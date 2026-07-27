@@ -32,7 +32,9 @@ window/stretch/scale_mode="integer"
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-; frame_queue_size stays at the default 2: a 1-frame queue was tried for
-; latency (2026-07-27) and amplified perceived stutter — with no buffer
-; slack, every minor OS/driver stall becomes a visible hitch. Latency
-; feel belongs to the §6 item 1 A/B, not a global queue gamble.
+; 1-frame queue = -16.7 ms input latency. History: tried 2026-07-27 in
+; WINDOWED mode and amplified compositor stutter (reverted); retried the
+; same day once fullscreen became the default — fullscreen bypasses the
+; compositor, and the HUD spike counter guards the retry. If spikes
+; climb again, revert to 2.
+rendering_device/vsync/frame_queue_size=1
