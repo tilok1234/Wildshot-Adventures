@@ -62,7 +62,14 @@ func _process(_delta: float) -> void:
 		_set_speed(snappedf(cur - 0.1, 0.1))
 	elif Input.is_action_just_pressed("debug_speed_up"):
 		_set_speed(snappedf(cur + 0.1, 0.1))
-	speed_label.text = ("speed %.1f t/s%s" % [cur, "   REPLAY-DIRTY" if world.replay_dirty else ""])
+	speed_label.text = (
+		"%d fps   speed %.1f t/s%s"
+		% [
+			Engine.get_frames_per_second(),
+			cur,
+			"   REPLAY-DIRTY" if world.replay_dirty else "",
+		]
+	)
 	var p: RefCounted = world.players[0]
 	autofire_label.visible = p.autofire_on
 	rec_label.visible = gif_recorder != null and gif_recorder.armed

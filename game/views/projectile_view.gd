@@ -1,17 +1,19 @@
 extends Node2D
-## Projectile renderer — M2 rig form, the seed of the §2.6 per-family
-## renderer. One MultiMeshInstance2D per faction: hostile and friendly
-## render from SEPARATE nodes so content cannot violate layering
-## structurally, and hostile draws above friendly — player shots are
-## visually subordinate to enemy fire (CORE-51 Laws 2/3, §2.5 bands 5/7).
-## Flat greybox quads for now; family sprite sheets and the shared hostile
-## signature arrive with M-FX/M6 behind EffectLibrary. Positions
+## Projectile renderer: one MultiMeshInstance2D per faction (the §2.6
+## per-family split arrives with the M-FX effects language). Both factions
+## draw a small procedural sphere sized EXACTLY to the collision circle —
+## visual = hitbox, the honest Law 8 placeholder (designer call: simple
+## small sphere). Hostile renders from a SEPARATE node added above
+## friendly, so player shots stay visually subordinate and content cannot
+## violate layering structurally (CORE-51 Laws 2/3, §2.5); the shared
+## hostile signature replaces the plain red tint at M-FX/M6. Positions
 ## interpolate prev→curr per the §2.9 toggle. View-only: reads the pool,
-## never mutates it.
+## never mutates.
 
 const ActorState := preload("res://sim/actor_state.gd")
 
 const TILE := 32.0
+const SPHERE_TEX_PX := 16
 
 var world: RefCounted = null
 var clock: RefCounted = null
@@ -22,8 +24,9 @@ var _allocated := false
 
 
 func _ready() -> void:
-	_setup_mmi(_friendly, Color(0.72, 0.84, 1.0, 0.85))
-	_setup_mmi(_hostile, Color(1.0, 0.32, 0.22))
+	var sphere := _make_sphere_texture()
+	_setup_mmi(_friendly, Color(0.82, 0.9, 1.0), sphere)
+	_setup_mmi(_hostile, Color(1.0, 0.36, 0.28), sphere)
 	add_child(_friendly)
 	add_child(_hostile)
 
@@ -69,11 +72,29 @@ func _process(_delta: float) -> void:
 	mm_h.visible_instance_count = n_h
 
 
-static func _setup_mmi(mmi: MultiMeshInstance2D, color: Color) -> void:
+static func _setup_mmi(mmi: MultiMeshInstance2D, color: Color, tex: Texture2D) -> void:
 	var mm := MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_2D
 	var quad := QuadMesh.new()
-	quad.size = Vector2(2.0, 2.0)  # unit-ish quad; instance transform scales by radius*TILE
+	quad.size = Vector2(2.0, 2.0)  # unit quad; instance scale = radius*TILE
 	mm.mesh = quad
 	mmi.multimesh = mm
 	mmi.modulate = color
+	mmi.texture = tex
+
+
+## Small white sphere: filled circle with an up-left highlight and a hard
+## pixel edge (Nearest filtering keeps it crisp). Faction color comes from
+## node modulate.
+static func _make_sphere_texture() -> ImageTexture:
+	var img := Image.create(SPHERE_TEX_PX, SPHERE_TEX_PX, false, Image.FORMAT_RGBA8)
+	var c := (SPHERE_TEX_PX - 1) / 2.0
+	for y in SPHERE_TEX_PX:
+		for x in SPHERE_TEX_PX:
+			var d := Vector2(x - c, y - c).length() / c
+			if d > 1.0:
+				continue
+			var hl := Vector2(x - c + c * 0.35, y - c + c * 0.35).length() / c
+			var b := clampf(1.1 - 0.5 * hl, 0.55, 1.0)
+			img.set_pixel(x, y, Color(b, b, b, 1.0))
+	return ImageTexture.create_from_image(img)

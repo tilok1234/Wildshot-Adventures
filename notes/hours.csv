@@ -8,3 +8,4 @@ timestamp,action,note
 2026-07-27T08:12:31,note,"PROVISIONAL feel note (tired): movement smoothness. Probe built; pipeline measured clean at 60Hz; walk anim 8->12fps velocity-scaled (provisional); ledger #8 filed; #6 closed by stress verdict."
 2026-07-27T08:15:32,note,"Second PROVISIONAL feel note (still tired session): walk-rate change lands - 'i guess that feels good i think'. Positive but hedged; NOT logged as the M2 feel verdict per fresh-hands rule. Rested day-start pass still owns the close."
 2026-07-27T08:39:51,note,"M3 engineering complete in one push: weapons+fire path w/ CORE-32 proofs, motion programs+hit registry, terrain+snag log, replay capture+goldens 10x verified+CI, remap UI+settings persistence, GIF pipeline. Channels+first GIF post = designer."
+2026-07-27T08:51:52,note,"Lag report triaged: 32ms/capture GIF readback (now armed-mode), 141KB->11KB sparse serialization (hash 2.5->0.28ms), stale instances killed. Goldens regenerated+verified."

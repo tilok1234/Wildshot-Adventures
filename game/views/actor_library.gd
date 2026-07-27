@@ -64,3 +64,20 @@ static func _is_looping(label: String) -> bool:
 		if label.begins_with(prefix):
 			return true
 	return false
+
+
+## Standalone texture of one frame (row 0) — for renderers that can't use
+## SpriteFrames, like the per-family projectile MultiMeshes. Extracted to
+## its own ImageTexture so mesh UVs map cleanly (an AtlasTexture region
+## does not survive canvas-mesh sampling).
+func frame_texture(id: String, frame: int) -> Texture2D:
+	if not _by_id.has(id):
+		return null
+	var entry: Dictionary = _by_id[id]
+	var tex: Texture2D = load(SHEET_ROOT + String(entry.sheet))
+	if tex == null:
+		return null
+	var cell := int(entry.cell) * int(entry.scale)
+	var img := tex.get_image()
+	var f := mini(frame, int(entry.rows[0].frames) - 1)
+	return ImageTexture.create_from_image(img.get_region(Rect2i(f * cell, 0, cell, cell)))

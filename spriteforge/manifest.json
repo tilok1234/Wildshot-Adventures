@@ -149,6 +149,90 @@
 			"setName": "Ranger",
 			"sheet": "players/ranger.png",
 			"zone": null
+		},
+		{
+			"category": "projectiles",
+			"cell": 16.0,
+			"cfg": {
+				"accent": "teal",
+				"body": "arrow",
+				"cat": "projectile",
+				"seed": 7.0
+			},
+			"flags": {
+				"boss": false,
+				"flying": false,
+				"ranged": false,
+				"rig": "projectile"
+			},
+			"id": "arrow",
+			"name": "Arrow",
+			"rateMs": 240.0,
+			"rows": [
+				{
+					"frames": 2.0,
+					"label": "loop"
+				}
+			],
+			"scale": 2.0,
+			"sheet": "projectiles/arrow.png",
+			"zone": null
+		},
+		{
+			"category": "projectiles",
+			"cell": 16.0,
+			"cfg": {
+				"accent": "teal",
+				"body": "boomerang",
+				"cat": "projectile",
+				"seed": 7.0
+			},
+			"flags": {
+				"boss": false,
+				"flying": false,
+				"ranged": false,
+				"rig": "projectile"
+			},
+			"id": "boomerang",
+			"name": "Boomerang",
+			"rateMs": 110.0,
+			"rows": [
+				{
+					"frames": 2.0,
+					"label": "loop"
+				}
+			],
+			"scale": 2.0,
+			"sheet": "projectiles/boomerang.png",
+			"zone": null
+		},
+		{
+			"category": "projectiles",
+			"cell": 16.0,
+			"cfg": {
+				"accent": "teal",
+				"body": "beamdot",
+				"cat": "projectile",
+				"seed": 7.0
+			},
+			"flags": {
+				"boss": false,
+				"flying": false,
+				"ranged": false,
+				"rig": "projectile"
+			},
+			"id": "beamdot",
+			"name": "Beam pellet",
+			"rateMs": 100.0,
+			"rows": [
+				{
+					"frames": 2.0,
+					"label": "loop"
+				}
+			],
+			"scale": 2.0,
+			"sheet": "projectiles/beamdot.png",
+			"zone": null
 		}
 	],
 	"cellNote": "cell = unscaled px; sheets are drawn at scale 2, so each sheet cell is cell*2 px. Sheet layout: one row per animation (rows[] lists label + frame count, frames run left to right, each frame occupies cell*2 px).",

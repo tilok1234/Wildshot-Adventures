@@ -29,11 +29,13 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if driver == null or _file == null:
 		return
+	var wrote := false
 	for ev: Dictionary in driver.frame_events:
 		if int(ev.type) != SimEvents.Type.PROJECTILE_DESPAWNED:
 			continue
 		if int(ev.reason) != SimEvents.DespawnReason.TERRAIN:
 			continue
+		wrote = true
 		var pos: Vector2 = ev.pos
 		var fx := absf(pos.x - roundf(pos.x))
 		var fy := absf(pos.y - roundf(pos.y))
@@ -58,4 +60,7 @@ func _process(_delta: float) -> void:
 				)
 			)
 		)
-	_file.flush()
+	# Flush only when something was written — an every-frame flush is an
+	# OS call (and an AV-scan trigger) for nothing.
+	if wrote:
+		_file.flush()
