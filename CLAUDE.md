@@ -246,12 +246,43 @@ runs until M6 variation). Stress-density screenshot audit captured
 VFX + numbers; meter red-lines the deliberate 26/24 over-budget; Law-3
 shape signature stays M-FX/M6). Spriteforge fallback RETIRED (pack,
 importer, slice test, dead actor_library removed; CI step dropped).
-Serialization v9; goldens regenerated; all gates green. OPEN
-designer-owned: rested day-start feel pass (formally closes M2 AND
-ratifies M5 feel: rusher chase read, 12-tick telegraph read, HP bar
-placement — all today's calls provisional by rule); weekly GIF #2 due
-next week (fresh material: wolves + skeleton archers). Next code
-milestone: M6 (docs/12 §4 — remaining four behaviors w/ proofs, Yard
-Warden elite + PhaseList, EffectLibrary + M-FX decision due END of M5
-week (~week 7): curated pack vs law-compliant placeholders, 9-row
-acceptance, audio cue map, CORE-34 no-ability clear).**
+Serialization v9; goldens regenerated; all gates green.
+POST-M5 SAME-DAY ADDITIONS (all designer-approved, session log +
+docs/12 §3.1/§3.4 amendments): detailed lab arena (builder layers:
+floor_patches/decals/props w/ per-prop solid flag; §3.1 skeleton
+preserved); Forest Walk natural-setting readability testbed (SPEC-A
+addendum: arena_forest.json + per-scenario arenas via
+ScenarioDef.arena; blob-47 coverages; CANOPY band 32); RUSHER SLASH
+(visible-attacks principle — §3.4 amended: 3-shot 50° arc, tele 10,
+period 36, contact retired; smoke re-mechanized; DodgeBot re-learned
+melee: birth-ring windup hazards, orbit stationkeeping RING 4 around
+threat centroid, melee trigger bubbles under simulated pursuit);
+PROJECTILE PACK integrated within the hour of drop
+(assets/projectile-pack, 5 styles; data/projectile_map.tres = pattern
+-> sprite, style swap = one-file remap; projectile_view per-pattern
+MMIs + sphere fallback + Law-2/8 upscale guard; hazard_view zone
+sprites + 8-step arm strip; CI pack+map gate) — M-FX PRE-REGISTERED
+DECISION = CURATED PACK, satisfied by delivery. WORLDFORGE
+CONSUMER-PREP (2026-07-28 re-ruling in planning doc 15):
+addons/worldforge_importer validates packFormat 1 (sha256 parity,
+walkability -> Bitgrid, flood==floodCount, TMJ structure) with
+hand-derived fixture + 3 negative guards + CI; consumption half stays
+post-Gate-1. PROOF STATE: Rusher/Husk solo + canaries + forest_walk
+composition PASS at 3.0 ability-off; first_contact composition FAIL
+committed for DESIGNER ADJUDICATION (3 wolves + 2 archers exceed the
+primary policy; margins tier-3-watch ~0.1). Ledger #9-#12 opened.
+OPEN designer-owned: rested day-start feel pass (formally closes M2
+AND ratifies ALL 2026-07-27 provisional calls: enemies, forest, slash,
+pack projectiles); first_contact adjudication (play at 3.0 preset);
+provisional mappings to confirm/veto (Leadshot=bandit:sniper,
+Fanmaw=carniplant:snapvine, Ringer=eyemonster:watcher,
+Blightcaster=cultist:acolyte; slash borrows fang — ledger #10); weekly
+GIF #2 (wolves/forest/slash = fresh material); dusk TileForge export
+(unblocks WorldForge slice drafting). Next code milestone: M6 (docs/12
+§4 — remaining four behaviors w/ proofs: Leadshot needs INTERCEPT aim
+(target vel = sim state, SERIAL bump) + FLANKER policy; Blightcaster
+needs lingering multi-hit hazards (hazard_step ext, SERIAL bump);
+Fanmaw/Ringer are pure data; Yard Warden elite + PhaseList;
+EffectLibrary pass (ledger #9: cast-flash, density/opacity scaler,
+flash reduction); 9-row acceptance; audio cue map; CORE-34 no-ability
+clear).**
