@@ -267,11 +267,22 @@ CONSUMER-PREP (2026-07-28 re-ruling in planning doc 15):
 addons/worldforge_importer validates packFormat 1 (sha256 parity +
 baseArtifact consistency, validation-report pass gate, walkability ->
 Bitgrid, flood==floodCount, TMJ structure, world formatVersion) with
-hand-derived fixture + 4 negative guards + CI; PROVEN against the real
-small-cold-coastal reference pack (0.57 s, flood 33845 reproduced —
-three implementations agree); dusk pack incoming from the
-WorldForge-side agent (validate on arrival); consumption half stays
-post-Gate-1 behind the generated-test-arena ruling. PROOF STATE: Rusher/Husk solo + canaries + forest_walk
+hand-derived fixture + 4 negative guards + CI; PROVEN against BOTH
+real packs (forest reference + dusk, each 0.6 s, flood 33845
+reproduced — walkability theme-independence empirically confirmed;
+contract-as-built notes blessed upstream in WorldForge plan §3.3a).
+GENERATED-TEST-ARENA RULING EXERCISED 2026-07-28 (~00:50, session
+log): consumption landed for ONE world — World Walk scenario plays the
+dusk pack (assets/worldforge-packs committed raw drop 32 MB;
+game/arena/world_builder.gd validates, REFUSES TileForge
+package-identity mismatch, renders resolved TMJ 170k placements/2.1 s;
+collision = walkability verbatim; spawn at pack spawnCell;
+ScenarioDef.worldforge_pack routes scenarios+bot runner onto worlds).
+World Walk composition proof PASS with a light escort set (1R+1H); the
+full 3R+2H set FAILS in settlement streets — joined to the
+first_contact adjudication. v0 limits: animated tiles frame-0, no
+canopy z, POIs/settlements/minimap unconsumed (remaining post-Gate-1
+scope with more worlds). PROOF STATE: Rusher/Husk solo + canaries + forest_walk
 composition PASS at 3.0 ability-off; first_contact composition FAIL
 committed for DESIGNER ADJUDICATION (3 wolves + 2 archers exceed the
 primary policy; margins tier-3-watch ~0.1). Ledger #9-#12 opened.
@@ -281,8 +292,9 @@ pack projectiles); first_contact adjudication (play at 3.0 preset);
 provisional mappings to confirm/veto (Leadshot=bandit:sniper,
 Fanmaw=carniplant:snapvine, Ringer=eyemonster:watcher,
 Blightcaster=cultist:acolyte; slash borrows fang — ledger #10); weekly
-GIF #2 (wolves/forest/slash = fresh material); dusk TileForge export
-(unblocks WorldForge slice drafting). Next code milestone: M6 (docs/12
+GIF #2 (wolves/forest/slash/GENERATED WORLD = fresh material); the
+first_contact adjudication now ALSO covers the world_walk full-pack
+fight (same failure class, same ruling). Next code milestone: M6 (docs/12
 §4 — remaining four behaviors w/ proofs: Leadshot needs INTERCEPT aim
 (target vel = sim state, SERIAL bump) + FLANKER policy; Blightcaster
 needs lingering multi-hit hazards (hazard_step ext, SERIAL bump);
