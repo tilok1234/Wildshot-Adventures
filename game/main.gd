@@ -13,6 +13,9 @@ const HumanSampler := preload("res://input/human_sampler.gd")
 const InputMapDefaults := preload("res://input/input_map_defaults.gd")
 const PlayerView := preload("res://game/views/player_view.gd")
 
+const ViewClock := preload("res://game/views/view_clock.gd")
+const CameraRig := preload("res://game/views/camera_rig.gd")
+
 const TILE := 32.0
 ## Fixed dev seed until the scenario picker (M4) supplies one; always logged.
 const RUN_SEED := 1
@@ -20,6 +23,14 @@ const RUN_SEED := 1
 var bitgrid: RefCounted
 var world: SimWorld
 var driver: RealtimeDriver
+var view_clock: ViewClock
+
+
+func _process(_delta: float) -> void:
+	# §2.9 prev/curr render toggle (F7) — view-side only, replay-irrelevant.
+	if view_clock != null and Input.is_action_just_pressed("interp_toggle"):
+		view_clock.interp_enabled = not view_clock.interp_enabled
+		print("render interpolation: ", "ON" if view_clock.interp_enabled else "OFF (snap)")
 
 
 func _ready() -> void:
@@ -51,25 +62,30 @@ func _ready() -> void:
 	for c: Vector2i in ArenaBuilder.solid_cells(def, manifest):
 		bitgrid.set_solid(c.x, c.y)
 
-	var camera := Camera2D.new()
-	camera.position = Vector2(int(def.width) * 16.0, int(def.height) * 16.0)
-	add_child(camera)
-	camera.make_current()
-
 	InputMapDefaults.register()
 	world = SimWorld.new()
 	world.setup(RUN_SEED, bitgrid)
 	world.add_player(Vector2(int(def.width) / 2.0, int(def.height) / 2.0))
-
-	var pview := PlayerView.new()
-	pview.world = world
-	add_child(pview)
 
 	driver = RealtimeDriver.new()
 	driver.world = world
 	driver.sampler = HumanSampler.new()
 	driver.mouse_tile_provider = func() -> Vector2: return get_global_mouse_position() / TILE
 	add_child(driver)
+
+	view_clock = ViewClock.new()
+	view_clock.driver = driver
+
+	var pview := PlayerView.new()
+	pview.world = world
+	pview.clock = view_clock
+	add_child(pview)
+
+	var camera := CameraRig.new()
+	camera.world = world
+	camera.clock = view_clock
+	add_child(camera)
+	camera.setup(int(def.width), int(def.height))
 
 	var pause_label := Label.new()
 	pause_label.text = "PAUSED"
