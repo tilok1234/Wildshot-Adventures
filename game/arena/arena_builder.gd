@@ -9,9 +9,17 @@ extends RefCounted
 ## and collision agree by construction (docs/12 §2.3).
 ##
 ## Art contract subset used here (TileForge GAME-GUIDE §2):
-## - seamless floor: fill.<key> on the underlay layer, variant by position hash
+## - seamless floor: fill.<key> on the underlay layer, variant by position
+##   hash; rectangular floor_patches override the fill family per cell
+##   (last patch wins) — Law 6 judged on the preview, patches stay quiet
 ## - net16 walls: 4-bit port mask from same-layer cardinal neighbors,
 ##   out-of-world does NOT connect (§2.8)
+## - decals: isolated overlays (mask_000, frame 0) on their own layer
+##   between floor and walls — cosmetic ONLY, never solid
+## - props: single-cell prop.<name> tiles on the structures layer;
+##   "solid": true blocks the cell (per the M1 honesty ruling, reserve it
+##   for props whose art plausibly fills the cell — chunky crates/altars,
+##   never slim braziers; the hitbox view shows every solid instantly)
 ## - structures (metatiles, §2.9) are supported for pillar_structure +
 ##   pillar_blocks defs but unused by the current arena: every 2x2 obstacle
 ##   option underfilled its blocked footprint (see the def's comment), so the
@@ -19,7 +27,7 @@ extends RefCounted
 
 const TILE := 32
 
-const LAYERS: Array[String] = ["underlay", "wall", "structures"]
+const LAYERS: Array[String] = ["underlay", "decals", "wall", "structures"]
 
 const Bitgrid := preload("res://sim/collision/bitgrid.gd")
 
@@ -101,6 +109,9 @@ static func solid_cells(def: Dictionary, manifest: Dictionary) -> Dictionary:
 	var solids := wall_cells(def)
 	for c in pillar_cells(def, manifest):
 		solids[c] = true
+	for pr: Dictionary in def.get("props", []):
+		if bool(pr.get("solid", false)):
+			solids[Vector2i(int(pr.x), int(pr.y))] = true
 	return solids
 
 
@@ -136,13 +147,61 @@ static func resolve_placements(def: Dictionary, manifest: Dictionary) -> Array[D
 
 	var fill_tiles := _tiles_by_prefix(manifest, floor_fam, "fill.%s.variant_" % floor_fam)
 	var wall_by_mask := _net_tiles_by_mask(manifest, wall_fam)
+	var patches: Array = def.get("floor_patches", [])
+	var patch_tiles := {}
+	for pt: Dictionary in patches:
+		var pfam := String(pt.family)
+		if not patch_tiles.has(pfam):
+			patch_tiles[pfam] = _tiles_by_prefix(manifest, pfam, "fill.%s.variant_" % pfam)
 
 	var width := int(def.width)
 	var height := int(def.height)
 	for y in height:
 		for x in width:
-			var tile: Dictionary = fill_tiles[variant_hash(x, y) % fill_tiles.size()]
-			placements.append(_placement("underlay", Vector2i(x, y), floor_fam, tile))
+			var fam := floor_fam
+			var tiles: Array = fill_tiles
+			for pt: Dictionary in patches:
+				if (
+					x >= int(pt.x)
+					and x < int(pt.x) + int(pt.w)
+					and y >= int(pt.y)
+					and y < int(pt.y) + int(pt.h)
+				):
+					fam = String(pt.family)
+					tiles = patch_tiles[fam]
+			var tile: Dictionary = tiles[variant_hash(x, y) % tiles.size()]
+			placements.append(_placement("underlay", Vector2i(x, y), fam, tile))
+
+	# Decals: isolated (mask_000) frame-0 overlays, cosmetic only.
+	var decal_tiles := {}
+	for d: Dictionary in def.get("decals", []):
+		var dfam := String(d.name)
+		if not decal_tiles.has(dfam):
+			var all := _tiles_by_prefix(manifest, dfam, "terrain.%s_decal.mask_000.variant_" % dfam)
+			var frame0 := all.filter(
+				func(t: Dictionary) -> bool: return String(t.id).ends_with(".frame_00")
+			)
+			decal_tiles[dfam] = frame0
+		var dvariants: Array = decal_tiles[dfam]
+		if dvariants.is_empty():
+			push_error("arena_builder: decal family '%s' has no frame_00 variants" % dfam)
+			continue
+		var dcell := Vector2i(int(d.x), int(d.y))
+		var dtile: Dictionary = dvariants[variant_hash(dcell.x, dcell.y) % dvariants.size()]
+		placements.append(_placement("decals", dcell, dfam, dtile))
+
+	# Props: single-cell prop.<name> tiles; solidity handled in solid_cells.
+	var prop_tiles := {}
+	for pr: Dictionary in def.get("props", []):
+		var pname := String(pr.name)
+		if not prop_tiles.has(pname):
+			prop_tiles[pname] = _tiles_by_prefix(manifest, "prop", "prop.%s.variant_" % pname)
+		var pvariants: Array = prop_tiles[pname]
+		if pvariants.is_empty():
+			continue
+		var pcell := Vector2i(int(pr.x), int(pr.y))
+		var ptile: Dictionary = pvariants[variant_hash(pcell.x, pcell.y) % pvariants.size()]
+		placements.append(_placement("structures", pcell, "prop", ptile))
 
 	var walls := wall_cells(def)
 	for c: Vector2i in walls:

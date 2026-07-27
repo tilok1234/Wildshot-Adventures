@@ -18,8 +18,11 @@ const Kinematics := preload("res://sim/systems/kinematics.gd")
 const ActorState := preload("res://sim/actor_state.gd")
 const ProjectilePool := preload("res://sim/projectile_pool.gd")
 
-## Projection depth K, in ticks.
-const HORIZON := 30
+## Projection depth K, in ticks. 60 (1 s) is enough for simulated pursuit
+## to reveal a closing corner BEFORE the bot enters it — 30/45 with
+## linear body extrapolation both cornered and failed the rusher proof
+## (repros in reports/; the fix history lives in the M5 session log).
+const HORIZON := 60
 ## Threat inflation (tiles): projected overlaps use hitbox + this margin,
 ## so near-misses count against a candidate before they become hits.
 const MARGIN := 0.12
@@ -50,30 +53,39 @@ static func compute_frame(world: RefCounted, player_index: int) -> RefCounted:
 	var best_candidate := 0
 	var best_survival := -1
 	var best_clearance := -1.0e18
-	var best_center := -1.0e18
+	var best_escape := -1.0e18
 	# Candidate 0 = stay; 1..16 = headings h*22.5 deg. Even headings are a
 	# single dir; odd headings alternate the two adjacent dirs by parity.
+	# Keys: survival first, always. Then MODE SPLIT: fully safe for the
+	# whole horizon -> POSITIONING decides (end far from threats, away
+	# from walls — clearance here rewarded pure radial flight straight
+	# into a corner, the second rusher-proof FAIL); under predicted
+	# threat -> grazing margin (clearance) decides, positioning breaks
+	# ties.
 	for c in 17:
 		var result := _score(world, p, c, t, threats, use_slide)
 		var survival := int(result.x)
 		var clearance := float(result.y)
-		var center_bias := -float(result.z)
+		var escape := float(result.z)
 		var better := false
 		if survival > best_survival:
 			better = true
-		elif survival == best_survival and clearance > best_clearance + 0.0001:
-			better = true
-		elif (
-			survival == best_survival
-			and absf(clearance - best_clearance) <= 0.0001
-			and center_bias > best_center + 0.0001
-		):
-			better = true
+		elif survival == best_survival:
+			if survival > HORIZON:
+				if escape > best_escape + 0.0001:
+					better = true
+				elif absf(escape - best_escape) <= 0.0001 and clearance > best_clearance + 0.0001:
+					better = true
+			else:
+				if clearance > best_clearance + 0.0001:
+					better = true
+				elif absf(clearance - best_clearance) <= 0.0001 and escape > best_escape + 0.0001:
+					better = true
 		if better:
 			best_candidate = c
 			best_survival = survival
 			best_clearance = clearance
-			best_center = center_bias
+			best_escape = escape
 	if best_candidate > 0:
 		var d := _candidate_dir(best_candidate, t)
 		frame.move_x = DIR_X[d]
@@ -93,10 +105,11 @@ static func _candidate_dir(c: int, t: int) -> int:
 	return base if t % 2 == 0 else (base + 1) % 8
 
 
-## Survival ticks (x), min clearance (y), end-distance-to-center (z) for
-## one candidate. use_slide walks the real Kinematics slide (near walls);
-## the open-field path integrates directly — identical where walls are
-## unreachable within the horizon.
+## Survival ticks (x), min clearance (y), end-position distance to the
+## nearest projected threat (z — the kiting term) for one candidate.
+## use_slide walks the real Kinematics slide (near walls); the open-field
+## path integrates directly — identical where walls are unreachable
+## within the horizon.
 static func _score(
 	world: RefCounted, p: RefCounted, c: int, t: int, threats: Dictionary, use_slide: bool
 ) -> Vector3:
@@ -110,6 +123,13 @@ static func _score(
 	var proj_gone: PackedInt32Array = threats.proj_gone
 	var bodies: Array = threats.bodies
 	var hazards: Array = threats.hazards
+	var body_pos: Array = []
+	var body_speed: PackedFloat32Array = PackedFloat32Array()
+	var body_r: PackedFloat32Array = PackedFloat32Array()
+	for b: Dictionary in bodies:
+		body_pos.append(b.pos)
+		body_speed.append(float(b.speed))
+		body_r.append(float(b.radius))
 	var survival := HORIZON + 1
 	var clearance := 1.0e18
 	for h in range(1, HORIZON + 1):
@@ -132,10 +152,18 @@ static func _score(
 			clearance = minf(clearance, dist - rr)
 			if dist < rr + MARGIN:
 				survival = h
-		for b: Dictionary in bodies:
-			var bpos: Vector2 = b.pos + b.vel * float(h)
-			var rr2: float = float(b.radius) + pr
-			var dist2 := pos.distance_to(bpos)
+		for k in body_pos.size():
+			# Simulated pursuit, coupled to THIS candidate's path: chasers
+			# home on the player (enemy_step CHASER), so linear
+			# extrapolation lies exactly when it matters — in corners.
+			var bp: Vector2 = body_pos[k]
+			var to_player := pos - bp
+			var d2 := to_player.length()
+			if d2 > 0.0001:
+				bp += to_player / d2 * minf(body_speed[k] * dt, d2)
+				body_pos[k] = bp
+			var rr2: float = body_r[k] + pr
+			var dist2 := pos.distance_to(bp)
 			clearance = minf(clearance, dist2 - rr2)
 			if dist2 < rr2 + MARGIN:
 				survival = h
@@ -148,8 +176,39 @@ static func _score(
 					survival = h
 		if survival <= h:
 			break
-	var center := Vector2(float(world.bitgrid.width) * 0.5, float(world.bitgrid.height) * 0.5)
-	return Vector3(float(survival), clearance, pos.distance_to(center))
+	# Kiting term: end far from the nearest threat's projected end pos,
+	# MINUS a wall-proximity penalty — pure radial flight in a bounded
+	# arena always terminates in a corner (the second rusher-proof FAIL:
+	# 573 ticks pinned bottom-left), so nearing walls devalues a heading
+	# and the away-vector bends tangent: orbit emerges.
+	var escape := 1.0e18
+	var last_step: Array = proj_pos[HORIZON - 1]
+	for i in last_step.size():
+		if proj_gone[i] >= HORIZON:
+			escape = minf(escape, pos.distance_to(Vector2(last_step[i])))
+	for k in body_pos.size():
+		escape = minf(escape, pos.distance_to(Vector2(body_pos[k])))
+	var wall_clear := _wall_clearance(grid, pos, 3.0)
+	escape -= maxf(0.0, 2.5 - wall_clear) * 2.0
+	return Vector3(float(survival), clearance, escape)
+
+
+## Distance from pos to the nearest solid-cell edge within max_r (returns
+## max_r when nothing solid is that close).
+static func _wall_clearance(grid: RefCounted, pos: Vector2, max_r: float) -> float:
+	var x0 := int(floorf(pos.x - max_r))
+	var x1 := int(floorf(pos.x + max_r))
+	var y0 := int(floorf(pos.y - max_r))
+	var y1 := int(floorf(pos.y + max_r))
+	var best := max_r
+	for ty in range(y0, y1 + 1):
+		for tx in range(x0, x1 + 1):
+			if not grid.is_solid(tx, ty):
+				continue
+			var qx := clampf(pos.x, float(tx), float(tx) + 1.0)
+			var qy := clampf(pos.y, float(ty), float(ty) + 1.0)
+			best = minf(best, pos.distance_to(Vector2(qx, qy)))
+	return best
 
 
 ## Precompute per-tick projected positions for every relevant hostile
@@ -223,12 +282,22 @@ static func _project_threats(world: RefCounted, p: RefCounted) -> Dictionary:
 		var def_index: int = e.def_index
 		if def_index < 0 or e.hp <= 0:
 			continue
-		if int(defs[def_index].contact_damage) <= 0:
+		var def: Resource = defs[def_index]
+		if int(def.contact_damage) <= 0:
 			continue
 		var epos: Vector2 = e.pos
 		if epos.distance_to(ppos) > RELEVANT_R:
 			continue
-		bodies.append({"pos": epos, "vel": epos - e.prev_pos, "radius": e.radius})
+		(
+			bodies
+			. append(
+				{
+					"pos": epos,
+					"speed": float(def.move_speed),
+					"radius": e.radius,
+				}
+			)
+		)
 	var hazards: Array = []
 	for hz: Dictionary in world.hazards:
 		if int(hz.faction) != ActorState.FACTION_HOSTILE:

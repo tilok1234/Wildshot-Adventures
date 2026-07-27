@@ -1,5 +1,5 @@
 {
-  "comment": "Phase A lab arena per docs/12 §3.1 [T]: 48x32 dungeon room, 1-tile perimeter walls, two corridor walls, one corner pocket (top-right, 2-cell mouth), five obstacle stubs, open center ~16x12 (cells x16..31, y10..21 kept clear). DEVIATION FROM §3.1 (M1 preview finding, designer ruling pending): obstacles are 3-cell wall stubs, not 2x2 pillars — every 2x2 option lied about collision (slim pillar props: invisible walls; 2x2 wall blocks: hollow-ring artifact; monolith/rtower structures: art underfills the blocked footprint). Straight wall runs are the one asset whose art fills blocked cells edge-to-edge, so stubs keep Law 8 honest at cell granularity.",
+  "comment": "Phase A lab arena per docs/12 SS3.1 [T]: 48x32 dungeon room, 1-tile perimeter, two corridor walls, one corner pocket (top-right, 2-cell mouth), five obstacle stubs, open center ~16x12 (cells x16..31, y10..21 kept clear of solids). DEVIATION FROM SS3.1 (M1 preview finding, designer ruling pending): obstacles are wall stubs, not 2x2 pillars - every 2x2 option lied about collision; straight wall runs are the one asset whose art fills blocked cells edge-to-edge. DETAIL PASS (M5, designer-requested, styled on the reference pack's dungeon-room scene): NW crypt aisles (three staggered stubs over a stone patch), SE shrine room (templefloor, altar, braziers, chest), pocket bait dressing, prop clusters + bones/blood/webs/cracks decals. Decals + slim props are COSMETIC (never solid); solid: true only on chunky cell-filling props (crates/barrels/altar/statue) per the M1 honesty ruling. Solids visible via hitbox view (H) and the collision preview.",
   "width": 48,
   "height": 32,
   "floor_family": "dungeonfloor",
@@ -19,6 +19,48 @@
     { "x": 20, "y": 6, "w": 1, "h": 3 },
     { "x": 36, "y": 12, "w": 3, "h": 1 },
     { "x": 10, "y": 25, "w": 1, "h": 3 },
-    { "x": 30, "y": 25, "w": 3, "h": 1 }
+    { "x": 30, "y": 25, "w": 3, "h": 1 },
+    { "x": 6, "y": 14, "w": 1, "h": 4 },
+    { "x": 9, "y": 17, "w": 1, "h": 4 },
+    { "x": 12, "y": 13, "w": 1, "h": 4 },
+    { "x": 36, "y": 23, "w": 4, "h": 1 },
+    { "x": 42, "y": 23, "w": 5, "h": 1 },
+    { "x": 36, "y": 24, "w": 1, "h": 6 }
+  ],
+  "floor_patches": [
+    { "x": 40, "y": 26, "w": 3, "h": 3, "family": "templefloor" }
+  ],
+  "props": [
+    { "x": 14, "y": 13, "name": "crates", "solid": true },
+    { "x": 14, "y": 14, "name": "barrels", "solid": true },
+    { "x": 40, "y": 13, "name": "crates", "solid": true },
+    { "x": 41, "y": 27, "name": "altar", "solid": true },
+    { "x": 5, "y": 27, "name": "statue", "solid": true },
+    { "x": 18, "y": 24, "name": "brazier" },
+    { "x": 29, "y": 24, "name": "brazier" },
+    { "x": 38, "y": 25, "name": "brazier" },
+    { "x": 44, "y": 25, "name": "brazier" },
+    { "x": 44, "y": 29, "name": "chest" },
+    { "x": 39, "y": 3, "name": "lootpile" },
+    { "x": 44, "y": 2, "name": "bonepile" },
+    { "x": 41, "y": 12, "name": "bonepile" },
+    { "x": 11, "y": 28, "name": "rubblepile" }
+  ],
+  "decals": [
+    { "x": 6, "y": 8, "name": "cracks" },
+    { "x": 17, "y": 23, "name": "cracks" },
+    { "x": 33, "y": 8, "name": "cracks" },
+    { "x": 26, "y": 5, "name": "cracks" },
+    { "x": 22, "y": 28, "name": "cracks" },
+    { "x": 12, "y": 19, "name": "bones" },
+    { "x": 31, "y": 24, "name": "bones" },
+    { "x": 39, "y": 29, "name": "bones" },
+    { "x": 12, "y": 20, "name": "blood" },
+    { "x": 43, "y": 12, "name": "blood" },
+    { "x": 46, "y": 1, "name": "webs" },
+    { "x": 39, "y": 1, "name": "webs" },
+    { "x": 37, "y": 24, "name": "webs" },
+    { "x": 46, "y": 24, "name": "webs" },
+    { "x": 2, "y": 11, "name": "webs" }
   ]
 }
