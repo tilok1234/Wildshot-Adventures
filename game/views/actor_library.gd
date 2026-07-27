@@ -7,9 +7,12 @@ extends RefCounted
 
 const MANIFEST_PATH := "res://spriteforge/manifest.json"
 const SHEET_ROOT := "res://spriteforge/"
-## Pack rateMs is null throughout, so this dev default drives all rows for
-## now; per-row tuning is a later art pass, not a code concern.
+## Pack rateMs is null throughout, so these dev defaults drive row rates.
+## PROVISIONAL [T-ish]: walk runs faster than the rest so footfalls track
+## ground speed (AnimatedActor additionally scales walk by live velocity);
+## rested-session feel pass judges both numbers.
 const DEFAULT_FPS := 8.0
+const WALK_FPS := 12.0
 ## Looping is a label property: locomotion cycles, everything else one-shots.
 const LOOP_PREFIXES: Array[String] = ["idle-", "walk-"]
 
@@ -37,14 +40,14 @@ func build_sprite_frames(id: String) -> SpriteFrames:
 		push_error("actor_library: sheet not imported: %s" % entry.sheet)
 		return null
 	var cell := int(entry.cell) * int(entry.scale)
-	var fps := DEFAULT_FPS
-	if entry.rateMs != null:
-		fps = 1000.0 / float(entry.rateMs)
 	var frames := SpriteFrames.new()
 	frames.remove_animation("default")
 	var rows: Array = entry.rows
 	for row_i in rows.size():
 		var label := String(rows[row_i].label)
+		var fps := WALK_FPS if label.begins_with("walk-") else DEFAULT_FPS
+		if entry.rateMs != null:
+			fps = 1000.0 / float(entry.rateMs)
 		frames.add_animation(label)
 		frames.set_animation_speed(label, fps)
 		frames.set_animation_loop(label, _is_looping(label))

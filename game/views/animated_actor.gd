@@ -11,6 +11,8 @@ extends AnimatedSprite2D
 
 const TILE := 32.0
 const RENDER_SCALE := 0.5
+## The speed the walk row's fps is authored against (§3.2 baseline).
+const BASELINE_SPEED := 4.0
 
 var actor: RefCounted = null
 var clock: RefCounted = null
@@ -37,8 +39,13 @@ func _process(_delta: float) -> void:
 	if vel.length_squared() > 0.000001:
 		_facing = _dir_from(vel)
 		_play_if_changed("walk-" + _facing)
+		# Footfall rate tracks live ground speed (view-side, PROVISIONAL):
+		# walk fps is authored for the 4.0 t/s baseline; scale by actual
+		# tiles/s so 3.0 strolls and 5.5 sprints don't foot-slide.
+		speed_scale = vel.length() * 60.0 / BASELINE_SPEED
 	else:
 		_play_if_changed("idle-" + _facing)
+		speed_scale = 1.0
 
 
 func _play_if_changed(anim: String) -> void:

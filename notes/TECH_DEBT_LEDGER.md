@@ -13,5 +13,6 @@ work here.
 | 3 | Fixed class-shell stats — flat values in data, no growth curves | `data/` (M2) | Phase C build grammar |
 | 4 | Arena-only spawning — scenario spawner assumes the one greybox arena | `sim/` (M2+) | Phase B+ encounter authoring |
 | 5 | Placeholder EffectLibrary entries until the effects pack lands (M-FX; pack-or-placeholder call pre-registered for end of M5) | `game/` (M3+) | Effects-pack acceptance — 9-row checklist (M6) |
-| 6 | Brute-force actor collision and projectile-vs-actor circle tests — spatial hash deferred, upgrade path documented | `sim/collision/` (M2) | M2 600-projectile stress-scene verdict |
+| 6 | Brute-force actor collision and projectile-vs-actor circle tests — spatial hash deferred, upgrade path documented | `sim/collision/` (M2) | **CLOSED at M2**: stress verdict PASS (reports/stress_m2.json, min 1950 fps at 600 live) — brute force stays for Phase A; reopen only if a later milestone's density profile breaks budget |
 | 7 | PNG-sequence GIF path (F9 ring buffer → PNG → ffmpeg) — no in-engine encoder | `tools/gif.ps1` (M3) | Only if the weekly GIF cadence makes it painful |
+| 8 | Kinematics axis-clamp assumes legal (non-overlapping) spawns: a body spawned inside solid geometry gets clamped to the near face on its first move on that axis (can read as a small teleport) and is not evicted on the other axis. Found by the motion probe's own illegal spawn at (10,10). | `sim/systems/player_move.gd` (M2) | Scenario loader validates spawn legality against the bitgrid (M4 spawn/reset panel) |
