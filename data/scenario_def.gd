@@ -12,4 +12,8 @@ extends Resource
 ## ORDER is def-roster order then array order — never Dictionary key
 ## order (§2.4 stable iteration; scenario_loader owns the loop).
 @export var enemy_spawns: Dictionary = {}
+## Extra EnemyDefs appended AFTER the standard roster (indexes stay
+## stable). Exists for the §2.11 bot canaries — deliberately unfair
+## defs that must never enter the shipped roster.
+@export var extra_enemy_defs: Array[Resource] = []
 @export var default_seed: int = 1

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+[ext_resource type="Resource" path="res://tests/bot_scenarios/canary_wall_def.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"canary_undodgeable"
+display_name = "CANARY: undodgeable (bot MUST fail)"
+player_spawn = Vector2(24, 16)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"canary_wall": PackedVector2Array(29, 16)
+}
+extra_enemy_defs = Array[Resource]([ExtResource("2")])
+default_seed = 101

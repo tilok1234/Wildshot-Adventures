@@ -1,0 +1,28 @@
+[gd_resource type="Resource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://data/enemy_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/emitter_slot.gd" id="2"]
+[ext_resource type="Resource" path="res://tests/bot_scenarios/canary_wall_ring.tres" id="3"]
+
+[sub_resource type="Resource" id="slot0"]
+script = ExtResource("2")
+pattern = ExtResource("3")
+trigger_range = 30.0
+telegraph_ticks = 1
+cooldown_ticks = 60
+recover_ticks = 1
+
+[resource]
+script = ExtResource("1")
+id = &"canary_wall"
+display_name = "CANARY: Undodgeable Wall (never ship)"
+hp = 100000
+body_radius = 0.4
+move_speed = 0.0
+contact_damage = 0
+contact_cooldown_ticks = 30
+aggro_range = 40.0
+movement_policy = 3
+range_min = 0.0
+range_max = 0.0
+emitters = Array[Resource]([SubResource("slot0")])

@@ -37,6 +37,7 @@ const ProjectileView := preload("res://game/views/projectile_view.gd")
 const StandinView := preload("res://game/views/standin_view.gd")
 const EnemyActorsView := preload("res://game/views/enemy_actors_view.gd")
 const HpBarView := preload("res://game/views/hp_bar_view.gd")
+const DodgeProof := preload("res://game/bots/dodge_proof.gd")
 
 const TILE := 32.0
 
@@ -302,6 +303,12 @@ func _set_speed(speed: float) -> void:
 
 
 func _ready() -> void:
+	# §2.11 bot mode: the documented CLI (godot --headless -- --bot=...)
+	# runs the proof core with zero presentation built, then exits with
+	# the proof's status code.
+	if BootArgs.get_arg("bot") == "dodge_proof":
+		get_tree().quit(DodgeProof.run_from_args(BootArgs.args))
+		return
 	var arena := ArenaBuilder.build_arena(self)
 	if arena.is_empty():
 		return
