@@ -25,7 +25,7 @@ static func run(world: RefCounted) -> void:
 		if not frame.ability_pressed:
 			continue
 		var p: RefCounted = world.players[i]
-		if p.mana < int(def.mana_cost):
+		if p.dead or p.mana < int(def.mana_cost):
 			continue
 		p.mana -= int(def.mana_cost)
 		(
@@ -70,6 +70,8 @@ static func _cast_nova(world: RefCounted, p: RefCounted, def: Resource) -> void:
 	var ppos: Vector2 = p.pos
 	var events: Array[Dictionary] = world.events
 	for e: RefCounted in world.enemies:
+		if e.dead:
+			continue
 		var apos: Vector2 = e.pos
 		var d := apos - ppos
 		var rr: float = r + e.radius

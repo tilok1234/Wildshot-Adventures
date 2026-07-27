@@ -38,6 +38,8 @@ const KEY_ACTIONS := {
 	"gif_dump": KEY_G,
 	# M4 density meter overlay.
 	"density_toggle": KEY_M,
+	# M4 spawn/reset: rebuild the scenario with the next seed, logged.
+	"scenario_reset": KEY_T,
 }
 ## Modifier-key actions (registered separately): Alt+Enter fullscreen.
 const ALT_KEY_ACTIONS := {

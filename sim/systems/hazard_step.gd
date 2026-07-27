@@ -40,6 +40,8 @@ static func run(world: RefCounted) -> void:
 		var r := float(hz.radius)
 		var center: Vector2 = hz.pos
 		for a: RefCounted in targets:
+			if a.dead:
+				continue
 			var apos: Vector2 = a.pos
 			var d := apos - center
 			var rr: float = r + a.radius

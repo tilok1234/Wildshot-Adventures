@@ -72,6 +72,8 @@ func _init() -> void:
 		failed = true
 	if not _check_fire_path():
 		failed = true
+	if not _check_emitter_death():
+		failed = true
 
 	if failed:
 		quit(1)
@@ -252,6 +254,71 @@ func _run_fire_once(with_fire: bool) -> Dictionary:
 		"casts": casts,
 		"mana_min": mana_min,
 		"rng_end": [world.rng_enemy.state, world.rng_misc.state],
+	}
+
+
+## Debug-emitter + player-death contract (M4): hostile fire kills the
+## player deterministically; a dead player is inert (no further damage,
+## no movement); double-run hashes stay identical.
+func _check_emitter_death() -> bool:
+	var a := _run_emitter_once()
+	var b := _run_emitter_once()
+	var ok := true
+	if a.hashes != b.hashes:
+		printerr("FAIL: emitter runs diverge")
+		ok = false
+	if not bool(a.died):
+		printerr("FAIL: player never died under emitter fire")
+		ok = false
+	if int(a.hits_after_death) != 0:
+		printerr("FAIL: dead player took %d further hits" % int(a.hits_after_death))
+		ok = false
+	if ok:
+		print("emitter-death ok: died at tick %d, hp floor %d" % [int(a.death_tick), int(a.hp_end)])
+	return ok
+
+
+func _run_emitter_once() -> Dictionary:
+	var grid := Bitgrid.new()
+	grid.setup(16, 16)
+	var world := SimWorld.new()
+	world.setup(5, grid)
+	var player := world.add_player(Vector2(8.0, 8.0))
+	(
+		world
+		. enqueue_command(
+			{
+				"type": SimWorld.Command.TOGGLE_EMITTER,
+				"on": true,
+				"pos": Vector2(4.0, 8.0),
+				"damage": 25,
+				"cadence": 60,
+			}
+		)
+	)
+	var hashes: Array[int] = []
+	var died := false
+	var death_tick := -1
+	var hits_after_death := 0
+	for t in 900:
+		world.step([null])
+		for ev: Dictionary in world.events:
+			match int(ev.type):
+				SimEvents.Type.ENTITY_KILLED:
+					if bool(ev.get("player", false)):
+						died = true
+						death_tick = int(ev.tick)
+				SimEvents.Type.DAMAGE_APPLIED:
+					if died and int(ev.target) == player.id and int(ev.tick) > death_tick:
+						hits_after_death += 1
+		if (world.tick % HASH_EVERY) == 0:
+			hashes.append(world.state_hash())
+	return {
+		"hashes": hashes,
+		"died": died,
+		"death_tick": death_tick,
+		"hits_after_death": hits_after_death,
+		"hp_end": player.hp,
 	}
 
 

@@ -20,6 +20,8 @@ static func run(world: RefCounted) -> void:
 		var p: RefCounted = world.players[i]
 		# Unconditional: the view interpolates every player every tick (§2.9).
 		p.prev_pos = p.pos
+		if p.dead:
+			continue
 		if i >= frames.size() or frames[i] == null:
 			continue
 		var mv: Vector2 = frames[i].move_vector()

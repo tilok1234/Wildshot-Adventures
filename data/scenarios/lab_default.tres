@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"lab_default"
+display_name = "Lab (target ring)"
+player_spawn = Vector2(24, 16)
+standin_positions = PackedVector2Array(30, 16, 28.24, 20.24, 24, 22, 19.76, 20.24, 18, 16, 19.76, 11.76, 24, 10, 28.24, 11.76)
+default_seed = 1

@@ -23,10 +23,11 @@ const PlayerAbility := preload("res://sim/systems/player_ability.gd")
 const PlayerFire := preload("res://sim/systems/player_fire.gd")
 const ProjectileStep := preload("res://sim/systems/projectile_step.gd")
 const HazardStep := preload("res://sim/systems/hazard_step.gd")
+const EmitterStep := preload("res://sim/systems/emitter_step.gd")
 
 const TICKS_PER_SECOND := 60
 const DT := 1.0 / 60.0
-const SERIAL_VERSION := 5
+const SERIAL_VERSION := 6
 
 ## Named PCG32 stream ids (§2.4). rng_vfx deliberately does NOT exist here —
 ## it lives view-side so cosmetics can never perturb gameplay.
@@ -37,6 +38,7 @@ enum Command {
 	SPAWN_PROJECTILE,
 	SET_MOVE_SPEED,
 	SET_ABILITY,
+	TOGGLE_EMITTER,
 }
 
 ## §3.2 move-speed tuning band. The sim-side clamp means NO path — debug
@@ -86,6 +88,14 @@ var ability_def: Resource = null
 ## Live armed-zone hazards (§2.6 M4 subset), stable order, serialized:
 ## {id, pos, radius, faction, damage, arm_at_tick}.
 var hazards: Array[Dictionary] = []
+
+## M4 debug hostile emitter (sim/systems/emitter_step.gd). Serialized;
+## toggling is a debug command and marks the run replay-dirty.
+var emitter_on: bool = false
+var emitter_pos: Vector2 = Vector2.ZERO
+var emitter_next_fire: int = 0
+var emitter_cadence: int = 90
+var emitter_damage: int = 10
 
 var _commands: Array[Dictionary] = []
 
@@ -176,6 +186,7 @@ func step(frames: Array) -> void:
 	PlayerMove.run(self)
 	PlayerAbility.run(self)
 	PlayerFire.run(self)
+	EmitterStep.run(self)
 	ProjectileStep.run(self)
 	HazardStep.run(self)
 	tick += 1
@@ -267,6 +278,12 @@ func serialize() -> PackedByteArray:
 		buf.put_64(int(hz.placed_at_tick))
 		buf.put_64(int(hz.arm_at_tick))
 	buf.put_u8(0 if ability_def == null else ability_defs.find(ability_def) + 1)
+	buf.put_u8(1 if emitter_on else 0)
+	buf.put_double(emitter_pos.x)
+	buf.put_double(emitter_pos.y)
+	buf.put_64(emitter_next_fire)
+	buf.put_32(emitter_cadence)
+	buf.put_32(emitter_damage)
 	return buf.data_array
 
 
@@ -301,6 +318,14 @@ func _drain_commands() -> void:
 				if idx >= 0 and idx < ability_defs.size():
 					ability_def = ability_defs[idx]
 					replay_dirty = true
+			Command.TOGGLE_EMITTER:
+				emitter_on = bool(cmd.on)
+				if emitter_on:
+					emitter_pos = cmd.pos
+					emitter_cadence = int(cmd.get("cadence", 90))
+					emitter_damage = int(cmd.get("damage", 10))
+					emitter_next_fire = tick + emitter_cadence
+				replay_dirty = true
 	_commands.clear()
 
 

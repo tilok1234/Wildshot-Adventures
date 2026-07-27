@@ -21,6 +21,9 @@ const StatBar := preload("res://ui/stat_bar.gd")
 const DensityMeter := preload("res://ui/density_meter.gd")
 const HazardView := preload("res://game/views/hazard_view.gd")
 const DamageNumberView := preload("res://game/views/damage_number_view.gd")
+const ScenarioLoader := preload("res://game/scenario_loader.gd")
+const RecapTracker := preload("res://game/drivers/recap_tracker.gd")
+const RecapPanel := preload("res://ui/recap_panel.gd")
 const ActorLibrary := preload("res://game/views/actor_library.gd")
 const AnimatedActor := preload("res://game/views/animated_actor.gd")
 
@@ -30,8 +33,6 @@ const ProjectileView := preload("res://game/views/projectile_view.gd")
 const StandinView := preload("res://game/views/standin_view.gd")
 
 const TILE := 32.0
-## Fixed dev seed until the scenario picker (M4) supplies one; always logged.
-const RUN_SEED := 1
 
 var bitgrid: RefCounted
 var world: SimWorld
@@ -49,6 +50,7 @@ var hints_label: Label
 var gif_recorder: Node
 var rec_label: Label
 var feedback_settings: Dictionary = {}
+var recap_panel: PanelContainer
 var _af_on_tex: Texture2D = load("res://uikit/icon_autofire_on.png")
 var _af_off_tex: Texture2D = load("res://uikit/icon_autofire_off.png")
 
@@ -74,6 +76,13 @@ func _process(_delta: float) -> void:
 		_refresh_hints()
 	if density_meter != null and Input.is_action_just_pressed("density_toggle"):
 		density_meter.visible = not density_meter.visible
+	# One-key reseeding reset (§2.10): next seed persisted + logged, full
+	# scene rebuild — no ref-swapping, no stale state.
+	if world != null and Input.is_action_just_pressed("scenario_reset"):
+		Config.set_setting("dev", "seed", world.run_seed + 1)
+		print("scenario reset -> seed %d" % (world.run_seed + 1))
+		get_tree().reload_current_scene()
+		return
 	# Alt+Enter: borderless fullscreen — windowed-mode compositing is a
 	# known stutter source on Windows; this is the one-key A/B for it.
 	if Input.is_action_just_pressed("fullscreen_toggle"):
@@ -134,6 +143,8 @@ func _refresh_hints() -> void:
 		["debug_speed_baseline", "spd 4.0"],
 		["gif_dump", "gif"],
 		["replay_save", "replay"],
+		["scenario_reset", "reset"],
+		["density_toggle", "meter"],
 	]:
 		parts.append("%s %s" % [Config.binding_text(entry[0]), entry[1]])
 	hints_label.text = "  ".join(parts)
@@ -157,36 +168,18 @@ func _ready() -> void:
 	bitgrid = arena.bitgrid
 
 	# InputMap defaults + saved remaps are applied by the Config autoload
-	# before any scene _ready runs.
-	world = SimWorld.new()
-	world.setup(RUN_SEED, bitgrid)
-	(
-		world
-		. set_weapons(
-			[
-				load("res://data/weapons/longbolt.tres"),
-				load("res://data/weapons/scattercast.tres"),
-				load("res://data/weapons/wheelblade.tres"),
-			]
-		)
+	# before any scene _ready runs. Scenario + seed + speed preset come
+	# from persisted dev settings; T rebuilds with the next seed.
+	var scenario: Resource = load(
+		String(Config.get_setting("dev", "scenario", "res://data/scenarios/lab_default.tres"))
 	)
-	(
-		world
-		. set_abilities(
-			[
-				load("res://data/abilities/nova_burst.tres"),
-				load("res://data/abilities/quickdraw.tres"),
-				load("res://data/abilities/blast_rune.tres"),
-			]
-		)
-	)
-	var center := Vector2(int(def.width) / 2.0, int(def.height) / 2.0)
-	world.add_player(center)
-	# M3 target practice: a ring of inert stand-ins to shoot. The M4
-	# scenario picker replaces this hardcoded setup with scenario .tres.
-	for i in 8:
-		var ang := TAU * i / 8.0
-		world.add_enemy_standin(center + Vector2(cos(ang), sin(ang)) * 6.0)
+	var seed_v := int(Config.get_setting("dev", "seed", scenario.default_seed))
+	world = ScenarioLoader.build_world(scenario, seed_v, bitgrid)
+	# Lowest-intended-speed loadout is a first-class preset (§2.10,
+	# CORE-53): setup-phase config, never a replay-dirtying edit — it
+	# lands in the replay header's speed snapshot.
+	var preset := clampf(float(Config.get_setting("dev", "speed_preset", 4.0)), 3.0, 5.5)
+	world.players[0].move_speed = preset
 
 	driver = RealtimeDriver.new()
 	driver.world = world
@@ -320,6 +313,8 @@ func _ready() -> void:
 	hud.add_child(hints_label)
 	hud.add_child(density_meter)
 	hud.add_child(options_menu)
+	recap_panel = RecapPanel.new()
+	hud.add_child(recap_panel)
 	add_child(hud)
 	Input.set_custom_mouse_cursor(
 		load("res://uikit/cursor_crosshair.png"), Input.CURSOR_ARROW, Vector2(5.0, 5.0)
@@ -360,17 +355,45 @@ func _ready() -> void:
 			feedback_settings.damage_numbers = i
 			Config.set_setting("feedback", "damage_numbers", i)
 	)
+	options_menu.add_toggle_row(
+		"debug emitter (shoots you)",
+		false,
+		func(v: bool) -> void:
+			world.enqueue_command(
+				{"type": SimWorld.Command.TOGGLE_EMITTER, "on": v, "pos": Vector2(30.0, 12.0)}
+			)
+	)
+	options_menu.add_cycle_row(
+		"speed preset (on reset)",
+		["4.0 baseline", "3.0 lowest"],
+		1 if is_equal_approx(preset, 3.0) else 0,
+		func(i: int) -> void:
+			Config.set_setting("dev", "speed_preset", 3.0 if i == 1 else 4.0)
+			print("speed preset persisted; applies on reset (T)")
+	)
 	_refresh_hints()
+
+	var recap := RecapTracker.new()
+	recap.driver = driver
+	recap.world = world
+	add_child(recap)
+	recap.recap_ready.connect(
+		func(r: Dictionary) -> void:
+			driver.paused = true
+			recap_panel.show_recap(r, Config.binding_text("scenario_reset"))
+	)
 
 	print(
 		(
-			"arena ready: %dx%d, %d solid cells, %d placements, seed=%d"
+			"arena ready: %dx%d, %d solid cells, %d placements, scenario=%s seed=%d speed=%.1f"
 			% [
 				int(def.width),
 				int(def.height),
 				bitgrid.solid_count(),
 				int(arena.placements),
-				RUN_SEED,
+				String(scenario.id),
+				world.run_seed,
+				world.players[0].move_speed,
 			]
 		)
 	)

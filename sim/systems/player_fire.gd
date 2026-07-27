@@ -30,6 +30,8 @@ static func run(world: RefCounted) -> void:
 		if i >= frames.size() or frames[i] == null:
 			continue
 		var p: RefCounted = world.players[i]
+		if p.dead:
+			continue
 		var frame: RefCounted = frames[i]
 		if frame.autofire_toggle_edge:
 			p.autofire_on = not p.autofire_on

@@ -18,6 +18,8 @@ static func run(world: RefCounted) -> void:
 	if world.tick % REGEN_PERIOD != 0:
 		return
 	for p: RefCounted in world.players:
+		if p.dead:
+			continue
 		if p.mana < MANA_MAX:
 			p.mana += 1
 			(

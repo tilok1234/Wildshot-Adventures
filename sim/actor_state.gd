@@ -17,6 +17,9 @@ var faction: int = FACTION_FRIENDLY
 var move_speed: float = 4.0
 ## Tick this actor last took damage — gates out-of-combat regen (§3.2).
 var last_damaged_tick: int = -1000000
+## Players die in place (dead flag; recap + restart own the flow).
+## Enemies never set this — they are removed by the death sweep.
+var dead: bool = false
 
 
 func serialize_into(buf: StreamPeerBuffer) -> void:
@@ -28,3 +31,4 @@ func serialize_into(buf: StreamPeerBuffer) -> void:
 	buf.put_u8(faction)
 	buf.put_double(move_speed)
 	buf.put_64(last_damaged_tick)
+	buf.put_u8(1 if dead else 0)

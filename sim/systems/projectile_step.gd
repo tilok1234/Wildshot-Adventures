@@ -130,6 +130,8 @@ static func run(world: RefCounted) -> void:
 		if mp[s] == 0:
 			# Non-pierce: first overlap damages and despawns.
 			for a: RefCounted in targets:
+				if a.dead:
+					continue
 				var apos: Vector2 = a.pos
 				var ddx := x - apos.x
 				var ddy := y - apos.y
@@ -190,6 +192,8 @@ static func _step_pierce(
 	var base := s * REG_SLOTS
 	var overlapped: Array[int] = []
 	for a: RefCounted in targets:
+		if a.dead:
+			continue
 		var apos: Vector2 = a.pos
 		var ddx := x - apos.x
 		var ddy := y - apos.y
@@ -241,6 +245,20 @@ static func _apply_damage(
 ) -> void:
 	a.hp -= amount
 	a.last_damaged_tick = t
+	# Player death: dies in place (recap + restart own the flow); enemy
+	# death stays with the sweep.
+	if a.hp <= 0 and a.faction == ActorState.FACTION_FRIENDLY and not a.dead:
+		a.hp = 0
+		a.dead = true
+		events.append(
+			{
+				"type": SimEvents.Type.ENTITY_KILLED,
+				"tick": t,
+				"id": a.id,
+				"pos": a.pos,
+				"player": true
+			}
+		)
 	(
 		events
 		. append(
