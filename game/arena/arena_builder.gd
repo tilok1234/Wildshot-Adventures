@@ -21,6 +21,45 @@ const TILE := 32
 
 const LAYERS: Array[String] = ["underlay", "wall", "structures"]
 
+const Bitgrid := preload("res://sim/collision/bitgrid.gd")
+
+
+## Assemble the full arena under `root`: TileMapLayers from the manifest +
+## def, and the collision bitgrid baked from the SAME definition (visuals
+## and collision agree by construction, §2.3). Returns
+## {def, layers, bitgrid, placements} or {} on missing inputs.
+static func build_arena(root: Node2D) -> Dictionary:
+	var manifest: Variant = JSON.parse_string(
+		FileAccess.get_file_as_string("res://tileforge/tileforge-manifest.json")
+	)
+	var def := load_def("res://data/arena_lab.json")
+	var tileset: TileSet = load("res://tileforge/tileforge.tres")
+	if manifest == null or def.is_empty() or tileset == null:
+		push_error("arena_builder: missing manifest, arena def, or tileforge.tres")
+		return {}
+
+	var sources := family_sources(manifest, tileset)
+	var layers := {}
+	for layer_name: String in LAYERS:
+		var layer := TileMapLayer.new()
+		layer.name = layer_name
+		layer.tile_set = tileset
+		root.add_child(layer)
+		layers[layer_name] = layer
+
+	var placements := resolve_placements(def, manifest)
+	for p: Dictionary in placements:
+		var src: Dictionary = sources[p.fam]
+		var coords := atlas_coords(p.atlas_px, int(src.pad))
+		(layers[p.layer] as TileMapLayer).set_cell(p.cell, int(src.sid), coords)
+
+	var grid := Bitgrid.new()
+	grid.setup(int(def.width), int(def.height))
+	for c: Vector2i in solid_cells(def, manifest):
+		grid.set_solid(c.x, c.y)
+
+	return {"def": def, "layers": layers, "bitgrid": grid, "placements": placements.size()}
+
 
 static func load_def(path: String) -> Dictionary:
 	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))

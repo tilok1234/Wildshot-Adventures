@@ -20,6 +20,10 @@ var sampler: HumanSampler = null
 var mouse_tile_provider: Callable = Callable()
 var paused: bool = false
 var slew_count: int = 0
+## Microseconds spent inside world.step() during the latest _process —
+## driver-side instrumentation for the stress rig and the M4 density meter.
+## Engine timing lives HERE, never in the sim (§2.1).
+var frame_sim_usec: int = 0
 var _accumulator: float = 0.0
 
 
@@ -31,10 +35,12 @@ func _process(delta: float) -> void:
 		return
 	_accumulator += delta
 	var ticks := 0
+	var t0 := Time.get_ticks_usec()
 	while _accumulator >= SimWorld.DT and ticks < MAX_TICKS_PER_FRAME:
 		world.step([_sample_frame()])
 		_accumulator -= SimWorld.DT
 		ticks += 1
+	frame_sim_usec = int(Time.get_ticks_usec() - t0) if ticks > 0 else 0
 	if _accumulator >= SimWorld.DT:
 		var dropped := int(_accumulator / SimWorld.DT)
 		_accumulator -= dropped * SimWorld.DT
