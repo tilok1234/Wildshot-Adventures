@@ -38,6 +38,7 @@ by rule.
 | Path | Contents |
 |---|---|
 | `assets/` | Raw forge drops (`.gdignore`d — importers consume these): `tileforge/` (4 theme packages + reference pack), `spriteforge/` (231-actor pack incl. projectiles/effects, manifest-driven) |
+| `tileforge/` | The active theme package (dusk) as `res://tileforge/` per its GAME-GUIDE; `tileforge.tres` built by `addons/tileforge_importer/run_import.gd` (headless) |
 | `addons/` | `tileforge_importer` (M1), `spriteforge_importer` (M2) |
 | `autoload/` | Config, Telemetry, DebugHub, BootArgs — exactly four, none holding gameplay state |
 | `data/` | Weapons, enemies, patterns, abilities, scenarios, actor sheet map, budgets — all `.tres`, hot-reloadable |
@@ -53,7 +54,9 @@ by rule.
 ## CI
 
 GitHub Actions, jobs activating as their producing milestone lands. Active
-now (M0): banned-RNG grep under `sim/` + GDScript format check. Coming:
-pixel-match (M1), golden-replay hash gate (M4), nightly DodgeBot (M7),
-CI-only tester exports (M8). Replay/bot jobs run on Windows runners only —
-the determinism scope is same-build/same-platform.
+now: banned-RNG grep under `sim/` + GDScript format check (M0, forge packages
+exempt as generated artifacts); TileForge §4 acceptance — pixel-match against
+`map-reference.png` + net16 mask derivation (M1). Coming: golden-replay hash
+gate (M4), nightly DodgeBot (M7), CI-only tester exports (M8). Replay/bot
+jobs run on Windows runners only — the determinism scope is
+same-build/same-platform.

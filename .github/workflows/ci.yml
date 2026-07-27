@@ -32,10 +32,53 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          files=$(git ls-files '*.gd')
+          # Forge packages (tileforge/, assets/) are generated build artifacts —
+          # "regenerate rather than hand-edit" — so they are exempt from format.
+          files=$(git ls-files '*.gd' | grep -v '^assets/' | grep -v '^tileforge/' || true)
           if [ -z "$files" ]; then
-            echo "No .gd files yet — format check trivially green."
+            echo "No project-authored .gd files yet — format check trivially green."
             exit 0
           fi
           pip install --quiet "gdtoolkit==4.*"
           gdformat --check $files
+
+  # M1 job (CI addendum): TileForge §4 acceptance, headless. Pure CPU image
+  # compositing — no sim execution, so a Linux runner is allowed.
+  pixel-match:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Godot 4.6.2
+        id: godot-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/godot
+          key: godot-4.6.2-stable-linux-x86_64
+
+      - name: Download Godot 4.6.2
+        if: steps.godot-cache.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ~/godot
+          curl -sL -o /tmp/godot.zip \
+            https://github.com/godotengine/godot/releases/download/4.6.2-stable/Godot_v4.6.2-stable_linux.x86_64.zip
+          unzip -q /tmp/godot.zip -d ~/godot
+          mv ~/godot/Godot_v4.6.2-stable_linux.x86_64 ~/godot/godot
+
+      - name: Pixel-match acceptance (GAME-GUIDE §4 step 1)
+        run: ~/godot/godot --headless --path . --script tests/pixel_match/pixel_match.gd
+
+      - name: net16 mask derivation (GAME-GUIDE §4 step 2 subset)
+        run: ~/godot/godot --headless --path . --script tests/pixel_match/net16_masks.gd
+
+      - name: Upload diff artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pixel-match-diff
+          path: |
+            tests/pixel_match/out_render.png
+            tests/pixel_match/out_diff.png
+          if-no-files-found: ignore

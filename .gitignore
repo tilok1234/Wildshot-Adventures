@@ -11,6 +11,9 @@ reports/*
 !reports/.gitkeep
 !reports/.gdignore
 
+# Regenerable test outputs (pixel-match diffs, arena previews)
+tests/pixel_match/*.png
+
 # OS noise
 Thumbs.db
 Desktop.ini

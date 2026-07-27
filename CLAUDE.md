@@ -175,5 +175,8 @@ primes the tester-recruitment pipeline both Gate 1 cycles draw from.
 
 ## Milestone position
 
-Edit this line as milestones land: **M0 complete — next is M1 (TileForge
-importer + pixel-match acceptance + greybox arena).**
+Edit this line as milestones land: **M1 code-complete — pixel-match + net16
+tests green, arena boots from data/arena_lab.json, bitgrid by construction.
+Pending designer: Law-6 floor eyeball + obstacle-stub deviation ruling (see
+data/arena_lab.json comment). Next is M2 (sim core + movement + camera +
+Sprite Forge player + stress rig).**
