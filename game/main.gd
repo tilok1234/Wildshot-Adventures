@@ -26,6 +26,7 @@ const RecapTracker := preload("res://game/drivers/recap_tracker.gd")
 const RecapPanel := preload("res://ui/recap_panel.gd")
 const DebugConsole := preload("res://ui/debug_console.gd")
 const HitboxView := preload("res://game/views/hitbox_view.gd")
+const EmitterView := preload("res://game/views/emitter_view.gd")
 const SimEvents := preload("res://sim/events.gd")
 const ActorLibrary := preload("res://game/views/actor_library.gd")
 const AnimatedActor := preload("res://game/views/animated_actor.gd")
@@ -349,6 +350,10 @@ func _ready() -> void:
 	hitboxes.world = world
 	hitboxes.visible = bool(Config.get_setting("ui", "hitboxes", false))
 	add_child(hitboxes)
+
+	var emitter_view := EmitterView.new()
+	emitter_view.world = world
+	add_child(emitter_view)
 
 	var lib := ActorLibrary.new()
 	var sheet_map: Resource = load("res://data/actor_sheet_map.tres")
