@@ -5,5 +5,7 @@
 [resource]
 script = ExtResource("1")
 map = {
+"enemy_husk": "skeleton:archer",
+"enemy_rusher": "wolf:gray",
 "player": "character-ranger"
 }

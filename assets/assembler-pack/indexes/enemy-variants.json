@@ -1,0 +1,1623 @@
+{
+  "format": "wildshot-enemy-variant-index",
+  "version": 0,
+  "key_format": "<family>:<variant>",
+  "variants": [
+    {
+      "key": "slime:lime",
+      "family": "slime",
+      "variant": "lime",
+      "family_name": "Slime",
+      "variant_name": "Lime",
+      "sheet": "enemies/slime/lime.png"
+    },
+    {
+      "key": "slime:aqua",
+      "family": "slime",
+      "variant": "aqua",
+      "family_name": "Slime",
+      "variant_name": "Aqua",
+      "sheet": "enemies/slime/aqua.png"
+    },
+    {
+      "key": "slime:magma",
+      "family": "slime",
+      "variant": "magma",
+      "family_name": "Slime",
+      "variant_name": "Magma",
+      "sheet": "enemies/slime/magma.png"
+    },
+    {
+      "key": "slime:shadow",
+      "family": "slime",
+      "variant": "shadow",
+      "family_name": "Slime",
+      "variant_name": "Shadow",
+      "sheet": "enemies/slime/shadow.png"
+    },
+    {
+      "key": "slime:honey",
+      "family": "slime",
+      "variant": "honey",
+      "family_name": "Slime",
+      "variant_name": "Honey",
+      "sheet": "enemies/slime/honey.png"
+    },
+    {
+      "key": "slime:rock",
+      "family": "slime",
+      "variant": "rock",
+      "family_name": "Slime",
+      "variant_name": "Rock",
+      "sheet": "enemies/slime/rock.png"
+    },
+    {
+      "key": "slime:rose",
+      "family": "slime",
+      "variant": "rose",
+      "family_name": "Slime",
+      "variant_name": "Rose",
+      "sheet": "enemies/slime/rose.png"
+    },
+    {
+      "key": "goblin:scout",
+      "family": "goblin",
+      "variant": "scout",
+      "family_name": "Goblin",
+      "variant_name": "Scout",
+      "sheet": "enemies/goblin/scout.png"
+    },
+    {
+      "key": "goblin:brute",
+      "family": "goblin",
+      "variant": "brute",
+      "family_name": "Goblin",
+      "variant_name": "Hobgoblin",
+      "sheet": "enemies/goblin/brute.png"
+    },
+    {
+      "key": "goblin:shaman",
+      "family": "goblin",
+      "variant": "shaman",
+      "family_name": "Goblin",
+      "variant_name": "Shaman",
+      "sheet": "enemies/goblin/shaman.png"
+    },
+    {
+      "key": "goblin:archer",
+      "family": "goblin",
+      "variant": "archer",
+      "family_name": "Goblin",
+      "variant_name": "Archer",
+      "sheet": "enemies/goblin/archer.png"
+    },
+    {
+      "key": "goblin:chief",
+      "family": "goblin",
+      "variant": "chief",
+      "family_name": "Goblin",
+      "variant_name": "Chief",
+      "sheet": "enemies/goblin/chief.png"
+    },
+    {
+      "key": "skeleton:grunt",
+      "family": "skeleton",
+      "variant": "grunt",
+      "family_name": "Skeleton",
+      "variant_name": "Grunt",
+      "sheet": "enemies/skeleton/grunt.png"
+    },
+    {
+      "key": "skeleton:knight",
+      "family": "skeleton",
+      "variant": "knight",
+      "family_name": "Skeleton",
+      "variant_name": "Knight",
+      "sheet": "enemies/skeleton/knight.png"
+    },
+    {
+      "key": "skeleton:mage",
+      "family": "skeleton",
+      "variant": "mage",
+      "family_name": "Skeleton",
+      "variant_name": "Mage",
+      "sheet": "enemies/skeleton/mage.png"
+    },
+    {
+      "key": "skeleton:archer",
+      "family": "skeleton",
+      "variant": "archer",
+      "family_name": "Skeleton",
+      "variant_name": "Archer",
+      "sheet": "enemies/skeleton/archer.png"
+    },
+    {
+      "key": "skeleton:lord",
+      "family": "skeleton",
+      "variant": "lord",
+      "family_name": "Skeleton",
+      "variant_name": "Bone lord",
+      "sheet": "enemies/skeleton/lord.png"
+    },
+    {
+      "key": "bat:cave",
+      "family": "bat",
+      "variant": "cave",
+      "family_name": "Bat",
+      "variant_name": "Cave",
+      "sheet": "enemies/bat/cave.png"
+    },
+    {
+      "key": "bat:frost",
+      "family": "bat",
+      "variant": "frost",
+      "family_name": "Bat",
+      "variant_name": "Frost",
+      "sheet": "enemies/bat/frost.png"
+    },
+    {
+      "key": "bat:vampire",
+      "family": "bat",
+      "variant": "vampire",
+      "family_name": "Bat",
+      "variant_name": "Vampire",
+      "sheet": "enemies/bat/vampire.png"
+    },
+    {
+      "key": "bat:moss",
+      "family": "bat",
+      "variant": "moss",
+      "family_name": "Bat",
+      "variant_name": "Moss",
+      "sheet": "enemies/bat/moss.png"
+    },
+    {
+      "key": "ghost:pale",
+      "family": "ghost",
+      "variant": "pale",
+      "family_name": "Ghost",
+      "variant_name": "Pale",
+      "sheet": "enemies/ghost/pale.png"
+    },
+    {
+      "key": "ghost:spectral",
+      "family": "ghost",
+      "variant": "spectral",
+      "family_name": "Ghost",
+      "variant_name": "Spectral",
+      "sheet": "enemies/ghost/spectral.png"
+    },
+    {
+      "key": "ghost:cursed",
+      "family": "ghost",
+      "variant": "cursed",
+      "family_name": "Ghost",
+      "variant_name": "Cursed",
+      "sheet": "enemies/ghost/cursed.png"
+    },
+    {
+      "key": "ghost:ember",
+      "family": "ghost",
+      "variant": "ember",
+      "family_name": "Ghost",
+      "variant_name": "Ember",
+      "sheet": "enemies/ghost/ember.png"
+    },
+    {
+      "key": "spider:forest",
+      "family": "spider",
+      "variant": "forest",
+      "family_name": "Spider",
+      "variant_name": "Forest",
+      "sheet": "enemies/spider/forest.png"
+    },
+    {
+      "key": "spider:widow",
+      "family": "spider",
+      "variant": "widow",
+      "family_name": "Spider",
+      "variant_name": "Widow",
+      "sheet": "enemies/spider/widow.png"
+    },
+    {
+      "key": "spider:venom",
+      "family": "spider",
+      "variant": "venom",
+      "family_name": "Spider",
+      "variant_name": "Venom",
+      "sheet": "enemies/spider/venom.png"
+    },
+    {
+      "key": "spider:frost",
+      "family": "spider",
+      "variant": "frost",
+      "family_name": "Spider",
+      "variant_name": "Frost",
+      "sheet": "enemies/spider/frost.png"
+    },
+    {
+      "key": "shroom:toad",
+      "family": "shroom",
+      "variant": "toad",
+      "family_name": "Shroom",
+      "variant_name": "Toadcap",
+      "sheet": "enemies/shroom/toad.png"
+    },
+    {
+      "key": "shroom:violet",
+      "family": "shroom",
+      "variant": "violet",
+      "family_name": "Shroom",
+      "variant_name": "Violet",
+      "sheet": "enemies/shroom/violet.png"
+    },
+    {
+      "key": "shroom:earth",
+      "family": "shroom",
+      "variant": "earth",
+      "family_name": "Shroom",
+      "variant_name": "Earth",
+      "sheet": "enemies/shroom/earth.png"
+    },
+    {
+      "key": "shroom:sky",
+      "family": "shroom",
+      "variant": "sky",
+      "family_name": "Shroom",
+      "variant_name": "Sky",
+      "sheet": "enemies/shroom/sky.png"
+    },
+    {
+      "key": "zombie:shambler",
+      "family": "zombie",
+      "variant": "shambler",
+      "family_name": "Zombie",
+      "variant_name": "Shambler",
+      "sheet": "enemies/zombie/shambler.png"
+    },
+    {
+      "key": "zombie:ghoul",
+      "family": "zombie",
+      "variant": "ghoul",
+      "family_name": "Zombie",
+      "variant_name": "Ghoul",
+      "sheet": "enemies/zombie/ghoul.png"
+    },
+    {
+      "key": "zombie:rotter",
+      "family": "zombie",
+      "variant": "rotter",
+      "family_name": "Zombie",
+      "variant_name": "Rotter",
+      "sheet": "enemies/zombie/rotter.png"
+    },
+    {
+      "key": "zombie:brute",
+      "family": "zombie",
+      "variant": "brute",
+      "family_name": "Zombie",
+      "variant_name": "Brute",
+      "sheet": "enemies/zombie/brute.png"
+    },
+    {
+      "key": "imp:sprite",
+      "family": "imp",
+      "variant": "sprite",
+      "family_name": "Imp",
+      "variant_name": "Sprite",
+      "sheet": "enemies/imp/sprite.png"
+    },
+    {
+      "key": "imp:pyro",
+      "family": "imp",
+      "variant": "pyro",
+      "family_name": "Imp",
+      "variant_name": "Pyro",
+      "sheet": "enemies/imp/pyro.png"
+    },
+    {
+      "key": "imp:fiend",
+      "family": "imp",
+      "variant": "fiend",
+      "family_name": "Imp",
+      "variant_name": "Fiend",
+      "sheet": "enemies/imp/fiend.png"
+    },
+    {
+      "key": "wolf:gray",
+      "family": "wolf",
+      "variant": "gray",
+      "family_name": "Wolf",
+      "variant_name": "Gray",
+      "sheet": "enemies/wolf/gray.png"
+    },
+    {
+      "key": "wolf:timber",
+      "family": "wolf",
+      "variant": "timber",
+      "family_name": "Wolf",
+      "variant_name": "Timber",
+      "sheet": "enemies/wolf/timber.png"
+    },
+    {
+      "key": "wolf:dire",
+      "family": "wolf",
+      "variant": "dire",
+      "family_name": "Wolf",
+      "variant_name": "Dire",
+      "sheet": "enemies/wolf/dire.png"
+    },
+    {
+      "key": "boar:tusker",
+      "family": "boar",
+      "variant": "tusker",
+      "family_name": "Boar",
+      "variant_name": "Tusker",
+      "sheet": "enemies/boar/tusker.png"
+    },
+    {
+      "key": "boar:ash",
+      "family": "boar",
+      "variant": "ash",
+      "family_name": "Boar",
+      "variant_name": "Ash",
+      "sheet": "enemies/boar/ash.png"
+    },
+    {
+      "key": "boar:blood",
+      "family": "boar",
+      "variant": "blood",
+      "family_name": "Boar",
+      "variant_name": "Blood",
+      "sheet": "enemies/boar/blood.png"
+    },
+    {
+      "key": "bear:brown",
+      "family": "bear",
+      "variant": "brown",
+      "family_name": "Bear",
+      "variant_name": "Brown",
+      "sheet": "enemies/bear/brown.png"
+    },
+    {
+      "key": "bear:cave",
+      "family": "bear",
+      "variant": "cave",
+      "family_name": "Bear",
+      "variant_name": "Cave",
+      "sheet": "enemies/bear/cave.png"
+    },
+    {
+      "key": "bear:polar",
+      "family": "bear",
+      "variant": "polar",
+      "family_name": "Bear",
+      "variant_name": "Polar",
+      "sheet": "enemies/bear/polar.png"
+    },
+    {
+      "key": "bigcat:lynx",
+      "family": "bigcat",
+      "variant": "lynx",
+      "family_name": "Big cat",
+      "variant_name": "Lynx",
+      "sheet": "enemies/bigcat/lynx.png"
+    },
+    {
+      "key": "bigcat:tiger",
+      "family": "bigcat",
+      "variant": "tiger",
+      "family_name": "Big cat",
+      "variant_name": "Tiger",
+      "sheet": "enemies/bigcat/tiger.png"
+    },
+    {
+      "key": "bigcat:panther",
+      "family": "bigcat",
+      "variant": "panther",
+      "family_name": "Big cat",
+      "variant_name": "Panther",
+      "sheet": "enemies/bigcat/panther.png"
+    },
+    {
+      "key": "bigcat:snow",
+      "family": "bigcat",
+      "variant": "snow",
+      "family_name": "Big cat",
+      "variant_name": "Snow leopard",
+      "sheet": "enemies/bigcat/snow.png"
+    },
+    {
+      "key": "elf:ranger",
+      "family": "elf",
+      "variant": "ranger",
+      "family_name": "Elf",
+      "variant_name": "Ranger",
+      "sheet": "enemies/elf/ranger.png"
+    },
+    {
+      "key": "elf:mage",
+      "family": "elf",
+      "variant": "mage",
+      "family_name": "Elf",
+      "variant_name": "Mage",
+      "sheet": "enemies/elf/mage.png"
+    },
+    {
+      "key": "elf:duelist",
+      "family": "elf",
+      "variant": "duelist",
+      "family_name": "Elf",
+      "variant_name": "Duelist",
+      "sheet": "enemies/elf/duelist.png"
+    },
+    {
+      "key": "elf:dark",
+      "family": "elf",
+      "variant": "dark",
+      "family_name": "Elf",
+      "variant_name": "Dark elf",
+      "sheet": "enemies/elf/dark.png"
+    },
+    {
+      "key": "dwarf:warrior",
+      "family": "dwarf",
+      "variant": "warrior",
+      "family_name": "Dwarf",
+      "variant_name": "Warrior",
+      "sheet": "enemies/dwarf/warrior.png"
+    },
+    {
+      "key": "dwarf:miner",
+      "family": "dwarf",
+      "variant": "miner",
+      "family_name": "Dwarf",
+      "variant_name": "Miner",
+      "sheet": "enemies/dwarf/miner.png"
+    },
+    {
+      "key": "dwarf:king",
+      "family": "dwarf",
+      "variant": "king",
+      "family_name": "Dwarf",
+      "variant_name": "King",
+      "sheet": "enemies/dwarf/king.png"
+    },
+    {
+      "key": "bandit:thug",
+      "family": "bandit",
+      "variant": "thug",
+      "family_name": "Bandit",
+      "variant_name": "Thug",
+      "sheet": "enemies/bandit/thug.png"
+    },
+    {
+      "key": "bandit:brigand",
+      "family": "bandit",
+      "variant": "brigand",
+      "family_name": "Bandit",
+      "variant_name": "Brigand",
+      "sheet": "enemies/bandit/brigand.png"
+    },
+    {
+      "key": "bandit:sniper",
+      "family": "bandit",
+      "variant": "sniper",
+      "family_name": "Bandit",
+      "variant_name": "Sniper",
+      "sheet": "enemies/bandit/sniper.png"
+    },
+    {
+      "key": "cultist:acolyte",
+      "family": "cultist",
+      "variant": "acolyte",
+      "family_name": "Cultist",
+      "variant_name": "Acolyte",
+      "sheet": "enemies/cultist/acolyte.png"
+    },
+    {
+      "key": "cultist:zealot",
+      "family": "cultist",
+      "variant": "zealot",
+      "family_name": "Cultist",
+      "variant_name": "Zealot",
+      "sheet": "enemies/cultist/zealot.png"
+    },
+    {
+      "key": "cultist:oracle",
+      "family": "cultist",
+      "variant": "oracle",
+      "family_name": "Cultist",
+      "variant_name": "Oracle",
+      "sheet": "enemies/cultist/oracle.png"
+    },
+    {
+      "key": "orc:grunt",
+      "family": "orc",
+      "variant": "grunt",
+      "family_name": "Orc",
+      "variant_name": "Grunt",
+      "sheet": "enemies/orc/grunt.png"
+    },
+    {
+      "key": "orc:berserker",
+      "family": "orc",
+      "variant": "berserker",
+      "family_name": "Orc",
+      "variant_name": "Berserker",
+      "sheet": "enemies/orc/berserker.png"
+    },
+    {
+      "key": "orc:warlord",
+      "family": "orc",
+      "variant": "warlord",
+      "family_name": "Orc",
+      "variant_name": "Warlord",
+      "sheet": "enemies/orc/warlord.png"
+    },
+    {
+      "key": "ogre:brute",
+      "family": "ogre",
+      "variant": "brute",
+      "family_name": "Ogre",
+      "variant_name": "Brute",
+      "sheet": "enemies/ogre/brute.png"
+    },
+    {
+      "key": "ogre:crusher",
+      "family": "ogre",
+      "variant": "crusher",
+      "family_name": "Ogre",
+      "variant_name": "Crusher",
+      "sheet": "enemies/ogre/crusher.png"
+    },
+    {
+      "key": "ogre:magi",
+      "family": "ogre",
+      "variant": "magi",
+      "family_name": "Ogre",
+      "variant_name": "Magi",
+      "sheet": "enemies/ogre/magi.png"
+    },
+    {
+      "key": "troll:cave",
+      "family": "troll",
+      "variant": "cave",
+      "family_name": "Troll",
+      "variant_name": "Cave",
+      "sheet": "enemies/troll/cave.png"
+    },
+    {
+      "key": "troll:bridge",
+      "family": "troll",
+      "variant": "bridge",
+      "family_name": "Troll",
+      "variant_name": "Bridge",
+      "sheet": "enemies/troll/bridge.png"
+    },
+    {
+      "key": "troll:frost",
+      "family": "troll",
+      "variant": "frost",
+      "family_name": "Troll",
+      "variant_name": "Frost",
+      "sheet": "enemies/troll/frost.png"
+    },
+    {
+      "key": "kobold:skirmisher",
+      "family": "kobold",
+      "variant": "skirmisher",
+      "family_name": "Kobold",
+      "variant_name": "Skirmisher",
+      "sheet": "enemies/kobold/skirmisher.png"
+    },
+    {
+      "key": "kobold:trapper",
+      "family": "kobold",
+      "variant": "trapper",
+      "family_name": "Kobold",
+      "variant_name": "Trapper",
+      "sheet": "enemies/kobold/trapper.png"
+    },
+    {
+      "key": "kobold:sorcerer",
+      "family": "kobold",
+      "variant": "sorcerer",
+      "family_name": "Kobold",
+      "variant_name": "Sorcerer",
+      "sheet": "enemies/kobold/sorcerer.png"
+    },
+    {
+      "key": "gnoll:raider",
+      "family": "gnoll",
+      "variant": "raider",
+      "family_name": "Gnoll",
+      "variant_name": "Raider",
+      "sheet": "enemies/gnoll/raider.png"
+    },
+    {
+      "key": "gnoll:hunter",
+      "family": "gnoll",
+      "variant": "hunter",
+      "family_name": "Gnoll",
+      "variant_name": "Hunter",
+      "sheet": "enemies/gnoll/hunter.png"
+    },
+    {
+      "key": "gnoll:alpha",
+      "family": "gnoll",
+      "variant": "alpha",
+      "family_name": "Gnoll",
+      "variant_name": "Alpha",
+      "sheet": "enemies/gnoll/alpha.png"
+    },
+    {
+      "key": "ratfolk:skulker",
+      "family": "ratfolk",
+      "variant": "skulker",
+      "family_name": "Ratfolk",
+      "variant_name": "Skulker",
+      "sheet": "enemies/ratfolk/skulker.png"
+    },
+    {
+      "key": "ratfolk:plague",
+      "family": "ratfolk",
+      "variant": "plague",
+      "family_name": "Ratfolk",
+      "variant_name": "Plague",
+      "sheet": "enemies/ratfolk/plague.png"
+    },
+    {
+      "key": "ratfolk:blade",
+      "family": "ratfolk",
+      "variant": "blade",
+      "family_name": "Ratfolk",
+      "variant_name": "Blade",
+      "sheet": "enemies/ratfolk/blade.png"
+    },
+    {
+      "key": "lizardfolk:saurian",
+      "family": "lizardfolk",
+      "variant": "saurian",
+      "family_name": "Lizardfolk",
+      "variant_name": "Saurian",
+      "sheet": "enemies/lizardfolk/saurian.png"
+    },
+    {
+      "key": "lizardfolk:marsh",
+      "family": "lizardfolk",
+      "variant": "marsh",
+      "family_name": "Lizardfolk",
+      "variant_name": "Marsh",
+      "sheet": "enemies/lizardfolk/marsh.png"
+    },
+    {
+      "key": "lizardfolk:chromatic",
+      "family": "lizardfolk",
+      "variant": "chromatic",
+      "family_name": "Lizardfolk",
+      "variant_name": "Chromatic",
+      "sheet": "enemies/lizardfolk/chromatic.png"
+    },
+    {
+      "key": "minotaur:bull",
+      "family": "minotaur",
+      "variant": "bull",
+      "family_name": "Minotaur",
+      "variant_name": "Bull",
+      "sheet": "enemies/minotaur/bull.png"
+    },
+    {
+      "key": "minotaur:ironhorn",
+      "family": "minotaur",
+      "variant": "ironhorn",
+      "family_name": "Minotaur",
+      "variant_name": "Ironhorn",
+      "sheet": "enemies/minotaur/ironhorn.png"
+    },
+    {
+      "key": "minotaur:warden",
+      "family": "minotaur",
+      "variant": "warden",
+      "family_name": "Minotaur",
+      "variant_name": "Warden",
+      "sheet": "enemies/minotaur/warden.png"
+    },
+    {
+      "key": "demon:duke",
+      "family": "demon",
+      "variant": "duke",
+      "family_name": "Demon",
+      "variant_name": "Duke",
+      "sheet": "enemies/demon/duke.png"
+    },
+    {
+      "key": "demon:pit",
+      "family": "demon",
+      "variant": "pit",
+      "family_name": "Demon",
+      "variant_name": "Pit fiend",
+      "sheet": "enemies/demon/pit.png"
+    },
+    {
+      "key": "demon:warlock",
+      "family": "demon",
+      "variant": "warlock",
+      "family_name": "Demon",
+      "variant_name": "Warlock",
+      "sheet": "enemies/demon/warlock.png"
+    },
+    {
+      "key": "golem:stone",
+      "family": "golem",
+      "variant": "stone",
+      "family_name": "Golem",
+      "variant_name": "Stone",
+      "sheet": "enemies/golem/stone.png"
+    },
+    {
+      "key": "golem:lava",
+      "family": "golem",
+      "variant": "lava",
+      "family_name": "Golem",
+      "variant_name": "Lava",
+      "sheet": "enemies/golem/lava.png"
+    },
+    {
+      "key": "golem:ice",
+      "family": "golem",
+      "variant": "ice",
+      "family_name": "Golem",
+      "variant_name": "Ice",
+      "sheet": "enemies/golem/ice.png"
+    },
+    {
+      "key": "elemental:flame",
+      "family": "elemental",
+      "variant": "flame",
+      "family_name": "Elemental",
+      "variant_name": "Flame",
+      "sheet": "enemies/elemental/flame.png"
+    },
+    {
+      "key": "elemental:water",
+      "family": "elemental",
+      "variant": "water",
+      "family_name": "Elemental",
+      "variant_name": "Water",
+      "sheet": "enemies/elemental/water.png"
+    },
+    {
+      "key": "elemental:storm",
+      "family": "elemental",
+      "variant": "storm",
+      "family_name": "Elemental",
+      "variant_name": "Storm",
+      "sheet": "enemies/elemental/storm.png"
+    },
+    {
+      "key": "treant:oak",
+      "family": "treant",
+      "variant": "oak",
+      "family_name": "Treant",
+      "variant_name": "Oak",
+      "sheet": "enemies/treant/oak.png"
+    },
+    {
+      "key": "treant:willow",
+      "family": "treant",
+      "variant": "willow",
+      "family_name": "Treant",
+      "variant_name": "Willow",
+      "sheet": "enemies/treant/willow.png"
+    },
+    {
+      "key": "treant:blighted",
+      "family": "treant",
+      "variant": "blighted",
+      "family_name": "Treant",
+      "variant_name": "Blighted",
+      "sheet": "enemies/treant/blighted.png"
+    },
+    {
+      "key": "gargoyle:granite",
+      "family": "gargoyle",
+      "variant": "granite",
+      "family_name": "Gargoyle",
+      "variant_name": "Granite",
+      "sheet": "enemies/gargoyle/granite.png"
+    },
+    {
+      "key": "gargoyle:obsidian",
+      "family": "gargoyle",
+      "variant": "obsidian",
+      "family_name": "Gargoyle",
+      "variant_name": "Obsidian",
+      "sheet": "enemies/gargoyle/obsidian.png"
+    },
+    {
+      "key": "gargoyle:verdigris",
+      "family": "gargoyle",
+      "variant": "verdigris",
+      "family_name": "Gargoyle",
+      "variant_name": "Verdigris",
+      "sheet": "enemies/gargoyle/verdigris.png"
+    },
+    {
+      "key": "cyclops:shepherd",
+      "family": "cyclops",
+      "variant": "shepherd",
+      "family_name": "Cyclops",
+      "variant_name": "Shepherd",
+      "sheet": "enemies/cyclops/shepherd.png"
+    },
+    {
+      "key": "cyclops:smasher",
+      "family": "cyclops",
+      "variant": "smasher",
+      "family_name": "Cyclops",
+      "variant_name": "Smasher",
+      "sheet": "enemies/cyclops/smasher.png"
+    },
+    {
+      "key": "cyclops:titan",
+      "family": "cyclops",
+      "variant": "titan",
+      "family_name": "Cyclops",
+      "variant_name": "Titan",
+      "sheet": "enemies/cyclops/titan.png"
+    },
+    {
+      "key": "harpy:screech",
+      "family": "harpy",
+      "variant": "screech",
+      "family_name": "Harpy",
+      "variant_name": "Screecher",
+      "sheet": "enemies/harpy/screech.png"
+    },
+    {
+      "key": "harpy:storm",
+      "family": "harpy",
+      "variant": "storm",
+      "family_name": "Harpy",
+      "variant_name": "Storm",
+      "sheet": "enemies/harpy/storm.png"
+    },
+    {
+      "key": "harpy:blood",
+      "family": "harpy",
+      "variant": "blood",
+      "family_name": "Harpy",
+      "variant_name": "Blood",
+      "sheet": "enemies/harpy/blood.png"
+    },
+    {
+      "key": "snake:viper",
+      "family": "snake",
+      "variant": "viper",
+      "family_name": "Snake",
+      "variant_name": "Viper",
+      "sheet": "enemies/snake/viper.png"
+    },
+    {
+      "key": "snake:cobra",
+      "family": "snake",
+      "variant": "cobra",
+      "family_name": "Snake",
+      "variant_name": "Cobra",
+      "sheet": "enemies/snake/cobra.png"
+    },
+    {
+      "key": "snake:frost",
+      "family": "snake",
+      "variant": "frost",
+      "family_name": "Snake",
+      "variant_name": "Frost",
+      "sheet": "enemies/snake/frost.png"
+    },
+    {
+      "key": "worm:dirt",
+      "family": "worm",
+      "variant": "dirt",
+      "family_name": "Worm",
+      "variant_name": "Dirt",
+      "sheet": "enemies/worm/dirt.png"
+    },
+    {
+      "key": "worm:frost",
+      "family": "worm",
+      "variant": "frost",
+      "family_name": "Worm",
+      "variant_name": "Frost",
+      "sheet": "enemies/worm/frost.png"
+    },
+    {
+      "key": "worm:magma",
+      "family": "worm",
+      "variant": "magma",
+      "family_name": "Worm",
+      "variant_name": "Magma",
+      "sheet": "enemies/worm/magma.png"
+    },
+    {
+      "key": "eyemonster:watcher",
+      "family": "eyemonster",
+      "variant": "watcher",
+      "family_name": "Eye monster",
+      "variant_name": "Watcher",
+      "sheet": "enemies/eyemonster/watcher.png"
+    },
+    {
+      "key": "eyemonster:doom",
+      "family": "eyemonster",
+      "variant": "doom",
+      "family_name": "Eye monster",
+      "variant_name": "Doom",
+      "sheet": "enemies/eyemonster/doom.png"
+    },
+    {
+      "key": "eyemonster:void",
+      "family": "eyemonster",
+      "variant": "void",
+      "family_name": "Eye monster",
+      "variant_name": "Void",
+      "sheet": "enemies/eyemonster/void.png"
+    },
+    {
+      "key": "scorpion:dune",
+      "family": "scorpion",
+      "variant": "dune",
+      "family_name": "Scorpion",
+      "variant_name": "Dune",
+      "sheet": "enemies/scorpion/dune.png"
+    },
+    {
+      "key": "scorpion:emperor",
+      "family": "scorpion",
+      "variant": "emperor",
+      "family_name": "Scorpion",
+      "variant_name": "Emperor",
+      "sheet": "enemies/scorpion/emperor.png"
+    },
+    {
+      "key": "scorpion:venom",
+      "family": "scorpion",
+      "variant": "venom",
+      "family_name": "Scorpion",
+      "variant_name": "Venom",
+      "sheet": "enemies/scorpion/venom.png"
+    },
+    {
+      "key": "crab:shore",
+      "family": "crab",
+      "variant": "shore",
+      "family_name": "Crab",
+      "variant_name": "Shore",
+      "sheet": "enemies/crab/shore.png"
+    },
+    {
+      "key": "crab:rock",
+      "family": "crab",
+      "variant": "rock",
+      "family_name": "Crab",
+      "variant_name": "Rock",
+      "sheet": "enemies/crab/rock.png"
+    },
+    {
+      "key": "crab:sapphire",
+      "family": "crab",
+      "variant": "sapphire",
+      "family_name": "Crab",
+      "variant_name": "Sapphire",
+      "sheet": "enemies/crab/sapphire.png"
+    },
+    {
+      "key": "beetle:scarab",
+      "family": "beetle",
+      "variant": "scarab",
+      "family_name": "Beetle",
+      "variant_name": "Scarab",
+      "sheet": "enemies/beetle/scarab.png"
+    },
+    {
+      "key": "beetle:stag",
+      "family": "beetle",
+      "variant": "stag",
+      "family_name": "Beetle",
+      "variant_name": "Stag",
+      "sheet": "enemies/beetle/stag.png"
+    },
+    {
+      "key": "beetle:bomber",
+      "family": "beetle",
+      "variant": "bomber",
+      "family_name": "Beetle",
+      "variant_name": "Bomber",
+      "sheet": "enemies/beetle/bomber.png"
+    },
+    {
+      "key": "wasp:yellowjacket",
+      "family": "wasp",
+      "variant": "yellowjacket",
+      "family_name": "Wasp",
+      "variant_name": "Yellowjacket",
+      "sheet": "enemies/wasp/yellowjacket.png"
+    },
+    {
+      "key": "wasp:hornet",
+      "family": "wasp",
+      "variant": "hornet",
+      "family_name": "Wasp",
+      "variant_name": "Hornet",
+      "sheet": "enemies/wasp/hornet.png"
+    },
+    {
+      "key": "wasp:royal",
+      "family": "wasp",
+      "variant": "royal",
+      "family_name": "Wasp",
+      "variant_name": "Royal",
+      "sheet": "enemies/wasp/royal.png"
+    },
+    {
+      "key": "mimic:wooden",
+      "family": "mimic",
+      "variant": "wooden",
+      "family_name": "Mimic",
+      "variant_name": "Wooden",
+      "sheet": "enemies/mimic/wooden.png"
+    },
+    {
+      "key": "mimic:royal",
+      "family": "mimic",
+      "variant": "royal",
+      "family_name": "Mimic",
+      "variant_name": "Royal",
+      "sheet": "enemies/mimic/royal.png"
+    },
+    {
+      "key": "mimic:cursed",
+      "family": "mimic",
+      "variant": "cursed",
+      "family_name": "Mimic",
+      "variant_name": "Cursed",
+      "sheet": "enemies/mimic/cursed.png"
+    },
+    {
+      "key": "drake:ember",
+      "family": "drake",
+      "variant": "ember",
+      "family_name": "Drake",
+      "variant_name": "Ember",
+      "sheet": "enemies/drake/ember.png"
+    },
+    {
+      "key": "drake:frost",
+      "family": "drake",
+      "variant": "frost",
+      "family_name": "Drake",
+      "variant_name": "Frost",
+      "sheet": "enemies/drake/frost.png"
+    },
+    {
+      "key": "drake:verdant",
+      "family": "drake",
+      "variant": "verdant",
+      "family_name": "Drake",
+      "variant_name": "Verdant",
+      "sheet": "enemies/drake/verdant.png"
+    },
+    {
+      "key": "frog:bog",
+      "family": "frog",
+      "variant": "bog",
+      "family_name": "Frog",
+      "variant_name": "Bog hopper",
+      "sheet": "enemies/frog/bog.png"
+    },
+    {
+      "key": "frog:dart",
+      "family": "frog",
+      "variant": "dart",
+      "family_name": "Frog",
+      "variant_name": "Poison dart",
+      "sheet": "enemies/frog/dart.png"
+    },
+    {
+      "key": "frog:ember",
+      "family": "frog",
+      "variant": "ember",
+      "family_name": "Frog",
+      "variant_name": "Ember toad",
+      "sheet": "enemies/frog/ember.png"
+    },
+    {
+      "key": "frog:frost",
+      "family": "frog",
+      "variant": "frost",
+      "family_name": "Frog",
+      "variant_name": "Frost croaker",
+      "sheet": "enemies/frog/frost.png"
+    },
+    {
+      "key": "crocodile:marsh",
+      "family": "crocodile",
+      "variant": "marsh",
+      "family_name": "Crocodile",
+      "variant_name": "Marsh",
+      "sheet": "enemies/crocodile/marsh.png"
+    },
+    {
+      "key": "crocodile:albino",
+      "family": "crocodile",
+      "variant": "albino",
+      "family_name": "Crocodile",
+      "variant_name": "Albino",
+      "sheet": "enemies/crocodile/albino.png"
+    },
+    {
+      "key": "crocodile:ash",
+      "family": "crocodile",
+      "variant": "ash",
+      "family_name": "Crocodile",
+      "variant_name": "Ashscale",
+      "sheet": "enemies/crocodile/ash.png"
+    },
+    {
+      "key": "crocodile:ancient",
+      "family": "crocodile",
+      "variant": "ancient",
+      "family_name": "Crocodile",
+      "variant_name": "Mirejaw",
+      "sheet": "enemies/crocodile/ancient.png"
+    },
+    {
+      "key": "turtle:mossback",
+      "family": "turtle",
+      "variant": "mossback",
+      "family_name": "Turtle",
+      "variant_name": "Mossback",
+      "sheet": "enemies/turtle/mossback.png"
+    },
+    {
+      "key": "turtle:iron",
+      "family": "turtle",
+      "variant": "iron",
+      "family_name": "Turtle",
+      "variant_name": "Iron shell",
+      "sheet": "enemies/turtle/iron.png"
+    },
+    {
+      "key": "turtle:frost",
+      "family": "turtle",
+      "variant": "frost",
+      "family_name": "Turtle",
+      "variant_name": "Frost shell",
+      "sheet": "enemies/turtle/frost.png"
+    },
+    {
+      "key": "turtle:magma",
+      "family": "turtle",
+      "variant": "magma",
+      "family_name": "Turtle",
+      "variant_name": "Magma tortoise",
+      "sheet": "enemies/turtle/magma.png"
+    },
+    {
+      "key": "jellyfish:moon",
+      "family": "jellyfish",
+      "variant": "moon",
+      "family_name": "Jellyfish",
+      "variant_name": "Moon jelly",
+      "sheet": "enemies/jellyfish/moon.png"
+    },
+    {
+      "key": "jellyfish:venom",
+      "family": "jellyfish",
+      "variant": "venom",
+      "family_name": "Jellyfish",
+      "variant_name": "Venom medusa",
+      "sheet": "enemies/jellyfish/venom.png"
+    },
+    {
+      "key": "jellyfish:ember",
+      "family": "jellyfish",
+      "variant": "ember",
+      "family_name": "Jellyfish",
+      "variant_name": "Ember bell",
+      "sheet": "enemies/jellyfish/ember.png"
+    },
+    {
+      "key": "jellyfish:void",
+      "family": "jellyfish",
+      "variant": "void",
+      "family_name": "Jellyfish",
+      "variant_name": "Void drifter",
+      "sheet": "enemies/jellyfish/void.png"
+    },
+    {
+      "key": "centipede:cave",
+      "family": "centipede",
+      "variant": "cave",
+      "family_name": "Centipede",
+      "variant_name": "Cave crawler",
+      "sheet": "enemies/centipede/cave.png"
+    },
+    {
+      "key": "centipede:venom",
+      "family": "centipede",
+      "variant": "venom",
+      "family_name": "Centipede",
+      "variant_name": "Venom spine",
+      "sheet": "enemies/centipede/venom.png"
+    },
+    {
+      "key": "centipede:bone",
+      "family": "centipede",
+      "variant": "bone",
+      "family_name": "Centipede",
+      "variant_name": "Bone runner",
+      "sheet": "enemies/centipede/bone.png"
+    },
+    {
+      "key": "centipede:magma",
+      "family": "centipede",
+      "variant": "magma",
+      "family_name": "Centipede",
+      "variant_name": "Magma burrower",
+      "sheet": "enemies/centipede/magma.png"
+    },
+    {
+      "key": "carniplant:snapvine",
+      "family": "carniplant",
+      "variant": "snapvine",
+      "family_name": "Carnivorous plant",
+      "variant_name": "Snapvine",
+      "sheet": "enemies/carniplant/snapvine.png"
+    },
+    {
+      "key": "carniplant:corpse",
+      "family": "carniplant",
+      "variant": "corpse",
+      "family_name": "Carnivorous plant",
+      "variant_name": "Corpse bloom",
+      "sheet": "enemies/carniplant/corpse.png"
+    },
+    {
+      "key": "carniplant:frost",
+      "family": "carniplant",
+      "variant": "frost",
+      "family_name": "Carnivorous plant",
+      "variant_name": "Frostbud",
+      "sheet": "enemies/carniplant/frost.png"
+    },
+    {
+      "key": "carniplant:ember",
+      "family": "carniplant",
+      "variant": "ember",
+      "family_name": "Carnivorous plant",
+      "variant_name": "Ember maw",
+      "sheet": "enemies/carniplant/ember.png"
+    },
+    {
+      "key": "anglerfish:deepglow",
+      "family": "anglerfish",
+      "variant": "deepglow",
+      "family_name": "Anglerfish",
+      "variant_name": "Deepglow",
+      "sheet": "enemies/anglerfish/deepglow.png"
+    },
+    {
+      "key": "anglerfish:bloodfin",
+      "family": "anglerfish",
+      "variant": "bloodfin",
+      "family_name": "Anglerfish",
+      "variant_name": "Bloodfin",
+      "sheet": "enemies/anglerfish/bloodfin.png"
+    },
+    {
+      "key": "anglerfish:frostfin",
+      "family": "anglerfish",
+      "variant": "frostfin",
+      "family_name": "Anglerfish",
+      "variant_name": "Frostfin",
+      "sheet": "enemies/anglerfish/frostfin.png"
+    },
+    {
+      "key": "anglerfish:voidlight",
+      "family": "anglerfish",
+      "variant": "voidlight",
+      "family_name": "Anglerfish",
+      "variant_name": "Voidlight",
+      "sheet": "enemies/anglerfish/voidlight.png"
+    },
+    {
+      "key": "griffin:royal",
+      "family": "griffin",
+      "variant": "royal",
+      "family_name": "Griffin",
+      "variant_name": "Royal",
+      "sheet": "enemies/griffin/royal.png"
+    },
+    {
+      "key": "griffin:ash",
+      "family": "griffin",
+      "variant": "ash",
+      "family_name": "Griffin",
+      "variant_name": "Ashwing",
+      "sheet": "enemies/griffin/ash.png"
+    },
+    {
+      "key": "griffin:frost",
+      "family": "griffin",
+      "variant": "frost",
+      "family_name": "Griffin",
+      "variant_name": "Frostcrest",
+      "sheet": "enemies/griffin/frost.png"
+    },
+    {
+      "key": "griffin:night",
+      "family": "griffin",
+      "variant": "night",
+      "family_name": "Griffin",
+      "variant_name": "Nightfeather",
+      "sheet": "enemies/griffin/night.png"
+    },
+    {
+      "key": "mantis:orchid",
+      "family": "mantis",
+      "variant": "orchid",
+      "family_name": "Mantis",
+      "variant_name": "Orchid",
+      "sheet": "enemies/mantis/orchid.png"
+    },
+    {
+      "key": "mantis:jade",
+      "family": "mantis",
+      "variant": "jade",
+      "family_name": "Mantis",
+      "variant_name": "Jade reaper",
+      "sheet": "enemies/mantis/jade.png"
+    },
+    {
+      "key": "mantis:bone",
+      "family": "mantis",
+      "variant": "bone",
+      "family_name": "Mantis",
+      "variant_name": "Boneblade",
+      "sheet": "enemies/mantis/bone.png"
+    },
+    {
+      "key": "mantis:inferno",
+      "family": "mantis",
+      "variant": "inferno",
+      "family_name": "Mantis",
+      "variant_name": "Inferno",
+      "sheet": "enemies/mantis/inferno.png"
+    },
+    {
+      "key": "moth:moon",
+      "family": "moth",
+      "variant": "moon",
+      "family_name": "Moth",
+      "variant_name": "Moonwing",
+      "sheet": "enemies/moth/moon.png"
+    },
+    {
+      "key": "moth:plague",
+      "family": "moth",
+      "variant": "plague",
+      "family_name": "Moth",
+      "variant_name": "Plague dust",
+      "sheet": "enemies/moth/plague.png"
+    },
+    {
+      "key": "moth:frost",
+      "family": "moth",
+      "variant": "frost",
+      "family_name": "Moth",
+      "variant_name": "Frostsilk",
+      "sheet": "enemies/moth/frost.png"
+    },
+    {
+      "key": "moth:ember",
+      "family": "moth",
+      "variant": "ember",
+      "family_name": "Moth",
+      "variant_name": "Emberwing",
+      "sheet": "enemies/moth/ember.png"
+    },
+    {
+      "key": "octopus:reef",
+      "family": "octopus",
+      "variant": "reef",
+      "family_name": "Octopus",
+      "variant_name": "Reef",
+      "sheet": "enemies/octopus/reef.png"
+    },
+    {
+      "key": "octopus:venom",
+      "family": "octopus",
+      "variant": "venom",
+      "family_name": "Octopus",
+      "variant_name": "Venom ring",
+      "sheet": "enemies/octopus/venom.png"
+    },
+    {
+      "key": "octopus:frost",
+      "family": "octopus",
+      "variant": "frost",
+      "family_name": "Octopus",
+      "variant_name": "Frostkraken",
+      "sheet": "enemies/octopus/frost.png"
+    },
+    {
+      "key": "octopus:abyss",
+      "family": "octopus",
+      "variant": "abyss",
+      "family_name": "Octopus",
+      "variant_name": "Abyssal",
+      "sheet": "enemies/octopus/abyss.png"
+    },
+    {
+      "key": "mole:tunnel",
+      "family": "mole",
+      "variant": "tunnel",
+      "family_name": "Mole",
+      "variant_name": "Tunnel digger",
+      "sheet": "enemies/mole/tunnel.png"
+    },
+    {
+      "key": "mole:crystal",
+      "family": "mole",
+      "variant": "crystal",
+      "family_name": "Mole",
+      "variant_name": "Crystalclaw",
+      "sheet": "enemies/mole/crystal.png"
+    },
+    {
+      "key": "mole:rot",
+      "family": "mole",
+      "variant": "rot",
+      "family_name": "Mole",
+      "variant_name": "Rotburrow",
+      "sheet": "enemies/mole/rot.png"
+    },
+    {
+      "key": "mole:magma",
+      "family": "mole",
+      "variant": "magma",
+      "family_name": "Mole",
+      "variant_name": "Magma mole",
+      "sheet": "enemies/mole/magma.png"
+    },
+    {
+      "key": "scarecrow:strawfield",
+      "family": "scarecrow",
+      "variant": "strawfield",
+      "family_name": "Scarecrow",
+      "variant_name": "Strawfield",
+      "sheet": "enemies/scarecrow/strawfield.png"
+    },
+    {
+      "key": "scarecrow:plaguecrow",
+      "family": "scarecrow",
+      "variant": "plaguecrow",
+      "family_name": "Scarecrow",
+      "variant_name": "Plaguecrow",
+      "sheet": "enemies/scarecrow/plaguecrow.png"
+    },
+    {
+      "key": "scarecrow:frostbound",
+      "family": "scarecrow",
+      "variant": "frostbound",
+      "family_name": "Scarecrow",
+      "variant_name": "Frostbound",
+      "sheet": "enemies/scarecrow/frostbound.png"
+    },
+    {
+      "key": "scarecrow:infernal",
+      "family": "scarecrow",
+      "variant": "infernal",
+      "family_name": "Scarecrow",
+      "variant_name": "Infernal",
+      "sheet": "enemies/scarecrow/infernal.png"
+    },
+    {
+      "key": "snail:meadow",
+      "family": "snail",
+      "variant": "meadow",
+      "family_name": "Snail",
+      "variant_name": "Meadow",
+      "sheet": "enemies/snail/meadow.png"
+    },
+    {
+      "key": "snail:iron",
+      "family": "snail",
+      "variant": "iron",
+      "family_name": "Snail",
+      "variant_name": "Iron shell",
+      "sheet": "enemies/snail/iron.png"
+    },
+    {
+      "key": "snail:crystal",
+      "family": "snail",
+      "variant": "crystal",
+      "family_name": "Snail",
+      "variant_name": "Crystal slime",
+      "sheet": "enemies/snail/crystal.png"
+    },
+    {
+      "key": "snail:magma",
+      "family": "snail",
+      "variant": "magma",
+      "family_name": "Snail",
+      "variant_name": "Magma",
+      "sheet": "enemies/snail/magma.png"
+    },
+    {
+      "key": "porcupine:forest",
+      "family": "porcupine",
+      "variant": "forest",
+      "family_name": "Porcupine",
+      "variant_name": "Forest",
+      "sheet": "enemies/porcupine/forest.png"
+    },
+    {
+      "key": "porcupine:venom",
+      "family": "porcupine",
+      "variant": "venom",
+      "family_name": "Porcupine",
+      "variant_name": "Venom quill",
+      "sheet": "enemies/porcupine/venom.png"
+    },
+    {
+      "key": "porcupine:frost",
+      "family": "porcupine",
+      "variant": "frost",
+      "family_name": "Porcupine",
+      "variant_name": "Frostspine",
+      "sheet": "enemies/porcupine/frost.png"
+    },
+    {
+      "key": "porcupine:ember",
+      "family": "porcupine",
+      "variant": "ember",
+      "family_name": "Porcupine",
+      "variant_name": "Emberback",
+      "sheet": "enemies/porcupine/ember.png"
+    },
+    {
+      "key": "puppet:marionette",
+      "family": "puppet",
+      "variant": "marionette",
+      "family_name": "Haunted puppet",
+      "variant_name": "Marionette",
+      "sheet": "enemies/puppet/marionette.png"
+    },
+    {
+      "key": "puppet:bone",
+      "family": "puppet",
+      "variant": "bone",
+      "family_name": "Haunted puppet",
+      "variant_name": "Bone doll",
+      "sheet": "enemies/puppet/bone.png"
+    },
+    {
+      "key": "puppet:ice",
+      "family": "puppet",
+      "variant": "ice",
+      "family_name": "Haunted puppet",
+      "variant_name": "Icebound",
+      "sheet": "enemies/puppet/ice.png"
+    },
+    {
+      "key": "puppet:demonwood",
+      "family": "puppet",
+      "variant": "demonwood",
+      "family_name": "Haunted puppet",
+      "variant_name": "Demonwood",
+      "sheet": "enemies/puppet/demonwood.png"
+    }
+  ]
+}

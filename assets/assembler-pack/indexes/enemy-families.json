@@ -1,0 +1,1472 @@
+{
+  "format": "wildshot-enemy-family-index",
+  "version": 0,
+  "families": [
+    {
+      "id": "slime",
+      "name": "Slime",
+      "default_variant": "lime",
+      "variant_count": 7,
+      "variants": [
+        {
+          "id": "lime",
+          "name": "Lime",
+          "sheet": "enemies/slime/lime.png"
+        },
+        {
+          "id": "aqua",
+          "name": "Aqua",
+          "sheet": "enemies/slime/aqua.png"
+        },
+        {
+          "id": "magma",
+          "name": "Magma",
+          "sheet": "enemies/slime/magma.png"
+        },
+        {
+          "id": "shadow",
+          "name": "Shadow",
+          "sheet": "enemies/slime/shadow.png"
+        },
+        {
+          "id": "honey",
+          "name": "Honey",
+          "sheet": "enemies/slime/honey.png"
+        },
+        {
+          "id": "rock",
+          "name": "Rock",
+          "sheet": "enemies/slime/rock.png"
+        },
+        {
+          "id": "rose",
+          "name": "Rose",
+          "sheet": "enemies/slime/rose.png"
+        }
+      ]
+    },
+    {
+      "id": "goblin",
+      "name": "Goblin",
+      "default_variant": "scout",
+      "variant_count": 5,
+      "variants": [
+        {
+          "id": "scout",
+          "name": "Scout",
+          "sheet": "enemies/goblin/scout.png"
+        },
+        {
+          "id": "brute",
+          "name": "Hobgoblin",
+          "sheet": "enemies/goblin/brute.png"
+        },
+        {
+          "id": "shaman",
+          "name": "Shaman",
+          "sheet": "enemies/goblin/shaman.png"
+        },
+        {
+          "id": "archer",
+          "name": "Archer",
+          "sheet": "enemies/goblin/archer.png"
+        },
+        {
+          "id": "chief",
+          "name": "Chief",
+          "sheet": "enemies/goblin/chief.png"
+        }
+      ]
+    },
+    {
+      "id": "skeleton",
+      "name": "Skeleton",
+      "default_variant": "grunt",
+      "variant_count": 5,
+      "variants": [
+        {
+          "id": "grunt",
+          "name": "Grunt",
+          "sheet": "enemies/skeleton/grunt.png"
+        },
+        {
+          "id": "knight",
+          "name": "Knight",
+          "sheet": "enemies/skeleton/knight.png"
+        },
+        {
+          "id": "mage",
+          "name": "Mage",
+          "sheet": "enemies/skeleton/mage.png"
+        },
+        {
+          "id": "archer",
+          "name": "Archer",
+          "sheet": "enemies/skeleton/archer.png"
+        },
+        {
+          "id": "lord",
+          "name": "Bone lord",
+          "sheet": "enemies/skeleton/lord.png"
+        }
+      ]
+    },
+    {
+      "id": "bat",
+      "name": "Bat",
+      "default_variant": "cave",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "cave",
+          "name": "Cave",
+          "sheet": "enemies/bat/cave.png"
+        },
+        {
+          "id": "frost",
+          "name": "Frost",
+          "sheet": "enemies/bat/frost.png"
+        },
+        {
+          "id": "vampire",
+          "name": "Vampire",
+          "sheet": "enemies/bat/vampire.png"
+        },
+        {
+          "id": "moss",
+          "name": "Moss",
+          "sheet": "enemies/bat/moss.png"
+        }
+      ]
+    },
+    {
+      "id": "ghost",
+      "name": "Ghost",
+      "default_variant": "pale",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "pale",
+          "name": "Pale",
+          "sheet": "enemies/ghost/pale.png"
+        },
+        {
+          "id": "spectral",
+          "name": "Spectral",
+          "sheet": "enemies/ghost/spectral.png"
+        },
+        {
+          "id": "cursed",
+          "name": "Cursed",
+          "sheet": "enemies/ghost/cursed.png"
+        },
+        {
+          "id": "ember",
+          "name": "Ember",
+          "sheet": "enemies/ghost/ember.png"
+        }
+      ]
+    },
+    {
+      "id": "spider",
+      "name": "Spider",
+      "default_variant": "forest",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "forest",
+          "name": "Forest",
+          "sheet": "enemies/spider/forest.png"
+        },
+        {
+          "id": "widow",
+          "name": "Widow",
+          "sheet": "enemies/spider/widow.png"
+        },
+        {
+          "id": "venom",
+          "name": "Venom",
+          "sheet": "enemies/spider/venom.png"
+        },
+        {
+          "id": "frost",
+          "name": "Frost",
+          "sheet": "enemies/spider/frost.png"
+        }
+      ]
+    },
+    {
+      "id": "shroom",
+      "name": "Shroom",
+      "default_variant": "toad",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "toad",
+          "name": "Toadcap",
+          "sheet": "enemies/shroom/toad.png"
+        },
+        {
+          "id": "violet",
+          "name": "Violet",
+          "sheet": "enemies/shroom/violet.png"
+        },
+        {
+          "id": "earth",
+          "name": "Earth",
+          "sheet": "enemies/shroom/earth.png"
+        },
+        {
+          "id": "sky",
+          "name": "Sky",
+          "sheet": "enemies/shroom/sky.png"
+        }
+      ]
+    },
+    {
+      "id": "zombie",
+      "name": "Zombie",
+      "default_variant": "shambler",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "shambler",
+          "name": "Shambler",
+          "sheet": "enemies/zombie/shambler.png"
+        },
+        {
+          "id": "ghoul",
+          "name": "Ghoul",
+          "sheet": "enemies/zombie/ghoul.png"
+        },
+        {
+          "id": "rotter",
+          "name": "Rotter",
+          "sheet": "enemies/zombie/rotter.png"
+        },
+        {
+          "id": "brute",
+          "name": "Brute",
+          "sheet": "enemies/zombie/brute.png"
+        }
+      ]
+    },
+    {
+      "id": "imp",
+      "name": "Imp",
+      "default_variant": "sprite",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "sprite",
+          "name": "Sprite",
+          "sheet": "enemies/imp/sprite.png"
+        },
+        {
+          "id": "pyro",
+          "name": "Pyro",
+          "sheet": "enemies/imp/pyro.png"
+        },
+        {
+          "id": "fiend",
+          "name": "Fiend",
+          "sheet": "enemies/imp/fiend.png"
+        }
+      ]
+    },
+    {
+      "id": "wolf",
+      "name": "Wolf",
+      "default_variant": "gray",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "gray",
+          "name": "Gray",
+          "sheet": "enemies/wolf/gray.png"
+        },
+        {
+          "id": "timber",
+          "name": "Timber",
+          "sheet": "enemies/wolf/timber.png"
+        },
+        {
+          "id": "dire",
+          "name": "Dire",
+          "sheet": "enemies/wolf/dire.png"
+        }
+      ]
+    },
+    {
+      "id": "boar",
+      "name": "Boar",
+      "default_variant": "tusker",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "tusker",
+          "name": "Tusker",
+          "sheet": "enemies/boar/tusker.png"
+        },
+        {
+          "id": "ash",
+          "name": "Ash",
+          "sheet": "enemies/boar/ash.png"
+        },
+        {
+          "id": "blood",
+          "name": "Blood",
+          "sheet": "enemies/boar/blood.png"
+        }
+      ]
+    },
+    {
+      "id": "bear",
+      "name": "Bear",
+      "default_variant": "brown",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "brown",
+          "name": "Brown",
+          "sheet": "enemies/bear/brown.png"
+        },
+        {
+          "id": "cave",
+          "name": "Cave",
+          "sheet": "enemies/bear/cave.png"
+        },
+        {
+          "id": "polar",
+          "name": "Polar",
+          "sheet": "enemies/bear/polar.png"
+        }
+      ]
+    },
+    {
+      "id": "bigcat",
+      "name": "Big cat",
+      "default_variant": "lynx",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "lynx",
+          "name": "Lynx",
+          "sheet": "enemies/bigcat/lynx.png"
+        },
+        {
+          "id": "tiger",
+          "name": "Tiger",
+          "sheet": "enemies/bigcat/tiger.png"
+        },
+        {
+          "id": "panther",
+          "name": "Panther",
+          "sheet": "enemies/bigcat/panther.png"
+        },
+        {
+          "id": "snow",
+          "name": "Snow leopard",
+          "sheet": "enemies/bigcat/snow.png"
+        }
+      ]
+    },
+    {
+      "id": "elf",
+      "name": "Elf",
+      "default_variant": "ranger",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "ranger",
+          "name": "Ranger",
+          "sheet": "enemies/elf/ranger.png"
+        },
+        {
+          "id": "mage",
+          "name": "Mage",
+          "sheet": "enemies/elf/mage.png"
+        },
+        {
+          "id": "duelist",
+          "name": "Duelist",
+          "sheet": "enemies/elf/duelist.png"
+        },
+        {
+          "id": "dark",
+          "name": "Dark elf",
+          "sheet": "enemies/elf/dark.png"
+        }
+      ]
+    },
+    {
+      "id": "dwarf",
+      "name": "Dwarf",
+      "default_variant": "warrior",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "warrior",
+          "name": "Warrior",
+          "sheet": "enemies/dwarf/warrior.png"
+        },
+        {
+          "id": "miner",
+          "name": "Miner",
+          "sheet": "enemies/dwarf/miner.png"
+        },
+        {
+          "id": "king",
+          "name": "King",
+          "sheet": "enemies/dwarf/king.png"
+        }
+      ]
+    },
+    {
+      "id": "bandit",
+      "name": "Bandit",
+      "default_variant": "thug",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "thug",
+          "name": "Thug",
+          "sheet": "enemies/bandit/thug.png"
+        },
+        {
+          "id": "brigand",
+          "name": "Brigand",
+          "sheet": "enemies/bandit/brigand.png"
+        },
+        {
+          "id": "sniper",
+          "name": "Sniper",
+          "sheet": "enemies/bandit/sniper.png"
+        }
+      ]
+    },
+    {
+      "id": "cultist",
+      "name": "Cultist",
+      "default_variant": "acolyte",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "acolyte",
+          "name": "Acolyte",
+          "sheet": "enemies/cultist/acolyte.png"
+        },
+        {
+          "id": "zealot",
+          "name": "Zealot",
+          "sheet": "enemies/cultist/zealot.png"
+        },
+        {
+          "id": "oracle",
+          "name": "Oracle",
+          "sheet": "enemies/cultist/oracle.png"
+        }
+      ]
+    },
+    {
+      "id": "orc",
+      "name": "Orc",
+      "default_variant": "grunt",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "grunt",
+          "name": "Grunt",
+          "sheet": "enemies/orc/grunt.png"
+        },
+        {
+          "id": "berserker",
+          "name": "Berserker",
+          "sheet": "enemies/orc/berserker.png"
+        },
+        {
+          "id": "warlord",
+          "name": "Warlord",
+          "sheet": "enemies/orc/warlord.png"
+        }
+      ]
+    },
+    {
+      "id": "ogre",
+      "name": "Ogre",
+      "default_variant": "brute",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "brute",
+          "name": "Brute",
+          "sheet": "enemies/ogre/brute.png"
+        },
+        {
+          "id": "crusher",
+          "name": "Crusher",
+          "sheet": "enemies/ogre/crusher.png"
+        },
+        {
+          "id": "magi",
+          "name": "Magi",
+          "sheet": "enemies/ogre/magi.png"
+        }
+      ]
+    },
+    {
+      "id": "troll",
+      "name": "Troll",
+      "default_variant": "cave",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "cave",
+          "name": "Cave",
+          "sheet": "enemies/troll/cave.png"
+        },
+        {
+          "id": "bridge",
+          "name": "Bridge",
+          "sheet": "enemies/troll/bridge.png"
+        },
+        {
+          "id": "frost",
+          "name": "Frost",
+          "sheet": "enemies/troll/frost.png"
+        }
+      ]
+    },
+    {
+      "id": "kobold",
+      "name": "Kobold",
+      "default_variant": "skirmisher",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "skirmisher",
+          "name": "Skirmisher",
+          "sheet": "enemies/kobold/skirmisher.png"
+        },
+        {
+          "id": "trapper",
+          "name": "Trapper",
+          "sheet": "enemies/kobold/trapper.png"
+        },
+        {
+          "id": "sorcerer",
+          "name": "Sorcerer",
+          "sheet": "enemies/kobold/sorcerer.png"
+        }
+      ]
+    },
+    {
+      "id": "gnoll",
+      "name": "Gnoll",
+      "default_variant": "raider",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "raider",
+          "name": "Raider",
+          "sheet": "enemies/gnoll/raider.png"
+        },
+        {
+          "id": "hunter",
+          "name": "Hunter",
+          "sheet": "enemies/gnoll/hunter.png"
+        },
+        {
+          "id": "alpha",
+          "name": "Alpha",
+          "sheet": "enemies/gnoll/alpha.png"
+        }
+      ]
+    },
+    {
+      "id": "ratfolk",
+      "name": "Ratfolk",
+      "default_variant": "skulker",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "skulker",
+          "name": "Skulker",
+          "sheet": "enemies/ratfolk/skulker.png"
+        },
+        {
+          "id": "plague",
+          "name": "Plague",
+          "sheet": "enemies/ratfolk/plague.png"
+        },
+        {
+          "id": "blade",
+          "name": "Blade",
+          "sheet": "enemies/ratfolk/blade.png"
+        }
+      ]
+    },
+    {
+      "id": "lizardfolk",
+      "name": "Lizardfolk",
+      "default_variant": "saurian",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "saurian",
+          "name": "Saurian",
+          "sheet": "enemies/lizardfolk/saurian.png"
+        },
+        {
+          "id": "marsh",
+          "name": "Marsh",
+          "sheet": "enemies/lizardfolk/marsh.png"
+        },
+        {
+          "id": "chromatic",
+          "name": "Chromatic",
+          "sheet": "enemies/lizardfolk/chromatic.png"
+        }
+      ]
+    },
+    {
+      "id": "minotaur",
+      "name": "Minotaur",
+      "default_variant": "bull",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "bull",
+          "name": "Bull",
+          "sheet": "enemies/minotaur/bull.png"
+        },
+        {
+          "id": "ironhorn",
+          "name": "Ironhorn",
+          "sheet": "enemies/minotaur/ironhorn.png"
+        },
+        {
+          "id": "warden",
+          "name": "Warden",
+          "sheet": "enemies/minotaur/warden.png"
+        }
+      ]
+    },
+    {
+      "id": "demon",
+      "name": "Demon",
+      "default_variant": "duke",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "duke",
+          "name": "Duke",
+          "sheet": "enemies/demon/duke.png"
+        },
+        {
+          "id": "pit",
+          "name": "Pit fiend",
+          "sheet": "enemies/demon/pit.png"
+        },
+        {
+          "id": "warlock",
+          "name": "Warlock",
+          "sheet": "enemies/demon/warlock.png"
+        }
+      ]
+    },
+    {
+      "id": "golem",
+      "name": "Golem",
+      "default_variant": "stone",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "stone",
+          "name": "Stone",
+          "sheet": "enemies/golem/stone.png"
+        },
+        {
+          "id": "lava",
+          "name": "Lava",
+          "sheet": "enemies/golem/lava.png"
+        },
+        {
+          "id": "ice",
+          "name": "Ice",
+          "sheet": "enemies/golem/ice.png"
+        }
+      ]
+    },
+    {
+      "id": "elemental",
+      "name": "Elemental",
+      "default_variant": "flame",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "flame",
+          "name": "Flame",
+          "sheet": "enemies/elemental/flame.png"
+        },
+        {
+          "id": "water",
+          "name": "Water",
+          "sheet": "enemies/elemental/water.png"
+        },
+        {
+          "id": "storm",
+          "name": "Storm",
+          "sheet": "enemies/elemental/storm.png"
+        }
+      ]
+    },
+    {
+      "id": "treant",
+      "name": "Treant",
+      "default_variant": "oak",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "oak",
+          "name": "Oak",
+          "sheet": "enemies/treant/oak.png"
+        },
+        {
+          "id": "willow",
+          "name": "Willow",
+          "sheet": "enemies/treant/willow.png"
+        },
+        {
+          "id": "blighted",
+          "name": "Blighted",
+          "sheet": "enemies/treant/blighted.png"
+        }
+      ]
+    },
+    {
+      "id": "gargoyle",
+      "name": "Gargoyle",
+      "default_variant": "granite",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "granite",
+          "name": "Granite",
+          "sheet": "enemies/gargoyle/granite.png"
+        },
+        {
+          "id": "obsidian",
+          "name": "Obsidian",
+          "sheet": "enemies/gargoyle/obsidian.png"
+        },
+        {
+          "id": "verdigris",
+          "name": "Verdigris",
+          "sheet": "enemies/gargoyle/verdigris.png"
+        }
+      ]
+    },
+    {
+      "id": "cyclops",
+      "name": "Cyclops",
+      "default_variant": "shepherd",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "shepherd",
+          "name": "Shepherd",
+          "sheet": "enemies/cyclops/shepherd.png"
+        },
+        {
+          "id": "smasher",
+          "name": "Smasher",
+          "sheet": "enemies/cyclops/smasher.png"
+        },
+        {
+          "id": "titan",
+          "name": "Titan",
+          "sheet": "enemies/cyclops/titan.png"
+        }
+      ]
+    },
+    {
+      "id": "harpy",
+      "name": "Harpy",
+      "default_variant": "screech",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "screech",
+          "name": "Screecher",
+          "sheet": "enemies/harpy/screech.png"
+        },
+        {
+          "id": "storm",
+          "name": "Storm",
+          "sheet": "enemies/harpy/storm.png"
+        },
+        {
+          "id": "blood",
+          "name": "Blood",
+          "sheet": "enemies/harpy/blood.png"
+        }
+      ]
+    },
+    {
+      "id": "snake",
+      "name": "Snake",
+      "default_variant": "viper",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "viper",
+          "name": "Viper",
+          "sheet": "enemies/snake/viper.png"
+        },
+        {
+          "id": "cobra",
+          "name": "Cobra",
+          "sheet": "enemies/snake/cobra.png"
+        },
+        {
+          "id": "frost",
+          "name": "Frost",
+          "sheet": "enemies/snake/frost.png"
+        }
+      ]
+    },
+    {
+      "id": "worm",
+      "name": "Worm",
+      "default_variant": "dirt",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "dirt",
+          "name": "Dirt",
+          "sheet": "enemies/worm/dirt.png"
+        },
+        {
+          "id": "frost",
+          "name": "Frost",
+          "sheet": "enemies/worm/frost.png"
+        },
+        {
+          "id": "magma",
+          "name": "Magma",
+          "sheet": "enemies/worm/magma.png"
+        }
+      ]
+    },
+    {
+      "id": "eyemonster",
+      "name": "Eye monster",
+      "default_variant": "watcher",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "watcher",
+          "name": "Watcher",
+          "sheet": "enemies/eyemonster/watcher.png"
+        },
+        {
+          "id": "doom",
+          "name": "Doom",
+          "sheet": "enemies/eyemonster/doom.png"
+        },
+        {
+          "id": "void",
+          "name": "Void",
+          "sheet": "enemies/eyemonster/void.png"
+        }
+      ]
+    },
+    {
+      "id": "scorpion",
+      "name": "Scorpion",
+      "default_variant": "dune",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "dune",
+          "name": "Dune",
+          "sheet": "enemies/scorpion/dune.png"
+        },
+        {
+          "id": "emperor",
+          "name": "Emperor",
+          "sheet": "enemies/scorpion/emperor.png"
+        },
+        {
+          "id": "venom",
+          "name": "Venom",
+          "sheet": "enemies/scorpion/venom.png"
+        }
+      ]
+    },
+    {
+      "id": "crab",
+      "name": "Crab",
+      "default_variant": "shore",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "shore",
+          "name": "Shore",
+          "sheet": "enemies/crab/shore.png"
+        },
+        {
+          "id": "rock",
+          "name": "Rock",
+          "sheet": "enemies/crab/rock.png"
+        },
+        {
+          "id": "sapphire",
+          "name": "Sapphire",
+          "sheet": "enemies/crab/sapphire.png"
+        }
+      ]
+    },
+    {
+      "id": "beetle",
+      "name": "Beetle",
+      "default_variant": "scarab",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "scarab",
+          "name": "Scarab",
+          "sheet": "enemies/beetle/scarab.png"
+        },
+        {
+          "id": "stag",
+          "name": "Stag",
+          "sheet": "enemies/beetle/stag.png"
+        },
+        {
+          "id": "bomber",
+          "name": "Bomber",
+          "sheet": "enemies/beetle/bomber.png"
+        }
+      ]
+    },
+    {
+      "id": "wasp",
+      "name": "Wasp",
+      "default_variant": "yellowjacket",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "yellowjacket",
+          "name": "Yellowjacket",
+          "sheet": "enemies/wasp/yellowjacket.png"
+        },
+        {
+          "id": "hornet",
+          "name": "Hornet",
+          "sheet": "enemies/wasp/hornet.png"
+        },
+        {
+          "id": "royal",
+          "name": "Royal",
+          "sheet": "enemies/wasp/royal.png"
+        }
+      ]
+    },
+    {
+      "id": "mimic",
+      "name": "Mimic",
+      "default_variant": "wooden",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "wooden",
+          "name": "Wooden",
+          "sheet": "enemies/mimic/wooden.png"
+        },
+        {
+          "id": "royal",
+          "name": "Royal",
+          "sheet": "enemies/mimic/royal.png"
+        },
+        {
+          "id": "cursed",
+          "name": "Cursed",
+          "sheet": "enemies/mimic/cursed.png"
+        }
+      ]
+    },
+    {
+      "id": "drake",
+      "name": "Drake",
+      "default_variant": "ember",
+      "variant_count": 3,
+      "variants": [
+        {
+          "id": "ember",
+          "name": "Ember",
+          "sheet": "enemies/drake/ember.png"
+        },
+        {
+          "id": "frost",
+          "name": "Frost",
+          "sheet": "enemies/drake/frost.png"
+        },
+        {
+          "id": "verdant",
+          "name": "Verdant",
+          "sheet": "enemies/drake/verdant.png"
+        }
+      ]
+    },
+    {
+      "id": "frog",
+      "name": "Frog",
+      "default_variant": "bog",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "bog",
+          "name": "Bog hopper",
+          "sheet": "enemies/frog/bog.png"
+        },
+        {
+          "id": "dart",
+          "name": "Poison dart",
+          "sheet": "enemies/frog/dart.png"
+        },
+        {
+          "id": "ember",
+          "name": "Ember toad",
+          "sheet": "enemies/frog/ember.png"
+        },
+        {
+          "id": "frost",
+          "name": "Frost croaker",
+          "sheet": "enemies/frog/frost.png"
+        }
+      ]
+    },
+    {
+      "id": "crocodile",
+      "name": "Crocodile",
+      "default_variant": "marsh",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "marsh",
+          "name": "Marsh",
+          "sheet": "enemies/crocodile/marsh.png"
+        },
+        {
+          "id": "albino",
+          "name": "Albino",
+          "sheet": "enemies/crocodile/albino.png"
+        },
+        {
+          "id": "ash",
+          "name": "Ashscale",
+          "sheet": "enemies/crocodile/ash.png"
+        },
+        {
+          "id": "ancient",
+          "name": "Mirejaw",
+          "sheet": "enemies/crocodile/ancient.png"
+        }
+      ]
+    },
+    {
+      "id": "turtle",
+      "name": "Turtle",
+      "default_variant": "mossback",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "mossback",
+          "name": "Mossback",
+          "sheet": "enemies/turtle/mossback.png"
+        },
+        {
+          "id": "iron",
+          "name": "Iron shell",
+          "sheet": "enemies/turtle/iron.png"
+        },
+        {
+          "id": "frost",
+          "name": "Frost shell",
+          "sheet": "enemies/turtle/frost.png"
+        },
+        {
+          "id": "magma",
+          "name": "Magma tortoise",
+          "sheet": "enemies/turtle/magma.png"
+        }
+      ]
+    },
+    {
+      "id": "jellyfish",
+      "name": "Jellyfish",
+      "default_variant": "moon",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "moon",
+          "name": "Moon jelly",
+          "sheet": "enemies/jellyfish/moon.png"
+        },
+        {
+          "id": "venom",
+          "name": "Venom medusa",
+          "sheet": "enemies/jellyfish/venom.png"
+        },
+        {
+          "id": "ember",
+          "name": "Ember bell",
+          "sheet": "enemies/jellyfish/ember.png"
+        },
+        {
+          "id": "void",
+          "name": "Void drifter",
+          "sheet": "enemies/jellyfish/void.png"
+        }
+      ]
+    },
+    {
+      "id": "centipede",
+      "name": "Centipede",
+      "default_variant": "cave",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "cave",
+          "name": "Cave crawler",
+          "sheet": "enemies/centipede/cave.png"
+        },
+        {
+          "id": "venom",
+          "name": "Venom spine",
+          "sheet": "enemies/centipede/venom.png"
+        },
+        {
+          "id": "bone",
+          "name": "Bone runner",
+          "sheet": "enemies/centipede/bone.png"
+        },
+        {
+          "id": "magma",
+          "name": "Magma burrower",
+          "sheet": "enemies/centipede/magma.png"
+        }
+      ]
+    },
+    {
+      "id": "carniplant",
+      "name": "Carnivorous plant",
+      "default_variant": "snapvine",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "snapvine",
+          "name": "Snapvine",
+          "sheet": "enemies/carniplant/snapvine.png"
+        },
+        {
+          "id": "corpse",
+          "name": "Corpse bloom",
+          "sheet": "enemies/carniplant/corpse.png"
+        },
+        {
+          "id": "frost",
+          "name": "Frostbud",
+          "sheet": "enemies/carniplant/frost.png"
+        },
+        {
+          "id": "ember",
+          "name": "Ember maw",
+          "sheet": "enemies/carniplant/ember.png"
+        }
+      ]
+    },
+    {
+      "id": "anglerfish",
+      "name": "Anglerfish",
+      "default_variant": "deepglow",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "deepglow",
+          "name": "Deepglow",
+          "sheet": "enemies/anglerfish/deepglow.png"
+        },
+        {
+          "id": "bloodfin",
+          "name": "Bloodfin",
+          "sheet": "enemies/anglerfish/bloodfin.png"
+        },
+        {
+          "id": "frostfin",
+          "name": "Frostfin",
+          "sheet": "enemies/anglerfish/frostfin.png"
+        },
+        {
+          "id": "voidlight",
+          "name": "Voidlight",
+          "sheet": "enemies/anglerfish/voidlight.png"
+        }
+      ]
+    },
+    {
+      "id": "griffin",
+      "name": "Griffin",
+      "default_variant": "royal",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "royal",
+          "name": "Royal",
+          "sheet": "enemies/griffin/royal.png"
+        },
+        {
+          "id": "ash",
+          "name": "Ashwing",
+          "sheet": "enemies/griffin/ash.png"
+        },
+        {
+          "id": "frost",
+          "name": "Frostcrest",
+          "sheet": "enemies/griffin/frost.png"
+        },
+        {
+          "id": "night",
+          "name": "Nightfeather",
+          "sheet": "enemies/griffin/night.png"
+        }
+      ]
+    },
+    {
+      "id": "mantis",
+      "name": "Mantis",
+      "default_variant": "orchid",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "orchid",
+          "name": "Orchid",
+          "sheet": "enemies/mantis/orchid.png"
+        },
+        {
+          "id": "jade",
+          "name": "Jade reaper",
+          "sheet": "enemies/mantis/jade.png"
+        },
+        {
+          "id": "bone",
+          "name": "Boneblade",
+          "sheet": "enemies/mantis/bone.png"
+        },
+        {
+          "id": "inferno",
+          "name": "Inferno",
+          "sheet": "enemies/mantis/inferno.png"
+        }
+      ]
+    },
+    {
+      "id": "moth",
+      "name": "Moth",
+      "default_variant": "moon",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "moon",
+          "name": "Moonwing",
+          "sheet": "enemies/moth/moon.png"
+        },
+        {
+          "id": "plague",
+          "name": "Plague dust",
+          "sheet": "enemies/moth/plague.png"
+        },
+        {
+          "id": "frost",
+          "name": "Frostsilk",
+          "sheet": "enemies/moth/frost.png"
+        },
+        {
+          "id": "ember",
+          "name": "Emberwing",
+          "sheet": "enemies/moth/ember.png"
+        }
+      ]
+    },
+    {
+      "id": "octopus",
+      "name": "Octopus",
+      "default_variant": "reef",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "reef",
+          "name": "Reef",
+          "sheet": "enemies/octopus/reef.png"
+        },
+        {
+          "id": "venom",
+          "name": "Venom ring",
+          "sheet": "enemies/octopus/venom.png"
+        },
+        {
+          "id": "frost",
+          "name": "Frostkraken",
+          "sheet": "enemies/octopus/frost.png"
+        },
+        {
+          "id": "abyss",
+          "name": "Abyssal",
+          "sheet": "enemies/octopus/abyss.png"
+        }
+      ]
+    },
+    {
+      "id": "mole",
+      "name": "Mole",
+      "default_variant": "tunnel",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "tunnel",
+          "name": "Tunnel digger",
+          "sheet": "enemies/mole/tunnel.png"
+        },
+        {
+          "id": "crystal",
+          "name": "Crystalclaw",
+          "sheet": "enemies/mole/crystal.png"
+        },
+        {
+          "id": "rot",
+          "name": "Rotburrow",
+          "sheet": "enemies/mole/rot.png"
+        },
+        {
+          "id": "magma",
+          "name": "Magma mole",
+          "sheet": "enemies/mole/magma.png"
+        }
+      ]
+    },
+    {
+      "id": "scarecrow",
+      "name": "Scarecrow",
+      "default_variant": "strawfield",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "strawfield",
+          "name": "Strawfield",
+          "sheet": "enemies/scarecrow/strawfield.png"
+        },
+        {
+          "id": "plaguecrow",
+          "name": "Plaguecrow",
+          "sheet": "enemies/scarecrow/plaguecrow.png"
+        },
+        {
+          "id": "frostbound",
+          "name": "Frostbound",
+          "sheet": "enemies/scarecrow/frostbound.png"
+        },
+        {
+          "id": "infernal",
+          "name": "Infernal",
+          "sheet": "enemies/scarecrow/infernal.png"
+        }
+      ]
+    },
+    {
+      "id": "snail",
+      "name": "Snail",
+      "default_variant": "meadow",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "meadow",
+          "name": "Meadow",
+          "sheet": "enemies/snail/meadow.png"
+        },
+        {
+          "id": "iron",
+          "name": "Iron shell",
+          "sheet": "enemies/snail/iron.png"
+        },
+        {
+          "id": "crystal",
+          "name": "Crystal slime",
+          "sheet": "enemies/snail/crystal.png"
+        },
+        {
+          "id": "magma",
+          "name": "Magma",
+          "sheet": "enemies/snail/magma.png"
+        }
+      ]
+    },
+    {
+      "id": "porcupine",
+      "name": "Porcupine",
+      "default_variant": "forest",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "forest",
+          "name": "Forest",
+          "sheet": "enemies/porcupine/forest.png"
+        },
+        {
+          "id": "venom",
+          "name": "Venom quill",
+          "sheet": "enemies/porcupine/venom.png"
+        },
+        {
+          "id": "frost",
+          "name": "Frostspine",
+          "sheet": "enemies/porcupine/frost.png"
+        },
+        {
+          "id": "ember",
+          "name": "Emberback",
+          "sheet": "enemies/porcupine/ember.png"
+        }
+      ]
+    },
+    {
+      "id": "puppet",
+      "name": "Haunted puppet",
+      "default_variant": "marionette",
+      "variant_count": 4,
+      "variants": [
+        {
+          "id": "marionette",
+          "name": "Marionette",
+          "sheet": "enemies/puppet/marionette.png"
+        },
+        {
+          "id": "bone",
+          "name": "Bone doll",
+          "sheet": "enemies/puppet/bone.png"
+        },
+        {
+          "id": "ice",
+          "name": "Icebound",
+          "sheet": "enemies/puppet/ice.png"
+        },
+        {
+          "id": "demonwood",
+          "name": "Demonwood",
+          "sheet": "enemies/puppet/demonwood.png"
+        }
+      ]
+    }
+  ]
+}
