@@ -1,0 +1,78 @@
+{
+  "authoredStamps": [],
+  "biases": {
+    "moisturePermille": 0,
+    "northElevationPermille": 350,
+    "temperaturePermille": 0
+  },
+  "budgets": {
+    "landmarkCount": 8,
+    "primaryRouteCount": 3,
+    "regionCount": 4,
+    "settlementCount": 10
+  },
+  "cellOverrides": [],
+  "decoration": {
+    "densityPermille": 400
+  },
+  "landmarks": [
+    {
+      "at": null,
+      "near": null,
+      "relation": "across_river_from_town",
+      "type": "ancient_fortress"
+    },
+    {
+      "at": null,
+      "near": null,
+      "relation": "high_ground",
+      "type": "ruined_city"
+    },
+    {
+      "at": null,
+      "near": null,
+      "relation": "far_from_town",
+      "type": "world_tree"
+    },
+    {
+      "at": null,
+      "near": null,
+      "relation": "high_ground",
+      "type": "crystal_spire"
+    },
+    {
+      "at": null,
+      "near": null,
+      "relation": "coastal",
+      "type": "lighthouse"
+    },
+    {
+      "at": null,
+      "near": null,
+      "relation": "remote_corner",
+      "type": "hunters_lodge"
+    },
+    {
+      "at": null,
+      "near": null,
+      "relation": "high_ground",
+      "type": "mountain_hamlet"
+    },
+    {
+      "at": null,
+      "near": null,
+      "relation": "high_ground",
+      "type": "mountain_hamlet"
+    }
+  ],
+  "recipeFormat": 1,
+  "seed": 103991,
+  "settlements": [],
+  "toggles": {},
+  "world": {
+    "climatePreset": "cold_coastal",
+    "densityPreset": "dense",
+    "sizePreset": "small"
+  },
+  "zones": null
+}

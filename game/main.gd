@@ -7,6 +7,7 @@ extends Node2D
 ## debug layer land at M4.
 
 const ArenaBuilder := preload("res://game/arena/arena_builder.gd")
+const WorldBuilder := preload("res://game/arena/world_builder.gd")
 const Bitgrid := preload("res://sim/collision/bitgrid.gd")
 const SimWorld := preload("res://sim/sim_world.gd")
 const RealtimeDriver := preload("res://game/drivers/realtime_driver.gd")
@@ -348,7 +349,13 @@ func _ready() -> void:
 	var seed_v := int(Config.get_setting("dev", "seed", scenario.default_seed))
 	if audit_mode:
 		seed_v = int(scenario.default_seed)
-	var arena := ArenaBuilder.build_arena(self, String(scenario.arena))
+	# Arena source: a WorldForge game pack when the scenario names one
+	# (generated-test-arena ruling), else the arena-def builder.
+	var arena: Dictionary
+	if not String(scenario.worldforge_pack).is_empty():
+		arena = WorldBuilder.build_world_arena(self, String(scenario.worldforge_pack))
+	else:
+		arena = ArenaBuilder.build_arena(self, String(scenario.arena))
 	if arena.is_empty():
 		return
 	var def: Dictionary = arena.def

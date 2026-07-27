@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"world_walk"
+display_name = "World Walk: small-cold-coastal (dusk)"
+worldforge_pack = "res://assets/worldforge-packs/small-cold-coastal-pack-dusk/"
+player_spawn = Vector2(241.5, 124.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"husk_archer": PackedVector2Array(238.5, 129.5),
+"rusher": PackedVector2Array(247.5, 124.5)
+}
+default_seed = 46

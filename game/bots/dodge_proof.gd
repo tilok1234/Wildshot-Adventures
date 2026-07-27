@@ -7,6 +7,7 @@ extends RefCounted
 
 const ArenaBuilder := preload("res://game/arena/arena_builder.gd")
 const Bitgrid := preload("res://sim/collision/bitgrid.gd")
+const WorldforgePack := preload("res://addons/worldforge_importer/worldforge_pack.gd")
 const ScenarioLoader := preload("res://game/scenario_loader.gd")
 const ReplayRecorder := preload("res://input/replay_recorder.gd")
 const SimEvents := preload("res://sim/events.gd")
@@ -40,7 +41,16 @@ static func run_from_args(args: Dictionary) -> int:
 			seeds.append(base + i)
 	var out_path := String(args.get("out", "res://reports/dodge_%s.json" % String(scenario.id)))
 
-	var grid := _build_bitgrid(String(scenario.arena))
+	var grid: RefCounted
+	if not String(scenario.worldforge_pack).is_empty():
+		var wf := WorldforgePack.validate(String(scenario.worldforge_pack))
+		if not bool(wf.ok):
+			for line: String in wf.log:
+				printerr("dodge_proof: " + line)
+			return 2
+		grid = wf.bitgrid
+	else:
+		grid = _build_bitgrid(String(scenario.arena))
 	var run_reports: Array = []
 	var all_pass := true
 	for seed_v in seeds:

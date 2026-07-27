@@ -46,3 +46,5 @@ timestamp,action,note
 2026-07-28T00:38:54,note,"Real WorldForge pack VALIDATED first try (0.57s, flood 33845 reproduced, 8/8 hashes). Validator hardened per relayed contract (report gate, baseArtifact consistency, formatVersion field). Both repos pushed."
 2026-07-28T00:44:53,stop,"Session close: WorldForge validation proven on the real pack, docs + handoff current, both repos pushed. Next chat starts at M6 from notes/HANDOFF.md."
 2026-07-28T00:47:49,start,"Dusk WorldForge pack arrived: validate + record"
+2026-07-28T00:48:49,stop,"Dusk pack validated (0.56s, flood 33845, dusk-ae1eecb identity confirmed). All records current, both repos pushed. Clean seam; next chat = M6."
+2026-07-28T00:52:14,start,"Generated test arena ruling: dusk world walk consumption build"

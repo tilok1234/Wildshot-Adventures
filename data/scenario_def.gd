@@ -9,6 +9,10 @@ extends Resource
 ## Arena definition this scenario plays on (visuals + collision derive
 ## from it together). Default: the lab arena.
 @export var arena: String = "res://data/arena_lab.json"
+## When set, this scenario plays on a WorldForge game pack instead of an
+## arena def (the generated-test-arena ruling): validated + rendered by
+## game/arena/world_builder.gd; collision comes from walkability.json.
+@export var worldforge_pack: String = ""
 @export var player_spawn: Vector2 = Vector2(24.0, 16.0)
 @export var standin_positions: PackedVector2Array = PackedVector2Array()
 ## EnemyDef id (String) -> PackedVector2Array of tile positions. Spawn

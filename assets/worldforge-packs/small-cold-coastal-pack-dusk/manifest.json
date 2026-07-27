@@ -1,0 +1,50 @@
+{
+  "adapter": {
+    "tileforge": 6
+  },
+  "artifactFormat": 8,
+  "baseArtifactSha256": "702c10e622f4fe4e3f63c43598851781edbc60c5de9910bd6462e0e382e399f4",
+  "dimensions": {
+    "chunkHeight": 32,
+    "chunkWidth": 32,
+    "height": 256,
+    "width": 256
+  },
+  "files": {
+    "minimap.png": "daad68d1b0908752d33d289462a10288399d3eb0b08cabf5c151ddf83d426fc6",
+    "normalized-recipe.json": "80cff5eb69437be55d56a433874887a6a2446f38aad613b2422a73e9c48c6c58",
+    "resolved/resolved-map.tmj": "1bead19ab8b124b22a11afeaf1d6933db6555917594cf0d7228a65c90681b1c9",
+    "resolved/tileforge-map-data.json": "b5a1c3125076894a484b0f88dbe00b103501b76891b76d819894bca10d2e1a9e",
+    "resolved/tileforge-slice.json": "a235d04b73ff35ec0a67f049e4c7bf0d151666a2ea859c282e2e2888d6306729",
+    "validation-report.json": "79a29c54072808e93335e0ae389fbb81ead136394d1ca70c95a1c013966590cd",
+    "walkability.json": "ea7e5c2a849978f5f545a7f563a3ec8ba90ded2ce8ecceaadbc28ebab06ddd56",
+    "world.json": "702c10e622f4fe4e3f63c43598851781edbc60c5de9910bd6462e0e382e399f4"
+  },
+  "generator": {
+    "behaviorVersion": 46,
+    "generationIdentitySha256": "456247d1adede9c6149c65f6969ea5a1d85b4f6afc7614bf59043b59e3407e2a",
+    "name": "worldforge",
+    "recipeCompilerVersion": 28,
+    "recipeSha256": "80cff5eb69437be55d56a433874887a6a2446f38aad613b2422a73e9c48c6c58",
+    "resolvedConfigSha256": "9af3cd33052c5c79ac2cffe9311fd6d40eda5afebd756f02f6feff0b54b305bb",
+    "seed": 103991,
+    "version": "0.1.0"
+  },
+  "pack": "worldforge-game-pack",
+  "packFormat": 1,
+  "tileforge": {
+    "manifestSha256": "bb10a0aafe6b8fb14be1d3a41bce325202d57a6b277306ae5e6ef9c57f3b2b11",
+    "packageId": "dusk-ae1eecb-seed103991",
+    "packageSha256": "395c16929e3a678668b82f10f952c55c5315f3938450891db2ac3ae1dd4dc1eb",
+    "theme": "dusk"
+  },
+  "walkability": {
+    "floodCount": 33845,
+    "format": 1,
+    "spawnCell": [
+      241,
+      124
+    ]
+  },
+  "world": "small-cold-coastal"
+}
