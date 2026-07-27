@@ -68,8 +68,11 @@ small-cold-coastal-pack` — validated in 0.57 s, flood 33845 from
 legal). Validate any pack via:
 `godot_console --headless --path . --script
 addons/worldforge_importer/import_pack.gd -- --pack=<dir>/`.
-A DUSK pack is being produced by the WorldForge-side agent — when it
-lands, run that CLI; green means the contract held. The CONSUMPTION
+The DUSK pack is DELIVERED and VALIDATED (2026-07-28, 0.56 s:
+`...\game-packs\small-cold-coastal-pack-dusk`, tileforge
+dusk-ae1eecb-seed103991, flood 33845 reproduced — walkability is
+theme-independent, empirically confirmed; contract-as-built notes
+blessed in WorldForge's plan §3.3a). The CONSUMPTION
 half (render a world, playable scenario, POIs) is deliberately
 deferred: post-Gate-1 OR an explicit designer "generated test arena"
 ruling (≈one session when ruled; contract-gap protocol: never patch a
@@ -191,8 +194,8 @@ Before every commit, per touched area:
   M7 reactive policies / composition-too-hot.
 - Provisional M6 actor mappings + slash-sprite share (ledger #10).
 - Weekly GIF #2 (wolves + forest + slash = fresh material).
-- Dusk WorldForge pack: requested from the WorldForge-side agent
-  (2026-07-28); when delivered, validate via the importer CLI and
-  report the result — consumption stays gated on the ruling above.
+- Dusk WorldForge pack: DELIVERED + VALIDATED 2026-07-28. Everything
+  world-gen now waits only on the designer's generated-test-arena
+  ruling (consumption half).
 - M6 audio cue map wants placeholder WAVs (Law 7) — sourcing is
   designer taste territory.
