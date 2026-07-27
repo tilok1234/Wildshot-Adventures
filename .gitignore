@@ -9,6 +9,7 @@ export_presets.cfg.secret
 # Bot harness output (mechanical verification only — not committed)
 reports/*
 !reports/.gitkeep
+!reports/.gdignore
 
 # OS noise
 Thumbs.db
