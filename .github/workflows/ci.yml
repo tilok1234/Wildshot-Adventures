@@ -117,6 +117,10 @@ jobs:
       - name: Actor-sheet slice test
         run: ~/godot/godot --headless --path . --script tests/actor_sheet_slice/actor_sheet_slice.gd
 
+      # M4 (docs/13 §6): UI kit pieces match their manifest. Linux-safe.
+      - name: UI kit validation
+        run: ~/godot/godot --headless --path . --script tests/uikit/uikit_validate.gd
+
       - name: Upload diff artifacts on failure
         if: failure()
         uses: actions/upload-artifact@v4

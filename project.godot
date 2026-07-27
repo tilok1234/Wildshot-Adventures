@@ -16,6 +16,11 @@ config/features=PackedStringArray("4.6")
 
 Config="*res://autoload/config.gd"
 
+[gui]
+
+; wildshot-ui kit theme (docs/13; built by addons/uikit_importer).
+theme/custom="res://ui/theme.tres"
+
 [display]
 
 ; Fullscreen default: windowed-mode compositing produced measured 25-30ms

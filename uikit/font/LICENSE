@@ -1,0 +1,10 @@
+Wildshot Pixel (wildshot_pixel.ttf)
+Original bitmap-style pixel font drawn from scratch for the Wildshot Adventures UI kit, 2026-07-27.
+
+License: CC0 1.0 Universal (public domain dedication)
+https://creativecommons.org/publicdomain/zero/1.0/
+No attribution required.
+
+Coverage: Latin basic, ASCII 32-126.
+Metrics: 10 px em, 7 px cap height, 5 px x-height, 2 px descender, 12 px line.
+Godot import: FontFile, antialiasing OFF, hinting None, use at 10 px (or integer multiples).

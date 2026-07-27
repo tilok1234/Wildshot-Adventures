@@ -17,6 +17,7 @@ const ReplayRecorder := preload("res://input/replay_recorder.gd")
 const OptionsMenu := preload("res://ui/options_menu.gd")
 const GifRecorder := preload("res://game/drivers/gif_recorder.gd")
 const FlashView := preload("res://game/views/flash_view.gd")
+const StatBar := preload("res://ui/stat_bar.gd")
 const ActorLibrary := preload("res://game/views/actor_library.gd")
 const AnimatedActor := preload("res://game/views/animated_actor.gd")
 
@@ -34,12 +35,27 @@ var world: SimWorld
 var driver: RealtimeDriver
 var view_clock: ViewClock
 var speed_label: Label
-var autofire_label: Label
+var autofire_icon: TextureRect
 var weapon_label: Label
+var hp_bar: StatBar
+var mana_bar: StatBar
 var options_menu: PanelContainer
 var hints_label: Label
 var gif_recorder: Node
 var rec_label: Label
+var _af_on_tex: Texture2D = load("res://uikit/icon_autofire_on.png")
+var _af_off_tex: Texture2D = load("res://uikit/icon_autofire_off.png")
+
+
+## bar_frame stylebox from the kit manifest (margins 2,2,2,2).
+static func _bar_frame_box() -> StyleBoxTexture:
+	var sb := StyleBoxTexture.new()
+	sb.texture = load("res://uikit/bar_frame.png")
+	sb.texture_margin_left = 2.0
+	sb.texture_margin_top = 2.0
+	sb.texture_margin_right = 2.0
+	sb.texture_margin_bottom = 2.0
+	return sb
 
 
 func _process(_delta: float) -> void:
@@ -80,7 +96,9 @@ func _process(_delta: float) -> void:
 		]
 	)
 	var p: RefCounted = world.players[0]
-	autofire_label.visible = p.autofire_on
+	autofire_icon.texture = _af_on_tex if p.autofire_on else _af_off_tex
+	hp_bar.value = p.hp / 100.0
+	mana_bar.value = p.mana / 100.0
 	rec_label.visible = gif_recorder != null and gif_recorder.armed
 	if not world.weapon_frames.is_empty():
 		weapon_label.text = String(world.weapon_frames[p.equipped_weapon].display_name)
@@ -202,14 +220,28 @@ func _ready() -> void:
 	pause_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	speed_label = Label.new()
 	speed_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
+	speed_label.position.y -= 24.0
 	# Autofire indicator reads SIM state (§2.8) — the latch, not the key.
-	autofire_label = Label.new()
-	autofire_label.text = "AUTOFIRE"
-	autofire_label.visible = false
-	autofire_label.modulate = Color(1.0, 0.5, 0.3)
-	autofire_label.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	# Kit icons: ON/OFF differ by shape, not color (CORE-50).
+	autofire_icon = TextureRect.new()
+	autofire_icon.texture = load("res://uikit/icon_autofire_off.png")
+	autofire_icon.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	autofire_icon.position = Vector2(4.0, 4.0)
 	weapon_label = Label.new()
 	weapon_label.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	# HP/mana bars (M4 HUD): kit frame + pattern-differentiated fills.
+	hp_bar = StatBar.new()
+	hp_bar.frame_box = _bar_frame_box()
+	hp_bar.fill_tex = load("res://uikit/bar_fill_hp.png")
+	hp_bar.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
+	hp_bar.position = Vector2(4.0, -22.0)
+	hp_bar.size = Vector2(64.0, 8.0)
+	mana_bar = StatBar.new()
+	mana_bar.frame_box = _bar_frame_box()
+	mana_bar.fill_tex = load("res://uikit/bar_fill_mana.png")
+	mana_bar.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
+	mana_bar.position = Vector2(4.0, -12.0)
+	mana_bar.size = Vector2(64.0, 8.0)
 	# GIF capture costs real frame time while armed — the indicator is
 	# also the "why did fps dip" explanation.
 	rec_label = Label.new()
@@ -226,12 +258,17 @@ func _ready() -> void:
 	var hud := CanvasLayer.new()
 	hud.add_child(pause_label)
 	hud.add_child(speed_label)
-	hud.add_child(autofire_label)
+	hud.add_child(autofire_icon)
 	hud.add_child(weapon_label)
+	hud.add_child(hp_bar)
+	hud.add_child(mana_bar)
 	hud.add_child(rec_label)
 	hud.add_child(hints_label)
 	hud.add_child(options_menu)
 	add_child(hud)
+	Input.set_custom_mouse_cursor(
+		load("res://uikit/cursor_crosshair.png"), Input.CURSOR_ARROW, Vector2(5.0, 5.0)
+	)
 	driver.pause_changed.connect(func(p: bool) -> void: pause_label.visible = p)
 	_refresh_hints()
 

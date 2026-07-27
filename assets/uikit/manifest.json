@@ -1,0 +1,540 @@
+{
+  "kit": "wildshot-ui",
+  "version": 1,
+  "generated": "2026-07-27",
+  "scale": 1,
+  "theme": "gilded",
+  "margins_order": "left,top,right,bottom",
+  "palette": {
+    "chrome_dark": "#2f2557",
+    "chrome_mid": "#4a3d80",
+    "chrome_light": "#8f7cce",
+    "accent_1": "#f2c14e",
+    "accent_2": "#3f7de8"
+  },
+  "font": {
+    "file": "font/wildshot_pixel.ttf",
+    "license": "CC0",
+    "size_px": 10,
+    "line_px": 12,
+    "cap_px": 7
+  },
+  "pieces": [
+    {
+      "id": "panel",
+      "file": "panel.png",
+      "kind": "nineslice",
+      "margins": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "min_size": [
+        12,
+        12
+      ],
+      "tier": 1
+    },
+    {
+      "id": "panel_inset",
+      "file": "panel_inset.png",
+      "kind": "nineslice",
+      "margins": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "min_size": [
+        12,
+        12
+      ],
+      "tier": 1
+    },
+    {
+      "id": "button_normal",
+      "file": "button_normal.png",
+      "kind": "nineslice",
+      "margins": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "min_size": [
+        12,
+        14
+      ],
+      "tier": 1
+    },
+    {
+      "id": "button_hover",
+      "file": "button_hover.png",
+      "kind": "nineslice",
+      "margins": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "min_size": [
+        12,
+        14
+      ],
+      "tier": 1
+    },
+    {
+      "id": "button_pressed",
+      "file": "button_pressed.png",
+      "kind": "nineslice",
+      "margins": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "min_size": [
+        12,
+        14
+      ],
+      "tier": 1
+    },
+    {
+      "id": "button_disabled",
+      "file": "button_disabled.png",
+      "kind": "nineslice",
+      "margins": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "min_size": [
+        12,
+        14
+      ],
+      "tier": 1
+    },
+    {
+      "id": "button_focus",
+      "file": "button_focus.png",
+      "kind": "nineslice",
+      "margins": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "min_size": [
+        12,
+        14
+      ],
+      "tier": 1,
+      "note": "draw OVER other button states"
+    },
+    {
+      "id": "check_on",
+      "file": "check_on.png",
+      "kind": "icon",
+      "size": [
+        12,
+        12
+      ],
+      "tier": 1
+    },
+    {
+      "id": "check_off",
+      "file": "check_off.png",
+      "kind": "icon",
+      "size": [
+        12,
+        12
+      ],
+      "tier": 1
+    },
+    {
+      "id": "slider_track",
+      "file": "slider_track.png",
+      "kind": "nineslice",
+      "margins": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "min_size": [
+        8,
+        6
+      ],
+      "tier": 1
+    },
+    {
+      "id": "slider_grabber",
+      "file": "slider_grabber.png",
+      "kind": "texture",
+      "size": [
+        10,
+        14
+      ],
+      "tier": 1
+    },
+    {
+      "id": "slider_grabber_focus",
+      "file": "slider_grabber_focus.png",
+      "kind": "texture",
+      "size": [
+        10,
+        14
+      ],
+      "tier": 1
+    },
+    {
+      "id": "focus_ring",
+      "file": "focus_ring.png",
+      "kind": "nineslice",
+      "margins": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "min_size": [
+        8,
+        8
+      ],
+      "tier": 1,
+      "note": "1px bright keyboard-focus outline, draw over any control"
+    },
+    {
+      "id": "cursor_pointer",
+      "file": "cursor_pointer.png",
+      "kind": "cursor",
+      "hotspot": [
+        0,
+        0
+      ],
+      "size": [
+        16,
+        16
+      ],
+      "tier": 1
+    },
+    {
+      "id": "cursor_crosshair",
+      "file": "cursor_crosshair.png",
+      "kind": "cursor",
+      "hotspot": [
+        5,
+        5
+      ],
+      "size": [
+        11,
+        11
+      ],
+      "tier": 1
+    },
+    {
+      "id": "bar_frame",
+      "file": "bar_frame.png",
+      "kind": "nineslice",
+      "margins": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "min_size": [
+        12,
+        8
+      ],
+      "tier": 1
+    },
+    {
+      "id": "bar_fill_hp",
+      "file": "bar_fill_hp.png",
+      "kind": "tile",
+      "size": [
+        8,
+        4
+      ],
+      "tier": 1,
+      "note": "tile horizontally inside bar_frame 2px padding"
+    },
+    {
+      "id": "bar_fill_mana",
+      "file": "bar_fill_mana.png",
+      "kind": "tile",
+      "size": [
+        8,
+        4
+      ],
+      "tier": 1,
+      "note": "diagonal pattern differs from HP, not hue alone"
+    },
+    {
+      "id": "icon_autofire_on",
+      "file": "icon_autofire_on.png",
+      "kind": "icon",
+      "size": [
+        12,
+        12
+      ],
+      "tier": 1
+    },
+    {
+      "id": "icon_autofire_off",
+      "file": "icon_autofire_off.png",
+      "kind": "icon",
+      "size": [
+        12,
+        12
+      ],
+      "tier": 1
+    },
+    {
+      "id": "icon_gear",
+      "file": "icon_gear.png",
+      "kind": "icon",
+      "size": [
+        12,
+        12
+      ],
+      "tier": 1
+    },
+    {
+      "id": "icon_keyboard",
+      "file": "icon_keyboard.png",
+      "kind": "icon",
+      "size": [
+        12,
+        12
+      ],
+      "tier": 1
+    },
+    {
+      "id": "icon_mouse",
+      "file": "icon_mouse.png",
+      "kind": "icon",
+      "size": [
+        12,
+        12
+      ],
+      "tier": 1
+    },
+    {
+      "id": "icon_audio",
+      "file": "icon_audio.png",
+      "kind": "icon",
+      "size": [
+        12,
+        12
+      ],
+      "tier": 1
+    },
+    {
+      "id": "icon_eye",
+      "file": "icon_eye.png",
+      "kind": "icon",
+      "size": [
+        12,
+        12
+      ],
+      "tier": 1
+    },
+    {
+      "id": "icon_warning",
+      "file": "icon_warning.png",
+      "kind": "icon",
+      "size": [
+        12,
+        12
+      ],
+      "tier": 1
+    },
+    {
+      "id": "icon_close",
+      "file": "icon_close.png",
+      "kind": "icon",
+      "size": [
+        12,
+        12
+      ],
+      "tier": 1
+    },
+    {
+      "id": "icon_arrow_down",
+      "file": "icon_arrow_down.png",
+      "kind": "icon",
+      "size": [
+        12,
+        12
+      ],
+      "tier": 1
+    },
+    {
+      "id": "tab_selected",
+      "file": "tab_selected.png",
+      "kind": "nineslice",
+      "margins": [
+        4,
+        4,
+        4,
+        2
+      ],
+      "min_size": [
+        12,
+        12
+      ],
+      "tier": 2
+    },
+    {
+      "id": "tab_unselected",
+      "file": "tab_unselected.png",
+      "kind": "nineslice",
+      "margins": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "min_size": [
+        12,
+        12
+      ],
+      "tier": 2
+    },
+    {
+      "id": "popup_panel",
+      "file": "popup_panel.png",
+      "kind": "nineslice",
+      "margins": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "min_size": [
+        12,
+        12
+      ],
+      "tier": 2
+    },
+    {
+      "id": "item_hover",
+      "file": "item_hover.png",
+      "kind": "nineslice",
+      "margins": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "min_size": [
+        8,
+        8
+      ],
+      "tier": 2
+    },
+    {
+      "id": "scroll_track",
+      "file": "scroll_track.png",
+      "kind": "nineslice",
+      "margins": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "min_size": [
+        6,
+        12
+      ],
+      "tier": 2
+    },
+    {
+      "id": "scroll_grabber",
+      "file": "scroll_grabber.png",
+      "kind": "nineslice",
+      "margins": [
+        2,
+        3,
+        2,
+        3
+      ],
+      "min_size": [
+        6,
+        12
+      ],
+      "tier": 2
+    },
+    {
+      "id": "lineedit_normal",
+      "file": "lineedit_normal.png",
+      "kind": "nineslice",
+      "margins": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "min_size": [
+        12,
+        12
+      ],
+      "tier": 2
+    },
+    {
+      "id": "lineedit_focus",
+      "file": "lineedit_focus.png",
+      "kind": "nineslice",
+      "margins": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "min_size": [
+        12,
+        12
+      ],
+      "tier": 2
+    },
+    {
+      "id": "tooltip_panel",
+      "file": "tooltip_panel.png",
+      "kind": "nineslice",
+      "margins": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "min_size": [
+        8,
+        8
+      ],
+      "tier": 2
+    },
+    {
+      "id": "icon_export",
+      "file": "icon_export.png",
+      "kind": "icon",
+      "size": [
+        12,
+        12
+      ],
+      "tier": 2
+    },
+    {
+      "id": "icon_replay",
+      "file": "icon_replay.png",
+      "kind": "icon",
+      "size": [
+        12,
+        12
+      ],
+      "tier": 2
+    }
+  ]
+}

@@ -1,0 +1,540 @@
+{
+	"font": {
+		"cap_px": 7.0,
+		"file": "font/wildshot_pixel.ttf",
+		"license": "CC0",
+		"line_px": 12.0,
+		"size_px": 10.0
+	},
+	"generated": "2026-07-27",
+	"kit": "wildshot-ui",
+	"margins_order": "left,top,right,bottom",
+	"palette": {
+		"accent_1": "#f2c14e",
+		"accent_2": "#3f7de8",
+		"chrome_dark": "#2f2557",
+		"chrome_light": "#8f7cce",
+		"chrome_mid": "#4a3d80"
+	},
+	"pieces": [
+		{
+			"file": "panel.png",
+			"id": "panel",
+			"kind": "nineslice",
+			"margins": [
+				4.0,
+				4.0,
+				4.0,
+				4.0
+			],
+			"min_size": [
+				12.0,
+				12.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "panel_inset.png",
+			"id": "panel_inset",
+			"kind": "nineslice",
+			"margins": [
+				4.0,
+				4.0,
+				4.0,
+				4.0
+			],
+			"min_size": [
+				12.0,
+				12.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "button_normal.png",
+			"id": "button_normal",
+			"kind": "nineslice",
+			"margins": [
+				3.0,
+				3.0,
+				3.0,
+				3.0
+			],
+			"min_size": [
+				12.0,
+				14.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "button_hover.png",
+			"id": "button_hover",
+			"kind": "nineslice",
+			"margins": [
+				3.0,
+				3.0,
+				3.0,
+				3.0
+			],
+			"min_size": [
+				12.0,
+				14.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "button_pressed.png",
+			"id": "button_pressed",
+			"kind": "nineslice",
+			"margins": [
+				3.0,
+				3.0,
+				3.0,
+				3.0
+			],
+			"min_size": [
+				12.0,
+				14.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "button_disabled.png",
+			"id": "button_disabled",
+			"kind": "nineslice",
+			"margins": [
+				3.0,
+				3.0,
+				3.0,
+				3.0
+			],
+			"min_size": [
+				12.0,
+				14.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "button_focus.png",
+			"id": "button_focus",
+			"kind": "nineslice",
+			"margins": [
+				3.0,
+				3.0,
+				3.0,
+				3.0
+			],
+			"min_size": [
+				12.0,
+				14.0
+			],
+			"note": "draw OVER other button states",
+			"tier": 1.0
+		},
+		{
+			"file": "check_on.png",
+			"id": "check_on",
+			"kind": "icon",
+			"size": [
+				12.0,
+				12.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "check_off.png",
+			"id": "check_off",
+			"kind": "icon",
+			"size": [
+				12.0,
+				12.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "slider_track.png",
+			"id": "slider_track",
+			"kind": "nineslice",
+			"margins": [
+				2.0,
+				2.0,
+				2.0,
+				2.0
+			],
+			"min_size": [
+				8.0,
+				6.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "slider_grabber.png",
+			"id": "slider_grabber",
+			"kind": "texture",
+			"size": [
+				10.0,
+				14.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "slider_grabber_focus.png",
+			"id": "slider_grabber_focus",
+			"kind": "texture",
+			"size": [
+				10.0,
+				14.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "focus_ring.png",
+			"id": "focus_ring",
+			"kind": "nineslice",
+			"margins": [
+				3.0,
+				3.0,
+				3.0,
+				3.0
+			],
+			"min_size": [
+				8.0,
+				8.0
+			],
+			"note": "1px bright keyboard-focus outline, draw over any control",
+			"tier": 1.0
+		},
+		{
+			"file": "cursor_pointer.png",
+			"hotspot": [
+				0.0,
+				0.0
+			],
+			"id": "cursor_pointer",
+			"kind": "cursor",
+			"size": [
+				16.0,
+				16.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "cursor_crosshair.png",
+			"hotspot": [
+				5.0,
+				5.0
+			],
+			"id": "cursor_crosshair",
+			"kind": "cursor",
+			"size": [
+				11.0,
+				11.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "bar_frame.png",
+			"id": "bar_frame",
+			"kind": "nineslice",
+			"margins": [
+				2.0,
+				2.0,
+				2.0,
+				2.0
+			],
+			"min_size": [
+				12.0,
+				8.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "bar_fill_hp.png",
+			"id": "bar_fill_hp",
+			"kind": "tile",
+			"note": "tile horizontally inside bar_frame 2px padding",
+			"size": [
+				8.0,
+				4.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "bar_fill_mana.png",
+			"id": "bar_fill_mana",
+			"kind": "tile",
+			"note": "diagonal pattern differs from HP, not hue alone",
+			"size": [
+				8.0,
+				4.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "icon_autofire_on.png",
+			"id": "icon_autofire_on",
+			"kind": "icon",
+			"size": [
+				12.0,
+				12.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "icon_autofire_off.png",
+			"id": "icon_autofire_off",
+			"kind": "icon",
+			"size": [
+				12.0,
+				12.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "icon_gear.png",
+			"id": "icon_gear",
+			"kind": "icon",
+			"size": [
+				12.0,
+				12.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "icon_keyboard.png",
+			"id": "icon_keyboard",
+			"kind": "icon",
+			"size": [
+				12.0,
+				12.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "icon_mouse.png",
+			"id": "icon_mouse",
+			"kind": "icon",
+			"size": [
+				12.0,
+				12.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "icon_audio.png",
+			"id": "icon_audio",
+			"kind": "icon",
+			"size": [
+				12.0,
+				12.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "icon_eye.png",
+			"id": "icon_eye",
+			"kind": "icon",
+			"size": [
+				12.0,
+				12.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "icon_warning.png",
+			"id": "icon_warning",
+			"kind": "icon",
+			"size": [
+				12.0,
+				12.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "icon_close.png",
+			"id": "icon_close",
+			"kind": "icon",
+			"size": [
+				12.0,
+				12.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "icon_arrow_down.png",
+			"id": "icon_arrow_down",
+			"kind": "icon",
+			"size": [
+				12.0,
+				12.0
+			],
+			"tier": 1.0
+		},
+		{
+			"file": "tab_selected.png",
+			"id": "tab_selected",
+			"kind": "nineslice",
+			"margins": [
+				4.0,
+				4.0,
+				4.0,
+				2.0
+			],
+			"min_size": [
+				12.0,
+				12.0
+			],
+			"tier": 2.0
+		},
+		{
+			"file": "tab_unselected.png",
+			"id": "tab_unselected",
+			"kind": "nineslice",
+			"margins": [
+				4.0,
+				4.0,
+				4.0,
+				4.0
+			],
+			"min_size": [
+				12.0,
+				12.0
+			],
+			"tier": 2.0
+		},
+		{
+			"file": "popup_panel.png",
+			"id": "popup_panel",
+			"kind": "nineslice",
+			"margins": [
+				4.0,
+				4.0,
+				4.0,
+				4.0
+			],
+			"min_size": [
+				12.0,
+				12.0
+			],
+			"tier": 2.0
+		},
+		{
+			"file": "item_hover.png",
+			"id": "item_hover",
+			"kind": "nineslice",
+			"margins": [
+				2.0,
+				2.0,
+				2.0,
+				2.0
+			],
+			"min_size": [
+				8.0,
+				8.0
+			],
+			"tier": 2.0
+		},
+		{
+			"file": "scroll_track.png",
+			"id": "scroll_track",
+			"kind": "nineslice",
+			"margins": [
+				2.0,
+				2.0,
+				2.0,
+				2.0
+			],
+			"min_size": [
+				6.0,
+				12.0
+			],
+			"tier": 2.0
+		},
+		{
+			"file": "scroll_grabber.png",
+			"id": "scroll_grabber",
+			"kind": "nineslice",
+			"margins": [
+				2.0,
+				3.0,
+				2.0,
+				3.0
+			],
+			"min_size": [
+				6.0,
+				12.0
+			],
+			"tier": 2.0
+		},
+		{
+			"file": "lineedit_normal.png",
+			"id": "lineedit_normal",
+			"kind": "nineslice",
+			"margins": [
+				3.0,
+				3.0,
+				3.0,
+				3.0
+			],
+			"min_size": [
+				12.0,
+				12.0
+			],
+			"tier": 2.0
+		},
+		{
+			"file": "lineedit_focus.png",
+			"id": "lineedit_focus",
+			"kind": "nineslice",
+			"margins": [
+				3.0,
+				3.0,
+				3.0,
+				3.0
+			],
+			"min_size": [
+				12.0,
+				12.0
+			],
+			"tier": 2.0
+		},
+		{
+			"file": "tooltip_panel.png",
+			"id": "tooltip_panel",
+			"kind": "nineslice",
+			"margins": [
+				3.0,
+				3.0,
+				3.0,
+				3.0
+			],
+			"min_size": [
+				8.0,
+				8.0
+			],
+			"tier": 2.0
+		},
+		{
+			"file": "icon_export.png",
+			"id": "icon_export",
+			"kind": "icon",
+			"size": [
+				12.0,
+				12.0
+			],
+			"tier": 2.0
+		},
+		{
+			"file": "icon_replay.png",
+			"id": "icon_replay",
+			"kind": "icon",
+			"size": [
+				12.0,
+				12.0
+			],
+			"tier": 2.0
+		}
+	],
+	"scale": 1.0,
+	"theme": "gilded",
+	"version": 1.0
+}
