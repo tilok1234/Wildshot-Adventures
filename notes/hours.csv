@@ -40,3 +40,6 @@ timestamp,action,note
 2026-07-27T14:00:11,stop,"(reconstructed at designer's return: work went idle after the pack integration note while the designer was at their job; stop backdated to the last work note - zero idle minutes counted. The 13:49 'start' was a mid-session marker, not a new session.)"
 2026-07-28T00:07:19,start,"Evening session: WorldForge doc-15 review (planning branch fast-forwarded); next per plan: M6 roster vs real sprites"
 2026-07-28T00:26:37,note,"WorldForge consumer-prep landed: packFormat-1 validator + walkability-to-bitgrid decode, fixture-proven (hand-derived flood 124, 3 negative guards), CI gate. Re-ruling recorded in doc 15. Both repos pushed."
+2026-07-28T00:34:38,note,"Session close: docs truth-up (tracker post-M5 block, ledger 9-12, docs/12 SS3.1+SS3.4 amendments recorded in place) + fresh cold-start HANDOFF.md for the M6 session. Both repos pushed, all gates green, clean seam."
+2026-07-28T00:34:38,stop,"M5 marathon + post-M5 additions complete; next session starts fresh at M6 from notes/HANDOFF.md"
+2026-07-28T00:36:05,start,"WorldForge Phase-4 handoff: validate the real small-cold-coastal reference pack"

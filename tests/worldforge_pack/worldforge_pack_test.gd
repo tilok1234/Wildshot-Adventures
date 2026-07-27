@@ -18,7 +18,7 @@ const H := 12
 const SPAWN := Vector2i(2, 2)
 const FLOOD_HAND_DERIVED := 124
 
-enum Mode { NORMAL, BAD_FLOOD, BAD_HASH, BOM }
+enum Mode { NORMAL, BAD_FLOOD, BAD_HASH, BOM, BAD_REPORT }
 
 
 func _init() -> void:
@@ -71,12 +71,18 @@ func _init() -> void:
 		printerr("FAIL: manifest BOM was not caught")
 		failed = true
 
+	_write_fixture(FIX + "bad_report/", Mode.BAD_REPORT)
+	var br := WorldforgePack.validate(FIX + "bad_report/")
+	if br.ok or not _log_has(br.log, "validation-report status"):
+		printerr("FAIL: failing validation report was not caught")
+		failed = true
+
 	if failed:
 		quit(1)
 		return
 	print(
 		(
-			"PASS: worldforge pack validator (flood %d hand-verified; 3 guards fail correctly)"
+			"PASS: worldforge pack validator (flood %d hand-verified; 4 guards fail correctly)"
 			% FLOOD_HAND_DERIVED
 		)
 	)
@@ -136,9 +142,14 @@ func _write_fixture(dir: String, mode: Mode) -> void:
 	_write_json(dir + "resolved/resolved-map.tmj", tmj)
 	_write_json(dir + "resolved/tileforge-map-data.json", {"stub": true})
 	_write_json(dir + "resolved/tileforge-slice.json", {"stub": true})
-	_write_json(dir + "world.json", {"artifactFormat": 8, "settlements": [], "pois": []})
+	# Real-artifact shape: the world's own format field is formatVersion.
+	_write_json(dir + "world.json", {"formatVersion": 8, "settlements": [], "pois": []})
 	_write_json(dir + "normalized-recipe.json", {"name": "fixture-world"})
-	_write_json(dir + "validation-report.json", {"status": "pass"})
+	var report_status := "fail" if mode == Mode.BAD_REPORT else "pass"
+	_write_json(
+		dir + "validation-report.json",
+		{"status": report_status, "errors": [], "warnings": ["fixture warning (legal)"]}
+	)
 	var mini := Image.create(4, 4, false, Image.FORMAT_RGBA8)
 	mini.fill(Color(0.3, 0.5, 0.3))
 	mini.save_png(ProjectSettings.globalize_path(dir + "minimap.png"))

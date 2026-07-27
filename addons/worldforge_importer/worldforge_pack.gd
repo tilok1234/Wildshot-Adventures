@@ -51,7 +51,8 @@ static func validate(src: String) -> Dictionary:
 	if int(manifest.get("packFormat", -1)) != PACK_FORMAT:
 		return fail.call("packFormat %d != %d" % [int(manifest.get("packFormat", -1)), PACK_FORMAT])
 
-	# 2. File + hash parity — the byte-honesty gate.
+	# 2. File + hash parity — the byte-honesty gate. The base artifact's
+	# hash must also BE the world.json file hash (manifest self-consistency).
 	var files: Dictionary = manifest.get("files", {})
 	if files.is_empty():
 		return fail.call("manifest.files is empty")
@@ -62,6 +63,19 @@ static func validate(src: String) -> Dictionary:
 		var got := FileAccess.get_sha256(path)
 		if got != String(files[rel]):
 			return fail.call("sha256 mismatch on %s" % rel)
+	if String(manifest.get("baseArtifactSha256", "")) != String(files.get("world.json", "?")):
+		return fail.call("baseArtifactSha256 != files['world.json'] — manifest inconsistent")
+
+	# 2b. The exporter refuses to pack unvalidated worlds; re-check.
+	var report_json: Variant = JSON.parse_string(
+		FileAccess.get_file_as_string(src + "validation-report.json")
+	)
+	if report_json == null:
+		return fail.call("validation-report.json missing or invalid")
+	if String(report_json.get("status", "")) != "pass":
+		return fail.call(
+			"validation-report status '%s' != 'pass'" % String(report_json.get("status", ""))
+		)
 
 	# 3. Walkability → bitgrid + flood verification.
 	var dims: Dictionary = manifest.get("dimensions", {})
@@ -136,16 +150,18 @@ static func validate(src: String) -> Dictionary:
 					"tmj layer '%s' uses flip bits (forbidden)" % String(layer.get("name", "?"))
 				)
 
-	# 5. world.json artifact sanity.
+	# 5. world.json artifact sanity. The artifact's own field is named
+	# formatVersion (real-pack contract); the manifest calls it
+	# artifactFormat — they must agree.
 	var world_json: Variant = JSON.parse_string(FileAccess.get_file_as_string(src + "world.json"))
 	if world_json == null:
 		return fail.call("world.json missing or invalid")
 	var want_fmt := int(manifest.get("artifactFormat", -1))
-	if int(world_json.get("artifactFormat", -2)) != want_fmt:
+	if int(world_json.get("formatVersion", -2)) != want_fmt:
 		return fail.call(
 			(
-				"world.json artifactFormat %d != manifest %d"
-				% [int(world_json.get("artifactFormat", -2)), want_fmt]
+				"world.json formatVersion %d != manifest artifactFormat %d"
+				% [int(world_json.get("formatVersion", -2)), want_fmt]
 			)
 		)
 
