@@ -15,19 +15,21 @@ extends RefCounted
 const Pcg32 := preload("res://sim/pcg32.gd")
 const ActorState := preload("res://sim/actor_state.gd")
 const PlayerState := preload("res://sim/player_state.gd")
+const EnemyState := preload("res://sim/enemy_state.gd")
 const ProjectilePool := preload("res://sim/projectile_pool.gd")
 const SimEvents := preload("res://sim/events.gd")
 const PlayerMove := preload("res://sim/systems/player_move.gd")
 const PlayerRegen := preload("res://sim/systems/player_regen.gd")
 const PlayerAbility := preload("res://sim/systems/player_ability.gd")
 const PlayerFire := preload("res://sim/systems/player_fire.gd")
+const EnemyStep := preload("res://sim/systems/enemy_step.gd")
 const ProjectileStep := preload("res://sim/systems/projectile_step.gd")
 const HazardStep := preload("res://sim/systems/hazard_step.gd")
 const EmitterStep := preload("res://sim/systems/emitter_step.gd")
 
 const TICKS_PER_SECOND := 60
 const DT := 1.0 / 60.0
-const SERIAL_VERSION := 7
+const SERIAL_VERSION := 8
 
 ## Named PCG32 stream ids (§2.4). rng_vfx deliberately does NOT exist here —
 ## it lives view-side so cosmetics can never perturb gameplay.
@@ -80,6 +82,9 @@ var current_frames: Array = []
 ## by weapon_select-1. Excluded from serialize() like the bitgrid — the
 ## replay header's data-definitions hash covers them instead (§2.4).
 var weapon_frames: Array = []
+## EnemyDef RESOURCES (definitions, not state): set at setup; EnemyState
+## points in by def_index. Same serialization exclusion as weapon_frames.
+var enemy_defs: Array = []
 ## Available AbilityDef resources (definitions) + the ONE equipped slot
 ## (CORE-34). Swapping is a debug/scenario action, not gameplay input —
 ## it marks the run replay-dirty.
@@ -120,6 +125,13 @@ func set_weapons(frames: Array) -> void:
 	weapon_frames = frames
 
 
+## Setup-phase: install the EnemyDef roster. INDEX ORDER IS CONTRACT —
+## def_index serializes, so a scenario's def list order must be stable
+## (scenario_loader owns the standard order).
+func set_enemy_defs(defs: Array) -> void:
+	enemy_defs = defs
+
+
 ## Setup-phase: available abilities; index 0 equips by default.
 func set_abilities(defs: Array) -> void:
 	ability_defs = defs
@@ -154,6 +166,7 @@ func place_hazard(pos: Vector2, r: float, fac: int, dmg: int, arm_ticks: int) ->
 				"radius": r,
 				"faction": fac,
 				"arm_at_tick": tick + arm_ticks,
+				"pattern": -2,
 			}
 		)
 	)
@@ -169,9 +182,11 @@ func add_player(pos: Vector2) -> PlayerState:
 	return p
 
 
-## Inert hostile stand-in (M2 stress/testing; real EnemyDefs land at M5).
+## Inert hostile stand-in (M2 stress/testing): an EnemyState with
+## def_index -1, so the enemy system skips it and the enemies array
+## stays one uniform type.
 func add_enemy_standin(pos: Vector2, body_radius := 0.35) -> ActorState:
-	var e := ActorState.new()
+	var e := EnemyState.new()
 	e.id = _alloc_id()
 	e.pos = pos
 	e.prev_pos = pos
@@ -179,6 +194,28 @@ func add_enemy_standin(pos: Vector2, body_radius := 0.35) -> ActorState:
 	e.hp = 40
 	e.faction = ActorState.FACTION_HOSTILE
 	e.move_speed = 0.0
+	e.def_index = -1
+	e.spawned_at_tick = tick
+	enemies.append(e)
+	return e
+
+
+## Setup-phase (and scenario-reset) spawn of a real enemy from the def
+## roster. Stats copy from the def; behavior state starts IDLE.
+func add_enemy(def_index: int, pos: Vector2) -> EnemyState:
+	var def: Resource = enemy_defs[def_index]
+	var e := EnemyState.new()
+	e.id = _alloc_id()
+	e.pos = pos
+	e.prev_pos = pos
+	e.radius = float(def.body_radius)
+	e.hp = int(def.hp)
+	e.faction = ActorState.FACTION_HOSTILE
+	e.move_speed = float(def.move_speed)
+	e.def_index = def_index
+	e.spawned_at_tick = tick
+	var emitters: Array = def.emitters
+	e.cooldowns.resize(emitters.size())
 	enemies.append(e)
 	return e
 
@@ -193,6 +230,7 @@ func step(frames: Array) -> void:
 	PlayerMove.run(self)
 	PlayerAbility.run(self)
 	PlayerFire.run(self)
+	EnemyStep.run(self)
 	EmitterStep.run(self)
 	ProjectileStep.run(self)
 	HazardStep.run(self)

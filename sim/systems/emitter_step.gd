@@ -36,6 +36,7 @@ static func run(world: RefCounted) -> void:
 					"radius": 0.6,
 					"faction": ActorState.FACTION_HOSTILE,
 					"arm_at_tick": world.emitter_next_fire,
+					"pattern": PATTERN_ID,
 				}
 			)
 		)

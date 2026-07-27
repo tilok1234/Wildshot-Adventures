@@ -74,6 +74,8 @@ func _init() -> void:
 		failed = true
 	if not _check_emitter_death():
 		failed = true
+	if not _check_enemy_behavior():
+		failed = true
 
 	if failed:
 		quit(1)
@@ -319,6 +321,189 @@ func _run_emitter_once() -> Dictionary:
 		"death_tick": death_tick,
 		"hits_after_death": hits_after_death,
 		"hp_end": player.hp,
+	}
+
+
+## M5 enemy-machine contract (docs/12 §2.7/§3.4), mechanized:
+## 1. double-run hash equality with live enemy AI (machine is deterministic);
+## 2. Rusher closes and lands contact damage gated by its data cooldown,
+##    and a standing player eventually dies EXPLAINABLY (pattern -3 trace);
+## 3. Husk Archer telegraphs exactly telegraph_ticks before every volley,
+##    fires on its data cooldown period, aims at the player (stationary
+##    target ⇒ hits land), and holds its keep-range band after settling;
+## 4. all timings read from the SHIPPED .tres defs — never re-hardcoded.
+func _check_enemy_behavior() -> bool:
+	var rdef: Resource = load("res://data/enemies/rusher.tres")
+	var hdef: Resource = load("res://data/enemies/husk_archer.tres")
+	var ok := true
+
+	var ra := _run_rusher_once(rdef)
+	var rb := _run_rusher_once(rdef)
+	if ra.hashes != rb.hashes:
+		printerr("FAIL: rusher runs diverge")
+		ok = false
+	var contact_ticks: Array = ra.contact_ticks
+	if contact_ticks.size() < 5:
+		printerr("FAIL: only %d contact hits — rusher never pressed in" % contact_ticks.size())
+		ok = false
+	var contact_cd := int(rdef.contact_cooldown_ticks)
+	for i in range(1, contact_ticks.size()):
+		if contact_ticks[i] - contact_ticks[i - 1] < contact_cd:
+			printerr(
+				(
+					"FAIL: contact cooldown breach — %d ticks apart (min %d)"
+					% [contact_ticks[i] - contact_ticks[i - 1], contact_cd]
+				)
+			)
+			ok = false
+			break
+	if not bool(ra.player_died):
+		printerr("FAIL: standing player survived the rusher — contact not lethal")
+		ok = false
+	if int(ra.last_hit_pattern) != -3:
+		printerr("FAIL: death trace pattern %d != -3 (contact)" % int(ra.last_hit_pattern))
+		ok = false
+
+	var slot0: Resource = hdef.emitters[0]
+	var telegraph := int(slot0.telegraph_ticks)
+	var cooldown := int(slot0.cooldown_ticks)
+	var ha := _run_husk_once(hdef)
+	var hb := _run_husk_once(hdef)
+	if ha.hashes != hb.hashes:
+		printerr("FAIL: husk runs diverge")
+		ok = false
+	var telegraphs: Array = ha.telegraph_ticks_list
+	var attacks: Array = ha.attack_ticks
+	if attacks.size() < 3:
+		printerr("FAIL: only %d husk volleys" % attacks.size())
+		ok = false
+	if telegraphs.size() != attacks.size():
+		printerr("FAIL: %d telegraphs vs %d volleys" % [telegraphs.size(), attacks.size()])
+		ok = false
+	for i in mini(telegraphs.size(), attacks.size()):
+		if attacks[i] - telegraphs[i] != telegraph:
+			printerr(
+				(
+					"FAIL: telegraph lead %d != %d at volley %d"
+					% [attacks[i] - telegraphs[i], telegraph, i]
+				)
+			)
+			ok = false
+			break
+	for i in range(1, attacks.size()):
+		if attacks[i] - attacks[i - 1] != cooldown:
+			printerr("FAIL: husk fire period %d != %d" % [attacks[i] - attacks[i - 1], cooldown])
+			ok = false
+			break
+	if int(ha.aimed_hits) == 0:
+		printerr("FAIL: no aimed shot hit the standing player")
+		ok = false
+	if float(ha.settled_min) < float(hdef.range_min) - 0.6:
+		printerr(
+			(
+				"FAIL: husk closed to %.2f (band %s-%s)"
+				% [ha.settled_min, hdef.range_min, hdef.range_max]
+			)
+		)
+		ok = false
+	if float(ha.settled_max) > float(hdef.range_max) + 0.6:
+		printerr(
+			(
+				"FAIL: husk drifted to %.2f (band %s-%s)"
+				% [ha.settled_max, hdef.range_min, hdef.range_max]
+			)
+		)
+		ok = false
+	if ok:
+		print(
+			(
+				"enemy-machine ok: contact=%d death@%d; volleys=%d lead=%d period=%d band=[%.2f, %.2f]"
+				% [
+					contact_ticks.size(),
+					int(ra.death_tick),
+					attacks.size(),
+					telegraph,
+					cooldown,
+					float(ha.settled_min),
+					float(ha.settled_max),
+				]
+			)
+		)
+	return ok
+
+
+func _run_rusher_once(rdef: Resource) -> Dictionary:
+	var world := SimWorld.new()
+	world.setup(21, _build_bitgrid())
+	world.set_enemy_defs([rdef])
+	var player := world.add_player(Vector2(24.0, 16.0))
+	world.add_enemy(0, Vector2(16.0, 16.0))
+	var hashes: Array[int] = []
+	var contact_ticks: Array[int] = []
+	var player_died := false
+	var death_tick := -1
+	var last_hit_pattern := 0
+	for t in 900:
+		world.step([null])
+		for ev: Dictionary in world.events:
+			match int(ev.type):
+				SimEvents.Type.DAMAGE_APPLIED:
+					if int(ev.target) == player.id:
+						contact_ticks.append(int(ev.tick))
+						last_hit_pattern = int(ev.pattern)
+				SimEvents.Type.ENTITY_KILLED:
+					if bool(ev.get("player", false)):
+						player_died = true
+						death_tick = int(ev.tick)
+		if (world.tick % HASH_EVERY) == 0:
+			hashes.append(world.state_hash())
+	return {
+		"hashes": hashes,
+		"contact_ticks": contact_ticks,
+		"player_died": player_died,
+		"death_tick": death_tick,
+		"last_hit_pattern": last_hit_pattern,
+	}
+
+
+func _run_husk_once(hdef: Resource) -> Dictionary:
+	var world := SimWorld.new()
+	world.setup(22, _build_bitgrid())
+	world.set_enemy_defs([hdef])
+	var player := world.add_player(Vector2(24.0, 16.0))
+	var husk := world.add_enemy(0, Vector2(21.0, 16.0))
+	var hashes: Array[int] = []
+	var telegraph_ticks_list: Array[int] = []
+	var attack_ticks: Array[int] = []
+	var aimed_hits := 0
+	var settled_min := 1.0e9
+	var settled_max := 0.0
+	for t in 600:
+		world.step([null])
+		for ev: Dictionary in world.events:
+			match int(ev.type):
+				SimEvents.Type.TELEGRAPH_STARTED:
+					if int(ev.id) == husk.id:
+						telegraph_ticks_list.append(int(ev.tick))
+				SimEvents.Type.ATTACK_STARTED:
+					if int(ev.get("enemy", 0)) == husk.id:
+						attack_ticks.append(int(ev.tick))
+				SimEvents.Type.DAMAGE_APPLIED:
+					if int(ev.target) == player.id:
+						aimed_hits += 1
+		if t >= 200:
+			var d: float = husk.pos.distance_to(player.pos)
+			settled_min = minf(settled_min, d)
+			settled_max = maxf(settled_max, d)
+		if (world.tick % HASH_EVERY) == 0:
+			hashes.append(world.state_hash())
+	return {
+		"hashes": hashes,
+		"telegraph_ticks_list": telegraph_ticks_list,
+		"attack_ticks": attack_ticks,
+		"aimed_hits": aimed_hits,
+		"settled_min": settled_min,
+		"settled_max": settled_max,
 	}
 
 

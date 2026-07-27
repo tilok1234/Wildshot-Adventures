@@ -87,7 +87,8 @@ static func apply(
 	)
 
 
-## The resolution path's tail: emit enemy kills, then compact the array.
+## The resolution path's tail: emit enemy kills (with def_index + TTK for
+## the §2.10 telemetry — CORE-36's honest-health evidence), then compact.
 ## Players are never removed here (they die in place, flagged).
 static func sweep_dead_enemies(world: RefCounted) -> void:
 	var t: int = world.tick
@@ -95,8 +96,19 @@ static func sweep_dead_enemies(world: RefCounted) -> void:
 	for e: RefCounted in world.enemies:
 		if e.hp <= 0:
 			any_dead = true
-			world.events.append(
-				{"type": SimEvents.Type.ENTITY_KILLED, "tick": t, "id": e.id, "pos": e.pos}
+			(
+				world
+				. events
+				. append(
+					{
+						"type": SimEvents.Type.ENTITY_KILLED,
+						"tick": t,
+						"id": e.id,
+						"pos": e.pos,
+						"def_index": e.def_index,
+						"ttk_ticks": t - e.spawned_at_tick,
+					}
+				)
 			)
 	if any_dead:
 		world.enemies = world.enemies.filter(func(e: RefCounted) -> bool: return e.hp > 0)

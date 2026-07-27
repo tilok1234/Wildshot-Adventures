@@ -33,6 +33,17 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 			]
 		)
 	)
+	# EnemyDef roster — INDEX ORDER IS CONTRACT (def_index serializes):
+	# 0=rusher, 1=husk_archer. Append-only; never reorder.
+	(
+		world
+		. set_enemy_defs(
+			[
+				load("res://data/enemies/rusher.tres"),
+				load("res://data/enemies/husk_archer.tres"),
+			]
+		)
+	)
 	world.add_player(scenario.player_spawn)
 	for p in scenario.standin_positions:
 		world.add_enemy_standin(p)

@@ -11,6 +11,7 @@ extends RefCounted
 const ActorState := preload("res://sim/actor_state.gd")
 const SimEvents := preload("res://sim/events.gd")
 const AbilityDef := preload("res://data/ability_def.gd")
+const Damage := preload("res://sim/systems/damage.gd")
 
 
 static func run(world: RefCounted) -> void:
@@ -64,11 +65,10 @@ static func run(world: RefCounted) -> void:
 				_cast_zone(world, p, frame, def)
 
 
-## Radial damage around the player — same resolution events as shots.
+## Radial damage around the player — THE damage path, like everything else.
 static func _cast_nova(world: RefCounted, p: RefCounted, def: Resource) -> void:
 	var r := float(def.radius)
 	var ppos: Vector2 = p.pos
-	var events: Array[Dictionary] = world.events
 	for e: RefCounted in world.enemies:
 		if e.dead:
 			continue
@@ -77,22 +77,7 @@ static func _cast_nova(world: RefCounted, p: RefCounted, def: Resource) -> void:
 		var rr: float = r + e.radius
 		if d.length_squared() >= rr * rr:
 			continue
-		e.hp -= int(def.damage)
-		e.last_damaged_tick = world.tick
-		(
-			events
-			. append(
-				{
-					"type": SimEvents.Type.DAMAGE_APPLIED,
-					"tick": world.tick,
-					"target": e.id,
-					"amount": int(def.damage),
-					"hp": e.hp,
-					"pattern": -1,
-					"pos": e.pos,
-				}
-			)
-		)
+		Damage.apply(world, e, int(def.damage), -1)
 	# Death sweep for nova kills happens in projectile_step's shared sweep
 	# later this tick (systems order: ability -> fire -> projectiles).
 
