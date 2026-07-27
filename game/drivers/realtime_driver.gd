@@ -26,6 +26,9 @@ var recorder: RefCounted = null
 ## scene (view-side transform knowledge stays out of input and sim).
 var mouse_tile_provider: Callable = Callable()
 var paused: bool = false
+## Slow motion = driver divisor (§2.1): wall time is divided before the
+## accumulator, dt never changes, so slow-mo runs stay replay-valid.
+var time_divisor: float = 1.0
 var slew_count: int = 0
 var spike_count: int = 0
 var _spike_file: FileAccess = null
@@ -50,7 +53,7 @@ func _process(delta: float) -> void:
 	if delta * 1000.0 > SPIKE_MS:
 		_log_spike(delta)
 	frame_events.clear()
-	_accumulator += delta
+	_accumulator += delta / maxf(1.0, time_divisor)
 	var ticks := 0
 	var t0 := Time.get_ticks_usec()
 	while _accumulator >= SimWorld.DT and ticks < MAX_TICKS_PER_FRAME:

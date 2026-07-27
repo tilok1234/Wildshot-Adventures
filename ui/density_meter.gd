@@ -24,7 +24,6 @@ var _ok := Color(0.81, 0.77, 0.93)
 
 func _ready() -> void:
 	_ring.resize(SAMPLE_WINDOW)
-	_label.add_theme_font_size_override("font_size", 10)
 	add_child(_label)
 
 

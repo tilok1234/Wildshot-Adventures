@@ -40,6 +40,9 @@ const KEY_ACTIONS := {
 	"density_toggle": KEY_M,
 	# M4 spawn/reset: rebuild the scenario with the next seed, logged.
 	"scenario_reset": KEY_T,
+	# M4 debug console + hitbox display.
+	"console_toggle": KEY_QUOTELEFT,
+	"hitbox_toggle": KEY_H,
 }
 ## Modifier-key actions (registered separately): Alt+Enter fullscreen.
 const ALT_KEY_ACTIONS := {

@@ -47,6 +47,21 @@ static func run(world: RefCounted) -> void:
 			var rr: float = r + a.radius
 			if d.length_squared() >= rr * rr:
 				continue
+			if world.god_mode and a.faction == ActorState.FACTION_FRIENDLY:
+				(
+					events
+					. append(
+						{
+							"type": SimEvents.Type.DAMAGE_IMMUNE,
+							"tick": t,
+							"target": a.id,
+							"amount": int(hz.damage),
+							"pattern": -2,
+							"pos": a.pos,
+						}
+					)
+				)
+				continue
 			a.hp -= int(hz.damage)
 			a.last_damaged_tick = t
 			(

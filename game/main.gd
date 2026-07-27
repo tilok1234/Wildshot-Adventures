@@ -24,6 +24,9 @@ const DamageNumberView := preload("res://game/views/damage_number_view.gd")
 const ScenarioLoader := preload("res://game/scenario_loader.gd")
 const RecapTracker := preload("res://game/drivers/recap_tracker.gd")
 const RecapPanel := preload("res://ui/recap_panel.gd")
+const DebugConsole := preload("res://ui/debug_console.gd")
+const HitboxView := preload("res://game/views/hitbox_view.gd")
+const SimEvents := preload("res://sim/events.gd")
 const ActorLibrary := preload("res://game/views/actor_library.gd")
 const AnimatedActor := preload("res://game/views/animated_actor.gd")
 
@@ -51,6 +54,10 @@ var gif_recorder: Node
 var rec_label: Label
 var feedback_settings: Dictionary = {}
 var recap_panel: PanelContainer
+var console: PanelContainer
+var hitboxes: Node2D
+var hud_stack: VBoxContainer
+var _console_events := "off"
 var _af_on_tex: Texture2D = load("res://uikit/icon_autofire_on.png")
 var _af_off_tex: Texture2D = load("res://uikit/icon_autofire_off.png")
 
@@ -85,11 +92,31 @@ func _process(_delta: float) -> void:
 		return
 	# Alt+Enter: borderless fullscreen — windowed-mode compositing is a
 	# known stutter source on Windows; this is the one-key A/B for it.
+	# Choice persists (§2.13 window key).
 	if Input.is_action_just_pressed("fullscreen_toggle"):
 		var fs := DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN
 		DisplayServer.window_set_mode(
 			DisplayServer.WINDOW_MODE_WINDOWED if fs else DisplayServer.WINDOW_MODE_FULLSCREEN
 		)
+		Config.set_setting("ui", "fullscreen", not fs)
+	if console != null and Input.is_action_just_pressed("console_toggle"):
+		console.toggle()
+	if hitboxes != null and Input.is_action_just_pressed("hitbox_toggle"):
+		hitboxes.visible = not hitboxes.visible
+		Config.set_setting("ui", "hitboxes", hitboxes.visible)
+	# Event-console tail (§2.10): only while the console is open.
+	if console != null and console.visible and _console_events != "off":
+		for ev: Dictionary in driver.frame_events:
+			var tname := String(SimEvents.Type.keys()[int(ev.type)])
+			if (
+				_console_events != "all"
+				and tname in ["RESOURCE_REGEN", "PROJECTILE_SPAWNED", "PROJECTILE_DESPAWNED"]
+			):
+				continue
+			var d := ev.duplicate()
+			d.erase("type")
+			d.erase("tick")
+			console.println("[%d] %s %s" % [int(ev.tick), tname, str(d)])
 	if world == null or world.players.is_empty():
 		return
 	# M2 movement-speed editor: presets + 0.1 steps, routed through the sim
@@ -134,6 +161,115 @@ func _process(_delta: float) -> void:
 			print("replay saved: ", ProjectSettings.globalize_path(path))
 
 
+## CORE-50 UI/text scaling: integer multiples only (kit contract), applied
+## live to every HUD surface via a scaled duplicate of the kit theme.
+## World rendering is untouched — this scales UI, not the game.
+func _apply_ui_scale(k: int) -> void:
+	var th: Theme = load("res://ui/theme.tres").duplicate()
+	th.default_base_scale = float(k)
+	th.default_font_size = 10 * k
+	for c: Control in [
+		hud_stack,
+		autofire_icon,
+		weapon_label,
+		rec_label,
+		hints_label,
+		density_meter,
+		options_menu,
+		recap_panel,
+		console,
+	]:
+		if c != null:
+			c.theme = th
+	hp_bar.custom_minimum_size = Vector2(64.0 * k, 8.0 * k)
+	mana_bar.custom_minimum_size = Vector2(64.0 * k, 8.0 * k)
+	autofire_icon.scale = Vector2(float(k), float(k))
+
+
+func _console_exec(line: String) -> void:
+	var tokens := line.strip_edges().split(" ", false)
+	if tokens.is_empty():
+		return
+	match String(tokens[0]).to_lower():
+		"help":
+			console.println("god | slowmo <1-10> | events <on|off|all> | emitter <on|off> | reset")
+			console.println("verdict <dodgeability|feel> <rested-human|bot-proof> <text>")
+		"god":
+			var want: bool = not world.god_mode
+			world.enqueue_command({"type": SimWorld.Command.SET_GOD, "on": want})
+			console.println(
+				(
+					"god -> %s (replay-dirty; absorbed hits log DAMAGE_IMMUNE)"
+					% ("ON" if want else "OFF")
+				)
+			)
+		"slowmo":
+			var d := clampf(float(tokens[1]) if tokens.size() > 1 else 1.0, 1.0, 10.0)
+			driver.time_divisor = d
+			console.println("slow-mo divisor %.1f (replay-valid; dt unchanged)" % d)
+		"verdict":
+			_console_verdict(tokens)
+		"events":
+			_console_events = String(tokens[1]) if tokens.size() > 1 else "on"
+			console.println("event tail: " + _console_events)
+		"emitter":
+			var on: bool = tokens.size() > 1 and String(tokens[1]) == "on"
+			world.enqueue_command(
+				{"type": SimWorld.Command.TOGGLE_EMITTER, "on": on, "pos": Vector2(30.0, 12.0)}
+			)
+			console.println("emitter -> %s (replay-dirty)" % ("ON" if on else "OFF"))
+		"reset":
+			Config.set_setting("dev", "seed", world.run_seed + 1)
+			get_tree().reload_current_scene()
+		_:
+			console.println("unknown: %s (try help)" % tokens[0])
+
+
+## The fresh-hands split verdict command (§2.10, PLAN-fresh-hands):
+## dodgeability accepts {rested-human, bot-proof}; feel accepts rested
+## humans ONLY. Runtime edits or active slow-mo auto-stamp PROVISIONAL.
+## Data, not willpower.
+func _console_verdict(tokens: PackedStringArray) -> void:
+	if tokens.size() < 4:
+		console.println("usage: verdict <dodgeability|feel> <rested-human|bot-proof> <text>")
+		return
+	var vtype := String(tokens[1]).to_lower()
+	var source := String(tokens[2]).to_lower()
+	if not vtype in ["dodgeability", "feel"] or not source in ["rested-human", "bot-proof"]:
+		console.println("usage: verdict <dodgeability|feel> <rested-human|bot-proof> <text>")
+		return
+	if vtype == "feel" and source == "bot-proof":
+		console.println(
+			"REJECTED: feel verdicts accept rested humans ONLY — bots verify mechanics, never feel."
+		)
+		return
+	var provisional: bool = world.replay_dirty or driver.time_divisor != 1.0
+	var text := " ".join(Array(tokens).slice(3))
+	var entry := {
+		"tick": world.tick,
+		"type": vtype,
+		"source": source,
+		"text": text,
+		"provisional": provisional,
+		"replay_dirty": world.replay_dirty,
+		"slowmo": driver.time_divisor,
+	}
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("user://logs"))
+	var f := FileAccess.open("user://logs/verdicts.jsonl", FileAccess.READ_WRITE)
+	if f == null:
+		f = FileAccess.open("user://logs/verdicts.jsonl", FileAccess.WRITE)
+	if f != null:
+		f.seek_end()
+		f.store_line(JSON.stringify(entry))
+		f.close()
+	console.println(
+		(
+			"verdict recorded%s: %s/%s — %s"
+			% [" [PROVISIONAL: runtime edits this run]" if provisional else "", vtype, source, text]
+		)
+	)
+
+
 func _refresh_hints() -> void:
 	var parts: Array[String] = []
 	for entry: Array in [
@@ -145,6 +281,8 @@ func _refresh_hints() -> void:
 		["replay_save", "replay"],
 		["scenario_reset", "reset"],
 		["density_toggle", "meter"],
+		["hitbox_toggle", "hitbox"],
+		["console_toggle", "console"],
 	]:
 		parts.append("%s %s" % [Config.binding_text(entry[0]), entry[1]])
 	hints_label.text = "  ".join(parts)
@@ -206,6 +344,11 @@ func _ready() -> void:
 	var hazards_view := HazardView.new()
 	hazards_view.world = world
 	add_child(hazards_view)
+
+	hitboxes = HitboxView.new()
+	hitboxes.world = world
+	hitboxes.visible = bool(Config.get_setting("ui", "hitboxes", false))
+	add_child(hitboxes)
 
 	var lib := ActorLibrary.new()
 	var sheet_map: Resource = load("res://data/actor_sheet_map.tres")
@@ -281,7 +424,7 @@ func _ready() -> void:
 	mana_bar.fill_tex = load("res://uikit/bar_fill_mana.png")
 	mana_bar.custom_minimum_size = Vector2(64.0, 8.0)
 	ability_label = Label.new()
-	var hud_stack := VBoxContainer.new()
+	hud_stack = VBoxContainer.new()
 	hud_stack.add_theme_constant_override("separation", 2)
 	hud_stack.add_child(ability_label)
 	hud_stack.add_child(hp_bar)
@@ -315,6 +458,9 @@ func _ready() -> void:
 	hud.add_child(options_menu)
 	recap_panel = RecapPanel.new()
 	hud.add_child(recap_panel)
+	console = DebugConsole.new()
+	console.line_submitted.connect(_console_exec)
+	hud.add_child(console)
 	add_child(hud)
 	Input.set_custom_mouse_cursor(
 		load("res://uikit/cursor_crosshair.png"), Input.CURSOR_ARROW, Vector2(5.0, 5.0)
@@ -371,6 +517,20 @@ func _ready() -> void:
 			Config.set_setting("dev", "speed_preset", 3.0 if i == 1 else 4.0)
 			print("speed preset persisted; applies on reset (T)")
 	)
+	var ui_scale := clampi(int(Config.get_setting("ui", "scale", 1)), 1, 2)
+	options_menu.add_cycle_row(
+		"ui scale",
+		["x1", "x2"],
+		ui_scale - 1,
+		func(i: int) -> void:
+			Config.set_setting("ui", "scale", i + 1)
+			_apply_ui_scale(i + 1)
+	)
+	_apply_ui_scale(ui_scale)
+	# Persisted window mode (§2.13): fullscreen is the project default;
+	# honor a saved windowed preference.
+	if not bool(Config.get_setting("ui", "fullscreen", true)):
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 	_refresh_hints()
 
 	var recap := RecapTracker.new()

@@ -27,7 +27,7 @@ const EmitterStep := preload("res://sim/systems/emitter_step.gd")
 
 const TICKS_PER_SECOND := 60
 const DT := 1.0 / 60.0
-const SERIAL_VERSION := 6
+const SERIAL_VERSION := 7
 
 ## Named PCG32 stream ids (§2.4). rng_vfx deliberately does NOT exist here —
 ## it lives view-side so cosmetics can never perturb gameplay.
@@ -39,6 +39,7 @@ enum Command {
 	SET_MOVE_SPEED,
 	SET_ABILITY,
 	TOGGLE_EMITTER,
+	SET_GOD,
 }
 
 ## §3.2 move-speed tuning band. The sim-side clamp means NO path — debug
@@ -88,6 +89,12 @@ var ability_def: Resource = null
 ## Live armed-zone hazards (§2.6 M4 subset), stable order, serialized:
 ## {id, pos, radius, faction, damage, arm_at_tick}.
 var hazards: Array[Dictionary] = []
+
+## God/invulnerability flag (§2.10): friendly actors take no damage —
+## every absorbed hit emits DAMAGE_IMMUNE, so god use is always visible
+## in logs and no verdict can launder through it. Serialized; toggling
+## marks the run replay-dirty.
+var god_mode: bool = false
 
 ## M4 debug hostile emitter (sim/systems/emitter_step.gd). Serialized;
 ## toggling is a debug command and marks the run replay-dirty.
@@ -278,6 +285,7 @@ func serialize() -> PackedByteArray:
 		buf.put_64(int(hz.placed_at_tick))
 		buf.put_64(int(hz.arm_at_tick))
 	buf.put_u8(0 if ability_def == null else ability_defs.find(ability_def) + 1)
+	buf.put_u8(1 if god_mode else 0)
 	buf.put_u8(1 if emitter_on else 0)
 	buf.put_double(emitter_pos.x)
 	buf.put_double(emitter_pos.y)
@@ -318,6 +326,9 @@ func _drain_commands() -> void:
 				if idx >= 0 and idx < ability_defs.size():
 					ability_def = ability_defs[idx]
 					replay_dirty = true
+			Command.SET_GOD:
+				god_mode = bool(cmd.on)
+				replay_dirty = true
 			Command.TOGGLE_EMITTER:
 				emitter_on = bool(cmd.on)
 				if emitter_on:

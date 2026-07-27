@@ -56,6 +56,7 @@ static func run(world: RefCounted) -> void:
 	var enemies: Array = world.enemies
 	var events: Array[Dictionary] = world.events
 	var capacity: int = pool.CAPACITY
+	var god: bool = world.god_mode
 
 	for s in capacity:
 		if act[s] == 0:
@@ -137,7 +138,7 @@ static func run(world: RefCounted) -> void:
 				var ddy := y - apos.y
 				var rr: float = r + a.radius
 				if ddx * ddx + ddy * ddy < rr * rr:
-					_apply_damage(events, t, s, pat[s], a, dmg[s])
+					_apply_damage(events, t, s, pat[s], a, dmg[s], god)
 					pool.despawn(s)
 					(
 						events
@@ -153,7 +154,20 @@ static func run(world: RefCounted) -> void:
 					break
 		else:
 			_step_pierce(
-				events, t, s, pat[s], targets, x, y, r, dmg[s], mp[s], reg_id, reg_pass, reg_count
+				events,
+				t,
+				s,
+				pat[s],
+				targets,
+				x,
+				y,
+				r,
+				dmg[s],
+				mp[s],
+				reg_id,
+				reg_pass,
+				reg_count,
+				god
 			)
 
 	# Death sweep — the resolution path's tail: emit kills, then compact.
@@ -188,6 +202,7 @@ static func _step_pierce(
 	reg_id: PackedInt64Array,
 	reg_pass: PackedByteArray,
 	reg_count: PackedByteArray,
+	god: bool,
 ) -> void:
 	var base := s * REG_SLOTS
 	var overlapped: Array[int] = []
@@ -212,7 +227,7 @@ static func _step_pierce(
 			var was_contact := (entry & 0x80) != 0
 			if not was_contact and passes < passes_max:
 				passes += 1
-				_apply_damage(events, t, s, pattern, a, damage_amt)
+				_apply_damage(events, t, s, pattern, a, damage_amt, god)
 			reg_pass[base + found] = 0x80 | passes
 		elif reg_count[s] >= REG_SLOTS:
 			(
@@ -232,7 +247,7 @@ static func _step_pierce(
 			reg_id[base + k] = a.id
 			reg_pass[base + k] = 0x80 | 1
 			reg_count[s] = k + 1
-			_apply_damage(events, t, s, pattern, a, damage_amt)
+			_apply_damage(events, t, s, pattern, a, damage_amt, god)
 	# Contact bits: clear for registry entries not overlapped this tick, so
 	# the next overlap counts as a new pass.
 	for k in reg_count[s]:
@@ -241,8 +256,31 @@ static func _step_pierce(
 
 
 static func _apply_damage(
-	events: Array[Dictionary], t: int, slot: int, pattern: int, a: RefCounted, amount: int
+	events: Array[Dictionary],
+	t: int,
+	slot: int,
+	pattern: int,
+	a: RefCounted,
+	amount: int,
+	god := false,
 ) -> void:
+	# God flag (§2.10): friendly damage becomes a visible DAMAGE_IMMUNE —
+	# logged, never silent, so god use can't launder into evidence.
+	if god and a.faction == ActorState.FACTION_FRIENDLY:
+		(
+			events
+			. append(
+				{
+					"type": SimEvents.Type.DAMAGE_IMMUNE,
+					"tick": t,
+					"target": a.id,
+					"amount": amount,
+					"pattern": pattern,
+					"pos": a.pos,
+				}
+			)
+		)
+		return
 	a.hp -= amount
 	a.last_damaged_tick = t
 	# Player death: dies in place (recap + restart own the flow); enemy
