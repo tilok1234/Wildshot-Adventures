@@ -72,11 +72,17 @@ The DUSK pack is DELIVERED and VALIDATED (2026-07-28, 0.56 s:
 `...\game-packs\small-cold-coastal-pack-dusk`, tileforge
 dusk-ae1eecb-seed103991, flood 33845 reproduced — walkability is
 theme-independent, empirically confirmed; contract-as-built notes
-blessed in WorldForge's plan §3.3a). The CONSUMPTION
-half (render a world, playable scenario, POIs) is deliberately
-deferred: post-Gate-1 OR an explicit designer "generated test arena"
-ruling (≈one session when ruled; contract-gap protocol: never patch a
-pack, relay issues to the WorldForge side). Serialization v9; goldens
+blessed in WorldForge's plan §3.3a). The CONSUMPTION half LANDED for ONE world under the designer's
+2026-07-28 generated-test-arena ruling: World Walk scenario
+(world_walk.tres) plays the dusk pack — game/arena/world_builder.gd
+validates, REFUSES on TileForge package-identity mismatch, renders the
+resolved TMJ (170k placements/2.1 s), collision = walkability verbatim,
+spawn at the pack's spawnCell; composition proof PASS with a light
+escort set (the full 3R+2H set FAILS in settlement streets — joined to
+the first_contact adjudication). v0 limits: animated tiles at frame 0,
+no canopy z, POIs/settlements/minimap unconsumed (that plus more worlds
+is the remaining post-Gate-1 scope; contract-gap protocol: never patch
+a pack, relay issues to the WorldForge side). Serialization v9; goldens
 current;
 CI fully green (RNG lint, smoke, goldens ×10, pixel-match, uikit,
 assembler, projectile, worldforge gates).
