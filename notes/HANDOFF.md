@@ -1,11 +1,54 @@
 # Session Handoff — written 2026-07-27, end of the M2→M4 marathon
 
-Read this AFTER CLAUDE.md (the contract auto-loads and its milestone
-tracker is the authoritative position). This file adds operational
-context the tracker doesn't carry. Design authority remains the planning
-repo (`C:\Users\headc\Documents\Wildshot_adventure_final_planning`) —
-key docs: 12 (build plan, §2.14 Amendment v2 applied), 14 (assembler
-game-pack spec, BINDING), 13 (UI kit spec).
+**COLD START — this handoff assumes NO prior context.** You may be a
+fresh Claude instance with no memory of any earlier session.
+
+## §0 What this project is (60 seconds)
+
+Wildshot Adventures: a solo-developed RotMG-inspired top-down realtime
+bullet-hell ARPG in **Godot 4.6.2 (pinned), typed GDScript, custom
+deterministic sim, no Godot physics in gameplay**. Current phase:
+"Phase A" — a zero-reward combat-feel laboratory that outside testers
+must enjoy for 20+ minutes on movement-dodging alone (Gate 1). Two
+repos:
+
+- **Game repo (you are here):** `C:\Users\headc\Documents\Wildshot-Adventures`
+  — implements. Its `CLAUDE.md` is a BINDING contract (auto-loads):
+  design constraints digest, no-RNG-in-sim rule, milestone tracker
+  (the authoritative "where are we"). Never reinterpret design here;
+  conflicts get flagged to the planning repo.
+- **Planning repo (design authority):**
+  `C:\Users\headc\Documents\Wildshot_adventure_final_planning` — key
+  docs: `docs/12-PHASE_A_LAB_BUILD_PLAN.md` (the plan; §2.14
+  Amendment v2 applied), `docs/14-ASSEMBLER_GAME_PACK_SPEC.md`
+  (BINDING asset-export contract), `docs/13` (UI kit spec),
+  `notes/sessions/2026-07-27.md` (the full record of the marathon
+  session this handoff summarizes). Milestone completions are recorded
+  there: one approved decision = one commit + push, BOTH repos.
+
+## §0.5 Working with the designer
+
+Solo dev, message handle mmoabsurd. Self-described "big nerd, can go
+hard" — works long sessions, sometimes overnight; their own plan
+contains a **fresh-hands rule**: feel verdicts count only from rested
+day-start sessions, and tired-session notes are PROVISIONAL by rule —
+honor it kindly, don't nag. They iterate by PLAYING: ship a change,
+relaunch the game for them (Start-Process detached; window opens
+BEHIND — bring it to front), they react in short casual messages
+("feels good i think" = provisional positive). Hedged phrasing is
+normal, not doubt about you. They build their own asset tools
+("forges": TileForge tiles, the 8-bit sprite assembler for actors, a
+UI kit) and ship packs as versioned drops with manifests — treat tool
+repos as READ-ONLY unless asked. **Compact keyboard: NO F1–F12 keys,
+ever.** You have standing authority to commit and push both repos at
+every clean seam without asking. Give honest opinions with numbers
+when you disagree — they change their mind on evidence and expect you
+to concede when they're right. Measure before optimizing; they respect
+"I measured X" and distrust vibes (their plan is built on
+falsifiability).
+
+Read the rest AFTER `CLAUDE.md`. Design authority for anything
+ambiguous: the planning repo, then the designer.
 
 ## Where things stand (one paragraph)
 
