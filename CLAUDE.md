@@ -214,13 +214,44 @@ replay-dirty), slow-mo divisor (replay-valid), event tail, and the
 SPLIT VERDICT COMMAND (feel rejects bot sources; PROVISIONAL
 auto-stamp on dirty/slow-mo) -> verdicts.jsonl; hitbox display (H,
 from sim shapes); UI scale x1/x2 + fullscreen/hitbox persistence.
-Serialization v7; goldens current; all CI green. OPEN: designer rested
-feel pass (formally closes M2; all of today's feel calls provisional);
-weekly GIF cadence continues; ASSEMBLER ACTOR-SOURCE SWITCH pending —
-designer building the 1x game-pack export per planning docs/14
-(DRAFT; §2.14 amendment v2 awaits designer approval); when the pack
-drops into assets/, build importer v2 + swap the player, BEFORE M5
-enemies. Next code milestone: M5 (docs/12 §4 — first two EnemyDefs +
-5-state machine + overhead HP bars + Sprite-sheet enemies + DodgeBot
-primary policy + calibration canaries; each EnemyDef ships with its
-passing 3.0 t/s ability-off proof).**
+Serialization v7 at M4 close; goldens current; all CI green.
+ASSEMBLER SWITCH COMPLETE 2026-07-27: §2.14 Amendment v2 approved,
+importer v2 + pack v0 integrated (player = character-ranger 1x), then
+the FULL ENEMY CATALOG pack (57 families / 202 variants, players
+byte-identical, family:variant index shape) superseded v0 same day.
+M5 ENGINEERING COMPLETE 2026-07-27 (cf54bcc→<accept>; session record
+in planning notes/sessions/2026-07-27.md): EnemyDef/EmitterSlot/
+PatternDef resource family (CORE-40 lean stats, policy grammar, shared
+ShotDef volleys); explicit 5-state machine (idle/reposition/windup/
+fire/recover) on shared player/enemy Kinematics + THE one damage path
+(nova/hazard/contact unified); Rusher (wolf:gray) + Husk Archer
+(skeleton:archer) at §3.4 EXACT v0 stats, designer-mapped, rendering
+from assembler sheets with aim-facing attack rows; overhead HP bars
+(HP_BARS band 35, CORE-35 zero targeting); scenario enemy_spawns +
+picker row (first_contact default); M4 debug emitter fully retired
+(SERIAL v9); recap keys telegraph lead by pattern (-3 contact / 10
+husk named); TTK evidence lines in session.jsonl; §2.6 sustained
+worst-case live in the density meter; §2.5 band assertions at boot;
+smoke mechanizes the §3.4 contracts (telegraph lead exactly 12, period
+exactly 90, contact cadence, keep-range band, hostile-death). DodgeBot
+per §2.11: BootArgs autoload (3/4), movement-only 16-heading policy
+via legal 8-dir frames, closed-form K=30 projection, headless CLI
+(--script bot_runner or --bot=dodge_proof), .wsr repro on hit;
+CANARIES calibrate (trivial MUST-PASS passes; wall MUST-FAIL fails
+t32); PROOFS COMMITTED: Rusher + Husk PASS 5 seeds x 60 s at 3.0
+ability-off + first_contact composition bonus PASS
+(reports/dodge_*.json; M5 enemies draw no RNG so seeds are identical
+runs until M6 variation). Stress-density screenshot audit captured
+(reports/density_audit_m5.png; hostile fire legible above max player
+VFX + numbers; meter red-lines the deliberate 26/24 over-budget; Law-3
+shape signature stays M-FX/M6). Spriteforge fallback RETIRED (pack,
+importer, slice test, dead actor_library removed; CI step dropped).
+Serialization v9; goldens regenerated; all gates green. OPEN
+designer-owned: rested day-start feel pass (formally closes M2 AND
+ratifies M5 feel: rusher chase read, 12-tick telegraph read, HP bar
+placement — all today's calls provisional by rule); weekly GIF #2 due
+next week (fresh material: wolves + skeleton archers). Next code
+milestone: M6 (docs/12 §4 — remaining four behaviors w/ proofs, Yard
+Warden elite + PhaseList, EffectLibrary + M-FX decision due END of M5
+week (~week 7): curated pack vs law-compliant placeholders, 9-row
+acceptance, audio cue map, CORE-34 no-ability clear).**

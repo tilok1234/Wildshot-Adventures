@@ -15,8 +15,7 @@ const BASELINE_SPEED := 4.0
 
 var actor: RefCounted = null
 var clock: RefCounted = null
-## Set by the caller from the source library (assembler 1x = 1.0;
-## legacy spriteforge 2x sheets = 0.5).
+## Set by the caller from the source library (assembler 1x = 1.0).
 var render_scale := 1.0
 var _facing := "down"
 

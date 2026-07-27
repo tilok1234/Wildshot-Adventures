@@ -37,16 +37,17 @@ by rule.
 
 | Path | Contents |
 |---|---|
-| `assets/` | Raw forge drops (`.gdignore`d — importers consume these): `tileforge/` (4 theme packages + reference pack), `spriteforge/` (231-actor pack incl. projectiles/effects, manifest-driven) |
+| `assets/` | Raw forge drops (`.gdignore`d — importers consume these): `tileforge/` (4 theme packages + reference pack), `assembler-pack/` (full enemy catalog: 57 families / 202 variants + 4 players, manifest + index driven) |
 | `tileforge/` | The active theme package (dusk) as `res://tileforge/` per its GAME-GUIDE; `tileforge.tres` built by `addons/tileforge_importer/run_import.gd` (headless) |
-| `addons/` | `tileforge_importer` (M1), `spriteforge_importer` (M2) |
+| `assembler/` | The imported actor roster (player + mapped enemies) — roster-filtered by `addons/assembler_importer` from `data/actor_sheet_map.tres` |
+| `addons/` | `tileforge_importer` (M1), `assembler_importer` (M4/M5, docs/14), `uikit_importer` (M4) |
 | `autoload/` | Config, Telemetry, DebugHub, BootArgs — exactly four, none holding gameplay state |
 | `data/` | Weapons, enemies, patterns, abilities, scenarios, actor sheet map, budgets — all `.tres`, hot-reloadable |
 | `sim/` | The engine-decoupled deterministic sim core (`systems/`, `collision/`) — global RNG banned here |
 | `input/` | HumanSampler, ReplaySource, `bot/` — three equal InputSources |
 | `game/` | Main scene, render layers, `views/` (presentation only — never mutates sim) |
 | `ui/` | HUD, menus, options |
-| `tests/` | `pixel_match/`, `actor_sheet_slice/`, `replay_fixtures/` (golden replays), `bot_scenarios/` (incl. calibration canaries) |
+| `tests/` | `pixel_match/`, `assembler_pack/`, `replay_fixtures/` (golden replays), `bot_scenarios/` (proof isolates + calibration canaries + the density-audit scenario) |
 | `tools/` | `hourslog.ps1`, `hours_report.ps1`; later `export.ps1`, `gif.ps1` |
 | `notes/` | `hours.csv`, `TECH_DEBT_LEDGER.md` |
 | `reports/` | Bot harness output — mechanical verification only, never gate evidence |

@@ -38,6 +38,7 @@ const StandinView := preload("res://game/views/standin_view.gd")
 const EnemyActorsView := preload("res://game/views/enemy_actors_view.gd")
 const HpBarView := preload("res://game/views/hp_bar_view.gd")
 const DodgeProof := preload("res://game/bots/dodge_proof.gd")
+const AuditSampler := preload("res://game/bots/audit_sampler.gd")
 
 const TILE := 32.0
 
@@ -163,6 +164,25 @@ func _process(_delta: float) -> void:
 		var path := "user://replays/session_%d.wsr" % world.tick
 		if driver.recorder.save_wsr(path, "dev", "main_dev_scene"):
 			print("replay saved: ", ProjectSettings.globalize_path(path))
+
+
+## M5 stress-density screenshot audit (docs/12 §4 M5, Laws 1/2): let the
+## scripted run reach peak density, then capture the frame to reports/.
+## Legibility is judged by eyes on the PNG — this produces the evidence.
+func _run_density_audit() -> void:
+	while world.tick < 420:
+		await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	var img := get_viewport().get_texture().get_image()
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://reports"))
+	img.save_png(ProjectSettings.globalize_path("res://reports/density_audit_m5.png"))
+	print(
+		(
+			"density audit captured: reports/density_audit_m5.png (tick %d, %d live hostiles)"
+			% [world.tick, world.enemies.size()]
+		)
+	)
+	get_tree().quit()
 
 
 ## CORE-50 UI/text scaling: integer multiples only (kit contract), applied
@@ -316,10 +336,21 @@ func _ready() -> void:
 	# InputMap defaults + saved remaps are applied by the Config autoload
 	# before any scene _ready runs. Scenario + seed + speed preset come
 	# from persisted dev settings; T rebuilds with the next seed.
+	# --audit=density (M5): fixed stress scenario + scripted max-VFX input
+	# + a Laws-1/2 screenshot to reports/ — persisted settings untouched.
+	var audit_mode := BootArgs.get_arg("audit") == "density"
 	var scenario: Resource = load(
-		String(Config.get_setting("dev", "scenario", "res://data/scenarios/first_contact.tres"))
+		(
+			"res://tests/bot_scenarios/audit_density.tres"
+			if audit_mode
+			else String(
+				Config.get_setting("dev", "scenario", "res://data/scenarios/first_contact.tres")
+			)
+		)
 	)
 	var seed_v := int(Config.get_setting("dev", "seed", scenario.default_seed))
+	if audit_mode:
+		seed_v = int(scenario.default_seed)
 	world = ScenarioLoader.build_world(scenario, seed_v, bitgrid)
 	# Lowest-intended-speed loadout is a first-class preset (§2.10,
 	# CORE-53): setup-phase config, never a replay-dirtying edit — it
@@ -400,6 +431,13 @@ func _ready() -> void:
 		"damage_numbers":
 		int(Config.get_setting("feedback", "damage_numbers", DamageNumberView.Mode.FULL)),
 	}
+	if audit_mode:
+		# The audit maxes every player-side channel (Laws 1/2 stress how
+		# hostile fire reads ABOVE all of it) without touching settings.cfg.
+		feedback_settings.impact = true
+		feedback_settings.kill = true
+		feedback_settings.blocked = true
+		feedback_settings.damage_numbers = DamageNumberView.Mode.FULL
 
 	var flashes := FlashView.new()
 	flashes.driver = driver
@@ -587,6 +625,14 @@ func _ready() -> void:
 			driver.paused = true
 			recap_panel.show_recap(r, Config.binding_text("scenario_reset"))
 	)
+
+	if audit_mode:
+		driver.sampler = AuditSampler.new()
+		# God keeps the player alive at ring center — absorbed hits log
+		# DAMAGE_IMMUNE; the screenshot is the artifact, not the run.
+		world.enqueue_command({"type": SimWorld.Command.SET_GOD, "on": true})
+		density_meter.visible = true
+		_run_density_audit()
 
 	print(
 		(

@@ -112,12 +112,9 @@ jobs:
       - name: net16 mask derivation (GAME-GUIDE §4 step 2 subset)
         run: ~/godot/godot --headless --path . --script tests/pixel_match/net16_masks.gd
 
-      # M2 (§2.14): actor sheets match their manifest declarations. Pure CPU
-      # image reads — no sim execution, so the Linux runner is allowed.
-      - name: Actor-sheet slice test
-        run: ~/godot/godot --headless --path . --script tests/actor_sheet_slice/actor_sheet_slice.gd
-
       # M4 (docs/13 §6): UI kit pieces match their manifest. Linux-safe.
+      # (The spriteforge actor-sheet slice test retired at M5 acceptance
+      # with its pack — assembler sheets validate in the pack test below.)
       - name: UI kit validation
         run: ~/godot/godot --headless --path . --script tests/uikit/uikit_validate.gd
 
