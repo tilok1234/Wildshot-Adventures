@@ -12,6 +12,7 @@ const FLOOR := 0  # TileMapLayers (default z)
 const FRIENDLY_GROUND := 10  # friendly decals + placed zones (Blast Rune)
 const HOSTILE_HAZARD_FILL := 20  # spatial grounding only, never sole signal
 const ACTORS := 30
+const HP_BARS := 35  # overhead bars: general presentation (CORE-35), below all hostile bands
 const PLAYER_PROJECTILES := 40  # + ALL player VFX
 const DAMAGE_NUMBERS := 50  # non-occluding: BELOW all hostile bands
 const HOSTILE_PROJECTILES := 60

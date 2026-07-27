@@ -26,3 +26,4 @@ timestamp,action,note
 2026-07-27T10:48:52,stop,"(reconstructed at next-session start: session-wrap note was logged but stop was missed; stop backdated to the wrap-note timestamp - zero minutes added)"
 2026-07-27T10:59:08,start,"M5 session: EnemyDef family + 5-state machine + Rusher/Husk Archer (assembler sprites) + DodgeBot + canaries"
 2026-07-27T11:13:38,note,"Full-enemy-catalog pack integrated (57 fam/202 var; importer shape adapter + catalog fixture; normalized imported manifest). Designer mapping locked: Rusher=wolf:gray, Husk=skeleton:archer. All gates green, pushed."
+2026-07-27T11:30:02,note,"Enemy sim landed: EnemyDef/EmitterSlot/PatternDef + 5-state machine + Rusher/Husk at SS3.4 exact; smoke mechanizes contact cadence, telegraph lead 12, period 90, keep-range band; SERIAL v8, goldens regen, pushed."

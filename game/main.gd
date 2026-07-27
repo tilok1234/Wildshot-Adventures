@@ -35,6 +35,8 @@ const ViewClock := preload("res://game/views/view_clock.gd")
 const CameraRig := preload("res://game/views/camera_rig.gd")
 const ProjectileView := preload("res://game/views/projectile_view.gd")
 const StandinView := preload("res://game/views/standin_view.gd")
+const EnemyActorsView := preload("res://game/views/enemy_actors_view.gd")
+const HpBarView := preload("res://game/views/hp_bar_view.gd")
 
 const TILE := 32.0
 
@@ -310,7 +312,7 @@ func _ready() -> void:
 	# before any scene _ready runs. Scenario + seed + speed preset come
 	# from persisted dev settings; T rebuilds with the next seed.
 	var scenario: Resource = load(
-		String(Config.get_setting("dev", "scenario", "res://data/scenarios/lab_default.tres"))
+		String(Config.get_setting("dev", "scenario", "res://data/scenarios/first_contact.tres"))
 	)
 	var seed_v := int(Config.get_setting("dev", "seed", scenario.default_seed))
 	world = ScenarioLoader.build_world(scenario, seed_v, bitgrid)
@@ -357,8 +359,9 @@ func _ready() -> void:
 
 	# Actor source: the assembler pack (§2.14 Amendment v2, docs/14).
 	var lib := AssemblerLibrary.new()
+	var lib_ok := lib.load_manifest()
 	var sheet_map: Resource = load("res://data/actor_sheet_map.tres")
-	if lib.load_manifest() and sheet_map != null and lib.has_actor(String(sheet_map.map.player)):
+	if lib_ok and sheet_map != null and lib.has_actor(String(sheet_map.map.player)):
 		var av := AnimatedActor.new()
 		av.sprite_frames = lib.build_sprite_frames(String(sheet_map.map.player))
 		av.actor = world.players[0]
@@ -368,6 +371,21 @@ func _ready() -> void:
 		add_child(av)
 	else:
 		push_error("main: player sheet unavailable — run the assembler importer")
+
+	# Real enemies: assembler sheets + overhead HP bars (M5; CORE-35 —
+	# general presentation, no targeting anything).
+	if lib_ok:
+		var enemy_actors := EnemyActorsView.new()
+		enemy_actors.world = world
+		enemy_actors.clock = view_clock
+		enemy_actors.driver = driver
+		enemy_actors.lib = lib
+		enemy_actors.sheet_map = sheet_map
+		add_child(enemy_actors)
+	var hp_bars := HpBarView.new()
+	hp_bars.world = world
+	hp_bars.clock = view_clock
+	add_child(hp_bars)
 
 	var pv := ProjectileView.new()
 	pv.world = world
@@ -527,6 +545,29 @@ func _ready() -> void:
 		func(i: int) -> void:
 			Config.set_setting("dev", "speed_preset", 3.0 if i == 1 else 4.0)
 			print("speed preset persisted; applies on reset (T)")
+	)
+	# Scenario picker (§2.10): every .tres in data/scenarios, sorted for a
+	# stable cycle order; choice persists and applies on reset (T).
+	var scenario_paths: Array[String] = []
+	var scenario_names: Array[String] = []
+	for f in DirAccess.get_files_at("res://data/scenarios"):
+		var fname := String(f).trim_suffix(".remap")
+		if fname.ends_with(".tres"):
+			scenario_paths.append("res://data/scenarios/" + fname)
+	scenario_paths.sort()
+	var scenario_idx := 0
+	for i in scenario_paths.size():
+		var sc: Resource = load(scenario_paths[i])
+		scenario_names.append(String(sc.display_name))
+		if String(sc.id) == String(scenario.id):
+			scenario_idx = i
+	options_menu.add_cycle_row(
+		"scenario (on reset)",
+		scenario_names,
+		scenario_idx,
+		func(i: int) -> void:
+			Config.set_setting("dev", "scenario", scenario_paths[i])
+			print("scenario persisted: %s; applies on reset (T)" % scenario_names[i])
 	)
 	var ui_scale := clampi(int(Config.get_setting("ui", "scale", 1)), 1, 2)
 	options_menu.add_cycle_row(

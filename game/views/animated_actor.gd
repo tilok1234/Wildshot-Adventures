@@ -40,6 +40,10 @@ func _process(_delta: float) -> void:
 		if is_playing():
 			pause()
 		return
+	# An attack one-shot holds until it finishes — locomotion never
+	# stomps the swing mid-animation (enemy_actors_view triggers these).
+	if String(animation).begins_with("attack-") and is_playing():
+		return
 	var vel: Vector2 = actor.pos - actor.prev_pos
 	if vel.length_squared() > 0.000001:
 		_facing = _dir_from(vel)
@@ -51,6 +55,15 @@ func _process(_delta: float) -> void:
 	else:
 		_play_if_changed("idle-" + _facing)
 		speed_scale = 1.0
+
+
+## One-shot attack read: face the aim, play the attack row; _process
+## resumes idle/walk when it ends. Presentation only — never sim-fed.
+func play_attack(aim: Vector2) -> void:
+	if aim.length_squared() > 0.000001:
+		_facing = _dir_from(aim)
+	speed_scale = 1.0
+	play("attack-" + _facing)
 
 
 func _play_if_changed(anim: String) -> void:

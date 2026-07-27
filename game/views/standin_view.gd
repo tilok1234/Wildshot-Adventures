@@ -1,8 +1,8 @@
 extends MultiMeshInstance2D
-## Minimal enemy stand-in renderer (M3 target practice): one quad per live
-## sim enemy, rebuilt per frame from world.enemies — kills disappear on
-## the tick they land. Real enemies render from Sprite Forge sheets at M5;
-## this view dies then. View-only: never mutates sim.
+## Minimal enemy stand-in renderer (M3 target practice / M2 stress): one
+## quad per live INERT stand-in (def_index -1), rebuilt per frame. Real
+## enemies (def_index >= 0) render from assembler sheets in
+## enemy_actors_view — never here. View-only: never mutates sim.
 
 const RenderLayers := preload("res://game/render_layers.gd")
 
@@ -27,11 +27,15 @@ func _process(_delta: float) -> void:
 	if world == null:
 		return
 	var enemies: Array = world.enemies
-	var n := mini(enemies.size(), multimesh.instance_count)
-	for i in n:
-		var e: RefCounted = enemies[i]
+	var n := 0
+	for e: RefCounted in enemies:
+		if e.def_index >= 0:
+			continue
+		if n >= multimesh.instance_count:
+			break
 		var sc: float = e.radius * TILE
 		multimesh.set_instance_transform_2d(
-			i, Transform2D(Vector2(sc, 0.0), Vector2(0.0, sc), e.pos * TILE)
+			n, Transform2D(Vector2(sc, 0.0), Vector2(0.0, sc), e.pos * TILE)
 		)
+		n += 1
 	multimesh.visible_instance_count = n

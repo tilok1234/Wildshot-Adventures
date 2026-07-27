@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"first_contact"
+display_name = "First Contact (M5)"
+player_spawn = Vector2(24, 16)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"husk_archer": PackedVector2Array(12, 20, 36, 20),
+"rusher": PackedVector2Array(14, 8, 34, 8, 24, 26)
+}
+default_seed = 9

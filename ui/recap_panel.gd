@@ -4,14 +4,16 @@ extends PanelContainer
 ## telegraph lead time, and the last-5-seconds hit trace. Restart is the
 ## scenario_reset action (default T).
 
-## Pattern id -> display name (ui-side lookup; EnemyDefs extend at M5).
+## Pattern id -> display name (ui-side lookup; namespace in pattern_def.gd).
 const PATTERN_NAMES := {
 	1: "Longbolt",
 	2: "Scattercast",
 	3: "Wheelblade",
+	10: "Husk Archer's aimed shot",
 	100: "Debug Ring",
 	-1: "Nova Burst",
 	-2: "Blast Rune",
+	-3: "Rusher contact",
 }
 
 var _label := Label.new()
