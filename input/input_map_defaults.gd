@@ -36,6 +36,8 @@ const KEY_ACTIONS := {
 	"options_toggle": KEY_O,
 	# M3 GIF ring buffer dump.
 	"gif_dump": KEY_G,
+	# M4 density meter overlay.
+	"density_toggle": KEY_M,
 }
 ## Modifier-key actions (registered separately): Alt+Enter fullscreen.
 const ALT_KEY_ACTIONS := {

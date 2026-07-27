@@ -49,6 +49,15 @@ func _process(delta: float) -> void:
 	queue_redraw()
 
 
+## Live flash count — reported to the density meter against effects_max.
+func active_count() -> int:
+	var n := 0
+	for i in POOL:
+		if _age[i] < _life[i]:
+			n += 1
+	return n
+
+
 func _spawn(px: Vector2, size: float, color: Color, life: float) -> void:
 	_pos[_head] = px
 	_age[_head] = 0.0

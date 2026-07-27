@@ -18,6 +18,7 @@ const OptionsMenu := preload("res://ui/options_menu.gd")
 const GifRecorder := preload("res://game/drivers/gif_recorder.gd")
 const FlashView := preload("res://game/views/flash_view.gd")
 const StatBar := preload("res://ui/stat_bar.gd")
+const DensityMeter := preload("res://ui/density_meter.gd")
 const ActorLibrary := preload("res://game/views/actor_library.gd")
 const AnimatedActor := preload("res://game/views/animated_actor.gd")
 
@@ -40,6 +41,7 @@ var weapon_label: Label
 var hp_bar: StatBar
 var mana_bar: StatBar
 var options_menu: PanelContainer
+var density_meter: PanelContainer
 var hints_label: Label
 var gif_recorder: Node
 var rec_label: Label
@@ -66,6 +68,8 @@ func _process(_delta: float) -> void:
 	if options_menu != null and Input.is_action_just_pressed("options_toggle"):
 		options_menu.toggle()
 		_refresh_hints()
+	if density_meter != null and Input.is_action_just_pressed("density_toggle"):
+		density_meter.visible = not density_meter.visible
 	# Alt+Enter: borderless fullscreen — windowed-mode compositing is a
 	# known stutter source on Windows; this is the one-key A/B for it.
 	if Input.is_action_just_pressed("fullscreen_toggle"):
@@ -208,6 +212,14 @@ func _ready() -> void:
 	flashes.driver = driver
 	add_child(flashes)
 
+	density_meter = DensityMeter.new()
+	density_meter.world = world
+	density_meter.budgets = load("res://data/budgets.tres")
+	density_meter.effects_counter = flashes.active_count
+	density_meter.visible = false
+	density_meter.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	density_meter.position += Vector2(-4.0, 16.0)
+
 	var camera := CameraRig.new()
 	camera.world = world
 	camera.clock = view_clock
@@ -264,6 +276,7 @@ func _ready() -> void:
 	hud.add_child(mana_bar)
 	hud.add_child(rec_label)
 	hud.add_child(hints_label)
+	hud.add_child(density_meter)
 	hud.add_child(options_menu)
 	add_child(hud)
 	Input.set_custom_mouse_cursor(

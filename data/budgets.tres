@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/budgets.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+hostile_ordinary_max = 150
+hostile_elite_max = 300
+combined_max = 600
+enemies_max = 24
+effects_max = 150
