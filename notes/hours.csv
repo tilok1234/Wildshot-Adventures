@@ -50,3 +50,6 @@ timestamp,action,note
 2026-07-28T00:52:14,start,"Generated test arena ruling: dusk world walk consumption build"
 2026-07-28T00:57:30,note,"GENERATED WORLD PLAYABLE: dusk small-cold-coastal rendered (170k placements/2.1s), collision from walkability verbatim, spawn at pack spawnCell, world_walk scenario + PASS proof (light escort set; full pack-fight joins the first_contact adjudication). Package-identity guard in the builder. Pushed."
 2026-07-28T01:02:53,note,"PROVISIONAL feel note (late night): 'wow thats so cool!' - first walk of a generated world (World Walk, dusk small-cold-coastal). The full pipeline moment: WorldForge -> pack -> validated -> walked."
+2026-07-28T01:05:15,stop,"Session close: generated world playable + all docs/tracker/handoff current. Next chat = M6 from notes/HANDOFF.md."
+2026-07-28T01:09:36,start,"M6 session start: remaining roster (Fanmaw/Ringer/Leadshot/Blightcaster) per HANDOFF work order"
+2026-07-28T01:13:29,note,"DECISION (designer, casual-approve): all four M6 actor mappings confirmed (Leadshot=bandit:sniper, Fanmaw=carniplant:snapvine, Ringer=eyemonster:watcher, Blightcaster=cultist:acolyte); polished sheet drops expected later, same family:variant slots"

@@ -5,7 +5,11 @@
 [resource]
 script = ExtResource("1")
 map = {
+"enemy_blightcaster": "cultist:acolyte",
+"enemy_fanmaw": "carniplant:snapvine",
 "enemy_husk_archer": "skeleton:archer",
+"enemy_leadshot": "bandit:sniper",
+"enemy_ringer": "eyemonster:watcher",
 "enemy_rusher": "wolf:gray",
 "player": "character-ranger"
 }

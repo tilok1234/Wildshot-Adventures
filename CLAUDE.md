@@ -289,9 +289,11 @@ primary policy; margins tier-3-watch ~0.1). Ledger #9-#12 opened.
 OPEN designer-owned: rested day-start feel pass (formally closes M2
 AND ratifies ALL 2026-07-27 provisional calls: enemies, forest, slash,
 pack projectiles); first_contact adjudication (play at 3.0 preset);
-provisional mappings to confirm/veto (Leadshot=bandit:sniper,
-Fanmaw=carniplant:snapvine, Ringer=eyemonster:watcher,
-Blightcaster=cultist:acolyte; slash borrows fang — ledger #10); weekly
+M6 actor mappings CONFIRMED (designer 2026-07-28: Leadshot=
+bandit:sniper, Fanmaw=carniplant:snapvine, Ringer=eyemonster:watcher,
+Blightcaster=cultist:acolyte — polished sheet drops expected later,
+same family:variant slots; sheets imported; slash-borrows-fang ledger
+#10 still open); weekly
 GIF #2 (wolves/forest/slash/GENERATED WORLD = fresh material); the
 first_contact adjudication now ALSO covers the world_walk full-pack
 fight (same failure class, same ruling). Next code milestone: M6 (docs/12

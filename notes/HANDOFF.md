@@ -198,7 +198,9 @@ Before every commit, per touched area:
   under the primary policy (committed as FAILING — never launder).
   They play at the 3.0 preset and rule: retune spawns / accept until
   M7 reactive policies / composition-too-hot.
-- Provisional M6 actor mappings + slash-sprite share (ledger #10).
+- ~~Provisional M6 actor mappings~~ CONFIRMED 2026-07-28 (all four;
+  polished sheet drops expected later, same slots). Slash-sprite share
+  (ledger #10) still open.
 - Weekly GIF #2 (wolves + forest + slash = fresh material).
 - Dusk WorldForge pack: DELIVERED + VALIDATED 2026-07-28. Everything
   world-gen now waits only on the designer's generated-test-arena

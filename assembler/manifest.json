@@ -1,6 +1,22 @@
 {
 	"actors": [
 		{
+			"category": "enemy",
+			"family": "bandit",
+			"id": "bandit:sniper",
+			"name": "Bandit - Sniper",
+			"sheet": "enemies/bandit/sniper.png",
+			"variant": "sniper"
+		},
+		{
+			"category": "enemy",
+			"family": "carniplant",
+			"id": "carniplant:snapvine",
+			"name": "Carnivorous plant - Snapvine",
+			"sheet": "enemies/carniplant/snapvine.png",
+			"variant": "snapvine"
+		},
+		{
 			"category": "player",
 			"file_audit": {
 				"binary_alpha": true,
@@ -52,6 +68,22 @@
 				"tier4",
 				"wilderness"
 			]
+		},
+		{
+			"category": "enemy",
+			"family": "cultist",
+			"id": "cultist:acolyte",
+			"name": "Cultist - Acolyte",
+			"sheet": "enemies/cultist/acolyte.png",
+			"variant": "acolyte"
+		},
+		{
+			"category": "enemy",
+			"family": "eyemonster",
+			"id": "eyemonster:watcher",
+			"name": "Eye monster - Watcher",
+			"sheet": "enemies/eyemonster/watcher.png",
+			"variant": "watcher"
 		},
 		{
 			"category": "enemy",
