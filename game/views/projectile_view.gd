@@ -14,6 +14,8 @@ const ActorState := preload("res://sim/actor_state.gd")
 
 const TILE := 32.0
 const SPHERE_TEX_PX := 16
+## Long-axis stretch per tile/s of speed (14 t/s Longbolt ≈ 1.7x).
+const STRETCH_PER_SPEED := 0.05
 
 var world: RefCounted = null
 var clock: RefCounted = null
@@ -45,6 +47,8 @@ func _process(_delta: float) -> void:
 	var py: PackedFloat32Array = pool.pos_y
 	var qx: PackedFloat32Array = pool.prev_x
 	var qy: PackedFloat32Array = pool.prev_y
+	var vx: PackedFloat32Array = pool.vel_x
+	var vy: PackedFloat32Array = pool.vel_y
 	var rad: PackedFloat32Array = pool.radius
 	var fac: PackedByteArray = pool.faction
 	var act: PackedByteArray = pool.active
@@ -61,11 +65,30 @@ func _process(_delta: float) -> void:
 			x = qx[s] + (x - qx[s]) * alpha
 			y = qy[s] + (y - qy[s]) * alpha
 		var sc: float = rad[s] * TILE
-		var xf := Transform2D(Vector2(sc, 0.0), Vector2(0.0, sc), Vector2(x, y) * TILE)
+		var pos := Vector2(x, y) * TILE
 		if fac[s] == ActorState.FACTION_HOSTILE:
-			mm_h.set_instance_transform_2d(n_h, xf)
+			# Hostile stays a plain round sphere until the signature
+			# language lands (M-FX/M6) — roundness is also free
+			# hostile-vs-friendly shape contrast meanwhile (Law 3).
+			mm_h.set_instance_transform_2d(
+				n_h, Transform2D(Vector2(sc, 0.0), Vector2(0.0, sc), pos)
+			)
 			n_h += 1
 		else:
+			# Friendly spheres stretch along travel: at 14 t/s a shot
+			# moves ~75% of its diameter per frame and strobes as dots;
+			# elongation reads as motion (genre-standard). Cross-axis
+			# stays honest to the collision circle.
+			var vxs: float = vx[s]
+			var vys: float = vy[s]
+			var vlen := sqrt(vxs * vxs + vys * vys)
+			var xf: Transform2D
+			if vlen > 0.01:
+				var dir := Vector2(vxs / vlen, vys / vlen)
+				var stretch: float = sc * (1.0 + vlen * STRETCH_PER_SPEED)
+				xf = Transform2D(dir * stretch, Vector2(-dir.y, dir.x) * sc, pos)
+			else:
+				xf = Transform2D(Vector2(sc, 0.0), Vector2(0.0, sc), pos)
 			mm_f.set_instance_transform_2d(n_f, xf)
 			n_f += 1
 	mm_f.visible_instance_count = n_f

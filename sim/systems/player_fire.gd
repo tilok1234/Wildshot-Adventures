@@ -16,6 +16,12 @@ extends RefCounted
 const ActorState := preload("res://sim/actor_state.gd")
 const SimEvents := preload("res://sim/events.gd")
 
+## Tap buffer: a tap that lands during cooldown fires when the gate opens
+## if it was held within this many ticks (~67 ms) — without it, taps mid-
+## cooldown are silently eaten, which reads as unresponsive firing. Still
+## strictly cadence-gated: one volley per gate opening, never early.
+const TAP_BUFFER_TICKS := 4
+
 
 static func run(world: RefCounted) -> void:
 	var frames: Array = world.current_frames
@@ -31,7 +37,10 @@ static func run(world: RefCounted) -> void:
 			p.equipped_weapon = frame.weapon_select - 1
 		if weapons.is_empty():
 			continue
-		if not (frame.fire_held or p.autofire_on):
+		if frame.fire_held:
+			p.last_fire_held_tick = world.tick
+		var buffered: bool = world.tick - p.last_fire_held_tick <= TAP_BUFFER_TICKS
+		if not (frame.fire_held or p.autofire_on or buffered):
 			continue
 		if world.tick < p.next_fire_tick:
 			continue

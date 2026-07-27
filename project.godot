@@ -18,6 +18,10 @@ Config="*res://autoload/config.gd"
 
 [display]
 
+; Fullscreen default: windowed-mode compositing produced measured 25-30ms
+; stall clusters on the dev machine (632 spikes/session, sim at 0.1 ms —
+; spikes.jsonl evidence 2026-07-27). Alt+Enter toggles back to windowed.
+window/size/mode=3
 window/size/viewport_width=640
 window/size/viewport_height=360
 window/size/window_width_override=1280

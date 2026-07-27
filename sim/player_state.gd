@@ -13,6 +13,9 @@ var autofire_on: bool = false
 var equipped_weapon: int = 0
 ## Cadence gate: firing is legal when tick >= this.
 var next_fire_tick: int = 0
+## Last tick fire was held — the tap buffer (§2.8 responsiveness): a tap
+## released during cooldown still fires when the gate opens, if recent.
+var last_fire_held_tick: int = -1000000
 
 
 func serialize_into(buf: StreamPeerBuffer) -> void:
@@ -21,3 +24,4 @@ func serialize_into(buf: StreamPeerBuffer) -> void:
 	buf.put_u8(1 if autofire_on else 0)
 	buf.put_u8(equipped_weapon)
 	buf.put_64(next_fire_tick)
+	buf.put_64(last_fire_held_tick)
