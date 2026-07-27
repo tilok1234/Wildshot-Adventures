@@ -1,0 +1,24 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/projectile_map.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+shots = {
+1: "v0:friendly-longbolt",
+2: "v0:friendly-scattercast",
+3: "v0:friendly-wheelblade",
+10: "v0:hostile-orb",
+11: "v0:hostile-fang",
+12: "v0:hostile-dart",
+13: "v0:hostile-fang",
+14: "v0:hostile-burr"
+}
+alts = {
+3: "v0:friendly-wheelblade-f2"
+}
+zones = {
+15: "v0:hostile-hazard-zone",
+-2: "v0:friendly-blast-rune"
+}
+arm_strip = "v0:hostile-hazard-arm"

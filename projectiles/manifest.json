@@ -1,0 +1,206 @@
+{
+	"pack": "wildshot-projectiles-all",
+	"px_per_tile": 32,
+	"sprites": [
+		{
+			"band": 5.0,
+			"canvas_px": [
+				96.0,
+				96.0
+			],
+			"covers_hitbox": false,
+			"faction": "friendly",
+			"file": "sprites/v0/friendly/blast-rune-zone.png",
+			"frames": 1.0,
+			"hitbox_diameter_px": 96.0,
+			"id": "v0:friendly-blast-rune",
+			"oriented": false,
+			"role": "Blast Rune 1.5-tile zone (§3.6): thin cool rim, dim fill — visibly subordinate to the hostile hazard; arm via hazard-arm-strip8 modulated cool",
+			"style": "v0",
+			"suggested_pattern_ids": [
+				-2.0
+			]
+		},
+		{
+			"band": 5.0,
+			"canvas_px": [
+				16.0,
+				16.0
+			],
+			"covers_hitbox": false,
+			"faction": "friendly",
+			"file": "sprites/v0/friendly/longbolt.png",
+			"frames": 1.0,
+			"hitbox_diameter_px": 10.0,
+			"id": "v0:friendly-longbolt",
+			"oriented": true,
+			"role": "Longbolt (§3.3; r 0.15 t, 16 t/s). Slim under-render is deliberate and player-favorable (Law 2/8)",
+			"style": "v0",
+			"suggested_pattern_ids": [
+				1.0
+			]
+		},
+		{
+			"band": 5.0,
+			"canvas_px": [
+				8.0,
+				8.0
+			],
+			"covers_hitbox": true,
+			"faction": "friendly",
+			"file": "sprites/v0/friendly/scattercast-pellet.png",
+			"frames": 1.0,
+			"hitbox_diameter_px": 8.0,
+			"id": "v0:friendly-scattercast",
+			"oriented": false,
+			"role": "Scattercast pellet (§3.3; r 0.12 t, five per volley)",
+			"style": "v0",
+			"suggested_pattern_ids": [
+				2.0
+			]
+		},
+		{
+			"band": 5.0,
+			"canvas_px": [
+				16.0,
+				16.0
+			],
+			"covers_hitbox": false,
+			"faction": "friendly",
+			"file": "sprites/v0/friendly/wheelblade.png",
+			"frames": 1.0,
+			"hitbox_diameter_px": 13.0,
+			"id": "v0:friendly-wheelblade",
+			"oriented": false,
+			"role": "Wheelblade (§3.3; r 0.20 t, boomerang max_passes 2). Alternate with -f2 at ~150 ms for spin (chunky world cadence)",
+			"style": "v0",
+			"suggested_pattern_ids": [
+				3.0
+			]
+		},
+		{
+			"band": 5.0,
+			"canvas_px": [
+				16.0,
+				16.0
+			],
+			"covers_hitbox": false,
+			"faction": "friendly",
+			"file": "sprites/v0/friendly/wheelblade-f2.png",
+			"frames": 1.0,
+			"hitbox_diameter_px": 13.0,
+			"id": "v0:friendly-wheelblade-f2",
+			"oriented": false,
+			"role": "Wheelblade spin frame B (22.5° phase)",
+			"style": "v0",
+			"suggested_pattern_ids": [
+				3.0
+			]
+		},
+		{
+			"band": 7.0,
+			"canvas_px": [
+				20.0,
+				20.0
+			],
+			"covers_hitbox": true,
+			"faction": "hostile",
+			"file": "sprites/v0/hostile/burr.png",
+			"frames": 1.0,
+			"hitbox_diameter_px": 13.0,
+			"id": "v0:hostile-burr",
+			"oriented": false,
+			"role": "radial burst pellet (Ringer §3.4; shot r 0.20 t, 12-shot ring)",
+			"style": "v0",
+			"suggested_pattern_ids": []
+		},
+		{
+			"band": 7.0,
+			"canvas_px": [
+				24.0,
+				24.0
+			],
+			"covers_hitbox": true,
+			"faction": "hostile",
+			"file": "sprites/v0/hostile/dart.png",
+			"frames": 1.0,
+			"hitbox_diameter_px": 12.0,
+			"id": "v0:hostile-dart",
+			"oriented": true,
+			"role": "predictive intercept (Leadshot §3.4; shot r 0.18 t, 9 t/s)",
+			"style": "v0",
+			"suggested_pattern_ids": []
+		},
+		{
+			"band": 7.0,
+			"canvas_px": [
+				20.0,
+				20.0
+			],
+			"covers_hitbox": true,
+			"faction": "hostile",
+			"file": "sprites/v0/hostile/fang.png",
+			"frames": 1.0,
+			"hitbox_diameter_px": 13.0,
+			"id": "v0:hostile-fang",
+			"oriented": true,
+			"role": "fan/cone volley (Fanmaw §3.4; shot r 0.20 t, 5-shot 60° fan)",
+			"style": "v0",
+			"suggested_pattern_ids": []
+		},
+		{
+			"band": 8.0,
+			"canvas_px": [
+				768.0,
+				96.0
+			],
+			"covers_hitbox": false,
+			"faction": "hostile",
+			"file": "sprites/v0/hostile/hazard-arm-strip8.png",
+			"frames": 8.0,
+			"hitbox_diameter_px": 96.0,
+			"id": "v0:hostile-hazard-arm",
+			"oriented": false,
+			"role": "arm-progress ring, 8 steps CW from 12 o'clock (§2.5 band 8; Blightcaster 45-tick arm, Blast Rune 30-tick arm via cool modulate)",
+			"style": "v0",
+			"suggested_pattern_ids": []
+		},
+		{
+			"band": 8.0,
+			"canvas_px": [
+				96.0,
+				96.0
+			],
+			"covers_hitbox": false,
+			"faction": "hostile",
+			"file": "sprites/v0/hostile/hazard-zone.png",
+			"frames": 1.0,
+			"hitbox_diameter_px": 96.0,
+			"id": "v0:hostile-hazard-zone",
+			"oriented": false,
+			"role": "1.5-tile-radius ground zone (Blightcaster §3.4, Warden P2 §3.5); rim opaque at true boundary, fill deliberately dim",
+			"style": "v0",
+			"suggested_pattern_ids": []
+		},
+		{
+			"band": 7.0,
+			"canvas_px": [
+				12.0,
+				12.0
+			],
+			"covers_hitbox": true,
+			"faction": "hostile",
+			"file": "sprites/v0/hostile/orb.png",
+			"frames": 1.0,
+			"hitbox_diameter_px": 12.0,
+			"id": "v0:hostile-orb",
+			"oriented": false,
+			"role": "aimed single (Husk Archer §3.4; shot r 0.18 t)",
+			"style": "v0",
+			"suggested_pattern_ids": [
+				10.0
+			]
+		}
+	],
+	"version": "v0"
+}

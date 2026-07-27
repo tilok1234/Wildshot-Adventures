@@ -118,6 +118,11 @@ jobs:
       - name: UI kit validation
         run: ~/godot/godot --headless --path . --script tests/uikit/uikit_validate.gd
 
+      # Projectile pack + map consistency (M-FX curation; Law-2/8 hostile
+      # coverage guard). Pure image reads — Linux-safe.
+      - name: Projectile-pack validation
+        run: ~/godot/godot --headless --path . --script tests/projectile_pack/projectile_pack_test.gd
+
       # docs/14: assembler-pack consumer — fixture round-trip always;
       # real-pack validation activates when the drop lands. Linux-safe.
       - name: Assembler pack consumer test

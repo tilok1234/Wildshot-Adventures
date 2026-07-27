@@ -1,0 +1,1813 @@
+{
+  "pack": "wildshot-projectiles-all",
+  "version": "v0",
+  "generated_by": "tools/assemble.ps1 (aggregates the five source packs; regenerate sources first)",
+  "px_per_tile": 32,
+  "scale": "native 1x",
+  "filtering": "nearest",
+  "styles": {
+    "v0": {
+      "source_pack": "wildshot-projectiles v0",
+      "docs": "../wildshot-projectiles-v0/README.md"
+    },
+    "min": {
+      "source_pack": "wildshot-projectiles-min v0",
+      "docs": "../wildshot-projectiles-min-v0/README.md"
+    },
+    "eclipse": {
+      "source_pack": "wildshot-projectiles-eclipse v0",
+      "docs": "../wildshot-projectiles-eclipse-v0/README.md"
+    },
+    "mono": {
+      "source_pack": "wildshot-projectiles-mono v0",
+      "docs": "../wildshot-projectiles-mono-v0/README.md"
+    },
+    "ray": {
+      "source_pack": "wildshot-projectiles-ray v0",
+      "docs": "../wildshot-projectiles-ray-v0/README.md"
+    }
+  },
+  "note": "One packet, five interchangeable styles. Per-style contracts, Phase-A mappings and integration notes live in each source pack README (paths under styles.*.docs). Common law: hostile signature per style, Law-8 coverage asserted by each source generator, §2.5 bands (5 friendly / 7 hostile / 8 hazard rim+arm), hostile channels clamped at every density setting.",
+  "sprites": [
+    {
+      "id": "v0:hostile-orb",
+      "style": "v0",
+      "file": "sprites/v0/hostile/orb.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        12,
+        12
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 12,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        10
+      ],
+      "role": "aimed single (Husk Archer §3.4; shot r 0.18 t)"
+    },
+    {
+      "id": "v0:hostile-dart",
+      "style": "v0",
+      "file": "sprites/v0/hostile/dart.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        24,
+        24
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 12,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "predictive intercept (Leadshot §3.4; shot r 0.18 t, 9 t/s)"
+    },
+    {
+      "id": "v0:hostile-fang",
+      "style": "v0",
+      "file": "sprites/v0/hostile/fang.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        20,
+        20
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "fan/cone volley (Fanmaw §3.4; shot r 0.20 t, 5-shot 60° fan)"
+    },
+    {
+      "id": "v0:hostile-burr",
+      "style": "v0",
+      "file": "sprites/v0/hostile/burr.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        20,
+        20
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "radial burst pellet (Ringer §3.4; shot r 0.20 t, 12-shot ring)"
+    },
+    {
+      "id": "v0:hostile-heavy-orb",
+      "style": "v0",
+      "file": "sprites/v0/hostile/heavy-orb.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 16,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "elite shot (Yard Warden §3.5 P1 triples / P3 bursts); double rim = elite marker"
+    },
+    {
+      "id": "v0:hostile-hazard-zone",
+      "style": "v0",
+      "file": "sprites/v0/hostile/hazard-zone.png",
+      "faction": "hostile",
+      "band": 8,
+      "canvas_px": [
+        96,
+        96
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 96,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "1.5-tile-radius ground zone (Blightcaster §3.4, Warden P2 §3.5); rim opaque at true boundary, fill deliberately dim"
+    },
+    {
+      "id": "v0:hostile-hazard-arm",
+      "style": "v0",
+      "file": "sprites/v0/hostile/hazard-arm-strip8.png",
+      "faction": "hostile",
+      "band": 8,
+      "canvas_px": [
+        768,
+        96
+      ],
+      "frames": 8,
+      "hitbox_diameter_px": 96,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "arm-progress ring, 8 steps CW from 12 o'clock (§2.5 band 8; Blightcaster 45-tick arm, Blast Rune 30-tick arm via cool modulate)"
+    },
+    {
+      "id": "v0:friendly-longbolt",
+      "style": "v0",
+      "file": "sprites/v0/friendly/longbolt.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 10,
+      "covers_hitbox": false,
+      "oriented": true,
+      "suggested_pattern_ids": [
+        1
+      ],
+      "role": "Longbolt (§3.3; r 0.15 t, 16 t/s). Slim under-render is deliberate and player-favorable (Law 2/8)"
+    },
+    {
+      "id": "v0:friendly-scattercast",
+      "style": "v0",
+      "file": "sprites/v0/friendly/scattercast-pellet.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        8,
+        8
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 8,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        2
+      ],
+      "role": "Scattercast pellet (§3.3; r 0.12 t, five per volley)"
+    },
+    {
+      "id": "v0:friendly-wheelblade",
+      "style": "v0",
+      "file": "sprites/v0/friendly/wheelblade.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        3
+      ],
+      "role": "Wheelblade (§3.3; r 0.20 t, boomerang max_passes 2). Alternate with -f2 at ~150 ms for spin (chunky world cadence)"
+    },
+    {
+      "id": "v0:friendly-wheelblade-f2",
+      "style": "v0",
+      "file": "sprites/v0/friendly/wheelblade-f2.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        3
+      ],
+      "role": "Wheelblade spin frame B (22.5° phase)"
+    },
+    {
+      "id": "v0:friendly-nova-ring",
+      "style": "v0",
+      "file": "sprites/v0/friendly/nova-ring.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        48,
+        48
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 0,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        -1
+      ],
+      "role": "Nova Burst cast flash (§3.6): scale-out + fade view-side; honors effect-density/opacity settings"
+    },
+    {
+      "id": "v0:friendly-blast-rune",
+      "style": "v0",
+      "file": "sprites/v0/friendly/blast-rune-zone.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        96,
+        96
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 96,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        -2
+      ],
+      "role": "Blast Rune 1.5-tile zone (§3.6): thin cool rim, dim fill — visibly subordinate to the hostile hazard; arm via hazard-arm-strip8 modulated cool"
+    },
+    {
+      "id": "min:hostile-orb",
+      "style": "min",
+      "file": "sprites/min/hostile/orb.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        12,
+        12
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 12,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        10
+      ],
+      "role": "aimed single (Husk Archer §3.4; shot r 0.18 t)"
+    },
+    {
+      "id": "min:hostile-dart",
+      "style": "min",
+      "file": "sprites/min/hostile/dart.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        24,
+        24
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 12,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "predictive intercept (Leadshot §3.4; shot r 0.18 t, 9 t/s)"
+    },
+    {
+      "id": "min:hostile-fang",
+      "style": "min",
+      "file": "sprites/min/hostile/fang.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        20,
+        20
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "fan/cone volley (Fanmaw §3.4; shot r 0.20 t, 5-shot 60° fan)"
+    },
+    {
+      "id": "min:hostile-burr",
+      "style": "min",
+      "file": "sprites/min/hostile/burr.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        20,
+        20
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "radial burst pellet (Ringer §3.4; shot r 0.20 t, 12-shot ring)"
+    },
+    {
+      "id": "min:hostile-heavy-orb",
+      "style": "min",
+      "file": "sprites/min/hostile/heavy-orb.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 16,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "elite shot (Yard Warden §3.5 P1 triples / P3 bursts); double rim = elite marker"
+    },
+    {
+      "id": "min:hostile-hazard-zone",
+      "style": "min",
+      "file": "sprites/min/hostile/hazard-zone.png",
+      "faction": "hostile",
+      "band": 8,
+      "canvas_px": [
+        96,
+        96
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 96,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "1.5-tile-radius ground zone (Blightcaster §3.4, Warden P2 §3.5); rim opaque at true boundary, fill flat + faint"
+    },
+    {
+      "id": "min:hostile-hazard-arm",
+      "style": "min",
+      "file": "sprites/min/hostile/hazard-arm-strip8.png",
+      "faction": "hostile",
+      "band": 8,
+      "canvas_px": [
+        768,
+        96
+      ],
+      "frames": 8,
+      "hitbox_diameter_px": 96,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "arm-progress ring, 8 steps CW from 12 o'clock (§2.5 band 8; Blightcaster 45-tick arm, Blast Rune 30-tick arm via cool modulate)"
+    },
+    {
+      "id": "min:friendly-longbolt",
+      "style": "min",
+      "file": "sprites/min/friendly/longbolt.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 10,
+      "covers_hitbox": false,
+      "oriented": true,
+      "suggested_pattern_ids": [
+        1
+      ],
+      "role": "Longbolt (§3.3; r 0.15 t, 16 t/s). Slim under-render is deliberate and player-favorable (Law 2/8)"
+    },
+    {
+      "id": "min:friendly-scattercast",
+      "style": "min",
+      "file": "sprites/min/friendly/scattercast-pellet.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        8,
+        8
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 8,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        2
+      ],
+      "role": "Scattercast pellet (§3.3; r 0.12 t, five per volley)"
+    },
+    {
+      "id": "min:friendly-wheelblade",
+      "style": "min",
+      "file": "sprites/min/friendly/wheelblade.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        3
+      ],
+      "role": "Wheelblade (§3.3; r 0.20 t, boomerang max_passes 2). Alternate with -f2 at ~150 ms for spin"
+    },
+    {
+      "id": "min:friendly-wheelblade-f2",
+      "style": "min",
+      "file": "sprites/min/friendly/wheelblade-f2.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        3
+      ],
+      "role": "Wheelblade spin frame B (45° phase)"
+    },
+    {
+      "id": "min:friendly-nova-ring",
+      "style": "min",
+      "file": "sprites/min/friendly/nova-ring.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        48,
+        48
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 0,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        -1
+      ],
+      "role": "Nova Burst cast flash (§3.6): scale-out + fade view-side; honors effect-density/opacity settings"
+    },
+    {
+      "id": "min:friendly-blast-rune",
+      "style": "min",
+      "file": "sprites/min/friendly/blast-rune-zone.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        96,
+        96
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 96,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        -2
+      ],
+      "role": "Blast Rune 1.5-tile zone (§3.6): thin cool rim, near-empty fill — visibly subordinate to the hostile hazard"
+    },
+    {
+      "id": "eclipse:hostile-orb",
+      "style": "eclipse",
+      "file": "sprites/eclipse/hostile/orb.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        12,
+        12
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 12,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        10
+      ],
+      "role": "aimed single (Husk Archer §3.4; shot r 0.18 t) — base eclipse ring"
+    },
+    {
+      "id": "eclipse:hostile-dart",
+      "style": "eclipse",
+      "file": "sprites/eclipse/hostile/dart.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        24,
+        24
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 12,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "predictive intercept (Leadshot §3.4; shot r 0.18 t, 9 t/s) — razor lance"
+    },
+    {
+      "id": "eclipse:hostile-fang",
+      "style": "eclipse",
+      "file": "sprites/eclipse/hostile/fang.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        20,
+        20
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "fan/cone volley (Fanmaw §3.4; shot r 0.20 t) — wave segment, wide across travel"
+    },
+    {
+      "id": "eclipse:hostile-burr",
+      "style": "eclipse",
+      "file": "sprites/eclipse/hostile/burr.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        20,
+        20
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "radial burst pellet (Ringer §3.4; shot r 0.20 t, 12-shot ring) — diamond"
+    },
+    {
+      "id": "eclipse:hostile-heavy-orb",
+      "style": "eclipse",
+      "file": "sprites/eclipse/hostile/heavy-orb.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        20,
+        20
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 16,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "elite shot (Yard Warden §3.5); hexagon, double bright edge = elite marker"
+    },
+    {
+      "id": "eclipse:hostile-hazard-zone",
+      "style": "eclipse",
+      "file": "sprites/eclipse/hostile/hazard-zone.png",
+      "faction": "hostile",
+      "band": 8,
+      "canvas_px": [
+        96,
+        96
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 96,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "1.5-tile-radius ground zone (Blightcaster §3.4, Warden P2 §3.5); rim opaque at true boundary, center void eye"
+    },
+    {
+      "id": "eclipse:hostile-hazard-arm",
+      "style": "eclipse",
+      "file": "sprites/eclipse/hostile/hazard-arm-strip8.png",
+      "faction": "hostile",
+      "band": 8,
+      "canvas_px": [
+        768,
+        96
+      ],
+      "frames": 8,
+      "hitbox_diameter_px": 96,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "arm-progress ring, 8 steps CW from 12 o'clock (§2.5 band 8; Blightcaster 45-tick arm, Blast Rune 30-tick arm via cool modulate)"
+    },
+    {
+      "id": "eclipse:friendly-longbolt",
+      "style": "eclipse",
+      "file": "sprites/eclipse/friendly/longbolt.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 10,
+      "covers_hitbox": false,
+      "oriented": true,
+      "suggested_pattern_ids": [
+        1
+      ],
+      "role": "Longbolt (§3.3; r 0.15 t, 16 t/s) — delta with white tip; under-render deliberate (Law 2/8)"
+    },
+    {
+      "id": "eclipse:friendly-scattercast",
+      "style": "eclipse",
+      "file": "sprites/eclipse/friendly/scattercast-pellet.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        8,
+        8
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 8,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        2
+      ],
+      "role": "Scattercast chip (§3.3; r 0.12 t, five per volley) — square vs the world's round shots"
+    },
+    {
+      "id": "eclipse:friendly-wheelblade",
+      "style": "eclipse",
+      "file": "sprites/eclipse/friendly/wheelblade.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        3
+      ],
+      "role": "Wheelblade (§3.3; r 0.20 t, boomerang). Alternate + / x frames at ~150 ms for spin"
+    },
+    {
+      "id": "eclipse:friendly-wheelblade-f2",
+      "style": "eclipse",
+      "file": "sprites/eclipse/friendly/wheelblade-f2.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        3
+      ],
+      "role": "Wheelblade spin frame B (x phase)"
+    },
+    {
+      "id": "eclipse:friendly-nova-ring",
+      "style": "eclipse",
+      "file": "sprites/eclipse/friendly/nova-ring.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        48,
+        48
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 0,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        -1
+      ],
+      "role": "Nova Burst cast flash (§3.6) — dashed ring; scale-out + fade view-side"
+    },
+    {
+      "id": "eclipse:friendly-blast-rune",
+      "style": "eclipse",
+      "file": "sprites/eclipse/friendly/blast-rune-zone.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        96,
+        96
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 96,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        -2
+      ],
+      "role": "Blast Rune 1.5-tile zone (§3.6): thin cool rim, square sigil — subordinate to hostile zones"
+    },
+    {
+      "id": "mono:hostile-disc:d12-plain",
+      "style": "mono",
+      "file": "sprites/mono/hostile/disc-d12-plain.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        12,
+        12
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 12,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "hostile disc, d12 px, mark 'plain'"
+    },
+    {
+      "id": "mono:hostile-disc:d12-dash",
+      "style": "mono",
+      "file": "sprites/mono/hostile/disc-d12-dash.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        12,
+        12
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 12,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "hostile disc, d12 px, mark 'dash'"
+    },
+    {
+      "id": "mono:hostile-disc:d12-pair",
+      "style": "mono",
+      "file": "sprites/mono/hostile/disc-d12-pair.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        12,
+        12
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 12,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "hostile disc, d12 px, mark 'pair'"
+    },
+    {
+      "id": "mono:hostile-disc:d12-triad",
+      "style": "mono",
+      "file": "sprites/mono/hostile/disc-d12-triad.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        12,
+        12
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 12,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "hostile disc, d12 px, mark 'triad'"
+    },
+    {
+      "id": "mono:hostile-disc:d12-ring",
+      "style": "mono",
+      "file": "sprites/mono/hostile/disc-d12-ring.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        12,
+        12
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 12,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "hostile disc, d12 px, mark 'ring'"
+    },
+    {
+      "id": "mono:hostile-disc:d13-plain",
+      "style": "mono",
+      "file": "sprites/mono/hostile/disc-d13-plain.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        13,
+        13
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "hostile disc, d13 px, mark 'plain'"
+    },
+    {
+      "id": "mono:hostile-disc:d13-dash",
+      "style": "mono",
+      "file": "sprites/mono/hostile/disc-d13-dash.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        13,
+        13
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "hostile disc, d13 px, mark 'dash'"
+    },
+    {
+      "id": "mono:hostile-disc:d13-pair",
+      "style": "mono",
+      "file": "sprites/mono/hostile/disc-d13-pair.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        13,
+        13
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "hostile disc, d13 px, mark 'pair'"
+    },
+    {
+      "id": "mono:hostile-disc:d13-triad",
+      "style": "mono",
+      "file": "sprites/mono/hostile/disc-d13-triad.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        13,
+        13
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "hostile disc, d13 px, mark 'triad'"
+    },
+    {
+      "id": "mono:hostile-disc:d13-ring",
+      "style": "mono",
+      "file": "sprites/mono/hostile/disc-d13-ring.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        13,
+        13
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "hostile disc, d13 px, mark 'ring'"
+    },
+    {
+      "id": "mono:hostile-disc:d16-plain",
+      "style": "mono",
+      "file": "sprites/mono/hostile/disc-d16-plain.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 16,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "hostile disc, d16 px, mark 'plain'"
+    },
+    {
+      "id": "mono:hostile-disc:d16-dash",
+      "style": "mono",
+      "file": "sprites/mono/hostile/disc-d16-dash.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 16,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "hostile disc, d16 px, mark 'dash'"
+    },
+    {
+      "id": "mono:hostile-disc:d16-pair",
+      "style": "mono",
+      "file": "sprites/mono/hostile/disc-d16-pair.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 16,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "hostile disc, d16 px, mark 'pair'"
+    },
+    {
+      "id": "mono:hostile-disc:d16-triad",
+      "style": "mono",
+      "file": "sprites/mono/hostile/disc-d16-triad.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 16,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "hostile disc, d16 px, mark 'triad'"
+    },
+    {
+      "id": "mono:hostile-disc:d16-ring",
+      "style": "mono",
+      "file": "sprites/mono/hostile/disc-d16-ring.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 16,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "hostile disc, d16 px, mark 'ring'"
+    },
+    {
+      "id": "mono:hostile-disc:d20-plain",
+      "style": "mono",
+      "file": "sprites/mono/hostile/disc-d20-plain.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        20,
+        20
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 20,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "hostile disc, d20 px, mark 'plain'"
+    },
+    {
+      "id": "mono:hostile-disc:d20-dash",
+      "style": "mono",
+      "file": "sprites/mono/hostile/disc-d20-dash.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        20,
+        20
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 20,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "hostile disc, d20 px, mark 'dash'"
+    },
+    {
+      "id": "mono:hostile-disc:d20-pair",
+      "style": "mono",
+      "file": "sprites/mono/hostile/disc-d20-pair.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        20,
+        20
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 20,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "hostile disc, d20 px, mark 'pair'"
+    },
+    {
+      "id": "mono:hostile-disc:d20-triad",
+      "style": "mono",
+      "file": "sprites/mono/hostile/disc-d20-triad.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        20,
+        20
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 20,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "hostile disc, d20 px, mark 'triad'"
+    },
+    {
+      "id": "mono:hostile-disc:d20-ring",
+      "style": "mono",
+      "file": "sprites/mono/hostile/disc-d20-ring.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        20,
+        20
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 20,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "hostile disc, d20 px, mark 'ring'"
+    },
+    {
+      "id": "mono:hostile-hazard-zone",
+      "style": "mono",
+      "file": "sprites/mono/hostile/hazard-zone.png",
+      "faction": "hostile",
+      "band": 8,
+      "canvas_px": [
+        96,
+        96
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 96,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "1.5-tile-radius ground zone (Blightcaster §3.4, Warden P2 §3.5); rim opaque at true boundary"
+    },
+    {
+      "id": "mono:hostile-hazard-arm",
+      "style": "mono",
+      "file": "sprites/mono/hostile/hazard-arm-strip8.png",
+      "faction": "hostile",
+      "band": 8,
+      "canvas_px": [
+        768,
+        96
+      ],
+      "frames": 8,
+      "hitbox_diameter_px": 96,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "arm-progress ring, 8 steps CW from 12 o'clock (§2.5 band 8)"
+    },
+    {
+      "id": "mono:friendly-bolt:single",
+      "style": "mono",
+      "file": "sprites/mono/friendly/bolt-single.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 10,
+      "covers_hitbox": false,
+      "oriented": true,
+      "suggested_pattern_ids": [
+        1
+      ],
+      "role": "Longbolt (§3.3; r 0.15 t, 16 t/s)"
+    },
+    {
+      "id": "mono:friendly-bolt:dual",
+      "style": "mono",
+      "file": "sprites/mono/friendly/bolt-dual.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 10,
+      "covers_hitbox": false,
+      "oriented": true,
+      "suggested_pattern_ids": [
+        1
+      ],
+      "role": "Longbolt dual-flavor (same single sim shot; under-render is player-favorable)"
+    },
+    {
+      "id": "mono:friendly-bolt:triple",
+      "style": "mono",
+      "file": "sprites/mono/friendly/bolt-triple.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 10,
+      "covers_hitbox": false,
+      "oriented": true,
+      "suggested_pattern_ids": [
+        1
+      ],
+      "role": "Longbolt triple-flavor (same single sim shot)"
+    },
+    {
+      "id": "mono:friendly-pellet:single",
+      "style": "mono",
+      "file": "sprites/mono/friendly/pellet-single.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        8,
+        8
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 8,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        2
+      ],
+      "role": "Scattercast pellet (§3.3; r 0.12 t)"
+    },
+    {
+      "id": "mono:friendly-pellet:dual",
+      "style": "mono",
+      "file": "sprites/mono/friendly/pellet-dual.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        12,
+        12
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 8,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        2
+      ],
+      "role": "Scattercast dual-flavor (same single sim shot)"
+    },
+    {
+      "id": "mono:friendly-pellet:triple",
+      "style": "mono",
+      "file": "sprites/mono/friendly/pellet-triple.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        12,
+        12
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 8,
+      "covers_hitbox": false,
+      "oriented": true,
+      "suggested_pattern_ids": [
+        2
+      ],
+      "role": "Scattercast triple-flavor (front lobe leads; same single sim shot)"
+    },
+    {
+      "id": "mono:friendly-disc:s",
+      "style": "mono",
+      "file": "sprites/mono/friendly/disc-s.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        8,
+        8
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 8,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "generic friendly round, d8 px (stock)"
+    },
+    {
+      "id": "mono:friendly-disc:m",
+      "style": "mono",
+      "file": "sprites/mono/friendly/disc-m.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        10,
+        10
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 10,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "generic friendly round, d10 px (stock)"
+    },
+    {
+      "id": "mono:friendly-disc:l",
+      "style": "mono",
+      "file": "sprites/mono/friendly/disc-l.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        13,
+        13
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": true,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "generic friendly round, d13 px (stock)"
+    },
+    {
+      "id": "mono:friendly-ring",
+      "style": "mono",
+      "file": "sprites/mono/friendly/ring.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        3
+      ],
+      "role": "Wheelblade (§3.3; r 0.20 t, boomerang) — plain ring, view-side spin optional"
+    },
+    {
+      "id": "mono:friendly-nova-ring",
+      "style": "mono",
+      "file": "sprites/mono/friendly/nova-ring.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        48,
+        48
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 0,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        -1
+      ],
+      "role": "Nova Burst cast flash (§3.6)"
+    },
+    {
+      "id": "mono:friendly-blast-rune",
+      "style": "mono",
+      "file": "sprites/mono/friendly/blast-rune-zone.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        96,
+        96
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 96,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        -2
+      ],
+      "role": "Blast Rune 1.5-tile zone (§3.6): thin rim + center dot only"
+    },
+    {
+      "id": "ray:hostile-cap:w12-l20-plain",
+      "style": "ray",
+      "file": "sprites/ray/hostile/cap-w12-l20-plain.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        20,
+        12
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 12,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "hostile ray, hitbox d12 px, length 20 px, mark 'plain'"
+    },
+    {
+      "id": "ray:hostile-cap:w12-l20-band",
+      "style": "ray",
+      "file": "sprites/ray/hostile/cap-w12-l20-band.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        20,
+        12
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 12,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "hostile ray, hitbox d12 px, length 20 px, mark 'band'"
+    },
+    {
+      "id": "ray:hostile-cap:w12-l20-pair",
+      "style": "ray",
+      "file": "sprites/ray/hostile/cap-w12-l20-pair.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        20,
+        12
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 12,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "hostile ray, hitbox d12 px, length 20 px, mark 'pair'"
+    },
+    {
+      "id": "ray:hostile-cap:w12-l26-plain",
+      "style": "ray",
+      "file": "sprites/ray/hostile/cap-w12-l26-plain.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        26,
+        12
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 12,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "hostile ray, hitbox d12 px, length 26 px, mark 'plain'"
+    },
+    {
+      "id": "ray:hostile-cap:w12-l26-band",
+      "style": "ray",
+      "file": "sprites/ray/hostile/cap-w12-l26-band.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        26,
+        12
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 12,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "hostile ray, hitbox d12 px, length 26 px, mark 'band'"
+    },
+    {
+      "id": "ray:hostile-cap:w12-l26-pair",
+      "style": "ray",
+      "file": "sprites/ray/hostile/cap-w12-l26-pair.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        26,
+        12
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 12,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "hostile ray, hitbox d12 px, length 26 px, mark 'pair'"
+    },
+    {
+      "id": "ray:hostile-cap:w13-l18-plain",
+      "style": "ray",
+      "file": "sprites/ray/hostile/cap-w13-l18-plain.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        18,
+        13
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "hostile ray, hitbox d13 px, length 18 px, mark 'plain'"
+    },
+    {
+      "id": "ray:hostile-cap:w13-l18-band",
+      "style": "ray",
+      "file": "sprites/ray/hostile/cap-w13-l18-band.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        18,
+        13
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "hostile ray, hitbox d13 px, length 18 px, mark 'band'"
+    },
+    {
+      "id": "ray:hostile-cap:w13-l18-pair",
+      "style": "ray",
+      "file": "sprites/ray/hostile/cap-w13-l18-pair.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        18,
+        13
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "hostile ray, hitbox d13 px, length 18 px, mark 'pair'"
+    },
+    {
+      "id": "ray:hostile-cap:w16-l24-plain",
+      "style": "ray",
+      "file": "sprites/ray/hostile/cap-w16-l24-plain.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        24,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 16,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "hostile ray, hitbox d16 px, length 24 px, mark 'plain'"
+    },
+    {
+      "id": "ray:hostile-cap:w16-l24-band",
+      "style": "ray",
+      "file": "sprites/ray/hostile/cap-w16-l24-band.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        24,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 16,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "hostile ray, hitbox d16 px, length 24 px, mark 'band'"
+    },
+    {
+      "id": "ray:hostile-cap:w16-l24-pair",
+      "style": "ray",
+      "file": "sprites/ray/hostile/cap-w16-l24-pair.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        24,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 16,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "hostile ray, hitbox d16 px, length 24 px, mark 'pair'"
+    },
+    {
+      "id": "ray:hostile-cap:w20-l30-plain",
+      "style": "ray",
+      "file": "sprites/ray/hostile/cap-w20-l30-plain.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        30,
+        20
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 20,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "hostile ray, hitbox d20 px, length 30 px, mark 'plain'"
+    },
+    {
+      "id": "ray:hostile-cap:w20-l30-band",
+      "style": "ray",
+      "file": "sprites/ray/hostile/cap-w20-l30-band.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        30,
+        20
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 20,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "hostile ray, hitbox d20 px, length 30 px, mark 'band'"
+    },
+    {
+      "id": "ray:hostile-cap:w20-l30-pair",
+      "style": "ray",
+      "file": "sprites/ray/hostile/cap-w20-l30-pair.png",
+      "faction": "hostile",
+      "band": 7,
+      "canvas_px": [
+        30,
+        20
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 20,
+      "covers_hitbox": true,
+      "oriented": true,
+      "suggested_pattern_ids": [],
+      "role": "hostile ray, hitbox d20 px, length 30 px, mark 'pair'"
+    },
+    {
+      "id": "ray:hostile-hazard-zone",
+      "style": "ray",
+      "file": "sprites/ray/hostile/hazard-zone.png",
+      "faction": "hostile",
+      "band": 8,
+      "canvas_px": [
+        96,
+        96
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 96,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "1.5-tile-radius ground zone; rim opaque at true boundary, inward ray ticks"
+    },
+    {
+      "id": "ray:hostile-hazard-arm",
+      "style": "ray",
+      "file": "sprites/ray/hostile/hazard-arm-strip8.png",
+      "faction": "hostile",
+      "band": 8,
+      "canvas_px": [
+        768,
+        96
+      ],
+      "frames": 8,
+      "hitbox_diameter_px": 96,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [],
+      "role": "arm-progress ring, 8 steps CW from 12 o'clock (§2.5 band 8)"
+    },
+    {
+      "id": "ray:friendly-bolt:single",
+      "style": "ray",
+      "file": "sprites/ray/friendly/bolt-single.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 10,
+      "covers_hitbox": false,
+      "oriented": true,
+      "suggested_pattern_ids": [
+        1
+      ],
+      "role": "Longbolt ray (§3.3; r 0.15 t, 16 t/s); slim under-render deliberate"
+    },
+    {
+      "id": "ray:friendly-bolt:dual",
+      "style": "ray",
+      "file": "sprites/ray/friendly/bolt-dual.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 10,
+      "covers_hitbox": false,
+      "oriented": true,
+      "suggested_pattern_ids": [
+        1
+      ],
+      "role": "Longbolt dual-ray flavor (same single sim shot)"
+    },
+    {
+      "id": "ray:friendly-bolt:triple",
+      "style": "ray",
+      "file": "sprites/ray/friendly/bolt-triple.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 10,
+      "covers_hitbox": false,
+      "oriented": true,
+      "suggested_pattern_ids": [
+        1
+      ],
+      "role": "Longbolt triple-ray flavor (center ray leads; same single sim shot)"
+    },
+    {
+      "id": "ray:friendly-pellet:single",
+      "style": "ray",
+      "file": "sprites/ray/friendly/pellet-single.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        8,
+        8
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 8,
+      "covers_hitbox": false,
+      "oriented": true,
+      "suggested_pattern_ids": [
+        2
+      ],
+      "role": "Scattercast mini-ray (§3.3; r 0.12 t)"
+    },
+    {
+      "id": "ray:friendly-pellet:dual",
+      "style": "ray",
+      "file": "sprites/ray/friendly/pellet-dual.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        12,
+        12
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 8,
+      "covers_hitbox": false,
+      "oriented": true,
+      "suggested_pattern_ids": [
+        2
+      ],
+      "role": "Scattercast dual-ray flavor (same single sim shot)"
+    },
+    {
+      "id": "ray:friendly-pellet:triple",
+      "style": "ray",
+      "file": "sprites/ray/friendly/pellet-triple.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        12,
+        14
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 8,
+      "covers_hitbox": false,
+      "oriented": true,
+      "suggested_pattern_ids": [
+        2
+      ],
+      "role": "Scattercast triple-ray flavor (center ray leads; same single sim shot)"
+    },
+    {
+      "id": "ray:friendly-cross:a",
+      "style": "ray",
+      "file": "sprites/ray/friendly/cross-a.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        3
+      ],
+      "role": "Wheelblade crossed rays, + frame (§3.3; r 0.20 t, boomerang); alternate with x at ~150 ms"
+    },
+    {
+      "id": "ray:friendly-cross:b",
+      "style": "ray",
+      "file": "sprites/ray/friendly/cross-b.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        16,
+        16
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 13,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        3
+      ],
+      "role": "Wheelblade crossed rays, x frame"
+    },
+    {
+      "id": "ray:friendly-nova-ring",
+      "style": "ray",
+      "file": "sprites/ray/friendly/nova-ring.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        48,
+        48
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 0,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        -1
+      ],
+      "role": "Nova Burst cast flash (§3.6) — radial ray burst"
+    },
+    {
+      "id": "ray:friendly-blast-rune",
+      "style": "ray",
+      "file": "sprites/ray/friendly/blast-rune-zone.png",
+      "faction": "friendly",
+      "band": 5,
+      "canvas_px": [
+        96,
+        96
+      ],
+      "frames": 1,
+      "hitbox_diameter_px": 96,
+      "covers_hitbox": false,
+      "oriented": false,
+      "suggested_pattern_ids": [
+        -2
+      ],
+      "role": "Blast Rune 1.5-tile zone (§3.6): thin rim, diagonal ticks, center dot"
+    }
+  ]
+}

@@ -30,6 +30,7 @@ const SimEvents := preload("res://sim/events.gd")
 const RenderLayers := preload("res://game/render_layers.gd")
 const AssemblerLibrary := preload("res://game/views/assembler_library.gd")
 const AnimatedActor := preload("res://game/views/animated_actor.gd")
+const ProjectileSprites := preload("res://game/views/projectile_sprites.gd")
 
 const ViewClock := preload("res://game/views/view_clock.gd")
 const CameraRig := preload("res://game/views/camera_rig.gd")
@@ -377,12 +378,21 @@ func _ready() -> void:
 	view_clock = ViewClock.new()
 	view_clock.driver = driver
 
+	# Projectile-pack sprites (M-FX curation): mapped patterns render
+	# their pack art; everything else keeps the honest sphere fallback.
+	var proj_sprites := ProjectileSprites.new()
+	if not proj_sprites.load_manifest():
+		proj_sprites = null
+	var proj_map: Resource = load("res://data/projectile_map.tres")
+
 	var standins := StandinView.new()
 	standins.world = world
 	add_child(standins)
 
 	var hazards_view := HazardView.new()
 	hazards_view.world = world
+	hazards_view.sprites = proj_sprites
+	hazards_view.pattern_map = proj_map
 	add_child(hazards_view)
 
 	hitboxes = HitboxView.new()
@@ -423,6 +433,8 @@ func _ready() -> void:
 	var pv := ProjectileView.new()
 	pv.world = world
 	pv.clock = view_clock
+	pv.sprites = proj_sprites
+	pv.pattern_map = proj_map
 	add_child(pv)
 
 	feedback_settings = {

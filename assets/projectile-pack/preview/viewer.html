@@ -1,0 +1,249 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>wildshot-projectiles-all-v0 — viewer</title>
+<style>
+  body { background:#17141d; color:#d8d4e0; font:13px Consolas, monospace; margin:0; padding:12px; }
+  h1 { font-size:14px; margin:0 0 8px 0; color:#efe9f5; }
+  .bar { margin:0 0 10px 0; display:flex; gap:14px; flex-wrap:wrap; align-items:center; }
+  .bar label { color:#a9a2b8; }
+  button { background:#2a2434; color:#d8d4e0; border:1px solid #4a4258; padding:3px 10px; font:inherit; cursor:pointer; }
+  button.on { background:#4a3f63; color:#fff; border-color:#8f7fb8; }
+  select, input { font:inherit; }
+  canvas { image-rendering:pixelated; border:1px solid #37303f; display:block; }
+  .note { color:#8f889e; margin-top:8px; max-width:900px; line-height:1.5; }
+</style>
+</head>
+<body>
+<h1>wildshot-projectiles-all-v0 — five styles, one viewer (switch style live, even mid-swarm)</h1>
+<div class="bar">
+  <label><b>style</b> <select id="style">
+    <option value="v0">v0 (shaded)</option>
+    <option value="min">min (flat, same shapes)</option>
+    <option value="eclipse">eclipse (void heart)</option>
+    <option value="mono" selected>mono (disc library)</option>
+    <option value="ray">ray (capsules)</option>
+  </select></label>
+  <span>
+    <button id="m-lineup" class="on">lineup</button><button id="m-flight">flight @ true speed</button><button id="m-swarm">swarm (stress)</button>
+  </span>
+  <label>backdrop <select id="bg">
+    <option value="backdrops/forest-clearing-dusk-1x.png" selected>dusk (active theme)</option>
+    <option value="backdrops/forest-clearing-forest-1x.png">forest</option>
+    <option value="backdrops/forest-clearing-autumn-1x.png">autumn</option>
+    <option value="backdrops/forest-clearing-winter-1x.png">winter (palest)</option>
+    <option value="backdrops/dungeon-room-dusk-1x.png">dungeon dusk</option>
+    <option value="#43706a">flat dusk swatch</option>
+    <option value="#94bd9f">flat winter swatch</option>
+  </select></label>
+  <label>zoom <select id="zoom"><option>1</option><option selected>2</option><option>3</option></select></label>
+  <label><input type="checkbox" id="hb"> hitboxes (Law 8 honesty)</label>
+  <label><input type="checkbox" id="pause"> pause</label>
+</div>
+<canvas id="cv"></canvas>
+<div class="note">
+  The swarm keeps running when you switch styles — the fairest A/B there is: same seed, same shots, different skin.
+  Oriented sprites rotate along velocity (all hostile in ray, dart/fang elsewhere); ray needs that rotation in-game,
+  mono needs none. Hitbox overlay shows each style's honesty contract. Per-style docs: the source pack READMEs.
+</div>
+<script>
+"use strict";
+const TILE = 32, W = 640, H = 384;
+function cap(f, w, h, hd, or, spd, fac, label) { return {f, w, h, hd, or, spd, fac, label}; }
+const STYLES = {
+  v0: {
+    orb:   cap("../sprites/v0/hostile/orb.png",12,12,12,false,7,"h","orb — husk (7 t/s)"),
+    dart:  cap("../sprites/v0/hostile/dart.png",24,24,12,true,9,"h","dart — leadshot (9 t/s)"),
+    fang:  cap("../sprites/v0/hostile/fang.png",20,20,13,true,6,"h","fang — fanmaw (6 t/s)"),
+    burr:  cap("../sprites/v0/hostile/burr.png",20,20,13,false,5,"h","burr — ringer (5 t/s)"),
+    heavy: cap("../sprites/v0/hostile/heavy-orb.png",16,16,16,false,6,"h","heavy — warden (6 t/s)"),
+    bolt:  cap("../sprites/v0/friendly/longbolt.png",16,16,10,true,16,"f","longbolt (16 t/s)"),
+    pellet:cap("../sprites/v0/friendly/scattercast-pellet.png",8,8,8,false,12.5,"f","scattercast (12.5 t/s)"),
+    wheelA:cap("../sprites/v0/friendly/wheelblade.png",16,16,13,false,8,"f","wheelblade (8 t/s)"),
+    wheelB:cap("../sprites/v0/friendly/wheelblade-f2.png",16,16,13,false,8,"f",""),
+    nova:  cap("../sprites/v0/friendly/nova-ring.png",48,48,0,false,0,"f","nova"),
+    haz:   cap("../sprites/v0/hostile/hazard-zone.png",96,96,96,false,0,"h","hazard + arm"),
+    arm:   cap("../sprites/v0/hostile/hazard-arm-strip8.png",768,96,96,false,0,"h",""),
+    rune:  cap("../sprites/v0/friendly/blast-rune-zone.png",96,96,96,false,0,"f","blast rune"),
+  },
+  min: {
+    orb:   cap("../sprites/min/hostile/orb.png",12,12,12,false,7,"h","orb — husk (7 t/s)"),
+    dart:  cap("../sprites/min/hostile/dart.png",24,24,12,true,9,"h","kite — leadshot (9 t/s)"),
+    fang:  cap("../sprites/min/hostile/fang.png",20,20,13,true,6,"h","wedge — fanmaw (6 t/s)"),
+    burr:  cap("../sprites/min/hostile/burr.png",20,20,13,false,5,"h","star — ringer (5 t/s)"),
+    heavy: cap("../sprites/min/hostile/heavy-orb.png",16,16,16,false,6,"h","heavy — warden (6 t/s)"),
+    bolt:  cap("../sprites/min/friendly/longbolt.png",16,16,10,true,16,"f","longbolt (16 t/s)"),
+    pellet:cap("../sprites/min/friendly/scattercast-pellet.png",8,8,8,false,12.5,"f","scattercast (12.5 t/s)"),
+    wheelA:cap("../sprites/min/friendly/wheelblade.png",16,16,13,false,8,"f","wheelblade (8 t/s)"),
+    wheelB:cap("../sprites/min/friendly/wheelblade-f2.png",16,16,13,false,8,"f",""),
+    nova:  cap("../sprites/min/friendly/nova-ring.png",48,48,0,false,0,"f","nova"),
+    haz:   cap("../sprites/min/hostile/hazard-zone.png",96,96,96,false,0,"h","hazard + arm"),
+    arm:   cap("../sprites/min/hostile/hazard-arm-strip8.png",768,96,96,false,0,"h",""),
+    rune:  cap("../sprites/min/friendly/blast-rune-zone.png",96,96,96,false,0,"f","blast rune"),
+  },
+  eclipse: {
+    orb:   cap("../sprites/eclipse/hostile/orb.png",12,12,12,false,7,"h","ring — husk (7 t/s)"),
+    dart:  cap("../sprites/eclipse/hostile/dart.png",24,24,12,true,9,"h","lance — leadshot (9 t/s)"),
+    fang:  cap("../sprites/eclipse/hostile/fang.png",20,20,13,true,6,"h","wave — fanmaw (6 t/s)"),
+    burr:  cap("../sprites/eclipse/hostile/burr.png",20,20,13,false,5,"h","diamond — ringer (5 t/s)"),
+    heavy: cap("../sprites/eclipse/hostile/heavy-orb.png",20,20,16,false,6,"h","hex — warden (6 t/s)"),
+    bolt:  cap("../sprites/eclipse/friendly/longbolt.png",16,16,10,true,16,"f","delta (16 t/s)"),
+    pellet:cap("../sprites/eclipse/friendly/scattercast-pellet.png",8,8,8,false,12.5,"f","chip (12.5 t/s)"),
+    wheelA:cap("../sprites/eclipse/friendly/wheelblade.png",16,16,13,false,8,"f","cross (8 t/s)"),
+    wheelB:cap("../sprites/eclipse/friendly/wheelblade-f2.png",16,16,13,false,8,"f",""),
+    nova:  cap("../sprites/eclipse/friendly/nova-ring.png",48,48,0,false,0,"f","nova"),
+    haz:   cap("../sprites/eclipse/hostile/hazard-zone.png",96,96,96,false,0,"h","hazard + arm"),
+    arm:   cap("../sprites/eclipse/hostile/hazard-arm-strip8.png",768,96,96,false,0,"h",""),
+    rune:  cap("../sprites/eclipse/friendly/blast-rune-zone.png",96,96,96,false,0,"f","blast rune"),
+  },
+  mono: {
+    orb:   cap("../sprites/mono/hostile/disc-d12-plain.png",12,12,12,false,7,"h","d12 plain — husk (7 t/s)"),
+    dart:  cap("../sprites/mono/hostile/disc-d12-dash.png",12,12,12,true,9,"h","d12 dash — leadshot (9 t/s)"),
+    fang:  cap("../sprites/mono/hostile/disc-d13-pair.png",13,13,13,false,6,"h","d13 pair — fanmaw (6 t/s)"),
+    burr:  cap("../sprites/mono/hostile/disc-d13-triad.png",13,13,13,false,5,"h","d13 triad — ringer (5 t/s)"),
+    heavy: cap("../sprites/mono/hostile/disc-d16-ring.png",16,16,16,false,6,"h","d16 ring — warden (6 t/s)"),
+    bolt:  cap("../sprites/mono/friendly/bolt-single.png",16,16,10,true,16,"f","bolt (16 t/s)"),
+    pellet:cap("../sprites/mono/friendly/pellet-single.png",8,8,8,false,12.5,"f","pellet (12.5 t/s)"),
+    wheelA:cap("../sprites/mono/friendly/ring.png",16,16,13,false,8,"f","ring (8 t/s)"),
+    wheelB:cap("../sprites/mono/friendly/ring.png",16,16,13,false,8,"f",""),
+    nova:  cap("../sprites/mono/friendly/nova-ring.png",48,48,0,false,0,"f","nova"),
+    haz:   cap("../sprites/mono/hostile/hazard-zone.png",96,96,96,false,0,"h","hazard + arm"),
+    arm:   cap("../sprites/mono/hostile/hazard-arm-strip8.png",768,96,96,false,0,"h",""),
+    rune:  cap("../sprites/mono/friendly/blast-rune-zone.png",96,96,96,false,0,"f","blast rune"),
+  },
+  ray: {
+    orb:   cap("../sprites/ray/hostile/cap-w12-l20-plain.png",20,12,12,true,7,"h","w12 L20 — husk (7 t/s)"),
+    dart:  cap("../sprites/ray/hostile/cap-w12-l26-plain.png",26,12,12,true,9,"h","w12 L26 — leadshot (9 t/s)"),
+    fang:  cap("../sprites/ray/hostile/cap-w13-l18-band.png",18,13,13,true,6,"h","w13 band — fanmaw (6 t/s)"),
+    burr:  cap("../sprites/ray/hostile/cap-w13-l18-pair.png",18,13,13,true,5,"h","w13 pair — ringer (5 t/s)"),
+    heavy: cap("../sprites/ray/hostile/cap-w16-l24-plain.png",24,16,16,true,6,"h","w16 L24 — warden (6 t/s)"),
+    bolt:  cap("../sprites/ray/friendly/bolt-single.png",16,16,10,true,16,"f","bolt ray (16 t/s)"),
+    pellet:cap("../sprites/ray/friendly/pellet-single.png",8,8,8,true,12.5,"f","mini-ray (12.5 t/s)"),
+    wheelA:cap("../sprites/ray/friendly/cross-a.png",16,16,13,false,8,"f","cross (8 t/s)"),
+    wheelB:cap("../sprites/ray/friendly/cross-b.png",16,16,13,false,8,"f",""),
+    nova:  cap("../sprites/ray/friendly/nova-ring.png",48,48,0,false,0,"f","nova burst"),
+    haz:   cap("../sprites/ray/hostile/hazard-zone.png",96,96,96,false,0,"h","hazard + arm"),
+    arm:   cap("../sprites/ray/hostile/hazard-arm-strip8.png",768,96,96,false,0,"h",""),
+    rune:  cap("../sprites/ray/friendly/blast-rune-zone.png",96,96,96,false,0,"f","blast rune"),
+  },
+};
+for (const st in STYLES) for (const k in STYLES[st]) { const im = new Image(); im.src = STYLES[st][k].f; STYLES[st][k].img = im; }
+let S = STYLES[document.getElementById("style").value];
+document.getElementById("style").onchange = e => { S = STYLES[e.target.value]; };
+const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+let mode = "lineup", zoom = 2, bgImg = null, bgColor = null, t0 = performance.now();
+function setBg(v) {
+  if (v.startsWith("#")) { bgColor = v; bgImg = null; }
+  else { bgColor = null; bgImg = new Image(); bgImg.src = v; }
+}
+setBg(document.getElementById("bg").value);
+document.getElementById("bg").onchange = e => setBg(e.target.value);
+document.getElementById("zoom").onchange = e => { zoom = +e.target.value; };
+for (const m of ["lineup","flight","swarm"]) {
+  document.getElementById("m-"+m).onclick = () => {
+    mode = m;
+    for (const n of ["lineup","flight","swarm"]) document.getElementById("m-"+n).classList.toggle("on", n===m);
+  };
+}
+function lcg(seed) { let s = seed>>>0; return () => (s = (s*1664525+1013904223)>>>0, s/4294967296); }
+function drawSprite(k, x, y, rot, frameX) {
+  const s = S[k]; if (!s.img.complete) return;
+  ctx.save(); ctx.translate(x, y);
+  if (rot) ctx.rotate(rot);
+  if (frameX !== undefined) ctx.drawImage(s.img, frameX, 0, 96, 96, -48, -48, 96, 96);
+  else ctx.drawImage(s.img, -s.w/2, -s.h/2);
+  ctx.restore();
+}
+function drawHitbox(k, x, y) {
+  const s = S[k]; if (!s.hd) return;
+  ctx.strokeStyle = "#39ff6e"; ctx.lineWidth = 1/zoom;
+  ctx.beginPath(); ctx.arc(x, y, s.hd/2, 0, 6.2832); ctx.stroke();
+}
+function label(txt, x, y) {
+  if (!txt) return;
+  ctx.font = "6px Consolas, monospace";
+  ctx.fillStyle = "rgba(0,0,0,0.55)"; ctx.fillText(txt, x+0.5, y+0.5);
+  ctx.fillStyle = "#f4efe2"; ctx.fillText(txt, x, y);
+}
+const lanes = ["bolt","pellet","wheelA","orb","dart","fang","burr","heavy"];
+const flight = lanes.map((k,i)=>({k, x: 40 + i*67, y: 46 + i*40}));
+let swarm = null;
+function buildSwarm() {
+  const R = lcg(421337);
+  const shots = [];
+  const emitters = [];
+  const kinds = ["burr","burr","burr","burr","burr","burr","fang","fang","fang","fang",
+                 "orb","orb","orb","orb","orb","orb","heavy","heavy","heavy","dart","dart","dart"];
+  const period = {burr:1.2, fang:1.2, orb:0.6, heavy:1.5, dart:0.8};
+  for (let i=0;i<kinds.length;i++) emitters.push({x: 90+R()*470, y: 55+R()*270, kind:kinds[i], period:period[kinds[i]], next: R()*1.2, seq:0});
+  swarm = { shots, emitters, R, player:{x:70,y:190}, pnext:0, snext:0, novaT: 0 };
+}
+buildSwarm();
+function stepSwarm(dt) {
+  const w = swarm;
+  for (const e of w.emitters) {
+    e.next -= dt;
+    if (e.next <= 0) {
+      const aimA = Math.atan2(w.player.y-e.y, w.player.x-e.x);
+      if (e.kind==="burr") { for (let i=0;i<12;i++){ const a=i*Math.PI/6 + e.seq*0.26; w.shots.push({k:"burr",x:e.x,y:e.y,vx:Math.cos(a)*5*TILE,vy:Math.sin(a)*5*TILE,ttl:1.2}); } }
+      else if (e.kind==="fang") { for (let i=-2;i<=2;i++){ const a=aimA+i*Math.PI/12; w.shots.push({k:"fang",x:e.x,y:e.y,vx:Math.cos(a)*6*TILE,vy:Math.sin(a)*6*TILE,ttl:1.25}); } }
+      else if (e.kind==="dart") { w.shots.push({k:"dart",x:e.x,y:e.y,vx:Math.cos(aimA)*9*TILE,vy:Math.sin(aimA)*9*TILE,ttl:1.1}); }
+      else if (e.kind==="heavy") { for (let i=-1;i<=1;i++){ const a=aimA+i*Math.PI/16; w.shots.push({k:"heavy",x:e.x,y:e.y,vx:Math.cos(a)*6*TILE,vy:Math.sin(a)*6*TILE,ttl:1.4}); } }
+      else { w.shots.push({k:"orb",x:e.x,y:e.y,vx:Math.cos(aimA)*7*TILE,vy:Math.sin(aimA)*7*TILE,ttl:1.0}); }
+      e.next = e.period; e.seq++;
+    }
+  }
+  w.pnext -= dt;
+  if (w.pnext <= 0) { w.shots.push({k:"bolt",x:w.player.x,y:w.player.y,vx:16*TILE,vy:0,ttl:0.42,rot:0}); w.pnext = 0.25; }
+  w.snext -= dt;
+  if (w.snext <= 0) { for (let i=-2;i<=2;i++){ const a=i*25*Math.PI/180; w.shots.push({k:"pellet",x:w.player.x,y:w.player.y,vx:Math.cos(a)*12.5*TILE,vy:Math.sin(a)*12.5*TILE,ttl:0.30}); } w.snext = 0.33; }
+  w.novaT = (w.novaT + dt) % 2.4;
+  for (const s of w.shots) { s.x += s.vx*dt; s.y += s.vy*dt; s.ttl -= dt; }
+  w.shots = w.shots.filter(s => s.ttl > 0 && s.x>-30 && s.x<W+30 && s.y>-30 && s.y<H+30);
+}
+let last = performance.now();
+function frame(now) {
+  const dt = Math.min(0.05, (now-last)/1000); last = now;
+  const paused = document.getElementById("pause").checked;
+  const hb = document.getElementById("hb").checked;
+  cv.width = W*zoom; cv.height = H*zoom;
+  ctx.imageSmoothingEnabled = false;
+  ctx.setTransform(zoom,0,0,zoom,0,0);
+  if (bgImg && bgImg.complete) ctx.drawImage(bgImg,0,0);
+  else { ctx.fillStyle = bgColor || "#43706a"; ctx.fillRect(0,0,W,H); }
+  const t = (now-t0)/1000;
+  const wheelK = (Math.floor(t/0.15)%2===0) ? "wheelA" : "wheelB";
+  if (mode==="lineup") {
+    const hs = ["orb","dart","fang","burr","heavy"], fs = ["bolt","pellet",wheelK,"nova"];
+    hs.forEach((k,i)=>{ const x=70+i*64,y=84; drawSprite(k,x,y,0); if(hb)drawHitbox(k,x,y); label(S[k].label.split(" — ")[0],x-18,y+22); });
+    fs.forEach((k,i)=>{ const x=70+i*64,y=160; drawSprite(k,x,y,0); if(hb)drawHitbox(k,x,y); label((S[k].label||"spin").split(" (")[0],x-18,y+22); });
+    const armPhase = Math.floor((t%1.6)/1.6*8);
+    drawSprite("haz",120,290,0); drawSprite("arm",120,290,0,96*Math.min(7,armPhase));
+    drawSprite("rune",300,290,0);
+    label("hazard + arm (band 8)",70,346); label("blast rune",272,346);
+    if (hb) { drawHitbox("haz",120,290); drawHitbox("rune",300,290); }
+  } else if (mode==="flight") {
+    if (!paused) for (const f of flight) { f.x += S[f.k].spd*TILE*dt; if (f.x > W+30) f.x = -20; }
+    for (const f of flight) {
+      const k = (f.k==="wheelA") ? wheelK : f.k;
+      drawSprite(k, f.x, f.y, 0);
+      if (hb) drawHitbox(k, f.x, f.y);
+      label(S[f.k].label, 8, f.y-14);
+    }
+  } else {
+    if (!paused) stepSwarm(dt);
+    const armPhase = Math.floor((t%1.8)/1.8*8);
+    drawSprite("haz",500,300,0); drawSprite("arm",500,300,0,96*Math.min(7,armPhase));
+    drawSprite("rune",150,90,0);
+    if (swarm.novaT < 0.35) { const s = 1+swarm.novaT*6; ctx.save(); ctx.globalAlpha = 1-swarm.novaT/0.35; ctx.translate(swarm.player.x,swarm.player.y); ctx.scale(s,s); ctx.drawImage(S.nova.img,-24,-24); ctx.restore(); }
+    for (const s of swarm.shots) if (S[s.k].fac==="f") { const k=(s.k==="wheelA")?wheelK:s.k; drawSprite(k,s.x,s.y,S[s.k].or?Math.atan2(s.vy,s.vx):0); if(hb)drawHitbox(s.k,s.x,s.y); }
+    for (const s of swarm.shots) if (S[s.k].fac==="h") { drawSprite(s.k,s.x,s.y,S[s.k].or?Math.atan2(s.vy,s.vx):0); if(hb)drawHitbox(s.k,s.x,s.y); }
+    label("live: "+swarm.shots.length+"  (hostile above friendly — §2.5 bands; style switch keeps the same swarm)", 8, 12);
+  }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
