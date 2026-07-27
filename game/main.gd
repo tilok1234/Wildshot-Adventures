@@ -1,12 +1,25 @@
 extends Node2D
-## Phase A lab main scene (M1 state): builds the arena from data/arena_lab.json
-## into TileMapLayers and bakes the collision bitgrid from the same definition.
-## Player, sim, and camera control arrive at M2.
+## Phase A lab main scene (M2 state): builds the arena from
+## data/arena_lab.json, bakes the collision bitgrid from the same
+## definition, then boots the sim — SimWorld + RealtimeDriver +
+## HumanSampler — with a placeholder player view. Scenario picker and
+## debug tooling land at M4.
 
 const ArenaBuilder := preload("res://game/arena/arena_builder.gd")
 const Bitgrid := preload("res://sim/collision/bitgrid.gd")
+const SimWorld := preload("res://sim/sim_world.gd")
+const RealtimeDriver := preload("res://game/drivers/realtime_driver.gd")
+const HumanSampler := preload("res://input/human_sampler.gd")
+const InputMapDefaults := preload("res://input/input_map_defaults.gd")
+const PlayerView := preload("res://game/views/player_view.gd")
+
+const TILE := 32.0
+## Fixed dev seed until the scenario picker (M4) supplies one; always logged.
+const RUN_SEED := 1
 
 var bitgrid: RefCounted
+var world: SimWorld
+var driver: RealtimeDriver
 
 
 func _ready() -> void:
@@ -43,10 +56,40 @@ func _ready() -> void:
 	add_child(camera)
 	camera.make_current()
 
+	InputMapDefaults.register()
+	world = SimWorld.new()
+	world.setup(RUN_SEED, bitgrid)
+	world.add_player(Vector2(int(def.width) / 2.0, int(def.height) / 2.0))
+
+	var pview := PlayerView.new()
+	pview.world = world
+	add_child(pview)
+
+	driver = RealtimeDriver.new()
+	driver.world = world
+	driver.sampler = HumanSampler.new()
+	driver.mouse_tile_provider = func() -> Vector2: return get_global_mouse_position() / TILE
+	add_child(driver)
+
+	var pause_label := Label.new()
+	pause_label.text = "PAUSED"
+	pause_label.visible = false
+	pause_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	var hud := CanvasLayer.new()
+	hud.add_child(pause_label)
+	add_child(hud)
+	driver.pause_changed.connect(func(p: bool) -> void: pause_label.visible = p)
+
 	print(
 		(
-			"arena ready: %dx%d, %d solid cells, %d placements"
-			% [int(def.width), int(def.height), bitgrid.solid_count(), get_placement_count(layers)]
+			"arena ready: %dx%d, %d solid cells, %d placements, seed=%d"
+			% [
+				int(def.width),
+				int(def.height),
+				bitgrid.solid_count(),
+				get_placement_count(layers),
+				RUN_SEED,
+			]
 		)
 	)
 
