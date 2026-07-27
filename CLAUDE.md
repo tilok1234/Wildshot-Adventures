@@ -175,21 +175,27 @@ primes the tester-recruitment pipeline both Gate 1 cycles draw from.
 
 ## Milestone position
 
-Edit this line as milestones land: **M1 complete and designer-approved
-(Law-6 floor + wall-stub obstacles accepted 2026-07-27). M2 ENGINEERING
-COMPLETE 2026-07-27 (game repo 3ac9081→db5ada1; session record in
-planning notes/sessions/2026-07-27.md): SimWorld spine, determinism
-smoke (60/60 checkpoints + Windows CI job), RealtimeDriver with
-structural full-freeze pause, grid-slide kinematics, §2.9 camera,
-prev/curr interp toggle (F7), HumanSampler + code-registered InputMap,
-Sprite Forge importer + AnimatedActor (ranger renders, velocity
-facing), slice test green (+CI), movement-speed editor (F2/F3 presets,
-sim-side 3.0–5.5 clamp, serialized replay-dirty flag). STRESS VERDICT
-RECORDED: min 1950 fps at ~600 live + 24 stand-ins, worst window
-0.51 ms vs 16.67 budget (reports/stress_m2.json) — spatial hash stays
-deferred, C# escape hatch NOT triggered. M2 CLOSES on the designer
-feel pass (rested session, day start): movement feel at 3.0/4.0
-(F2/F3), ranger facing eyeball, pause freeze (Esc), F7 interp A/B.
-Then M3 (docs/12 §4): aim/fire/autofire + deterministic projectiles +
-replay capture + golden replays + RNG lint + remap UI + F9 GIF ring
-buffer + itch/devlog/Discord channels.**
+Edit this line as milestones land: **M1 complete and designer-approved.
+M2 engineering complete 2026-07-27; stress verdict recorded (min 1950
+fps @ ~600 live — spatial hash deferred, C# hatch not triggered;
+reports/stress_m2.json). M2 CLOSES on the designer feel pass (rested,
+day start): movement feel at 3.0/4.0 (F2/F3), ranger facing, pause
+freeze, F7 interp A/B. M3 ENGINEERING COMPLETE 2026-07-27 (8a0f2d4→
+d172a25; session record in planning notes/sessions/2026-07-27.md):
+three WeaponFrame.tres (§3.3 values, Longbolt 6.5t cap), fire path
+with sim-side autofire latch + HUD indicator, motion programs
+(straight/decel/sine/boomerang) + 8-slot hit registry (max-passes,
+registry_full block), one damage-resolution path + death sweep,
+terrain collision + corner-snag JSONL, CORE-32 proofs mechanized in
+the smoke test (fire-vs-no-fire position equality; zero RNG in fire
+path), .wsr replay capture (F10 live) + ReplaySource + golden replay
+per frame verified 10x consecutive + Windows CI gate (activated M3,
+one milestone early — flagged in planning log for veto), remap UI
+(F1) + Config autoload + settings.cfg persistence (test green), F9
+GIF ring buffer + tools/gif.ps1. OPEN designer-owned M3 items: stand
+up itch page + devlog thread + bare Discord (accounts/public posts),
+post the first weekly GIF (F9 → tools/gif.ps1) — cadence starts there
+and never stops. Next code milestone: M4 (docs/12 §4 — debug console
++ overlay, density meter, event skeleton completion, death recap +
+debug emitter, scenario picker, ability slot + mana, HP/mana HUD,
+UI/text scaling, fresh-hands verdict command).**
