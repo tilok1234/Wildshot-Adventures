@@ -176,18 +176,20 @@ primes the tester-recruitment pipeline both Gate 1 cycles draw from.
 ## Milestone position
 
 Edit this line as milestones land: **M1 complete and designer-approved
-(Law-6 floor + wall-stub obstacles accepted 2026-07-27). M2 IN PROGRESS —
-landed so far: sim/pcg32.gd (named-stream PCG32) and sim/input_frame.gd
-(quantized InputFrame). Still to build (docs/12 §4 M2): SimWorld spine
-(§2.1 — tick/step, players array, SoA projectile pool, serialize +
-FNV-1a state_hash, event queue), RealtimeDriver (accumulator, 5-tick
-catch-up cap, full-freeze pause), player kinematics with grid slide vs
-the bitgrid, camera per §2.9 (view-side pixel rounding, arena limits),
-prev/curr interpolation toggle, HumanSampler + code-registered InputMap
-defaults, spriteforge importer + AnimatedActor (ranger sheet, facing
-from sim velocity; sheets are 64 px cells — render at 0.5 scale),
-actor-sheet slice test, 600-projectile stress rig + 24 stand-ins with
-windowed FPS report (the spatial-hash/C# escape-hatch verdict — do NOT
-let it drift past M2), determinism smoke test (double-run, hash
-compare; Windows CI runner per §2.4 scope), runtime movement-speed
-editor (presets 3.0/4.0, band clamp 3.0–5.5, replay-dirty flag).**
+(Law-6 floor + wall-stub obstacles accepted 2026-07-27). M2 ENGINEERING
+COMPLETE 2026-07-27 (game repo 3ac9081→db5ada1; session record in
+planning notes/sessions/2026-07-27.md): SimWorld spine, determinism
+smoke (60/60 checkpoints + Windows CI job), RealtimeDriver with
+structural full-freeze pause, grid-slide kinematics, §2.9 camera,
+prev/curr interp toggle (F7), HumanSampler + code-registered InputMap,
+Sprite Forge importer + AnimatedActor (ranger renders, velocity
+facing), slice test green (+CI), movement-speed editor (F2/F3 presets,
+sim-side 3.0–5.5 clamp, serialized replay-dirty flag). STRESS VERDICT
+RECORDED: min 1950 fps at ~600 live + 24 stand-ins, worst window
+0.51 ms vs 16.67 budget (reports/stress_m2.json) — spatial hash stays
+deferred, C# escape hatch NOT triggered. M2 CLOSES on the designer
+feel pass (rested session, day start): movement feel at 3.0/4.0
+(F2/F3), ranger facing eyeball, pause freeze (Esc), F7 interp A/B.
+Then M3 (docs/12 §4): aim/fire/autofire + deterministic projectiles +
+replay capture + golden replays + RNG lint + remap UI + F9 GIF ring
+buffer + itch/devlog/Discord channels.**
