@@ -15,6 +15,9 @@ const MAX_TICKS_PER_FRAME := 5
 
 var world: SimWorld = null
 var sampler: HumanSampler = null
+## Optional always-on replay recorder (§2.4): fed the exact frames the sim
+## steps with. begin() it against the world before play starts.
+var recorder: RefCounted = null
 ## Returns the mouse position in world TILE coordinates; supplied by the
 ## scene (view-side transform knowledge stays out of input and sim).
 var mouse_tile_provider: Callable = Callable()
@@ -43,7 +46,12 @@ func _process(delta: float) -> void:
 	var ticks := 0
 	var t0 := Time.get_ticks_usec()
 	while _accumulator >= SimWorld.DT and ticks < MAX_TICKS_PER_FRAME:
-		world.step([_sample_frame()])
+		var frames := [_sample_frame()]
+		if recorder != null:
+			recorder.record_frames(frames)
+		world.step(frames)
+		if recorder != null:
+			recorder.after_step()
 		frame_events.append_array(world.events)
 		_accumulator -= SimWorld.DT
 		ticks += 1

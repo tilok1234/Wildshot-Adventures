@@ -72,6 +72,15 @@ jobs:
           & "$HOME/godot/Godot_v4.6.2-stable_win64_console.exe" --headless --path . --script tests/determinism/determinism_smoke.gd
           exit $LASTEXITCODE
 
+      # Golden-replay hash gate. CI addendum schedules this at M4; activated
+      # at M3 when the goldens landed (strictly more verification, zero
+      # design change) — flagged in the planning session log for veto.
+      - name: Golden replays (10 consecutive verifies)
+        shell: pwsh
+        run: |
+          & "$HOME/godot/Godot_v4.6.2-stable_win64_console.exe" --headless --path . --script tests/replay_fixtures/verify_replays.gd
+          exit $LASTEXITCODE
+
   # M1 job (CI addendum): TileForge §4 acceptance, headless. Pure CPU image
   # compositing — no sim execution, so a Linux runner is allowed.
   pixel-match:

@@ -13,6 +13,7 @@ const RealtimeDriver := preload("res://game/drivers/realtime_driver.gd")
 const CollisionLogger := preload("res://game/drivers/collision_logger.gd")
 const HumanSampler := preload("res://input/human_sampler.gd")
 const InputMapDefaults := preload("res://input/input_map_defaults.gd")
+const ReplayRecorder := preload("res://input/replay_recorder.gd")
 const ActorLibrary := preload("res://game/views/actor_library.gd")
 const AnimatedActor := preload("res://game/views/animated_actor.gd")
 
@@ -57,6 +58,14 @@ func _process(_delta: float) -> void:
 	autofire_label.visible = p.autofire_on
 	if not world.weapon_frames.is_empty():
 		weapon_label.text = String(world.weapon_frames[p.equipped_weapon].display_name)
+	# F10: dump the always-on session recording. NOTE: the main scene is a
+	# hardcoded dev scenario until M4 — saved replays verify only against
+	# the same build (no scenario id exists for it yet); golden fixtures
+	# use the registered scenario path.
+	if Input.is_action_just_pressed("replay_save") and driver.recorder != null:
+		var path := "user://replays/session_%d.wsr" % world.tick
+		if driver.recorder.save_wsr(path, "dev", "main_dev_scene"):
+			print("replay saved: ", ProjectSettings.globalize_path(path))
 
 
 func _set_speed(speed: float) -> void:
@@ -101,6 +110,8 @@ func _ready() -> void:
 	driver.world = world
 	driver.sampler = HumanSampler.new()
 	driver.mouse_tile_provider = func() -> Vector2: return get_global_mouse_position() / TILE
+	driver.recorder = ReplayRecorder.new()
+	driver.recorder.begin(world)
 	add_child(driver)
 
 	var snag_logger := CollisionLogger.new()

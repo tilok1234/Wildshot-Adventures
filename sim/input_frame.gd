@@ -32,6 +32,11 @@ func move_vector() -> Vector2:
 	return v
 
 
+## Serialized size in bytes — the replay stream is tick_count x players x
+## this (input/replay_format.gd).
+const SERIALIZED_SIZE := 15
+
+
 func serialize_into(buf: StreamPeerBuffer) -> void:
 	buf.put_8(move_x + 1)
 	buf.put_8(move_y + 1)
@@ -42,3 +47,17 @@ func serialize_into(buf: StreamPeerBuffer) -> void:
 	buf.put_8(1 if autofire_toggle_edge else 0)
 	buf.put_8(1 if ability_pressed else 0)
 	buf.put_8(weapon_select)
+
+
+static func deserialize_from(buf: StreamPeerBuffer) -> RefCounted:
+	var f := new()
+	f.move_x = buf.get_8() - 1
+	f.move_y = buf.get_8() - 1
+	f.normalized = buf.get_8() == 1
+	f.aim_x = buf.get_32()
+	f.aim_y = buf.get_32()
+	f.fire_held = buf.get_8() == 1
+	f.autofire_toggle_edge = buf.get_8() == 1
+	f.ability_pressed = buf.get_8() == 1
+	f.weapon_select = buf.get_8()
+	return f

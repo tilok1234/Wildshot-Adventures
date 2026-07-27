@@ -26,6 +26,8 @@ const KEY_ACTIONS := {
 	"debug_speed_baseline": KEY_F3,
 	"debug_speed_down": KEY_MINUS,
 	"debug_speed_up": KEY_EQUAL,
+	# M3 replay capture: dump the session recording to user://replays/.
+	"replay_save": KEY_F10,
 }
 const MOUSE_ACTIONS := {
 	"fire": MOUSE_BUTTON_LEFT,
