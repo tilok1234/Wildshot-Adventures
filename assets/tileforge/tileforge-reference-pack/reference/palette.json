@@ -1,0 +1,3402 @@
+{
+ "forest": {
+  "families": {
+   "grass": [
+    {
+     "role": "grass.base",
+     "hex": "#4f8f3e"
+    },
+    {
+     "role": "grass.dark",
+     "hex": "#35602f"
+    },
+    {
+     "role": "grass.light",
+     "hex": "#74b95a"
+    },
+    {
+     "role": "grass.lush",
+     "hex": "#92d472"
+    },
+    {
+     "role": "grass.flower",
+     "hex": "#e9d867"
+    },
+    {
+     "role": "shadow.cast",
+     "hex": "#4a3323"
+    },
+    {
+     "role": "grass.tone",
+     "hex": "#4b893c"
+    }
+   ],
+   "drygrass": [
+    {
+     "role": "drygrass.base",
+     "hex": "#a29a54"
+    },
+    {
+     "role": "drygrass.dark",
+     "hex": "#7a7340"
+    },
+    {
+     "role": "drygrass.light",
+     "hex": "#c4bb6e"
+    },
+    {
+     "role": "drygrass.lush",
+     "hex": "#8d8549"
+    },
+    {
+     "role": "drygrass.seed",
+     "hex": "#d9cf8a"
+    },
+    {
+     "role": "shadow.cast",
+     "hex": "#4a3323"
+    },
+    {
+     "role": "drygrass.tone",
+     "hex": "#9d9551"
+    }
+   ],
+   "tallgrass": [
+    {
+     "role": "tallgrass.base",
+     "hex": "#3d7434"
+    },
+    {
+     "role": "tallgrass.dark",
+     "hex": "#2a5227"
+    },
+    {
+     "role": "tallgrass.light",
+     "hex": "#579a47"
+    },
+    {
+     "role": "tallgrass.speck",
+     "hex": "#1e3d1c"
+    }
+   ],
+   "soil": [
+    {
+     "role": "soil.base",
+     "hex": "#7d5b41"
+    },
+    {
+     "role": "soil.dark",
+     "hex": "#5f4130"
+    },
+    {
+     "role": "soil.light",
+     "hex": "#9a7857"
+    },
+    {
+     "role": "soil.pebble",
+     "hex": "#b39a7f"
+    },
+    {
+     "role": "soil.tone",
+     "hex": "#79573e"
+    }
+   ],
+   "sand": [
+    {
+     "role": "sand.base",
+     "hex": "#c9b17e"
+    },
+    {
+     "role": "sand.dark",
+     "hex": "#a58e5e"
+    },
+    {
+     "role": "sand.light",
+     "hex": "#e0cc96"
+    },
+    {
+     "role": "sand.speck",
+     "hex": "#8a7550"
+    },
+    {
+     "role": "sand.tone",
+     "hex": "#c4ac7a"
+    }
+   ],
+   "rock": [
+    {
+     "role": "rock.base",
+     "hex": "#7d838c"
+    },
+    {
+     "role": "rock.dark",
+     "hex": "#5a5f66"
+    },
+    {
+     "role": "rock.light",
+     "hex": "#a2a8b2"
+    },
+    {
+     "role": "rock.crack",
+     "hex": "#3f434a"
+    },
+    {
+     "role": "shadow.cast",
+     "hex": "#4a3323"
+    },
+    {
+     "role": "rock.tone",
+     "hex": "#787e87"
+    }
+   ],
+   "stone": [
+    {
+     "role": "stone.base",
+     "hex": "#867f6e"
+    },
+    {
+     "role": "stone.mortar",
+     "hex": "#615c50"
+    },
+    {
+     "role": "stone.light",
+     "hex": "#a8a190"
+    },
+    {
+     "role": "stone.speck",
+     "hex": "#4a463c"
+    }
+   ],
+   "cobble": [
+    {
+     "role": "cobble.base",
+     "hex": "#9b8264"
+    },
+    {
+     "role": "cobble.mortar",
+     "hex": "#6f5a44"
+    },
+    {
+     "role": "cobble.light",
+     "hex": "#c0a67e"
+    },
+    {
+     "role": "cobble.speck",
+     "hex": "#4c3b2c"
+    }
+   ],
+   "gravel": [
+    {
+     "role": "gravel.base",
+     "hex": "#8e8779"
+    },
+    {
+     "role": "gravel.dark",
+     "hex": "#6e675c"
+    },
+    {
+     "role": "gravel.light",
+     "hex": "#aca595"
+    },
+    {
+     "role": "gravel.pebble",
+     "hex": "#66727c"
+    },
+    {
+     "role": "gravel.tone",
+     "hex": "#8a8375"
+    }
+   ],
+   "mud": [
+    {
+     "role": "mud.base",
+     "hex": "#61462f"
+    },
+    {
+     "role": "mud.dark",
+     "hex": "#4a3526"
+    },
+    {
+     "role": "mud.light",
+     "hex": "#7b5d40"
+    },
+    {
+     "role": "mud.sheen",
+     "hex": "#8f8578"
+    },
+    {
+     "role": "mud.tone",
+     "hex": "#5e432d"
+    }
+   ],
+   "muck": [
+    {
+     "role": "muck.base",
+     "hex": "#42522f"
+    },
+    {
+     "role": "muck.dark",
+     "hex": "#2e3b24"
+    },
+    {
+     "role": "muck.light",
+     "hex": "#5a6b3c"
+    },
+    {
+     "role": "muck.weed",
+     "hex": "#71854a"
+    },
+    {
+     "role": "muck.tone",
+     "hex": "#3f4f2d"
+    }
+   ],
+   "bog": [
+    {
+     "role": "bog.base",
+     "hex": "#455c40"
+    },
+    {
+     "role": "bog.dark",
+     "hex": "#31432f"
+    },
+    {
+     "role": "bog.light",
+     "hex": "#5e7a54"
+    },
+    {
+     "role": "bog.sedge",
+     "hex": "#8a9a52"
+    },
+    {
+     "role": "bog.tone",
+     "hex": "#42583d"
+    }
+   ],
+   "snow": [
+    {
+     "role": "snow.base",
+     "hex": "#d5dde2"
+    },
+    {
+     "role": "snow.dark",
+     "hex": "#a8b4bd"
+    },
+    {
+     "role": "snow.light",
+     "hex": "#eef3f5"
+    },
+    {
+     "role": "snow.sparkle",
+     "hex": "#ffffff"
+    },
+    {
+     "role": "snow.tone",
+     "hex": "#cfd7dd"
+    }
+   ],
+   "ice": [
+    {
+     "role": "ice.base",
+     "hex": "#a9c8db"
+    },
+    {
+     "role": "ice.dark",
+     "hex": "#7fa3bd"
+    },
+    {
+     "role": "ice.light",
+     "hex": "#cfe4ee"
+    },
+    {
+     "role": "ice.crack",
+     "hex": "#5f83a0"
+    }
+   ],
+   "crackedearth": [
+    {
+     "role": "crackedearth.base",
+     "hex": "#a87d54"
+    },
+    {
+     "role": "crackedearth.dark",
+     "hex": "#8a5f41"
+    },
+    {
+     "role": "crackedearth.light",
+     "hex": "#c49b6b"
+    },
+    {
+     "role": "crackedearth.crack",
+     "hex": "#5c3a26"
+    },
+    {
+     "role": "crackedearth.tone",
+     "hex": "#a47951"
+    }
+   ],
+   "ash": [
+    {
+     "role": "ash.base",
+     "hex": "#615c57"
+    },
+    {
+     "role": "ash.dark",
+     "hex": "#4a4642"
+    },
+    {
+     "role": "ash.light",
+     "hex": "#7d7770"
+    },
+    {
+     "role": "ash.ember",
+     "hex": "#c96a3a"
+    },
+    {
+     "role": "ash.tone",
+     "hex": "#5e5954"
+    }
+   ],
+   "basalt": [
+    {
+     "role": "basalt.base",
+     "hex": "#383b44"
+    },
+    {
+     "role": "basalt.dark",
+     "hex": "#26282e"
+    },
+    {
+     "role": "basalt.light",
+     "hex": "#4e525e"
+    },
+    {
+     "role": "basalt.crack",
+     "hex": "#15161a"
+    },
+    {
+     "role": "basalt.tone",
+     "hex": "#3a3d47"
+    }
+   ],
+   "cavedirt": [
+    {
+     "role": "cavedirt.base",
+     "hex": "#544a40"
+    },
+    {
+     "role": "cavedirt.dark",
+     "hex": "#3e362f"
+    },
+    {
+     "role": "cavedirt.light",
+     "hex": "#6b6053"
+    },
+    {
+     "role": "cavedirt.speck",
+     "hex": "#7d7468"
+    },
+    {
+     "role": "cavedirt.tone",
+     "hex": "#51473d"
+    }
+   ],
+   "cavestone": [
+    {
+     "role": "cavestone.base",
+     "hex": "#525a66"
+    },
+    {
+     "role": "cavestone.dark",
+     "hex": "#3c424c"
+    },
+    {
+     "role": "cavestone.light",
+     "hex": "#6b7482"
+    },
+    {
+     "role": "cavestone.crack",
+     "hex": "#272c34"
+    },
+    {
+     "role": "cavestone.tone",
+     "hex": "#4f5762"
+    }
+   ],
+   "fungal": [
+    {
+     "role": "fungal.base",
+     "hex": "#414f45"
+    },
+    {
+     "role": "fungal.dark",
+     "hex": "#2f3a33"
+    },
+    {
+     "role": "fungal.light",
+     "hex": "#57685a"
+    },
+    {
+     "role": "fungal.spore",
+     "hex": "#5ecfb2"
+    },
+    {
+     "role": "fungal.tone",
+     "hex": "#3e4c42"
+    }
+   ],
+   "dungeonfloor": [
+    {
+     "role": "dungeonfloor.base",
+     "hex": "#454956"
+    },
+    {
+     "role": "dungeonfloor.dark",
+     "hex": "#33363e"
+    },
+    {
+     "role": "dungeonfloor.light",
+     "hex": "#5c6170"
+    },
+    {
+     "role": "dungeonfloor.grout",
+     "hex": "#22242a"
+    }
+   ],
+   "templefloor": [
+    {
+     "role": "templefloor.base",
+     "hex": "#a99770"
+    },
+    {
+     "role": "templefloor.dark",
+     "hex": "#8a7a5a"
+    },
+    {
+     "role": "templefloor.light",
+     "hex": "#c7b488"
+    },
+    {
+     "role": "templefloor.inlay",
+     "hex": "#6e5a8a"
+    }
+   ],
+   "corrupt": [
+    {
+     "role": "corrupt.base",
+     "hex": "#352844"
+    },
+    {
+     "role": "corrupt.dark",
+     "hex": "#241b30"
+    },
+    {
+     "role": "corrupt.light",
+     "hex": "#473a5c"
+    },
+    {
+     "role": "corrupt.vein",
+     "hex": "#a44ee0"
+    },
+    {
+     "role": "corrupt.tone",
+     "hex": "#372a47"
+    }
+   ],
+   "water": [
+    {
+     "role": "water.base",
+     "hex": "#3a7cb0"
+    },
+    {
+     "role": "water.dark",
+     "hex": "#27567f"
+    },
+    {
+     "role": "water.light",
+     "hex": "#63a8d8"
+    },
+    {
+     "role": "water.foam",
+     "hex": "#b8e0f2"
+    },
+    {
+     "role": "soil.damp",
+     "hex": "#5f4130"
+    }
+   ],
+   "shallow": [
+    {
+     "role": "shallow.base",
+     "hex": "#6fa3c4"
+    },
+    {
+     "role": "shallow.dark",
+     "hex": "#4f7fa3"
+    },
+    {
+     "role": "shallow.light",
+     "hex": "#95c4dd"
+    },
+    {
+     "role": "shallow.foam",
+     "hex": "#d5ecf5"
+    },
+    {
+     "role": "soil.damp",
+     "hex": "#5f4130"
+    }
+   ],
+   "deep": [
+    {
+     "role": "deep.base",
+     "hex": "#2c527a"
+    },
+    {
+     "role": "deep.dark",
+     "hex": "#1f3c5c"
+    },
+    {
+     "role": "deep.light",
+     "hex": "#3f6c96"
+    },
+    {
+     "role": "deep.foam",
+     "hex": "#6f9cc0"
+    },
+    {
+     "role": "soil.damp",
+     "hex": "#5f4130"
+    }
+   ],
+   "hotspring": [
+    {
+     "role": "hotspring.base",
+     "hex": "#2f9490"
+    },
+    {
+     "role": "hotspring.dark",
+     "hex": "#1f6a6a"
+    },
+    {
+     "role": "hotspring.light",
+     "hex": "#55bdb2"
+    },
+    {
+     "role": "hotspring.foam",
+     "hex": "#c8f0e8"
+    },
+    {
+     "role": "soil.damp",
+     "hex": "#5f4130"
+    }
+   ],
+   "lava": [
+    {
+     "role": "lava.base",
+     "hex": "#b8431c"
+    },
+    {
+     "role": "lava.dark",
+     "hex": "#7e2a14"
+    },
+    {
+     "role": "lava.light",
+     "hex": "#e06a26"
+    },
+    {
+     "role": "lava.glow",
+     "hex": "#f6a83a"
+    },
+    {
+     "role": "scorch",
+     "hex": "#4a3323"
+    }
+   ],
+   "moss": [
+    {
+     "role": "moss.base",
+     "hex": "#57a06b"
+    },
+    {
+     "role": "moss.dark",
+     "hex": "#3f7a52"
+    },
+    {
+     "role": "moss.light",
+     "hex": "#7cc78e"
+    },
+    {
+     "role": "moss.speck",
+     "hex": "#2e5c3d"
+    }
+   ],
+   "prop": [
+    {
+     "role": "canopy.base",
+     "hex": "#4f8f3e"
+    },
+    {
+     "role": "canopy.dark",
+     "hex": "#35602f"
+    },
+    {
+     "role": "canopy.light",
+     "hex": "#92d472"
+    },
+    {
+     "role": "trunk.base",
+     "hex": "#7d5a3c"
+    },
+    {
+     "role": "trunk.dark",
+     "hex": "#5b3f2a"
+    },
+    {
+     "role": "rock.base",
+     "hex": "#7d838c"
+    },
+    {
+     "role": "rock.dark",
+     "hex": "#5a5f66"
+    },
+    {
+     "role": "rock.light",
+     "hex": "#a2a8b2"
+    },
+    {
+     "role": "shadow.cast",
+     "hex": "#4a3323"
+    },
+    {
+     "role": "trunk.light",
+     "hex": "#9c7852"
+    },
+    {
+     "role": "flower",
+     "hex": "#e9d867"
+    },
+    {
+     "role": "crystal.glow",
+     "hex": "#5ecfb2"
+    },
+    {
+     "role": "ore.glint",
+     "hex": "#f6a83a"
+    },
+    {
+     "role": "water",
+     "hex": "#63a8d8"
+    },
+    {
+     "role": "straw",
+     "hex": "#d9cf8a"
+    },
+    {
+     "role": "corrupt.vein",
+     "hex": "#a44ee0"
+    },
+    {
+     "role": "void.dark",
+     "hex": "#1c1815"
+    }
+   ],
+   "meta": [
+    {
+     "role": "wall.light",
+     "hex": "#a8a190"
+    },
+    {
+     "role": "wall.base",
+     "hex": "#867f6e"
+    },
+    {
+     "role": "wall.dark",
+     "hex": "#615c50"
+    },
+    {
+     "role": "roof.base",
+     "hex": "#7d5a3c"
+    },
+    {
+     "role": "roof.dark",
+     "hex": "#5b3f2a"
+    },
+    {
+     "role": "roof.light",
+     "hex": "#9c7852"
+    },
+    {
+     "role": "edge.dark",
+     "hex": "#5a5f66"
+    },
+    {
+     "role": "window",
+     "hex": "#63a8d8"
+    },
+    {
+     "role": "shadow.cast",
+     "hex": "#4a3323"
+    },
+    {
+     "role": "forge.glow",
+     "hex": "#f6a83a"
+    },
+    {
+     "role": "earth.base",
+     "hex": "#7d5b41"
+    },
+    {
+     "role": "earth.dark",
+     "hex": "#5f4130"
+    },
+    {
+     "role": "earth.light",
+     "hex": "#9a7857"
+    },
+    {
+     "role": "void.dark",
+     "hex": "#1c1815"
+    },
+    {
+     "role": "straw",
+     "hex": "#d9cf8a"
+    },
+    {
+     "role": "ivy",
+     "hex": "#57a06b"
+    },
+    {
+     "role": "banner",
+     "hex": "#5ecfb2"
+    },
+    {
+     "role": "bone.base",
+     "hex": "#c0b394"
+    },
+    {
+     "role": "bone.light",
+     "hex": "#ded2b0"
+    },
+    {
+     "role": "canopy.dark",
+     "hex": "#35602f"
+    },
+    {
+     "role": "canopy.lush",
+     "hex": "#92d472"
+    },
+    {
+     "role": "stone.light",
+     "hex": "#a2a8b2"
+    },
+    {
+     "role": "stone.base",
+     "hex": "#7d838c"
+    },
+    {
+     "role": "stone.dark",
+     "hex": "#5a5f66"
+    }
+   ],
+   "packedroad": [
+    {
+     "role": "packed.base",
+     "hex": "#9f825c"
+    },
+    {
+     "role": "packed.dark",
+     "hex": "#7e6445"
+    },
+    {
+     "role": "packed.light",
+     "hex": "#b99e73"
+    },
+    {
+     "role": "packed.agg",
+     "hex": "#766454"
+    }
+   ]
+  },
+  "materialBaseHex": {
+   "0": "#7d5b41",
+   "1": "#4f8f3e",
+   "2": "#3a7cb0",
+   "3": "#c9b17e",
+   "4": "#7d838c",
+   "5": "#867f6e",
+   "6": "#b8431c",
+   "7": "#000000",
+   "8": "#a29a54",
+   "9": "#61462f",
+   "10": "#42522f",
+   "11": "#d5dde2",
+   "12": "#a9c8db",
+   "13": "#8e8779",
+   "14": "#a87d54",
+   "15": "#615c57",
+   "16": "#383b44",
+   "17": "#544a40",
+   "18": "#525a66",
+   "19": "#414f45",
+   "20": "#454956",
+   "21": "#a99770",
+   "22": "#6fa3c4",
+   "23": "#2c527a",
+   "24": "#455c40",
+   "25": "#2f9490",
+   "26": "#352844",
+   "27": "#9f825c"
+  }
+ },
+ "autumn": {
+  "families": {
+   "grass": [
+    {
+     "role": "grass.base",
+     "hex": "#8a7f31"
+    },
+    {
+     "role": "grass.dark",
+     "hex": "#5d5722"
+    },
+    {
+     "role": "grass.light",
+     "hex": "#b3a844"
+    },
+    {
+     "role": "grass.lush",
+     "hex": "#ccc25a"
+    },
+    {
+     "role": "grass.flower",
+     "hex": "#d97f3f"
+    },
+    {
+     "role": "shadow.cast",
+     "hex": "#402715"
+    },
+    {
+     "role": "grass.tone",
+     "hex": "#847a2f"
+    }
+   ],
+   "drygrass": [
+    {
+     "role": "drygrass.base",
+     "hex": "#997f38"
+    },
+    {
+     "role": "drygrass.dark",
+     "hex": "#6e5a28"
+    },
+    {
+     "role": "drygrass.light",
+     "hex": "#bfa24e"
+    },
+    {
+     "role": "drygrass.lush",
+     "hex": "#84702f"
+    },
+    {
+     "role": "drygrass.seed",
+     "hex": "#d4b968"
+    },
+    {
+     "role": "shadow.cast",
+     "hex": "#402715"
+    },
+    {
+     "role": "drygrass.tone",
+     "hex": "#937a36"
+    }
+   ],
+   "tallgrass": [
+    {
+     "role": "tallgrass.base",
+     "hex": "#6d6827"
+    },
+    {
+     "role": "tallgrass.dark",
+     "hex": "#4c481c"
+    },
+    {
+     "role": "tallgrass.light",
+     "hex": "#918b38"
+    },
+    {
+     "role": "tallgrass.speck",
+     "hex": "#363313"
+    }
+   ],
+   "soil": [
+    {
+     "role": "soil.base",
+     "hex": "#7a4e2a"
+    },
+    {
+     "role": "soil.dark",
+     "hex": "#58371f"
+    },
+    {
+     "role": "soil.light",
+     "hex": "#9c6c3f"
+    },
+    {
+     "role": "soil.pebble",
+     "hex": "#b98f62"
+    },
+    {
+     "role": "soil.tone",
+     "hex": "#754b28"
+    }
+   ],
+   "sand": [
+    {
+     "role": "sand.base",
+     "hex": "#c2a06b"
+    },
+    {
+     "role": "sand.dark",
+     "hex": "#9c7d4e"
+    },
+    {
+     "role": "sand.light",
+     "hex": "#dcc292"
+    },
+    {
+     "role": "sand.speck",
+     "hex": "#7d6440"
+    },
+    {
+     "role": "sand.tone",
+     "hex": "#bd9b67"
+    }
+   ],
+   "rock": [
+    {
+     "role": "rock.base",
+     "hex": "#8d8178"
+    },
+    {
+     "role": "rock.dark",
+     "hex": "#6a5f58"
+    },
+    {
+     "role": "rock.light",
+     "hex": "#b0a49a"
+    },
+    {
+     "role": "rock.crack",
+     "hex": "#4b423c"
+    },
+    {
+     "role": "shadow.cast",
+     "hex": "#402715"
+    },
+    {
+     "role": "rock.tone",
+     "hex": "#887c74"
+    }
+   ],
+   "stone": [
+    {
+     "role": "stone.base",
+     "hex": "#8a7a5e"
+    },
+    {
+     "role": "stone.mortar",
+     "hex": "#665741"
+    },
+    {
+     "role": "stone.light",
+     "hex": "#ab9b7d"
+    },
+    {
+     "role": "stone.speck",
+     "hex": "#4e4232"
+    }
+   ],
+   "cobble": [
+    {
+     "role": "cobble.base",
+     "hex": "#94714c"
+    },
+    {
+     "role": "cobble.mortar",
+     "hex": "#6b4f36"
+    },
+    {
+     "role": "cobble.light",
+     "hex": "#bd9a6b"
+    },
+    {
+     "role": "cobble.speck",
+     "hex": "#47311e"
+    }
+   ],
+   "gravel": [
+    {
+     "role": "gravel.base",
+     "hex": "#8b7f6e"
+    },
+    {
+     "role": "gravel.dark",
+     "hex": "#6b6053"
+    },
+    {
+     "role": "gravel.light",
+     "hex": "#aa9d88"
+    },
+    {
+     "role": "gravel.pebble",
+     "hex": "#6f7a84"
+    },
+    {
+     "role": "gravel.tone",
+     "hex": "#877b6a"
+    }
+   ],
+   "mud": [
+    {
+     "role": "mud.base",
+     "hex": "#5c4226"
+    },
+    {
+     "role": "mud.dark",
+     "hex": "#45301c"
+    },
+    {
+     "role": "mud.light",
+     "hex": "#775936"
+    },
+    {
+     "role": "mud.sheen",
+     "hex": "#8d7f6a"
+    },
+    {
+     "role": "mud.tone",
+     "hex": "#593f24"
+    }
+   ],
+   "muck": [
+    {
+     "role": "muck.base",
+     "hex": "#4e4f28"
+    },
+    {
+     "role": "muck.dark",
+     "hex": "#38391d"
+    },
+    {
+     "role": "muck.light",
+     "hex": "#686836"
+    },
+    {
+     "role": "muck.weed",
+     "hex": "#828045"
+    },
+    {
+     "role": "muck.tone",
+     "hex": "#4b4c26"
+    }
+   ],
+   "bog": [
+    {
+     "role": "bog.base",
+     "hex": "#565737"
+    },
+    {
+     "role": "bog.dark",
+     "hex": "#3f4028"
+    },
+    {
+     "role": "bog.light",
+     "hex": "#71724a"
+    },
+    {
+     "role": "bog.sedge",
+     "hex": "#9a9448"
+    },
+    {
+     "role": "bog.tone",
+     "hex": "#535435"
+    }
+   ],
+   "snow": [
+    {
+     "role": "snow.base",
+     "hex": "#d3d2c9"
+    },
+    {
+     "role": "snow.dark",
+     "hex": "#a9a9a4"
+    },
+    {
+     "role": "snow.light",
+     "hex": "#edece4"
+    },
+    {
+     "role": "snow.sparkle",
+     "hex": "#fdfcf6"
+    },
+    {
+     "role": "snow.tone",
+     "hex": "#cdccc4"
+    }
+   ],
+   "ice": [
+    {
+     "role": "ice.base",
+     "hex": "#adc2cd"
+    },
+    {
+     "role": "ice.dark",
+     "hex": "#8399a8"
+    },
+    {
+     "role": "ice.light",
+     "hex": "#d3e2e8"
+    },
+    {
+     "role": "ice.crack",
+     "hex": "#64798a"
+    }
+   ],
+   "crackedearth": [
+    {
+     "role": "crackedearth.base",
+     "hex": "#a96b3e"
+    },
+    {
+     "role": "crackedearth.dark",
+     "hex": "#8a4f2e"
+    },
+    {
+     "role": "crackedearth.light",
+     "hex": "#c78c54"
+    },
+    {
+     "role": "crackedearth.crack",
+     "hex": "#59301a"
+    },
+    {
+     "role": "crackedearth.tone",
+     "hex": "#a5673c"
+    }
+   ],
+   "ash": [
+    {
+     "role": "ash.base",
+     "hex": "#665c53"
+    },
+    {
+     "role": "ash.dark",
+     "hex": "#4e4640"
+    },
+    {
+     "role": "ash.light",
+     "hex": "#82766a"
+    },
+    {
+     "role": "ash.ember",
+     "hex": "#d1703a"
+    },
+    {
+     "role": "ash.tone",
+     "hex": "#635950"
+    }
+   ],
+   "basalt": [
+    {
+     "role": "basalt.base",
+     "hex": "#3e3a37"
+    },
+    {
+     "role": "basalt.dark",
+     "hex": "#2b2826"
+    },
+    {
+     "role": "basalt.light",
+     "hex": "#55504b"
+    },
+    {
+     "role": "basalt.crack",
+     "hex": "#181614"
+    },
+    {
+     "role": "basalt.tone",
+     "hex": "#403c39"
+    }
+   ],
+   "cavedirt": [
+    {
+     "role": "cavedirt.base",
+     "hex": "#594b3c"
+    },
+    {
+     "role": "cavedirt.dark",
+     "hex": "#42372c"
+    },
+    {
+     "role": "cavedirt.light",
+     "hex": "#72614e"
+    },
+    {
+     "role": "cavedirt.speck",
+     "hex": "#857562"
+    },
+    {
+     "role": "cavedirt.tone",
+     "hex": "#56483a"
+    }
+   ],
+   "cavestone": [
+    {
+     "role": "cavestone.base",
+     "hex": "#59575c"
+    },
+    {
+     "role": "cavestone.dark",
+     "hex": "#413f44"
+    },
+    {
+     "role": "cavestone.light",
+     "hex": "#737076"
+    },
+    {
+     "role": "cavestone.crack",
+     "hex": "#2b292e"
+    },
+    {
+     "role": "cavestone.tone",
+     "hex": "#565459"
+    }
+   ],
+   "fungal": [
+    {
+     "role": "fungal.base",
+     "hex": "#4e4f3b"
+    },
+    {
+     "role": "fungal.dark",
+     "hex": "#3a3a2c"
+    },
+    {
+     "role": "fungal.light",
+     "hex": "#66674c"
+    },
+    {
+     "role": "fungal.spore",
+     "hex": "#8fd45e"
+    },
+    {
+     "role": "fungal.tone",
+     "hex": "#4b4c39"
+    }
+   ],
+   "dungeonfloor": [
+    {
+     "role": "dungeonfloor.base",
+     "hex": "#4a4640"
+    },
+    {
+     "role": "dungeonfloor.dark",
+     "hex": "#383430"
+    },
+    {
+     "role": "dungeonfloor.light",
+     "hex": "#615c54"
+    },
+    {
+     "role": "dungeonfloor.grout",
+     "hex": "#242220"
+    }
+   ],
+   "templefloor": [
+    {
+     "role": "templefloor.base",
+     "hex": "#ae8f5c"
+    },
+    {
+     "role": "templefloor.dark",
+     "hex": "#8f7448"
+    },
+    {
+     "role": "templefloor.light",
+     "hex": "#ccab72"
+    },
+    {
+     "role": "templefloor.inlay",
+     "hex": "#8a4a3a"
+    }
+   ],
+   "corrupt": [
+    {
+     "role": "corrupt.base",
+     "hex": "#3e2a42"
+    },
+    {
+     "role": "corrupt.dark",
+     "hex": "#2a1c2e"
+    },
+    {
+     "role": "corrupt.light",
+     "hex": "#543a58"
+    },
+    {
+     "role": "corrupt.vein",
+     "hex": "#cc50c4"
+    },
+    {
+     "role": "corrupt.tone",
+     "hex": "#402c44"
+    }
+   ],
+   "water": [
+    {
+     "role": "water.base",
+     "hex": "#41729b"
+    },
+    {
+     "role": "water.dark",
+     "hex": "#2c4f6e"
+    },
+    {
+     "role": "water.light",
+     "hex": "#6f9fc4"
+    },
+    {
+     "role": "water.foam",
+     "hex": "#c2ddea"
+    },
+    {
+     "role": "soil.damp",
+     "hex": "#58371f"
+    }
+   ],
+   "shallow": [
+    {
+     "role": "shallow.base",
+     "hex": "#6d94ae"
+    },
+    {
+     "role": "shallow.dark",
+     "hex": "#4f7591"
+    },
+    {
+     "role": "shallow.light",
+     "hex": "#92b6ca"
+    },
+    {
+     "role": "shallow.foam",
+     "hex": "#d2e6ee"
+    },
+    {
+     "role": "soil.damp",
+     "hex": "#58371f"
+    }
+   ],
+   "deep": [
+    {
+     "role": "deep.base",
+     "hex": "#304c68"
+    },
+    {
+     "role": "deep.dark",
+     "hex": "#22374e"
+    },
+    {
+     "role": "deep.light",
+     "hex": "#446485"
+    },
+    {
+     "role": "deep.foam",
+     "hex": "#7092ac"
+    },
+    {
+     "role": "soil.damp",
+     "hex": "#58371f"
+    }
+   ],
+   "hotspring": [
+    {
+     "role": "hotspring.base",
+     "hex": "#348e92"
+    },
+    {
+     "role": "hotspring.dark",
+     "hex": "#23666a"
+    },
+    {
+     "role": "hotspring.light",
+     "hex": "#58b5b4"
+    },
+    {
+     "role": "hotspring.foam",
+     "hex": "#c4ecea"
+    },
+    {
+     "role": "soil.damp",
+     "hex": "#58371f"
+    }
+   ],
+   "lava": [
+    {
+     "role": "lava.base",
+     "hex": "#ad3e15"
+    },
+    {
+     "role": "lava.dark",
+     "hex": "#75260f"
+    },
+    {
+     "role": "lava.light",
+     "hex": "#d86420"
+    },
+    {
+     "role": "lava.glow",
+     "hex": "#f2a133"
+    },
+    {
+     "role": "scorch",
+     "hex": "#402715"
+    }
+   ],
+   "moss": [
+    {
+     "role": "moss.base",
+     "hex": "#8f9340"
+    },
+    {
+     "role": "moss.dark",
+     "hex": "#6b6d2c"
+    },
+    {
+     "role": "moss.light",
+     "hex": "#b5b95e"
+    },
+    {
+     "role": "moss.speck",
+     "hex": "#50521f"
+    }
+   ],
+   "prop": [
+    {
+     "role": "canopy.base",
+     "hex": "#8a7f31"
+    },
+    {
+     "role": "canopy.dark",
+     "hex": "#5d5722"
+    },
+    {
+     "role": "canopy.light",
+     "hex": "#ccc25a"
+    },
+    {
+     "role": "trunk.base",
+     "hex": "#835c38"
+    },
+    {
+     "role": "trunk.dark",
+     "hex": "#5f3d24"
+    },
+    {
+     "role": "rock.base",
+     "hex": "#8d8178"
+    },
+    {
+     "role": "rock.dark",
+     "hex": "#6a5f58"
+    },
+    {
+     "role": "rock.light",
+     "hex": "#b0a49a"
+    },
+    {
+     "role": "shadow.cast",
+     "hex": "#402715"
+    },
+    {
+     "role": "trunk.light",
+     "hex": "#a37b50"
+    },
+    {
+     "role": "flower",
+     "hex": "#d97f3f"
+    },
+    {
+     "role": "crystal.glow",
+     "hex": "#8fd45e"
+    },
+    {
+     "role": "ore.glint",
+     "hex": "#f2a133"
+    },
+    {
+     "role": "water",
+     "hex": "#6f9fc4"
+    },
+    {
+     "role": "straw",
+     "hex": "#d4b968"
+    },
+    {
+     "role": "corrupt.vein",
+     "hex": "#cc50c4"
+    },
+    {
+     "role": "void.dark",
+     "hex": "#1e1712"
+    }
+   ],
+   "meta": [
+    {
+     "role": "wall.light",
+     "hex": "#ab9b7d"
+    },
+    {
+     "role": "wall.base",
+     "hex": "#8a7a5e"
+    },
+    {
+     "role": "wall.dark",
+     "hex": "#665741"
+    },
+    {
+     "role": "roof.base",
+     "hex": "#835c38"
+    },
+    {
+     "role": "roof.dark",
+     "hex": "#5f3d24"
+    },
+    {
+     "role": "roof.light",
+     "hex": "#a37b50"
+    },
+    {
+     "role": "edge.dark",
+     "hex": "#6a5f58"
+    },
+    {
+     "role": "window",
+     "hex": "#6f9fc4"
+    },
+    {
+     "role": "shadow.cast",
+     "hex": "#402715"
+    },
+    {
+     "role": "forge.glow",
+     "hex": "#f2a133"
+    },
+    {
+     "role": "earth.base",
+     "hex": "#7a4e2a"
+    },
+    {
+     "role": "earth.dark",
+     "hex": "#58371f"
+    },
+    {
+     "role": "earth.light",
+     "hex": "#9c6c3f"
+    },
+    {
+     "role": "void.dark",
+     "hex": "#1e1712"
+    },
+    {
+     "role": "straw",
+     "hex": "#d4b968"
+    },
+    {
+     "role": "ivy",
+     "hex": "#8f9340"
+    },
+    {
+     "role": "banner",
+     "hex": "#8fd45e"
+    },
+    {
+     "role": "bone.base",
+     "hex": "#c2b18c"
+    },
+    {
+     "role": "bone.light",
+     "hex": "#e0cfa6"
+    },
+    {
+     "role": "canopy.dark",
+     "hex": "#5d5722"
+    },
+    {
+     "role": "canopy.lush",
+     "hex": "#ccc25a"
+    },
+    {
+     "role": "stone.light",
+     "hex": "#b0a49a"
+    },
+    {
+     "role": "stone.base",
+     "hex": "#8d8178"
+    },
+    {
+     "role": "stone.dark",
+     "hex": "#6a5f58"
+    }
+   ],
+   "packedroad": [
+    {
+     "role": "packed.base",
+     "hex": "#9a7347"
+    },
+    {
+     "role": "packed.dark",
+     "hex": "#765636"
+    },
+    {
+     "role": "packed.light",
+     "hex": "#b99364"
+    },
+    {
+     "role": "packed.agg",
+     "hex": "#725b47"
+    }
+   ]
+  },
+  "materialBaseHex": {
+   "0": "#7a4e2a",
+   "1": "#8a7f31",
+   "2": "#41729b",
+   "3": "#c2a06b",
+   "4": "#8d8178",
+   "5": "#8a7a5e",
+   "6": "#ad3e15",
+   "7": "#000000",
+   "8": "#997f38",
+   "9": "#5c4226",
+   "10": "#4e4f28",
+   "11": "#d3d2c9",
+   "12": "#adc2cd",
+   "13": "#8b7f6e",
+   "14": "#a96b3e",
+   "15": "#665c53",
+   "16": "#3e3a37",
+   "17": "#594b3c",
+   "18": "#59575c",
+   "19": "#4e4f3b",
+   "20": "#4a4640",
+   "21": "#ae8f5c",
+   "22": "#6d94ae",
+   "23": "#304c68",
+   "24": "#565737",
+   "25": "#348e92",
+   "26": "#3e2a42",
+   "27": "#9a7347"
+  }
+ },
+ "dusk": {
+  "families": {
+   "grass": [
+    {
+     "role": "grass.base",
+     "hex": "#3f6b6b"
+    },
+    {
+     "role": "grass.dark",
+     "hex": "#2e4a52"
+    },
+    {
+     "role": "grass.light",
+     "hex": "#5c9484"
+    },
+    {
+     "role": "grass.lush",
+     "hex": "#79b598"
+    },
+    {
+     "role": "grass.flower",
+     "hex": "#d9a0c8"
+    },
+    {
+     "role": "shadow.cast",
+     "hex": "#2c2136"
+    },
+    {
+     "role": "grass.tone",
+     "hex": "#3c6667"
+    }
+   ],
+   "drygrass": [
+    {
+     "role": "drygrass.base",
+     "hex": "#6d745c"
+    },
+    {
+     "role": "drygrass.dark",
+     "hex": "#4e5548"
+    },
+    {
+     "role": "drygrass.light",
+     "hex": "#929877"
+    },
+    {
+     "role": "drygrass.lush",
+     "hex": "#5e654f"
+    },
+    {
+     "role": "drygrass.seed",
+     "hex": "#b0b18c"
+    },
+    {
+     "role": "shadow.cast",
+     "hex": "#2c2136"
+    },
+    {
+     "role": "drygrass.tone",
+     "hex": "#697059"
+    }
+   ],
+   "tallgrass": [
+    {
+     "role": "tallgrass.base",
+     "hex": "#35595c"
+    },
+    {
+     "role": "tallgrass.dark",
+     "hex": "#26404a"
+    },
+    {
+     "role": "tallgrass.light",
+     "hex": "#4d7d72"
+    },
+    {
+     "role": "tallgrass.speck",
+     "hex": "#1a2f36"
+    }
+   ],
+   "soil": [
+    {
+     "role": "soil.base",
+     "hex": "#5d4766"
+    },
+    {
+     "role": "soil.dark",
+     "hex": "#43334c"
+    },
+    {
+     "role": "soil.light",
+     "hex": "#7a5f85"
+    },
+    {
+     "role": "soil.pebble",
+     "hex": "#97789f"
+    },
+    {
+     "role": "soil.tone",
+     "hex": "#594462"
+    }
+   ],
+   "sand": [
+    {
+     "role": "sand.base",
+     "hex": "#a08fa0"
+    },
+    {
+     "role": "sand.dark",
+     "hex": "#7d6a80"
+    },
+    {
+     "role": "sand.light",
+     "hex": "#c0b1bd"
+    },
+    {
+     "role": "sand.speck",
+     "hex": "#635266"
+    },
+    {
+     "role": "sand.tone",
+     "hex": "#9b8a9c"
+    }
+   ],
+   "rock": [
+    {
+     "role": "rock.base",
+     "hex": "#5f6a8c"
+    },
+    {
+     "role": "rock.dark",
+     "hex": "#444e68"
+    },
+    {
+     "role": "rock.light",
+     "hex": "#8290b2"
+    },
+    {
+     "role": "rock.crack",
+     "hex": "#2f3850"
+    },
+    {
+     "role": "shadow.cast",
+     "hex": "#2c2136"
+    },
+    {
+     "role": "rock.tone",
+     "hex": "#5b6687"
+    }
+   ],
+   "stone": [
+    {
+     "role": "stone.base",
+     "hex": "#75706c"
+    },
+    {
+     "role": "stone.mortar",
+     "hex": "#564f4e"
+    },
+    {
+     "role": "stone.light",
+     "hex": "#948e86"
+    },
+    {
+     "role": "stone.speck",
+     "hex": "#3e3a38"
+    }
+   ],
+   "cobble": [
+    {
+     "role": "cobble.base",
+     "hex": "#7d6a88"
+    },
+    {
+     "role": "cobble.mortar",
+     "hex": "#5a4a63"
+    },
+    {
+     "role": "cobble.light",
+     "hex": "#a08cae"
+    },
+    {
+     "role": "cobble.speck",
+     "hex": "#3c3145"
+    }
+   ],
+   "gravel": [
+    {
+     "role": "gravel.base",
+     "hex": "#7a7288"
+    },
+    {
+     "role": "gravel.dark",
+     "hex": "#5b5468"
+    },
+    {
+     "role": "gravel.light",
+     "hex": "#9a92a6"
+    },
+    {
+     "role": "gravel.pebble",
+     "hex": "#6d8195"
+    },
+    {
+     "role": "gravel.tone",
+     "hex": "#766e84"
+    }
+   ],
+   "mud": [
+    {
+     "role": "mud.base",
+     "hex": "#574149"
+    },
+    {
+     "role": "mud.dark",
+     "hex": "#402e35"
+    },
+    {
+     "role": "mud.light",
+     "hex": "#6f5a60"
+    },
+    {
+     "role": "mud.sheen",
+     "hex": "#87757a"
+    },
+    {
+     "role": "mud.tone",
+     "hex": "#543e46"
+    }
+   ],
+   "muck": [
+    {
+     "role": "muck.base",
+     "hex": "#304c3f"
+    },
+    {
+     "role": "muck.dark",
+     "hex": "#22372e"
+    },
+    {
+     "role": "muck.light",
+     "hex": "#446351"
+    },
+    {
+     "role": "muck.weed",
+     "hex": "#5c7e66"
+    },
+    {
+     "role": "muck.tone",
+     "hex": "#2e493c"
+    }
+   ],
+   "bog": [
+    {
+     "role": "bog.base",
+     "hex": "#3b5163"
+    },
+    {
+     "role": "bog.dark",
+     "hex": "#2a3a4d"
+    },
+    {
+     "role": "bog.light",
+     "hex": "#506d80"
+    },
+    {
+     "role": "bog.sedge",
+     "hex": "#6a8a7a"
+    },
+    {
+     "role": "bog.tone",
+     "hex": "#384e60"
+    }
+   ],
+   "snow": [
+    {
+     "role": "snow.base",
+     "hex": "#b9b9d0"
+    },
+    {
+     "role": "snow.dark",
+     "hex": "#8f8fa8"
+    },
+    {
+     "role": "snow.light",
+     "hex": "#dcdcea"
+    },
+    {
+     "role": "snow.sparkle",
+     "hex": "#f4f2ff"
+    },
+    {
+     "role": "snow.tone",
+     "hex": "#b3b3cb"
+    }
+   ],
+   "ice": [
+    {
+     "role": "ice.base",
+     "hex": "#96a7cc"
+    },
+    {
+     "role": "ice.dark",
+     "hex": "#6f7fa8"
+    },
+    {
+     "role": "ice.light",
+     "hex": "#bfcce6"
+    },
+    {
+     "role": "ice.crack",
+     "hex": "#55628c"
+    }
+   ],
+   "crackedearth": [
+    {
+     "role": "crackedearth.base",
+     "hex": "#8d6668"
+    },
+    {
+     "role": "crackedearth.dark",
+     "hex": "#6f4b50"
+    },
+    {
+     "role": "crackedearth.light",
+     "hex": "#ab8582"
+    },
+    {
+     "role": "crackedearth.crack",
+     "hex": "#482e33"
+    },
+    {
+     "role": "crackedearth.tone",
+     "hex": "#896265"
+    }
+   ],
+   "ash": [
+    {
+     "role": "ash.base",
+     "hex": "#55534f"
+    },
+    {
+     "role": "ash.dark",
+     "hex": "#3e3c39"
+    },
+    {
+     "role": "ash.light",
+     "hex": "#6f6a63"
+    },
+    {
+     "role": "ash.ember",
+     "hex": "#c4643f"
+    },
+    {
+     "role": "ash.tone",
+     "hex": "#52504c"
+    }
+   ],
+   "basalt": [
+    {
+     "role": "basalt.base",
+     "hex": "#2e2c40"
+    },
+    {
+     "role": "basalt.dark",
+     "hex": "#201f2e"
+    },
+    {
+     "role": "basalt.light",
+     "hex": "#443f58"
+    },
+    {
+     "role": "basalt.crack",
+     "hex": "#141220"
+    },
+    {
+     "role": "basalt.tone",
+     "hex": "#302e43"
+    }
+   ],
+   "cavedirt": [
+    {
+     "role": "cavedirt.base",
+     "hex": "#3f4054"
+    },
+    {
+     "role": "cavedirt.dark",
+     "hex": "#333140"
+    },
+    {
+     "role": "cavedirt.light",
+     "hex": "#565572"
+    },
+    {
+     "role": "cavedirt.speck",
+     "hex": "#6f6e85"
+    },
+    {
+     "role": "cavedirt.tone",
+     "hex": "#3d3e51"
+    }
+   ],
+   "cavestone": [
+    {
+     "role": "cavestone.base",
+     "hex": "#565a78"
+    },
+    {
+     "role": "cavestone.dark",
+     "hex": "#3f4258"
+    },
+    {
+     "role": "cavestone.light",
+     "hex": "#6b7194"
+    },
+    {
+     "role": "cavestone.crack",
+     "hex": "#2a2d40"
+    },
+    {
+     "role": "cavestone.tone",
+     "hex": "#535774"
+    }
+   ],
+   "fungal": [
+    {
+     "role": "fungal.base",
+     "hex": "#3f405c"
+    },
+    {
+     "role": "fungal.dark",
+     "hex": "#2e2f45"
+    },
+    {
+     "role": "fungal.light",
+     "hex": "#545576"
+    },
+    {
+     "role": "fungal.spore",
+     "hex": "#8f7ae8"
+    },
+    {
+     "role": "fungal.tone",
+     "hex": "#3c3d59"
+    }
+   ],
+   "dungeonfloor": [
+    {
+     "role": "dungeonfloor.base",
+     "hex": "#3f3b56"
+    },
+    {
+     "role": "dungeonfloor.dark",
+     "hex": "#2e2b40"
+    },
+    {
+     "role": "dungeonfloor.light",
+     "hex": "#544f70"
+    },
+    {
+     "role": "dungeonfloor.grout",
+     "hex": "#1e1c2a"
+    }
+   ],
+   "templefloor": [
+    {
+     "role": "templefloor.base",
+     "hex": "#877a92"
+    },
+    {
+     "role": "templefloor.dark",
+     "hex": "#6e6278"
+    },
+    {
+     "role": "templefloor.light",
+     "hex": "#a294ac"
+    },
+    {
+     "role": "templefloor.inlay",
+     "hex": "#4a7a8a"
+    }
+   ],
+   "corrupt": [
+    {
+     "role": "corrupt.base",
+     "hex": "#2a3c26"
+    },
+    {
+     "role": "corrupt.dark",
+     "hex": "#1c2a1a"
+    },
+    {
+     "role": "corrupt.light",
+     "hex": "#3a5234"
+    },
+    {
+     "role": "corrupt.vein",
+     "hex": "#84dc3c"
+    },
+    {
+     "role": "corrupt.tone",
+     "hex": "#2c3e27"
+    }
+   ],
+   "water": [
+    {
+     "role": "water.base",
+     "hex": "#33488f"
+    },
+    {
+     "role": "water.dark",
+     "hex": "#232f66"
+    },
+    {
+     "role": "water.light",
+     "hex": "#5471bd"
+    },
+    {
+     "role": "water.foam",
+     "hex": "#93a8e0"
+    },
+    {
+     "role": "soil.damp",
+     "hex": "#43334c"
+    }
+   ],
+   "shallow": [
+    {
+     "role": "shallow.base",
+     "hex": "#6a80b5"
+    },
+    {
+     "role": "shallow.dark",
+     "hex": "#4a5f96"
+    },
+    {
+     "role": "shallow.light",
+     "hex": "#8fa3d0"
+    },
+    {
+     "role": "shallow.foam",
+     "hex": "#c8d4ee"
+    },
+    {
+     "role": "soil.damp",
+     "hex": "#43334c"
+    }
+   ],
+   "deep": [
+    {
+     "role": "deep.base",
+     "hex": "#293464"
+    },
+    {
+     "role": "deep.dark",
+     "hex": "#1c2447"
+    },
+    {
+     "role": "deep.light",
+     "hex": "#3a4884"
+    },
+    {
+     "role": "deep.foam",
+     "hex": "#6472ab"
+    },
+    {
+     "role": "soil.damp",
+     "hex": "#43334c"
+    }
+   ],
+   "hotspring": [
+    {
+     "role": "hotspring.base",
+     "hex": "#2f7e96"
+    },
+    {
+     "role": "hotspring.dark",
+     "hex": "#1f5a70"
+    },
+    {
+     "role": "hotspring.light",
+     "hex": "#4fa5b8"
+    },
+    {
+     "role": "hotspring.foam",
+     "hex": "#b8e4ec"
+    },
+    {
+     "role": "soil.damp",
+     "hex": "#43334c"
+    }
+   ],
+   "lava": [
+    {
+     "role": "lava.base",
+     "hex": "#9c2b52"
+    },
+    {
+     "role": "lava.dark",
+     "hex": "#63183f"
+    },
+    {
+     "role": "lava.light",
+     "hex": "#cf4f5a"
+    },
+    {
+     "role": "lava.glow",
+     "hex": "#f18a4e"
+    },
+    {
+     "role": "scorch",
+     "hex": "#2c2136"
+    }
+   ],
+   "moss": [
+    {
+     "role": "moss.base",
+     "hex": "#42807c"
+    },
+    {
+     "role": "moss.dark",
+     "hex": "#2f5c5e"
+    },
+    {
+     "role": "moss.light",
+     "hex": "#66a89e"
+    },
+    {
+     "role": "moss.speck",
+     "hex": "#224547"
+    }
+   ],
+   "prop": [
+    {
+     "role": "canopy.base",
+     "hex": "#3f6b6b"
+    },
+    {
+     "role": "canopy.dark",
+     "hex": "#2e4a52"
+    },
+    {
+     "role": "canopy.light",
+     "hex": "#79b598"
+    },
+    {
+     "role": "trunk.base",
+     "hex": "#6e5468"
+    },
+    {
+     "role": "trunk.dark",
+     "hex": "#4f3a4a"
+    },
+    {
+     "role": "rock.base",
+     "hex": "#5f6a8c"
+    },
+    {
+     "role": "rock.dark",
+     "hex": "#444e68"
+    },
+    {
+     "role": "rock.light",
+     "hex": "#8290b2"
+    },
+    {
+     "role": "shadow.cast",
+     "hex": "#2c2136"
+    },
+    {
+     "role": "trunk.light",
+     "hex": "#8d7188"
+    },
+    {
+     "role": "flower",
+     "hex": "#d9a0c8"
+    },
+    {
+     "role": "crystal.glow",
+     "hex": "#8f7ae8"
+    },
+    {
+     "role": "ore.glint",
+     "hex": "#f18a4e"
+    },
+    {
+     "role": "water",
+     "hex": "#5471bd"
+    },
+    {
+     "role": "straw",
+     "hex": "#b0b18c"
+    },
+    {
+     "role": "corrupt.vein",
+     "hex": "#84dc3c"
+    },
+    {
+     "role": "void.dark",
+     "hex": "#17141d"
+    }
+   ],
+   "meta": [
+    {
+     "role": "wall.light",
+     "hex": "#948e86"
+    },
+    {
+     "role": "wall.base",
+     "hex": "#75706c"
+    },
+    {
+     "role": "wall.dark",
+     "hex": "#564f4e"
+    },
+    {
+     "role": "roof.base",
+     "hex": "#6e5468"
+    },
+    {
+     "role": "roof.dark",
+     "hex": "#4f3a4a"
+    },
+    {
+     "role": "roof.light",
+     "hex": "#8d7188"
+    },
+    {
+     "role": "edge.dark",
+     "hex": "#444e68"
+    },
+    {
+     "role": "window",
+     "hex": "#5471bd"
+    },
+    {
+     "role": "shadow.cast",
+     "hex": "#2c2136"
+    },
+    {
+     "role": "forge.glow",
+     "hex": "#f18a4e"
+    },
+    {
+     "role": "earth.base",
+     "hex": "#5d4766"
+    },
+    {
+     "role": "earth.dark",
+     "hex": "#43334c"
+    },
+    {
+     "role": "earth.light",
+     "hex": "#7a5f85"
+    },
+    {
+     "role": "void.dark",
+     "hex": "#17141d"
+    },
+    {
+     "role": "straw",
+     "hex": "#b0b18c"
+    },
+    {
+     "role": "ivy",
+     "hex": "#42807c"
+    },
+    {
+     "role": "banner",
+     "hex": "#8f7ae8"
+    },
+    {
+     "role": "bone.base",
+     "hex": "#aea6b2"
+    },
+    {
+     "role": "bone.light",
+     "hex": "#ccc4d0"
+    },
+    {
+     "role": "canopy.dark",
+     "hex": "#2e4a52"
+    },
+    {
+     "role": "canopy.lush",
+     "hex": "#79b598"
+    },
+    {
+     "role": "stone.light",
+     "hex": "#8290b2"
+    },
+    {
+     "role": "stone.base",
+     "hex": "#5f6a8c"
+    },
+    {
+     "role": "stone.dark",
+     "hex": "#444e68"
+    }
+   ],
+   "packedroad": [
+    {
+     "role": "packed.base",
+     "hex": "#7b6780"
+    },
+    {
+     "role": "packed.dark",
+     "hex": "#5d4c63"
+    },
+    {
+     "role": "packed.light",
+     "hex": "#99849e"
+    },
+    {
+     "role": "packed.agg",
+     "hex": "#5f536a"
+    }
+   ]
+  },
+  "materialBaseHex": {
+   "0": "#5d4766",
+   "1": "#3f6b6b",
+   "2": "#33488f",
+   "3": "#a08fa0",
+   "4": "#5f6a8c",
+   "5": "#75706c",
+   "6": "#9c2b52",
+   "7": "#000000",
+   "8": "#6d745c",
+   "9": "#574149",
+   "10": "#304c3f",
+   "11": "#b9b9d0",
+   "12": "#96a7cc",
+   "13": "#7a7288",
+   "14": "#8d6668",
+   "15": "#55534f",
+   "16": "#2e2c40",
+   "17": "#3f4054",
+   "18": "#565a78",
+   "19": "#3f405c",
+   "20": "#3f3b56",
+   "21": "#877a92",
+   "22": "#6a80b5",
+   "23": "#293464",
+   "24": "#3b5163",
+   "25": "#2f7e96",
+   "26": "#2a3c26",
+   "27": "#7b6780"
+  }
+ },
+ "winter": {
+  "families": {
+   "grass": [
+    {
+     "role": "grass.base",
+     "hex": "#6f9481"
+    },
+    {
+     "role": "grass.dark",
+     "hex": "#4e6b5d"
+    },
+    {
+     "role": "grass.light",
+     "hex": "#9dbfa9"
+    },
+    {
+     "role": "grass.lush",
+     "hex": "#c6e0cd"
+    },
+    {
+     "role": "grass.flower",
+     "hex": "#e8eef0"
+    },
+    {
+     "role": "shadow.cast",
+     "hex": "#3b3a38"
+    },
+    {
+     "role": "grass.tone",
+     "hex": "#6a8e7c"
+    }
+   ],
+   "drygrass": [
+    {
+     "role": "drygrass.base",
+     "hex": "#948e74"
+    },
+    {
+     "role": "drygrass.dark",
+     "hex": "#6e6a56"
+    },
+    {
+     "role": "drygrass.light",
+     "hex": "#bab393"
+    },
+    {
+     "role": "drygrass.lush",
+     "hex": "#807a63"
+    },
+    {
+     "role": "drygrass.seed",
+     "hex": "#d6d0b4"
+    },
+    {
+     "role": "shadow.cast",
+     "hex": "#3b3a38"
+    },
+    {
+     "role": "drygrass.tone",
+     "hex": "#8f8970"
+    }
+   ],
+   "tallgrass": [
+    {
+     "role": "tallgrass.base",
+     "hex": "#5c7a6a"
+    },
+    {
+     "role": "tallgrass.dark",
+     "hex": "#41584e"
+    },
+    {
+     "role": "tallgrass.light",
+     "hex": "#7fa189"
+    },
+    {
+     "role": "tallgrass.speck",
+     "hex": "#2f423a"
+    }
+   ],
+   "soil": [
+    {
+     "role": "soil.base",
+     "hex": "#767066"
+    },
+    {
+     "role": "soil.dark",
+     "hex": "#55524e"
+    },
+    {
+     "role": "soil.light",
+     "hex": "#989082"
+    },
+    {
+     "role": "soil.pebble",
+     "hex": "#c0b8a8"
+    },
+    {
+     "role": "soil.tone",
+     "hex": "#716c63"
+    }
+   ],
+   "sand": [
+    {
+     "role": "sand.base",
+     "hex": "#b3a894"
+    },
+    {
+     "role": "sand.dark",
+     "hex": "#8f867a"
+    },
+    {
+     "role": "sand.light",
+     "hex": "#d2c9b6"
+    },
+    {
+     "role": "sand.speck",
+     "hex": "#6f675c"
+    },
+    {
+     "role": "sand.tone",
+     "hex": "#aea390"
+    }
+   ],
+   "rock": [
+    {
+     "role": "rock.base",
+     "hex": "#7e8794"
+    },
+    {
+     "role": "rock.dark",
+     "hex": "#59626e"
+    },
+    {
+     "role": "rock.light",
+     "hex": "#a4aebc"
+    },
+    {
+     "role": "rock.crack",
+     "hex": "#404853"
+    },
+    {
+     "role": "shadow.cast",
+     "hex": "#3b3a38"
+    },
+    {
+     "role": "rock.tone",
+     "hex": "#79828f"
+    }
+   ],
+   "stone": [
+    {
+     "role": "stone.base",
+     "hex": "#837e74"
+    },
+    {
+     "role": "stone.mortar",
+     "hex": "#5e5a52"
+    },
+    {
+     "role": "stone.light",
+     "hex": "#a49e92"
+    },
+    {
+     "role": "stone.speck",
+     "hex": "#46423a"
+    }
+   ],
+   "cobble": [
+    {
+     "role": "cobble.base",
+     "hex": "#948c7d"
+    },
+    {
+     "role": "cobble.mortar",
+     "hex": "#6e675c"
+    },
+    {
+     "role": "cobble.light",
+     "hex": "#bdb4a2"
+    },
+    {
+     "role": "cobble.speck",
+     "hex": "#4b453c"
+    }
+   ],
+   "gravel": [
+    {
+     "role": "gravel.base",
+     "hex": "#96948e"
+    },
+    {
+     "role": "gravel.dark",
+     "hex": "#767470"
+    },
+    {
+     "role": "gravel.light",
+     "hex": "#b5b2aa"
+    },
+    {
+     "role": "gravel.pebble",
+     "hex": "#7a8b96"
+    },
+    {
+     "role": "gravel.tone",
+     "hex": "#92908a"
+    }
+   ],
+   "mud": [
+    {
+     "role": "mud.base",
+     "hex": "#59544c"
+    },
+    {
+     "role": "mud.dark",
+     "hex": "#413d38"
+    },
+    {
+     "role": "mud.light",
+     "hex": "#726c62"
+    },
+    {
+     "role": "mud.sheen",
+     "hex": "#8d897e"
+    },
+    {
+     "role": "mud.tone",
+     "hex": "#565149"
+    }
+   ],
+   "muck": [
+    {
+     "role": "muck.base",
+     "hex": "#4e5a50"
+    },
+    {
+     "role": "muck.dark",
+     "hex": "#39423b"
+    },
+    {
+     "role": "muck.light",
+     "hex": "#667468"
+    },
+    {
+     "role": "muck.weed",
+     "hex": "#818f7f"
+    },
+    {
+     "role": "muck.tone",
+     "hex": "#4b574d"
+    }
+   ],
+   "bog": [
+    {
+     "role": "bog.base",
+     "hex": "#525f63"
+    },
+    {
+     "role": "bog.dark",
+     "hex": "#3c464a"
+    },
+    {
+     "role": "bog.light",
+     "hex": "#6c7c80"
+    },
+    {
+     "role": "bog.sedge",
+     "hex": "#8a9a8a"
+    },
+    {
+     "role": "bog.tone",
+     "hex": "#4f5b5f"
+    }
+   ],
+   "snow": [
+    {
+     "role": "snow.base",
+     "hex": "#dde4e8"
+    },
+    {
+     "role": "snow.dark",
+     "hex": "#b0bac2"
+    },
+    {
+     "role": "snow.light",
+     "hex": "#f2f6f8"
+    },
+    {
+     "role": "snow.sparkle",
+     "hex": "#ffffff"
+    },
+    {
+     "role": "snow.tone",
+     "hex": "#d7dee3"
+    }
+   ],
+   "ice": [
+    {
+     "role": "ice.base",
+     "hex": "#b0cede"
+    },
+    {
+     "role": "ice.dark",
+     "hex": "#84a8c0"
+    },
+    {
+     "role": "ice.light",
+     "hex": "#d6e9f2"
+    },
+    {
+     "role": "ice.crack",
+     "hex": "#63869f"
+    }
+   ],
+   "crackedearth": [
+    {
+     "role": "crackedearth.base",
+     "hex": "#998872"
+    },
+    {
+     "role": "crackedearth.dark",
+     "hex": "#7a6a58"
+    },
+    {
+     "role": "crackedearth.light",
+     "hex": "#b8a78d"
+    },
+    {
+     "role": "crackedearth.crack",
+     "hex": "#52443a"
+    },
+    {
+     "role": "crackedearth.tone",
+     "hex": "#95846e"
+    }
+   ],
+   "ash": [
+    {
+     "role": "ash.base",
+     "hex": "#636367"
+    },
+    {
+     "role": "ash.dark",
+     "hex": "#4a4a4e"
+    },
+    {
+     "role": "ash.light",
+     "hex": "#808085"
+    },
+    {
+     "role": "ash.ember",
+     "hex": "#b55f3b"
+    },
+    {
+     "role": "ash.tone",
+     "hex": "#5f5f63"
+    }
+   ],
+   "basalt": [
+    {
+     "role": "basalt.base",
+     "hex": "#3b3f47"
+    },
+    {
+     "role": "basalt.dark",
+     "hex": "#282b31"
+    },
+    {
+     "role": "basalt.light",
+     "hex": "#525761"
+    },
+    {
+     "role": "basalt.crack",
+     "hex": "#16181d"
+    },
+    {
+     "role": "basalt.tone",
+     "hex": "#3d424a"
+    }
+   ],
+   "cavedirt": [
+    {
+     "role": "cavedirt.base",
+     "hex": "#4b4a50"
+    },
+    {
+     "role": "cavedirt.dark",
+     "hex": "#37363b"
+    },
+    {
+     "role": "cavedirt.light",
+     "hex": "#616066"
+    },
+    {
+     "role": "cavedirt.speck",
+     "hex": "#747379"
+    },
+    {
+     "role": "cavedirt.tone",
+     "hex": "#48474d"
+    }
+   ],
+   "cavestone": [
+    {
+     "role": "cavestone.base",
+     "hex": "#50565f"
+    },
+    {
+     "role": "cavestone.dark",
+     "hex": "#3a3f47"
+    },
+    {
+     "role": "cavestone.light",
+     "hex": "#6a707a"
+    },
+    {
+     "role": "cavestone.crack",
+     "hex": "#262a30"
+    },
+    {
+     "role": "cavestone.tone",
+     "hex": "#4d535c"
+    }
+   ],
+   "fungal": [
+    {
+     "role": "fungal.base",
+     "hex": "#425052"
+    },
+    {
+     "role": "fungal.dark",
+     "hex": "#303a3c"
+    },
+    {
+     "role": "fungal.light",
+     "hex": "#586a6c"
+    },
+    {
+     "role": "fungal.spore",
+     "hex": "#6ad4d8"
+    },
+    {
+     "role": "fungal.tone",
+     "hex": "#3f4d4f"
+    }
+   ],
+   "dungeonfloor": [
+    {
+     "role": "dungeonfloor.base",
+     "hex": "#43484f"
+    },
+    {
+     "role": "dungeonfloor.dark",
+     "hex": "#31353b"
+    },
+    {
+     "role": "dungeonfloor.light",
+     "hex": "#5a6068"
+    },
+    {
+     "role": "dungeonfloor.grout",
+     "hex": "#202327"
+    }
+   ],
+   "templefloor": [
+    {
+     "role": "templefloor.base",
+     "hex": "#999588"
+    },
+    {
+     "role": "templefloor.dark",
+     "hex": "#7d7a70"
+    },
+    {
+     "role": "templefloor.light",
+     "hex": "#b8b3a4"
+    },
+    {
+     "role": "templefloor.inlay",
+     "hex": "#5a7a92"
+    }
+   ],
+   "corrupt": [
+    {
+     "role": "corrupt.base",
+     "hex": "#422636"
+    },
+    {
+     "role": "corrupt.dark",
+     "hex": "#2e1a26"
+    },
+    {
+     "role": "corrupt.light",
+     "hex": "#583648"
+    },
+    {
+     "role": "corrupt.vein",
+     "hex": "#e0487c"
+    },
+    {
+     "role": "corrupt.tone",
+     "hex": "#442838"
+    }
+   ],
+   "water": [
+    {
+     "role": "water.base",
+     "hex": "#4a7d9c"
+    },
+    {
+     "role": "water.dark",
+     "hex": "#33566e"
+    },
+    {
+     "role": "water.light",
+     "hex": "#79aec8"
+    },
+    {
+     "role": "water.foam",
+     "hex": "#d6ecf6"
+    },
+    {
+     "role": "soil.damp",
+     "hex": "#55524e"
+    }
+   ],
+   "shallow": [
+    {
+     "role": "shallow.base",
+     "hex": "#77a1bd"
+    },
+    {
+     "role": "shallow.dark",
+     "hex": "#557d9c"
+    },
+    {
+     "role": "shallow.light",
+     "hex": "#9fc4d8"
+    },
+    {
+     "role": "shallow.foam",
+     "hex": "#ddeef6"
+    },
+    {
+     "role": "soil.damp",
+     "hex": "#55524e"
+    }
+   ],
+   "deep": [
+    {
+     "role": "deep.base",
+     "hex": "#334e68"
+    },
+    {
+     "role": "deep.dark",
+     "hex": "#24384c"
+    },
+    {
+     "role": "deep.light",
+     "hex": "#486787"
+    },
+    {
+     "role": "deep.foam",
+     "hex": "#7c9cb8"
+    },
+    {
+     "role": "soil.damp",
+     "hex": "#55524e"
+    }
+   ],
+   "hotspring": [
+    {
+     "role": "hotspring.base",
+     "hex": "#3a949a"
+    },
+    {
+     "role": "hotspring.dark",
+     "hex": "#276a72"
+    },
+    {
+     "role": "hotspring.light",
+     "hex": "#5fbcbe"
+    },
+    {
+     "role": "hotspring.foam",
+     "hex": "#d2f2f0"
+    },
+    {
+     "role": "soil.damp",
+     "hex": "#55524e"
+    }
+   ],
+   "lava": [
+    {
+     "role": "lava.base",
+     "hex": "#a0431e"
+    },
+    {
+     "role": "lava.dark",
+     "hex": "#6e2c14"
+    },
+    {
+     "role": "lava.light",
+     "hex": "#cc6a28"
+    },
+    {
+     "role": "lava.glow",
+     "hex": "#eda63e"
+    },
+    {
+     "role": "scorch",
+     "hex": "#3b3a38"
+    }
+   ],
+   "moss": [
+    {
+     "role": "moss.base",
+     "hex": "#dde6ec"
+    },
+    {
+     "role": "moss.dark",
+     "hex": "#b9c4cc"
+    },
+    {
+     "role": "moss.light",
+     "hex": "#f4f8fa"
+    },
+    {
+     "role": "moss.speck",
+     "hex": "#93a2ad"
+    }
+   ],
+   "prop": [
+    {
+     "role": "canopy.base",
+     "hex": "#6f9481"
+    },
+    {
+     "role": "canopy.dark",
+     "hex": "#4e6b5d"
+    },
+    {
+     "role": "canopy.light",
+     "hex": "#c6e0cd"
+    },
+    {
+     "role": "trunk.base",
+     "hex": "#7f7264"
+    },
+    {
+     "role": "trunk.dark",
+     "hex": "#5e5348"
+    },
+    {
+     "role": "rock.base",
+     "hex": "#7e8794"
+    },
+    {
+     "role": "rock.dark",
+     "hex": "#59626e"
+    },
+    {
+     "role": "rock.light",
+     "hex": "#a4aebc"
+    },
+    {
+     "role": "shadow.cast",
+     "hex": "#3b3a38"
+    },
+    {
+     "role": "trunk.light",
+     "hex": "#a0937f"
+    },
+    {
+     "role": "flower",
+     "hex": "#e8eef0"
+    },
+    {
+     "role": "crystal.glow",
+     "hex": "#6ad4d8"
+    },
+    {
+     "role": "ore.glint",
+     "hex": "#eda63e"
+    },
+    {
+     "role": "water",
+     "hex": "#79aec8"
+    },
+    {
+     "role": "straw",
+     "hex": "#d6d0b4"
+    },
+    {
+     "role": "corrupt.vein",
+     "hex": "#e0487c"
+    },
+    {
+     "role": "void.dark",
+     "hex": "#191a1c"
+    }
+   ],
+   "meta": [
+    {
+     "role": "wall.light",
+     "hex": "#a49e92"
+    },
+    {
+     "role": "wall.base",
+     "hex": "#837e74"
+    },
+    {
+     "role": "wall.dark",
+     "hex": "#5e5a52"
+    },
+    {
+     "role": "roof.base",
+     "hex": "#7f7264"
+    },
+    {
+     "role": "roof.dark",
+     "hex": "#5e5348"
+    },
+    {
+     "role": "roof.light",
+     "hex": "#a0937f"
+    },
+    {
+     "role": "edge.dark",
+     "hex": "#59626e"
+    },
+    {
+     "role": "window",
+     "hex": "#79aec8"
+    },
+    {
+     "role": "shadow.cast",
+     "hex": "#3b3a38"
+    },
+    {
+     "role": "forge.glow",
+     "hex": "#eda63e"
+    },
+    {
+     "role": "earth.base",
+     "hex": "#767066"
+    },
+    {
+     "role": "earth.dark",
+     "hex": "#55524e"
+    },
+    {
+     "role": "earth.light",
+     "hex": "#989082"
+    },
+    {
+     "role": "void.dark",
+     "hex": "#191a1c"
+    },
+    {
+     "role": "straw",
+     "hex": "#d6d0b4"
+    },
+    {
+     "role": "ivy",
+     "hex": "#dde6ec"
+    },
+    {
+     "role": "banner",
+     "hex": "#6ad4d8"
+    },
+    {
+     "role": "bone.base",
+     "hex": "#bcb8ac"
+    },
+    {
+     "role": "bone.light",
+     "hex": "#dcd8cc"
+    },
+    {
+     "role": "canopy.dark",
+     "hex": "#4e6b5d"
+    },
+    {
+     "role": "canopy.lush",
+     "hex": "#c6e0cd"
+    },
+    {
+     "role": "stone.light",
+     "hex": "#a4aebc"
+    },
+    {
+     "role": "stone.base",
+     "hex": "#7e8794"
+    },
+    {
+     "role": "stone.dark",
+     "hex": "#59626e"
+    }
+   ],
+   "packedroad": [
+    {
+     "role": "packed.base",
+     "hex": "#92897b"
+    },
+    {
+     "role": "packed.dark",
+     "hex": "#6f6962"
+    },
+    {
+     "role": "packed.light",
+     "hex": "#b2a899"
+    },
+    {
+     "role": "packed.agg",
+     "hex": "#75736e"
+    }
+   ]
+  },
+  "materialBaseHex": {
+   "0": "#767066",
+   "1": "#6f9481",
+   "2": "#4a7d9c",
+   "3": "#b3a894",
+   "4": "#7e8794",
+   "5": "#837e74",
+   "6": "#a0431e",
+   "7": "#000000",
+   "8": "#948e74",
+   "9": "#59544c",
+   "10": "#4e5a50",
+   "11": "#dde4e8",
+   "12": "#b0cede",
+   "13": "#96948e",
+   "14": "#998872",
+   "15": "#636367",
+   "16": "#3b3f47",
+   "17": "#4b4a50",
+   "18": "#50565f",
+   "19": "#425052",
+   "20": "#43484f",
+   "21": "#999588",
+   "22": "#77a1bd",
+   "23": "#334e68",
+   "24": "#525f63",
+   "25": "#3a949a",
+   "26": "#422636",
+   "27": "#92897b"
+  }
+ }
+}

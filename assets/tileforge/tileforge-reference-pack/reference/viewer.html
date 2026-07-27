@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TileForge reference pack — viewer</title>
+<style>
+  :root { --bg:#17181c; --panel:#1f2126; --ink:#e9e7de; --muted:#98958a; --accent:#e0a458; --line:#2c2e35; }
+  html { background:var(--bg); }
+  body { margin:0; padding:24px 16px 64px; color:var(--ink); background:var(--bg);
+    font:15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  main { max-width:1400px; margin:0 auto; }
+  h1 { font-size:22px; margin:0 0 2px; }
+  .sub { color:var(--muted); font-size:13px; margin:0 0 18px; }
+  .controls { display:flex; gap:8px; flex-wrap:wrap; margin:0 0 22px; }
+  .controls button { background:var(--panel); color:var(--ink); border:1px solid var(--line);
+    border-radius:4px; padding:6px 12px; font:600 12px/1 ui-monospace, Menlo, Consolas, monospace;
+    cursor:pointer; letter-spacing:.06em; }
+  .controls button.on { border-color:var(--accent); color:var(--accent); }
+  section.scene { margin:0 0 30px; }
+  section.scene h2 { font:600 13px/1 ui-monospace, Menlo, Consolas, monospace;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin:0 0 10px; }
+  .row { display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:12px; }
+  figure { margin:0; background:var(--panel); border:1px solid var(--line); border-radius:5px; overflow:hidden; }
+  figure img { width:100%; height:auto; display:block; image-rendering:pixelated; }
+  figcaption { padding:6px 10px; color:var(--muted);
+    font:11px/1.4 ui-monospace, Menlo, Consolas, monospace; border-top:1px solid var(--line); }
+  .assets { display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:12px; }
+  hr { border:0; border-top:1px solid var(--line); margin:34px 0; }
+  a { color:var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <h1>TileForge reference pack</h1>
+  <p class="sub">13 scenes × 4 themes · live game renders (frame 0, exact export path) ·
+  laws in <a href="SPRITE-REFERENCE.md">SPRITE-REFERENCE.md</a> · pinch/ctrl-zoom keeps pixels crisp</p>
+  <div class="controls" id="filters"></div>
+  <section class="scene"><h2>Flagship maps</h2><div class="stack" id="flagships"></div></section>
+  <div id="scenes"></div>
+  <hr>
+  <section class="scene"><h2>Palettes &amp; cadence</h2>
+    <div class="assets">
+      <figure><img src="palette-forest.png" alt="forest palette"><figcaption>palette — forest</figcaption></figure>
+      <figure><img src="palette-autumn.png" alt="autumn palette"><figcaption>palette — autumn</figcaption></figure>
+      <figure><img src="palette-dusk.png" alt="dusk palette"><figcaption>palette — dusk</figcaption></figure>
+      <figure><img src="palette-winter.png" alt="winter palette"><figcaption>palette — winter</figcaption></figure>
+      <figure><img src="animation-cadence.png" alt="animation cadence strips"><figcaption>animation cadence — water · river · lava · hotspring, frames 0–3</figcaption></figure>
+    </div>
+  </section>
+</main>
+<script>
+  var SCENES = ['forest-clearing','pine-wood','desert','snowfield','swamp','cave',
+    'dungeon-room','town-street','harbor','volcanic','corrupt-zone','farmland','scale-lineup'];
+  var FLAGSHIPS = ['crownhold','tidewater','thornhollow'];
+  var THEMES = ['forest','autumn','dusk','winter'];
+  var active = 'all';
+  function render() {
+    var fhost = document.getElementById('flagships');
+    fhost.innerHTML = '';
+    FLAGSHIPS.forEach(function (s) {
+      var themes = active === 'all' ? ['forest'] : [active];
+      themes.forEach(function (t) {
+        fhost.insertAdjacentHTML('beforeend',
+          '<figure><img src="flagships/' + s + '-' + t + '-1x.png" alt="' + s + ' ' + t + '">' +
+          '<figcaption>' + s + ' · ' + t + ' · 1×</figcaption></figure>');
+      });
+    });
+    var host = document.getElementById('scenes');
+    host.innerHTML = '';
+    SCENES.forEach(function (s) {
+      var sec = document.createElement('section');
+      sec.className = 'scene';
+      var themes = active === 'all' ? THEMES : [active];
+      sec.innerHTML = '<h2>' + s + '</h2><div class="row">' + themes.map(function (t) {
+        return '<figure><img src="scenes/' + s + '-' + t + '-1x.png" alt="' + s + ' ' + t + '">' +
+          '<figcaption>' + t + ' · 1×</figcaption></figure>';
+      }).join('') + '</div>';
+      host.appendChild(sec);
+    });
+    document.querySelectorAll('#filters button').forEach(function (b) {
+      b.className = b.dataset.t === active ? 'on' : '';
+    });
+  }
+  var f = document.getElementById('filters');
+  ['all'].concat(THEMES).forEach(function (t) {
+    var b = document.createElement('button');
+    b.textContent = t.toUpperCase();
+    b.dataset.t = t;
+    b.onclick = function () { active = t; render(); };
+    f.appendChild(b);
+  });
+  render();
+</script>
+</body>
+</html>

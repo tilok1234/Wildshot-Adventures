@@ -37,7 +37,8 @@ by rule.
 
 | Path | Contents |
 |---|---|
-| `addons/` | `tileforge_importer` (M1), `actorforge_importer` (M2) |
+| `assets/` | Raw forge drops (`.gdignore`d — importers consume these): `tileforge/` (4 theme packages + reference pack), `spriteforge/` (231-actor pack incl. projectiles/effects, manifest-driven) |
+| `addons/` | `tileforge_importer` (M1), `spriteforge_importer` (M2) |
 | `autoload/` | Config, Telemetry, DebugHub, BootArgs — exactly four, none holding gameplay state |
 | `data/` | Weapons, enemies, patterns, abilities, scenarios, actor sheet map, budgets — all `.tres`, hot-reloadable |
 | `sim/` | The engine-decoupled deterministic sim core (`systems/`, `collision/`) — global RNG banned here |

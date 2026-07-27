@@ -1,0 +1,370 @@
+{
+ "pack": "tileforge-sprite-reference",
+ "version": 1,
+ "generated": "2026-07-26 (REFROADS: routes re-authored to bare packedroad corridors, road band retired from display)",
+ "sourceCommit": "199ed7d",
+ "engineState": "31431 tiles/theme, validation 0 failures / 0 warnings (RD7 packedroad close)",
+ "renderPath": "buildMapReference frame 0 - the exact export path the game consumes; 1x PNGs are ground truth, upscale nearest-neighbor only",
+ "themes": [
+  "forest",
+  "autumn",
+  "dusk",
+  "winter"
+ ],
+ "boundary": "TileForge (upstream, tiles/props/structures/decals) stays isolated from the sprite forge (actors). This pack is the ONLY artifact crossing that boundary. Never request TileForge app features from it; request pack regeneration instead.",
+ "readingOrder": [
+  "README.md",
+  "SPRITE-REFERENCE.md",
+  "manifest.json",
+  "viewer.html (browse)",
+  "palette.json (build-time data)"
+ ],
+ "docs": {
+  "entry": "README.md",
+  "visualLaws": "SPRITE-REFERENCE.md",
+  "browser": "viewer.html"
+ },
+ "palette": {
+  "data": "palette.json",
+  "sheets": {
+   "forest": "palette-forest.png",
+   "autumn": "palette-autumn.png",
+   "dusk": "palette-dusk.png",
+   "winter": "palette-winter.png"
+  },
+  "notes": "families -> role lists with hex per theme; materialBaseHex = material id -> representative hex (camouflage checklist)"
+ },
+ "animationCadence": {
+  "file": "animation-cadence.png",
+  "notes": "water/river/lava/hotspring frames 0-3 at 3x, ~300ms per frame"
+ },
+ "scenes": [
+  {
+   "name": "forest-clearing",
+   "cells": [
+    20,
+    12
+   ],
+   "px": [
+    640,
+    384
+   ],
+   "biome": "temperate forest",
+   "contents": "oaks, pine, bushes, boulder, flowers, stump, fruit tree, leaf-litter decals, a dirtpath",
+   "files": {
+    "forest_1x": "scenes/forest-clearing-forest-1x.png",
+    "autumn_1x": "scenes/forest-clearing-autumn-1x.png",
+    "dusk_1x": "scenes/forest-clearing-dusk-1x.png",
+    "winter_1x": "scenes/forest-clearing-winter-1x.png",
+    "forest_2x": "scenes/forest-clearing-forest-2x.png"
+   }
+  },
+  {
+   "name": "pine-wood",
+   "cells": [
+    20,
+    12
+   ],
+   "px": [
+    640,
+    384
+   ],
+   "biome": "conifer forest",
+   "contents": "dense pines, boulder, stump, rock outcrop, ferns",
+   "files": {
+    "forest_1x": "scenes/pine-wood-forest-1x.png",
+    "autumn_1x": "scenes/pine-wood-autumn-1x.png",
+    "dusk_1x": "scenes/pine-wood-dusk-1x.png",
+    "winter_1x": "scenes/pine-wood-winter-1x.png",
+    "forest_2x": "scenes/pine-wood-forest-2x.png"
+   }
+  },
+  {
+   "name": "desert",
+   "cells": [
+    20,
+    12
+   ],
+   "px": [
+    640,
+    384
+   ],
+   "biome": "desert",
+   "contents": "sand + crackedearth patch, cacti, desert shrubs, rock outcrop, boulder, cracks + bones decals",
+   "files": {
+    "forest_1x": "scenes/desert-forest-1x.png",
+    "autumn_1x": "scenes/desert-autumn-1x.png",
+    "dusk_1x": "scenes/desert-dusk-1x.png",
+    "winter_1x": "scenes/desert-winter-1x.png",
+    "forest_2x": "scenes/desert-forest-2x.png"
+   }
+  },
+  {
+   "name": "snowfield",
+   "cells": [
+    20,
+    12
+   ],
+   "px": [
+    640,
+    384
+   ],
+   "biome": "winter field",
+   "contents": "snow + ice pond, snow shrubs, pines, boulder, basalt outcrop, ice cracks",
+   "files": {
+    "forest_1x": "scenes/snowfield-forest-1x.png",
+    "autumn_1x": "scenes/snowfield-autumn-1x.png",
+    "dusk_1x": "scenes/snowfield-dusk-1x.png",
+    "winter_1x": "scenes/snowfield-winter-1x.png",
+    "forest_2x": "scenes/snowfield-forest-2x.png"
+   }
+  },
+  {
+   "name": "swamp",
+   "cells": [
+    20,
+    12
+   ],
+   "px": [
+    640,
+    384
+   ],
+   "biome": "wetland",
+   "contents": "bog + muck + open water, reeds, cattails, dead trees, ferns, mushrooms",
+   "files": {
+    "forest_1x": "scenes/swamp-forest-1x.png",
+    "autumn_1x": "scenes/swamp-autumn-1x.png",
+    "dusk_1x": "scenes/swamp-dusk-1x.png",
+    "winter_1x": "scenes/swamp-winter-1x.png",
+    "forest_2x": "scenes/swamp-forest-2x.png"
+   }
+  },
+  {
+   "name": "cave",
+   "cells": [
+    20,
+    12
+   ],
+   "px": [
+    640,
+    384
+   ],
+   "biome": "cave interior",
+   "contents": "cavedirt + cavestone split, cavewall enclosure ring, mushrooms, crystals, minecart, ore vein, boulder",
+   "files": {
+    "forest_1x": "scenes/cave-forest-1x.png",
+    "autumn_1x": "scenes/cave-autumn-1x.png",
+    "dusk_1x": "scenes/cave-dusk-1x.png",
+    "winter_1x": "scenes/cave-winter-1x.png",
+    "forest_2x": "scenes/cave-forest-2x.png"
+   }
+  },
+  {
+   "name": "dungeon-room",
+   "cells": [
+    20,
+    12
+   ],
+   "px": [
+    640,
+    384
+   ],
+   "biome": "dungeon interior",
+   "contents": "dungeonfloor, dungeonwall ring, braziers, altar, chest, loot pile, bones/blood/webs decals",
+   "files": {
+    "forest_1x": "scenes/dungeon-room-forest-1x.png",
+    "autumn_1x": "scenes/dungeon-room-autumn-1x.png",
+    "dusk_1x": "scenes/dungeon-room-dusk-1x.png",
+    "winter_1x": "scenes/dungeon-room-winter-1x.png",
+    "forest_2x": "scenes/dungeon-room-forest-2x.png"
+   }
+  },
+  {
+   "name": "town-street",
+   "cells": [
+    20,
+    12
+   ],
+   "px": [
+    640,
+    384
+   ],
+   "biome": "town",
+   "contents": "house, stall, smithy, well, cobble street (streets are cobble areas — no road band), lamps, bench, kegs, crates, banner, fence",
+   "files": {
+    "forest_1x": "scenes/town-street-forest-1x.png",
+    "autumn_1x": "scenes/town-street-autumn-1x.png",
+    "dusk_1x": "scenes/town-street-dusk-1x.png",
+    "winter_1x": "scenes/town-street-winter-1x.png",
+    "forest_2x": "scenes/town-street-forest-2x.png"
+   }
+  },
+  {
+   "name": "harbor",
+   "cells": [
+    20,
+    12
+   ],
+   "px": [
+    640,
+    384
+   ],
+   "biome": "coast",
+   "contents": "water, pier L, dock (top row over water), rowboat, fishing boat, buoy, fishnets, bollard, kegs, lilypads + rapids",
+   "files": {
+    "forest_1x": "scenes/harbor-forest-1x.png",
+    "autumn_1x": "scenes/harbor-autumn-1x.png",
+    "dusk_1x": "scenes/harbor-dusk-1x.png",
+    "winter_1x": "scenes/harbor-winter-1x.png",
+    "forest_2x": "scenes/harbor-forest-2x.png"
+   }
+  },
+  {
+   "name": "volcanic",
+   "cells": [
+    20,
+    12
+   ],
+   "px": [
+    640,
+    384
+   ],
+   "biome": "volcanic",
+   "contents": "basalt, lava pool, ash field, rock outcrops, steamvent, scorch + cracks decals",
+   "files": {
+    "forest_1x": "scenes/volcanic-forest-1x.png",
+    "autumn_1x": "scenes/volcanic-autumn-1x.png",
+    "dusk_1x": "scenes/volcanic-dusk-1x.png",
+    "winter_1x": "scenes/volcanic-winter-1x.png",
+    "forest_2x": "scenes/volcanic-forest-2x.png"
+   }
+  },
+  {
+   "name": "corrupt-zone",
+   "cells": [
+    20,
+    12
+   ],
+   "px": [
+    640,
+    384
+   ],
+   "biome": "corruption",
+   "contents": "corrupt ground, corrupted trees, skullpole, bonepile, runestone, crystalfield + blood/webs decals",
+   "files": {
+    "forest_1x": "scenes/corrupt-zone-forest-1x.png",
+    "autumn_1x": "scenes/corrupt-zone-autumn-1x.png",
+    "dusk_1x": "scenes/corrupt-zone-dusk-1x.png",
+    "winter_1x": "scenes/corrupt-zone-winter-1x.png",
+    "forest_2x": "scenes/corrupt-zone-forest-2x.png"
+   }
+  },
+  {
+   "name": "farmland",
+   "cells": [
+    20,
+    12
+   ],
+   "px": [
+    640,
+    384
+   ],
+   "biome": "farm",
+   "contents": "soil plot with ALL 16 crop codes (4 crops x 4 stages), farmhouse, barn, coop, trough, chopping block, wheelbarrow, haybale, pen fence",
+   "files": {
+    "forest_1x": "scenes/farmland-forest-1x.png",
+    "autumn_1x": "scenes/farmland-autumn-1x.png",
+    "dusk_1x": "scenes/farmland-dusk-1x.png",
+    "winter_1x": "scenes/farmland-winter-1x.png",
+    "forest_2x": "scenes/farmland-forest-2x.png"
+   }
+  },
+  {
+   "name": "scale-lineup",
+   "cells": [
+    20,
+    12
+   ],
+   "px": [
+    640,
+    384
+   ],
+   "biome": "calibration",
+   "contents": "height ladder on grass: flowers - bush - barrels - statue - oak - pine - 2x2 cottage; actors calibrate ~22-30px/cell",
+   "files": {
+    "forest_1x": "scenes/scale-lineup-forest-1x.png",
+    "autumn_1x": "scenes/scale-lineup-autumn-1x.png",
+    "dusk_1x": "scenes/scale-lineup-dusk-1x.png",
+    "winter_1x": "scenes/scale-lineup-winter-1x.png",
+    "forest_2x": "scenes/scale-lineup-forest-2x.png"
+   }
+  }
+ ],
+ "flagships": [
+  {
+   "name": "crownhold",
+   "cells": [
+    64,
+    40
+   ],
+   "px": [
+    2048,
+    1280
+   ],
+   "kind": "walled mountain city",
+   "contents": "3-tier snow mountain (cliffsnow cap, cave mouth, mineshaft, ore veins), 2-wide waterfall feeding brook -> west+south moat -> mill outflow; wbridge + sbridge; walled city with 4 corner watchtowers + drawbridge over the moat channel; keep, manor, townhall (banner), chapel, plaza (fountain, well, stalls, awnings, puddles), shop street (bakery, store, smithy, tavern), guardhouse, houses, lamps, market goods; farm belt (full crop plot, farmhouse, barn, windmill, coop, pen); roadside shrine, forest fringes, moat lilypads, tallgrass + moss accents",
+   "files": {
+    "forest_1x": "flagships/crownhold-forest-1x.png",
+    "autumn_1x": "flagships/crownhold-autumn-1x.png",
+    "dusk_1x": "flagships/crownhold-dusk-1x.png",
+    "winter_1x": "flagships/crownhold-winter-1x.png",
+    "forest_2x": "flagships/crownhold-forest-2x.png"
+   }
+  },
+  {
+   "name": "tidewater",
+   "cells": [
+    48,
+    28
+   ],
+   "px": [
+    1536,
+    896
+   ],
+   "kind": "harbor town",
+   "contents": "sea with breakwater (offshore seawall), two piers + boardwalk arm, dock seated top-row-over-water, lighthouse headland (rock outcrop, dune grass, driftwood), river mouth under the coast-road bridge; cobble quay market (stalls, fishnets, baskets, kegs, crates, bollards, wet puddles); warehouse, store, tavern (terrace), fisher huts, smithy, houses; garden plot, laundry line, village props",
+   "files": {
+    "forest_1x": "flagships/tidewater-forest-1x.png",
+    "autumn_1x": "flagships/tidewater-autumn-1x.png",
+    "dusk_1x": "flagships/tidewater-dusk-1x.png",
+    "winter_1x": "flagships/tidewater-winter-1x.png",
+    "forest_2x": "flagships/tidewater-forest-2x.png"
+   }
+  },
+  {
+   "name": "thornhollow",
+   "cells": [
+    48,
+    28
+   ],
+   "px": [
+    1536,
+    896
+   ],
+   "kind": "dark wilds",
+   "contents": "calm mud base; bog marsh around a black pool (reeds, cattails, lilypads) + south hollow; muck slick; jagged corruption front NE (corrupted trees, stake lines, webs); ruined complex on a drygrass rise (A7 ruin, ruined temple, ruined gate + wall stubs, rubble/bones/gear); battle-broken road vignette (crater, spent arrows, battle gear, spikes); survivor camp (campfire, teal bedroll, crates, scorch); graveyard + crypt; stone circle on its own rise; dead trees, mushrooms, moss",
+   "files": {
+    "forest_1x": "flagships/thornhollow-forest-1x.png",
+    "autumn_1x": "flagships/thornhollow-autumn-1x.png",
+    "dusk_1x": "flagships/thornhollow-dusk-1x.png",
+    "winter_1x": "flagships/thornhollow-winter-1x.png",
+    "forest_2x": "flagships/thornhollow-forest-2x.png"
+   }
+  }
+ ],
+ "regenerate": {
+  "scenes": "node cli/reference-scenes.mjs --out reference/scenes  (from the TileForge repo)",
+  "flagships": "node cli/flagship-maps.mjs --out reference/flagships",
+  "note": "regenerate after TileForge art changes; deterministic from the engine seed"
+ }
+}
