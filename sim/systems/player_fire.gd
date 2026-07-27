@@ -49,7 +49,12 @@ static func run(world: RefCounted) -> void:
 		if aim == Vector2.ZERO:
 			aim = Vector2.RIGHT
 		aim = aim.normalized()
-		p.next_fire_tick = world.tick + int(wf.cadence_ticks)
+		# Quickdraw (ledger #2): hard-coded 2/3 cadence while buffed —
+		# +50% attack speed, no stat pipeline.
+		var cadence := int(wf.cadence_ticks)
+		if world.tick < p.quickdraw_until_tick:
+			cadence = maxi(1, (cadence * 2 + 2) / 3)
+		p.next_fire_tick = world.tick + cadence
 		(
 			world
 			. events

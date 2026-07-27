@@ -11,6 +11,22 @@ const InputMapDefaults := preload("res://input/input_map_defaults.gd")
 
 var _buttons: Dictionary = {}
 var _capturing := ""
+var _rows: VBoxContainer = null
+
+
+## Extra control row (e.g. the M4 ability hot-swap). cb receives the
+## pressed index.
+func add_button_row(title: String, names: Array, cb: Callable) -> void:
+	var row := HBoxContainer.new()
+	var lbl := Label.new()
+	lbl.text = title
+	row.add_child(lbl)
+	for i in names.size():
+		var b := Button.new()
+		b.text = String(names[i])
+		b.pressed.connect(cb.bind(i))
+		row.add_child(b)
+	_rows.add_child(row)
 
 
 func _ready() -> void:
@@ -19,6 +35,7 @@ func _ready() -> void:
 	var scroll := ScrollContainer.new()
 	scroll.custom_minimum_size = Vector2(280.0, 300.0)
 	var rows := VBoxContainer.new()
+	_rows = rows
 	var title := Label.new()
 	title.text = "INPUT REMAPS — click, then press a key"
 	rows.add_child(title)

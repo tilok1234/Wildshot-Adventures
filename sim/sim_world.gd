@@ -18,12 +18,15 @@ const PlayerState := preload("res://sim/player_state.gd")
 const ProjectilePool := preload("res://sim/projectile_pool.gd")
 const SimEvents := preload("res://sim/events.gd")
 const PlayerMove := preload("res://sim/systems/player_move.gd")
+const PlayerRegen := preload("res://sim/systems/player_regen.gd")
+const PlayerAbility := preload("res://sim/systems/player_ability.gd")
 const PlayerFire := preload("res://sim/systems/player_fire.gd")
 const ProjectileStep := preload("res://sim/systems/projectile_step.gd")
+const HazardStep := preload("res://sim/systems/hazard_step.gd")
 
 const TICKS_PER_SECOND := 60
 const DT := 1.0 / 60.0
-const SERIAL_VERSION := 4
+const SERIAL_VERSION := 5
 
 ## Named PCG32 stream ids (§2.4). rng_vfx deliberately does NOT exist here —
 ## it lives view-side so cosmetics can never perturb gameplay.
@@ -33,6 +36,7 @@ const STREAM_MISC := 2
 enum Command {
 	SPAWN_PROJECTILE,
 	SET_MOVE_SPEED,
+	SET_ABILITY,
 }
 
 ## §3.2 move-speed tuning band. The sim-side clamp means NO path — debug
@@ -73,6 +77,15 @@ var current_frames: Array = []
 ## by weapon_select-1. Excluded from serialize() like the bitgrid — the
 ## replay header's data-definitions hash covers them instead (§2.4).
 var weapon_frames: Array = []
+## Available AbilityDef resources (definitions) + the ONE equipped slot
+## (CORE-34). Swapping is a debug/scenario action, not gameplay input —
+## it marks the run replay-dirty.
+var ability_defs: Array = []
+var ability_def: Resource = null
+
+## Live armed-zone hazards (§2.6 M4 subset), stable order, serialized:
+## {id, pos, radius, faction, damage, arm_at_tick}.
+var hazards: Array[Dictionary] = []
 
 var _commands: Array[Dictionary] = []
 
@@ -88,6 +101,45 @@ func setup(p_seed: int, p_bitgrid: RefCounted) -> void:
 ## Setup-phase: install the weapon loadout (order = select keys 1..N).
 func set_weapons(frames: Array) -> void:
 	weapon_frames = frames
+
+
+## Setup-phase: available abilities; index 0 equips by default.
+func set_abilities(defs: Array) -> void:
+	ability_defs = defs
+	ability_def = defs[0] if not defs.is_empty() else null
+
+
+## In-step hazard placement (systems call this). Emits TelegraphStarted.
+func place_hazard(pos: Vector2, r: float, fac: int, dmg: int, arm_ticks: int) -> void:
+	var id := _alloc_id()
+	(
+		hazards
+		. append(
+			{
+				"id": id,
+				"pos": pos,
+				"radius": r,
+				"faction": fac,
+				"damage": dmg,
+				"placed_at_tick": tick,
+				"arm_at_tick": tick + arm_ticks,
+			}
+		)
+	)
+	(
+		events
+		. append(
+			{
+				"type": SimEvents.Type.TELEGRAPH_STARTED,
+				"tick": tick,
+				"id": id,
+				"pos": pos,
+				"radius": r,
+				"faction": fac,
+				"arm_at_tick": tick + arm_ticks,
+			}
+		)
+	)
 
 
 func add_player(pos: Vector2) -> PlayerState:
@@ -120,9 +172,12 @@ func step(frames: Array) -> void:
 	events.clear()
 	current_frames = frames
 	_drain_commands()
+	PlayerRegen.run(self)
 	PlayerMove.run(self)
+	PlayerAbility.run(self)
 	PlayerFire.run(self)
 	ProjectileStep.run(self)
+	HazardStep.run(self)
 	tick += 1
 
 
@@ -200,6 +255,18 @@ func serialize() -> PackedByteArray:
 	for e in enemies:
 		e.serialize_into(buf)
 	projectiles.serialize_into(buf)
+	buf.put_u32(hazards.size())
+	for hz: Dictionary in hazards:
+		buf.put_64(int(hz.id))
+		var hpos: Vector2 = hz.pos
+		buf.put_double(hpos.x)
+		buf.put_double(hpos.y)
+		buf.put_double(float(hz.radius))
+		buf.put_u8(int(hz.faction))
+		buf.put_32(int(hz.damage))
+		buf.put_64(int(hz.placed_at_tick))
+		buf.put_64(int(hz.arm_at_tick))
+	buf.put_u8(0 if ability_def == null else ability_defs.find(ability_def) + 1)
 	return buf.data_array
 
 
@@ -229,6 +296,11 @@ func _drain_commands() -> void:
 				spawn_projectile(cmd.pos, cmd.vel, cmd.radius, cmd.ttl, cmd.faction)
 			Command.SET_MOVE_SPEED:
 				_cmd_set_move_speed(int(cmd.player), float(cmd.speed))
+			Command.SET_ABILITY:
+				var idx := int(cmd.index)
+				if idx >= 0 and idx < ability_defs.size():
+					ability_def = ability_defs[idx]
+					replay_dirty = true
 	_commands.clear()
 
 

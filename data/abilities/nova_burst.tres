@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/ability_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"nova_burst"
+display_name = "Nova Burst"
+mana_cost = 30
+kind = 0
+damage = 15
+radius = 2.5
+duration_ticks = 0
+arm_ticks = 0
+place_range = 0.0

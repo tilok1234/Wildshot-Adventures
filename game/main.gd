@@ -19,6 +19,7 @@ const GifRecorder := preload("res://game/drivers/gif_recorder.gd")
 const FlashView := preload("res://game/views/flash_view.gd")
 const StatBar := preload("res://ui/stat_bar.gd")
 const DensityMeter := preload("res://ui/density_meter.gd")
+const HazardView := preload("res://game/views/hazard_view.gd")
 const ActorLibrary := preload("res://game/views/actor_library.gd")
 const AnimatedActor := preload("res://game/views/animated_actor.gd")
 
@@ -40,6 +41,7 @@ var autofire_icon: TextureRect
 var weapon_label: Label
 var hp_bar: StatBar
 var mana_bar: StatBar
+var ability_label: Label
 var options_menu: PanelContainer
 var density_meter: PanelContainer
 var hints_label: Label
@@ -103,6 +105,11 @@ func _process(_delta: float) -> void:
 	autofire_icon.texture = _af_on_tex if p.autofire_on else _af_off_tex
 	hp_bar.value = p.hp / 100.0
 	mana_bar.value = p.mana / 100.0
+	var adef: Resource = world.ability_def
+	if adef != null:
+		var affordable: bool = p.mana >= int(adef.mana_cost)
+		ability_label.text = "[Space] %s %dmp" % [String(adef.display_name), int(adef.mana_cost)]
+		ability_label.modulate = Color.WHITE if affordable else Color(0.6, 0.55, 0.75)
 	rec_label.visible = gif_recorder != null and gif_recorder.armed
 	if not world.weapon_frames.is_empty():
 		weapon_label.text = String(world.weapon_frames[p.equipped_weapon].display_name)
@@ -161,6 +168,16 @@ func _ready() -> void:
 			]
 		)
 	)
+	(
+		world
+		. set_abilities(
+			[
+				load("res://data/abilities/nova_burst.tres"),
+				load("res://data/abilities/quickdraw.tres"),
+				load("res://data/abilities/blast_rune.tres"),
+			]
+		)
+	)
 	var center := Vector2(int(def.width) / 2.0, int(def.height) / 2.0)
 	world.add_player(center)
 	# M3 target practice: a ring of inert stand-ins to shoot. The M4
@@ -190,6 +207,10 @@ func _ready() -> void:
 	var standins := StandinView.new()
 	standins.world = world
 	add_child(standins)
+
+	var hazards_view := HazardView.new()
+	hazards_view.world = world
+	add_child(hazards_view)
 
 	var lib := ActorLibrary.new()
 	var sheet_map: Resource = load("res://data/actor_sheet_map.tres")
@@ -232,7 +253,7 @@ func _ready() -> void:
 	pause_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	speed_label = Label.new()
 	speed_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
-	speed_label.position.y -= 24.0
+	speed_label.position.y -= 16.0
 	# Autofire indicator reads SIM state (§2.8) — the latch, not the key.
 	# Kit icons: ON/OFF differ by shape, not color (CORE-50).
 	autofire_icon = TextureRect.new()
@@ -246,14 +267,17 @@ func _ready() -> void:
 	hp_bar.frame_box = _bar_frame_box()
 	hp_bar.fill_tex = load("res://uikit/bar_fill_hp.png")
 	hp_bar.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
-	hp_bar.position = Vector2(4.0, -22.0)
+	hp_bar.position = Vector2(4.0, -40.0)
 	hp_bar.size = Vector2(64.0, 8.0)
 	mana_bar = StatBar.new()
 	mana_bar.frame_box = _bar_frame_box()
 	mana_bar.fill_tex = load("res://uikit/bar_fill_mana.png")
 	mana_bar.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
-	mana_bar.position = Vector2(4.0, -12.0)
+	mana_bar.position = Vector2(4.0, -30.0)
 	mana_bar.size = Vector2(64.0, 8.0)
+	ability_label = Label.new()
+	ability_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
+	ability_label.position = Vector2(4.0, -56.0)
 	# GIF capture costs real frame time while armed — the indicator is
 	# also the "why did fps dip" explanation.
 	rec_label = Label.new()
@@ -274,6 +298,7 @@ func _ready() -> void:
 	hud.add_child(weapon_label)
 	hud.add_child(hp_bar)
 	hud.add_child(mana_bar)
+	hud.add_child(ability_label)
 	hud.add_child(rec_label)
 	hud.add_child(hints_label)
 	hud.add_child(density_meter)
@@ -283,6 +308,12 @@ func _ready() -> void:
 		load("res://uikit/cursor_crosshair.png"), Input.CURSOR_ARROW, Vector2(5.0, 5.0)
 	)
 	driver.pause_changed.connect(func(p: bool) -> void: pause_label.visible = p)
+	options_menu.add_button_row(
+		"ability",
+		["Nova", "Quickdraw", "Rune"],
+		func(i: int) -> void:
+			world.enqueue_command({"type": SimWorld.Command.SET_ABILITY, "index": i})
+	)
 	_refresh_hints()
 
 	print(

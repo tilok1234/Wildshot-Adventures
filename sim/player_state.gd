@@ -16,6 +16,9 @@ var next_fire_tick: int = 0
 ## Last tick fire was held — the tap buffer (§2.8 responsiveness): a tap
 ## released during cooldown still fires when the gate opens, if recent.
 var last_fire_held_tick: int = -1000000
+## Quickdraw cadence buff active while tick < this (hard-coded 2/3
+## cadence multiplier — ledger #2, no stat pipeline).
+var quickdraw_until_tick: int = -1000000
 
 
 func serialize_into(buf: StreamPeerBuffer) -> void:
@@ -25,3 +28,4 @@ func serialize_into(buf: StreamPeerBuffer) -> void:
 	buf.put_u8(equipped_weapon)
 	buf.put_64(next_fire_tick)
 	buf.put_64(last_fire_held_tick)
+	buf.put_64(quickdraw_until_tick)

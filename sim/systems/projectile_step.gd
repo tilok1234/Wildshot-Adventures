@@ -238,6 +238,7 @@ static func _apply_damage(
 	events: Array[Dictionary], t: int, slot: int, pattern: int, a: RefCounted, amount: int
 ) -> void:
 	a.hp -= amount
+	a.last_damaged_tick = t
 	(
 		events
 		. append(

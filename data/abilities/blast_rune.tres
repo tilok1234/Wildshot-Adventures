@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/ability_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"blast_rune"
+display_name = "Blast Rune"
+mana_cost = 20
+kind = 2
+damage = 18
+radius = 1.5
+duration_ticks = 0
+arm_ticks = 30
+place_range = 3.0

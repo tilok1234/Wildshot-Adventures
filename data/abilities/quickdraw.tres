@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/ability_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"quickdraw"
+display_name = "Quickdraw"
+mana_cost = 25
+kind = 1
+damage = 0
+radius = 0.0
+duration_ticks = 240
+arm_ticks = 0
+place_range = 0.0

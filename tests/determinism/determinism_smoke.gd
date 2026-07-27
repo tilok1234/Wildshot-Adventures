@@ -154,6 +154,15 @@ func _check_fire_path() -> bool:
 	if not latch_fired:
 		printerr("FAIL: autofire latch never fired during a fire_held gap")
 		ok = false
+	if int(a.casts) < 2:
+		printerr("FAIL: ability casts missing (%d/2)" % int(a.casts))
+		ok = false
+	if int(a.dmg_by_pattern.get(-1, 0)) == 0:
+		printerr("FAIL: nova landed no damage")
+		ok = false
+	if int(a.mana_min) > 70:
+		printerr("FAIL: mana never spent (min %d)" % int(a.mana_min))
+		ok = false
 	if ok:
 		print(
 			"fire-path ok: kills=%d attacks=%d dmg=%s" % [a.kills, attacks.size(), a.dmg_by_pattern]
@@ -174,6 +183,7 @@ func _run_fire_once(with_fire: bool) -> Dictionary:
 			]
 		)
 	)
+	world.set_abilities([load("res://data/abilities/nova_burst.tres")])
 	var player := world.add_player(Vector2(24.0, 16.0))
 	# Ring A inside Wheelblade's out-and-return path; ring B in Longbolt
 	# reach (14 t/s x 28 ticks = 6.53 tiles).
@@ -189,6 +199,8 @@ func _run_fire_once(with_fire: bool) -> Dictionary:
 	var attack_ticks: Array[int] = []
 	var dmg_by_pattern := {}
 	var kills := 0
+	var casts := 0
+	var mana_min := 100
 	for t in FIRE_TICKS:
 		var frame := InputFrame.new()
 		var leg := (t / 50) % 8
@@ -210,6 +222,8 @@ func _run_fire_once(with_fire: bool) -> Dictionary:
 		if with_fire:
 			frame.fire_held = (t % 90) < 60
 			frame.autofire_toggle_edge = t == 300 or t == 420
+			# Nova casts: ring A is inside the 2.5-tile radius from center.
+			frame.ability_pressed = t == 200 or t == 900
 		if t % 7 == 0:
 			world.rng_enemy.next_u32()
 		world.step([frame])
@@ -223,6 +237,9 @@ func _run_fire_once(with_fire: bool) -> Dictionary:
 					dmg_by_pattern[pattern] = int(dmg_by_pattern.get(pattern, 0)) + 1
 				SimEvents.Type.ENTITY_KILLED:
 					kills += 1
+				SimEvents.Type.ABILITY_CAST:
+					casts += 1
+		mana_min = mini(mana_min, player.mana)
 		if (world.tick % HASH_EVERY) == 0:
 			hashes.append(world.state_hash())
 
@@ -232,6 +249,8 @@ func _run_fire_once(with_fire: bool) -> Dictionary:
 		"attack_ticks": attack_ticks,
 		"dmg_by_pattern": dmg_by_pattern,
 		"kills": kills,
+		"casts": casts,
+		"mana_min": mana_min,
 		"rng_end": [world.rng_enemy.state, world.rng_misc.state],
 	}
 
