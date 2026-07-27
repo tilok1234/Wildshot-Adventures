@@ -10,9 +10,10 @@ const PATTERN_NAMES := {
 	2: "Scattercast",
 	3: "Wheelblade",
 	10: "Husk Archer's aimed shot",
+	11: "Rusher's slash",
 	-1: "Nova Burst",
 	-2: "Blast Rune",
-	-3: "Rusher contact",
+	-3: "contact",
 }
 
 var _label := Label.new()

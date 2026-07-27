@@ -315,10 +315,12 @@ func _run_hostile_death_once() -> Dictionary:
 	}
 
 
-## M5 enemy-machine contract (docs/12 §2.7/§3.4), mechanized:
+## M5 enemy-machine contract (docs/12 §2.7/§3.4 as amended 2026-07-27:
+## every enemy attack is a visible telegraphed pattern), mechanized:
 ## 1. double-run hash equality with live enemy AI (machine is deterministic);
-## 2. Rusher closes and lands contact damage gated by its data cooldown,
-##    and a standing player eventually dies EXPLAINABLY (pattern -3 trace);
+## 2. Rusher closes and SLASHES: telegraph leads every volley by exactly
+##    its data ticks, volleys land pattern-11 damage on their cooldown
+##    period, and a standing player dies EXPLAINABLY (pattern 11 trace);
 ## 3. Husk Archer telegraphs exactly telegraph_ticks before every volley,
 ##    fires on its data cooldown period, aims at the player (stationary
 ##    target ⇒ hits land), and holds its keep-range band after settling;
@@ -328,31 +330,52 @@ func _check_enemy_behavior() -> bool:
 	var hdef: Resource = load("res://data/enemies/husk_archer.tres")
 	var ok := true
 
-	var ra := _run_rusher_once(rdef)
-	var rb := _run_rusher_once(rdef)
+	var rslot: Resource = rdef.emitters[0]
+	var rpattern: Resource = rslot.pattern
+	var rpid := int(rpattern.pattern_id)
+	var ra := _run_rusher_once(rdef, rpid)
+	var rb := _run_rusher_once(rdef, rpid)
 	if ra.hashes != rb.hashes:
 		printerr("FAIL: rusher runs diverge")
 		ok = false
-	var contact_ticks: Array = ra.contact_ticks
-	if contact_ticks.size() < 5:
-		printerr("FAIL: only %d contact hits — rusher never pressed in" % contact_ticks.size())
+	var slash_volleys: Array = ra.attack_ticks
+	var slash_telegraphs: Array = ra.telegraph_ticks_list
+	if slash_volleys.size() < 3:
+		printerr("FAIL: only %d slash volleys — rusher never pressed in" % slash_volleys.size())
 		ok = false
-	var contact_cd := int(rdef.contact_cooldown_ticks)
-	for i in range(1, contact_ticks.size()):
-		if contact_ticks[i] - contact_ticks[i - 1] < contact_cd:
+	if slash_telegraphs.size() != slash_volleys.size():
+		printerr(
+			(
+				"FAIL: %d slash telegraphs vs %d volleys"
+				% [slash_telegraphs.size(), slash_volleys.size()]
+			)
+		)
+		ok = false
+	var rlead := int(rslot.telegraph_ticks)
+	for i in mini(slash_telegraphs.size(), slash_volleys.size()):
+		if slash_volleys[i] - slash_telegraphs[i] != rlead:
 			printerr(
 				(
-					"FAIL: contact cooldown breach — %d ticks apart (min %d)"
-					% [contact_ticks[i] - contact_ticks[i - 1], contact_cd]
+					"FAIL: slash telegraph lead %d != %d at volley %d"
+					% [slash_volleys[i] - slash_telegraphs[i], rlead, i]
 				)
 			)
 			ok = false
 			break
-	if not bool(ra.player_died):
-		printerr("FAIL: standing player survived the rusher — contact not lethal")
+	var rcd := int(rslot.cooldown_ticks)
+	for i in range(1, slash_volleys.size()):
+		if slash_volleys[i] - slash_volleys[i - 1] != rcd:
+			printerr("FAIL: slash period %d != %d" % [slash_volleys[i] - slash_volleys[i - 1], rcd])
+			ok = false
+			break
+	if int(ra.slash_hits) < 3:
+		printerr("FAIL: only %d slash hits landed on a standing player" % int(ra.slash_hits))
 		ok = false
-	if int(ra.last_hit_pattern) != -3:
-		printerr("FAIL: death trace pattern %d != -3 (contact)" % int(ra.last_hit_pattern))
+	if not bool(ra.player_died):
+		printerr("FAIL: standing player survived the rusher — slash not lethal")
+		ok = false
+	if int(ra.last_hit_pattern) != rpid:
+		printerr("FAIL: death trace pattern %d != %d (slash)" % [int(ra.last_hit_pattern), rpid])
 		ok = false
 
 	var slot0: Resource = hdef.emitters[0]
@@ -408,9 +431,10 @@ func _check_enemy_behavior() -> bool:
 	if ok:
 		print(
 			(
-				"enemy-machine ok: contact=%d death@%d; volleys=%d lead=%d period=%d band=[%.2f, %.2f]"
+				"enemy-machine ok: slashes=%d hits=%d death@%d; volleys=%d lead=%d period=%d band=[%.2f, %.2f]"
 				% [
-					contact_ticks.size(),
+					slash_volleys.size(),
+					int(ra.slash_hits),
 					int(ra.death_tick),
 					attacks.size(),
 					telegraph,
@@ -423,14 +447,16 @@ func _check_enemy_behavior() -> bool:
 	return ok
 
 
-func _run_rusher_once(rdef: Resource) -> Dictionary:
+func _run_rusher_once(rdef: Resource, slash_pid: int) -> Dictionary:
 	var world := SimWorld.new()
 	world.setup(21, _build_bitgrid())
 	world.set_enemy_defs([rdef])
 	var player := world.add_player(Vector2(24.0, 16.0))
-	world.add_enemy(0, Vector2(16.0, 16.0))
+	var rusher := world.add_enemy(0, Vector2(16.0, 16.0))
 	var hashes: Array[int] = []
-	var contact_ticks: Array[int] = []
+	var telegraph_ticks_list: Array[int] = []
+	var attack_ticks: Array[int] = []
+	var slash_hits := 0
 	var player_died := false
 	var death_tick := -1
 	var last_hit_pattern := 0
@@ -438,10 +464,17 @@ func _run_rusher_once(rdef: Resource) -> Dictionary:
 		world.step([null])
 		for ev: Dictionary in world.events:
 			match int(ev.type):
+				SimEvents.Type.TELEGRAPH_STARTED:
+					if int(ev.id) == rusher.id:
+						telegraph_ticks_list.append(int(ev.tick))
+				SimEvents.Type.ATTACK_STARTED:
+					if int(ev.get("enemy", 0)) == rusher.id:
+						attack_ticks.append(int(ev.tick))
 				SimEvents.Type.DAMAGE_APPLIED:
 					if int(ev.target) == player.id:
-						contact_ticks.append(int(ev.tick))
 						last_hit_pattern = int(ev.pattern)
+						if int(ev.pattern) == slash_pid:
+							slash_hits += 1
 				SimEvents.Type.ENTITY_KILLED:
 					if bool(ev.get("player", false)):
 						player_died = true
@@ -450,7 +483,9 @@ func _run_rusher_once(rdef: Resource) -> Dictionary:
 			hashes.append(world.state_hash())
 	return {
 		"hashes": hashes,
-		"contact_ticks": contact_ticks,
+		"telegraph_ticks_list": telegraph_ticks_list,
+		"attack_ticks": attack_ticks,
+		"slash_hits": slash_hits,
 		"player_died": player_died,
 		"death_tick": death_tick,
 		"last_hit_pattern": last_hit_pattern,

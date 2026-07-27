@@ -16,6 +16,7 @@ extends RefCounted
 const InputFrame := preload("res://sim/input_frame.gd")
 const Kinematics := preload("res://sim/systems/kinematics.gd")
 const ActorState := preload("res://sim/actor_state.gd")
+const EnemyState := preload("res://sim/enemy_state.gd")
 const ProjectilePool := preload("res://sim/projectile_pool.gd")
 
 ## Projection depth K, in ticks. 60 (1 s) is enough for simulated pursuit
@@ -23,6 +24,12 @@ const ProjectilePool := preload("res://sim/projectile_pool.gd")
 ## linear body extrapolation both cornered and failed the rusher proof
 ## (repros in reports/; the fix history lives in the M5 session log).
 const HORIZON := 60
+## Fully-safe stationkeeping ring (tiles) around the nearest enemy:
+## orbit at this distance instead of fleeing radially — pure
+## distance-maximizing walks drift into wall pockets and die there
+## (2531 ticks wedged in an aisle nook, proof FAIL #3). Sits between
+## the Rusher's slash trigger (1.2) and the Husk's fire trigger (7).
+const RING := 4.0
 ## Threat inflation (tiles): projected overlaps use hitbox + this margin,
 ## so near-misses count against a candidate before they become hits.
 const MARGIN := 0.12
@@ -50,42 +57,65 @@ static func compute_frame(world: RefCounted, player_index: int) -> RefCounted:
 	# touch one; checked ONCE per tick, exact slide used only then.
 	var reach: float = p.move_speed * HORIZON * world.DT + p.radius + 0.1
 	var use_slide := not _clear_of_walls(world.bitgrid, p.pos, reach)
+	# Stationkeeping anchor: the CENTROID of nearby live enemies — packs
+	# are orbited as one cluster (a nearest-enemy anchor dragged the bot
+	# through the other chasers when three converged; composition FAIL).
+	var soft: Array = threats.soft_bodies
+	var ppos: Vector2 = p.pos
+	var anchor := Vector2.ZERO
+	var anchor_n := 0
+	for sp: Vector2 in soft:
+		if ppos.distance_to(sp) <= 8.0:
+			anchor += sp
+			anchor_n += 1
+	if anchor_n == 0:
+		for sp: Vector2 in soft:
+			anchor += sp
+			anchor_n += 1
+	var has_anchor := anchor_n > 0
+	if has_anchor:
+		anchor /= float(anchor_n)
 	var best_candidate := 0
 	var best_survival := -1
 	var best_clearance := -1.0e18
-	var best_escape := -1.0e18
+	var best_ring := -1.0e18
 	# Candidate 0 = stay; 1..16 = headings h*22.5 deg. Even headings are a
 	# single dir; odd headings alternate the two adjacent dirs by parity.
 	# Keys: survival first, always. Then MODE SPLIT: fully safe for the
-	# whole horizon -> POSITIONING decides (end far from threats, away
-	# from walls — clearance here rewarded pure radial flight straight
-	# into a corner, the second rusher-proof FAIL); under predicted
-	# threat -> grazing margin (clearance) decides, positioning breaks
-	# ties.
+	# whole horizon -> the ORBIT score decides (hold RING distance from
+	# the anchor, advance tangentially, avoid walls — greedy flee kept
+	# cornering itself); under predicted threat -> grazing margin
+	# (clearance) decides, orbit breaks ties.
 	for c in 17:
 		var result := _score(world, p, c, t, threats, use_slide)
-		var survival := int(result.x)
-		var clearance := float(result.y)
-		var escape := float(result.z)
+		var survival := int(result.survival)
+		var clearance := float(result.clearance)
+		var end_pos: Vector2 = result.end
+		var wall_pen := maxf(0.0, 2.5 - _wall_clearance(world.bitgrid, end_pos, 3.0)) * 2.0
+		var ring_score := -wall_pen
+		if has_anchor:
+			ring_score -= absf(end_pos.distance_to(anchor) - RING) * 2.0
+			var adv := wrapf((end_pos - anchor).angle() - (p.pos - anchor).angle(), -PI, PI)
+			ring_score += adv * 0.8
 		var better := false
 		if survival > best_survival:
 			better = true
 		elif survival == best_survival:
 			if survival > HORIZON:
-				if escape > best_escape + 0.0001:
+				if ring_score > best_ring + 0.0001:
 					better = true
-				elif absf(escape - best_escape) <= 0.0001 and clearance > best_clearance + 0.0001:
+				elif absf(ring_score - best_ring) <= 0.0001 and clearance > best_clearance + 0.0001:
 					better = true
 			else:
 				if clearance > best_clearance + 0.0001:
 					better = true
-				elif absf(clearance - best_clearance) <= 0.0001 and escape > best_escape + 0.0001:
+				elif absf(clearance - best_clearance) <= 0.0001 and ring_score > best_ring + 0.0001:
 					better = true
 		if better:
 			best_candidate = c
 			best_survival = survival
 			best_clearance = clearance
-			best_escape = escape
+			best_ring = ring_score
 	if best_candidate > 0:
 		var d := _candidate_dir(best_candidate, t)
 		frame.move_x = DIR_X[d]
@@ -105,14 +135,14 @@ static func _candidate_dir(c: int, t: int) -> int:
 	return base if t % 2 == 0 else (base + 1) % 8
 
 
-## Survival ticks (x), min clearance (y), end-position distance to the
-## nearest projected threat (z — the kiting term) for one candidate.
+## Survival ticks, min clearance over the walk, and the candidate's end
+## position (the orbit score derives from it in compute_frame).
 ## use_slide walks the real Kinematics slide (near walls); the open-field
 ## path integrates directly — identical where walls are unreachable
 ## within the horizon.
 static func _score(
 	world: RefCounted, p: RefCounted, c: int, t: int, threats: Dictionary, use_slide: bool
-) -> Vector3:
+) -> Dictionary:
 	var grid: RefCounted = world.bitgrid
 	var dt: float = world.DT
 	var speed: float = p.move_speed
@@ -176,21 +206,7 @@ static func _score(
 					survival = h
 		if survival <= h:
 			break
-	# Kiting term: end far from the nearest threat's projected end pos,
-	# MINUS a wall-proximity penalty — pure radial flight in a bounded
-	# arena always terminates in a corner (the second rusher-proof FAIL:
-	# 573 ticks pinned bottom-left), so nearing walls devalues a heading
-	# and the away-vector bends tangent: orbit emerges.
-	var escape := 1.0e18
-	var last_step: Array = proj_pos[HORIZON - 1]
-	for i in last_step.size():
-		if proj_gone[i] >= HORIZON:
-			escape = minf(escape, pos.distance_to(Vector2(last_step[i])))
-	for k in body_pos.size():
-		escape = minf(escape, pos.distance_to(Vector2(body_pos[k])))
-	var wall_clear := _wall_clearance(grid, pos, 3.0)
-	escape -= maxf(0.0, 2.5 - wall_clear) * 2.0
-	return Vector3(float(survival), clearance, escape)
+	return {"survival": survival, "clearance": clearance, "end": pos}
 
 
 ## Distance from pos to the nearest solid-cell edge within max_r (returns
@@ -277,28 +293,51 @@ static func _project_threats(world: RefCounted, p: RefCounted) -> Dictionary:
 			step[i] = cur[i]
 		proj_pos.append(step)
 	var bodies: Array = []
+	var soft_bodies: Array = []
+	var hazards: Array = []
 	var defs: Array = world.enemy_defs
 	for e: RefCounted in world.enemies:
 		var def_index: int = e.def_index
 		if def_index < 0 or e.hp <= 0:
 			continue
 		var def: Resource = defs[def_index]
-		if int(def.contact_damage) <= 0:
-			continue
 		var epos: Vector2 = e.pos
 		if epos.distance_to(ppos) > RELEVANT_R:
 			continue
-		(
-			bodies
-			. append(
-				{
-					"pos": epos,
-					"speed": float(def.move_speed),
-					"radius": e.radius,
-				}
+		# Every live enemy repels positioning (they attack when close).
+		# HARD pursuit threats: contact-damage bodies (radius = body) AND
+		# melee slashers — their trigger range is a do-not-enter bubble
+		# (the sim starts a windup at center-distance <= trigger), pursued
+		# with the same simulation. Without this, removing contact damage
+		# deleted the bot's long-horizon pack pressure and compositions
+		# failed.
+		soft_bodies.append(epos)
+		var melee_trigger := _melee_trigger(def)
+		if int(def.contact_damage) > 0 or melee_trigger > 0.0:
+			var eff_r: float = e.radius
+			if melee_trigger > 0.0:
+				eff_r = maxf(eff_r, melee_trigger - float(p.radius))
+			(
+				bodies
+				. append(
+					{
+						"pos": epos,
+						"speed": float(def.move_speed),
+						"radius": eff_r,
+					}
+				)
 			)
-		)
-	var hazards: Array = []
+		# An active windup is a telegraphed future threat — the bot dodges
+		# on the telegraph, the cue humans get (Law 4/8). The danger circle
+		# is the volley's BIRTH RING (where shots materialize at the arm
+		# tick), NOT the full sweep: spawned shots are ordinary pool
+		# projectiles the normal projection dodges reactively. A full-reach
+		# disc marked every fleeing candidate doomed and cost a proof.
+		if int(e.ai_state) == EnemyState.AIState.WINDUP and e.winding_slot >= 0:
+			var ring := _slot_birth_ring(def, int(e.winding_slot))
+			var warm := int(e.state_until) - t
+			if ring > 0.0 and warm >= 1 and warm <= HORIZON:
+				hazards.append({"pos": epos, "radius": ring, "arm_in": warm})
 	for hz: Dictionary in world.hazards:
 		if int(hz.faction) != ActorState.FACTION_HOSTILE:
 			continue
@@ -310,9 +349,42 @@ static func _project_threats(world: RefCounted, p: RefCounted) -> Dictionary:
 		"proj_r": proj_r,
 		"proj_gone": proj_gone,
 		"bodies": bodies,
+		"soft_bodies": soft_bodies,
 		"hazards": hazards,
-		"count": n + bodies.size() + hazards.size(),
+		"count": n + soft_bodies.size() + hazards.size(),
 	}
+
+
+## Smallest melee-class trigger range on a def (emitter slots with
+## trigger_range <= 2.0), or 0.0 when the def has none.
+static func _melee_trigger(def: Resource) -> float:
+	var best := 0.0
+	var emitters: Array = def.emitters
+	for es: Resource in emitters:
+		var tr := float(es.trigger_range)
+		if tr <= 2.0 and (best == 0.0 or tr < best):
+			best = tr
+	return best
+
+
+## Birth ring of one emitter slot's volley: how far from the enemy center
+## shots MATERIALIZE (spawn offset + shot radius, maxed over the pattern)
+## plus a reaction pad. Standing inside it at the arm tick is a
+## near-guaranteed hit; outside it, the spawned shots are dodged as
+## ordinary projectiles.
+static func _slot_birth_ring(def: Resource, slot_index: int) -> float:
+	var emitters: Array = def.emitters
+	if slot_index >= emitters.size():
+		return 0.0
+	var es: Resource = emitters[slot_index]
+	var pattern: Resource = es.pattern
+	if pattern == null:
+		return 0.0
+	var ring := 0.0
+	var shots: Array = pattern.shots
+	for shot: Resource in shots:
+		ring = maxf(ring, float(shot.spawn_offset) + float(shot.radius))
+	return ring + 0.35 if ring > 0.0 else 0.0
 
 
 ## True when no solid tile sits within `reach` of pos — the horizon's
