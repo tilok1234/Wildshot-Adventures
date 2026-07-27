@@ -1,0 +1,25 @@
+[gd_resource type="Resource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://data/weapon_frame.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+[sub_resource type="Resource" id="shot0"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 14.0
+radius = 0.15
+damage = 12
+ttl_ticks = 28
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+
+[resource]
+script = ExtResource("1")
+id = &"longbolt"
+display_name = "Longbolt"
+pattern_id = 1
+cadence_ticks = 24
+shots = Array[Resource]([SubResource("shot0")])

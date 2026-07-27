@@ -18,6 +18,7 @@ const PlayerState := preload("res://sim/player_state.gd")
 const ProjectilePool := preload("res://sim/projectile_pool.gd")
 const SimEvents := preload("res://sim/events.gd")
 const PlayerMove := preload("res://sim/systems/player_move.gd")
+const PlayerFire := preload("res://sim/systems/player_fire.gd")
 const ProjectileStep := preload("res://sim/systems/projectile_step.gd")
 
 const TICKS_PER_SECOND := 60
@@ -68,6 +69,11 @@ var events: Array[Dictionary] = []
 ## plus the frame stream).
 var current_frames: Array = []
 
+## Weapon frame RESOURCES (definitions, not state): set at setup, indexed
+## by weapon_select-1. Excluded from serialize() like the bitgrid — the
+## replay header's data-definitions hash covers them instead (§2.4).
+var weapon_frames: Array = []
+
 var _commands: Array[Dictionary] = []
 
 
@@ -77,6 +83,11 @@ func setup(p_seed: int, p_bitgrid: RefCounted) -> void:
 	rng_enemy.seed_stream(p_seed, STREAM_ENEMY)
 	rng_misc.seed_stream(p_seed, STREAM_MISC)
 	projectiles.setup()
+
+
+## Setup-phase: install the weapon loadout (order = select keys 1..N).
+func set_weapons(frames: Array) -> void:
+	weapon_frames = frames
 
 
 func add_player(pos: Vector2) -> PlayerState:
@@ -110,6 +121,7 @@ func step(frames: Array) -> void:
 	current_frames = frames
 	_drain_commands()
 	PlayerMove.run(self)
+	PlayerFire.run(self)
 	ProjectileStep.run(self)
 	tick += 1
 

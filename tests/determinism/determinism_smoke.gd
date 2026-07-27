@@ -70,6 +70,8 @@ func _init() -> void:
 		failed = true
 	if not _check_speed_edit():
 		failed = true
+	if not _check_fire_path():
+		failed = true
 
 	if failed:
 		quit(1)
@@ -88,6 +90,138 @@ func _init() -> void:
 		)
 	)
 	quit(0)
+
+
+const FIRE_TICKS := 1500
+
+
+## Fire-path determinism + CORE-32 independence, mechanized:
+## 1. double fire-run hash equality (weapons, cadence, pierce registry,
+##    kills — all deterministic);
+## 2. player positions EXACTLY equal between a fire run and a no-fire twin
+##    with identical movement — firing writes zero movement state;
+## 3. RNG stream end-states identical between fire and no-fire runs — the
+##    fire path draws no randomness;
+## 4. all three frames landed damage, kills happened, the cadence gate
+##    held (no two volleys closer than the fastest cadence), and the
+##    autofire latch fired during a fire_held gap.
+func _check_fire_path() -> bool:
+	var a := _run_fire_once(true)
+	var b := _run_fire_once(true)
+	var quiet := _run_fire_once(false)
+	var ok := true
+	if a.hashes != b.hashes:
+		printerr("FAIL: fire-path hashes diverge between identical runs")
+		ok = false
+	if a.pos_trace != quiet.pos_trace:
+		printerr("FAIL: CORE-32 violation — firing changed movement")
+		ok = false
+	if a.rng_end != quiet.rng_end:
+		printerr("FAIL: CORE-32 violation — fire path consumed RNG")
+		ok = false
+	if a.kills == 0:
+		printerr("FAIL: no kills — resolution path unexercised")
+		ok = false
+	for pattern_id in [1, 2, 3]:
+		if int(a.dmg_by_pattern.get(pattern_id, 0)) == 0:
+			printerr("FAIL: weapon pattern %d landed no damage" % pattern_id)
+			ok = false
+	var attacks: Array = a.attack_ticks
+	for i in range(1, attacks.size()):
+		if attacks[i] - attacks[i - 1] < 24:
+			printerr(
+				(
+					"FAIL: cadence gate breach — volleys %d ticks apart at tick %d"
+					% [attacks[i] - attacks[i - 1], attacks[i]]
+				)
+			)
+			ok = false
+			break
+	var latch_fired := false
+	for t: int in attacks:
+		if t >= 300 and t < 420 and (t % 90) >= 60:
+			latch_fired = true
+			break
+	if not latch_fired:
+		printerr("FAIL: autofire latch never fired during a fire_held gap")
+		ok = false
+	if ok:
+		print(
+			"fire-path ok: kills=%d attacks=%d dmg=%s" % [a.kills, attacks.size(), a.dmg_by_pattern]
+		)
+	return ok
+
+
+func _run_fire_once(with_fire: bool) -> Dictionary:
+	var world := SimWorld.new()
+	world.setup(77, _build_bitgrid())
+	(
+		world
+		. set_weapons(
+			[
+				load("res://data/weapons/longbolt.tres"),
+				load("res://data/weapons/scattercast.tres"),
+				load("res://data/weapons/wheelblade.tres"),
+			]
+		)
+	)
+	var player := world.add_player(Vector2(24.0, 16.0))
+	# Ring A inside Wheelblade's out-and-return path; ring B in Longbolt
+	# reach (14 t/s x 28 ticks = 6.53 tiles).
+	for i in 6:
+		var ang := TAU * i / 6.0
+		world.add_enemy_standin(Vector2(24.0, 16.0) + Vector2(cos(ang), sin(ang)) * 3.0)
+	for i in 6:
+		var ang := TAU * (i + 0.5) / 6.0
+		world.add_enemy_standin(Vector2(24.0, 16.0) + Vector2(cos(ang), sin(ang)) * 6.0)
+
+	var hashes: Array[int] = []
+	var pos_trace := PackedVector2Array()
+	var attack_ticks: Array[int] = []
+	var dmg_by_pattern := {}
+	var kills := 0
+	for t in FIRE_TICKS:
+		var frame := InputFrame.new()
+		var leg := (t / 50) % 8
+		frame.move_x = MOVE_X[leg]
+		frame.move_y = MOVE_Y[leg]
+		frame.normalized = true
+		var q := InputFrame.quantize_aim(Vector2.RIGHT.rotated(t * 0.021))
+		frame.aim_x = q.x
+		frame.aim_y = q.y
+		if t == 0:
+			frame.weapon_select = 1
+		elif t == 500:
+			frame.weapon_select = 2
+		elif t == 1000:
+			frame.weapon_select = 3
+		if with_fire:
+			frame.fire_held = (t % 90) < 60
+			frame.autofire_toggle_edge = t == 300 or t == 420
+		if t % 7 == 0:
+			world.rng_enemy.next_u32()
+		world.step([frame])
+		pos_trace.append(player.pos)
+		for ev: Dictionary in world.events:
+			match int(ev.type):
+				SimEvents.Type.ATTACK_STARTED:
+					attack_ticks.append(int(ev.tick))
+				SimEvents.Type.DAMAGE_APPLIED:
+					var pattern := int(ev.pattern)
+					dmg_by_pattern[pattern] = int(dmg_by_pattern.get(pattern, 0)) + 1
+				SimEvents.Type.ENTITY_KILLED:
+					kills += 1
+		if (world.tick % HASH_EVERY) == 0:
+			hashes.append(world.state_hash())
+
+	return {
+		"hashes": hashes,
+		"pos_trace": pos_trace,
+		"attack_ticks": attack_ticks,
+		"dmg_by_pattern": dmg_by_pattern,
+		"kills": kills,
+		"rng_end": [world.rng_enemy.state, world.rng_misc.state],
+	}
 
 
 ## Speed-editor sim contract (§3.2/§2.10): the command clamps to the band,

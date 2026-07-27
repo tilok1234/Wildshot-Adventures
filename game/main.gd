@@ -1,9 +1,10 @@
 extends Node2D
-## Phase A lab main scene (M2 state): builds the arena from
-## data/arena_lab.json, bakes the collision bitgrid from the same
-## definition, then boots the sim — SimWorld + RealtimeDriver +
-## HumanSampler — with the player rendering from its Sprite Forge sheet.
-## Scenario picker and debug tooling land at M4.
+## Phase A lab main scene (M3 state): arena + bitgrid from one definition,
+## SimWorld with the three weapon frames and target-practice stand-ins,
+## RealtimeDriver + HumanSampler, player rendering from its Sprite Forge
+## sheet, per-faction projectile rendering, corner-snag logging, and the
+## HUD's autofire/weapon/speed readouts. Scenario picker and the full
+## debug layer land at M4.
 
 const ArenaBuilder := preload("res://game/arena/arena_builder.gd")
 const Bitgrid := preload("res://sim/collision/bitgrid.gd")
@@ -17,6 +18,8 @@ const AnimatedActor := preload("res://game/views/animated_actor.gd")
 
 const ViewClock := preload("res://game/views/view_clock.gd")
 const CameraRig := preload("res://game/views/camera_rig.gd")
+const ProjectileView := preload("res://game/views/projectile_view.gd")
+const StandinView := preload("res://game/views/standin_view.gd")
 
 const TILE := 32.0
 ## Fixed dev seed until the scenario picker (M4) supplies one; always logged.
@@ -27,6 +30,8 @@ var world: SimWorld
 var driver: RealtimeDriver
 var view_clock: ViewClock
 var speed_label: Label
+var autofire_label: Label
+var weapon_label: Label
 
 
 func _process(_delta: float) -> void:
@@ -48,6 +53,10 @@ func _process(_delta: float) -> void:
 	elif Input.is_action_just_pressed("debug_speed_up"):
 		_set_speed(snappedf(cur + 0.1, 0.1))
 	speed_label.text = ("speed %.1f t/s%s" % [cur, "   REPLAY-DIRTY" if world.replay_dirty else ""])
+	var p: RefCounted = world.players[0]
+	autofire_label.visible = p.autofire_on
+	if not world.weapon_frames.is_empty():
+		weapon_label.text = String(world.weapon_frames[p.equipped_weapon].display_name)
 
 
 func _set_speed(speed: float) -> void:
@@ -70,7 +79,23 @@ func _ready() -> void:
 	InputMapDefaults.register()
 	world = SimWorld.new()
 	world.setup(RUN_SEED, bitgrid)
-	world.add_player(Vector2(int(def.width) / 2.0, int(def.height) / 2.0))
+	(
+		world
+		. set_weapons(
+			[
+				load("res://data/weapons/longbolt.tres"),
+				load("res://data/weapons/scattercast.tres"),
+				load("res://data/weapons/wheelblade.tres"),
+			]
+		)
+	)
+	var center := Vector2(int(def.width) / 2.0, int(def.height) / 2.0)
+	world.add_player(center)
+	# M3 target practice: a ring of inert stand-ins to shoot. The M4
+	# scenario picker replaces this hardcoded setup with scenario .tres.
+	for i in 8:
+		var ang := TAU * i / 8.0
+		world.add_enemy_standin(center + Vector2(cos(ang), sin(ang)) * 6.0)
 
 	driver = RealtimeDriver.new()
 	driver.world = world
@@ -85,6 +110,10 @@ func _ready() -> void:
 	view_clock = ViewClock.new()
 	view_clock.driver = driver
 
+	var standins := StandinView.new()
+	standins.world = world
+	add_child(standins)
+
 	var lib := ActorLibrary.new()
 	var sheet_map: Resource = load("res://data/actor_sheet_map.tres")
 	if lib.load_manifest() and sheet_map != null and lib.has_actor(String(sheet_map.map.player)):
@@ -96,6 +125,11 @@ func _ready() -> void:
 		add_child(av)
 	else:
 		push_error("main: player sheet unavailable — run the spriteforge importer")
+
+	var pv := ProjectileView.new()
+	pv.world = world
+	pv.clock = view_clock
+	add_child(pv)
 
 	var camera := CameraRig.new()
 	camera.world = world
@@ -109,9 +143,19 @@ func _ready() -> void:
 	pause_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	speed_label = Label.new()
 	speed_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
+	# Autofire indicator reads SIM state (§2.8) — the latch, not the key.
+	autofire_label = Label.new()
+	autofire_label.text = "AUTOFIRE"
+	autofire_label.visible = false
+	autofire_label.modulate = Color(1.0, 0.5, 0.3)
+	autofire_label.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	weapon_label = Label.new()
+	weapon_label.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 	var hud := CanvasLayer.new()
 	hud.add_child(pause_label)
 	hud.add_child(speed_label)
+	hud.add_child(autofire_label)
+	hud.add_child(weapon_label)
 	add_child(hud)
 	driver.pause_changed.connect(func(p: bool) -> void: pause_label.visible = p)
 
