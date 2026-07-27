@@ -9,6 +9,7 @@ extends RefCounted
 
 const ActorState := preload("res://sim/actor_state.gd")
 const SimEvents := preload("res://sim/events.gd")
+const Damage := preload("res://sim/systems/damage.gd")
 
 
 static func run(world: RefCounted) -> void:
@@ -47,47 +48,9 @@ static func run(world: RefCounted) -> void:
 			var rr: float = r + a.radius
 			if d.length_squared() >= rr * rr:
 				continue
-			if world.god_mode and a.faction == ActorState.FACTION_FRIENDLY:
-				(
-					events
-					. append(
-						{
-							"type": SimEvents.Type.DAMAGE_IMMUNE,
-							"tick": t,
-							"target": a.id,
-							"amount": int(hz.damage),
-							"pattern": -2,
-							"pos": a.pos,
-						}
-					)
-				)
-				continue
-			a.hp -= int(hz.damage)
-			a.last_damaged_tick = t
-			(
-				events
-				. append(
-					{
-						"type": SimEvents.Type.DAMAGE_APPLIED,
-						"tick": t,
-						"target": a.id,
-						"amount": int(hz.damage),
-						"hp": a.hp,
-						"pattern": -2,
-						"pos": a.pos,
-					}
-				)
-			)
+			Damage.apply(world, a, int(hz.damage), -2)
 	if any_fired:
 		world.hazards = hazards.filter(func(hz: Dictionary) -> bool: return t < int(hz.arm_at_tick))
 		# Kills from hazards: enemies sweep here (projectile_step's sweep
 		# already ran this tick — order: projectiles then hazards).
-		var any_dead := false
-		for e: RefCounted in world.enemies:
-			if e.hp <= 0:
-				any_dead = true
-				events.append(
-					{"type": SimEvents.Type.ENTITY_KILLED, "tick": t, "id": e.id, "pos": e.pos}
-				)
-		if any_dead:
-			world.enemies = world.enemies.filter(func(e: RefCounted) -> bool: return e.hp > 0)
+		Damage.sweep_dead_enemies(world)

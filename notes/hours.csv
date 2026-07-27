@@ -25,3 +25,4 @@ timestamp,action,note
 2026-07-27T10:48:52,note,"Designer approves assembler ranger on sight ('alot better') - style call validated in the dusk arena. Session wrap: M2+M3+M4 complete, pack v0 integrated, all green."
 2026-07-27T10:48:52,stop,"(reconstructed at next-session start: session-wrap note was logged but stop was missed; stop backdated to the wrap-note timestamp - zero minutes added)"
 2026-07-27T10:59:08,start,"M5 session: EnemyDef family + 5-state machine + Rusher/Husk Archer (assembler sprites) + DodgeBot + canaries"
+2026-07-27T11:13:38,note,"Full-enemy-catalog pack integrated (57 fam/202 var; importer shape adapter + catalog fixture; normalized imported manifest). Designer mapping locked: Rusher=wolf:gray, Husk=skeleton:archer. All gates green, pushed."

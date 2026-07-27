@@ -1,8 +1,9 @@
 extends RefCounted
 ## Ordered system: projectile motion programs + ttl + terrain collision +
-## the ONE damage-resolution path (docs/12 §2.1/§2.3/§2.6). Iteration is
-## slot-ascending and actor-array-ordered — stable order, never
-## dictionary-order (§2.4). Pure overlap = hit; no rolls anywhere (CORE-31).
+## hit detection, resolving through THE damage path (sim/systems/damage.gd)
+## (docs/12 §2.1/§2.3/§2.6). Iteration is slot-ascending and
+## actor-array-ordered — stable order, never dictionary-order (§2.4).
+## Pure overlap = hit; no rolls anywhere (CORE-31).
 ##
 ## Motion programs are pure functions of ticks-since-spawn and authored
 ## params — never of entity positions (CORE-32; the dodge bot's closed-form
@@ -18,6 +19,7 @@ extends RefCounted
 const ActorState := preload("res://sim/actor_state.gd")
 const SimEvents := preload("res://sim/events.gd")
 const ProjectilePool := preload("res://sim/projectile_pool.gd")
+const Damage := preload("res://sim/systems/damage.gd")
 
 const REG_SLOTS := ProjectilePool.REG_SLOTS
 
@@ -56,7 +58,6 @@ static func run(world: RefCounted) -> void:
 	var enemies: Array = world.enemies
 	var events: Array[Dictionary] = world.events
 	var capacity: int = pool.CAPACITY
-	var god: bool = world.god_mode
 
 	for s in capacity:
 		if act[s] == 0:
@@ -138,7 +139,7 @@ static func run(world: RefCounted) -> void:
 				var ddy := y - apos.y
 				var rr: float = r + a.radius
 				if ddx * ddx + ddy * ddy < rr * rr:
-					_apply_damage(events, t, s, pat[s], a, dmg[s], god)
+					Damage.apply(world, a, dmg[s], pat[s], s)
 					pool.despawn(s)
 					(
 						events
@@ -154,34 +155,13 @@ static func run(world: RefCounted) -> void:
 					break
 		else:
 			_step_pierce(
-				events,
-				t,
-				s,
-				pat[s],
-				targets,
-				x,
-				y,
-				r,
-				dmg[s],
-				mp[s],
-				reg_id,
-				reg_pass,
-				reg_count,
-				god
+				world, s, pat[s], targets, x, y, r, dmg[s], mp[s], reg_id, reg_pass, reg_count
 			)
 
 	# Death sweep — the resolution path's tail: emit kills, then compact.
 	# Player death handling (recap, respawn) is M4; players are never
 	# removed here.
-	var any_dead := false
-	for e: RefCounted in enemies:
-		if e.hp <= 0:
-			any_dead = true
-			events.append(
-				{"type": SimEvents.Type.ENTITY_KILLED, "tick": t, "id": e.id, "pos": e.pos}
-			)
-	if any_dead:
-		world.enemies = enemies.filter(func(e: RefCounted) -> bool: return e.hp > 0)
+	Damage.sweep_dead_enemies(world)
 
 
 ## Pierce path (§2.6): damage each overlapped target once per contact
@@ -189,8 +169,7 @@ static func run(world: RefCounted) -> void:
 ## Registry full ⇒ unregistered targets take no damage (DamageBlocked).
 ## The projectile never despawns on hits.
 static func _step_pierce(
-	events: Array[Dictionary],
-	t: int,
+	world: RefCounted,
 	s: int,
 	pattern: int,
 	targets: Array,
@@ -202,8 +181,9 @@ static func _step_pierce(
 	reg_id: PackedInt64Array,
 	reg_pass: PackedByteArray,
 	reg_count: PackedByteArray,
-	god: bool,
 ) -> void:
+	var events: Array[Dictionary] = world.events
+	var t: int = world.tick
 	var base := s * REG_SLOTS
 	var overlapped: Array[int] = []
 	for a: RefCounted in targets:
@@ -227,7 +207,7 @@ static func _step_pierce(
 			var was_contact := (entry & 0x80) != 0
 			if not was_contact and passes < passes_max:
 				passes += 1
-				_apply_damage(events, t, s, pattern, a, damage_amt, god)
+				Damage.apply(world, a, damage_amt, pattern, s)
 			reg_pass[base + found] = 0x80 | passes
 		elif reg_count[s] >= REG_SLOTS:
 			(
@@ -247,84 +227,12 @@ static func _step_pierce(
 			reg_id[base + k] = a.id
 			reg_pass[base + k] = 0x80 | 1
 			reg_count[s] = k + 1
-			_apply_damage(events, t, s, pattern, a, damage_amt, god)
+			Damage.apply(world, a, damage_amt, pattern, s)
 	# Contact bits: clear for registry entries not overlapped this tick, so
 	# the next overlap counts as a new pass.
 	for k in reg_count[s]:
 		if not overlapped.has(reg_id[base + k]):
 			reg_pass[base + k] = reg_pass[base + k] & 0x7F
-
-
-static func _apply_damage(
-	events: Array[Dictionary],
-	t: int,
-	slot: int,
-	pattern: int,
-	a: RefCounted,
-	amount: int,
-	god := false,
-) -> void:
-	# God flag (§2.10): friendly damage becomes a visible DAMAGE_IMMUNE —
-	# logged, never silent, so god use can't launder into evidence.
-	if god and a.faction == ActorState.FACTION_FRIENDLY:
-		(
-			events
-			. append(
-				{
-					"type": SimEvents.Type.DAMAGE_IMMUNE,
-					"tick": t,
-					"target": a.id,
-					"amount": amount,
-					"pattern": pattern,
-					"pos": a.pos,
-				}
-			)
-		)
-		return
-	a.hp -= amount
-	a.last_damaged_tick = t
-	# Player death: dies in place (recap + restart own the flow); enemy
-	# death stays with the sweep.
-	if a.hp <= 0 and a.faction == ActorState.FACTION_FRIENDLY and not a.dead:
-		a.hp = 0
-		a.dead = true
-		events.append(
-			{
-				"type": SimEvents.Type.ENTITY_KILLED,
-				"tick": t,
-				"id": a.id,
-				"pos": a.pos,
-				"player": true
-			}
-		)
-	(
-		events
-		. append(
-			{
-				"type": SimEvents.Type.HIT_LANDED,
-				"tick": t,
-				"slot": slot,
-				"target": a.id,
-				"damage": amount,
-				"pattern": pattern,
-				"pos": a.pos,
-			}
-		)
-	)
-	(
-		events
-		. append(
-			{
-				"type": SimEvents.Type.DAMAGE_APPLIED,
-				"tick": t,
-				"target": a.id,
-				"amount": amount,
-				"hp": a.hp,
-				"pattern": pattern,
-				"pos": a.pos,
-			}
-		)
-	)
 
 
 ## Circle-vs-solid-tiles over the cells the circle's AABB overlaps, using
