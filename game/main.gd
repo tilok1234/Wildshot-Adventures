@@ -28,7 +28,7 @@ const DebugConsole := preload("res://ui/debug_console.gd")
 const HitboxView := preload("res://game/views/hitbox_view.gd")
 const EmitterView := preload("res://game/views/emitter_view.gd")
 const SimEvents := preload("res://sim/events.gd")
-const ActorLibrary := preload("res://game/views/actor_library.gd")
+const AssemblerLibrary := preload("res://game/views/assembler_library.gd")
 const AnimatedActor := preload("res://game/views/animated_actor.gd")
 
 const ViewClock := preload("res://game/views/view_clock.gd")
@@ -355,17 +355,19 @@ func _ready() -> void:
 	emitter_view.world = world
 	add_child(emitter_view)
 
-	var lib := ActorLibrary.new()
+	# Actor source: the assembler pack (§2.14 Amendment v2, docs/14).
+	var lib := AssemblerLibrary.new()
 	var sheet_map: Resource = load("res://data/actor_sheet_map.tres")
 	if lib.load_manifest() and sheet_map != null and lib.has_actor(String(sheet_map.map.player)):
 		var av := AnimatedActor.new()
 		av.sprite_frames = lib.build_sprite_frames(String(sheet_map.map.player))
 		av.actor = world.players[0]
 		av.clock = view_clock
+		av.render_scale = lib.render_scale()
 		av.play("idle-down")
 		add_child(av)
 	else:
-		push_error("main: player sheet unavailable — run the spriteforge importer")
+		push_error("main: player sheet unavailable — run the assembler importer")
 
 	var pv := ProjectileView.new()
 	pv.world = world

@@ -10,19 +10,21 @@ extends AnimatedSprite2D
 ## the frozen frame matches the frozen sim.
 
 const TILE := 32.0
-const RENDER_SCALE := 0.5
 ## The speed the walk row's fps is authored against (§3.2 baseline).
 const BASELINE_SPEED := 4.0
 
 var actor: RefCounted = null
 var clock: RefCounted = null
+## Set by the caller from the source library (assembler 1x = 1.0;
+## legacy spriteforge 2x sheets = 0.5).
+var render_scale := 1.0
 var _facing := "down"
 
 const RenderLayers := preload("res://game/render_layers.gd")
 
 
 func _ready() -> void:
-	scale = Vector2(RENDER_SCALE, RENDER_SCALE)
+	scale = Vector2(render_scale, render_scale)
 	z_index = RenderLayers.ACTORS
 
 

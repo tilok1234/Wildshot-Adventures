@@ -5,8 +5,5 @@
 [resource]
 script = ExtResource("1")
 map = {
-"player": "ranger",
-"proj_longbolt": "arrow",
-"proj_scattercast": "beamdot",
-"proj_wheelblade": "boomerang"
+"player": "character-ranger"
 }

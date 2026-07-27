@@ -18,7 +18,7 @@ const InputMapDefaults := preload("res://input/input_map_defaults.gd")
 const ViewClock := preload("res://game/views/view_clock.gd")
 const CameraRig := preload("res://game/views/camera_rig.gd")
 const ProjectileView := preload("res://game/views/projectile_view.gd")
-const ActorLibrary := preload("res://game/views/actor_library.gd")
+const AssemblerLibrary := preload("res://game/views/assembler_library.gd")
 const AnimatedActor := preload("res://game/views/animated_actor.gd")
 
 const TILE := 32.0
@@ -72,13 +72,14 @@ func _ready() -> void:
 
 	_add_standin_markers()
 
-	var lib := ActorLibrary.new()
+	var lib := AssemblerLibrary.new()
 	var sheet_map: Resource = load("res://data/actor_sheet_map.tres")
-	if lib.load_manifest() and sheet_map != null:
+	if lib.load_manifest() and sheet_map != null and lib.has_actor(String(sheet_map.map.player)):
 		var av := AnimatedActor.new()
 		av.sprite_frames = lib.build_sprite_frames(String(sheet_map.map.player))
 		av.actor = world.players[0]
 		av.clock = clock
+		av.render_scale = lib.render_scale()
 		av.play("idle-down")
 		add_child(av)
 

@@ -1,0 +1,473 @@
+{
+  "pack": "wildshot-assembler-compat",
+  "version": 0,
+  "status": "preview-current-contract",
+  "generated": "2026-07-27",
+  "tool_commit": "b7eae05f5ece6cbdf38eea5274d2628bea6845b9",
+  "cell": 24,
+  "export_scale": 1,
+  "frame_contract": {
+    "dirs": [
+      "down",
+      "left",
+      "right",
+      "up"
+    ],
+    "anims": [
+      {
+        "id": "idle",
+        "frames": 2,
+        "ms": 420,
+        "start_column": 0
+      },
+      {
+        "id": "walk",
+        "frames": 4,
+        "ms": 150,
+        "start_column": 2
+      },
+      {
+        "id": "attack",
+        "frames": 4,
+        "ms": 115,
+        "start_column": 6
+      },
+      {
+        "id": "hurt",
+        "frames": 2,
+        "ms": 140,
+        "start_column": 10
+      }
+    ],
+    "layout": "rows = dirs in order; columns = anims in order, frames left to right",
+    "columns": 12,
+    "rows": 4,
+    "sheet_width": 288,
+    "sheet_height": 96
+  },
+  "presentation": {
+    "shade_mode": "form",
+    "outline_mode": "complete-b",
+    "effects": false,
+    "shadow_baked": false,
+    "background": "transparent",
+    "filtering": "nearest-neighbor"
+  },
+  "counts": {
+    "players": 4,
+    "enemies": 6,
+    "effects": 0,
+    "total_actors": 10
+  },
+  "actors": [
+    {
+      "id": "character-barbarian",
+      "category": "player",
+      "name": "Barbarian (Celestial)",
+      "sheet": "players/character-barbarian.png",
+      "spec": {
+        "kind": "player",
+        "species": "celestial",
+        "bodyBuild": "heroic",
+        "skin": "pale",
+        "hairStyle": "mohawk",
+        "hairColor": "blue",
+        "expression": "neutral",
+        "faceDetail": "none",
+        "headgear": "crown",
+        "outfit": "barbarian",
+        "outfitTier": "tier2",
+        "outfitColor": "purple",
+        "weapon": "axe",
+        "weaponTier": "tier2",
+        "shield": "none",
+        "shieldTier": "tier1",
+        "offhand": "none"
+      },
+      "tags": [
+        "barbarian",
+        "tier2",
+        "arcane"
+      ],
+      "production_audit": {
+        "profile": "production-v1",
+        "seed": "small-tileset-pack-v1:barbarian:104",
+        "archetype": "barbarian",
+        "powerTier": "tier2",
+        "paletteFamily": "arcane",
+        "attempts": 1,
+        "fallback": false
+      },
+      "file_audit": {
+        "byte_length": 4144,
+        "sha256": "5b20e6cb47cac61323399dec7ea72afcf533f9e81329f2db35b3c61de51e53b6",
+        "width": 288,
+        "height": 96,
+        "binary_alpha": true,
+        "opaque_pixels": 13614,
+        "frame0_non_empty_all_directions": {
+          "idle": true,
+          "walk": true,
+          "attack": true,
+          "hurt": true
+        }
+      }
+    },
+    {
+      "id": "character-guardian",
+      "category": "player",
+      "name": "Guardian (Orc)",
+      "sheet": "players/character-guardian.png",
+      "spec": {
+        "kind": "player",
+        "species": "orc",
+        "bodyBuild": "classic",
+        "skin": "orc",
+        "hairStyle": "mohawk",
+        "hairColor": "white",
+        "expression": "determined",
+        "faceDetail": "none",
+        "headgear": "circlet",
+        "outfit": "plate",
+        "outfitTier": "tier3",
+        "outfitColor": "forest",
+        "weapon": "sword",
+        "weaponTier": "tier3",
+        "shield": "kite",
+        "shieldTier": "tier3",
+        "offhand": "none"
+      },
+      "tags": [
+        "guardian",
+        "tier3",
+        "grounded"
+      ],
+      "production_audit": {
+        "profile": "production-v1",
+        "seed": "small-tileset-pack-v1:guardian:57",
+        "archetype": "guardian",
+        "powerTier": "tier3",
+        "paletteFamily": "grounded",
+        "attempts": 1,
+        "fallback": false
+      },
+      "file_audit": {
+        "byte_length": 4220,
+        "sha256": "6593cf5a574c3cf4064cd20cdb79bcab6bac16ae6756e49a3d71dd41fb180b31",
+        "width": 288,
+        "height": 96,
+        "binary_alpha": true,
+        "opaque_pixels": 13566,
+        "frame0_non_empty_all_directions": {
+          "idle": true,
+          "walk": true,
+          "attack": true,
+          "hurt": true
+        }
+      }
+    },
+    {
+      "id": "character-mage",
+      "category": "player",
+      "name": "Mage (Human)",
+      "sheet": "players/character-mage.png",
+      "spec": {
+        "kind": "player",
+        "species": "human",
+        "bodyBuild": "classic",
+        "skin": "peach",
+        "hairStyle": "mohawk",
+        "hairColor": "white",
+        "expression": "determined",
+        "faceDetail": "warpaint",
+        "headgear": "plumed",
+        "outfit": "robe",
+        "outfitTier": "tier2",
+        "outfitColor": "royal",
+        "weapon": "staff",
+        "weaponTier": "tier2",
+        "shield": "none",
+        "shieldTier": "tier1",
+        "offhand": "lantern"
+      },
+      "tags": [
+        "mage",
+        "tier2",
+        "divine"
+      ],
+      "production_audit": {
+        "profile": "production-v1",
+        "seed": "small-tileset-pack-v1:mage:2",
+        "archetype": "mage",
+        "powerTier": "tier2",
+        "paletteFamily": "divine",
+        "attempts": 3,
+        "fallback": false
+      },
+      "file_audit": {
+        "byte_length": 3661,
+        "sha256": "25269b64e69944c54c5ffc6a46ceebc6e2ceb394456e4bf686538363afb94d6f",
+        "width": 288,
+        "height": 96,
+        "binary_alpha": true,
+        "opaque_pixels": 14069,
+        "frame0_non_empty_all_directions": {
+          "idle": true,
+          "walk": true,
+          "attack": true,
+          "hurt": true
+        }
+      }
+    },
+    {
+      "id": "character-ranger",
+      "category": "player",
+      "name": "Ranger (Goblin)",
+      "sheet": "players/character-ranger.png",
+      "spec": {
+        "kind": "player",
+        "species": "goblin",
+        "bodyBuild": "classic",
+        "skin": "deep",
+        "hairStyle": "bowl",
+        "hairColor": "brown",
+        "expression": "surprised",
+        "faceDetail": "glasses",
+        "headgear": "hood",
+        "outfit": "ranger",
+        "outfitTier": "tier4",
+        "outfitColor": "forest",
+        "weapon": "crossbow",
+        "weaponTier": "tier4",
+        "shield": "none",
+        "shieldTier": "tier1",
+        "offhand": "none"
+      },
+      "tags": [
+        "ranger",
+        "tier4",
+        "wilderness"
+      ],
+      "production_audit": {
+        "profile": "production-v1",
+        "seed": "small-tileset-pack-v1:ranger:1",
+        "archetype": "ranger",
+        "powerTier": "tier4",
+        "paletteFamily": "wilderness",
+        "attempts": 9,
+        "fallback": false
+      },
+      "file_audit": {
+        "byte_length": 3947,
+        "sha256": "d9ae248043686cf3f0770ccc080a7910a1bcdc3cdad6442c73f9d704f58458fa",
+        "width": 288,
+        "height": 96,
+        "binary_alpha": true,
+        "opaque_pixels": 13396,
+        "frame0_non_empty_all_directions": {
+          "idle": true,
+          "walk": true,
+          "attack": true,
+          "hurt": true
+        }
+      }
+    },
+    {
+      "id": "enemy-bat-cave",
+      "category": "enemy",
+      "name": "Bat - Cave",
+      "sheet": "enemies/enemy-bat-cave.png",
+      "spec": {
+        "kind": "enemy",
+        "family": "bat",
+        "variant": "cave"
+      },
+      "tags": [
+        "bat",
+        "cave"
+      ],
+      "file_audit": {
+        "byte_length": 1294,
+        "sha256": "7807505fbd50e59b4b1c7d35a6e37f1afbfa9814e32d5f062761a05dbac94966",
+        "width": 288,
+        "height": 96,
+        "binary_alpha": true,
+        "opaque_pixels": 6048,
+        "frame0_non_empty_all_directions": {
+          "idle": true,
+          "walk": true,
+          "attack": true,
+          "hurt": true
+        }
+      }
+    },
+    {
+      "id": "enemy-goblin-scout",
+      "category": "enemy",
+      "name": "Goblin - Scout",
+      "sheet": "enemies/enemy-goblin-scout.png",
+      "spec": {
+        "kind": "enemy",
+        "family": "goblin",
+        "variant": "scout"
+      },
+      "tags": [
+        "goblin",
+        "scout"
+      ],
+      "file_audit": {
+        "byte_length": 2665,
+        "sha256": "76f278f510f61351bc50602f75826754fbb355d1ba6634337fe8dabb764c48cf",
+        "width": 288,
+        "height": 96,
+        "binary_alpha": true,
+        "opaque_pixels": 10019,
+        "frame0_non_empty_all_directions": {
+          "idle": true,
+          "walk": true,
+          "attack": true,
+          "hurt": true
+        }
+      }
+    },
+    {
+      "id": "enemy-skeleton-knight",
+      "category": "enemy",
+      "name": "Skeleton - Knight",
+      "sheet": "enemies/enemy-skeleton-knight.png",
+      "spec": {
+        "kind": "enemy",
+        "family": "skeleton",
+        "variant": "knight"
+      },
+      "tags": [
+        "skeleton",
+        "knight"
+      ],
+      "file_audit": {
+        "byte_length": 2656,
+        "sha256": "514ff40d7487638de38639e679422ca2ef68bf238d93619640c9a713feb7dfb7",
+        "width": 288,
+        "height": 96,
+        "binary_alpha": true,
+        "opaque_pixels": 11769,
+        "frame0_non_empty_all_directions": {
+          "idle": true,
+          "walk": true,
+          "attack": true,
+          "hurt": true
+        }
+      }
+    },
+    {
+      "id": "enemy-slime-lime",
+      "category": "enemy",
+      "name": "Slime - Lime",
+      "sheet": "enemies/enemy-slime-lime.png",
+      "spec": {
+        "kind": "enemy",
+        "family": "slime",
+        "variant": "lime"
+      },
+      "tags": [
+        "slime",
+        "lime"
+      ],
+      "file_audit": {
+        "byte_length": 1688,
+        "sha256": "684743561f0d5c4618091a2f2faf6a48de5259f64b70113aa7cc1f856a1fb4aa",
+        "width": 288,
+        "height": 96,
+        "binary_alpha": true,
+        "opaque_pixels": 5664,
+        "frame0_non_empty_all_directions": {
+          "idle": true,
+          "walk": true,
+          "attack": true,
+          "hurt": true
+        }
+      }
+    },
+    {
+      "id": "enemy-treant-oak",
+      "category": "enemy",
+      "name": "Treant - Oak",
+      "sheet": "enemies/enemy-treant-oak.png",
+      "spec": {
+        "kind": "enemy",
+        "family": "treant",
+        "variant": "oak"
+      },
+      "tags": [
+        "treant",
+        "oak"
+      ],
+      "file_audit": {
+        "byte_length": 2085,
+        "sha256": "2bbf0b38c62cdda0a38e38573dc087a26c4649698b7ad6becea2cdaac71519f0",
+        "width": 288,
+        "height": 96,
+        "binary_alpha": true,
+        "opaque_pixels": 10630,
+        "frame0_non_empty_all_directions": {
+          "idle": true,
+          "walk": true,
+          "attack": true,
+          "hurt": true
+        }
+      }
+    },
+    {
+      "id": "enemy-wolf-gray",
+      "category": "enemy",
+      "name": "Wolf - Gray",
+      "sheet": "enemies/enemy-wolf-gray.png",
+      "spec": {
+        "kind": "enemy",
+        "family": "wolf",
+        "variant": "gray"
+      },
+      "tags": [
+        "wolf",
+        "gray"
+      ],
+      "file_audit": {
+        "byte_length": 1856,
+        "sha256": "ba5e4fa8576ea5b65e860be8f1527b8a4d4d17c3e55775dc75be3fb9744839d5",
+        "width": 288,
+        "height": 96,
+        "binary_alpha": true,
+        "opaque_pixels": 9098,
+        "frame0_non_empty_all_directions": {
+          "idle": true,
+          "walk": true,
+          "attack": true,
+          "hurt": true
+        }
+      }
+    }
+  ],
+  "effects": [],
+  "limitations": {
+    "final_wildshot_v1": false,
+    "cast_animation": false,
+    "death_animation": false,
+    "compact_effect_sheets": false,
+    "note": "Use this pack for game integration now. Upgrade the importer from manifest version 0 when final Wildshot v1 ships."
+  },
+  "license_status": "private-development-testing-until-owner-selects-distribution-license",
+  "validation": {
+    "native_1x": true,
+    "exact_dimensions": true,
+    "binary_alpha": true,
+    "required_frame0_non_empty": [
+      "idle",
+      "walk",
+      "attack",
+      "hurt"
+    ],
+    "manifest_file_parity": true,
+    "source_checksums_verified": true,
+    "discarded_writes": 0
+  }
+}
