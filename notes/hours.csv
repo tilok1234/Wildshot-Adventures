@@ -6,3 +6,4 @@ timestamp,action,note
 2026-07-27T06:41:09,start,"M2 continuation: SimWorld spine onward"
 2026-07-27T07:14:05,note,"M2 executed end-to-end in game-repo session: spine+smoke, driver+input, camera+interp, spriteforge player, stress VERDICT PASS (1950fps min @600), speed editor. Feel pass pending."
 2026-07-27T08:12:31,note,"PROVISIONAL feel note (tired): movement smoothness. Probe built; pipeline measured clean at 60Hz; walk anim 8->12fps velocity-scaled (provisional); ledger #8 filed; #6 closed by stress verdict."
+2026-07-27T08:15:32,note,"Second PROVISIONAL feel note (still tired session): walk-rate change lands - 'i guess that feels good i think'. Positive but hedged; NOT logged as the M2 feel verdict per fresh-hands rule. Rested day-start pass still owns the close."

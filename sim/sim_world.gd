@@ -22,7 +22,7 @@ const ProjectileStep := preload("res://sim/systems/projectile_step.gd")
 
 const TICKS_PER_SECOND := 60
 const DT := 1.0 / 60.0
-const SERIAL_VERSION := 1
+const SERIAL_VERSION := 2
 
 ## Named PCG32 stream ids (§2.4). rng_vfx deliberately does NOT exist here —
 ## it lives view-side so cosmetics can never perturb gameplay.
@@ -120,10 +120,50 @@ func enqueue_command(cmd: Dictionary) -> void:
 
 ## In-step spawn path (systems and drained commands call this; external code
 ## never does). Emits PROJECTILE_SPAWNED. Returns the slot, -1 if exhausted.
-func spawn_projectile(pos: Vector2, vel: Vector2, r: float, ttl_ticks: int, fac: int) -> int:
-	var slot := projectiles.spawn(pos.x, pos.y, vel.x, vel.y, r, ttl_ticks, fac)
+## Defaults give the M2 rig shape: straight, zero damage, non-pierce.
+func spawn_projectile(
+	pos: Vector2,
+	vel: Vector2,
+	r: float,
+	ttl_ticks: int,
+	fac: int,
+	dmg := 0,
+	pattern := 0,
+	program := ProjectilePool.Program.STRAIGHT,
+	prog_a := 0.0,
+	prog_b := 0.0,
+	prog_c := 0.0,
+	passes := 0
+) -> int:
+	var slot := projectiles.spawn(
+		pos.x,
+		pos.y,
+		vel.x,
+		vel.y,
+		r,
+		ttl_ticks,
+		fac,
+		dmg,
+		pattern,
+		program,
+		prog_a,
+		prog_b,
+		prog_c,
+		tick,
+		passes
+	)
 	if slot >= 0:
-		events.append({"type": SimEvents.Type.PROJECTILE_SPAWNED, "tick": tick, "slot": slot})
+		(
+			events
+			. append(
+				{
+					"type": SimEvents.Type.PROJECTILE_SPAWNED,
+					"tick": tick,
+					"slot": slot,
+					"pattern": pattern,
+				}
+			)
+		)
 	return slot
 
 

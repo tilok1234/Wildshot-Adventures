@@ -24,6 +24,11 @@ var slew_count: int = 0
 ## driver-side instrumentation for the stress rig and the M4 density meter.
 ## Engine timing lives HERE, never in the sim (§2.1).
 var frame_sim_usec: int = 0
+## Sim events from ALL ticks stepped this render frame, in tick order.
+## world.events only holds the latest tick (cleared per step), and catch-up
+## frames step several ticks — event consumers (loggers, views, the M4
+## console) read THIS, never world.events directly.
+var frame_events: Array[Dictionary] = []
 var _accumulator: float = 0.0
 
 
@@ -33,11 +38,13 @@ func _process(delta: float) -> void:
 		pause_changed.emit(paused)
 	if paused or world == null:
 		return
+	frame_events.clear()
 	_accumulator += delta
 	var ticks := 0
 	var t0 := Time.get_ticks_usec()
 	while _accumulator >= SimWorld.DT and ticks < MAX_TICKS_PER_FRAME:
 		world.step([_sample_frame()])
+		frame_events.append_array(world.events)
 		_accumulator -= SimWorld.DT
 		ticks += 1
 	frame_sim_usec = int(Time.get_ticks_usec() - t0) if ticks > 0 else 0

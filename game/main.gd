@@ -9,6 +9,7 @@ const ArenaBuilder := preload("res://game/arena/arena_builder.gd")
 const Bitgrid := preload("res://sim/collision/bitgrid.gd")
 const SimWorld := preload("res://sim/sim_world.gd")
 const RealtimeDriver := preload("res://game/drivers/realtime_driver.gd")
+const CollisionLogger := preload("res://game/drivers/collision_logger.gd")
 const HumanSampler := preload("res://input/human_sampler.gd")
 const InputMapDefaults := preload("res://input/input_map_defaults.gd")
 const ActorLibrary := preload("res://game/views/actor_library.gd")
@@ -76,6 +77,10 @@ func _ready() -> void:
 	driver.sampler = HumanSampler.new()
 	driver.mouse_tile_provider = func() -> Vector2: return get_global_mouse_position() / TILE
 	add_child(driver)
+
+	var snag_logger := CollisionLogger.new()
+	snag_logger.driver = driver
+	add_child(snag_logger)
 
 	view_clock = ViewClock.new()
 	view_clock.driver = driver
