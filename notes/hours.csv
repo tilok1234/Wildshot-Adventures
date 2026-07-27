@@ -27,3 +27,4 @@ timestamp,action,note
 2026-07-27T10:59:08,start,"M5 session: EnemyDef family + 5-state machine + Rusher/Husk Archer (assembler sprites) + DodgeBot + canaries"
 2026-07-27T11:13:38,note,"Full-enemy-catalog pack integrated (57 fam/202 var; importer shape adapter + catalog fixture; normalized imported manifest). Designer mapping locked: Rusher=wolf:gray, Husk=skeleton:archer. All gates green, pushed."
 2026-07-27T11:30:02,note,"Enemy sim landed: EnemyDef/EmitterSlot/PatternDef + 5-state machine + Rusher/Husk at SS3.4 exact; smoke mechanizes contact cadence, telegraph lead 12, period 90, keep-range band; SERIAL v8, goldens regen, pushed."
+2026-07-27T12:00:20,note,"DodgeBot landed: SS2.11 policy (16 headings via legal 8-dir frames, closed-form K=30), canaries calibrate (trivial PASS, wall MUST-FAIL fails t32), Rusher+Husk 3.0 ability-off proofs PASS 5x60s + first_contact composition bonus PASS. Parse-error hang cost ~20min (gotcha 3 strikes again)."

@@ -26,8 +26,8 @@ const RecapTracker := preload("res://game/drivers/recap_tracker.gd")
 const RecapPanel := preload("res://ui/recap_panel.gd")
 const DebugConsole := preload("res://ui/debug_console.gd")
 const HitboxView := preload("res://game/views/hitbox_view.gd")
-const EmitterView := preload("res://game/views/emitter_view.gd")
 const SimEvents := preload("res://sim/events.gd")
+const RenderLayers := preload("res://game/render_layers.gd")
 const AssemblerLibrary := preload("res://game/views/assembler_library.gd")
 const AnimatedActor := preload("res://game/views/animated_actor.gd")
 
@@ -196,7 +196,7 @@ func _console_exec(line: String) -> void:
 		return
 	match String(tokens[0]).to_lower():
 		"help":
-			console.println("god | slowmo <1-10> | events <on|off|all> | emitter <on|off> | reset")
+			console.println("god | slowmo <1-10> | events <on|off|all> | reset")
 			console.println("verdict <dodgeability|feel> <rested-human|bot-proof> <text>")
 		"god":
 			var want: bool = not world.god_mode
@@ -216,12 +216,6 @@ func _console_exec(line: String) -> void:
 		"events":
 			_console_events = String(tokens[1]) if tokens.size() > 1 else "on"
 			console.println("event tail: " + _console_events)
-		"emitter":
-			var on: bool = tokens.size() > 1 and String(tokens[1]) == "on"
-			world.enqueue_command(
-				{"type": SimWorld.Command.TOGGLE_EMITTER, "on": on, "pos": Vector2(30.0, 12.0)}
-			)
-			console.println("emitter -> %s (replay-dirty)" % ("ON" if on else "OFF"))
 		"reset":
 			Config.set_setting("dev", "seed", world.run_seed + 1)
 			get_tree().reload_current_scene()
@@ -309,6 +303,10 @@ func _ready() -> void:
 	if BootArgs.get_arg("bot") == "dodge_proof":
 		get_tree().quit(DodgeProof.run_from_args(BootArgs.args))
 		return
+	# §2.5 load-time band assertions (M5): boot fails loudly on a Laws-1/2
+	# ordering violation; the boot gate greps for the error.
+	if not RenderLayers.assert_bands():
+		push_error("main: render band audit FAILED")
 	var arena := ArenaBuilder.build_arena(self)
 	if arena.is_empty():
 		return
@@ -359,10 +357,6 @@ func _ready() -> void:
 	hitboxes.world = world
 	hitboxes.visible = bool(Config.get_setting("ui", "hitboxes", false))
 	add_child(hitboxes)
-
-	var emitter_view := EmitterView.new()
-	emitter_view.world = world
-	add_child(emitter_view)
 
 	# Actor source: the assembler pack (§2.14 Amendment v2, docs/14).
 	var lib := AssemblerLibrary.new()
@@ -536,14 +530,6 @@ func _ready() -> void:
 		func(i: int) -> void:
 			feedback_settings.damage_numbers = i
 			Config.set_setting("feedback", "damage_numbers", i)
-	)
-	options_menu.add_toggle_row(
-		"debug emitter (shoots you)",
-		false,
-		func(v: bool) -> void:
-			world.enqueue_command(
-				{"type": SimWorld.Command.TOGGLE_EMITTER, "on": v, "pos": Vector2(30.0, 12.0)}
-			)
 	)
 	options_menu.add_cycle_row(
 		"speed preset (on reset)",

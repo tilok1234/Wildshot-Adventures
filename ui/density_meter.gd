@@ -20,6 +20,27 @@ var _ring := PackedInt32Array()
 var _head := 0
 var _warn := Color(1.0, 0.42, 0.35)
 var _ok := Color(0.81, 0.77, 0.93)
+var _worst_by_def := {}
+
+
+## Sustained worst-case hostile projectiles for one EnemyDef (§2.6/§3.4
+## composition rule): sum over slots of shots x ttl / cooldown — the
+## steady-state shot count one enemy keeps alive if it fires forever.
+func _worst_case(defs: Array, def_index: int) -> float:
+	if _worst_by_def.has(def_index):
+		return _worst_by_def[def_index]
+	var total := 0.0
+	var def: Resource = defs[def_index]
+	var emitters: Array = def.emitters
+	for slot: Resource in emitters:
+		var pattern: Resource = slot.pattern
+		var shots: Array = pattern.shots
+		var max_ttl := 0
+		for shot: Resource in shots:
+			max_ttl = maxi(max_ttl, int(shot.ttl_ticks))
+		total += shots.size() * float(max_ttl) / float(maxi(1, int(slot.cooldown_ticks)))
+	_worst_by_def[def_index] = total
+	return total
 
 
 func _ready() -> void:
@@ -46,13 +67,22 @@ func _process(_delta: float) -> void:
 		peak = maxi(peak, v)
 	var enemies: int = world.enemies.size()
 	var effects: int = effects_counter.call() if effects_counter.is_valid() else 0
+	# §2.6 composition rule, live (activated M5): the sustained hostile
+	# ceiling this scenario's LIVE enemies could hold if all fired forever.
+	var defs: Array = world.enemy_defs
+	var worst := 0.0
+	for e: RefCounted in world.enemies:
+		var def_index: int = e.def_index
+		if def_index >= 0:
+			worst += _worst_case(defs, def_index)
 
 	var over_total: bool = total > budgets.combined_max
 	var over_hostile: bool = hostile > budgets.hostile_ordinary_max
 	var over_enemies: bool = enemies > budgets.enemies_max
 	var over_effects: bool = effects > budgets.effects_max
+	var over_worst: bool = worst > float(budgets.hostile_ordinary_max)
 	_label.text = (
-		"DENSITY\nproj %d/%d  (H %d/%d  F %d)\npeak5s %d\nenemies %d/%d\neffects %d/%d\nworst-case: pending roster (M5)"
+		"DENSITY\nproj %d/%d  (H %d/%d  F %d)\npeak5s %d\nenemies %d/%d\neffects %d/%d\nsustained worst-case %.0f/%d"
 		% [
 			total,
 			budgets.combined_max,
@@ -64,7 +94,9 @@ func _process(_delta: float) -> void:
 			budgets.enemies_max,
 			effects,
 			budgets.effects_max,
+			worst,
+			budgets.hostile_ordinary_max,
 		]
 	)
-	var over := over_total or over_hostile or over_enemies or over_effects
+	var over := over_total or over_hostile or over_enemies or over_effects or over_worst
 	_label.add_theme_color_override("font_color", _warn if over else _ok)

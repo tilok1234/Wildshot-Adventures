@@ -72,7 +72,7 @@ func _init() -> void:
 		failed = true
 	if not _check_fire_path():
 		failed = true
-	if not _check_emitter_death():
+	if not _check_hostile_death():
 		failed = true
 	if not _check_enemy_behavior():
 		failed = true
@@ -259,45 +259,36 @@ func _run_fire_once(with_fire: bool) -> Dictionary:
 	}
 
 
-## Debug-emitter + player-death contract (M4): hostile fire kills the
-## player deterministically; a dead player is inert (no further damage,
-## no movement); double-run hashes stay identical.
-func _check_emitter_death() -> bool:
-	var a := _run_emitter_once()
-	var b := _run_emitter_once()
+## Hostile-projectile player-death contract (M4, re-based onto real
+## enemies when the debug emitter retired at M5): aimed hostile fire
+## kills a standing player deterministically; a dead player is inert
+## (no further damage); double-run hashes stay identical.
+func _check_hostile_death() -> bool:
+	var a := _run_hostile_death_once()
+	var b := _run_hostile_death_once()
 	var ok := true
 	if a.hashes != b.hashes:
-		printerr("FAIL: emitter runs diverge")
+		printerr("FAIL: hostile-death runs diverge")
 		ok = false
 	if not bool(a.died):
-		printerr("FAIL: player never died under emitter fire")
+		printerr("FAIL: player never died under husk fire")
 		ok = false
 	if int(a.hits_after_death) != 0:
 		printerr("FAIL: dead player took %d further hits" % int(a.hits_after_death))
 		ok = false
 	if ok:
-		print("emitter-death ok: died at tick %d, hp floor %d" % [int(a.death_tick), int(a.hp_end)])
+		print("hostile-death ok: died at tick %d, hp floor %d" % [int(a.death_tick), int(a.hp_end)])
 	return ok
 
 
-func _run_emitter_once() -> Dictionary:
-	var grid := Bitgrid.new()
-	grid.setup(16, 16)
+func _run_hostile_death_once() -> Dictionary:
 	var world := SimWorld.new()
-	world.setup(5, grid)
-	var player := world.add_player(Vector2(8.0, 8.0))
-	(
-		world
-		. enqueue_command(
-			{
-				"type": SimWorld.Command.TOGGLE_EMITTER,
-				"on": true,
-				"pos": Vector2(4.0, 8.0),
-				"damage": 25,
-				"cadence": 60,
-			}
-		)
-	)
+	world.setup(5, _build_bitgrid())
+	world.set_enemy_defs([load("res://data/enemies/husk_archer.tres")])
+	var player := world.add_player(Vector2(24.0, 16.0))
+	for i in 3:
+		var ang := TAU * i / 3.0
+		world.add_enemy(0, Vector2(24.0, 16.0) + Vector2(cos(ang), sin(ang)) * 5.5)
 	var hashes: Array[int] = []
 	var died := false
 	var death_tick := -1

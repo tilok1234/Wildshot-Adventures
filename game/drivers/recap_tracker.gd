@@ -29,7 +29,9 @@ func _process(_delta: float) -> void:
 	for ev: Dictionary in driver.frame_events:
 		match int(ev.type):
 			SimEvents.Type.TELEGRAPH_STARTED:
-				_last_telegraph_tick[int(ev.id)] = int(ev.tick)
+				# Keyed by PATTERN: the recap ties the killing pattern to
+				# its last warning regardless of which enemy fired it.
+				_last_telegraph_tick[int(ev.get("pattern", 0))] = int(ev.tick)
 			SimEvents.Type.DAMAGE_APPLIED:
 				if player_ids.has(int(ev.target)):
 					(
@@ -46,19 +48,43 @@ func _process(_delta: float) -> void:
 			SimEvents.Type.ENTITY_KILLED:
 				if bool(ev.get("player", false)):
 					_emit_recap(int(ev.tick))
+				elif int(ev.get("def_index", -1)) >= 0:
+					_log_enemy_kill(ev)
 	var cutoff: int = world.tick - TRACE_TICKS
 	while not _hits.is_empty() and int(_hits[0].tick) < cutoff:
 		_hits.pop_front()
 
 
+## TTK evidence line (M5, §2.10): every enemy kill appends to the
+## session evidence stream with its def + time-to-kill (CORE-36 honesty
+## data — TTKBot consumes the same shape at M7).
+func _log_enemy_kill(ev: Dictionary) -> void:
+	var pos: Vector2 = ev.pos
+	var line := {
+		"kind": "enemy_kill",
+		"tick": int(ev.tick),
+		"def_index": int(ev.def_index),
+		"ttk_ticks": int(ev.get("ttk_ticks", -1)),
+		"pos": [snappedf(pos.x, 0.01), snappedf(pos.y, 0.01)],
+	}
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("user://logs"))
+	var f := FileAccess.open("user://logs/session.jsonl", FileAccess.READ_WRITE)
+	if f == null:
+		f = FileAccess.open("user://logs/session.jsonl", FileAccess.WRITE)
+	if f != null:
+		f.seek_end()
+		f.store_line(JSON.stringify(line))
+		f.close()
+
+
 func _emit_recap(death_tick: int) -> void:
 	_done = true
 	var killer: Dictionary = _hits[-1] if not _hits.is_empty() else {}
-	# Emitter telegraphs use id -100; real enemies (M5) will carry their
-	# own telegraph ids — extend the lookup then.
+	# Telegraph lead is looked up by the killing PATTERN (telegraph
+	# events carry pattern ids since M5).
 	var telegraph_lead := -1
-	if _last_telegraph_tick.has(-100) and not killer.is_empty():
-		telegraph_lead = int(killer.tick) - int(_last_telegraph_tick[-100])
+	if not killer.is_empty() and _last_telegraph_tick.has(int(killer.pattern)):
+		telegraph_lead = int(killer.tick) - int(_last_telegraph_tick[int(killer.pattern)])
 	var recap := {
 		"death_tick": death_tick,
 		"killer": killer,
