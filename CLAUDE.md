@@ -264,10 +264,14 @@ MMIs + sphere fallback + Law-2/8 upscale guard; hazard_view zone
 sprites + 8-step arm strip; CI pack+map gate) — M-FX PRE-REGISTERED
 DECISION = CURATED PACK, satisfied by delivery. WORLDFORGE
 CONSUMER-PREP (2026-07-28 re-ruling in planning doc 15):
-addons/worldforge_importer validates packFormat 1 (sha256 parity,
-walkability -> Bitgrid, flood==floodCount, TMJ structure) with
-hand-derived fixture + 3 negative guards + CI; consumption half stays
-post-Gate-1. PROOF STATE: Rusher/Husk solo + canaries + forest_walk
+addons/worldforge_importer validates packFormat 1 (sha256 parity +
+baseArtifact consistency, validation-report pass gate, walkability ->
+Bitgrid, flood==floodCount, TMJ structure, world formatVersion) with
+hand-derived fixture + 4 negative guards + CI; PROVEN against the real
+small-cold-coastal reference pack (0.57 s, flood 33845 reproduced —
+three implementations agree); dusk pack incoming from the
+WorldForge-side agent (validate on arrival); consumption half stays
+post-Gate-1 behind the generated-test-arena ruling. PROOF STATE: Rusher/Husk solo + canaries + forest_walk
 composition PASS at 3.0 ability-off; first_contact composition FAIL
 committed for DESIGNER ADJUDICATION (3 wolves + 2 archers exceed the
 primary policy; margins tier-3-watch ~0.1). Ledger #9-#12 opened.

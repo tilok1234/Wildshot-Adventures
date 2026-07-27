@@ -43,3 +43,4 @@ timestamp,action,note
 2026-07-28T00:34:38,note,"Session close: docs truth-up (tracker post-M5 block, ledger 9-12, docs/12 SS3.1+SS3.4 amendments recorded in place) + fresh cold-start HANDOFF.md for the M6 session. Both repos pushed, all gates green, clean seam."
 2026-07-28T00:34:38,stop,"M5 marathon + post-M5 additions complete; next session starts fresh at M6 from notes/HANDOFF.md"
 2026-07-28T00:36:05,start,"WorldForge Phase-4 handoff: validate the real small-cold-coastal reference pack"
+2026-07-28T00:38:54,note,"Real WorldForge pack VALIDATED first try (0.57s, flood 33845 reproduced, 8/8 hashes). Validator hardened per relayed contract (report gate, baseArtifact consistency, formatVersion field). Both repos pushed."

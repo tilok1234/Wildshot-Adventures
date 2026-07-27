@@ -60,8 +60,21 @@ only mapped items enter the project. Two arenas: the detailed dungeon
 lab (`arena_lab.json`, §3.1 skeleton + dressing) and the Forest Walk
 readability testbed (`arena_forest.json`); scenarios pick their arena
 (`ScenarioDef.arena`) and spawn enemies by def id. WorldForge
-consumer-prep is fixture-proven (validator + walkability→bitgrid);
-real world packs wait post-Gate-1. Serialization v9; goldens current;
+consumer-prep is fixture-proven AND proven against a REAL reference
+pack (`C:\Users\headc\Documents\WorldForge\outputs\game-packs\
+small-cold-coastal-pack` — validated in 0.57 s, flood 33845 from
+(241,124) reproduced; contract-as-built: world.json's format field is
+`formatVersion`; report shape {status,errors,warnings}, warnings
+legal). Validate any pack via:
+`godot_console --headless --path . --script
+addons/worldforge_importer/import_pack.gd -- --pack=<dir>/`.
+A DUSK pack is being produced by the WorldForge-side agent — when it
+lands, run that CLI; green means the contract held. The CONSUMPTION
+half (render a world, playable scenario, POIs) is deliberately
+deferred: post-Gate-1 OR an explicit designer "generated test arena"
+ruling (≈one session when ruled; contract-gap protocol: never patch a
+pack, relay issues to the WorldForge side). Serialization v9; goldens
+current;
 CI fully green (RNG lint, smoke, goldens ×10, pixel-match, uikit,
 assembler, projectile, worldforge gates).
 
@@ -178,7 +191,8 @@ Before every commit, per touched area:
   M7 reactive policies / composition-too-hot.
 - Provisional M6 actor mappings + slash-sprite share (ledger #10).
 - Weekly GIF #2 (wolves + forest + slash = fresh material).
-- Dusk TileForge export (unblocks WorldForge slice drafting; nothing
-  game-side waits on it).
+- Dusk WorldForge pack: requested from the WorldForge-side agent
+  (2026-07-28); when delivered, validate via the importer CLI and
+  report the result — consumption stays gated on the ruling above.
 - M6 audio cue map wants placeholder WAVs (Law 7) — sourcing is
   designer taste territory.
