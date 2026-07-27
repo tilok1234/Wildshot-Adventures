@@ -28,6 +28,8 @@ const KEY_ACTIONS := {
 	"debug_speed_up": KEY_EQUAL,
 	# M3 replay capture: dump the session recording to user://replays/.
 	"replay_save": KEY_F10,
+	# M3 options panel (remap UI).
+	"options_toggle": KEY_F1,
 }
 const MOUSE_ACTIONS := {
 	"fire": MOUSE_BUTTON_LEFT,

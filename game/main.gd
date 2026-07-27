@@ -14,6 +14,7 @@ const CollisionLogger := preload("res://game/drivers/collision_logger.gd")
 const HumanSampler := preload("res://input/human_sampler.gd")
 const InputMapDefaults := preload("res://input/input_map_defaults.gd")
 const ReplayRecorder := preload("res://input/replay_recorder.gd")
+const OptionsMenu := preload("res://ui/options_menu.gd")
 const ActorLibrary := preload("res://game/views/actor_library.gd")
 const AnimatedActor := preload("res://game/views/animated_actor.gd")
 
@@ -33,6 +34,7 @@ var view_clock: ViewClock
 var speed_label: Label
 var autofire_label: Label
 var weapon_label: Label
+var options_menu: PanelContainer
 
 
 func _process(_delta: float) -> void:
@@ -40,6 +42,8 @@ func _process(_delta: float) -> void:
 	if view_clock != null and Input.is_action_just_pressed("interp_toggle"):
 		view_clock.interp_enabled = not view_clock.interp_enabled
 		print("render interpolation: ", "ON" if view_clock.interp_enabled else "OFF (snap)")
+	if options_menu != null and Input.is_action_just_pressed("options_toggle"):
+		options_menu.toggle()
 	if world == null or world.players.is_empty():
 		return
 	# M2 movement-speed editor: presets + 0.1 steps, routed through the sim
@@ -85,7 +89,8 @@ func _ready() -> void:
 	var def: Dictionary = arena.def
 	bitgrid = arena.bitgrid
 
-	InputMapDefaults.register()
+	# InputMap defaults + saved remaps are applied by the Config autoload
+	# before any scene _ready runs.
 	world = SimWorld.new()
 	world.setup(RUN_SEED, bitgrid)
 	(
@@ -162,11 +167,13 @@ func _ready() -> void:
 	autofire_label.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
 	weapon_label = Label.new()
 	weapon_label.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	options_menu = OptionsMenu.new()
 	var hud := CanvasLayer.new()
 	hud.add_child(pause_label)
 	hud.add_child(speed_label)
 	hud.add_child(autofire_label)
 	hud.add_child(weapon_label)
+	hud.add_child(options_menu)
 	add_child(hud)
 	driver.pause_changed.connect(func(p: bool) -> void: pause_label.visible = p)
 
