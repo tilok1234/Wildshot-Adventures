@@ -1,10 +1,11 @@
 extends PanelContainer
 ## Input remap panel (docs/12 §2.8, CORE-50 "full remapping from start" —
-## honestly met at M3 with persistence). F1 toggles. Every registered
-## gameplay action is listed; click a binding, press the new key or mouse
-## button, Esc cancels capture. Rebinds route through the Config autoload
-## (live + persisted in one call). Duplicate bindings are permitted
-## silently at M3 — the M4 UX pass adds conflict warnings.
+## honestly met at M3 with persistence). Toggled by the options_toggle
+## action (default O). Every registered gameplay action is listed; click
+## a binding, press the new key or mouse button, Esc cancels capture.
+## Rebinds route through the Config autoload (live + persisted in one
+## call). Duplicate bindings are permitted silently at M3 — the M4 UX
+## pass adds conflict warnings.
 
 const InputMapDefaults := preload("res://input/input_map_defaults.gd")
 

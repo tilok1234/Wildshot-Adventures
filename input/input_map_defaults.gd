@@ -20,18 +20,22 @@ const KEY_ACTIONS := {
 	"weapon_2": KEY_2,
 	"weapon_3": KEY_3,
 	"pause_toggle": KEY_ESCAPE,
-	"interp_toggle": KEY_F7,
-	# M2 movement-speed editor (§3.2 presets; full stat editor lands M4).
-	"debug_speed_lowest": KEY_F2,
-	"debug_speed_baseline": KEY_F3,
+	# Dev/utility defaults deliberately avoid the F-row — the dev
+	# machine's keyboard has no F1–F12 (designer constraint, recorded
+	# 2026-07-27). Future debug keys (M4 console etc.) follow this rule.
+	"interp_toggle": KEY_I,
+	# M2 movement-speed editor (§3.2 presets; full stat editor lands M4):
+	# [ = lowest-intended 3.0, ] = baseline 4.0, -/= step by 0.1.
+	"debug_speed_lowest": KEY_BRACKETLEFT,
+	"debug_speed_baseline": KEY_BRACKETRIGHT,
 	"debug_speed_down": KEY_MINUS,
 	"debug_speed_up": KEY_EQUAL,
 	# M3 replay capture: dump the session recording to user://replays/.
-	"replay_save": KEY_F10,
+	"replay_save": KEY_R,
 	# M3 options panel (remap UI).
-	"options_toggle": KEY_F1,
+	"options_toggle": KEY_O,
 	# M3 GIF ring buffer dump.
-	"gif_dump": KEY_F9,
+	"gif_dump": KEY_G,
 }
 const MOUSE_ACTIONS := {
 	"fire": MOUSE_BUTTON_LEFT,

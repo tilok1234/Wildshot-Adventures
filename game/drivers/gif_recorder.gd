@@ -1,9 +1,10 @@
 extends Node
-## F9 GIF ring buffer (docs/12 §2.10/§2.12): keeps the last ~10 s of
-## frames (half-rate, 30 fps at base res) in memory; F9 dumps them as a
-## PNG sequence to user://gif_frames/ for tools/gif.ps1 (ffmpeg) to
-## convert — the weekly devlog GIF pipeline (PIPE-testers; the PNG path
-## is ledger entry #7). Purely view-side; headless runs capture nothing.
+## GIF ring buffer (docs/12 §2.10/§2.12): keeps the last ~10 s of frames
+## (half-rate, 30 fps at base res) in memory; the gif_dump action
+## (default G) dumps them as a PNG sequence to user://gif_frames/ for
+## tools/gif.ps1 (ffmpeg) to convert — the weekly devlog GIF pipeline
+## (PIPE-testers; the PNG path is ledger entry #7). Purely view-side;
+## headless runs capture nothing.
 
 const FPS := 30
 const SECONDS := 10

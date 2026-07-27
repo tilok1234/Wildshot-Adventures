@@ -179,8 +179,11 @@ Edit this line as milestones land: **M1 complete and designer-approved.
 M2 engineering complete 2026-07-27; stress verdict recorded (min 1950
 fps @ ~600 live — spatial hash deferred, C# hatch not triggered;
 reports/stress_m2.json). M2 CLOSES on the designer feel pass (rested,
-day start): movement feel at 3.0/4.0 (F2/F3), ranger facing, pause
-freeze, F7 interp A/B. M3 ENGINEERING COMPLETE 2026-07-27 (8a0f2d4→
+day start): movement feel at 3.0/4.0 ([ / ] presets), ranger facing,
+pause freeze (Esc), interp A/B (I). NOTE: dev keyboard has no F-row —
+all utility defaults are letter/punct keys (O options, I interp,
+[ ] speed presets, G gif, R replay; HUD shows live hints) and future
+debug keys must avoid F1–F12. M3 ENGINEERING COMPLETE 2026-07-27 (8a0f2d4→
 d172a25; session record in planning notes/sessions/2026-07-27.md):
 three WeaponFrame.tres (§3.3 values, Longbolt 6.5t cap), fire path
 with sim-side autofire latch + HUD indicator, motion programs
@@ -188,13 +191,13 @@ with sim-side autofire latch + HUD indicator, motion programs
 registry_full block), one damage-resolution path + death sweep,
 terrain collision + corner-snag JSONL, CORE-32 proofs mechanized in
 the smoke test (fire-vs-no-fire position equality; zero RNG in fire
-path), .wsr replay capture (F10 live) + ReplaySource + golden replay
+path), .wsr replay capture (R dumps live) + ReplaySource + golden replay
 per frame verified 10x consecutive + Windows CI gate (activated M3,
 one milestone early — flagged in planning log for veto), remap UI
-(F1) + Config autoload + settings.cfg persistence (test green), F9
-GIF ring buffer + tools/gif.ps1. OPEN designer-owned M3 items: stand
+(O) + Config autoload + settings.cfg persistence (test green), GIF
+ring buffer (G) + tools/gif.ps1. OPEN designer-owned M3 items: stand
 up itch page + devlog thread + bare Discord (accounts/public posts),
-post the first weekly GIF (F9 → tools/gif.ps1) — cadence starts there
+post the first weekly GIF (G → tools/gif.ps1) — cadence starts there
 and never stops. Next code milestone: M4 (docs/12 §4 — debug console
 + overlay, density meter, event skeleton completion, death recap +
 debug emitter, scenario picker, ability slot + mana, HP/mana HUD,

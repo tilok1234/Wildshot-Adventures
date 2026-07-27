@@ -36,15 +36,17 @@ var speed_label: Label
 var autofire_label: Label
 var weapon_label: Label
 var options_menu: PanelContainer
+var hints_label: Label
 
 
 func _process(_delta: float) -> void:
-	# §2.9 prev/curr render toggle (F7) — view-side only, replay-irrelevant.
+	# §2.9 prev/curr render toggle — view-side only, replay-irrelevant.
 	if view_clock != null and Input.is_action_just_pressed("interp_toggle"):
 		view_clock.interp_enabled = not view_clock.interp_enabled
 		print("render interpolation: ", "ON" if view_clock.interp_enabled else "OFF (snap)")
 	if options_menu != null and Input.is_action_just_pressed("options_toggle"):
 		options_menu.toggle()
+		_refresh_hints()
 	if world == null or world.players.is_empty():
 		return
 	# M2 movement-speed editor: presets + 0.1 steps, routed through the sim
@@ -71,6 +73,20 @@ func _process(_delta: float) -> void:
 		var path := "user://replays/session_%d.wsr" % world.tick
 		if driver.recorder.save_wsr(path, "dev", "main_dev_scene"):
 			print("replay saved: ", ProjectSettings.globalize_path(path))
+
+
+func _refresh_hints() -> void:
+	var parts: Array[String] = []
+	for entry: Array in [
+		["options_toggle", "options"],
+		["interp_toggle", "interp"],
+		["debug_speed_lowest", "spd 3.0"],
+		["debug_speed_baseline", "spd 4.0"],
+		["gif_dump", "gif"],
+		["replay_save", "replay"],
+	]:
+		parts.append("%s %s" % [Config.binding_text(entry[0]), entry[1]])
+	hints_label.text = "  ".join(parts)
 
 
 func _set_speed(speed: float) -> void:
@@ -171,14 +187,21 @@ func _ready() -> void:
 	weapon_label = Label.new()
 	weapon_label.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 	options_menu = OptionsMenu.new()
+	# Live key-hint line: reads the ACTUAL InputMap, so it stays correct
+	# after remaps.
+	hints_label = Label.new()
+	hints_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
+	hints_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	var hud := CanvasLayer.new()
 	hud.add_child(pause_label)
 	hud.add_child(speed_label)
 	hud.add_child(autofire_label)
 	hud.add_child(weapon_label)
+	hud.add_child(hints_label)
 	hud.add_child(options_menu)
 	add_child(hud)
 	driver.pause_changed.connect(func(p: bool) -> void: pause_label.visible = p)
+	_refresh_hints()
 
 	print(
 		(
