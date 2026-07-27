@@ -21,6 +21,11 @@ const KEY_ACTIONS := {
 	"weapon_3": KEY_3,
 	"pause_toggle": KEY_ESCAPE,
 	"interp_toggle": KEY_F7,
+	# M2 movement-speed editor (§3.2 presets; full stat editor lands M4).
+	"debug_speed_lowest": KEY_F2,
+	"debug_speed_baseline": KEY_F3,
+	"debug_speed_down": KEY_MINUS,
+	"debug_speed_up": KEY_EQUAL,
 }
 const MOUSE_ACTIONS := {
 	"fire": MOUSE_BUTTON_LEFT,

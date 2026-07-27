@@ -25,6 +25,7 @@ var bitgrid: RefCounted
 var world: SimWorld
 var driver: RealtimeDriver
 var view_clock: ViewClock
+var speed_label: Label
 
 
 func _process(_delta: float) -> void:
@@ -32,6 +33,30 @@ func _process(_delta: float) -> void:
 	if view_clock != null and Input.is_action_just_pressed("interp_toggle"):
 		view_clock.interp_enabled = not view_clock.interp_enabled
 		print("render interpolation: ", "ON" if view_clock.interp_enabled else "OFF (snap)")
+	if world == null or world.players.is_empty():
+		return
+	# M2 movement-speed editor: presets + 0.1 steps, routed through the sim
+	# command queue (band-clamped and replay-dirty-stamped sim-side, §3.2).
+	var cur: float = world.players[0].move_speed
+	if Input.is_action_just_pressed("debug_speed_lowest"):
+		_set_speed(3.0)
+	elif Input.is_action_just_pressed("debug_speed_baseline"):
+		_set_speed(4.0)
+	elif Input.is_action_just_pressed("debug_speed_down"):
+		_set_speed(snappedf(cur - 0.1, 0.1))
+	elif Input.is_action_just_pressed("debug_speed_up"):
+		_set_speed(snappedf(cur + 0.1, 0.1))
+	speed_label.text = ("speed %.1f t/s%s" % [cur, "   REPLAY-DIRTY" if world.replay_dirty else ""])
+
+
+func _set_speed(speed: float) -> void:
+	world.enqueue_command({"type": SimWorld.Command.SET_MOVE_SPEED, "player": 0, "speed": speed})
+	print(
+		(
+			"speed editor: requested %.1f t/s (band %.1f-%.1f; run now replay-dirty)"
+			% [speed, SimWorld.MOVE_SPEED_MIN, SimWorld.MOVE_SPEED_MAX]
+		)
+	)
 
 
 func _ready() -> void:
@@ -77,8 +102,11 @@ func _ready() -> void:
 	pause_label.text = "PAUSED"
 	pause_label.visible = false
 	pause_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	speed_label = Label.new()
+	speed_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
 	var hud := CanvasLayer.new()
 	hud.add_child(pause_label)
+	hud.add_child(speed_label)
 	add_child(hud)
 	driver.pause_changed.connect(func(p: bool) -> void: pause_label.visible = p)
 

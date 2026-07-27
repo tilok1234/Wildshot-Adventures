@@ -31,7 +31,16 @@ const STREAM_MISC := 2
 
 enum Command {
 	SPAWN_PROJECTILE,
+	SET_MOVE_SPEED,
 }
+
+## §3.2 move-speed tuning band. The sim-side clamp means NO path — debug
+## editor included — can set a speed outside the band. Tuning below 3.0
+## first requires re-proving the whole dodgeability suite at the new floor
+## (proofs are speed-stamped; harness lands M7) — the band floor here is
+## that rule's hard backstop.
+const MOVE_SPEED_MIN := 3.0
+const MOVE_SPEED_MAX := 5.5
 
 var tick: int = 0
 var run_seed: int = 0
@@ -43,6 +52,11 @@ var enemies: Array[ActorState] = []
 var projectiles: ProjectilePool = ProjectilePool.new()
 var rng_enemy: Pcg32 = Pcg32.new()
 var rng_misc: Pcg32 = Pcg32.new()
+
+## True once ANY runtime edit command touched this run (§2.10): the run can
+## no longer serve as clean replay/feel evidence. Serialized — an edited
+## run hashes differently from a clean one, deliberately.
+var replay_dirty: bool = false
 
 ## Events emitted by systems this tick (sim/events.gd vocabulary). Cleared at
 ## the start of every step; consumers read between steps, never mutate sim.
@@ -122,6 +136,7 @@ func serialize() -> PackedByteArray:
 	buf.put_64(tick)
 	buf.put_64(run_seed)
 	buf.put_64(next_entity_id)
+	buf.put_u8(1 if replay_dirty else 0)
 	buf.put_64(rng_enemy.state)
 	buf.put_64(rng_enemy.inc)
 	buf.put_64(rng_misc.state)
@@ -160,4 +175,16 @@ func _drain_commands() -> void:
 		match int(cmd.type) as Command:
 			Command.SPAWN_PROJECTILE:
 				spawn_projectile(cmd.pos, cmd.vel, cmd.radius, cmd.ttl, cmd.faction)
+			Command.SET_MOVE_SPEED:
+				_cmd_set_move_speed(int(cmd.player), float(cmd.speed))
 	_commands.clear()
+
+
+## Runtime stat edit (M2: movement speed only; the full lean-stat editor is
+## M4). Sim-side band clamp + replay-dirty stamp — by construction no
+## caller can exceed the band or edit without leaving a mark.
+func _cmd_set_move_speed(player_index: int, speed: float) -> void:
+	if player_index < 0 or player_index >= players.size():
+		return
+	players[player_index].move_speed = clampf(speed, MOVE_SPEED_MIN, MOVE_SPEED_MAX)
+	replay_dirty = true

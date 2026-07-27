@@ -68,6 +68,8 @@ func _init() -> void:
 	if a.live_end == 0:
 		printerr("FAIL: no live projectiles at end — pool unexercised")
 		failed = true
+	if not _check_speed_edit():
+		failed = true
 
 	if failed:
 		quit(1)
@@ -86,6 +88,41 @@ func _init() -> void:
 		)
 	)
 	quit(0)
+
+
+## Speed-editor sim contract (§3.2/§2.10): the command clamps to the band,
+## stamps replay_dirty, and an edited run hashes differently from a clean
+## twin — an edit can never masquerade as clean evidence.
+func _check_speed_edit() -> bool:
+	var grid := Bitgrid.new()
+	grid.setup(8, 8)
+	var clean := SimWorld.new()
+	clean.setup(9, grid)
+	clean.add_player(Vector2(4.0, 4.0))
+	var edited := SimWorld.new()
+	edited.setup(9, grid)
+	edited.add_player(Vector2(4.0, 4.0))
+	for t in 3:
+		clean.step([null])
+		edited.step([null])
+	edited.enqueue_command({"type": SimWorld.Command.SET_MOVE_SPEED, "player": 0, "speed": 99.0})
+	clean.step([null])
+	edited.step([null])
+	if not edited.replay_dirty or clean.replay_dirty:
+		printerr(
+			(
+				"FAIL: replay_dirty flag wrong (edited=%s clean=%s)"
+				% [edited.replay_dirty, clean.replay_dirty]
+			)
+		)
+		return false
+	if edited.players[0].move_speed != SimWorld.MOVE_SPEED_MAX:
+		printerr("FAIL: band clamp missed: %f" % edited.players[0].move_speed)
+		return false
+	if clean.state_hash() == edited.state_hash():
+		printerr("FAIL: edited run hashes identical to clean run")
+		return false
+	return true
 
 
 func _build_bitgrid() -> RefCounted:
