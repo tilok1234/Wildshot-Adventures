@@ -123,6 +123,12 @@ jobs:
       - name: Projectile-pack validation
         run: ~/godot/godot --headless --path . --script tests/projectile_pack/projectile_pack_test.gd
 
+      # WorldForge game-pack validator (docs/15 consumer-prep half):
+      # synthetic fixture with hand-derived flood count + negative
+      # guards. Pure JSON/bit decode — Linux-safe.
+      - name: WorldForge pack validator
+        run: ~/godot/godot --headless --path . --script tests/worldforge_pack/worldforge_pack_test.gd
+
       # docs/14: assembler-pack consumer — fixture round-trip always;
       # real-pack validation activates when the drop lands. Linux-safe.
       - name: Assembler pack consumer test
