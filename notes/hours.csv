@@ -19,3 +19,4 @@ timestamp,action,note
 2026-07-27T09:56:55,note,"M4 tasks 16-18 done: UI kit themed everything, density meter (M), ability slot live (Space; swap in O panel). BOM + parse-error bugs caught by gates."
 2026-07-27T10:13:48,note,"M4 task 21 done: scenarios+T reset+lowest-speed preset, debug emitter (first hostile fire), player death + Law-8 recap panel + session.jsonl evidence stream."
 2026-07-27T10:31:32,note,"M4 engineering complete: console+god+slowmo+verdict cmd, hitboxes, UI scaling, all gates green. Assembler export in designer hands (docs/14)."
+2026-07-27T10:38:24,note,"SS2.14 Amendment v2 APPROVED: assembler = actor source; docs/14 binding; designer building exporter. Emitter visual fixed (was invisible)."

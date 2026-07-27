@@ -121,6 +121,11 @@ jobs:
       - name: UI kit validation
         run: ~/godot/godot --headless --path . --script tests/uikit/uikit_validate.gd
 
+      # docs/14: assembler-pack consumer — fixture round-trip always;
+      # real-pack validation activates when the drop lands. Linux-safe.
+      - name: Assembler pack consumer test
+        run: ~/godot/godot --headless --path . --script tests/assembler_pack/assembler_pack_test.gd
+
       - name: Upload diff artifacts on failure
         if: failure()
         uses: actions/upload-artifact@v4
