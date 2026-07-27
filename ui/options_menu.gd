@@ -60,6 +60,9 @@ func add_button_row(title: String, names: Array, cb: Callable) -> void:
 func _ready() -> void:
 	visible = false
 	set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	# Center-anchored panels must grow in BOTH directions to stay centered.
+	grow_horizontal = Control.GROW_DIRECTION_BOTH
+	grow_vertical = Control.GROW_DIRECTION_BOTH
 	var scroll := ScrollContainer.new()
 	scroll.custom_minimum_size = Vector2(280.0, 300.0)
 	var rows := VBoxContainer.new()

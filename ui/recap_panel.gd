@@ -20,6 +20,8 @@ var _label := Label.new()
 func _ready() -> void:
 	visible = false
 	set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	grow_horizontal = Control.GROW_DIRECTION_BOTH
+	grow_vertical = Control.GROW_DIRECTION_BOTH
 	add_child(_label)
 
 
@@ -55,4 +57,5 @@ func show_recap(recap: Dictionary, reset_key: String) -> void:
 	lines.append("")
 	lines.append("[%s] restart (new seed)" % reset_key)
 	_label.text = "\n".join(lines)
+	reset_size()
 	visible = true

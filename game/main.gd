@@ -392,7 +392,11 @@ func _ready() -> void:
 		return flashes.active_count() + dmg_numbers.active_count()
 	density_meter.visible = false
 	density_meter.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-	density_meter.position += Vector2(-4.0, 16.0)
+	# Right-anchored: must grow LEFT as content sizes it, or it runs off
+	# the screen edge.
+	density_meter.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	density_meter.offset_right = -4.0
+	density_meter.offset_top = 16.0
 
 	var camera := CameraRig.new()
 	camera.world = world
