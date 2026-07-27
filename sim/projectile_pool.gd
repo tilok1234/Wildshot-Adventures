@@ -178,29 +178,39 @@ func despawn(s: int) -> void:
 	_free_top += 1
 
 
+## Sparse-active canonical form (SERIAL_VERSION 3): despawn() zeroes every
+## field, so serializing only active slots (with their indices) is exact.
+## Dense form hashed 141 KB — 2.5 ms of FNV every 30-tick checkpoint at
+## play; sparse is a few KB. Free-list order is still state (it decides
+## allocation order) and stays dense.
 func serialize_into(buf: StreamPeerBuffer) -> void:
 	buf.put_u32(CAPACITY)
-	buf.put_data(pos_x.to_byte_array())
-	buf.put_data(pos_y.to_byte_array())
-	buf.put_data(vel_x.to_byte_array())
-	buf.put_data(vel_y.to_byte_array())
-	buf.put_data(dir_x.to_byte_array())
-	buf.put_data(dir_y.to_byte_array())
-	buf.put_data(radius.to_byte_array())
-	buf.put_data(ttl.to_byte_array())
-	buf.put_data(faction)
-	buf.put_data(active)
-	buf.put_data(damage.to_byte_array())
-	buf.put_data(pattern_id.to_byte_array())
-	buf.put_data(program)
-	buf.put_data(prog_a.to_byte_array())
-	buf.put_data(prog_b.to_byte_array())
-	buf.put_data(prog_c.to_byte_array())
-	buf.put_data(spawn_tick.to_byte_array())
-	buf.put_data(max_passes)
-	buf.put_data(reg_id.to_byte_array())
-	buf.put_data(reg_pass)
-	buf.put_data(reg_count)
 	buf.put_u32(live_count)
+	for s in CAPACITY:
+		if active[s] == 0:
+			continue
+		buf.put_u32(s)
+		buf.put_float(pos_x[s])
+		buf.put_float(pos_y[s])
+		buf.put_float(vel_x[s])
+		buf.put_float(vel_y[s])
+		buf.put_float(dir_x[s])
+		buf.put_float(dir_y[s])
+		buf.put_float(radius[s])
+		buf.put_32(ttl[s])
+		buf.put_u8(faction[s])
+		buf.put_32(damage[s])
+		buf.put_32(pattern_id[s])
+		buf.put_u8(program[s])
+		buf.put_float(prog_a[s])
+		buf.put_float(prog_b[s])
+		buf.put_float(prog_c[s])
+		buf.put_32(spawn_tick[s])
+		buf.put_u8(max_passes[s])
+		var base := s * REG_SLOTS
+		buf.put_u8(reg_count[s])
+		for k in reg_count[s]:
+			buf.put_64(reg_id[base + k])
+			buf.put_u8(reg_pass[base + k])
 	buf.put_u32(_free_top)
 	buf.put_data(_free.to_byte_array())

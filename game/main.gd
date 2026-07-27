@@ -37,6 +37,8 @@ var autofire_label: Label
 var weapon_label: Label
 var options_menu: PanelContainer
 var hints_label: Label
+var gif_recorder: Node
+var rec_label: Label
 
 
 func _process(_delta: float) -> void:
@@ -63,6 +65,7 @@ func _process(_delta: float) -> void:
 	speed_label.text = ("speed %.1f t/s%s" % [cur, "   REPLAY-DIRTY" if world.replay_dirty else ""])
 	var p: RefCounted = world.players[0]
 	autofire_label.visible = p.autofire_on
+	rec_label.visible = gif_recorder != null and gif_recorder.armed
 	if not world.weapon_frames.is_empty():
 		weapon_label.text = String(world.weapon_frames[p.equipped_weapon].display_name)
 	# F10: dump the always-on session recording. NOTE: the main scene is a
@@ -140,7 +143,8 @@ func _ready() -> void:
 	snag_logger.driver = driver
 	add_child(snag_logger)
 
-	add_child(GifRecorder.new())
+	gif_recorder = GifRecorder.new()
+	add_child(gif_recorder)
 
 	view_clock = ViewClock.new()
 	view_clock.driver = driver
@@ -186,6 +190,13 @@ func _ready() -> void:
 	autofire_label.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
 	weapon_label = Label.new()
 	weapon_label.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	# GIF capture costs real frame time while armed — the indicator is
+	# also the "why did fps dip" explanation.
+	rec_label = Label.new()
+	rec_label.text = "● REC (fps dips while capturing)"
+	rec_label.visible = false
+	rec_label.modulate = Color(1.0, 0.35, 0.35)
+	rec_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
 	options_menu = OptionsMenu.new()
 	# Live key-hint line: reads the ACTUAL InputMap, so it stays correct
 	# after remaps.
@@ -197,6 +208,7 @@ func _ready() -> void:
 	hud.add_child(speed_label)
 	hud.add_child(autofire_label)
 	hud.add_child(weapon_label)
+	hud.add_child(rec_label)
 	hud.add_child(hints_label)
 	hud.add_child(options_menu)
 	add_child(hud)
