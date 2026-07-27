@@ -1,0 +1,41 @@
+# CI skeleton (M0) — jobs activate as their producing milestone lands
+# (planning docs/12, CI addendum). Lint/format runs no sim code, so a Linux
+# runner is allowed here. Replay-hash and bot jobs (M4+) MUST run on Windows
+# runners — the determinism scope is same-build/same-platform.
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Banned-RNG grep under sim/ (CORE-32 fire-path guard)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -d sim ]; then
+            hits=$(grep -rnE '\b(randi|randf|randfn|randi_range|randf_range|randomize|rand_from_seed|RandomNumberGenerator)\b' sim --include='*.gd' || true)
+            if [ -n "$hits" ]; then
+              echo "Global RNG is banned under sim/ (planning docs/12 §2.4 — named PCG32 streams only):"
+              echo "$hits"
+              exit 1
+            fi
+          fi
+          echo "RNG lint clean."
+
+      - name: GDScript format check (gdformat)
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=$(git ls-files '*.gd')
+          if [ -z "$files" ]; then
+            echo "No .gd files yet — format check trivially green."
+            exit 0
+          fi
+          pip install --quiet "gdtoolkit==4.*"
+          gdformat --check $files
