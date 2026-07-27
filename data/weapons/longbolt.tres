@@ -21,5 +21,5 @@ script = ExtResource("1")
 id = &"longbolt"
 display_name = "Longbolt"
 pattern_id = 1
-cadence_ticks = 24
+cadence_ticks = 18
 shots = Array[Resource]([SubResource("shot0")])

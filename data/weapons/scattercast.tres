@@ -73,5 +73,5 @@ script = ExtResource("1")
 id = &"scattercast"
 display_name = "Scattercast"
 pattern_id = 2
-cadence_ticks = 30
+cadence_ticks = 24
 shots = Array[Resource]([SubResource("shot0"), SubResource("shot1"), SubResource("shot2"), SubResource("shot3"), SubResource("shot4")])

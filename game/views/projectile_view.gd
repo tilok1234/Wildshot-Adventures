@@ -16,6 +16,11 @@ const TILE := 32.0
 const SPHERE_TEX_PX := 16
 ## Long-axis stretch per tile/s of speed (14 t/s Longbolt ≈ 1.7x).
 const STRETCH_PER_SPEED := 0.05
+## Friendly shots render at 3/4 of their collision circle (designer call:
+## smaller). Under-rendering FRIENDLY visuals is player-favorable and
+## Law-8-benign; hostile shots may never render smaller than their
+## hitboxes, and stay at full size.
+const FRIENDLY_VISUAL_SCALE := 0.75
 
 var world: RefCounted = null
 var clock: RefCounted = null
@@ -79,16 +84,17 @@ func _process(_delta: float) -> void:
 			# moves ~75% of its diameter per frame and strobes as dots;
 			# elongation reads as motion (genre-standard). Cross-axis
 			# stays honest to the collision circle.
+			var fsc := sc * FRIENDLY_VISUAL_SCALE
 			var vxs: float = vx[s]
 			var vys: float = vy[s]
 			var vlen := sqrt(vxs * vxs + vys * vys)
 			var xf: Transform2D
 			if vlen > 0.01:
 				var dir := Vector2(vxs / vlen, vys / vlen)
-				var stretch: float = sc * (1.0 + vlen * STRETCH_PER_SPEED)
-				xf = Transform2D(dir * stretch, Vector2(-dir.y, dir.x) * sc, pos)
+				var stretch: float = fsc * (1.0 + vlen * STRETCH_PER_SPEED)
+				xf = Transform2D(dir * stretch, Vector2(-dir.y, dir.x) * fsc, pos)
 			else:
-				xf = Transform2D(Vector2(sc, 0.0), Vector2(0.0, sc), pos)
+				xf = Transform2D(Vector2(fsc, 0.0), Vector2(0.0, fsc), pos)
 			mm_f.set_instance_transform_2d(n_f, xf)
 			n_f += 1
 	mm_f.visible_instance_count = n_f

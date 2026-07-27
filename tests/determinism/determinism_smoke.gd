@@ -126,13 +126,22 @@ func _check_fire_path() -> bool:
 		if int(a.dmg_by_pattern.get(pattern_id, 0)) == 0:
 			printerr("FAIL: weapon pattern %d landed no damage" % pattern_id)
 			ok = false
+	# Minimum legal volley spacing derives from the DATA (fastest cadence
+	# in the loadout) — never a hardcoded tuning value.
+	var min_cadence := 1000000
+	for wf: Resource in [
+		load("res://data/weapons/longbolt.tres"),
+		load("res://data/weapons/scattercast.tres"),
+		load("res://data/weapons/wheelblade.tres"),
+	]:
+		min_cadence = mini(min_cadence, int(wf.cadence_ticks))
 	var attacks: Array = a.attack_ticks
 	for i in range(1, attacks.size()):
-		if attacks[i] - attacks[i - 1] < 24:
+		if attacks[i] - attacks[i - 1] < min_cadence:
 			printerr(
 				(
-					"FAIL: cadence gate breach — volleys %d ticks apart at tick %d"
-					% [attacks[i] - attacks[i - 1], attacks[i]]
+					"FAIL: cadence gate breach — volleys %d ticks apart at tick %d (min %d)"
+					% [attacks[i] - attacks[i - 1], attacks[i], min_cadence]
 				)
 			)
 			ok = false
@@ -189,12 +198,15 @@ func _run_fire_once(with_fire: bool) -> Dictionary:
 		var q := InputFrame.quantize_aim(Vector2.RIGHT.rotated(t * 0.021))
 		frame.aim_x = q.x
 		frame.aim_y = q.y
+		# Wheelblade FIRST, while both stand-in rings are fully alive —
+		# its pierce/registry coverage must not depend on how many
+		# targets the other frames' tuning leaves behind.
 		if t == 0:
-			frame.weapon_select = 1
-		elif t == 500:
-			frame.weapon_select = 2
-		elif t == 1000:
 			frame.weapon_select = 3
+		elif t == 500:
+			frame.weapon_select = 1
+		elif t == 1000:
+			frame.weapon_select = 2
 		if with_fire:
 			frame.fire_held = (t % 90) < 60
 			frame.autofire_toggle_edge = t == 300 or t == 420
