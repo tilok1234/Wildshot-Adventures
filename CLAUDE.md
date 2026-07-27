@@ -198,7 +198,29 @@ one milestone early — flagged in planning log for veto), remap UI
 ring buffer (G) + tools/gif.ps1. OPEN designer-owned M3 items: stand
 up itch page + devlog thread + bare Discord (accounts/public posts),
 post the first weekly GIF (G → tools/gif.ps1) — cadence starts there
-and never stops. Next code milestone: M4 (docs/12 §4 — debug console
-+ overlay, density meter, event skeleton completion, death recap +
-debug emitter, scenario picker, ability slot + mana, HP/mana HUD,
-UI/text scaling, fresh-hands verdict command).**
+and never stops (GIF #1 posted 2026-07-27; devlog live). M4
+ENGINEERING COMPLETE 2026-07-27 (session record in planning
+notes/sessions/2026-07-27.md): wildshot-ui kit intake (doc-13; gilded
+waiver recorded) themed everything + HP/mana bars + autofire icon +
+crosshair; density meter (M) vs budgets.tres; CORE-34 ability slot
+(mana/regen sim-side, Nova/Quickdraw/Blast Rune as data, hazard
+mechanism, full 13-event skeleton); damage numbers (off/reduced/full;
+§2.5 bands as code in render_layers.gd) + per-channel feedback
+toggles; scenario .tres + T reseeding reset + lowest-speed preset;
+debug emitter (pattern 100, telegraphed aimed ring — first hostile
+fire); player death + Law-8 recap panel + session.jsonl evidence
+stream; debug console (`) with god (DAMAGE_IMMUNE-logged,
+replay-dirty), slow-mo divisor (replay-valid), event tail, and the
+SPLIT VERDICT COMMAND (feel rejects bot sources; PROVISIONAL
+auto-stamp on dirty/slow-mo) -> verdicts.jsonl; hitbox display (H,
+from sim shapes); UI scale x1/x2 + fullscreen/hitbox persistence.
+Serialization v7; goldens current; all CI green. OPEN: designer rested
+feel pass (formally closes M2; all of today's feel calls provisional);
+weekly GIF cadence continues; ASSEMBLER ACTOR-SOURCE SWITCH pending —
+designer building the 1x game-pack export per planning docs/14
+(DRAFT; §2.14 amendment v2 awaits designer approval); when the pack
+drops into assets/, build importer v2 + swap the player, BEFORE M5
+enemies. Next code milestone: M5 (docs/12 §4 — first two EnemyDefs +
+5-state machine + overhead HP bars + Sprite-sheet enemies + DodgeBot
+primary policy + calibration canaries; each EnemyDef ships with its
+passing 3.0 t/s ability-off proof).**
