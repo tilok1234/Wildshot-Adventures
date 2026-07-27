@@ -6,15 +6,16 @@
 [sub_resource type="Resource" id="shot0"]
 script = ExtResource("2")
 angle_offset_deg = 0.0
-speed = 14.0
+speed = 16.0
 radius = 0.15
 damage = 12
-ttl_ticks = 28
+ttl_ticks = 24
 program = 0
 prog_a = 0.0
 prog_b = 0.0
 prog_c = 0.0
 max_passes = 0
+spawn_offset = 0.35
 
 [resource]
 script = ExtResource("1")

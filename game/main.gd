@@ -16,6 +16,7 @@ const InputMapDefaults := preload("res://input/input_map_defaults.gd")
 const ReplayRecorder := preload("res://input/replay_recorder.gd")
 const OptionsMenu := preload("res://ui/options_menu.gd")
 const GifRecorder := preload("res://game/drivers/gif_recorder.gd")
+const FlashView := preload("res://game/views/flash_view.gd")
 const ActorLibrary := preload("res://game/views/actor_library.gd")
 const AnimatedActor := preload("res://game/views/animated_actor.gd")
 
@@ -184,6 +185,10 @@ func _ready() -> void:
 	pv.world = world
 	pv.clock = view_clock
 	add_child(pv)
+
+	var flashes := FlashView.new()
+	flashes.driver = driver
+	add_child(flashes)
 
 	var camera := CameraRig.new()
 	camera.world = world

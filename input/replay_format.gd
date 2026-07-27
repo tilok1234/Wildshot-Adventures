@@ -36,6 +36,7 @@ static func weapons_data_hash(weapon_frames: Array) -> int:
 			buf.put_double(float(shot.prog_b))
 			buf.put_double(float(shot.prog_c))
 			buf.put_32(int(shot.max_passes))
+			buf.put_double(float(shot.spawn_offset))
 	return _fnv1a_64(buf.data_array)
 
 

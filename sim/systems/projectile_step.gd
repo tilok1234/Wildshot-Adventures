@@ -248,6 +248,7 @@ static func _apply_damage(
 				"target": a.id,
 				"damage": amount,
 				"pattern": pattern,
+				"pos": a.pos,
 			}
 		)
 	)

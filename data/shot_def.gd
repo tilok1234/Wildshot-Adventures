@@ -17,3 +17,6 @@ extends Resource
 ## 0 = despawn on first hit; N = pierce, max N damage passes per target
 ## via the hit registry.
 @export var max_passes: int = 0
+## Spawn distance along the aim vector, in tiles — shots appear at the
+## muzzle, not inside the body. Still a pure function of (aim, pos).
+@export var spawn_offset: float = 0.0

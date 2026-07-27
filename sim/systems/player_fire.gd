@@ -59,6 +59,8 @@ static func run(world: RefCounted) -> void:
 					"tick": world.tick,
 					"player": p.id,
 					"pattern": int(wf.pattern_id),
+					"pos": p.pos,
+					"aim": aim,
 				}
 			)
 		)
@@ -67,7 +69,7 @@ static func run(world: RefCounted) -> void:
 			var shot: Resource = shots[si]
 			var dir := aim.rotated(deg_to_rad(float(shot.angle_offset_deg)))
 			world.spawn_projectile(
-				p.pos,
+				p.pos + dir * float(shot.spawn_offset),
 				dir * float(shot.speed),
 				float(shot.radius),
 				int(shot.ttl_ticks),
