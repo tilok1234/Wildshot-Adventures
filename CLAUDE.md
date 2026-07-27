@@ -175,8 +175,19 @@ primes the tester-recruitment pipeline both Gate 1 cycles draw from.
 
 ## Milestone position
 
-Edit this line as milestones land: **M1 code-complete — pixel-match + net16
-tests green, arena boots from data/arena_lab.json, bitgrid by construction.
-Pending designer: Law-6 floor eyeball + obstacle-stub deviation ruling (see
-data/arena_lab.json comment). Next is M2 (sim core + movement + camera +
-Sprite Forge player + stress rig).**
+Edit this line as milestones land: **M1 complete and designer-approved
+(Law-6 floor + wall-stub obstacles accepted 2026-07-27). M2 IN PROGRESS —
+landed so far: sim/pcg32.gd (named-stream PCG32) and sim/input_frame.gd
+(quantized InputFrame). Still to build (docs/12 §4 M2): SimWorld spine
+(§2.1 — tick/step, players array, SoA projectile pool, serialize +
+FNV-1a state_hash, event queue), RealtimeDriver (accumulator, 5-tick
+catch-up cap, full-freeze pause), player kinematics with grid slide vs
+the bitgrid, camera per §2.9 (view-side pixel rounding, arena limits),
+prev/curr interpolation toggle, HumanSampler + code-registered InputMap
+defaults, spriteforge importer + AnimatedActor (ranger sheet, facing
+from sim velocity; sheets are 64 px cells — render at 0.5 scale),
+actor-sheet slice test, 600-projectile stress rig + 24 stand-ins with
+windowed FPS report (the spatial-hash/C# escape-hatch verdict — do NOT
+let it drift past M2), determinism smoke test (double-run, hash
+compare; Windows CI runner per §2.4 scope), runtime movement-speed
+editor (presets 3.0/4.0, band clamp 3.0–5.5, replay-dirty flag).**
