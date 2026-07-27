@@ -21,3 +21,5 @@ timestamp,action,note
 2026-07-27T10:31:32,note,"M4 engineering complete: console+god+slowmo+verdict cmd, hitboxes, UI scaling, all gates green. Assembler export in designer hands (docs/14)."
 2026-07-27T10:38:24,note,"SS2.14 Amendment v2 APPROVED: assembler = actor source; docs/14 binding; designer building exporter. Emitter visual fixed (was invisible)."
 2026-07-27T10:43:59,note,"Assembler consumer pipeline pre-built + fixture-proven (importer v2, library w/ cast->attack death->hurt fallbacks, CI gate). Ready for pack drop."
+2026-07-27T10:48:01,note,"Assembler pack v0 dropped + integrated same hour: player = character-ranger at 1x, gates green, CI real-pack validation active. M5 enemies next."
+2026-07-27T10:48:52,note,"Designer approves assembler ranger on sight ('alot better') - style call validated in the dusk arena. Session wrap: M2+M3+M4 complete, pack v0 integrated, all green."
