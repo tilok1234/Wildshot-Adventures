@@ -11,8 +11,14 @@ extends RefCounted
 const InputFrame := preload("res://sim/input_frame.gd")
 const ReplayFormat := preload("res://input/replay_format.gd")
 
+## Frames accumulate in bounded chunks: growing one giant buffer reallocs
+## and copies the whole history on writes (O(n²) over a session — a
+## slow-burn stutter source in long runs).
+const CHUNK_BYTES := 65536
+
 var _world: RefCounted = null
 var _frames := StreamPeerBuffer.new()
+var _chunks: Array[PackedByteArray] = []
 var _checkpoints := StreamPeerBuffer.new()
 var _tick_count := 0
 var _checkpoint_count := 0
@@ -24,6 +30,7 @@ var _seed := 0
 func begin(world: RefCounted) -> void:
 	_world = world
 	_frames = StreamPeerBuffer.new()
+	_chunks = []
 	_checkpoints = StreamPeerBuffer.new()
 	_tick_count = 0
 	_checkpoint_count = 0
@@ -41,6 +48,9 @@ func record_frames(frames: Array) -> void:
 			f = InputFrame.new()
 		f.serialize_into(_frames)
 	_tick_count += 1
+	if _frames.get_size() >= CHUNK_BYTES:
+		_chunks.append(_frames.data_array)
+		_frames = StreamPeerBuffer.new()
 
 
 func after_step() -> void:
@@ -64,6 +74,8 @@ func save_wsr(path: String, build_id: String, scenario_id: String) -> bool:
 		buf.put_double(s)
 	buf.put_64(_initial_hash)
 	buf.put_u32(_tick_count)
+	for chunk in _chunks:
+		buf.put_data(chunk)
 	buf.put_data(_frames.data_array)
 	buf.put_u32(_checkpoint_count)
 	buf.put_data(_checkpoints.data_array)

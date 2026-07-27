@@ -49,6 +49,13 @@ func _process(_delta: float) -> void:
 	if options_menu != null and Input.is_action_just_pressed("options_toggle"):
 		options_menu.toggle()
 		_refresh_hints()
+	# Alt+Enter: borderless fullscreen — windowed-mode compositing is a
+	# known stutter source on Windows; this is the one-key A/B for it.
+	if Input.is_action_just_pressed("fullscreen_toggle"):
+		var fs := DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN
+		DisplayServer.window_set_mode(
+			DisplayServer.WINDOW_MODE_WINDOWED if fs else DisplayServer.WINDOW_MODE_FULLSCREEN
+		)
 	if world == null or world.players.is_empty():
 		return
 	# M2 movement-speed editor: presets + 0.1 steps, routed through the sim
@@ -63,9 +70,10 @@ func _process(_delta: float) -> void:
 	elif Input.is_action_just_pressed("debug_speed_up"):
 		_set_speed(snappedf(cur + 0.1, 0.1))
 	speed_label.text = (
-		"%d fps   speed %.1f t/s%s"
+		"%d fps   spikes %d   speed %.1f t/s%s"
 		% [
 			Engine.get_frames_per_second(),
+			driver.spike_count,
 			cur,
 			"   REPLAY-DIRTY" if world.replay_dirty else "",
 		]

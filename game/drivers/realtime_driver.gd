@@ -12,6 +12,10 @@ const SimWorld := preload("res://sim/sim_world.gd")
 const HumanSampler := preload("res://input/human_sampler.gd")
 
 const MAX_TICKS_PER_FRAME := 5
+## A render frame longer than this is a SPIKE: logged with context to
+## user://logs/spikes.jsonl and counted on the HUD, so stutter reports
+## come with evidence from the session they happened in.
+const SPIKE_MS := 24.0
 
 var world: SimWorld = null
 var sampler: HumanSampler = null
@@ -23,6 +27,8 @@ var recorder: RefCounted = null
 var mouse_tile_provider: Callable = Callable()
 var paused: bool = false
 var slew_count: int = 0
+var spike_count: int = 0
+var _spike_file: FileAccess = null
 ## Microseconds spent inside world.step() during the latest _process —
 ## driver-side instrumentation for the stress rig and the M4 density meter.
 ## Engine timing lives HERE, never in the sim (§2.1).
@@ -41,6 +47,8 @@ func _process(delta: float) -> void:
 		pause_changed.emit(paused)
 	if paused or world == null:
 		return
+	if delta * 1000.0 > SPIKE_MS:
+		_log_spike(delta)
 	frame_events.clear()
 	_accumulator += delta
 	var ticks := 0
@@ -69,6 +77,37 @@ func _process(delta: float) -> void:
 ## progressed (0..1). Task of §2.9's prev/curr toggle.
 func alpha() -> float:
 	return clampf(_accumulator / SimWorld.DT, 0.0, 1.0)
+
+
+## One JSONL line per spike: how long the frame was, what the sim cost
+## LAST frame (a spike caused by sim would show it), and what was live.
+## The data that turns "it stutters" into a diagnosis.
+func _log_spike(delta: float) -> void:
+	spike_count += 1
+	if _spike_file == null:
+		DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("user://logs"))
+		_spike_file = FileAccess.open("user://logs/spikes.jsonl", FileAccess.WRITE)
+		if _spike_file == null:
+			return
+	(
+		_spike_file
+		. store_line(
+			(
+				JSON
+				. stringify(
+					{
+						"wall_ms": snappedf(delta * 1000.0, 0.1),
+						"tick": world.tick,
+						"prev_sim_ms": snappedf(frame_sim_usec / 1000.0, 0.01),
+						"live": world.projectiles.live_count,
+						"events": frame_events.size(),
+						"uptime_s": snappedf(Time.get_ticks_msec() / 1000.0, 0.1),
+					}
+				)
+			)
+		)
+	)
+	_spike_file.flush()
 
 
 func _sample_frame() -> RefCounted:

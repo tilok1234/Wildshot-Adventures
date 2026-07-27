@@ -37,6 +37,10 @@ const KEY_ACTIONS := {
 	# M3 GIF ring buffer dump.
 	"gif_dump": KEY_G,
 }
+## Modifier-key actions (registered separately): Alt+Enter fullscreen.
+const ALT_KEY_ACTIONS := {
+	"fullscreen_toggle": KEY_ENTER,
+}
 const MOUSE_ACTIONS := {
 	"fire": MOUSE_BUTTON_LEFT,
 }
@@ -56,4 +60,12 @@ static func register() -> void:
 		InputMap.add_action(action)
 		var ev := InputEventMouseButton.new()
 		ev.button_index = MOUSE_ACTIONS[action]
+		InputMap.action_add_event(action, ev)
+	for action: String in ALT_KEY_ACTIONS:
+		if InputMap.has_action(action):
+			continue
+		InputMap.add_action(action)
+		var ev := InputEventKey.new()
+		ev.physical_keycode = ALT_KEY_ACTIONS[action]
+		ev.alt_pressed = true
 		InputMap.action_add_event(action, ev)
