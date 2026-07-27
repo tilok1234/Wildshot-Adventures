@@ -1,0 +1,52 @@
+extends AnimatedSprite2D
+## View-layer actor renderer (docs/12 §2.14): plays Sprite Forge animation
+## sets for one sim actor. Facing is derived VIEW-SIDE from sim velocity —
+## and from aim during attacks once the fire path lands (M3). The sim knows
+## nothing about facing or frames; animation state is presentation and
+## never feeds back into sim. Renders at 0.5 scale: sheets are 64 px cells
+## (32 logical px × 2), so one cell spans exactly one 32 px tile on screen.
+## Positions interpolate prev→curr per the §2.9 toggle and round to whole
+## base-res pixels view-side only. Pause freezes the animation clock too —
+## the frozen frame matches the frozen sim.
+
+const TILE := 32.0
+const RENDER_SCALE := 0.5
+
+var actor: RefCounted = null
+var clock: RefCounted = null
+var _facing := "down"
+
+
+func _ready() -> void:
+	scale = Vector2(RENDER_SCALE, RENDER_SCALE)
+
+
+func _process(_delta: float) -> void:
+	if actor == null:
+		return
+	var shown: Vector2 = actor.pos
+	if clock != null and clock.interp_enabled:
+		shown = actor.prev_pos.lerp(actor.pos, clock.alpha())
+	position = (shown * TILE).round()
+
+	if clock != null and clock.paused():
+		if is_playing():
+			pause()
+		return
+	var vel: Vector2 = actor.pos - actor.prev_pos
+	if vel.length_squared() > 0.000001:
+		_facing = _dir_from(vel)
+		_play_if_changed("walk-" + _facing)
+	else:
+		_play_if_changed("idle-" + _facing)
+
+
+func _play_if_changed(anim: String) -> void:
+	if animation != StringName(anim) or not is_playing():
+		play(anim)
+
+
+static func _dir_from(v: Vector2) -> String:
+	if absf(v.x) >= absf(v.y):
+		return "right" if v.x > 0.0 else "left"
+	return "down" if v.y > 0.0 else "up"

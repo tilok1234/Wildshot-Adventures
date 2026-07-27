@@ -11,3 +11,7 @@ var interp_enabled: bool = true
 
 func alpha() -> float:
 	return driver.alpha() if driver != null else 1.0
+
+
+func paused() -> bool:
+	return driver != null and driver.paused

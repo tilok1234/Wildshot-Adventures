@@ -103,6 +103,11 @@ jobs:
       - name: net16 mask derivation (GAME-GUIDE §4 step 2 subset)
         run: ~/godot/godot --headless --path . --script tests/pixel_match/net16_masks.gd
 
+      # M2 (§2.14): actor sheets match their manifest declarations. Pure CPU
+      # image reads — no sim execution, so the Linux runner is allowed.
+      - name: Actor-sheet slice test
+        run: ~/godot/godot --headless --path . --script tests/actor_sheet_slice/actor_sheet_slice.gd
+
       - name: Upload diff artifacts on failure
         if: failure()
         uses: actions/upload-artifact@v4
