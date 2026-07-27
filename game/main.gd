@@ -15,6 +15,7 @@ const HumanSampler := preload("res://input/human_sampler.gd")
 const InputMapDefaults := preload("res://input/input_map_defaults.gd")
 const ReplayRecorder := preload("res://input/replay_recorder.gd")
 const OptionsMenu := preload("res://ui/options_menu.gd")
+const GifRecorder := preload("res://game/drivers/gif_recorder.gd")
 const ActorLibrary := preload("res://game/views/actor_library.gd")
 const AnimatedActor := preload("res://game/views/animated_actor.gd")
 
@@ -122,6 +123,8 @@ func _ready() -> void:
 	var snag_logger := CollisionLogger.new()
 	snag_logger.driver = driver
 	add_child(snag_logger)
+
+	add_child(GifRecorder.new())
 
 	view_clock = ViewClock.new()
 	view_clock.driver = driver

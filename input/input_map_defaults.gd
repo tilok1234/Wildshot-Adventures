@@ -30,6 +30,8 @@ const KEY_ACTIONS := {
 	"replay_save": KEY_F10,
 	# M3 options panel (remap UI).
 	"options_toggle": KEY_F1,
+	# M3 GIF ring buffer dump.
+	"gif_dump": KEY_F9,
 }
 const MOUSE_ACTIONS := {
 	"fire": MOUSE_BUTTON_LEFT,
