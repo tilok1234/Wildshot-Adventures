@@ -2,3 +2,5 @@ timestamp,action,note
 2026-07-27T03:20:49,start,"M0 scaffolding session (repo contract, skeleton, hours tooling, CI)"
 2026-07-27T04:03:02,note,"M1 built: tileforge in-project, pixel-match + net16 green, arena + bitgrid, CI job"
 2026-07-27T04:10:21,note,"M2 started (pcg32 + input_frame); session moving to game-repo-rooted chat"
+2026-07-27T04:10:21,stop,"reconstructed: session ended at last note; stop was missed"
+2026-07-27T06:41:09,start,"M2 continuation: SimWorld spine onward"

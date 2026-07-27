@@ -42,6 +42,36 @@ jobs:
           pip install --quiet "gdtoolkit==4.*"
           gdformat --check $files
 
+  # M2 job (tracker line "determinism smoke test"): double-run state-hash
+  # compare. Sim execution — §2.4 scope is same-build/same-platform (Windows),
+  # so this MUST run on a Windows runner; a Linux runner would false-alarm on
+  # float drift.
+  determinism-smoke:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Godot 4.6.2 (win64)
+        id: godot-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/godot
+          key: godot-4.6.2-stable-win64
+
+      - name: Download Godot 4.6.2
+        if: steps.godot-cache.outputs.cache-hit != 'true'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force "$HOME/godot" | Out-Null
+          Invoke-WebRequest -Uri https://github.com/godotengine/godot/releases/download/4.6.2-stable/Godot_v4.6.2-stable_win64.exe.zip -OutFile "$env:TEMP/godot.zip"
+          Expand-Archive "$env:TEMP/godot.zip" -DestinationPath "$HOME/godot"
+
+      - name: Determinism smoke (double-run hash compare)
+        shell: pwsh
+        run: |
+          & "$HOME/godot/Godot_v4.6.2-stable_win64_console.exe" --headless --path . --script tests/determinism/determinism_smoke.gd
+          exit $LASTEXITCODE
+
   # M1 job (CI addendum): TileForge §4 acceptance, headless. Pure CPU image
   # compositing — no sim execution, so a Linux runner is allowed.
   pixel-match:
