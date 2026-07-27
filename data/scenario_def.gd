@@ -6,6 +6,9 @@ extends Resource
 
 @export var id: StringName = &""
 @export var display_name: String = ""
+## Arena definition this scenario plays on (visuals + collision derive
+## from it together). Default: the lab arena.
+@export var arena: String = "res://data/arena_lab.json"
 @export var player_spawn: Vector2 = Vector2(24.0, 16.0)
 @export var standin_positions: PackedVector2Array = PackedVector2Array()
 ## EnemyDef id (String) -> PackedVector2Array of tile positions. Spawn

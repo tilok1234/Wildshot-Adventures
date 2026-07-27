@@ -40,7 +40,7 @@ static func run_from_args(args: Dictionary) -> int:
 			seeds.append(base + i)
 	var out_path := String(args.get("out", "res://reports/dodge_%s.json" % String(scenario.id)))
 
-	var grid := _build_bitgrid()
+	var grid := _build_bitgrid(String(scenario.arena))
 	var run_reports: Array = []
 	var all_pass := true
 	for seed_v in seeds:
@@ -188,11 +188,11 @@ static func _resolve_scenario(arg: String) -> String:
 	return ""
 
 
-static func _build_bitgrid() -> RefCounted:
+static func _build_bitgrid(arena_path: String) -> RefCounted:
 	var manifest: Variant = JSON.parse_string(
 		FileAccess.get_file_as_string("res://tileforge/tileforge-manifest.json")
 	)
-	var def := ArenaBuilder.load_def("res://data/arena_lab.json")
+	var def := ArenaBuilder.load_def(arena_path)
 	var grid := Bitgrid.new()
 	grid.setup(int(def.width), int(def.height))
 	for c: Vector2i in ArenaBuilder.solid_cells(def, manifest):

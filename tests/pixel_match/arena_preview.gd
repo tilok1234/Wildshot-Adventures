@@ -1,13 +1,15 @@
 extends SceneTree
-## Offline compositor for the lab arena: renders data/arena_lab.json through
+## Offline compositor for arena defs: renders an arena json through
 ## arena_builder's resolve_placements() — the exact tile choices the runtime
 ## scene applies — into two PNGs beside this script:
 ##   arena_preview.png            the arena as it renders
 ##   arena_preview_collision.png  same image with solid bitgrid cells tinted
 ##                                red, to eyeball collision == visuals
-## Usage: godot --headless --path . --script tests/pixel_match/arena_preview.gd
+## Usage: godot --headless --path . --script tests/pixel_match/arena_preview.gd \
+##        [-- --arena=res://data/arena_forest.json]
 
 const ArenaBuilder := preload("res://game/arena/arena_builder.gd")
+const BootArgs := preload("res://autoload/boot_args.gd")
 
 const PKG := "res://tileforge/"
 const OUT := "res://tests/pixel_match/"
@@ -18,7 +20,8 @@ func _init() -> void:
 	var manifest: Variant = JSON.parse_string(
 		FileAccess.get_file_as_string(PKG + "tileforge-manifest.json")
 	)
-	var def := ArenaBuilder.load_def("res://data/arena_lab.json")
+	var args := BootArgs.parse_user_args()
+	var def := ArenaBuilder.load_def(String(args.get("arena", "res://data/arena_lab.json")))
 	if manifest == null or def.is_empty():
 		push_error("arena_preview: missing manifest or arena def")
 		quit(1)

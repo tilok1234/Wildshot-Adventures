@@ -12,6 +12,10 @@ extends RefCounted
 ## - seamless floor: fill.<key> on the underlay layer, variant by position
 ##   hash; rectangular floor_patches override the fill family per cell
 ##   (last patch wins) — Law 6 judged on the preview, patches stay quiet
+## - coverages: masked "on-soil" terrain (terrain.<x>_on_<base>.mask_NNN)
+##   laid over the fill by the SAME net16 mask math as walls — organic
+##   edges come from the tool's own autotile language, never reinvented.
+##   Authored as rect unions minus holes.
 ## - net16 walls: 4-bit port mask from same-layer cardinal neighbors,
 ##   out-of-world does NOT connect (§2.8)
 ## - decals: isolated overlays (mask_000, frame 0) on their own layer
@@ -19,7 +23,13 @@ extends RefCounted
 ## - props: single-cell prop.<name> tiles on the structures layer;
 ##   "solid": true blocks the cell (per the M1 honesty ruling, reserve it
 ##   for props whose art plausibly fills the cell — chunky crates/altars,
-##   never slim braziers; the hitbox view shows every solid instantly)
+##   never slim braziers; the hitbox view shows every solid instantly).
+##   "tree": true places prop.<name>_ground (ALWAYS solid) plus
+##   prop.<name>_over one cell up on the canopy layer (CANOPY band:
+##   crowns occlude bodies, never bars or threats).
+## - tree_border: {"name", "thickness"} rings the map in solid forest —
+##   every band cell gets a trunk (collision == visuals at cell
+##   granularity), crowns overhang inward.
 ## - structures (metatiles, §2.9) are supported for pillar_structure +
 ##   pillar_blocks defs but unused by the current arena: every 2x2 obstacle
 ##   option underfilled its blocked footprint (see the def's comment), so the
@@ -27,20 +37,21 @@ extends RefCounted
 
 const TILE := 32
 
-const LAYERS: Array[String] = ["underlay", "decals", "wall", "structures"]
+const LAYERS: Array[String] = ["underlay", "coverage", "decals", "wall", "structures", "canopy"]
 
 const Bitgrid := preload("res://sim/collision/bitgrid.gd")
+const RenderLayers := preload("res://game/render_layers.gd")
 
 
 ## Assemble the full arena under `root`: TileMapLayers from the manifest +
 ## def, and the collision bitgrid baked from the SAME definition (visuals
 ## and collision agree by construction, §2.3). Returns
 ## {def, layers, bitgrid, placements} or {} on missing inputs.
-static func build_arena(root: Node2D) -> Dictionary:
+static func build_arena(root: Node2D, def_path := "res://data/arena_lab.json") -> Dictionary:
 	var manifest: Variant = JSON.parse_string(
 		FileAccess.get_file_as_string("res://tileforge/tileforge-manifest.json")
 	)
-	var def := load_def("res://data/arena_lab.json")
+	var def := load_def(def_path)
 	var tileset: TileSet = load("res://tileforge/tileforge.tres")
 	if manifest == null or def.is_empty() or tileset == null:
 		push_error("arena_builder: missing manifest, arena def, or tileforge.tres")
@@ -52,6 +63,8 @@ static func build_arena(root: Node2D) -> Dictionary:
 		var layer := TileMapLayer.new()
 		layer.name = layer_name
 		layer.tile_set = tileset
+		if layer_name == "canopy":
+			layer.z_index = RenderLayers.CANOPY
 		root.add_child(layer)
 		layers[layer_name] = layer
 
@@ -110,9 +123,43 @@ static func solid_cells(def: Dictionary, manifest: Dictionary) -> Dictionary:
 	for c in pillar_cells(def, manifest):
 		solids[c] = true
 	for pr: Dictionary in def.get("props", []):
-		if bool(pr.get("solid", false)):
+		# Trees are always solid (a trunk you can walk through lies);
+		# other props opt in per the M1 honesty ruling.
+		if bool(pr.get("solid", false)) or bool(pr.get("tree", false)):
 			solids[Vector2i(int(pr.x), int(pr.y))] = true
+	for c in _border_cells(def):
+		solids[c] = true
 	return solids
+
+
+## Every cell of the tree_border band (empty when the def has none).
+static func _border_cells(def: Dictionary) -> Array[Vector2i]:
+	var cells: Array[Vector2i] = []
+	var border: Dictionary = def.get("tree_border", {})
+	if border.is_empty():
+		return cells
+	var t := int(border.get("thickness", 2))
+	var w := int(def.width)
+	var h := int(def.height)
+	for y in h:
+		for x in w:
+			if x < t or x >= w - t or y < t or y >= h - t:
+				cells.append(Vector2i(x, y))
+	return cells
+
+
+## Coverage region: union of rects minus union of holes.
+static func _coverage_cells(cov: Dictionary) -> Dictionary:
+	var cells := {}
+	for r: Dictionary in cov.get("rects", []):
+		for dy in int(r.h):
+			for dx in int(r.w):
+				cells[Vector2i(int(r.x) + dx, int(r.y) + dy)] = true
+	for r: Dictionary in cov.get("holes", []):
+		for dy in int(r.h):
+			for dx in int(r.w):
+				cells.erase(Vector2i(int(r.x) + dx, int(r.y) + dy))
+	return cells
 
 
 ## Deterministic position hash for variant picks (GAME-GUIDE §2.4; the exact
@@ -172,6 +219,30 @@ static func resolve_placements(def: Dictionary, manifest: Dictionary) -> Array[D
 			var tile: Dictionary = tiles[variant_hash(x, y) % tiles.size()]
 			placements.append(_placement("underlay", Vector2i(x, y), fam, tile))
 
+	# Coverages: masked on-base terrain laid over the fill. These families
+	# ship the blob-47 autotile set (8-neighbor masks, corner bits only
+	# when both adjacent edges connect) — the tool's own edge tiles
+	# feather onto the fill underneath.
+	for cov: Dictionary in def.get("coverages", []):
+		var cfam := String(cov.family)
+		var ccells := _coverage_cells(cov)
+		var by_mask := {}
+		for t: Dictionary in manifest.families[cfam].tiles:
+			if int(t.get("frame", 0)) != 0:
+				continue
+			var tm := int(t.mask)
+			if not by_mask.has(tm):
+				by_mask[tm] = []
+			by_mask[tm].append(t)
+		for c: Vector2i in ccells:
+			var mask := _blob47_mask(ccells, c)
+			var cvariants: Array = by_mask.get(mask, [])
+			if cvariants.is_empty():
+				push_error("arena_builder: coverage '%s' missing blob mask %d" % [cfam, mask])
+				continue
+			var ctile: Dictionary = cvariants[variant_hash(c.x, c.y) % cvariants.size()]
+			placements.append(_placement("coverage", c, cfam, ctile))
+
 	# Decals: isolated (mask_000) frame-0 overlays, cosmetic only.
 	var decal_tiles := {}
 	for d: Dictionary in def.get("decals", []):
@@ -191,8 +262,13 @@ static func resolve_placements(def: Dictionary, manifest: Dictionary) -> Array[D
 		placements.append(_placement("decals", dcell, dfam, dtile))
 
 	# Props: single-cell prop.<name> tiles; solidity handled in solid_cells.
+	# Trees ("tree": true) split into <name>_ground + <name>_over (canopy
+	# one cell up, skipped at the map edge).
 	var prop_tiles := {}
 	for pr: Dictionary in def.get("props", []):
+		if bool(pr.get("tree", false)):
+			_place_tree(placements, prop_tiles, manifest, String(pr.name), int(pr.x), int(pr.y))
+			continue
 		var pname := String(pr.name)
 		if not prop_tiles.has(pname):
 			prop_tiles[pname] = _tiles_by_prefix(manifest, "prop", "prop.%s.variant_" % pname)
@@ -202,6 +278,14 @@ static func resolve_placements(def: Dictionary, manifest: Dictionary) -> Array[D
 		var pcell := Vector2i(int(pr.x), int(pr.y))
 		var ptile: Dictionary = pvariants[variant_hash(pcell.x, pcell.y) % pvariants.size()]
 		placements.append(_placement("structures", pcell, "prop", ptile))
+
+	# Tree border: a trunk on EVERY band cell (the whole band is solid, so
+	# every blocked cell carries blocking art), crowns overhang inward.
+	var border: Dictionary = def.get("tree_border", {})
+	if not border.is_empty():
+		var bname := String(border.name)
+		for c: Vector2i in _border_cells(def):
+			_place_tree(placements, prop_tiles, manifest, bname, c.x, c.y)
 
 	var walls := wall_cells(def)
 	for c: Vector2i in walls:
@@ -228,6 +312,64 @@ static func resolve_placements(def: Dictionary, manifest: Dictionary) -> Array[D
 				placements.append(_placement("structures", anchor + Vector2i(cx, cy), "meta", tile))
 
 	return placements
+
+
+## One tree: <name>_ground on structures at (x,y), <name>_over on canopy
+## at (x,y-1) — skipped when the crown would leave the map.
+static func _place_tree(
+	placements: Array[Dictionary],
+	prop_tiles: Dictionary,
+	manifest: Dictionary,
+	name: String,
+	x: int,
+	y: int,
+) -> void:
+	var gkey := name + "_ground"
+	var okey := name + "_over"
+	if not prop_tiles.has(gkey):
+		prop_tiles[gkey] = _tiles_by_prefix(manifest, "prop", "prop.%s.variant_" % gkey)
+	if not prop_tiles.has(okey):
+		prop_tiles[okey] = _tiles_by_prefix(manifest, "prop", "prop.%s.variant_" % okey)
+	var gvariants: Array = prop_tiles[gkey]
+	var ovariants: Array = prop_tiles[okey]
+	if gvariants.is_empty():
+		return
+	var pick := variant_hash(x, y)
+	placements.append(
+		_placement("structures", Vector2i(x, y), "prop", gvariants[pick % gvariants.size()])
+	)
+	if y > 0 and not ovariants.is_empty():
+		placements.append(
+			_placement("canopy", Vector2i(x, y - 1), "prop", ovariants[pick % ovariants.size()])
+		)
+
+
+## Blob-47 mask (N=1 NE=2 E=4 SE=8 S=16 SW=32 W=64 NW=128): corner bits
+## count only when both adjacent edges connect — the canonical reduction
+## onto the 47 shipped shapes.
+static func _blob47_mask(cells: Dictionary, c: Vector2i) -> int:
+	var n := cells.has(c + Vector2i(0, -1))
+	var e := cells.has(c + Vector2i(1, 0))
+	var s := cells.has(c + Vector2i(0, 1))
+	var w := cells.has(c + Vector2i(-1, 0))
+	var mask := 0
+	if n:
+		mask |= 1
+	if e:
+		mask |= 4
+	if s:
+		mask |= 16
+	if w:
+		mask |= 64
+	if n and e and cells.has(c + Vector2i(1, -1)):
+		mask |= 2
+	if e and s and cells.has(c + Vector2i(1, 1)):
+		mask |= 8
+	if s and w and cells.has(c + Vector2i(-1, 1)):
+		mask |= 32
+	if w and n and cells.has(c + Vector2i(-1, -1)):
+		mask |= 128
+	return mask
 
 
 static func _placement(layer: String, cell: Vector2i, fam: String, tile: Dictionary) -> Dictionary:

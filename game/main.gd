@@ -327,15 +327,11 @@ func _ready() -> void:
 	# ordering violation; the boot gate greps for the error.
 	if not RenderLayers.assert_bands():
 		push_error("main: render band audit FAILED")
-	var arena := ArenaBuilder.build_arena(self)
-	if arena.is_empty():
-		return
-	var def: Dictionary = arena.def
-	bitgrid = arena.bitgrid
 
 	# InputMap defaults + saved remaps are applied by the Config autoload
 	# before any scene _ready runs. Scenario + seed + speed preset come
-	# from persisted dev settings; T rebuilds with the next seed.
+	# from persisted dev settings; T rebuilds with the next seed. The
+	# scenario names its arena (visuals + collision from one definition).
 	# --audit=density (M5): fixed stress scenario + scripted max-VFX input
 	# + a Laws-1/2 screenshot to reports/ — persisted settings untouched.
 	var audit_mode := BootArgs.get_arg("audit") == "density"
@@ -351,6 +347,11 @@ func _ready() -> void:
 	var seed_v := int(Config.get_setting("dev", "seed", scenario.default_seed))
 	if audit_mode:
 		seed_v = int(scenario.default_seed)
+	var arena := ArenaBuilder.build_arena(self, String(scenario.arena))
+	if arena.is_empty():
+		return
+	var def: Dictionary = arena.def
+	bitgrid = arena.bitgrid
 	world = ScenarioLoader.build_world(scenario, seed_v, bitgrid)
 	# Lowest-intended-speed loadout is a first-class preset (§2.10,
 	# CORE-53): setup-phase config, never a replay-dirtying edit — it

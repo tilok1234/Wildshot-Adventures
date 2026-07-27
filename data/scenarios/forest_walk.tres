@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"forest_walk"
+display_name = "Forest Walk (readability)"
+arena = "res://data/arena_forest.json"
+player_spawn = Vector2(24, 16)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"husk_archer": PackedVector2Array(12, 22, 36, 20),
+"rusher": PackedVector2Array(10, 8, 38, 10, 24, 27)
+}
+default_seed = 31

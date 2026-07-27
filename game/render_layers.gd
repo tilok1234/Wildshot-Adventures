@@ -12,6 +12,7 @@ const FLOOR := 0  # TileMapLayers (default z)
 const FRIENDLY_GROUND := 10  # friendly decals + placed zones (Blast Rune)
 const HOSTILE_HAZARD_FILL := 20  # spatial grounding only, never sole signal
 const ACTORS := 30
+const CANOPY := 32  # tree crowns: occlude bodies (depth), never bars or any threat band
 const HP_BARS := 35  # overhead bars: general presentation (CORE-35), below all hostile bands
 const PLAYER_PROJECTILES := 40  # + ALL player VFX
 const DAMAGE_NUMBERS := 50  # non-occluding: BELOW all hostile bands
@@ -32,7 +33,8 @@ static func assert_bands() -> bool:
 	ok = ok and HOSTILE_PROJECTILES > PLAYER_PROJECTILES  # Law 2: player fire subordinate
 	ok = ok and DAMAGE_NUMBERS > PLAYER_PROJECTILES  # numbers over own VFX, never over threats
 	ok = ok and PLAYER_PROJECTILES > HP_BARS
-	ok = ok and HP_BARS > ACTORS
+	ok = ok and HP_BARS > CANOPY  # bars read through foliage
+	ok = ok and CANOPY > ACTORS  # crowns occlude bodies (depth cue), nothing above
 	ok = ok and ACTORS > HOSTILE_HAZARD_FILL  # hazard FILL grounds under bodies; the RIM warns above
 	ok = ok and HOSTILE_HAZARD_FILL > FRIENDLY_GROUND
 	ok = ok and FRIENDLY_GROUND > FLOOR
