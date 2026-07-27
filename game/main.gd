@@ -20,6 +20,7 @@ const FlashView := preload("res://game/views/flash_view.gd")
 const StatBar := preload("res://ui/stat_bar.gd")
 const DensityMeter := preload("res://ui/density_meter.gd")
 const HazardView := preload("res://game/views/hazard_view.gd")
+const DamageNumberView := preload("res://game/views/damage_number_view.gd")
 const ActorLibrary := preload("res://game/views/actor_library.gd")
 const AnimatedActor := preload("res://game/views/animated_actor.gd")
 
@@ -47,6 +48,7 @@ var density_meter: PanelContainer
 var hints_label: Label
 var gif_recorder: Node
 var rec_label: Label
+var feedback_settings: Dictionary = {}
 var _af_on_tex: Texture2D = load("res://uikit/icon_autofire_on.png")
 var _af_off_tex: Texture2D = load("res://uikit/icon_autofire_off.png")
 
@@ -229,14 +231,29 @@ func _ready() -> void:
 	pv.clock = view_clock
 	add_child(pv)
 
+	feedback_settings = {
+		"impact": bool(Config.get_setting("feedback", "impact", true)),
+		"kill": bool(Config.get_setting("feedback", "kill", true)),
+		"blocked": bool(Config.get_setting("feedback", "blocked", true)),
+		"damage_numbers":
+		int(Config.get_setting("feedback", "damage_numbers", DamageNumberView.Mode.FULL)),
+	}
+
 	var flashes := FlashView.new()
 	flashes.driver = driver
+	flashes.settings = feedback_settings
 	add_child(flashes)
+
+	var dmg_numbers := DamageNumberView.new()
+	dmg_numbers.driver = driver
+	dmg_numbers.settings = feedback_settings
+	add_child(dmg_numbers)
 
 	density_meter = DensityMeter.new()
 	density_meter.world = world
 	density_meter.budgets = load("res://data/budgets.tres")
-	density_meter.effects_counter = flashes.active_count
+	density_meter.effects_counter = func() -> int:
+		return flashes.active_count() + dmg_numbers.active_count()
 	density_meter.visible = false
 	density_meter.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 	density_meter.position += Vector2(-4.0, 16.0)
@@ -313,6 +330,35 @@ func _ready() -> void:
 		["Nova", "Quickdraw", "Rune"],
 		func(i: int) -> void:
 			world.enqueue_command({"type": SimWorld.Command.SET_ABILITY, "index": i})
+	)
+	options_menu.add_toggle_row(
+		"impact flashes",
+		bool(feedback_settings.impact),
+		func(v: bool) -> void:
+			feedback_settings.impact = v
+			Config.set_setting("feedback", "impact", v)
+	)
+	options_menu.add_toggle_row(
+		"kill flashes",
+		bool(feedback_settings.kill),
+		func(v: bool) -> void:
+			feedback_settings.kill = v
+			Config.set_setting("feedback", "kill", v)
+	)
+	options_menu.add_toggle_row(
+		"blocked markers",
+		bool(feedback_settings.blocked),
+		func(v: bool) -> void:
+			feedback_settings.blocked = v
+			Config.set_setting("feedback", "blocked", v)
+	)
+	options_menu.add_cycle_row(
+		"dmg numbers",
+		["off", "reduced", "full"],
+		int(feedback_settings.damage_numbers),
+		func(i: int) -> void:
+			feedback_settings.damage_numbers = i
+			Config.set_setting("feedback", "damage_numbers", i)
 	)
 	_refresh_hints()
 

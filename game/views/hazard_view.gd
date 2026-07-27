@@ -5,9 +5,19 @@ extends Node2D
 ## rims move ABOVE player VFX when hostile hazards exist (M6 band
 ## assertions). Reads world.hazards each frame; view-only.
 
+const RenderLayers := preload("res://game/render_layers.gd")
+
 const TILE := 32.0
 
 var world: RefCounted = null
+
+
+func _ready() -> void:
+	# Only FRIENDLY zones exist until M6 (Blast Rune) — band 2. When
+	# hostile hazards land, fills and rims split into their own nodes
+	# (HOSTILE_HAZARD_FILL vs HOSTILE_TELEGRAPH_RIMS) per §2.5.
+	z_index = RenderLayers.FRIENDLY_GROUND
+
 
 var _friendly_rim := Color(0.55, 0.75, 1.0, 0.9)
 var _friendly_fill := Color(0.4, 0.6, 1.0, 0.12)

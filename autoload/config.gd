@@ -50,6 +50,24 @@ func rebind(action: String, ev: InputEvent) -> void:
 	cf.save(settings_path)
 
 
+## Generic persisted setting (feedback toggles, scaling, ...). Sections
+## and keys exist only once their implementing milestone lands — no dead
+## keys (§2.13).
+func get_setting(section: String, key: String, default: Variant) -> Variant:
+	var cf := ConfigFile.new()
+	if cf.load(settings_path) != OK:
+		return default
+	return cf.get_value(section, key, default)
+
+
+func set_setting(section: String, key: String, value: Variant) -> void:
+	var cf := ConfigFile.new()
+	cf.load(settings_path)  # missing file is fine
+	cf.set_value("meta", "config_version", CONFIG_VERSION)
+	cf.set_value(section, key, value)
+	cf.save(settings_path)
+
+
 static func descriptor_from_event(ev: InputEvent) -> Dictionary:
 	if ev is InputEventKey:
 		var code: Key = ev.physical_keycode if ev.physical_keycode != KEY_NONE else ev.keycode

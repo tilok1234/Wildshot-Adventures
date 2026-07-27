@@ -87,6 +87,7 @@ static func _cast_nova(world: RefCounted, p: RefCounted, def: Resource) -> void:
 					"amount": int(def.damage),
 					"hp": e.hp,
 					"pattern": -1,
+					"pos": e.pos,
 				}
 			)
 		)

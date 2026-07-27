@@ -4,12 +4,15 @@ extends MultiMeshInstance2D
 ## the tick they land. Real enemies render from Sprite Forge sheets at M5;
 ## this view dies then. View-only: never mutates sim.
 
+const RenderLayers := preload("res://game/render_layers.gd")
+
 const TILE := 32.0
 
 var world: RefCounted = null
 
 
 func _ready() -> void:
+	z_index = RenderLayers.ACTORS
 	var mm := MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_2D
 	var quad := QuadMesh.new()

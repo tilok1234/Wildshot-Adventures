@@ -161,7 +161,9 @@ static func run(world: RefCounted) -> void:
 	for e: RefCounted in enemies:
 		if e.hp <= 0:
 			any_dead = true
-			events.append({"type": SimEvents.Type.ENTITY_KILLED, "tick": t, "id": e.id})
+			events.append(
+				{"type": SimEvents.Type.ENTITY_KILLED, "tick": t, "id": e.id, "pos": e.pos}
+			)
 	if any_dead:
 		world.enemies = enemies.filter(func(e: RefCounted) -> bool: return e.hp > 0)
 
@@ -263,6 +265,7 @@ static func _apply_damage(
 				"amount": amount,
 				"hp": a.hp,
 				"pattern": pattern,
+				"pos": a.pos,
 			}
 		)
 	)

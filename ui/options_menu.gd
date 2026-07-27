@@ -14,6 +14,34 @@ var _capturing := ""
 var _rows: VBoxContainer = null
 
 
+## Persisted-feedback checkbox row; cb receives the new bool.
+func add_toggle_row(title: String, initial: bool, cb: Callable) -> void:
+	var c := CheckBox.new()
+	c.text = title
+	c.button_pressed = initial
+	c.toggled.connect(cb)
+	_rows.add_child(c)
+
+
+## Multi-state cycle button (e.g. damage-number mode); cb receives index.
+func add_cycle_row(title: String, names: Array, initial: int, cb: Callable) -> void:
+	var row := HBoxContainer.new()
+	var lbl := Label.new()
+	lbl.text = title
+	row.add_child(lbl)
+	var b := Button.new()
+	var state: Array[int] = [initial]
+	b.text = String(names[initial])
+	b.pressed.connect(
+		func() -> void:
+			state[0] = (state[0] + 1) % names.size()
+			b.text = String(names[state[0]])
+			cb.call(state[0])
+	)
+	row.add_child(b)
+	_rows.add_child(row)
+
+
 ## Extra control row (e.g. the M4 ability hot-swap). cb receives the
 ## pressed index.
 func add_button_row(title: String, names: Array, cb: Callable) -> void:

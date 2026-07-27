@@ -11,6 +11,7 @@ extends Node2D
 ## never mutates.
 
 const ActorState := preload("res://sim/actor_state.gd")
+const RenderLayers := preload("res://game/render_layers.gd")
 
 const TILE := 32.0
 const SPHERE_TEX_PX := 16
@@ -34,6 +35,10 @@ func _ready() -> void:
 	var sphere := _make_sphere_texture()
 	_setup_mmi(_friendly, Color(0.82, 0.9, 1.0), sphere)
 	_setup_mmi(_hostile, Color(1.0, 0.36, 0.28), sphere)
+	# §2.5 bands: hostile projectiles above damage numbers above player
+	# shots — structural, not tree-order luck.
+	_friendly.z_index = RenderLayers.PLAYER_PROJECTILES
+	_hostile.z_index = RenderLayers.HOSTILE_PROJECTILES
 	add_child(_friendly)
 	add_child(_hostile)
 

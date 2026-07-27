@@ -8,13 +8,18 @@ extends Node2D
 ## screen shake, no hit-stop, ever.
 
 const SimEvents := preload("res://sim/events.gd")
+const RenderLayers := preload("res://game/render_layers.gd")
 
 const TILE := 32.0
 const POOL := 48
 const MUZZLE_LIFE := 0.09
 const IMPACT_LIFE := 0.14
+const KILL_LIFE := 0.22
 
 var driver: Node = null
+## Shared feedback settings (keys: "impact", "kill" — bools). Channel
+## gates are presentation-only; the sim never knows (§2.10).
+var settings: Dictionary = {}
 
 var _pos: Array[Vector2] = []
 var _age: Array[float] = []
@@ -25,6 +30,7 @@ var _head := 0
 
 
 func _ready() -> void:
+	z_index = RenderLayers.PLAYER_PROJECTILES
 	_pos.resize(POOL)
 	_age.resize(POOL)
 	_life.resize(POOL)
@@ -37,13 +43,20 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if driver != null:
+		var impact_on := bool(settings.get("impact", true))
+		var kill_on := bool(settings.get("kill", true))
 		for ev: Dictionary in driver.frame_events:
 			match int(ev.type):
 				SimEvents.Type.ATTACK_STARTED:
-					var muzzle: Vector2 = ev.pos + ev.aim * 0.45
-					_spawn(muzzle * TILE, 5.0, Color(1.0, 0.98, 0.85), MUZZLE_LIFE)
+					if impact_on:
+						var muzzle: Vector2 = ev.pos + ev.aim * 0.45
+						_spawn(muzzle * TILE, 5.0, Color(1.0, 0.98, 0.85), MUZZLE_LIFE)
 				SimEvents.Type.HIT_LANDED:
-					_spawn(ev.pos * TILE, 7.0, Color(1.0, 0.85, 0.55), IMPACT_LIFE)
+					if impact_on:
+						_spawn(ev.pos * TILE, 7.0, Color(1.0, 0.85, 0.55), IMPACT_LIFE)
+				SimEvents.Type.ENTITY_KILLED:
+					if kill_on:
+						_spawn(ev.pos * TILE, 12.0, Color(1.0, 0.75, 0.4), KILL_LIFE)
 	for i in POOL:
 		_age[i] += delta
 	queue_redraw()

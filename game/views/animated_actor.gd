@@ -18,9 +18,12 @@ var actor: RefCounted = null
 var clock: RefCounted = null
 var _facing := "down"
 
+const RenderLayers := preload("res://game/render_layers.gd")
+
 
 func _ready() -> void:
 	scale = Vector2(RENDER_SCALE, RENDER_SCALE)
+	z_index = RenderLayers.ACTORS
 
 
 func _process(_delta: float) -> void:
