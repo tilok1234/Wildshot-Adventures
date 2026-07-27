@@ -16,3 +16,4 @@ timestamp,action,note
 2026-07-27T09:22:33,note,"Punch pass: speeds up within range cap, muzzle spawn offsets, muzzle+impact flash pool. Audio absence noted as the remaining floaty factor (M6)."
 2026-07-27T09:23:52,note,"Session close: 'feels good for now' (provisional). M2+M3 engineering complete + feel-tuned in one session."
 2026-07-27T09:42:23,note,"M4 START. Designer shipped wildshot-ui kit (doc-13 deliverable, gilded theme w/ recorded Law-6 chrome waiver). Devlog + GIF #1 posted by designer."
+2026-07-27T09:56:55,note,"M4 tasks 16-18 done: UI kit themed everything, density meter (M), ability slot live (Space; swap in O panel). BOM + parse-error bugs caught by gates."

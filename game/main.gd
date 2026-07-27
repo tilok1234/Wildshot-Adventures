@@ -252,8 +252,6 @@ func _ready() -> void:
 	pause_label.visible = false
 	pause_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	speed_label = Label.new()
-	speed_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
-	speed_label.position.y -= 16.0
 	# Autofire indicator reads SIM state (§2.8) — the latch, not the key.
 	# Kit icons: ON/OFF differ by shape, not color (CORE-50).
 	autofire_icon = TextureRect.new()
@@ -262,22 +260,27 @@ func _ready() -> void:
 	autofire_icon.position = Vector2(4.0, 4.0)
 	weapon_label = Label.new()
 	weapon_label.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-	# HP/mana bars (M4 HUD): kit frame + pattern-differentiated fills.
+	# Bottom-left HUD column: container-managed so nothing can clip off
+	# the screen edge (a hand-offset label did exactly that once).
 	hp_bar = StatBar.new()
 	hp_bar.frame_box = _bar_frame_box()
 	hp_bar.fill_tex = load("res://uikit/bar_fill_hp.png")
-	hp_bar.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
-	hp_bar.position = Vector2(4.0, -40.0)
-	hp_bar.size = Vector2(64.0, 8.0)
+	hp_bar.custom_minimum_size = Vector2(64.0, 8.0)
 	mana_bar = StatBar.new()
 	mana_bar.frame_box = _bar_frame_box()
 	mana_bar.fill_tex = load("res://uikit/bar_fill_mana.png")
-	mana_bar.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
-	mana_bar.position = Vector2(4.0, -30.0)
-	mana_bar.size = Vector2(64.0, 8.0)
+	mana_bar.custom_minimum_size = Vector2(64.0, 8.0)
 	ability_label = Label.new()
-	ability_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
-	ability_label.position = Vector2(4.0, -56.0)
+	var hud_stack := VBoxContainer.new()
+	hud_stack.add_theme_constant_override("separation", 2)
+	hud_stack.add_child(ability_label)
+	hud_stack.add_child(hp_bar)
+	hud_stack.add_child(mana_bar)
+	hud_stack.add_child(speed_label)
+	hud_stack.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
+	hud_stack.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	hud_stack.offset_left = 4.0
+	hud_stack.offset_bottom = -4.0
 	# GIF capture costs real frame time while armed — the indicator is
 	# also the "why did fps dip" explanation.
 	rec_label = Label.new()
@@ -293,12 +296,9 @@ func _ready() -> void:
 	hints_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	var hud := CanvasLayer.new()
 	hud.add_child(pause_label)
-	hud.add_child(speed_label)
+	hud.add_child(hud_stack)
 	hud.add_child(autofire_icon)
 	hud.add_child(weapon_label)
-	hud.add_child(hp_bar)
-	hud.add_child(mana_bar)
-	hud.add_child(ability_label)
 	hud.add_child(rec_label)
 	hud.add_child(hints_label)
 	hud.add_child(density_meter)
