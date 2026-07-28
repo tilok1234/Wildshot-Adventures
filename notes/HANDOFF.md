@@ -79,7 +79,20 @@ v11.
 
 ## Next work: rest of M6 (docs/12 §4)
 
-1. **Yard Warden elite (§3.5)** — the next code task, biggest
+**ITEM 1 IS DONE (2026-07-28 ~03:40, same-night new-account session):**
+Yard Warden LIVE with all four proofs PASS (see the battery table —
+four new canonical rows). SERIAL 12 (phase_index). The transition
+proof runs on a scenario-declared damage schedule per the recorded
+planning decision (3d19a6c; ScenarioDef.damage_schedule → THE damage
+path, tag -4, test scenarios only). Multi-slot semantics discovered
+and mechanized: one state machine serializes attacks, so same-slot
+gaps sit in [cooldown, cooldown+90] — exact periods are a single-slot
+property. Law-4 ordering is now code (12 rows in the smoke). Elite
+actor sheet scarecrow:strawfield is PROVISIONAL (one-line swap).
+Elite [T] values (all patterns/cadences/phase bands) await the rested
+ratification with everything else.
+
+1. **Yard Warden elite (§3.5)** — DONE, kept for reference: the
    authoring lift of M6: PhaseList resource (ordered phases swapping
    policy + emitter sets on HP%), 400 HP [T], three phases: P1
    (100–66%) aimed triples + fan; P2 (66–33%) rotating radial +
@@ -165,6 +178,10 @@ Before every commit, per touched area:
 | world_walk → dodge_world_walk_composition.json | 1,2,3 | 3600 | PASS |
 | first_contact → dodge_first_contact_composition.json | 1,2,3 | 3600 | **FAIL — committed adjudication evidence, never launder** |
 | second_contact → dodge_second_contact_composition.json | 10..14 | 3600 | PASS (near 0.121) |
+| proof_yw_p1 | 208..212 | 3600 | PASS (natural P1 pin, near 0.121) |
+| proof_yw_p2 | 209..213 | 3600 | PASS (inside-spawn escape, near 1.587) |
+| proof_yw_p3 | 210..214 | 3600 | PASS (chase pressure, near 0.120) |
+| proof_yw_full | 211..215 | 3600 | PASS (transitions t1207/t2413 + kill t3301; report carries phase_transitions + peak 12/300) |
 
 Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- --scenario=<id> --speed=3.0 --seeds=<list> --ticks=<n> [--out=res://reports/<name>.json]`
 (compositions need the explicit --out names above).

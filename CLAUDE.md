@@ -336,6 +336,44 @@ lead exactly 45); hostile zones render split per §2.5 (fill 20 / rim
 pulses); smoke: standing pulse-train contract + reactive walker
 escapes 4/4 zones at 3.0 with ZERO hits; proof PASS 0 hits; Law-4
 ordering COMPLETE monotone 10<12<30<36<40<45; near-miss metric blind
-to hazard proximity (reporting nit, logged). Remaining M6: Yard
-Warden elite + PhaseList (§3.5), EffectLibrary pass (ledger #9),
-9-row acceptance, audio cue map, CORE-34 no-ability clear.**
+to hazard proximity (reporting nit, logged). YARD WARDEN ELITE LIVE
+2026-07-28 (~03:40, new-account session; planning decision 3d19a6c
+recorded FIRST: transition proofs via scenario-declared damage
+schedule — {tick,amount} on the scenario's elite through THE damage
+path, tag -4, mitigation-bypassing, static data excluded from
+serialize, replay-visible via the scenario; test scenarios only, M7
+checklist guards tester builds). SERIAL 12 = EnemyState.phase_index;
+goldens regenerated deliberately. PhaseDef/PhaseList resources;
+phase = pure function of HP resolved at one point in enemy_step;
+transitions re-arm cooldowns (entry beat + full telegraph — no
+untelegraphed volley across a flip), overwrite e.move_speed,
+interrupt windup, emit PHASE_CHANGED (event appended). PatternDef
+ROTOR aim mode (world-frame angle = rate x tick, stateless).
+dodge_policy fully phase-aware (anchor discs / melee bubbles / birth
+rings / pursuit speed from live phase). Elite at §3.5 EXACT: 400 HP,
+P1 keep-range fan 7sh tele 30 + triple tele 24; P2 ANCHOR rotor
+radial 12sh tele 36 + zone casts arm 45 (pattern 18); P3 chaser 2.2
+burst 4sh tele 24 + fan + INTERCEPT volley tele 40. Patterns 16-21
+all heavy-orb (one elite family, Law 3). Roster index 6. Actor sheet
+scarecrow:strawfield PROVISIONAL (designer swap = one line).
+MULTI-SLOT DISCOVERY: one state machine serializes attacks — slot
+gates wait out other slots' cycles; smoke asserts gap in [cd, cd+90]
+for multi-slot, exact solo periods unchanged. Law-4 ordering is now
+CODE in the smoke: 12 danger-ranked rows non-decreasing
+10<12<24=24<30=30<36=36<40=40<45=45. Smoke also pins: crossings
+tick-exact (264 hp AT the tick), 350-in-one settles P3 with ONE
+crossing, kill@300 via sweep, leads exact x5, anchor bit-still,
+rotor advance exact, schedule twins bit-match, peak<=budget.
+PROOFS ALL PASS 3.0 ability-off 5 seeds x 3600: proof_yw_p1 (plain
+fight = natural P1 pin, near 0.121), proof_yw_p2 (t0 drop 240,
+inside-spawn escape through live rotor gaps, 1.587), proof_yw_p3
+(t0 drop 120, chase pressure, 0.120), proof_yw_full (54-entry paced
+TTK schedule, transitions mid-flight t1207/t2413, kill t3301,
+cleanup to 3600, 0.120; reports carry phase_transitions +
+peak_hostile_live 12/300 — the budget line is a report field now).
+Elite report fields key on a SPAWNED phased enemy; all 13 ordinary
+canonical reports re-verified byte-identical. meet_yard_warden in
+the picker. Also fixed: pre-existing density-meter null deref on
+hazard-caster slots (pattern null); worst-case now phase-aware.
+Remaining M6: EffectLibrary pass (ledger #9 + #14), 9-row
+acceptance, audio cue map, CORE-34 no-ability clear.**
