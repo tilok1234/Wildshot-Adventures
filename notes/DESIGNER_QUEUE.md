@@ -56,6 +56,13 @@ exceptions). This pass:
 - [ ] **Ledger #12** — the blob-47 grandfather note you were going to
       record (game-side mask placement stays until a WorldForge
       arena replaces the hand-authored forest).
+- [ ] **Warden HP vs the 13-second line (TTKBot finding)** — §3.5
+      says 400 HP ≈ "~13 s of pure Longbolt"; the CURRENT Longbolt
+      kills it in 8.38 s (the prose matches an older statline).
+      Ruling: (a) accept 8.4 s as the honest number (docs truth-up),
+      or (b) raise elite HP toward ~575 [T] to keep the 13 s intent
+      (I re-run elite proofs + the full-fight schedule after).
+      Scattercast/Wheelblade already sit at ~13 s for reference.
 
 ## 3 — PLAY EVIDENCE (any time — tired counts, these are not feel verdicts)
 
