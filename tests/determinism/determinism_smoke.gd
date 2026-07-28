@@ -13,6 +13,7 @@ const Bitgrid := preload("res://sim/collision/bitgrid.gd")
 const SimWorld := preload("res://sim/sim_world.gd")
 const InputFrame := preload("res://sim/input_frame.gd")
 const SimEvents := preload("res://sim/events.gd")
+const PlayerMove := preload("res://sim/systems/player_move.gd")
 
 const TICKS := 1800
 const HASH_EVERY := 30
@@ -59,10 +60,18 @@ func _init() -> void:
 	if a.hits == 0:
 		printerr("FAIL: no hits landed — collision path unexercised")
 		failed = true
-	if a.min_x < 1.3499:
+	# Wall-slide floor = 1.0 + the LOCOMOTION radius (2026-07-28
+	# walk-close [T]: players hug walls at TERRAIN_RADIUS, not the
+	# combat hurtbox — the bound reads the constant so a retune moves
+	# the contract with it). NOTE: this assert failed silently between
+	# the terrain-radius commit and the pretester checklist catching it
+	# — the commit-gate smoke output was piped to its tail and the exit
+	# code went unchecked. Gates read exit codes, not prose.
+	var wall_floor: float = 1.0 + PlayerMove.TERRAIN_RADIUS
+	if a.min_x < wall_floor - 0.0001:
 		printerr("FAIL: player penetrated the west wall (min_x=%f)" % a.min_x)
 		failed = true
-	if a.min_x > 1.3501:
+	if a.min_x > wall_floor + 0.0001:
 		printerr("FAIL: wall slide never engaged (min_x=%f)" % a.min_x)
 		failed = true
 	if a.live_end == 0:

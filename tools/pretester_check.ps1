@@ -56,12 +56,20 @@ $tests = @(
     @("determinism smoke (all contracts)", "tests/determinism/determinism_smoke.gd"),
     @("golden replays x10", "tests/replay_fixtures/verify_replays.gd")
 )
+# Inline loop — NO closures: $LASTEXITCODE inside GetNewClosure
+# scriptblocks resolves unreliably in pwsh (observed: goldens step
+# flaked FAIL in-loop while the identical explicit step passed).
 foreach ($t in $tests) {
-    $name = $t[0]; $path = $t[1]
-    Step $name {
-        & $godot --headless --path . --script $path *> $null
-        return $LASTEXITCODE -eq 0
-    }.GetNewClosure()
+    $tname = $t[0]
+    $sw = [System.Diagnostics.Stopwatch]::StartNew()
+    $tout = & $godot --headless --path . --script $t[1] 2>&1
+    $ok = ($LASTEXITCODE -eq 0)
+    $sw.Stop()
+    Write-Host ("{0,-42} {1}  ({2:n1}s)" -f $tname, $(if ($ok) { "PASS" } else { "FAIL" }), $sw.Elapsed.TotalSeconds)
+    if (-not $ok) {
+        $fails += $tname
+        $tout | Select-Object -Last 12 | ForEach-Object { Write-Host "    | $_" }
+    }
 }
 
 Step "boot clean (no ERROR)" {
@@ -104,14 +112,17 @@ if (-not $SkipBattery) {
     foreach ($b in $battery) {
         $scen = $b[0]; $seeds = $b[1]; $ticks = $b[2]; $out = $b[3]; $pol = $b[4]; $want = $b[5]
         $tag = if ($pol) { " [$pol]" } else { "" }
-        Step "battery: $scen$tag (expect $want)" {
-            $ba = @("--headless","--path",".","--script","game/bots/bot_runner.gd","--","--scenario=$scen","--speed=3.0","--seeds=$seeds","--ticks=$ticks")
-            if ($out) { $ba += "--out=$out" }
-            if ($pol) { $ba += "--policy=$pol" }
-            $res = & $godot @ba 2>&1 | Select-String -Pattern "\((PASS|FAIL)\)" | Select-Object -Last 1
-            $got = $res -replace '.*\((PASS|FAIL)\).*','$1'
-            return $got -eq $want
-        }.GetNewClosure()
+        $bname = "battery: $scen$tag (expect $want)"
+        $sw = [System.Diagnostics.Stopwatch]::StartNew()
+        $ba = @("--headless","--path",".","--script","game/bots/bot_runner.gd","--","--scenario=$scen","--speed=3.0","--seeds=$seeds","--ticks=$ticks")
+        if ($out) { $ba += "--out=$out" }
+        if ($pol) { $ba += "--policy=$pol" }
+        $res = & $godot @ba 2>&1 | Select-String -Pattern "\((PASS|FAIL)\)" | Select-Object -Last 1
+        $got = $res -replace '.*\((PASS|FAIL)\).*','$1'
+        $ok = ($got -eq $want)
+        $sw.Stop()
+        Write-Host ("{0,-42} {1}  ({2:n1}s)" -f $bname, $(if ($ok) { "PASS" } else { "FAIL" }), $sw.Elapsed.TotalSeconds)
+        if (-not $ok) { $fails += $bname }
     }
     Step "battery byte-identical (reports/ clean)" {
         $dirty = git status --porcelain reports/ | Where-Object { $_ -notmatch "repro_.*\.wsr" }
