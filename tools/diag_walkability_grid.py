@@ -5,11 +5,14 @@ porosity summary. The instrument that convicted the porous-collision
 bug; the re-exported pack must be acquitted by it.
 
 Usage:
-  python tools/diag_walkability_grid.py [pack_dir] [x0 y0 x1 y1]
+  python tools/diag_walkability_grid.py [pack_dir] [x0 y0 x1 y1] [allowed]
 
 Defaults: the shipped dusk pack, region 208 126 248 148 (the town the
-evidence came from). Exit code 1 if any walkable cell carries a
-structures-layer tile (post-fix expectation: zero, doors included).
+evidence came from), allowed=11. Exit 1 if walkable structure cells
+exceed `allowed` — the WorldForge stamp (a1304b9) deliberately keeps
+exactly 11 walkable structure cells in this pack: 9 bridge/crossing
+cells + 2 ruined-city trail breaches (routes must walk; ratified at
+intake 2026-07-28). A regression above that count is porosity again.
 """
 
 import base64
@@ -22,6 +25,7 @@ pack = (
     else r"assets\worldforge-packs\small-cold-coastal-pack-dusk"
 )
 region = [int(a) for a in sys.argv[2:6]] if len(sys.argv) >= 6 else [208, 126, 248, 148]
+allowed = int(sys.argv[6]) if len(sys.argv) > 6 else 11
 
 w = json.load(open(pack + r"\walkability.json"))
 W, H = w["width"], w["height"]
@@ -66,6 +70,13 @@ on_walk = sum(1 for idx, g in enumerate(structures) if g and walkable(idx % W, i
 flood = w["floodCount"]
 total_walk = sum(1 for y in range(H) for x in range(W) if walkable(x, y))
 print()
-print(f"summary: structure tiles={n}, ON WALKABLE={on_walk} (post-fix expectation: 0)")
+print(f"summary: structure tiles={n}, ON WALKABLE={on_walk} (allowed: {allowed} route cells)")
 print(f"         walkable cells={total_walk}, floodCount={flood}, spawnCell={w['spawnCell']}")
-sys.exit(1 if on_walk else 0)
+if on_walk > allowed:
+    walk_cells = [
+        (idx % W, idx // W)
+        for idx, g in enumerate(structures)
+        if g and walkable(idx % W, idx // W)
+    ]
+    print("REGRESSION - walkable structure cells:", walk_cells)
+sys.exit(1 if on_walk > allowed else 0)

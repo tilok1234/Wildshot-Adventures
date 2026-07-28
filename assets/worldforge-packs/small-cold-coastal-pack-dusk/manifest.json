@@ -3,7 +3,7 @@
     "tileforge": 6
   },
   "artifactFormat": 8,
-  "baseArtifactSha256": "702c10e622f4fe4e3f63c43598851781edbc60c5de9910bd6462e0e382e399f4",
+  "baseArtifactSha256": "7dddda61b8c9b1e16b9945089117c6f7bc278c60d4ec1d8751cef4008a2da1cc",
   "dimensions": {
     "chunkHeight": 32,
     "chunkWidth": 32,
@@ -11,22 +11,22 @@
     "width": 256
   },
   "files": {
-    "minimap.png": "daad68d1b0908752d33d289462a10288399d3eb0b08cabf5c151ddf83d426fc6",
+    "minimap.png": "e827d55c65bd293ff9f15b2a93265ad4f8081b1e5b58290f17a717332b99292d",
     "normalized-recipe.json": "80cff5eb69437be55d56a433874887a6a2446f38aad613b2422a73e9c48c6c58",
-    "resolved/resolved-map.tmj": "1bead19ab8b124b22a11afeaf1d6933db6555917594cf0d7228a65c90681b1c9",
-    "resolved/tileforge-map-data.json": "b5a1c3125076894a484b0f88dbe00b103501b76891b76d819894bca10d2e1a9e",
-    "resolved/tileforge-slice.json": "a235d04b73ff35ec0a67f049e4c7bf0d151666a2ea859c282e2e2888d6306729",
-    "validation-report.json": "79a29c54072808e93335e0ae389fbb81ead136394d1ca70c95a1c013966590cd",
-    "walkability.json": "ea7e5c2a849978f5f545a7f563a3ec8ba90ded2ce8ecceaadbc28ebab06ddd56",
-    "world.json": "702c10e622f4fe4e3f63c43598851781edbc60c5de9910bd6462e0e382e399f4"
+    "resolved/resolved-map.tmj": "cc842c3fec809710d7192aa58cb5d36674a06883237dae1215ba69081caeff83",
+    "resolved/tileforge-map-data.json": "0b3dbe81794dedd255ec4e9055599c160270761910d800f7574db71e4bc41248",
+    "resolved/tileforge-slice.json": "c89faf83fbbc39267cbe348306393bf78f5607ad117b0e413c58cc4ef1b345d2",
+    "validation-report.json": "9cefe7b09292e6a718f3c1ddf0392e7061c7e424fe8e248733307a5c24a6ba1e",
+    "walkability.json": "696f0b198b08fac4990f8fcdc2b96ec61e969144492a19c959372924eddb48ca",
+    "world.json": "7dddda61b8c9b1e16b9945089117c6f7bc278c60d4ec1d8751cef4008a2da1cc"
   },
   "generator": {
-    "behaviorVersion": 46,
-    "generationIdentitySha256": "456247d1adede9c6149c65f6969ea5a1d85b4f6afc7614bf59043b59e3407e2a",
+    "behaviorVersion": 48,
+    "generationIdentitySha256": "16f4e4b2871f016eb8b255eb385a09c4c3f6178e8a0ce57fff84564daabe7ce3",
     "name": "worldforge",
-    "recipeCompilerVersion": 28,
+    "recipeCompilerVersion": 29,
     "recipeSha256": "80cff5eb69437be55d56a433874887a6a2446f38aad613b2422a73e9c48c6c58",
-    "resolvedConfigSha256": "9af3cd33052c5c79ac2cffe9311fd6d40eda5afebd756f02f6feff0b54b305bb",
+    "resolvedConfigSha256": "a9cdf74adbb01dd765a9106bee406da2d22befedf21dd87a98d9c36f155f3205",
     "seed": 103991,
     "version": "0.1.0"
   },
@@ -39,11 +39,11 @@
     "theme": "dusk"
   },
   "walkability": {
-    "floodCount": 33845,
+    "floodCount": 33712,
     "format": 1,
     "spawnCell": [
-      241,
-      124
+      240,
+      125
     ]
   },
   "world": "small-cold-coastal"
