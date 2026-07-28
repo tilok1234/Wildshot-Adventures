@@ -197,22 +197,6 @@
 			],
 			"covers_hitbox": true,
 			"faction": "hostile",
-			"file": "sprites/hostile/orb-d10-orange.png",
-			"frames": 1.0,
-			"hitbox_diameter_px": 10.0,
-			"id": "hostile-orb:d10-orange",
-			"oriented": false,
-			"role": "shaded orb d10 px, color 'orange'",
-			"suggested_pattern_ids": []
-		},
-		{
-			"band": 7.0,
-			"canvas_px": [
-				10.0,
-				10.0
-			],
-			"covers_hitbox": true,
-			"faction": "hostile",
 			"file": "sprites/hostile/orb-d10-violet.png",
 			"frames": 1.0,
 			"hitbox_diameter_px": 10.0,
@@ -235,6 +219,22 @@
 			"id": "hostile-orb:d12-amber",
 			"oriented": false,
 			"role": "shaded orb d12 px, color 'amber'",
+			"suggested_pattern_ids": []
+		},
+		{
+			"band": 7.0,
+			"canvas_px": [
+				16.0,
+				16.0
+			],
+			"covers_hitbox": true,
+			"faction": "hostile",
+			"file": "sprites/hostile/orb-d16-orange.png",
+			"frames": 1.0,
+			"hitbox_diameter_px": 16.0,
+			"id": "hostile-orb:d16-orange",
+			"oriented": false,
+			"role": "shaded orb d16 px, color 'orange'",
 			"suggested_pattern_ids": []
 		},
 		{

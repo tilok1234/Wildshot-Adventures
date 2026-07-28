@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cer0a2qpj2qrg"
-path="res://.godot/imported/orb-d10-orange.png-4c8e18fdddf2c78e8d63ef22c86e308d.ctex"
+uid="uid://baxveqne4q2o6"
+path="res://.godot/imported/orb-d16-orange.png-31cf63dfe5b09d4a5b49552273fb1915.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://projectiles/sprites/hostile/orb-d10-orange.png"
-dest_files=["res://.godot/imported/orb-d10-orange.png-4c8e18fdddf2c78e8d63ef22c86e308d.ctex"]
+source_file="res://projectiles/sprites/hostile/orb-d16-orange.png"
+dest_files=["res://.godot/imported/orb-d16-orange.png-31cf63dfe5b09d4a5b49552273fb1915.ctex"]
 
 [params]
 
