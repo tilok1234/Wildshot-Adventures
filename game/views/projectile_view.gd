@@ -33,12 +33,16 @@ var clock: RefCounted = null
 ## missing every pattern falls back to spheres.
 var sprites: RefCounted = null
 var pattern_map: Resource = null
+## EffectLibrary (M6 ledger #9): FRIENDLY-channel alpha only. Hostile
+## rendering below never reads it — the §2.6 clamp is structural.
+var effects: RefCounted = null
 
 var _friendly := MultiMeshInstance2D.new()
 var _hostile := MultiMeshInstance2D.new()
 var _allocated := false
-## pattern_id -> {mmi, entry, base_tex, alt_tex, count}
+## pattern_id -> {mmi, entry, base_tex, alt_tex, count, friendly}
 var _mapped: Dictionary = {}
+var _friendly_base_alpha := 1.0
 
 
 func _ready() -> void:
@@ -91,6 +95,7 @@ func _build_mapped_nodes() -> void:
 			"base_tex": entry.tex,
 			"alt_tex": alt_tex,
 			"count": 0,
+			"friendly": int(entry.band) <= 5,
 		}
 
 
@@ -106,6 +111,17 @@ func _process(_delta: float) -> void:
 		_allocated = true
 	var interp: bool = clock != null and clock.interp_enabled
 	var alpha: float = clock.alpha() if clock != null else 1.0
+	# FRIENDLY-channel opacity (EffectLibrary): applied to the friendly
+	# sphere MMI and friendly-band mapped nodes only. The hostile MMI and
+	# hostile-band nodes are never modulated here — §2.6 clamp.
+	var fa: float = effects.friendly_alpha() if effects != null else 1.0
+	if not is_equal_approx(fa, _friendly_base_alpha):
+		_friendly_base_alpha = fa
+		_friendly.modulate.a = fa
+		for pid: int in _mapped:
+			var mn: Dictionary = _mapped[pid]
+			if bool(mn.friendly):
+				mn.mmi.modulate = Color(1.0, 1.0, 1.0, fa)
 	var px: PackedFloat32Array = pool.pos_x
 	var py: PackedFloat32Array = pool.pos_y
 	var qx: PackedFloat32Array = pool.prev_x

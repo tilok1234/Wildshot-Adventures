@@ -43,6 +43,25 @@
 		{
 			"band": 5.0,
 			"canvas_px": [
+				48.0,
+				48.0
+			],
+			"covers_hitbox": false,
+			"faction": "friendly",
+			"file": "sprites/v0/friendly/nova-ring.png",
+			"frames": 1.0,
+			"hitbox_diameter_px": 0.0,
+			"id": "v0:friendly-nova-ring",
+			"oriented": false,
+			"role": "Nova Burst cast flash (§3.6): scale-out + fade view-side; honors effect-density/opacity settings",
+			"style": "v0",
+			"suggested_pattern_ids": [
+				-1.0
+			]
+		},
+		{
+			"band": 5.0,
+			"canvas_px": [
 				8.0,
 				8.0
 			],
@@ -179,6 +198,23 @@
 			"id": "v0:hostile-hazard-zone",
 			"oriented": false,
 			"role": "1.5-tile-radius ground zone (Blightcaster §3.4, Warden P2 §3.5); rim opaque at true boundary, fill deliberately dim",
+			"style": "v0",
+			"suggested_pattern_ids": []
+		},
+		{
+			"band": 7.0,
+			"canvas_px": [
+				16.0,
+				16.0
+			],
+			"covers_hitbox": true,
+			"faction": "hostile",
+			"file": "sprites/v0/hostile/heavy-orb.png",
+			"frames": 1.0,
+			"hitbox_diameter_px": 16.0,
+			"id": "v0:hostile-heavy-orb",
+			"oriented": false,
+			"role": "elite shot (Yard Warden §3.5 P1 triples / P3 bursts); double rim = elite marker",
 			"style": "v0",
 			"suggested_pattern_ids": []
 		},

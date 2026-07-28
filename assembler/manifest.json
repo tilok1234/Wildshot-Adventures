@@ -87,6 +87,14 @@
 		},
 		{
 			"category": "enemy",
+			"family": "scarecrow",
+			"id": "scarecrow:strawfield",
+			"name": "Scarecrow - Strawfield",
+			"sheet": "enemies/scarecrow/strawfield.png",
+			"variant": "strawfield"
+		},
+		{
+			"category": "enemy",
 			"family": "skeleton",
 			"id": "skeleton:archer",
 			"name": "Skeleton - Archer",

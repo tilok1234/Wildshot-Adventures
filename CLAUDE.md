@@ -375,5 +375,25 @@ Elite report fields key on a SPAWNED phased enemy; all 13 ordinary
 canonical reports re-verified byte-identical. meet_yard_warden in
 the picker. Also fixed: pre-existing density-meter null deref on
 hazard-caster slots (pattern null); worst-case now phase-aware.
-Remaining M6: EffectLibrary pass (ledger #9 + #14), 9-row
-acceptance, audio cue map, CORE-34 no-ability clear.**
+EFFECTLIBRARY PASS DONE
+2026-07-28 (~04:55): game/views/effect_library.gd = the ONE cosmetic/
+friendly policy point (CORE-50 density 1/.66/.33, opacity 1/.7/.4,
+flash reduction; Bresenham spawn gate, no RNG, view-only). STRUCTURAL
+§2.6 clamp: hostile views never receive the reference (FRIENDLY
+hazard instance only; projectile_view modulates friendly MMIs only;
+flash pops + nova ring are cosmetic channel). Nova cast ring = pack
+sprite via new projectile_map.nova_ring field (ability looked up by
+id, NOVA kind, expands to def radius). Ledger #14 burning state:
+armed lingering zones refill the arm strip toward each pulse from
+serialized cadence over a solid armed rim + additive hot swell —
+emphasis only; zone sprites now keyed by hazard pattern id (pattern
+18 renders its own skin). Options rows effect density/opacity/flash
+reduction + [effects] persistence (settings test extended); audit
+mode forces full. IMPORTERS RE-RUN (both map-filtered by design):
+projectile pack 13 sprites (heavy-orb + nova-ring were missing —
+elite had sphere-fallback shots), assembler 8 sheets (scarecrow:
+strawfield was missing — elite had NO body; boot error greps must
+use "ERROR" not "SCRIPT ERROR", lesson recorded). Ledger #9 amended
+(exit = 9-row acceptance record); #14 amended (built, awaits same).
+Remaining M6: 9-row acceptance, audio cue map, CORE-34 no-ability
+clear.**

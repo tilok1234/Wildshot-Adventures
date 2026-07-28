@@ -28,3 +28,4 @@ zones = {
 -2: "v0:friendly-blast-rune"
 }
 arm_strip = "v0:hostile-hazard-arm"
+nova_ring = "v0:friendly-nova-ring"

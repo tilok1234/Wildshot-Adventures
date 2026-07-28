@@ -11,3 +11,7 @@ extends Resource
 @export var alts: Dictionary = {}
 @export var zones: Dictionary = {}
 @export var arm_strip: String = ""
+## Nova cast-flash ring sprite (M6 EffectLibrary pass, ledger #9) —
+## drawn expanding to the ability's radius on ABILITY_CAST; friendly
+## cosmetic channel (density/opacity governed).
+@export var nova_ring: String = ""

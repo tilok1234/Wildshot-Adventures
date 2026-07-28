@@ -49,7 +49,28 @@ func _init() -> void:
 		quit(1)
 		return
 
+	# CORE-50 effect-scaler keys (M6 EffectLibrary pass): round-trip the
+	# [effects] section through the generic setting path — the same
+	# write/read cycle the options rows use.
+	config.set_setting("effects", "density", 2)
+	config.set_setting("effects", "opacity", 1)
+	config.set_setting("effects", "flash_reduction", true)
+	if int(config.get_setting("effects", "density", -1)) != 2:
+		printerr("FAIL: effects/density did not persist")
+		quit(1)
+		return
+	if int(config.get_setting("effects", "opacity", -1)) != 1:
+		printerr("FAIL: effects/opacity did not persist")
+		quit(1)
+		return
+	if not bool(config.get_setting("effects", "flash_reduction", false)):
+		printerr("FAIL: effects/flash_reduction did not persist")
+		quit(1)
+		return
+
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(TEST_PATH))
 	config.free()
-	print("PASS: remap persisted across simulated restart (W->J on move_up)")
+	print(
+		"PASS: remap persisted across simulated restart (W->J on move_up); effects keys round-trip"
+	)
 	quit(0)

@@ -101,6 +101,9 @@ static func needed_from_map(pmap: Resource) -> Dictionary:
 			needed.append(sid)
 	if not String(pmap.arm_strip).is_empty() and not needed.has(String(pmap.arm_strip)):
 		needed.append(String(pmap.arm_strip))
+	var ring := String(pmap.nova_ring)
+	if not ring.is_empty() and not needed.has(ring):
+		needed.append(ring)
 	needed.sort()
 	hostile_shots.sort()
 	return {"needed": needed, "hostile_shots": hostile_shots}

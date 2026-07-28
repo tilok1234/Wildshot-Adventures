@@ -18,6 +18,7 @@ const ReplayRecorder := preload("res://input/replay_recorder.gd")
 const OptionsMenu := preload("res://ui/options_menu.gd")
 const GifRecorder := preload("res://game/drivers/gif_recorder.gd")
 const FlashView := preload("res://game/views/flash_view.gd")
+const EffectLibrary := preload("res://game/views/effect_library.gd")
 const StatBar := preload("res://ui/stat_bar.gd")
 const DensityMeter := preload("res://ui/density_meter.gd")
 const HazardView := preload("res://game/views/hazard_view.gd")
@@ -60,6 +61,13 @@ var hints_label: Label
 var gif_recorder: Node
 var rec_label: Label
 var feedback_settings: Dictionary = {}
+## EffectLibrary policy object (M6, ledger #9) — cosmetic/friendly
+## channels only; hostile paths never hold a reference (§2.6 clamp).
+var effects_lib: RefCounted = null
+
+## Options presets for the CORE-50 effect scaler (index persisted).
+const EFFECT_DENSITY_LEVELS: Array[float] = [1.0, 0.66, 0.33]
+const EFFECT_OPACITY_LEVELS: Array[float] = [1.0, 0.7, 0.4]
 var recap_panel: PanelContainer
 var console: PanelContainer
 var hitboxes: Node2D
@@ -392,12 +400,26 @@ func _ready() -> void:
 		proj_sprites = null
 	var proj_map: Resource = load("res://data/projectile_map.tres")
 
+	# EffectLibrary (M6 ledger #9): CORE-50 density/opacity/flash-
+	# reduction on cosmetic + friendly channels only. Hostile views never
+	# receive the reference (§2.6 structural clamp). The audit forces
+	# full so Laws 1/2 are stressed against maximum player noise.
+	effects_lib = EffectLibrary.new()
+	if not audit_mode:
+		var di := clampi(int(Config.get_setting("effects", "density", 0)), 0, 2)
+		var oi := clampi(int(Config.get_setting("effects", "opacity", 0)), 0, 2)
+		effects_lib.density = EFFECT_DENSITY_LEVELS[di]
+		effects_lib.opacity = EFFECT_OPACITY_LEVELS[oi]
+		effects_lib.flash_reduction = bool(Config.get_setting("effects", "flash_reduction", false))
+
 	var standins := StandinView.new()
 	standins.world = world
 	add_child(standins)
 
 	# §2.5 split (M6): friendly zones whole at FRIENDLY_GROUND; hostile
 	# zones as fill (grounding) + rim/arm ring (the warning, Law 1).
+	# Only the FRIENDLY instance holds the EffectLibrary reference — the
+	# hostile fill/rim instances structurally cannot dim (§2.6).
 	for hz_mode: int in [
 		HazardView.Mode.FRIENDLY, HazardView.Mode.HOSTILE_FILL, HazardView.Mode.HOSTILE_RIM
 	]:
@@ -406,6 +428,8 @@ func _ready() -> void:
 		hazards_view.sprites = proj_sprites
 		hazards_view.pattern_map = proj_map
 		hazards_view.mode = hz_mode
+		if hz_mode == HazardView.Mode.FRIENDLY:
+			hazards_view.effects = effects_lib
 		add_child(hazards_view)
 
 	hitboxes = HitboxView.new()
@@ -448,6 +472,7 @@ func _ready() -> void:
 	pv.clock = view_clock
 	pv.sprites = proj_sprites
 	pv.pattern_map = proj_map
+	pv.effects = effects_lib
 	add_child(pv)
 
 	feedback_settings = {
@@ -467,7 +492,11 @@ func _ready() -> void:
 
 	var flashes := FlashView.new()
 	flashes.driver = driver
+	flashes.world = world
 	flashes.settings = feedback_settings
+	flashes.effects = effects_lib
+	flashes.sprites = proj_sprites
+	flashes.pattern_map = proj_map
 	add_child(flashes)
 
 	var dmg_numbers := DamageNumberView.new()
@@ -594,6 +623,29 @@ func _ready() -> void:
 		func(i: int) -> void:
 			feedback_settings.damage_numbers = i
 			Config.set_setting("feedback", "damage_numbers", i)
+	)
+	options_menu.add_cycle_row(
+		"effect density",
+		["full", "reduced", "minimal"],
+		clampi(int(Config.get_setting("effects", "density", 0)), 0, 2),
+		func(i: int) -> void:
+			effects_lib.density = EFFECT_DENSITY_LEVELS[i]
+			Config.set_setting("effects", "density", i)
+	)
+	options_menu.add_cycle_row(
+		"effect opacity",
+		["full", "dim", "faint"],
+		clampi(int(Config.get_setting("effects", "opacity", 0)), 0, 2),
+		func(i: int) -> void:
+			effects_lib.opacity = EFFECT_OPACITY_LEVELS[i]
+			Config.set_setting("effects", "opacity", i)
+	)
+	options_menu.add_toggle_row(
+		"flash reduction",
+		bool(effects_lib.flash_reduction),
+		func(v: bool) -> void:
+			effects_lib.flash_reduction = v
+			Config.set_setting("effects", "flash_reduction", v)
 	)
 	options_menu.add_cycle_row(
 		"speed preset (on reset)",
