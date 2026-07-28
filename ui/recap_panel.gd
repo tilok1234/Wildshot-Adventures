@@ -14,6 +14,7 @@ const PATTERN_NAMES := {
 	12: "Leadshot's intercept dart",
 	13: "Fanmaw's fan",
 	14: "Ringer's ring burst",
+	15: "Blightcaster's blight zone",
 	-1: "Nova Burst",
 	-2: "Blast Rune",
 	-3: "contact",

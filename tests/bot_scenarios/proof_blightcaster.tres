@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"proof_blightcaster"
+display_name = "PROOF: Blightcaster solo (SS3.4 tier-1 pattern proof)"
+player_spawn = Vector2(24, 16)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"blightcaster": PackedVector2Array(30, 16)
+}
+default_seed = 207

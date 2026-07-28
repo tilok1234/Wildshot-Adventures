@@ -80,6 +80,8 @@ func _init() -> void:
 		failed = true
 	if not _check_leadshot():
 		failed = true
+	if not _check_blightcaster():
+		failed = true
 
 	if failed:
 		quit(1)
@@ -916,6 +918,213 @@ func _run_leadshot_once(ldef: Resource, mover: bool, ticks: int) -> Dictionary:
 		"dist_min": dist_min,
 		"dist_max": dist_max,
 		"sweep": sweep,
+	}
+
+
+## M6 Blightcaster contract (docs/12 §3.4 row 6, SERIAL 11), mechanized
+## in two runs, every number from the shipped .tres resources:
+## STANDING target: double-run hash equality; casts on the exact
+## fire-to-fire period; the zone's first damage lands exactly arm_ticks
+## after its placement telegraph (§3.4: "telegraph 45 = full arm time" —
+## the arming zone IS the warning); pulses continue every
+## hit_interval_ticks; a full-stood zone lands exactly
+## 1 + linger/interval hits then expires (no sixth pulse); live-zone
+## count stays bounded; the keep-range caster holds its band.
+## REACTIVE WALKER at 3.0 t/s (lowest speed): stands until the zone's
+## placement telegraph appears at their feet, then walks — and takes
+## ZERO hits. That is the CORE-33 escape witness: center-to-edge 1.63
+## tiles inside a 45-tick arm window at 3.0 t/s leaves ~12 ticks spare.
+func _check_blightcaster() -> bool:
+	var bdef: Resource = load("res://data/enemies/blightcaster.tres")
+	var slot: Resource = bdef.emitters[0]
+	var hz: Resource = slot.hazard
+	var pid := int(hz.pattern_id)
+	var arm := int(hz.arm_ticks)
+	var interval := int(hz.hit_interval_ticks)
+	var per_zone := 1 + int(hz.linger_ticks) / maxi(1, interval)
+	var period := int(slot.cooldown_ticks)
+	var ok := true
+
+	var sa := _run_blight_once(bdef, false)
+	var sb := _run_blight_once(bdef, false)
+	if sa.hashes != sb.hashes:
+		printerr("FAIL: blightcaster standing runs diverge")
+		ok = false
+	var wa := _run_blight_once(bdef, true)
+	var wb := _run_blight_once(bdef, true)
+	if wa.hashes != wb.hashes:
+		printerr("FAIL: blightcaster walker runs diverge")
+		ok = false
+
+	var attacks: Array = sa.attack_ticks
+	if attacks.size() < 3:
+		printerr("FAIL: only %d blightcaster casts" % attacks.size())
+		ok = false
+	for i in range(1, attacks.size()):
+		if attacks[i] - attacks[i - 1] != period:
+			printerr("FAIL: blight cast period %d != %d" % [attacks[i] - attacks[i - 1], period])
+			ok = false
+			break
+	var hits: Array = sa.hit_ticks
+	if hits.size() < per_zone:
+		printerr("FAIL: only %d blight hits on a standing player" % hits.size())
+		ok = false
+	else:
+		var lead: int = int(hits[0]) - int(sa.telegraph_before_first_hit)
+		if lead != arm:
+			printerr("FAIL: blight first-damage lead %d != arm %d" % [lead, arm])
+			ok = false
+		for i in range(1, per_zone):
+			if int(hits[i]) - int(hits[i - 1]) != interval:
+				printerr(
+					(
+						"FAIL: blight pulse gap %d != %d at hit %d"
+						% [int(hits[i]) - int(hits[i - 1]), interval, i]
+					)
+				)
+				ok = false
+				break
+		var zone_end: int = int(hits[0]) + int(hz.linger_ticks)
+		var in_first_zone := 0
+		for ht: int in hits:
+			if ht <= zone_end:
+				in_first_zone += 1
+		if in_first_zone != per_zone:
+			printerr(
+				(
+					"FAIL: first zone landed %d hits (expected exactly %d) — expiry leak?"
+					% [in_first_zone, per_zone]
+				)
+			)
+			ok = false
+	if int(sa.armed_events) != attacks.size():
+		printerr(
+			"FAIL: %d HAZARD_ARMED events for %d casts" % [int(sa.armed_events), attacks.size()]
+		)
+		ok = false
+	if int(sa.max_live_zones) > 2:
+		printerr("FAIL: %d zones live at once (bound 2)" % int(sa.max_live_zones))
+		ok = false
+	if float(sa.dist_min) < float(bdef.range_min) - 0.6:
+		printerr(
+			(
+				"FAIL: blightcaster closed to %.2f (band %s-%s)"
+				% [sa.dist_min, bdef.range_min, bdef.range_max]
+			)
+		)
+		ok = false
+	if float(sa.dist_max) > float(bdef.range_max) + 0.6:
+		printerr(
+			(
+				"FAIL: blightcaster drifted to %.2f (band %s-%s)"
+				% [sa.dist_max, bdef.range_min, bdef.range_max]
+			)
+		)
+		ok = false
+	if int(wa.hit_ticks.size()) != 0:
+		printerr(
+			(
+				"FAIL: reactive walker took %d blight hits — zone not escapable at 3.0"
+				% wa.hit_ticks.size()
+			)
+		)
+		ok = false
+	if ok:
+		print(
+			(
+				"m6 blightcaster ok: casts=%d period=%d first-lead=%d pulses x%d gap=%d walker-hits=0 band=[%.2f, %.2f]"
+				% [
+					attacks.size(),
+					period,
+					arm,
+					per_zone,
+					interval,
+					float(sa.dist_min),
+					float(sa.dist_max),
+				]
+			)
+		)
+	return ok
+
+
+## Blightcaster micro-world: player at (24,16) speed 3.0, caster at
+## (30,16) — inside trigger and band, so it casts immediately.
+## reactive_walker=false stands forever (pulse-train witness); true
+## walks 60 ticks (3 tiles — past the 1.63-tile escape radius with
+## margin) each time a placement telegraph appears at the player's
+## feet, alternating direction per zone so the bounce stays inside the
+## lab arena's open pocket (a straight-line walker pinned itself on
+## interior props and ate zones — the alternating escape is also the
+## stronger witness: every zone is escaped from center at 3.0).
+func _run_blight_once(bdef: Resource, reactive_walker: bool) -> Dictionary:
+	var world := SimWorld.new()
+	world.setup(25, _build_bitgrid())
+	world.set_enemy_defs([bdef])
+	var player := world.add_player(Vector2(24.0, 16.0))
+	player.move_speed = 3.0
+	# Harness allowance (like move_speed): a shipped-hp stander dies to
+	# zone 2 and silences later casts — the period/expiry assertions need
+	# four full cast cycles observed.
+	player.hp = 300
+	var enemy: RefCounted = world.add_enemy(0, Vector2(30.0, 16.0))
+	var slot: Resource = bdef.emitters[0]
+	var hzdef: Resource = slot.hazard
+	var pid := int(hzdef.pattern_id)
+	var hashes: Array[int] = []
+	var attack_ticks: Array[int] = []
+	var hit_ticks: Array[int] = []
+	var telegraph_before_first_hit := -1
+	var last_pattern_telegraph := -1
+	var armed_events := 0
+	var max_live_zones := 0
+	var dist_min := 1.0e9
+	var dist_max := 0.0
+	var walk_until := -1
+	var walk_dir := 0
+	var next_dir := -1
+	for t in 600:
+		var frame: RefCounted = null
+		if t < walk_until:
+			frame = InputFrame.new()
+			frame.move_x = walk_dir
+			frame.normalized = true
+		world.step([frame])
+		for ev: Dictionary in world.events:
+			match int(ev.type):
+				SimEvents.Type.TELEGRAPH_STARTED:
+					if int(ev.get("pattern", 0)) == pid:
+						last_pattern_telegraph = int(ev.tick)
+						var epos: Vector2 = ev.pos
+						if reactive_walker and epos.distance_to(player.pos) < 0.1:
+							walk_dir = next_dir
+							next_dir = -next_dir
+							walk_until = t + 60
+				SimEvents.Type.ATTACK_STARTED:
+					if int(ev.get("enemy", 0)) == enemy.id:
+						attack_ticks.append(int(ev.tick))
+				SimEvents.Type.HAZARD_ARMED:
+					armed_events += 1
+				SimEvents.Type.DAMAGE_APPLIED:
+					if int(ev.target) == player.id and int(ev.pattern) == pid:
+						if hit_ticks.is_empty():
+							telegraph_before_first_hit = last_pattern_telegraph
+						hit_ticks.append(int(ev.tick))
+		max_live_zones = maxi(max_live_zones, world.hazards.size())
+		if t >= 200:
+			var d: float = enemy.pos.distance_to(player.pos)
+			dist_min = minf(dist_min, d)
+			dist_max = maxf(dist_max, d)
+		if (world.tick % HASH_EVERY) == 0:
+			hashes.append(world.state_hash())
+	return {
+		"hashes": hashes,
+		"attack_ticks": attack_ticks,
+		"hit_ticks": hit_ticks,
+		"telegraph_before_first_hit": telegraph_before_first_hit,
+		"armed_events": armed_events,
+		"max_live_zones": max_live_zones,
+		"dist_min": dist_min,
+		"dist_max": dist_max,
 	}
 
 

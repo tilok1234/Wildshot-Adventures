@@ -56,3 +56,5 @@ timestamp,action,note
 2026-07-28T02:03:47,note,"M6 behaviors 3-4 DONE: Fanmaw+Ringer live at 3.4-exact, smoke-mechanized, DodgeBot learned anchors (keep-out discs, mobile-only centroid), canary strengthened to 4-wall geometric MUST-FAIL, second_contact PASS at solo-ringer margins; all gates green"
 2026-07-28T02:09:49,note,"Leadshot start: intercept aim (vel as sim state, SERIAL 10) + flanker policy"
 2026-07-28T02:23:12,note,"Leadshot DONE: vel as serialized sim state (SERIAL 10, goldens regen), INTERCEPT closed-form aim, FLANKER orbit-in policy, smoke witnesses lead-beats-mover, full battery green incl proof_leadshot PASS 0.125"
+2026-07-28T02:30:07,note,"Blightcaster start: lingering multi-hit hazards (hazard_step ext, SERIAL 11), hazard emitter slot"
+2026-07-28T02:47:49,note,"Blightcaster DONE: lingering multi-hit hazards (SERIAL 11), hazard emitter slots, hostile zone view split per 2.5, bot models pulse trains, walker escape witness, proof PASS 0 hits; ordinary roster COMPLETE (6/6)"

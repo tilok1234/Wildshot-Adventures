@@ -396,11 +396,17 @@ func _ready() -> void:
 	standins.world = world
 	add_child(standins)
 
-	var hazards_view := HazardView.new()
-	hazards_view.world = world
-	hazards_view.sprites = proj_sprites
-	hazards_view.pattern_map = proj_map
-	add_child(hazards_view)
+	# §2.5 split (M6): friendly zones whole at FRIENDLY_GROUND; hostile
+	# zones as fill (grounding) + rim/arm ring (the warning, Law 1).
+	for hz_mode: int in [
+		HazardView.Mode.FRIENDLY, HazardView.Mode.HOSTILE_FILL, HazardView.Mode.HOSTILE_RIM
+	]:
+		var hazards_view := HazardView.new()
+		hazards_view.world = world
+		hazards_view.sprites = proj_sprites
+		hazards_view.pattern_map = proj_map
+		hazards_view.mode = hz_mode
+		add_child(hazards_view)
 
 	hitboxes = HitboxView.new()
 	hitboxes.world = world

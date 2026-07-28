@@ -8,6 +8,10 @@ extends Resource
 
 ## PatternDef resource this slot fires.
 @export var pattern: Resource = null
+## HazardDef this slot casts INSTEAD of a volley (M6 Blightcaster):
+## when set, `pattern` stays null and firing places the hazard at the
+## nearest player's position (§3.4 delayed ground hazard).
+@export var hazard: Resource = null
 ## Fire only when the nearest player is within this many tiles.
 @export var trigger_range: float = 7.0
 ## TELEGRAPH_STARTED leads the volley by exactly this many ticks

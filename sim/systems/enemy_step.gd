@@ -82,7 +82,6 @@ static func run(world: RefCounted) -> void:
 					e.ai_state = EnemyState.AIState.WINDUP
 					e.winding_slot = slot
 					e.state_until = t + int(es.telegraph_ticks)
-					var pattern: Resource = es.pattern
 					(
 						world
 						. events
@@ -95,7 +94,7 @@ static func run(world: RefCounted) -> void:
 								"radius": e.radius + WINDUP_RING_EXTRA,
 								"faction": ActorState.FACTION_HOSTILE,
 								"arm_at_tick": e.state_until,
-								"pattern": int(pattern.pattern_id),
+								"pattern": _slot_pattern_id(es),
 							}
 						)
 					)
@@ -155,6 +154,16 @@ static func _move(
 	e.vel = (e.pos - before) / dt
 
 
+## Pattern id a slot's attack carries: the cast hazard's id when the
+## slot is a caster (M6), else the volley pattern's.
+static func _slot_pattern_id(es: Resource) -> int:
+	var hz: Resource = es.hazard
+	if hz != null:
+		return int(hz.pattern_id)
+	var pattern: Resource = es.pattern
+	return int(pattern.pattern_id)
+
+
 ## First emitter slot whose cooldown gate is open (windup may begin
 ## telegraph_ticks before the fire gate: cooldown is fire-to-fire) and
 ## whose trigger range contains the nearest player. -1 = none.
@@ -169,17 +178,52 @@ static func _ready_slot(e: RefCounted, def: Resource, t: int, dist: float) -> in
 	return -1
 
 
-## Fire the winding slot: compute the aim vector per the pattern's aim
-## mode (CURRENT = nearest player's position at the fire tick; INTERCEPT
-## = closed-form lead on the target's serialized vel — M6 Leadshot),
-## spawn the authored volley, close the cooldown gate, enter recovery.
+## Fire the winding slot. Hazard slots (M6 Blightcaster) CAST: the zone
+## is placed at the target's position — its arm period is the §3.4
+## telegraph, and place_hazard's own TELEGRAPH_STARTED (pattern-tagged,
+## at the zone) is what the recap's lead measurement keys on. Volley
+## slots spawn shots on an aim vector per the pattern's aim mode
+## (CURRENT = target position at the fire tick; INTERCEPT = closed-form
+## lead on the target's serialized vel — M6 Leadshot).
 static func _fire(
 	world: RefCounted, e: RefCounted, def: Resource, target: RefCounted, t: int
 ) -> void:
 	var es: Resource = def.emitters[e.winding_slot]
-	var pattern: Resource = es.pattern
 	var tpos: Vector2 = target.pos
 	var aim: Vector2 = tpos - e.pos
+	var hz: Resource = es.hazard
+	if hz != null:
+		aim = aim.normalized() if aim.length_squared() > 0.0001 else Vector2.RIGHT
+		(
+			world
+			. events
+			. append(
+				{
+					"type": SimEvents.Type.ATTACK_STARTED,
+					"tick": t,
+					"enemy": e.id,
+					"def_index": e.def_index,
+					"pattern": int(hz.pattern_id),
+					"pos": e.pos,
+					"aim": aim,
+				}
+			)
+		)
+		world.place_hazard(
+			tpos,
+			float(hz.radius),
+			ActorState.FACTION_HOSTILE,
+			int(hz.damage),
+			int(hz.arm_ticks),
+			int(hz.pattern_id),
+			int(hz.linger_ticks),
+			int(hz.hit_interval_ticks)
+		)
+		e.cooldowns[e.winding_slot] = t + int(es.cooldown_ticks)
+		e.state_until = t + int(es.recover_ticks)
+		e.winding_slot = -1
+		return
+	var pattern: Resource = es.pattern
 	if int(pattern.aim_mode) == PatternDef.AimMode.INTERCEPT and not pattern.shots.is_empty():
 		var tvel: Vector2 = target.vel
 		var shot0: Resource = pattern.shots[0]

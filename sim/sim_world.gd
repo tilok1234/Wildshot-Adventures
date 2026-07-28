@@ -28,7 +28,7 @@ const HazardStep := preload("res://sim/systems/hazard_step.gd")
 
 const TICKS_PER_SECOND := 60
 const DT := 1.0 / 60.0
-const SERIAL_VERSION := 10
+const SERIAL_VERSION := 11
 
 ## Named PCG32 stream ids (§2.4). rng_vfx deliberately does NOT exist here —
 ## it lives view-side so cosmetics can never perturb gameplay.
@@ -89,8 +89,10 @@ var enemy_defs: Array = []
 var ability_defs: Array = []
 var ability_def: Resource = null
 
-## Live armed-zone hazards (§2.6 M4 subset), stable order, serialized:
-## {id, pos, radius, faction, damage, arm_at_tick}.
+## Live ground hazards (§2.6; lingering multi-hit since M6), stable
+## order, serialized: {id, pos, radius, faction, damage, placed_at_tick,
+## arm_at_tick, pattern, linger_until, next_damage_tick,
+## hit_interval_ticks}.
 var hazards: Array[Dictionary] = []
 
 ## God/invulnerability flag (§2.10): friendly actors take no damage —
@@ -129,7 +131,19 @@ func set_abilities(defs: Array) -> void:
 
 
 ## In-step hazard placement (systems call this). Emits TelegraphStarted.
-func place_hazard(pos: Vector2, r: float, fac: int, dmg: int, arm_ticks: int) -> void:
+## Defaults reproduce the M4 one-shot Blast Rune shape (pulse once at the
+## arm tick, then gone); linger_ticks > 0 makes a lingering multi-hit
+## zone pulsing every hit_interval ticks (M6 Blightcaster, SERIAL 11).
+func place_hazard(
+	pos: Vector2,
+	r: float,
+	fac: int,
+	dmg: int,
+	arm_ticks: int,
+	pattern: int = -2,
+	linger_ticks: int = 0,
+	hit_interval: int = 0
+) -> void:
 	var id := _alloc_id()
 	(
 		hazards
@@ -142,6 +156,10 @@ func place_hazard(pos: Vector2, r: float, fac: int, dmg: int, arm_ticks: int) ->
 				"damage": dmg,
 				"placed_at_tick": tick,
 				"arm_at_tick": tick + arm_ticks,
+				"pattern": pattern,
+				"linger_until": tick + arm_ticks + linger_ticks,
+				"next_damage_tick": tick + arm_ticks,
+				"hit_interval_ticks": hit_interval,
 			}
 		)
 	)
@@ -156,7 +174,7 @@ func place_hazard(pos: Vector2, r: float, fac: int, dmg: int, arm_ticks: int) ->
 				"radius": r,
 				"faction": fac,
 				"arm_at_tick": tick + arm_ticks,
-				"pattern": -2,
+				"pattern": pattern,
 			}
 		)
 	)
@@ -311,6 +329,10 @@ func serialize() -> PackedByteArray:
 		buf.put_32(int(hz.damage))
 		buf.put_64(int(hz.placed_at_tick))
 		buf.put_64(int(hz.arm_at_tick))
+		buf.put_32(int(hz.pattern))
+		buf.put_64(int(hz.linger_until))
+		buf.put_64(int(hz.next_damage_tick))
+		buf.put_32(int(hz.hit_interval_ticks))
 	buf.put_u8(0 if ability_def == null else ability_defs.find(ability_def) + 1)
 	buf.put_u8(1 if god_mode else 0)
 	return buf.data_array

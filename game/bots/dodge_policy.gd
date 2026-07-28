@@ -371,9 +371,23 @@ static func _project_threats(world: RefCounted, p: RefCounted) -> Dictionary:
 	for hz: Dictionary in world.hazards:
 		if int(hz.faction) != ActorState.FACTION_HOSTILE:
 			continue
-		var arm_in := int(hz.arm_at_tick) - t
-		if arm_in >= 1 and arm_in <= HORIZON:
-			hazards.append({"pos": hz.pos, "radius": hz.radius, "arm_in": arm_in})
+		# Every future damage pulse inside the horizon is a hazard step:
+		# the first (arm, or the next lingering pulse — M6 zones burn on a
+		# deterministic cadence) plus each interval after. Between pulses a
+		# zone is honestly crossable; standing in one at a pulse tick is
+		# death, and the candidate walk sees exactly that.
+		var pulse_in := int(hz.arm_at_tick) - t
+		if pulse_in < 1:
+			if t >= int(hz.get("linger_until", 0)):
+				continue
+			pulse_in = maxi(1, int(hz.get("next_damage_tick", 0)) - t)
+		var interval := maxi(1, int(hz.get("hit_interval_ticks", 0)))
+		var last_in := int(hz.get("linger_until", hz.arm_at_tick)) - t
+		while pulse_in <= HORIZON and pulse_in <= last_in:
+			hazards.append({"pos": hz.pos, "radius": hz.radius, "arm_in": pulse_in})
+			if int(hz.get("hit_interval_ticks", 0)) <= 0:
+				break
+			pulse_in += interval
 	return {
 		"proj_pos": proj_pos,
 		"proj_r": proj_r,
