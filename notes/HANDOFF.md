@@ -1,7 +1,9 @@
-# Session Handoff — written 2026-07-28 (post-midnight), end of the M5 marathon + post-M5 additions
+# Session Handoff — written 2026-07-28 (~03:00), end of the M6 roster session
 
 **COLD START — this handoff assumes NO prior context.** You may be a
-fresh Claude instance with no memory of any earlier session.
+fresh Claude instance (possibly under a different user account — the
+designer switched accounts on usage limits mid-M6) with no memory of
+any earlier session.
 
 ## §0 What this project is (60 seconds)
 
@@ -20,12 +22,15 @@ repos:
 - **Planning repo (design authority):**
   `C:\Users\headc\Documents\Wildshot_adventure_final_planning` — ONE
   branch only, `claude/questionnaire-note-taking-9vl2sl` (no main —
-  do not create one). Key docs: `docs/12` (build plan; §3.1/§3.4 carry
-  2026-07-27 amendments), `docs/14` (assembler pack spec),
-  `docs/15` (WorldForge integration + the 2026-07-28 re-ruling),
-  `notes/sessions/2026-07-27.md` (the FULL record of the marathon —
-  read it for any "why"). One approved decision = one commit + push,
-  BOTH repos.
+  do not create one). Other `claude/*` branches appear when the
+  designer runs web sessions: `git fetch` at session start, check for
+  new ones, fast-forward in only if they fork cleanly from the working
+  tip (a stale fully-absorbed branch needs no action — one existed
+  2026-07-28 and was correctly ignored). Key docs: `docs/12` (build
+  plan; §3.4 as amended), `docs/14` (assembler packs), `docs/15`
+  (WorldForge), `notes/sessions/2026-07-27.md` + `2026-07-28.md` (the
+  full record of the marathon and the M6 roster session — read for
+  any "why"). One approved decision = one commit + push, BOTH repos.
 
 ## §0.5 Working with the designer
 
@@ -33,188 +38,219 @@ Solo dev, handle mmoabsurd. Big nerd, goes hard, sometimes overnight;
 their plan has a **fresh-hands rule**: feel verdicts count only from
 rested day-start sessions — tired-session notes are PROVISIONAL by
 rule; honor it kindly, don't nag. They iterate by PLAYING: ship, then
-relaunch the game for them (`Start-Process` detached `~/bin/godot.exe
---path .`; the window opens BEHIND — bring it to front via
-user32 SetForegroundWindow). Short casual messages ("ye this feels
-much better") = provisional positives. They build their own asset
-tools and ship packs as versioned drops — tool repos (8-bit sprite
-assembler, TileForge, WorldForge at `Documents\WorldForge`) are
-READ-ONLY unless separately scoped. **Compact keyboard: NO F1–F12
-keys, ever.** You have standing authority to commit and push both
-repos at every clean seam. Give honest opinions with numbers; they
-change their mind on evidence — and they'll change YOURS the same way.
-When they ship a pack mid-task, integrating it beats finishing your
-plan (it happened twice on 2026-07-27; both times it was right).
+relaunch the game for them (`Start-Process` detached
+`~/bin/godot.exe --path .`; the window opens BEHIND — bring it to
+front via user32 SetForegroundWindow; kill the old godot process
+first or two builds run at once). Short casual messages ("ye this
+feels much better", "he does exactly that!") = provisional positives.
+They build their own asset tools and ship packs as versioned drops —
+tool repos (8-bit sprite assembler, TileForge, WorldForge at
+`Documents\WorldForge`) are READ-ONLY unless separately scoped.
+**Compact keyboard: NO F1–F12 keys, ever.** You have standing
+authority to commit and push both repos at every clean seam. Give
+honest opinions with numbers; they change their mind on evidence —
+and they'll change YOURS the same way. When they ship a pack
+mid-task, integrating it beats finishing your plan. When they ask to
+SEE something before ruling (they did, for the M6 actor sheets),
+render it and send it — 4x nearest-neighbor upscales read well.
 
 ## Where things stand (one paragraph)
 
-M0–M5 all engineering-complete and accepted, ~5 weeks ahead of the
-docs/12 schedule (the plan had M5 at week 7; it landed on day 2).
-Enemies exist and are proven: Rusher (wolf, telegraphed slash arc) +
-Husk Archer (skeleton archer, aimed orb), 5-state machine, one damage
-path, DodgeBot proofs at 3.0 ability-off + calibration canaries.
-Three asset packs are live (assembler actor catalog 57×202, projectile
-pack v0-style with 4 styles in reserve, TileForge theme package), all
-via the same discipline: raw drop in `assets/` → validating importer →
-only mapped items enter the project. Two arenas: the detailed dungeon
-lab (`arena_lab.json`, §3.1 skeleton + dressing) and the Forest Walk
-readability testbed (`arena_forest.json`); scenarios pick their arena
-(`ScenarioDef.arena`) and spawn enemies by def id. WorldForge
-consumer-prep is fixture-proven AND proven against a REAL reference
-pack (`C:\Users\headc\Documents\WorldForge\outputs\game-packs\
-small-cold-coastal-pack` — validated in 0.57 s, flood 33845 from
-(241,124) reproduced; contract-as-built: world.json's format field is
-`formatVersion`; report shape {status,errors,warnings}, warnings
-legal). Validate any pack via:
-`godot_console --headless --path . --script
-addons/worldforge_importer/import_pack.gd -- --pack=<dir>/`.
-The DUSK pack is DELIVERED and VALIDATED (2026-07-28, 0.56 s:
-`...\game-packs\small-cold-coastal-pack-dusk`, tileforge
-dusk-ae1eecb-seed103991, flood 33845 reproduced — walkability is
-theme-independent, empirically confirmed; contract-as-built notes
-blessed in WorldForge's plan §3.3a). The CONSUMPTION half LANDED for ONE world under the designer's
-2026-07-28 generated-test-arena ruling: World Walk scenario
-(world_walk.tres) plays the dusk pack — game/arena/world_builder.gd
-validates, REFUSES on TileForge package-identity mismatch, renders the
-resolved TMJ (170k placements/2.1 s), collision = walkability verbatim,
-spawn at the pack's spawnCell; composition proof PASS with a light
-escort set (the full 3R+2H set FAILS in settlement streets — joined to
-the first_contact adjudication). v0 limits: animated tiles at frame 0,
-no canopy z, POIs/settlements/minimap unconsumed (that plus more worlds
-is the remaining post-Gate-1 scope; contract-gap protocol: never patch
-a pack, relay issues to the WorldForge side). Serialization v9; goldens
-current;
-CI fully green (RNG lint, smoke, goldens ×10, pixel-match, uikit,
-assembler, projectile, worldforge gates).
+M0–M5 complete and accepted. **M6 is past its halfway point: THE
+ORDINARY §3.4 ROSTER IS COMPLETE — all six enemies live, each with
+its passing 3.0 t/s ability-off proof.** Rusher (wolf, slash arc),
+Husk Archer (skeleton, aimed), Fanmaw (carniplant, 5-shot fan ANCHOR,
+pattern 13), Ringer (eyemonster, 12-shot radial slow chaser, 14),
+Leadshot (bandit sniper, INTERCEPT-aimed FLANKER, 12), Blightcaster
+(cultist, lingering ground-hazard caster, keep-range, 15). Law-4
+telegraph ordering complete and monotone: 10<12<30<36<40<45.
+Serialization is at **v11** (v10 added ActorState.vel — real applied
+post-slide velocity, written every tick, prev_pos stays
+presentation-only and BANNED for sim reads; v11 added hazard
+linger/pulse fields). All four M6 actor-sheet mappings are
+DESIGNER-CONFIRMED (2026-07-28: bandit:sniper / carniplant:snapvine /
+eyemonster:watcher / cultist:acolyte); polished sheet drops are
+expected later in the SAME family:variant slots (importer re-run =
+zero-code swap). Three arenas: lab (detailed), Forest Walk, World
+Walk (real WorldForge dusk pack). Picker rows: first_contact,
+forest_walk, lab_default, meet_blightcaster, meet_leadshot,
+second_contact, world_walk. All CI gates green; goldens current at
+v11.
 
-## Next work: M6 (docs/12 §4) — remaining roster + elite + effects/audio
+## Next work: rest of M6 (docs/12 §4)
 
-Sim first, then data, then proofs — the M5 pattern. Per-behavior needs:
-
-1. ~~**Fanmaw** + **Ringer**~~ DONE 2026-07-28 (session log): defs at
-   §3.4 exact, patterns 13/14, roster indexes 2/3, smoke-mechanized
-   contracts, solos + deep-spawn escape + second_contact composition
-   proofs ALL PASS. THREE things the next session must know: (a) the
-   DodgeBot now models ANCHOR enemies as data-derived keep-out discs
-   and orbits ONLY mobile enemies — anchor-free scenarios verified
-   byte-identical; (b) canary_undodgeable is now a FOUR-wall box
-   (the single wall was only undodgeable while the bot chose to stay
-   close — geometric MUST-FAIL now, t23); (c) scenario spawn layouts
-   must not open inside an anchor's envelope and must not leave a
-   habitable pocket between an anchor's disc and a wall (both bit
-   second_contact; heatmaps tell the story in the session log).
-2. ~~**Leadshot**~~ DONE 2026-07-28 (session log): ActorState.vel
-   serialized (SERIAL 10, goldens regenerated — applied post-slide
-   velocity, written every tick, zero when standing/pinned);
-   PatternDef.aim_mode INTERCEPT (closed-form lead, first-shot speed,
-   current-pos fallback); FLANKER orbit-in (band 6-8 authored [T],
-   id-parity chirality). Smoke witnesses the lead beating a strafing
-   mover; proof PASS near 0.125. prev_pos remains presentation-only.
-3. ~~**Blightcaster**~~ DONE 2026-07-28 (session log) — ORDINARY
-   ROSTER COMPLETE 6/6. SERIAL 11 (hazard linger/pulse fields);
-   EmitterSlot.hazard→HazardDef; zone arm = the telegraph (recap lead
-   exactly 45); hostile zones split fill/rim per §2.5; DodgeBot models
-   pulse trains; smoke has a reactive-walker escape witness (zero hits
-   at 3.0). Blast Rune untouched by construction (linger==arm ⇒ M4
-   one-shot path). Near-miss metric is hazard-blind (reads −1 when no
-   projectiles exist) — reporting nit only.
-4. **Sprites**: the projectile pack PRE-ASSIGNED pattern sprites
-   (dart=Leadshot 12, fang=Fanmaw 13, burr=Ringer 14, hazard-zone=15);
-   `data/projectile_map.tres` already maps them. Actor sheets: use the
-   PROVISIONAL picks in `data/actor_sheet_map.tres` conventions
-   (tracker lists them: bandit:sniper / carniplant:snapvine /
-   eyemonster:watcher / cultist:acolyte) — designer veto pending, ask
-   once casually, don't block.
-5. **Every EnemyDef ships WITH its passing 3.0 ability-off proof**
-   (tests/bot_scenarios/proof_<id>.tres + committed report). Re-run
-   canaries + ALL proofs after ANY policy/arena/pattern change — §2.11.
-6. **Yard Warden elite** (§3.5): PhaseList resource, 400 HP, three
-   phases, per-phase + full-fight proofs, peak ≤300 w/ meter proof.
-   heavy-orb sprite reserved (elite marker).
-7. **EffectLibrary pass** (ledger #9): Nova cast-flash ring sprite,
+1. **Yard Warden elite (§3.5)** — the next code task, biggest
+   authoring lift of M6: PhaseList resource (ordered phases swapping
+   policy + emitter sets on HP%), 400 HP [T], three phases: P1
+   (100–66%) aimed triples + fan; P2 (66–33%) rotating radial +
+   ground hazards; P3 (33–0%) predictive volleys + fan + chase
+   bursts. Peak hostile projectiles ≤ 300 (budgets.tres
+   hostile_elite_max) with a density-meter proof. **Per-phase
+   DodgeBot proofs at 3.0 ability-off PLUS a full-fight proof across
+   phase transitions.** Building blocks all exist now: aimed/fan/
+   radial patterns, INTERCEPT aim, hazard casting, multi-slot
+   emitters (EmitterSlot array — multi-slot never yet exercised;
+   _ready_slot picks the first open+in-range slot). PhaseList needs:
+   a resource type, an elite def referencing it, sim-side phase
+   swap on HP% thresholds (serialized phase index → SERIAL 12 +
+   golden regen, deliberate), and probably a heavy-orb elite marker
+   (sprite reserved in the projectile pack). Expect the elite to
+   need a new proof-harness thought: the bot must FIGHT it... no —
+   proofs are movement-only; the full-fight proof needs the elite's
+   HP driven down. §2.11/§3.5 intent: per-phase proofs run each
+   phase's pattern set (spawn the elite pinned at a phase via
+   scenario/test rig — a phase-force debug hook or per-phase defs);
+   the full-fight proof crosses transitions — that needs damage, so
+   either a scripted damage schedule in the harness (console command
+   exists for damage? god exists; direct hp set would be a new
+   sim-legal test hook) or accept the fight at full length with a
+   fire-enabled... NO: proofs are ability-off AND fire-off by
+   construction. Design the transition proof deliberately: a test
+   hook that steps the elite's hp down on a tick schedule inside the
+   harness (sim command, replay-visible) is the honest route. Flag
+   the design in the planning log before building.
+2. **EffectLibrary pass (ledger #9)**: Nova cast-flash ring sprite,
    effect-density/opacity scaler (cosmetic/friendly channels ONLY,
-   hostile clamped — §2.6), flash-reduction mode; then the NINE-row
-   acceptance at stress density + audio cue map + placeholder WAVs
-   (Law 7) + CORE-34 full no-ability clear.
+   hostile clamped — §2.6), flash-reduction mode. Ledger #14 (zone
+   burning-state visual) belongs to this pass.
+3. **Nine-row acceptance** at stress density + audio cue map +
+   placeholder WAVs (Law 7; sourcing is designer-taste territory) +
+   CORE-34 full no-ability clear. Ledger #10 (slash borrows fang)
+   gets designer ruling here.
 
 ## Session rituals (the gates)
 
 Before every commit, per touched area:
-- format: `python -m gdtoolkit.formatter <files>` (gdformat not on PATH)
+- format: `python -m gdtoolkit.formatter <files>` (gdformat not on
+  PATH). It REFLOWS — re-grep before editing formatted files.
 - smoke: `godot_console --headless --path . --script tests/determinism/determinism_smoke.gd`
-- goldens: any SIM/serialization change ⇒ bump SERIAL_VERSION if
-  format changed, regenerate (`tests/replay_fixtures/record_goldens.gd`),
-  verify (`verify_replays.gd`), say so in the commit — deliberate,
-  never a side effect.
+  — now carries mechanized contracts for ALL SIX enemies (exact
+  telegraph leads, periods, volley sizes, policy behaviors, the
+  Leadshot intercept-beats-mover witness, the Blightcaster
+  reactive-walker escape witness).
+- goldens: any sim/serialization change ⇒ bump SERIAL_VERSION,
+  regenerate (`tests/replay_fixtures/record_goldens.gd`), verify
+  (`verify_replays.gd`), say so in the commit — deliberate, never a
+  side effect. Two bumps happened this session (10, 11); the next
+  (PhaseList state) is 12.
 - boot: `godot_console --headless --path . --quit-after 60` grep
   "arena ready|SCRIPT ERROR"
-- proofs (if patterns/policy/arenas changed): run the canaries + every
-  proof scenario via `game/bots/bot_runner.gd`; commit reports
-  (`git add -f reports/*.json` — reports/ is gitignored except
-  force-added verdict records).
+- proofs: **re-run canaries + EVERY proof after ANY pattern/policy/
+  arena change, with the CANONICAL SEEDS** (see table below). Commit
+  reports (`git add -f reports/*.json` — reports/ is gitignored
+  except force-adds). Unchanged scenarios must reproduce their
+  committed reports BYTE-IDENTICAL (empty git diff = the
+  no-regression proof; this was demonstrated twice this session).
 - godot binary: `~/bin/godot_console.exe` (headless) / `godot.exe`
   (play, detached + bring to front).
 - hourslog start/stop/note around ALL work (PROD-01). Check the tail
-  for a dangling `start` at session start; reconstruct stops honestly
-  (backdate to the last work note, note the reconstruction).
+  for a dangling `start` at session start.
 - One approved decision = one commit; milestone records go to the
   planning session log; push BOTH repos.
 
-## Hard-won gotchas (cost real debugging)
+### Canonical proof battery (13 scenarios, all --speed=3.0)
+
+| scenario | seeds | ticks | expected |
+|---|---|---|---|
+| canary_trivial | 1,2,3,4,5 | 3600 | PASS (MUST-PASS) |
+| canary_undodgeable | 1,2,3 | 1800 | FAIL (MUST-FAIL, ~t23) |
+| proof_rusher | 1,2,3,4,5 | 3600 | PASS |
+| proof_husk_archer | 1,2,3,4,5 | 3600 | PASS |
+| proof_fanmaw | 203..207 | 3600 | PASS (stand-off, near 2.678) |
+| proof_fanmaw_inside | 205..209 | 3600 | PASS (escape, near 0.315) |
+| proof_ringer | 204..208 | 3600 | PASS (near 0.120) |
+| proof_leadshot | 206..210 | 3600 | PASS (near 0.125) |
+| proof_blightcaster | 207..211 | 3600 | PASS (0 hits; near reads −1, ledger #13) |
+| forest_walk → dodge_forest_walk_composition.json | 1,2,3 | 3600 | PASS |
+| world_walk → dodge_world_walk_composition.json | 1,2,3 | 3600 | PASS |
+| first_contact → dodge_first_contact_composition.json | 1,2,3 | 3600 | **FAIL — committed adjudication evidence, never launder** |
+| second_contact → dodge_second_contact_composition.json | 10..14 | 3600 | PASS (near 0.121) |
+
+Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- --scenario=<id> --speed=3.0 --seeds=<list> --ticks=<n> [--out=res://reports/<name>.json]`
+(compositions need the explicit --out names above).
+
+## Hard-won gotchas (cost real debugging — read ALL of them)
 
 1. **A silently hanging `--script` run = a PARSE ERROR.** Godot 4.6
-   prints the error to stderr and the SceneTree idles FOREVER (quit
-   never runs). Piping through `tail` hides even the banner. Kill it,
-   re-run unpiped at tiny scale, read stderr. Then kill orphaned
-   `godot_console` processes. bot_runner guards its dependency with
+   prints the error to stderr and the SceneTree idles FOREVER. Kill
+   it, re-run unpiped at tiny scale, read stderr. Then kill orphaned
+   `godot_console` processes. bot_runner guards with
    `can_instantiate()` → exit 3; copy that pattern for new SceneTree
    entry points.
 2. GDScript type inference fails on duck-typed member access:
    `var d := expr_using(p.pos)` where p is RefCounted = PARSE error.
-   Hoist typed locals ALWAYS (`var ppos: Vector2 = p.pos`). This bit
-   the session THREE times.
-3. `as` binds looser than `!=`: `if x != [..] as Array[String]` is a
-   parse error — use a typed local for the expected value.
+   Hoist typed locals ALWAYS (`var ppos: Vector2 = p.pos`).
+3. `as` binds looser than `!=` — use typed locals for expected
+   values. Also `sqrtf` does NOT exist in GDScript — it's `sqrt`.
 4. NEVER write .tres/.json via PowerShell Set-Content (UTF-8 BOM ⇒
-   Godot silently loads null). Use the Write tool. The importers all
-   REJECT BOMs by contract.
-5. gdformat REFLOWS code — after running it, Grep the actual text
-   before Edit; old_string must match the formatted form. It also
-   rejects parenthesized assignments (`(a = b)` is illegal anyway).
+   Godot silently loads null). Use the Write tool. Importers REJECT
+   BOMs by contract.
+5. gdformat REFLOWS code — after running it, re-grep the actual text
+   before Edit; old_string must match the formatted form.
 6. NO F-row keys (designer's keyboard). Current keys: O options,
    I interp, [ ] speed presets, -/= step, G gif, R replay, T reset,
    M meter, H hitboxes, ` console, Esc pause, Alt+Enter fullscreen.
 7. Sim = pure core: no Nodes/clock/RNG; prev_pos is presentation-only
-   (NO sim system may read it — Leadshot's intercept needs a real
-   serialized vel field instead); systems duck-type `world`.
+   (NO sim system may read it — intercept reads the serialized
+   ActorState.vel instead); systems duck-type `world`.
 8. PackedArrays share storage on assignment — `.duplicate()` for
    snapshots.
-9. The proof system WILL catch your regressions (it caught an arena
-   detail pass cornering the bot, twice). When a proof fails: read the
-   heatmap in the report JSON before theorizing; iterate the ARENA or
-   the POLICY, never weaken the proof.
+9. The proof system WILL catch your regressions. When a proof fails:
+   read the heatmap in the report JSON before theorizing; iterate the
+   ARENA/LAYOUT or the POLICY, never weaken the proof.
 10. Feel notes are PROVISIONAL until a rested day-start pass; the
-    verdict console command enforces sources (feel rejects bot-proof).
+    verdict console command enforces sources (feel rejects
+    bot-proof).
 11. The planning repo's only branch is
-    `claude/questionnaire-note-taking-9vl2sl`; other `claude/*`
-    branches appear when the designer runs web sessions — check for
-    them at session start (`git fetch` + look for new branches),
-    fast-forward if they fork cleanly from the working tip.
+    `claude/questionnaire-note-taking-9vl2sl`; check for new
+    `claude/*` branches at session start.
+12. **Smoke micro-worlds use the LAB bitgrid — it has interior
+    furniture.** A scripted straight-line walker pinned itself on a
+    prop ~10 tiles west of (24,16) and invalidated an escape witness.
+    Keep scripted movement near the proven-open pocket (x 16–31,
+    y 8–20 has been used safely) or bounce with alternating
+    directions.
+13. **The undodgeable canary is GEOMETRIC now** (four wall emitters
+    boxing the spawn). The old single wall was only undodgeable
+    because the old bot policy chose to stand close — a smarter bot
+    flees and threads a single ring's widening gaps. If you improve
+    the policy and the canary starts passing, the canary is what
+    must get harder; never ship with MUST-FAIL passing.
+14. **DodgeBot anchor semantics** (learned this session): ANCHOR-
+    policy enemies are data-derived keep-out discs (shot reach +
+    pad) and are EXCLUDED from the orbit centroid — the bot orbits
+    only what chases it. Scenario layouts must respect the same
+    geometry: never spawn the player inside an anchor's envelope,
+    never leave a habitable pocket between an anchor's disc and a
+    wall (both bit second_contact; heatmaps diagnosed both).
+15. The report near-miss metric is HAZARD-BLIND (ledger #13): a
+    hazard-only enemy reads near −1 with zero hits. The verdict
+    field is the evidence, not the margin.
+16. Blast Rune and Blightcaster zones share ONE code path: one-shot =
+    linger_until == arm tick. Touch hazard_step with both in mind;
+    the smoke's blight block plus the fire-path ability casts cover
+    it.
+17. Windows console pipes can swallow a run's tail — when a battery
+    loop's last line looks truncated, check the report JSON on disk
+    before re-running.
 
 ## Open designer-side items (do not nag, they know)
 
-- **Rested day-start pass**: formally closes M2 AND ratifies every
-  2026-07-27 provisional call (enemies, forest, slash, projectiles).
-- **first_contact adjudication**: the composition proof FAILS at 3.0
-  under the primary policy (committed as FAILING — never launder).
-  They play at the 3.0 preset and rule: retune spawns / accept until
-  M7 reactive policies / composition-too-hot.
-- ~~Provisional M6 actor mappings~~ CONFIRMED 2026-07-28 (all four;
-  polished sheet drops expected later, same slots). Slash-sprite share
-  (ledger #10) still open.
-- Weekly GIF #2 (wolves + forest + slash = fresh material).
-- Dusk WorldForge pack: DELIVERED + VALIDATED 2026-07-28. Everything
-  world-gen now waits only on the designer's generated-test-arena
-  ruling (consumption half).
-- M6 audio cue map wants placeholder WAVs (Law 7) — sourcing is
-  designer taste territory.
+- **Rested day-start pass** — the big one, now covers: formally
+  closing M2, and ratifying EVERY provisional call from 2026-07-27
+  AND -28: enemies (all six — each got a positive PROVISIONAL touch
+  tonight, Blightcaster's "he does exactly that!" latest), forest,
+  slash, pack projectiles, the generated world, the four confirmed
+  actor mappings, the M6 authored [T] values (Leadshot band 6–8,
+  Blightcaster band 5.5–7 / trigger 8 / cast tell 15, recover 20s),
+  the DodgeBot anchor/centroid evolution, and the geometric canary.
+- **Composition adjudication at the 3.0 preset**: first_contact
+  (3R+2H) AND the world_walk full-pack fight — same failure class
+  (primary policy limits, ledger #11), one ruling covers both:
+  retune spawns / accept until M7 reactive policies / too hot.
+- **Weekly GIF #2** (cadence!): best material — the dusk town walk
+  with a wolf on your heels, or the new pack: fanmaw denying a
+  quarter while a ringer presses and a leadshot leads you.
+- docs/12 §2.7/§3.4 may want a truth-up commit for the M6 authored
+  [T] values after the rested ratification (planning-side, designer
+  approves).

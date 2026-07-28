@@ -37,10 +37,10 @@ by rule.
 
 | Path | Contents |
 |---|---|
-| `assets/` | Raw forge drops (`.gdignore`d — importers consume these): `tileforge/` (4 theme packages + reference pack), `assembler-pack/` (full enemy catalog: 57 families / 202 variants + 4 players, manifest + index driven) |
+| `assets/` | Raw forge drops (`.gdignore`d — importers consume these): `tileforge/` (theme packages), `assembler-pack/` (full enemy catalog: 57 families / 202 variants + 4 players), `projectile-pack/` (5 styles, pattern-mapped), `worldforge-packs/` (generated worlds; dusk small-cold-coastal committed) |
 | `tileforge/` | The active theme package (dusk) as `res://tileforge/` per its GAME-GUIDE; `tileforge.tres` built by `addons/tileforge_importer/run_import.gd` (headless) |
 | `assembler/` | The imported actor roster (player + mapped enemies) — roster-filtered by `addons/assembler_importer` from `data/actor_sheet_map.tres` |
-| `addons/` | `tileforge_importer` (M1), `assembler_importer` (M4/M5, docs/14), `uikit_importer` (M4) |
+| `addons/` | `tileforge_importer` (M1), `assembler_importer` (M4/M5, docs/14), `uikit_importer` (M4), `worldforge_importer` (post-M5, docs/15 — validates + consumes generated world packs) |
 | `autoload/` | Config, Telemetry, DebugHub, BootArgs — exactly four, none holding gameplay state |
 | `data/` | Weapons, enemies, patterns, abilities, scenarios, actor sheet map, budgets — all `.tres`, hot-reloadable |
 | `sim/` | The engine-decoupled deterministic sim core (`systems/`, `collision/`) — global RNG banned here |
@@ -48,16 +48,17 @@ by rule.
 | `game/` | Main scene, render layers, `views/` (presentation only — never mutates sim) |
 | `ui/` | HUD, menus, options |
 | `tests/` | `pixel_match/`, `assembler_pack/`, `replay_fixtures/` (golden replays), `bot_scenarios/` (proof isolates + calibration canaries + the density-audit scenario) |
-| `tools/` | `hourslog.ps1`, `hours_report.ps1`; later `export.ps1`, `gif.ps1` |
-| `notes/` | `hours.csv`, `TECH_DEBT_LEDGER.md` |
+| `tools/` | `hourslog.ps1`, `hours_report.ps1`, `gif.ps1` (F-rowless: G arms the ring buffer); later `export.ps1` |
+| `notes/` | `hours.csv`, `TECH_DEBT_LEDGER.md`, `HANDOFF.md` (cold-start briefing for any new session) |
 | `reports/` | Bot harness output — mechanical verification only, never gate evidence |
 
 ## CI
 
 GitHub Actions, jobs activating as their producing milestone lands. Active
 now: banned-RNG grep under `sim/` + GDScript format check (M0, forge packages
-exempt as generated artifacts); TileForge §4 acceptance — pixel-match against
-`map-reference.png` + net16 mask derivation (M1). Coming: golden-replay hash
-gate (M4), nightly DodgeBot (M7), CI-only tester exports (M8). Replay/bot
-jobs run on Windows runners only — the determinism scope is
+exempt as generated artifacts); TileForge §4 acceptance — pixel-match +
+net16 mask derivation (M1); golden-replay hash gate ×10 (activated M3);
+uikit, assembler-pack, projectile-pack, and worldforge-pack gates (M4+).
+Coming: nightly DodgeBot (M7), CI-only tester exports (M8). Replay/bot jobs
+run on Windows runners only — the determinism scope is
 same-build/same-platform.
