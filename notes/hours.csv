@@ -55,3 +55,4 @@ timestamp,action,note
 2026-07-28T01:13:29,note,"DECISION (designer, casual-approve): all four M6 actor mappings confirmed (Leadshot=bandit:sniper, Fanmaw=carniplant:snapvine, Ringer=eyemonster:watcher, Blightcaster=cultist:acolyte); polished sheet drops expected later, same family:variant slots"
 2026-07-28T02:03:47,note,"M6 behaviors 3-4 DONE: Fanmaw+Ringer live at 3.4-exact, smoke-mechanized, DodgeBot learned anchors (keep-out discs, mobile-only centroid), canary strengthened to 4-wall geometric MUST-FAIL, second_contact PASS at solo-ringer margins; all gates green"
 2026-07-28T02:09:49,note,"Leadshot start: intercept aim (vel as sim state, SERIAL 10) + flanker policy"
+2026-07-28T02:23:12,note,"Leadshot DONE: vel as serialized sim state (SERIAL 10, goldens regen), INTERCEPT closed-form aim, FLANKER orbit-in policy, smoke witnesses lead-beats-mover, full battery green incl proof_leadshot PASS 0.125"

@@ -314,8 +314,16 @@ ringer solos + second_contact composition ALL PASS 3.0 ability-off
 (near 0.121 = solo-ringer margin); first_contact FAIL preserved
 untouched for adjudication. second_contact (M6 pack: fanmaw 40,16
 zone-guards the east, ringer chases — pull-the-chaser CORE-44 lesson)
-in the picker. Remaining M6: Leadshot (INTERCEPT aim, target vel =
-sim state, SERIAL 10 + golden regen; FLANKER policy), Blightcaster
-(lingering multi-hit hazards, hazard_step ext, SERIAL bump), Yard
-Warden elite + PhaseList, EffectLibrary pass (ledger #9), 9-row
-acceptance, audio cue map, CORE-34 no-ability clear.**
+in the picker. LEADSHOT LIVE 2026-07-28 (SERIAL 10: ActorState.vel =
+applied post-slide velocity, serialized+hashed, goldens regenerated;
+PatternDef.aim_mode INTERCEPT closed-form lead on target vel, fallback
+to current; FLANKER orbit-in landed — spiral to band 6-8, circle-
+strafe, id-parity chirality, authored [T] band; §3.4 exact 45hp/2.4t/s
+dart 9t/s dmg12 ttl67 pattern 12, telegraph 40, cooldown 120; smoke
+witnesses band-settle+circulation AND 3 dart hits on a 3.0 t/s square-
+wave strafer that current-aim geometrically misses; roster index 4;
+Meet: Leadshot picker row; proof_leadshot PASS near 0.125; ALL prior
+proofs reproduce exact pre-bump margins at v10). Remaining M6:
+Blightcaster (lingering multi-hit hazards, hazard_step ext, SERIAL
+bump), Yard Warden elite + PhaseList, EffectLibrary pass (ledger #9),
+9-row acceptance, audio cue map, CORE-34 no-ability clear.**

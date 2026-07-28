@@ -103,12 +103,13 @@ Sim first, then data, then proofs — the M5 pattern. Per-behavior needs:
    must not open inside an anchor's envelope and must not leave a
    habitable pocket between an anchor's disc and a wall (both bit
    second_contact; heatmaps tell the story in the session log).
-2. **Leadshot** (intercept-aimed flanker): needs (a) INTERCEPT aim
-   mode on PatternDef — requires target VELOCITY as sim state
-   (ActorState.prev_pos is presentation-only and BANNED for sim reads;
-   add a serialized `vel`/last-move field → SERIAL_VERSION 10 + golden
-   regen, deliberate); (b) FLANKER movement policy (orbit-in — enum
-   value exists, anchors currently).
+2. ~~**Leadshot**~~ DONE 2026-07-28 (session log): ActorState.vel
+   serialized (SERIAL 10, goldens regenerated — applied post-slide
+   velocity, written every tick, zero when standing/pinned);
+   PatternDef.aim_mode INTERCEPT (closed-form lead, first-shot speed,
+   current-pos fallback); FLANKER orbit-in (band 6-8 authored [T],
+   id-parity chirality). Smoke witnesses the lead beating a strafing
+   mover; proof PASS near 0.125. prev_pos remains presentation-only.
 3. **Blightcaster** (delayed ground hazard, keep-range): needs
    lingering multi-hit hazards — hazard_step is explicitly marked for
    this extension; hazards will need linger_until/next_damage fields
