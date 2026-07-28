@@ -23,4 +23,11 @@ extends Resource
 ## stable). Exists for the §2.11 bot canaries — deliberately unfair
 ## defs that must never enter the shipped roster.
 @export var extra_enemy_defs: Array[Resource] = []
+## Test damage schedule (§2.11 elite transition proofs; planning log
+## 2026-07-28): {tick: int, amount: int} entries the sim applies to the
+## scenario's elite at exact tick equality through the one damage path
+## (source tag -4). Amounts are final HP deltas. TEST SCENARIOS ONLY
+## (tests/bot_scenarios) — no tester-reachable scenario may declare one
+## (M7 pre-tester-build checklist line).
+@export var damage_schedule: Array[Dictionary] = []
 @export var default_seed: int = 1

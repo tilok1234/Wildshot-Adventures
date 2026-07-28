@@ -21,6 +21,7 @@ enum Type {
 	ABILITY_CAST,
 	RESOURCE_SPENT,
 	RESOURCE_REGEN,
+	PHASE_CHANGED,
 }
 
 ## PROJECTILE_DESPAWNED carries one of these (§2.6 typed despawn reasons).

@@ -48,6 +48,7 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 	for extra: Resource in scenario.extra_enemy_defs:
 		defs.append(extra)
 	world.set_enemy_defs(defs)
+	world.set_damage_schedule(scenario.damage_schedule)
 	world.add_player(scenario.player_spawn)
 	for p in scenario.standin_positions:
 		world.add_enemy_standin(p)

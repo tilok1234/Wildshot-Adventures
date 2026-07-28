@@ -26,20 +26,38 @@ var _worst_by_def := {}
 ## Sustained worst-case hostile projectiles for one EnemyDef (§2.6/§3.4
 ## composition rule): sum over slots of shots x ttl / cooldown — the
 ## steady-state shot count one enemy keeps alive if it fires forever.
+## Phased defs (§3.5 elite) report their worst PHASE. Hazard-caster
+## slots (pattern null — M6 Blightcaster) contribute nothing here:
+## zones are not pool projectiles, and reading them as volleys was a
+## null deref whenever a caster entered the boot scenario.
 func _worst_case(defs: Array, def_index: int) -> float:
 	if _worst_by_def.has(def_index):
 		return _worst_by_def[def_index]
 	var total := 0.0
 	var def: Resource = defs[def_index]
-	var emitters: Array = def.emitters
+	var phase_res: Resource = def.phases
+	if phase_res == null:
+		total = _emitters_sustained(def.emitters)
+	else:
+		var plist: Array = phase_res.phases
+		for pe: Resource in plist:
+			var pemit: Array = pe.emitters
+			total = maxf(total, _emitters_sustained(pemit))
+	_worst_by_def[def_index] = total
+	return total
+
+
+func _emitters_sustained(emitters: Array) -> float:
+	var total := 0.0
 	for slot: Resource in emitters:
 		var pattern: Resource = slot.pattern
+		if pattern == null:
+			continue
 		var shots: Array = pattern.shots
 		var max_ttl := 0
 		for shot: Resource in shots:
 			max_ttl = maxi(max_ttl, int(shot.ttl_ticks))
 		total += shots.size() * float(max_ttl) / float(maxi(1, int(slot.cooldown_ticks)))
-	_worst_by_def[def_index] = total
 	return total
 
 

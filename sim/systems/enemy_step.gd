@@ -44,6 +44,26 @@ static func run(world: RefCounted) -> void:
 			continue  # inert stand-in, or killed this tick awaiting sweep
 		var def: Resource = defs[def_index]
 
+		# Phase resolution (§3.5 elite): the active phase is a pure
+		# function of current HP; this is the single point where a
+		# crossing's side effects fire (exactly once — phase_index is
+		# serialized edge-detection state). Old-phase projectiles and
+		# hazards persist untouched: transition seams are real, and the
+		# full-fight proof exists to witness them.
+		var phase_res: Resource = def.phases
+		if phase_res != null:
+			var want: int = def.phase_for_hp(e.hp)
+			if want != e.phase_index:
+				_enter_phase(world, e, def, want, t)
+		var emitters: Array = def.active_emitters(e.phase_index)
+		var policy: int = def.active_policy(e.phase_index)
+		var rmin: float = float(def.range_min)
+		var rmax: float = float(def.range_max)
+		if phase_res != null:
+			var pe: Resource = def.phase_entry(e.phase_index)
+			rmin = float(pe.range_min)
+			rmax = float(pe.range_max)
+
 		# Nearest living player: linear scan, first-wins ties (stable §2.4).
 		var target: RefCounted = null
 		var best := INF
@@ -75,10 +95,10 @@ static func run(world: RefCounted) -> void:
 				if dist <= float(def.aggro_range):
 					e.ai_state = EnemyState.AIState.REPOSITION
 			EnemyState.AIState.REPOSITION:
-				_move(grid, e, def, tpos, dist, dt)
-				var slot := _ready_slot(e, def, t, dist)
+				_move(grid, e, policy, rmin, rmax, tpos, dist, dt)
+				var slot := _ready_slot(e, emitters, t, dist)
 				if slot >= 0:
-					var es: Resource = def.emitters[slot]
+					var es: Resource = emitters[slot]
 					e.ai_state = EnemyState.AIState.WINDUP
 					e.winding_slot = slot
 					e.state_until = t + int(es.telegraph_ticks)
@@ -101,7 +121,7 @@ static func run(world: RefCounted) -> void:
 			EnemyState.AIState.WINDUP:
 				if t >= e.state_until:
 					e.ai_state = EnemyState.AIState.FIRE
-					_fire(world, e, def, target, t)
+					_fire(world, e, emitters, target, t)
 			EnemyState.AIState.FIRE:
 				# The volley left on the WINDUP->FIRE transition tick; FIRE
 				# persists one observable tick (explicit 5-state contract).
@@ -111,22 +131,70 @@ static func run(world: RefCounted) -> void:
 					e.ai_state = EnemyState.AIState.REPOSITION
 
 
+## Phase transition (§3.5): re-arm cooldowns for the new phase's slots
+## (entry beat + full telegraph — no volley may arrive untelegraphed
+## across a flip), apply the phase's movement speed, interrupt any
+## in-progress windup (its telegraph resolves to nothing — safe by Law
+## 8: an unkept warning cannot kill), and emit PHASE_CHANGED.
+static func _enter_phase(
+	world: RefCounted, e: RefCounted, def: Resource, want: int, t: int
+) -> void:
+	e.phase_index = want
+	var pe: Resource = def.phase_entry(want)
+	var pspeed: float = float(pe.move_speed)
+	e.move_speed = float(def.move_speed) if pspeed < 0.0 else pspeed
+	var pemit: Array = pe.emitters
+	var fresh := PackedInt64Array()
+	fresh.resize(pemit.size())
+	for k in pemit.size():
+		var es: Resource = pemit[k]
+		fresh[k] = t + int(pe.entry_cooldown_ticks) + int(es.telegraph_ticks)
+	e.cooldowns = fresh
+	if e.ai_state != EnemyState.AIState.IDLE:
+		e.ai_state = EnemyState.AIState.REPOSITION
+	e.winding_slot = -1
+	(
+		world
+		. events
+		. append(
+			{
+				"type": SimEvents.Type.PHASE_CHANGED,
+				"tick": t,
+				"id": e.id,
+				"def_index": e.def_index,
+				"phase": want,
+				"hp": e.hp,
+				"pos": e.pos,
+			}
+		)
+	)
+
+
 ## Movement policies (§2.7). WINDUP/FIRE/RECOVER stand still — telegraphs
-## stay readable where they started (Law 4 honesty).
+## stay readable where they started (Law 4 honesty). Speed reads
+## e.move_speed (copied from the def at spawn; phase entry overwrites it
+## for §3.5 elites), band comes from the caller's phase-resolved values.
 static func _move(
-	grid: RefCounted, e: RefCounted, def: Resource, tpos: Vector2, dist: float, dt: float
+	grid: RefCounted,
+	e: RefCounted,
+	policy: int,
+	rmin: float,
+	rmax: float,
+	tpos: Vector2,
+	dist: float,
+	dt: float
 ) -> void:
 	if dist < 0.0001:
 		return
 	var toward: Vector2 = (tpos - e.pos) / dist
 	var dir := Vector2.ZERO
-	match int(def.movement_policy):
+	match policy:
 		EnemyDef.MovementPolicy.CHASER:
 			dir = toward
 		EnemyDef.MovementPolicy.KEEP_RANGE:
-			if dist < float(def.range_min):
+			if dist < rmin:
 				dir = -toward
-			elif dist > float(def.range_max):
+			elif dist > rmax:
 				dir = toward
 		EnemyDef.MovementPolicy.FLANKER:
 			# Orbit-in (M6 Leadshot, §2.7): spiral toward the band, then
@@ -136,9 +204,9 @@ static func _move(
 			var tangent := Vector2(-toward.y, toward.x)
 			if e.id % 2 == 1:
 				tangent = -tangent
-			if dist > float(def.range_max):
+			if dist > rmax:
 				dir = (toward + tangent).normalized()
-			elif dist < float(def.range_min):
+			elif dist < rmin:
 				dir = (tangent - toward).normalized()
 			else:
 				dir = tangent
@@ -149,7 +217,7 @@ static func _move(
 	if dir == Vector2.ZERO:
 		return
 	var before: Vector2 = e.pos
-	var step: Vector2 = dir * float(def.move_speed) * dt
+	var step: Vector2 = dir * float(e.move_speed) * dt
 	e.pos = Kinematics.move_circle(grid, e.pos, e.radius, step)
 	e.vel = (e.pos - before) / dt
 
@@ -166,9 +234,9 @@ static func _slot_pattern_id(es: Resource) -> int:
 
 ## First emitter slot whose cooldown gate is open (windup may begin
 ## telegraph_ticks before the fire gate: cooldown is fire-to-fire) and
-## whose trigger range contains the nearest player. -1 = none.
-static func _ready_slot(e: RefCounted, def: Resource, t: int, dist: float) -> int:
-	var emitters: Array = def.emitters
+## whose trigger range contains the nearest player. -1 = none. The
+## caller passes the phase-resolved emitter set (§3.5).
+static func _ready_slot(e: RefCounted, emitters: Array, t: int, dist: float) -> int:
 	for k in emitters.size():
 		var es: Resource = emitters[k]
 		if t < e.cooldowns[k] - int(es.telegraph_ticks):
@@ -184,11 +252,14 @@ static func _ready_slot(e: RefCounted, def: Resource, t: int, dist: float) -> in
 ## at the zone) is what the recap's lead measurement keys on. Volley
 ## slots spawn shots on an aim vector per the pattern's aim mode
 ## (CURRENT = target position at the fire tick; INTERCEPT = closed-form
-## lead on the target's serialized vel — M6 Leadshot).
+## lead on the target's serialized vel — M6 Leadshot; ROTOR = a
+## world-frame angle advancing with the tick — §3.5 rotating radial,
+## stateless and seed-free). The caller passes the phase-resolved
+## emitter set (§3.5).
 static func _fire(
-	world: RefCounted, e: RefCounted, def: Resource, target: RefCounted, t: int
+	world: RefCounted, e: RefCounted, emitters: Array, target: RefCounted, t: int
 ) -> void:
-	var es: Resource = def.emitters[e.winding_slot]
+	var es: Resource = emitters[e.winding_slot]
 	var tpos: Vector2 = target.pos
 	var aim: Vector2 = tpos - e.pos
 	var hz: Resource = es.hazard
@@ -228,6 +299,8 @@ static func _fire(
 		var tvel: Vector2 = target.vel
 		var shot0: Resource = pattern.shots[0]
 		aim = _intercept_aim(e.pos, tpos, tvel, float(shot0.speed))
+	elif int(pattern.aim_mode) == PatternDef.AimMode.ROTOR:
+		aim = Vector2.RIGHT.rotated(deg_to_rad(float(t) * float(pattern.rotor_deg_per_tick)))
 	aim = aim.normalized() if aim.length_squared() > 0.0001 else Vector2.RIGHT
 	(
 		world

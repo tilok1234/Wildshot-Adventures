@@ -18,6 +18,11 @@ var cooldowns: PackedInt64Array = PackedInt64Array()
 var next_contact_tick: int = 0
 ## Spawn tick — TTK telemetry reads kill tick minus this.
 var spawned_at_tick: int = 0
+## Resolved PhaseList phase (§3.5 elite; stays 0 for unphased defs).
+## Serialized (SERIAL 12): transition side effects (cooldown re-arm,
+## PHASE_CHANGED, windup interrupt) fire exactly once per crossing, so
+## the edge-detection state must restore with the run.
+var phase_index: int = 0
 
 
 func serialize_into(buf: StreamPeerBuffer) -> void:
@@ -31,3 +36,4 @@ func serialize_into(buf: StreamPeerBuffer) -> void:
 		buf.put_64(c)
 	buf.put_64(next_contact_tick)
 	buf.put_64(spawned_at_tick)
+	buf.put_u8(phase_index)

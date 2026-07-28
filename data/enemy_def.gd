@@ -31,3 +31,43 @@ enum MovementPolicy { CHASER, KEEP_RANGE, ORBIT, ANCHOR, FLANKER }
 @export var range_max: float = 0.0
 ## EmitterSlot resources; empty = melee-only.
 @export var emitters: Array[Resource] = []
+## PhaseList resource (docs/12 §3.5 elite): when set, the active phase's
+## policy + emitter set supersede the flat fields above and `emitters`
+## stays empty. null = ordinary single-phase enemy.
+@export var phases: Resource = null
+
+
+## Active phase for a current HP: first entry whose floor the HP still
+## exceeds; the last phase catches everything at or below its ceiling.
+## Pure function of (def, hp) — the sim's single phase-resolution rule.
+func phase_for_hp(cur_hp: int) -> int:
+	var list: Array = phases.phases
+	for i in list.size():
+		var floor_hp := roundi(float(hp) * float(list[i].hp_floor_pct) / 100.0)
+		if cur_hp > floor_hp:
+			return i
+	return list.size() - 1
+
+
+## PhaseDef entry for a phase index; null when this def is unphased.
+func phase_entry(index: int) -> Resource:
+	if phases == null:
+		return null
+	return phases.entry(index)
+
+
+## Emitter slots active at a phase index (the flat set when unphased).
+func active_emitters(index: int) -> Array:
+	var pe := phase_entry(index)
+	if pe == null:
+		return emitters
+	var pemit: Array = pe.emitters
+	return pemit
+
+
+## Movement policy active at a phase index (the flat one when unphased).
+func active_policy(index: int) -> int:
+	var pe := phase_entry(index)
+	if pe == null:
+		return int(movement_policy)
+	return int(pe.movement_policy)

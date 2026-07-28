@@ -320,6 +320,14 @@ static func _project_threats(world: RefCounted, p: RefCounted) -> Dictionary:
 		if def_index < 0 or e.hp <= 0:
 			continue
 		var def: Resource = defs[def_index]
+		# Phase-resolved behavior (§3.5): policy and emitter set come
+		# from the CURRENT phase — a P2-anchored elite is a keep-out
+		# disc this tick and an orbit target again when P3 starts
+		# chasing. Reading serialized live state (phase_index,
+		# move_speed) keeps the bot honest across transitions.
+		var eph: int = e.phase_index
+		var e_policy: int = def.active_policy(eph)
+		var e_emitters: Array = def.active_emitters(eph)
 		var epos: Vector2 = e.pos
 		if epos.distance_to(ppos) > RELEVANT_R:
 			continue
@@ -336,13 +344,13 @@ static func _project_threats(world: RefCounted, p: RefCounted) -> Dictionary:
 		# it into the stationkeeping centroid dragged the bot to point-
 		# blank range of the pack's chasers (second_contact pinch). Only
 		# MOBILE enemies join the orbit cluster.
-		if int(def.movement_policy) == EnemyDef.MovementPolicy.ANCHOR:
-			var reach := _anchor_reach(def, dt)
+		if e_policy == EnemyDef.MovementPolicy.ANCHOR:
+			var reach := _anchor_reach(e_emitters, dt)
 			if reach > 0.0:
 				anchor_zones.append({"pos": epos, "reach": reach + ANCHOR_PAD})
 		else:
 			soft_bodies.append(epos)
-		var melee_trigger := _melee_trigger(def)
+		var melee_trigger := _melee_trigger(e_emitters)
 		if int(def.contact_damage) > 0 or melee_trigger > 0.0:
 			var eff_r: float = e.radius
 			if melee_trigger > 0.0:
@@ -352,7 +360,7 @@ static func _project_threats(world: RefCounted, p: RefCounted) -> Dictionary:
 				. append(
 					{
 						"pos": epos,
-						"speed": float(def.move_speed),
+						"speed": float(e.move_speed),
 						"radius": eff_r,
 					}
 				)
@@ -364,7 +372,7 @@ static func _project_threats(world: RefCounted, p: RefCounted) -> Dictionary:
 		# projectiles the normal projection dodges reactively. A full-reach
 		# disc marked every fleeing candidate doomed and cost a proof.
 		if int(e.ai_state) == EnemyState.AIState.WINDUP and e.winding_slot >= 0:
-			var ring := _slot_birth_ring(def, int(e.winding_slot))
+			var ring := _slot_birth_ring(e_emitters, int(e.winding_slot))
 			var warm := int(e.state_until) - t
 			if ring > 0.0 and warm >= 1 and warm <= HORIZON:
 				hazards.append({"pos": epos, "radius": ring, "arm_in": warm})
@@ -400,12 +408,11 @@ static func _project_threats(world: RefCounted, p: RefCounted) -> Dictionary:
 	}
 
 
-## Max shot reach across a def's emitter slots: spawn offset + flight
-## distance (speed x ttl, closed form — same DT the sim integrates with)
-## + shot radius. 0.0 when the def has no shots.
-static func _anchor_reach(def: Resource, dt: float) -> float:
+## Max shot reach across an emitter set (phase-resolved by the caller):
+## spawn offset + flight distance (speed x ttl, closed form — same DT
+## the sim integrates with) + shot radius. 0.0 when it has no shots.
+static func _anchor_reach(emitters: Array, dt: float) -> float:
 	var reach := 0.0
-	var emitters: Array = def.emitters
 	for es: Resource in emitters:
 		var pattern: Resource = es.pattern
 		if pattern == null:
@@ -417,11 +424,10 @@ static func _anchor_reach(def: Resource, dt: float) -> float:
 	return reach
 
 
-## Smallest melee-class trigger range on a def (emitter slots with
-## trigger_range <= 2.0), or 0.0 when the def has none.
-static func _melee_trigger(def: Resource) -> float:
+## Smallest melee-class trigger range on an emitter set (slots with
+## trigger_range <= 2.0), or 0.0 when it has none.
+static func _melee_trigger(emitters: Array) -> float:
 	var best := 0.0
-	var emitters: Array = def.emitters
 	for es: Resource in emitters:
 		var tr := float(es.trigger_range)
 		if tr <= 2.0 and (best == 0.0 or tr < best):
@@ -433,9 +439,8 @@ static func _melee_trigger(def: Resource) -> float:
 ## shots MATERIALIZE (spawn offset + shot radius, maxed over the pattern)
 ## plus a reaction pad. Standing inside it at the arm tick is a
 ## near-guaranteed hit; outside it, the spawned shots are dodged as
-## ordinary projectiles.
-static func _slot_birth_ring(def: Resource, slot_index: int) -> float:
-	var emitters: Array = def.emitters
+## ordinary projectiles. The set is phase-resolved by the caller.
+static func _slot_birth_ring(emitters: Array, slot_index: int) -> float:
 	if slot_index >= emitters.size():
 		return 0.0
 	var es: Resource = emitters[slot_index]

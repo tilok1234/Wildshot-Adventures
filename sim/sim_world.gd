@@ -25,10 +25,16 @@ const PlayerFire := preload("res://sim/systems/player_fire.gd")
 const EnemyStep := preload("res://sim/systems/enemy_step.gd")
 const ProjectileStep := preload("res://sim/systems/projectile_step.gd")
 const HazardStep := preload("res://sim/systems/hazard_step.gd")
+const Damage := preload("res://sim/systems/damage.gd")
 
 const TICKS_PER_SECOND := 60
 const DT := 1.0 / 60.0
-const SERIAL_VERSION := 11
+const SERIAL_VERSION := 12
+
+## Damage-source pattern id for the scenario-declared test damage
+## schedule (§2.11 elite transition proofs; planning log 2026-07-28).
+## Namespace: pattern_def.gd.
+const PATTERN_TEST_SCHEDULE := -4
 
 ## Named PCG32 stream ids (§2.4). rng_vfx deliberately does NOT exist here —
 ## it lives view-side so cosmetics can never perturb gameplay.
@@ -83,6 +89,15 @@ var weapon_frames: Array = []
 ## EnemyDef RESOURCES (definitions, not state): set at setup; EnemyState
 ## points in by def_index. Same serialization exclusion as weapon_frames.
 var enemy_defs: Array = []
+## Scenario-declared test damage schedule (§2.11 transition proofs):
+## {tick, amount} entries applied to the first live PHASED enemy (the
+## scenario's elite) at exact tick equality, through THE damage path,
+## tagged PATTERN_TEST_SCHEDULE. Amounts are final HP deltas. Static
+## definition data like the defs above — excluded from serialize();
+## replays reproduce it because a replay names its scenario. Only test
+## scenarios declare one; tester-reachable scenarios never do (M7
+## checklist line).
+var damage_schedule: Array = []
 ## Available AbilityDef resources (definitions) + the ONE equipped slot
 ## (CORE-34). Swapping is a debug/scenario action, not gameplay input —
 ## it marks the run replay-dirty.
@@ -128,6 +143,11 @@ func set_enemy_defs(defs: Array) -> void:
 func set_abilities(defs: Array) -> void:
 	ability_defs = defs
 	ability_def = defs[0] if not defs.is_empty() else null
+
+
+## Setup-phase: install the scenario's test damage schedule (§2.11).
+func set_damage_schedule(entries: Array) -> void:
+	damage_schedule = entries
 
 
 ## In-step hazard placement (systems call this). Emits TelegraphStarted.
@@ -222,18 +242,22 @@ func add_enemy(def_index: int, pos: Vector2) -> EnemyState:
 	e.move_speed = float(def.move_speed)
 	e.def_index = def_index
 	e.spawned_at_tick = tick
-	var emitters: Array = def.emitters
+	# Phase-resolved slot count (§3.5): phased defs keep the flat
+	# emitters array empty and spawn into phase 0's set.
+	var emitters: Array = def.active_emitters(0)
 	e.cooldowns.resize(emitters.size())
 	enemies.append(e)
 	return e
 
 
-## One fixed-dt tick: drain queued commands, then run the ordered systems.
-## frames[i] belongs to players[i]; null means "no input this tick".
+## One fixed-dt tick: drain queued commands, apply any scheduled test
+## damage (top of step — the same tick's EnemyStep already acts in the
+## resulting phase), then run the ordered systems.
 func step(frames: Array) -> void:
 	events.clear()
 	current_frames = frames
 	_drain_commands()
+	_apply_damage_schedule()
 	PlayerRegen.run(self)
 	PlayerMove.run(self)
 	PlayerAbility.run(self)
@@ -349,6 +373,24 @@ static func fnv1a_64(bytes: PackedByteArray) -> int:
 	for b in bytes:
 		h = (h ^ b) * 1099511628211  # prime 0x100000001B3; 64-bit wrap intended
 	return h
+
+
+## Scheduled test damage (§2.11): entries land at exact tick equality on
+## the first live phased enemy, through THE damage path (events, death
+## sweep, HP bars all behave normally; the sweep runs later this tick in
+## ProjectileStep). No cursor state — the schedule is static data and
+## this scan is a pure function of the tick.
+func _apply_damage_schedule() -> void:
+	if damage_schedule.is_empty():
+		return
+	for entry: Dictionary in damage_schedule:
+		if int(entry.tick) != tick:
+			continue
+		for e in enemies:
+			var di: int = e.def_index
+			if di >= 0 and e.hp > 0 and enemy_defs[di].phases != null:
+				Damage.apply(self, e, int(entry.amount), PATTERN_TEST_SCHEDULE)
+				break
 
 
 func _alloc_id() -> int:
