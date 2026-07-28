@@ -1,4 +1,29 @@
-# Designer queue — everything waiting on you (2026-07-28, ~07:10)
+# Designer queue — everything waiting on you (updated ~14:20)
+
+## THE FOUR-RULING MENU (one line each; supersedes items below where they overlap)
+
+1. **The 13 sealed grass slits** (inter-house gaps you X-marked —
+   they were the porosity fix's seals, not moss): (a) keep sealed
+   [overlap protection wins], (b) reopen [readability wins, the
+   slide-into-sprites visual returns on exactly those cells],
+   (c) TileForge blocked-ground dressing [fixes both, upstream art].
+   Lean: (a) now, (c) endstate.
+2. **Reactive as policy of record** — yes/no. Yes closes ledger #11,
+   dissolves the first_contact adjudication, converts the three
+   wolf-pair FAILs into documented baselines, and I re-run the
+   canonical battery under reactive as the new record. Lean: yes.
+3. **Warden HP vs the 13-second line** — (a) accept 8.4 s honest
+   (docs truth-up), (b) ~575 HP [T] + contained re-proof. Lean: (a).
+4. **Six ordinaries ratification** — your "Approved : not done"
+   still needs the word (walk the current build first; fanmaw is
+   big-glob now, wolves corner fluidly, moss walks).
+
+Movement stack itself: you said "doesnt lag anymore" — M2 approval
+presumably rides your next walk on the current build.
+
+---
+
+# Original queue (2026-07-28, ~07:10)
 
 Written on request after the overnight M6 push. Everything engineering-
 side is done, gated, and pushed; every line below needs YOUR eyes,

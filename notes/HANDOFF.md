@@ -161,27 +161,38 @@ Before every commit, per touched area:
 - One approved decision = one commit; milestone records go to the
   planning session log; push BOTH repos.
 
-### Canonical proof battery (13 scenarios, all --speed=3.0)
+### Canonical proof battery (all --speed=3.0; state as of 2026-07-28
+### afternoon — tangent slide + corner slip + terrain radius 0.25 +
+### sealed/moss WorldForge pack; POLICY-OF-RECORD RULING PENDING)
 
-| scenario | seeds | ticks | expected |
+| scenario | seeds | ticks | expected (primary policy) |
 |---|---|---|---|
 | canary_trivial | 1,2,3,4,5 | 3600 | PASS (MUST-PASS) |
 | canary_undodgeable | 1,2,3 | 1800 | FAIL (MUST-FAIL, ~t23) |
-| proof_rusher | 1,2,3,4,5 | 3600 | PASS |
+| proof_rusher | 1,2,3,4,5 | 3600 | **FAIL 4 hits near 0.015 — wolf-pair; reactive PASS 0.181** |
 | proof_husk_archer | 1,2,3,4,5 | 3600 | PASS |
-| proof_fanmaw | 203..207 | 3600 | PASS (stand-off, near 2.678) |
-| proof_fanmaw_inside | 205..209 | 3600 | PASS (escape, near 0.315) |
-| proof_ringer | 204..208 | 3600 | PASS (near 0.120) |
-| proof_leadshot | 206..210 | 3600 | PASS (near 0.125) |
-| proof_blightcaster | 207..211 | 3600 | PASS (0 hits; near reads −1, ledger #13) |
-| forest_walk → dodge_forest_walk_composition.json | 1,2,3 | 3600 | PASS |
-| world_walk → dodge_world_walk_composition.json | 1,2,3 | 3600 | PASS |
-| first_contact → dodge_first_contact_composition.json | 1,2,3 | 3600 | **FAIL — committed adjudication evidence, never launder** |
-| second_contact → dodge_second_contact_composition.json | 10..14 | 3600 | PASS (near 0.121) |
-| proof_yw_p1 | 208..212 | 3600 | PASS (natural P1 pin, near 0.121) |
-| proof_yw_p2 | 209..213 | 3600 | PASS (inside-spawn escape, near 1.587) |
-| proof_yw_p3 | 210..214 | 3600 | PASS (chase pressure, near 0.120) |
-| proof_yw_full | 211..215 | 3600 | PASS (transitions t1207/t2413 + kill t3301; report carries phase_transitions + peak 12/300) |
+| proof_fanmaw | 203..207 | 3600 | PASS (stand-off) |
+| proof_fanmaw_inside | 205..209 | 3600 | PASS (escape) |
+| proof_ringer | 204..208 | 3600 | PASS |
+| proof_leadshot | 206..210 | 3600 | PASS |
+| proof_blightcaster (open-pocket layout 20,12/26,12) | 207..211 | 3600 | PASS (0 hits, near 0.090 — hazard metric live, ledger #13 closed) |
+| forest_walk → dodge_forest_walk_composition.json | 1,2,3 | 3600 | **FAIL 12 hits near 0.003 — wolf-pair; reactive PASS 0.125** |
+| world_walk → dodge_world_walk_composition.json | 1,2,3 | 3600 | PASS (sealed+moss pack; byte-stable through moss intake) |
+| first_contact → dodge_first_contact_composition.json | 1,2,3 | 3600 | **FAIL — wolf-pair; reactive PASS** |
+| second_contact → dodge_second_contact_composition.json | 10..14 | 3600 | PASS |
+| proof_yw_p1 | 208..212 | 3600 | PASS |
+| proof_yw_p2 | 209..213 | 3600 | PASS (near now reflects armed zones) |
+| proof_yw_p3 | 210..214 | 3600 | PASS |
+| proof_yw_full | 211..215 | 3600 | PASS (transitions t1207/t2413 + kill t3301; phase_transitions + peak 12/300 in report) |
+
+**The three wolf-pairs (rusher, forest, first_contact) share ONE
+root**: the primary policy models melee as do-not-enter, and corner
+slip freed wolves from prop snags. REACTIVE (calibrated: passes
+trivial, fails geometric canary, solos wolves) passes all three
+clean — reactive evidence committed as dodge_*_reactive.json.
+PENDING DESIGNER RULING: promote reactive to policy of record
+(closes ledger #11, dissolves the first_contact adjudication). Until
+ruled, the FAILs are honest committed evidence — never launder.
 
 Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- --scenario=<id> --speed=3.0 --seeds=<list> --ticks=<n> [--out=res://reports/<name>.json]`
 (compositions need the explicit --out names above).

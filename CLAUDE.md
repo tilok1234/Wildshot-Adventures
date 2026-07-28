@@ -436,4 +436,49 @@ a worse pocket) — organic-flip hypothesis refuted; ledger #11
 adjudication stands.** Audit captures regenerated on the sphere
 set + density_audit_m6_deutan.png committed (Law-3 CVD evidence).
 Remaining M6: 9-row acceptance (designer eyes, now vs sphere set),
-CORE-34 no-ability clear (designer play, session.jsonl evidence).**
+CORE-34 no-ability clear (designer play, session.jsonl evidence).
+2026-07-28 AFTERNOON ARC (the movement odyssey + M7 first half; full
+narrative in planning notes/sessions/2026-07-28.md): M7 STARTED
+designer-directed parallel to the designer-side M6 queue. Landed:
+policy modes (Policy.{PRIMARY,REACTIVE,ORBIT,AXIS_STRAFE},
+--policy=, suffix-guarded outputs; reactive = melee bodies at RAW
+radius, dodge windups on telegraph); TTKBot (ttk_runner/ttk_bot, 21
+pairs ALL EXACT, finding: Warden dies to current Longbolt in 8.38s
+vs stale ~13s prose — RULING PENDING); ledger #13 CLOSED (armed
+zones in near-miss; negative = between-pulse crossing, legal).
+MOVEMENT ODYSSEY (four real fixes chasing the designer's "walking
+bugs out near structures"): (1) RealtimeDriver 5-tick catch-up
+bursts → 2-tick cap + time-stretch shed; (2) props-overhang →
+CANOPY band (walk under awnings, occluded); (3) WorldForge packs
+re-exported by DESIGNER-RUN WF AGENTS (a1304b9 full-footprint
+stamping — porosity was inter-placement slits + POI pass cells,
+NOT window columns; flood 33712, spawn 240,125, diag allows exactly
+11 route cells; then cbf11a9 level-0 moss carpet walks — flood
+34556, 626 carpet + 366 bridged cells; both intakes battery-clean,
+world_walk byte-identical through moss); (4) THE core bug since M2:
+Kinematics corner over-ejection limit cycle (2-px shiver, zero
+progress at visible gaps) → TANGENT ejection (face math
+byte-identical); then designer-directed WALK-CLOSE FEEL [T]:
+TERRAIN_RADIUS 0.25 locomotion split (hurtbox 0.35 untouched
+everywhere; bot walks 0.25/threats 0.35) + CORNER SLIP in the one
+shared slide (unused corner-blocked motion deflects along escape
+unless input opposes; all movers). Designer: "doesnt lag anymore".
+CONSEQUENCE: slip freed WOLVES from prop snags → 3 primary-FAIL/
+reactive-PASS pairs (rusher solo 4 hits/0.015, forest 12/0.003,
+first_contact) — one root: melee-as-do-not-enter; reactive passes
+all three clean + solos wolves + fails the geometric canary.
+world_walk flipped PASS under primary (its FAIL was porosity-era).
+proof_blightcaster layout iterated to the open pocket
+(20,12)/(26,12) per never-weaken (its old PASS partly rode
+over-ejection slip). Goldens regenerated twice (tangent, slip).
+DESIGNER RULING MENU (chat ~14:10, all one-liners): (1) the 13
+sealed grass slit cells (keep sealed / reopen / TileForge dressing
+— lean: keep now, dressing endstate); (2) REACTIVE AS POLICY OF
+RECORD (lean: yes — closes ledger #11, dissolves first_contact
+adjudication); (3) Warden HP 8.4s-vs-575 (lean: accept 8.4s);
+(4) six-ordinaries ratification ("Approved : not done" needs the
+word). APPROVED TODAY (morning batch): Warden full ratification,
+sphere set + §2.6 amendment, arenas (tree-border taste note);
+M2 movement approval pending the walk on the current build.
+Remaining M7: SoakBot, composition rows for all picker scenarios,
+pre-tester checklist script, export.ps1 dev/tester profiles.**
