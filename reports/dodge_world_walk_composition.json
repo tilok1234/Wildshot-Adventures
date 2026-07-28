@@ -124,7 +124,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.120864236354828,
+			"near_miss_min": 0.120901906490326,
 			"repro": "",
 			"seed": 1,
 			"survived_ticks": 3600
@@ -246,7 +246,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.120864236354828,
+			"near_miss_min": 0.120901906490326,
 			"repro": "",
 			"seed": 2,
 			"survived_ticks": 3600
@@ -368,7 +368,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.120864236354828,
+			"near_miss_min": 0.120901906490326,
 			"repro": "",
 			"seed": 3,
 			"survived_ticks": 3600
