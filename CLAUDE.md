@@ -134,14 +134,19 @@ runners only**; lint may run on Linux.
   CORE-54 evidence; any debrief answer to a direct question is marked
   "prompted".
 
-## Fresh-hands rule
+## Fresh-hands rule (TWO-TIER since 2026-07-29, ruled via Decision Deck)
 
-- Dodgeability verdicts accept sources {rested-human, bot-proof}. **Feel
-  verdicts accept rested humans only — never a bot** (bots verify mechanics,
-  never feel).
+- **Tier 1:** in-session designer calls (chat one-liners, deck taps) count
+  as decisions immediately. **Tier 2:** feel items additionally get one
+  rested ratification pass before they are final. Dodgeability verdicts
+  accept sources {rested-human, bot-proof}; **feel verdicts accept rested
+  humans only — never a bot** (bots verify mechanics, never feel).
+- **"Rested"/"day start" key on hours into the DESIGNER'S waking day and
+  session, never wall clock** — they work a 15:00–23:00 shift, so home at
+  midnight is their ~17:00. Marathon-length sessions and dirty runs
+  (god/slow-mo/runtime edits) stay PROVISIONAL regardless of tier.
 - Any runtime edit auto-stamps subsequent feel notes PROVISIONAL; the stamp is
-  honored, never overridden by enthusiasm at hour 14. Feel-verdict sessions
-  are scheduled at day start.
+  honored, never overridden by enthusiasm at hour 14.
 
 ## Scope tripwire
 
@@ -501,4 +506,39 @@ assert now derives from PlayerMove.TERRAIN_RADIUS (4e59412).
 Export pipeline: templates verified present, one-shot design in
 notes/EXPORT_PIPELINE_DESIGN.md. Remaining M7: export.ps1
 dev/tester profiles + the export step in the checklist. DESIGNER
-four-ruling menu unchanged (queue leads with it).**
+four-ruling menu unchanged (queue leads with it).
+DECISION DECK ERA BEGINS 2026-07-28 late (~23:30-00:50, session
+record planning notes/sessions/2026-07-29.md): designer-built
+Decision Deck (Claude-design export) ADOPTED as THE decision
+register (planning tools/decision_deck.html + payload + register;
+test_deck retired; plain-language rule for all designer-facing card
+text — memory + payload rewritten). BURN-DOWN: 20 decisions in the
+register (tools/decision_deck_register.json). RULED: verdict system
+TWO-TIER + shift-work rested definition (digest above amended);
+REACTIVE = DodgeBot policy of record (ledger #11 CLOSED,
+first_contact adjudication dissolved, battery re-baseline QUEUED on
+exclusive access); recruitment 10-16, >=4 strangers/cycle, >=5 held
+for cycle 2; Warden HP -> ~575 [T] re-proof QUEUED (13-s intent
+kept); fanmaw stays ORANGE (9-row row-3 adjunct); scarecrow:
+strawfield APPROVED; grass slits keep-sealed-now (designer note
+flags confusion — clarification pending, dressing endstate);
+hours backfill approved (numbers pending); ledger #12 grandfather
+note recorded (CLOSED). ACCEPTED: 9-row eye rows 1/2/3/6/9 (table
+signed, two-tier basis), ecosystem map doc 16 (pointer blocks
+armed), doc 17 world_filler plan (post-Gate-1 ladder). GOs ARMED:
+export.ps1 (M7 close), WorldForge 49/50 merge + dusk re-export +
+intake, docs truth-up. VERIFIED EVIDENCE: assembler b7eae05f
+PUSHED (+ 48x48 boss direction pilots on the branch — polished
+sheets warming); CORE-34 no-ability clear (session.jsonl
+2026-07-29: 3 Warden kills t556/581/721, ZERO ability events,
+the one death was world_walk husk — M6 acceptance line met);
+itch/Discord marked done by designer (links pending). world_filler:
+freeze review RESOLVED upstream (38/38, format 1 FINAL), mainline
+RULED = freeze-review-resolution-tf6bkf, proper clone landed
+(HEAD adds F9 studio A+B); game-side consumption stays post-Gate-1
+per doc 17. Weekly GIF #2 produced (Warden fight, 2.54 MB devlog
+cut). OPEN feel cards stay rested-gated per two-tier: M2 close,
+six ordinaries, audio-in-play; eyes-closed audio evidence open.
+ENGINEERING QUEUE (needs exclusive Godot access — designer's game
+closes first): reactive re-baseline -> Warden 575 -> export.ps1 ->
+WF merge chain -> docs truth-up + pointer blocks.**

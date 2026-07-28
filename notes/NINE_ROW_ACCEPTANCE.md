@@ -57,4 +57,4 @@ Player-side noise, not hostile flood, is what Laws 1/2 stress here.
 
 | Date | Row(s) | Verdict | Notes |
 |---|---|---|---|
-| | | | |
+| 2026-07-29 ~00:47 | 1, 2, 3, 6, 9 | ACCEPTED | Via Decision Deck register (two-tier in-session basis — the verdict-system ruling landed the same session). Fanmaw hue ruled KEEP ORANGE same session (the row-3 CVD adjunct; deutan capture is the evidence). Row 7 remains on the separate eyes-closed card. Ledger #10 note in row 3 was already closed by the sphere-pack hue map. |
