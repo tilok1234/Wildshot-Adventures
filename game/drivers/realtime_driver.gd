@@ -1,17 +1,22 @@
 extends Node
 ## RealtimeDriver (docs/12 §2.1): steps the sim from wall time with a fixed
-## accumulator in _process — never _physics_process. Catch-up is capped at 5
-## ticks per render frame; any backlog beyond that is dropped (slew) and
-## logged. Pause = this driver stops stepping: nothing gameplay exists
-## outside ticks, so full freeze with zero queued actions is structural
-## (CORE-31), and pause is always legal in single-player (CORE-50).
+## accumulator in _process — never _physics_process. Catch-up is capped at
+## TWO ticks per render frame (2026-07-28 movement-bug fix: the old 5-tick
+## burst advanced a third of a tile in ONE render frame after any hitch —
+## felt as a micro-teleport, reported as "walking bugs out near
+## structures" where render load spikes). Backlog beyond the cap is shed
+## as TIME STRETCH: game time briefly runs slower than wall time instead
+## of jumping — still logged (slew) so stutter stays evidenced. Pause =
+## this driver stops stepping: nothing gameplay exists outside ticks, so
+## full freeze with zero queued actions is structural (CORE-31), and
+## pause is always legal in single-player (CORE-50).
 
 signal pause_changed(paused: bool)
 
 const SimWorld := preload("res://sim/sim_world.gd")
 const HumanSampler := preload("res://input/human_sampler.gd")
 
-const MAX_TICKS_PER_FRAME := 5
+const MAX_TICKS_PER_FRAME := 2
 ## A render frame longer than this is a SPIKE: logged with context to
 ## user://logs/spikes.jsonl and counted on the HUD, so stutter reports
 ## come with evidence from the session they happened in.
@@ -68,11 +73,14 @@ func _process(delta: float) -> void:
 		ticks += 1
 	frame_sim_usec = int(Time.get_ticks_usec() - t0) if ticks > 0 else 0
 	if _accumulator >= SimWorld.DT:
-		var dropped := int(_accumulator / SimWorld.DT)
-		_accumulator -= dropped * SimWorld.DT
+		var shed := int(_accumulator / SimWorld.DT)
+		_accumulator -= shed * SimWorld.DT
 		slew_count += 1
 		push_warning(
-			"RealtimeDriver: dropped %d ticks after catch-up cap (slew #%d)" % [dropped, slew_count]
+			(
+				"RealtimeDriver: time-stretched %d ticks at the catch-up cap (slew #%d)"
+				% [shed, slew_count]
+			)
 		)
 
 
