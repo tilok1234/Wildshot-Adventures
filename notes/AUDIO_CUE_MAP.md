@@ -37,7 +37,11 @@ Design notes:
 
 ## Eyes-closed sanity review (pattern-review line, M6 acceptance)
 
-**PENDING — designer, rested session:** play one mixed encounter
+**DEFERRED (designer call, 2026-07-29): audio judgment waits for the
+Resonance Forge integration — the placeholder cues will not be
+separately ratified; both the eyes-closed test and the in-play feel
+verdict run against real audio at Forge intake.** Original protocol
+(unchanged, runs then): play one mixed encounter
 (second_contact or the Warden) eyes closed; confirm the seven classes
 are tellable apart and that key threats read through a busy mix.
 Record verdict + date here.
