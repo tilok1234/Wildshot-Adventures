@@ -1,5 +1,15 @@
 # Designer queue — everything waiting on you (updated ~14:20)
 
+> **2026-07-28 late: this queue is now dealt as CARDS.** The Decision
+> Deck (your build, adopted) lives at planning
+> `tools/decision_deck.html`; open it, PASTE FROM AI → REPLACE with
+> the contents of planning `tools/decision_deck_items_2026-07-28.json`
+> (25 cards — everything below plus the assessment queue), then deal.
+> EXPORT after a session and hand the JSON to the session for the
+> sweep. This file stays as the readable record; decisions land in the
+> deck and sweep to the planning log. Convention details: planning
+> `docs/03-HANDOFF.md` current seam section.
+
 ## THE FOUR-RULING MENU (one line each; supersedes items below where they overlap)
 
 1. **The 13 sealed grass slits** (inter-house gaps you X-marked —
