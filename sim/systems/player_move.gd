@@ -11,6 +11,15 @@ extends RefCounted
 
 const Kinematics := preload("res://sim/systems/kinematics.gd")
 
+## Locomotion radius vs terrain (2026-07-28, designer-directed
+## walk-close feel, [T]): the player's feet hug walls to sprite-edge
+## distance instead of stopping at the full combat circle. The 0.35
+## HURTBOX (ActorState.radius) is untouched everywhere it matters —
+## projectile/hazard/contact hits, the hitbox indicator, recaps — this
+## constant governs terrain sliding only. DodgeBot walks with the same
+## value (one locomotion truth, bot honesty §2.8).
+const TERRAIN_RADIUS := 0.25
+
 
 static func run(world: RefCounted) -> void:
 	var frames: Array = world.current_frames
@@ -25,7 +34,7 @@ static func run(world: RefCounted) -> void:
 			var mv: Vector2 = frames[i].move_vector()
 			if mv != Vector2.ZERO:
 				var step: Vector2 = mv * p.move_speed * dt
-				p.pos = Kinematics.move_circle(grid, p.pos, p.radius, step)
+				p.pos = Kinematics.move_circle(grid, p.pos, TERRAIN_RADIUS, step)
 		# Serialized applied velocity (SERIAL 10): post-slide truth, every
 		# tick — intercept aim must see a wall-pinned player as stationary.
 		p.vel = (p.pos - before) / dt

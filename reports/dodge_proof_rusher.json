@@ -4,11 +4,11 @@
 	"horizon_ticks": 60,
 	"kind": "dodge_proof",
 	"label": "mechanical verification (no gate code reads this — CORE-53)",
-	"pass": true,
+	"pass": false,
 	"policy": "primary-16dir-stay-closed-form",
 	"runs": [
 		{
-			"first_hit_tick": -1,
+			"first_hit_tick": 483,
 			"heatmap": [
 				[
 					0,
@@ -19,8 +19,8 @@
 					0,
 					0,
 					0,
-					52,
-					3188,
+					50,
+					3190,
 					0,
 					0
 				],
@@ -123,14 +123,14 @@
 					0
 				]
 			],
-			"hits": 0,
-			"near_miss_min": 0.309496858716011,
-			"repro": "",
+			"hits": 4,
+			"near_miss_min": 0.0151931434869766,
+			"repro": "res://reports/repro_proof_rusher_seed1.wsr",
 			"seed": 1,
 			"survived_ticks": 3600
 		},
 		{
-			"first_hit_tick": -1,
+			"first_hit_tick": 483,
 			"heatmap": [
 				[
 					0,
@@ -141,8 +141,8 @@
 					0,
 					0,
 					0,
-					52,
-					3188,
+					50,
+					3190,
 					0,
 					0
 				],
@@ -245,14 +245,14 @@
 					0
 				]
 			],
-			"hits": 0,
-			"near_miss_min": 0.309496858716011,
-			"repro": "",
+			"hits": 4,
+			"near_miss_min": 0.0151931434869766,
+			"repro": "res://reports/repro_proof_rusher_seed2.wsr",
 			"seed": 2,
 			"survived_ticks": 3600
 		},
 		{
-			"first_hit_tick": -1,
+			"first_hit_tick": 483,
 			"heatmap": [
 				[
 					0,
@@ -263,8 +263,8 @@
 					0,
 					0,
 					0,
-					52,
-					3188,
+					50,
+					3190,
 					0,
 					0
 				],
@@ -367,14 +367,14 @@
 					0
 				]
 			],
-			"hits": 0,
-			"near_miss_min": 0.309496858716011,
-			"repro": "",
+			"hits": 4,
+			"near_miss_min": 0.0151931434869766,
+			"repro": "res://reports/repro_proof_rusher_seed3.wsr",
 			"seed": 3,
 			"survived_ticks": 3600
 		},
 		{
-			"first_hit_tick": -1,
+			"first_hit_tick": 483,
 			"heatmap": [
 				[
 					0,
@@ -385,8 +385,8 @@
 					0,
 					0,
 					0,
-					52,
-					3188,
+					50,
+					3190,
 					0,
 					0
 				],
@@ -489,14 +489,14 @@
 					0
 				]
 			],
-			"hits": 0,
-			"near_miss_min": 0.309496858716011,
-			"repro": "",
+			"hits": 4,
+			"near_miss_min": 0.0151931434869766,
+			"repro": "res://reports/repro_proof_rusher_seed4.wsr",
 			"seed": 4,
 			"survived_ticks": 3600
 		},
 		{
-			"first_hit_tick": -1,
+			"first_hit_tick": 483,
 			"heatmap": [
 				[
 					0,
@@ -507,8 +507,8 @@
 					0,
 					0,
 					0,
-					52,
-					3188,
+					50,
+					3190,
 					0,
 					0
 				],
@@ -611,9 +611,9 @@
 					0
 				]
 			],
-			"hits": 0,
-			"near_miss_min": 0.309496858716011,
-			"repro": "",
+			"hits": 4,
+			"near_miss_min": 0.0151931434869766,
+			"repro": "res://reports/repro_proof_rusher_seed5.wsr",
 			"seed": 5,
 			"survived_ticks": 3600
 		}

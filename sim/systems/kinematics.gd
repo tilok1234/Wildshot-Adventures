@@ -29,15 +29,28 @@ const AXIS_Y := 1
 ## tangent. At exact tangency the strict < in circle_hits_tile reports
 ## no hit, so the rest position is stable.
 static func slide(grid: RefCounted, pos: Vector2, r: float, delta: float, axis: int) -> float:
+	return float(slide_ex(grid, pos, r, delta, axis).coord)
+
+
+## slide() plus bind metadata for the corner-slip pass: corner_bind is
+## true when the axis was clamped and EVERY binding contact was a
+## corner arc (dy > 0 — no face contact); escape_sign is the cross-axis
+## direction away from the tightest binding corner.
+static func slide_ex(
+	grid: RefCounted, pos: Vector2, r: float, delta: float, axis: int
+) -> Dictionary:
 	var along := pos.x if axis == AXIS_X else pos.y
 	if delta == 0.0:
-		return along
+		return {"coord": along, "corner_bind": false, "escape_sign": 0.0}
 	var cross := pos.y if axis == AXIS_X else pos.x
 	var moved := along + delta
 	var lead := moved + r if delta > 0.0 else moved - r
 	var lead_tile := int(floorf(lead))
 	var c0 := int(floorf(cross - r))
 	var c1 := int(floorf(cross + r))
+	var any_face := false
+	var any_corner := false
+	var escape := 0.0
 	for c in range(c0, c1 + 1):
 		var tx := lead_tile if axis == AXIS_X else c
 		var ty := c if axis == AXIS_X else lead_tile
@@ -50,19 +63,54 @@ static func slide(grid: RefCounted, pos: Vector2, r: float, delta: float, axis: 
 		var cross_lo := float(ty) if axis == AXIS_X else float(tx)
 		var dy := absf(cross - clampf(cross, cross_lo, cross_lo + 1.0))
 		var allowed := sqrt(maxf(0.0, r * r - dy * dy))
+		var before := moved
 		if delta > 0.0:
 			moved = minf(moved, float(lead_tile) - allowed)
 		else:
 			moved = maxf(moved, float(lead_tile) + 1.0 + allowed)
-	return moved
+		if dy > 0.0:
+			if moved != before or not any_corner:
+				escape = -1.0 if cross < cross_lo else 1.0
+			any_corner = true
+		else:
+			any_face = true
+	var clamped := moved != along + delta
+	return {
+		"coord": moved,
+		"corner_bind": clamped and any_corner and not any_face,
+		"escape_sign": escape,
+	}
 
 
 ## Both-axes convenience: slide X then Y (the §2.3 order), returning the
 ## final position. Every walking body — player or enemy — moves through
 ## this, so corner behavior is identical by construction.
+##
+## CORNER SLIP (2026-07-28, designer-directed walk-close feel, [T]):
+## when an axis is blocked ONLY by corner-arc contacts, its unused
+## motion deflects into the cross axis AWAY from the binding corner —
+## brushing past a corner curls you smoothly around it. The deflection
+## never fights explicit input: pressing INTO the corner on the cross
+## axis holds the honest tangent rest. Deterministic, pure function of
+## (pos, step, grid); applies to every mover through this one path.
 static func move_circle(grid: RefCounted, pos: Vector2, r: float, step: Vector2) -> Vector2:
-	var nx := slide(grid, pos, r, step.x, AXIS_X)
-	var ny := slide(grid, Vector2(nx, pos.y), r, step.y, AXIS_Y)
+	var rx := slide_ex(grid, pos, r, step.x, AXIS_X)
+	var nx: float = rx.coord
+	var ry := slide_ex(grid, Vector2(nx, pos.y), r, step.y, AXIS_Y)
+	var ny: float = ry.coord
+	# X blocked purely by a corner: spend the unused X magnitude along Y
+	# in the escape direction (unless Y input opposes it).
+	var left_x: float = absf(step.x) - absf(nx - pos.x)
+	if bool(rx.corner_bind) and left_x > 0.0001:
+		var esc_x: float = rx.escape_sign
+		if step.y == 0.0 or signf(step.y) == esc_x:
+			ny = slide(grid, Vector2(nx, ny), r, left_x * esc_x, AXIS_Y)
+	# Y blocked purely by a corner: spend the unused Y magnitude along X.
+	var left_y: float = absf(step.y) - absf(ny - pos.y)
+	if bool(ry.corner_bind) and left_y > 0.0001:
+		var esc_y: float = ry.escape_sign
+		if step.x == 0.0 or signf(step.x) == esc_y:
+			nx = slide(grid, Vector2(nx, ny), r, left_y * esc_y, AXIS_X)
 	return Vector2(nx, ny)
 
 

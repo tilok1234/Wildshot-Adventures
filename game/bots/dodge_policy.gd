@@ -15,6 +15,7 @@ extends RefCounted
 
 const InputFrame := preload("res://sim/input_frame.gd")
 const Kinematics := preload("res://sim/systems/kinematics.gd")
+const PlayerMove := preload("res://sim/systems/player_move.gd")
 const ActorState := preload("res://sim/actor_state.gd")
 const EnemyState := preload("res://sim/enemy_state.gd")
 const ProjectilePool := preload("res://sim/projectile_pool.gd")
@@ -86,7 +87,9 @@ static func compute_frame(
 		return frame
 	# Walls only matter to candidate walks when the horizon's reach can
 	# touch one; checked ONCE per tick, exact slide used only then.
-	var reach: float = p.move_speed * HORIZON * world.DT + p.radius + 0.1
+	# Candidate walks use the LOCOMOTION radius (one truth with
+	# player_move); threat clearances keep the combat hurtbox.
+	var reach: float = p.move_speed * HORIZON * world.DT + PlayerMove.TERRAIN_RADIUS + 0.1
 	var use_slide := not _clear_of_walls(world.bitgrid, p.pos, reach)
 	# Stationkeeping anchor: the CENTROID of nearby live enemies — packs
 	# are orbited as one cluster (a nearest-enemy anchor dragged the bot
@@ -204,7 +207,9 @@ static func _score(
 			if mv.length_squared() > 1.0:
 				mv = mv.normalized()
 			if use_slide:
-				pos = Kinematics.move_circle(grid, pos, pr, mv * speed * dt)
+				# Walk with the locomotion radius (player_move parity);
+				# pr below stays the combat hurtbox for threat overlap.
+				pos = Kinematics.move_circle(grid, pos, PlayerMove.TERRAIN_RADIUS, mv * speed * dt)
 			else:
 				pos += mv * speed * dt
 		var step_positions: Array = proj_pos[h - 1]
