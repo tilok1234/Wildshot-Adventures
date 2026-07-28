@@ -1,5 +1,5 @@
 {
-	"pack": "wildshot-projectiles-all",
+	"pack": "wildshot-projectiles-sphere",
 	"px_per_tile": 32,
 	"sprites": [
 		{
@@ -10,13 +10,12 @@
 			],
 			"covers_hitbox": false,
 			"faction": "friendly",
-			"file": "sprites/v0/friendly/blast-rune-zone.png",
+			"file": "sprites/friendly/blast-rune-zone.png",
 			"frames": 1.0,
 			"hitbox_diameter_px": 96.0,
-			"id": "v0:friendly-blast-rune",
+			"id": "friendly-blast-rune",
 			"oriented": false,
-			"role": "Blast Rune 1.5-tile zone (§3.6): thin cool rim, dim fill — visibly subordinate to the hostile hazard; arm via hazard-arm-strip8 modulated cool",
-			"style": "v0",
+			"role": "Blast Rune 1.5-tile zone (§3.6)",
 			"suggested_pattern_ids": [
 				-2.0
 			]
@@ -24,18 +23,17 @@
 		{
 			"band": 5.0,
 			"canvas_px": [
-				16.0,
-				16.0
+				10.0,
+				10.0
 			],
 			"covers_hitbox": false,
 			"faction": "friendly",
-			"file": "sprites/v0/friendly/longbolt.png",
+			"file": "sprites/friendly/bolt.png",
 			"frames": 1.0,
 			"hitbox_diameter_px": 10.0,
-			"id": "v0:friendly-longbolt",
-			"oriented": true,
-			"role": "Longbolt (§3.3; r 0.15 t, 16 t/s). Slim under-render is deliberate and player-favorable (Law 2/8)",
-			"style": "v0",
+			"id": "friendly-bolt",
+			"oriented": false,
+			"role": "Longbolt (§3.3): round shaded silver; view travel-stretch supplies elongation",
 			"suggested_pattern_ids": [
 				1.0
 			]
@@ -48,13 +46,12 @@
 			],
 			"covers_hitbox": false,
 			"faction": "friendly",
-			"file": "sprites/v0/friendly/nova-ring.png",
+			"file": "sprites/friendly/nova-ring.png",
 			"frames": 1.0,
 			"hitbox_diameter_px": 0.0,
-			"id": "v0:friendly-nova-ring",
+			"id": "friendly-nova-ring",
 			"oriented": false,
-			"role": "Nova Burst cast flash (§3.6): scale-out + fade view-side; honors effect-density/opacity settings",
-			"style": "v0",
+			"role": "Nova Burst cast flash (§3.6)",
 			"suggested_pattern_ids": [
 				-1.0
 			]
@@ -65,15 +62,14 @@
 				8.0,
 				8.0
 			],
-			"covers_hitbox": true,
+			"covers_hitbox": false,
 			"faction": "friendly",
-			"file": "sprites/v0/friendly/scattercast-pellet.png",
+			"file": "sprites/friendly/pellet.png",
 			"frames": 1.0,
 			"hitbox_diameter_px": 8.0,
-			"id": "v0:friendly-scattercast",
+			"id": "friendly-pellet",
 			"oriented": false,
-			"role": "Scattercast pellet (§3.3; r 0.12 t, five per volley)",
-			"style": "v0",
+			"role": "Scattercast (§3.3): art d6.4 inside hd8 — deliberately smaller (Law 2/8)",
 			"suggested_pattern_ids": [
 				2.0
 			]
@@ -81,91 +77,20 @@
 		{
 			"band": 5.0,
 			"canvas_px": [
-				16.0,
-				16.0
+				13.0,
+				13.0
 			],
 			"covers_hitbox": false,
 			"faction": "friendly",
-			"file": "sprites/v0/friendly/wheelblade.png",
+			"file": "sprites/friendly/wheel-ring.png",
 			"frames": 1.0,
 			"hitbox_diameter_px": 13.0,
-			"id": "v0:friendly-wheelblade",
+			"id": "friendly-wheel-ring",
 			"oriented": false,
-			"role": "Wheelblade (§3.3; r 0.20 t, boomerang max_passes 2). Alternate with -f2 at ~150 ms for spin (chunky world cadence)",
-			"style": "v0",
+			"role": "Wheelblade (§3.3): shaded silver annulus, art d11.4 inside hd13",
 			"suggested_pattern_ids": [
 				3.0
 			]
-		},
-		{
-			"band": 5.0,
-			"canvas_px": [
-				16.0,
-				16.0
-			],
-			"covers_hitbox": false,
-			"faction": "friendly",
-			"file": "sprites/v0/friendly/wheelblade-f2.png",
-			"frames": 1.0,
-			"hitbox_diameter_px": 13.0,
-			"id": "v0:friendly-wheelblade-f2",
-			"oriented": false,
-			"role": "Wheelblade spin frame B (22.5° phase)",
-			"style": "v0",
-			"suggested_pattern_ids": [
-				3.0
-			]
-		},
-		{
-			"band": 7.0,
-			"canvas_px": [
-				20.0,
-				20.0
-			],
-			"covers_hitbox": true,
-			"faction": "hostile",
-			"file": "sprites/v0/hostile/burr.png",
-			"frames": 1.0,
-			"hitbox_diameter_px": 13.0,
-			"id": "v0:hostile-burr",
-			"oriented": false,
-			"role": "radial burst pellet (Ringer §3.4; shot r 0.20 t, 12-shot ring)",
-			"style": "v0",
-			"suggested_pattern_ids": []
-		},
-		{
-			"band": 7.0,
-			"canvas_px": [
-				24.0,
-				24.0
-			],
-			"covers_hitbox": true,
-			"faction": "hostile",
-			"file": "sprites/v0/hostile/dart.png",
-			"frames": 1.0,
-			"hitbox_diameter_px": 12.0,
-			"id": "v0:hostile-dart",
-			"oriented": true,
-			"role": "predictive intercept (Leadshot §3.4; shot r 0.18 t, 9 t/s)",
-			"style": "v0",
-			"suggested_pattern_ids": []
-		},
-		{
-			"band": 7.0,
-			"canvas_px": [
-				20.0,
-				20.0
-			],
-			"covers_hitbox": true,
-			"faction": "hostile",
-			"file": "sprites/v0/hostile/fang.png",
-			"frames": 1.0,
-			"hitbox_diameter_px": 13.0,
-			"id": "v0:hostile-fang",
-			"oriented": true,
-			"role": "fan/cone volley (Fanmaw §3.4; shot r 0.20 t, 5-shot 60° fan)",
-			"style": "v0",
-			"suggested_pattern_ids": []
 		},
 		{
 			"band": 8.0,
@@ -175,13 +100,13 @@
 			],
 			"covers_hitbox": false,
 			"faction": "hostile",
-			"file": "sprites/v0/hostile/hazard-arm-strip8.png",
+			"file": "sprites/hostile/hazard-arm-strip8.png",
+			"frame_w": 96.0,
 			"frames": 8.0,
 			"hitbox_diameter_px": 96.0,
-			"id": "v0:hostile-hazard-arm",
+			"id": "hostile-hazard-arm",
 			"oriented": false,
-			"role": "arm-progress ring, 8 steps CW from 12 o'clock (§2.5 band 8; Blightcaster 45-tick arm, Blast Rune 30-tick arm via cool modulate)",
-			"style": "v0",
+			"role": "arm-progress ring, 8 steps CW from 12 o'clock (§2.5 band 8)",
 			"suggested_pattern_ids": []
 		},
 		{
@@ -192,30 +117,108 @@
 			],
 			"covers_hitbox": false,
 			"faction": "hostile",
-			"file": "sprites/v0/hostile/hazard-zone.png",
+			"file": "sprites/hostile/hazard-zone.png",
 			"frames": 1.0,
 			"hitbox_diameter_px": 96.0,
-			"id": "v0:hostile-hazard-zone",
+			"id": "hostile-hazard-zone",
 			"oriented": false,
-			"role": "1.5-tile-radius ground zone (Blightcaster §3.4, Warden P2 §3.5); rim opaque at true boundary, fill deliberately dim",
-			"style": "v0",
+			"role": "1.5-tile-radius ground zone; bright rim opaque at true boundary",
 			"suggested_pattern_ids": []
 		},
 		{
 			"band": 7.0,
 			"canvas_px": [
-				16.0,
-				16.0
+				10.0,
+				10.0
 			],
 			"covers_hitbox": true,
 			"faction": "hostile",
-			"file": "sprites/v0/hostile/heavy-orb.png",
+			"file": "sprites/hostile/orb-d10-amber.png",
 			"frames": 1.0,
-			"hitbox_diameter_px": 16.0,
-			"id": "v0:hostile-heavy-orb",
+			"hitbox_diameter_px": 10.0,
+			"id": "hostile-orb:d10-amber",
 			"oriented": false,
-			"role": "elite shot (Yard Warden §3.5 P1 triples / P3 bursts); double rim = elite marker",
-			"style": "v0",
+			"role": "shaded orb d10 px, color 'amber'",
+			"suggested_pattern_ids": []
+		},
+		{
+			"band": 7.0,
+			"canvas_px": [
+				10.0,
+				10.0
+			],
+			"covers_hitbox": true,
+			"faction": "hostile",
+			"file": "sprites/hostile/orb-d10-amber-dark.png",
+			"frames": 1.0,
+			"hitbox_diameter_px": 10.0,
+			"id": "hostile-orb:d10-amber-dark",
+			"oriented": false,
+			"role": "shaded orb d10 px, color 'amber-dark'",
+			"suggested_pattern_ids": []
+		},
+		{
+			"band": 7.0,
+			"canvas_px": [
+				10.0,
+				10.0
+			],
+			"covers_hitbox": true,
+			"faction": "hostile",
+			"file": "sprites/hostile/orb-d10-amber-deep.png",
+			"frames": 1.0,
+			"hitbox_diameter_px": 10.0,
+			"id": "hostile-orb:d10-amber-deep",
+			"oriented": false,
+			"role": "shaded orb d10 px, color 'amber-deep'",
+			"suggested_pattern_ids": []
+		},
+		{
+			"band": 7.0,
+			"canvas_px": [
+				10.0,
+				10.0
+			],
+			"covers_hitbox": true,
+			"faction": "hostile",
+			"file": "sprites/hostile/orb-d10-cyan.png",
+			"frames": 1.0,
+			"hitbox_diameter_px": 10.0,
+			"id": "hostile-orb:d10-cyan",
+			"oriented": false,
+			"role": "shaded orb d10 px, color 'cyan'",
+			"suggested_pattern_ids": []
+		},
+		{
+			"band": 7.0,
+			"canvas_px": [
+				10.0,
+				10.0
+			],
+			"covers_hitbox": true,
+			"faction": "hostile",
+			"file": "sprites/hostile/orb-d10-orange.png",
+			"frames": 1.0,
+			"hitbox_diameter_px": 10.0,
+			"id": "hostile-orb:d10-orange",
+			"oriented": false,
+			"role": "shaded orb d10 px, color 'orange'",
+			"suggested_pattern_ids": []
+		},
+		{
+			"band": 7.0,
+			"canvas_px": [
+				10.0,
+				10.0
+			],
+			"covers_hitbox": true,
+			"faction": "hostile",
+			"file": "sprites/hostile/orb-d10-violet.png",
+			"frames": 1.0,
+			"hitbox_diameter_px": 10.0,
+			"id": "hostile-orb:d10-violet",
+			"oriented": false,
+			"role": "shaded orb d10 px, color 'violet'",
 			"suggested_pattern_ids": []
 		},
 		{
@@ -226,16 +229,45 @@
 			],
 			"covers_hitbox": true,
 			"faction": "hostile",
-			"file": "sprites/v0/hostile/orb.png",
+			"file": "sprites/hostile/orb-d12-amber.png",
 			"frames": 1.0,
 			"hitbox_diameter_px": 12.0,
-			"id": "v0:hostile-orb",
+			"id": "hostile-orb:d12-amber",
 			"oriented": false,
-			"role": "aimed single (Husk Archer §3.4; shot r 0.18 t)",
-			"style": "v0",
-			"suggested_pattern_ids": [
-				10.0
-			]
+			"role": "shaded orb d12 px, color 'amber'",
+			"suggested_pattern_ids": []
+		},
+		{
+			"band": 7.0,
+			"canvas_px": [
+				8.0,
+				8.0
+			],
+			"covers_hitbox": true,
+			"faction": "hostile",
+			"file": "sprites/hostile/orb-d8-magenta-deep.png",
+			"frames": 1.0,
+			"hitbox_diameter_px": 8.0,
+			"id": "hostile-orb:d8-magenta-deep",
+			"oriented": false,
+			"role": "shaded orb d8 px, color 'magenta-deep'",
+			"suggested_pattern_ids": []
+		},
+		{
+			"band": 7.0,
+			"canvas_px": [
+				8.0,
+				8.0
+			],
+			"covers_hitbox": true,
+			"faction": "hostile",
+			"file": "sprites/hostile/orb-d8-red.png",
+			"frames": 1.0,
+			"hitbox_diameter_px": 8.0,
+			"id": "hostile-orb:d8-red",
+			"oriented": false,
+			"role": "shaded orb d8 px, color 'red'",
+			"suggested_pattern_ids": []
 		}
 	],
 	"version": "v0"

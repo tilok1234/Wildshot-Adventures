@@ -1,9 +1,17 @@
 # Nine-Row Effects Acceptance (M6 — CORE-51 Laws 1–8 + photosensitivity)
 
 Per docs/12 §4 M6: "acceptance is an event with a record, not a vibe."
-This is the record. Applied to the SHIPPED set: curated projectile pack
-(M-FX decision satisfied by delivery) + assembler actor sheets +
-EffectLibrary pass (game 372a94f) + audio cue map (c794906).
+This is the record. Applied to the SHIPPED set: **wildshot-projectiles-
+sphere-v0 (shaded orbs — adopted 2026-07-28, designer-directed; §2.6
+hostile-signature amendment recorded in the planning log; hue map with
+the CVD-checked ringer magenta-deep fix; §3.4 small-tier shot-radius
+retune, full battery re-proven)** + assembler actor sheets +
+EffectLibrary pass (game 372a94f) + audio cue map (c794906). The
+previous projectile pack stays in-repo as the recorded fallback until
+this acceptance passes. Captures below regenerated against the sphere
+set; `reports/density_audit_m6_deutan.png` (deuteranopia-simulated max
+capture) is committed as added Law-3 evidence — judge row 3 with those
+eyes too.
 
 **Evidence captures** (scripted `--audit=density` runs, seed 77, tick
 420, god-logged, settings untouched):

@@ -409,6 +409,31 @@ consumes the event relay: telegraph_ranged/melee, hazard_cast/
 armed (HAZARD_ARMED now carries faction — events are unserialized,
 payload additions replay-safe), phase_change, player_hit/death;
 8-tick per-class retrigger gate. notes/AUDIO_CUE_MAP.md holds the
-written map + PENDING designer eyes-closed review slot. Remaining
-M6: 9-row acceptance (record prep + designer eyes), CORE-34
-no-ability clear (designer play, session.jsonl evidence).**
+written map + PENDING designer eyes-closed review slot. SPHERE PACK ADOPTED
+2026-07-28 (~06:40, designer-directed; planning decision 0680ca9 =
+§2.6 signature amendment + §3.4 small-shot retune [T]):
+assets/wildshot-projectiles-sphere-v0 (shaded orbs, 726 files,
+deterministic generator) supersedes the v0 5-style pack (held
+in-repo as recorded fallback until 9-row passes). Hue map per the
+CVD-checked proposal: husk red d8, slash cyan d10 (LEDGER #10
+CLOSED — share dissolved), dart violet d10, fanmaw orange d10
+(deutan-bucket flag with red recorded; teal = alternate), ringer
+MAGENTA-DEEP d8 (base magenta collapses into friendly silver under
+deuteranopia — the sim caught it), Warden amber tone-ladder
+d10/d12 unchanged radii (now reads one tier above ordinaries).
+Ordinary shot radii retuned to small tier [T]: husk/ringer 0.125,
+slash/dart/fanmaw 0.156 (elite untouched). Exact-fit + full-bleed
+orbs = visual == hitbox at ~native scale. Importer + pack test
+repointed; 16 sprites imported; wheelblade alt frame dropped
+(annulus spin invisible). FULL BATTERY re-proven at new radii:
+canaries correct (MUST-FAIL still t23), all solos + forest/world/
+second PASS with widened margins (fanmaw_inside 0.315→0.365,
+rusher 0.311), ELITE PROOFS BYTE-IDENTICAL (untouched control ✓),
+canary_trivial heatmap shifted (it IS a lone husk — explained).
+**first_contact STILL FAIL, reshaped: 13 hits from t1050
+seed-identical (smaller shots changed the deterministic path into
+a worse pocket) — organic-flip hypothesis refuted; ledger #11
+adjudication stands.** Audit captures regenerated on the sphere
+set + density_audit_m6_deutan.png committed (Law-3 CVD evidence).
+Remaining M6: 9-row acceptance (designer eyes, now vs sphere set),
+CORE-34 no-ability clear (designer play, session.jsonl evidence).**

@@ -8,7 +8,11 @@ extends SceneTree
 
 const ProjectilePack := preload("res://addons/projectile_importer/projectile_pack.gd")
 
-const SRC := "res://assets/projectile-pack/"
+## Sphere pack adopted 2026-07-28 (designer-directed; planning log
+## decision + §2.6 amendment). The previous drop at
+## assets/projectile-pack/ stays in-repo as the recorded fallback
+## until the 9-row acceptance passes against the sphere set.
+const SRC := "res://assets/wildshot-projectiles-sphere-v0/"
 const DST := "res://projectiles/"
 
 

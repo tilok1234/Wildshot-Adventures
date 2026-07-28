@@ -5,27 +5,26 @@
 [resource]
 script = ExtResource("1")
 shots = {
-1: "v0:friendly-longbolt",
-2: "v0:friendly-scattercast",
-3: "v0:friendly-wheelblade",
-10: "v0:hostile-orb",
-11: "v0:hostile-fang",
-12: "v0:hostile-dart",
-13: "v0:hostile-fang",
-14: "v0:hostile-burr",
-16: "v0:hostile-heavy-orb",
-17: "v0:hostile-heavy-orb",
-19: "v0:hostile-heavy-orb",
-20: "v0:hostile-heavy-orb",
-21: "v0:hostile-heavy-orb"
+1: "friendly-bolt",
+2: "friendly-pellet",
+3: "friendly-wheel-ring",
+10: "hostile-orb:d8-red",
+11: "hostile-orb:d10-cyan",
+12: "hostile-orb:d10-violet",
+13: "hostile-orb:d10-orange",
+14: "hostile-orb:d8-magenta-deep",
+16: "hostile-orb:d12-amber",
+17: "hostile-orb:d12-amber",
+19: "hostile-orb:d10-amber-deep",
+20: "hostile-orb:d10-amber-dark",
+21: "hostile-orb:d10-amber"
 }
 alts = {
-3: "v0:friendly-wheelblade-f2"
 }
 zones = {
-15: "v0:hostile-hazard-zone",
-18: "v0:hostile-hazard-zone",
--2: "v0:friendly-blast-rune"
+15: "hostile-hazard-zone",
+18: "hostile-hazard-zone",
+-2: "friendly-blast-rune"
 }
-arm_strip = "v0:hostile-hazard-arm"
-nova_ring = "v0:friendly-nova-ring"
+arm_strip = "hostile-hazard-arm"
+nova_ring = "friendly-nova-ring"

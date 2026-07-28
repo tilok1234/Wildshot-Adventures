@@ -12,7 +12,7 @@ const ProjectilePack := preload("res://addons/projectile_importer/projectile_pac
 
 func _init() -> void:
 	if not DirAccess.dir_exists_absolute(
-		ProjectSettings.globalize_path("res://assets/projectile-pack")
+		ProjectSettings.globalize_path("res://assets/wildshot-projectiles-sphere-v0")
 	):
 		print("projectile pack not dropped yet — nothing to validate")
 		quit(0)
@@ -24,7 +24,10 @@ func _init() -> void:
 		return
 	var need := ProjectilePack.needed_from_map(pmap)
 	var report := ProjectilePack.import(
-		"res://assets/projectile-pack/", "user://projectile_check/", need.needed, need.hostile_shots
+		"res://assets/wildshot-projectiles-sphere-v0/",
+		"user://projectile_check/",
+		need.needed,
+		need.hostile_shots
 	)
 	for line: String in report.log:
 		print("projectile-pack: ", line)
