@@ -323,7 +323,19 @@ dart 9t/s dmg12 ttl67 pattern 12, telegraph 40, cooldown 120; smoke
 witnesses band-settle+circulation AND 3 dart hits on a 3.0 t/s square-
 wave strafer that current-aim geometrically misses; roster index 4;
 Meet: Leadshot picker row; proof_leadshot PASS near 0.125; ALL prior
-proofs reproduce exact pre-bump margins at v10). Remaining M6:
-Blightcaster (lingering multi-hit hazards, hazard_step ext, SERIAL
-bump), Yard Warden elite + PhaseList, EffectLibrary pass (ledger #9),
+proofs reproduce exact pre-bump margins at v10). BLIGHTCASTER LIVE
+2026-07-28 — THE ORDINARY §3.4 ROSTER IS COMPLETE (6/6). SERIAL 11:
+hazard records carry pattern/linger_until/next_damage_tick/
+hit_interval; hazard_step pulses (first damage exactly at arm, every
+interval until linger inclusive, exact expiry any alignment; Blast
+Rune = same path with linger==arm, byte-identical M4 behavior);
+EmitterSlot.hazard→HazardDef casts at target pos (zone arm 45 IS the
+§3.4 telegraph, pattern-tagged placement TELEGRAPH_STARTED → recap
+lead exactly 45); hostile zones render split per §2.5 (fill 20 / rim
+70); DodgeBot models full pulse trains (zones crossable between
+pulses); smoke: standing pulse-train contract + reactive walker
+escapes 4/4 zones at 3.0 with ZERO hits; proof PASS 0 hits; Law-4
+ordering COMPLETE monotone 10<12<30<36<40<45; near-miss metric blind
+to hazard proximity (reporting nit, logged). Remaining M6: Yard
+Warden elite + PhaseList (§3.5), EffectLibrary pass (ledger #9),
 9-row acceptance, audio cue map, CORE-34 no-ability clear.**

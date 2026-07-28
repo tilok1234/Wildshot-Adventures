@@ -110,12 +110,14 @@ Sim first, then data, then proofs — the M5 pattern. Per-behavior needs:
    current-pos fallback); FLANKER orbit-in (band 6-8 authored [T],
    id-parity chirality). Smoke witnesses the lead beating a strafing
    mover; proof PASS near 0.125. prev_pos remains presentation-only.
-3. **Blightcaster** (delayed ground hazard, keep-range): needs
-   lingering multi-hit hazards — hazard_step is explicitly marked for
-   this extension; hazards will need linger_until/next_damage fields
-   (serialized → same SERIAL bump) + a hazard-type emitter slot
-   (EmitterSlot.hazard → HazardDef) + pattern-tagged hazards for the
-   recap. Zone + 8-step arm sprites are ALREADY WIRED (hazard_view).
+3. ~~**Blightcaster**~~ DONE 2026-07-28 (session log) — ORDINARY
+   ROSTER COMPLETE 6/6. SERIAL 11 (hazard linger/pulse fields);
+   EmitterSlot.hazard→HazardDef; zone arm = the telegraph (recap lead
+   exactly 45); hostile zones split fill/rim per §2.5; DodgeBot models
+   pulse trains; smoke has a reactive-walker escape witness (zero hits
+   at 3.0). Blast Rune untouched by construction (linger==arm ⇒ M4
+   one-shot path). Near-miss metric is hazard-blind (reads −1 when no
+   projectiles exist) — reporting nit only.
 4. **Sprites**: the projectile pack PRE-ASSIGNED pattern sprites
    (dart=Leadshot 12, fang=Fanmaw 13, burr=Ringer 14, hazard-zone=15);
    `data/projectile_map.tres` already maps them. Actor sheets: use the
