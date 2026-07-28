@@ -160,14 +160,19 @@ func _process(_delta: float) -> void:
 			var entry: Dictionary = mapped.entry
 			var hw := float(entry.w) * 0.5
 			var hh := float(entry.h) * 0.5
-			# Law 2/8 guard: a hostile sprite may never render smaller
-			# than the live shot's hitbox — upscale on declared shortfall.
+			# Law 2/8 EXACT-FIT (2026-07-28 feel signal): a hostile
+			# sprite's declared hitbox pixels render at exactly the live
+			# shot's collision size — never smaller (the old guard), and
+			# no longer larger either. Native-size rendering had shots
+			# reading 1.4-2.35x their truth (dart 24px canvas on a ~10px
+			# hitbox), visually shrinking every dodge gap. The sprite's
+			# covering core now equals the hitbox; art extents beyond the
+			# core (fang tips, needle tails) scale with it.
 			if fac[s] == ActorState.FACTION_HOSTILE and int(entry.hitbox_d) > 0:
 				var need := rad[s] * 2.0 * TILE
-				if float(entry.hitbox_d) < need:
-					var fix := need / float(entry.hitbox_d)
-					hw *= fix
-					hh *= fix
+				var fix := need / float(entry.hitbox_d)
+				hw *= fix
+				hh *= fix
 			var xf: Transform2D
 			if bool(entry.oriented):
 				var dir := Vector2(dx_[s], dy_[s])
