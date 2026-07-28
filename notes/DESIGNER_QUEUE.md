@@ -37,11 +37,17 @@ exceptions). This pass:
 ## 2 — RULINGS (one word each; any time, rested preferred)
 
 - [ ] **Composition adjudication (ledger #11)** — first_contact
-      (3R+2H) AND the world_walk full-pack fight, one ruling:
-      (a) retune spawns, (b) accept-until-M7 (I build the reactive
-      bot policy and re-adjudicate with data), or (c) too hot.
-      New evidence: small shots did NOT fix it (still FAIL, 13 hits,
-      reshaped). My lean: (b).
+      (3R+2H) AND the world_walk full-pack fight, one ruling.
+      **M7 EVIDENCE IS IN (game 71a60c1): the REACTIVE policy —
+      enter melee range, dodge windups on their telegraphs like a
+      human — passes first_contact CLEAN: 0 hits, all three
+      canonical seeds, calibrated (it also solos a wolf and still
+      fails the undodgeable canary).** The encounter is honestly
+      dodgeable at 3.0 movement-only; the standing FAIL measured
+      the conservative bot model, not the encounter. Ruling is
+      still yours (bot-fair ≠ human-fun): (a) accept as-is with
+      the reactive proof attached, (b) retune spawns anyway for
+      feel, or (c) too hot despite the proof. My lean is now (a).
 - [ ] **Scarecrow:strawfield** for the Warden — approve or name
       another family:variant (one-line swap).
 - [ ] **Fanmaw orange vs teal** — orange shares the colorblind
