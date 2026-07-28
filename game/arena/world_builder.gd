@@ -15,6 +15,7 @@ extends RefCounted
 ## — resolved layers are rendering-only (multi-game rule).
 
 const WorldforgePack := preload("res://addons/worldforge_importer/worldforge_pack.gd")
+const RenderLayers := preload("res://game/render_layers.gd")
 
 const TILE := 32
 
@@ -94,6 +95,16 @@ static func build_world_arena(root: Node2D, pack_src: String) -> Dictionary:
 		var layer := TileMapLayer.new()
 		layer.name = String(layer_def.get("name", "layer"))
 		layer.tile_set = tileset
+		# Overhang-class layers (awnings, eaves — pack naming convention)
+		# ride the CANOPY band: their cells are WALKABLE by design (54%
+		# in the dusk pack), so the player walks UNDER them and must be
+		# occluded, exactly like forest crowns (arena_builder precedent).
+		# Threat bands all sit above CANOPY — Law 1 is untouched by
+		# construction (render band asserts cover it at boot). This
+		# consumes the pack's canopy z one world early; pull-forward
+		# recorded in the planning log 2026-07-28.
+		if String(layer_def.get("name", "")).contains("overhang"):
+			layer.z_index = RenderLayers.CANOPY
 		root.add_child(layer)
 		var data: Array = layer_def.data
 		for i in data.size():
