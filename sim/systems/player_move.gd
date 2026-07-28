@@ -20,12 +20,12 @@ static func run(world: RefCounted) -> void:
 		var p: RefCounted = world.players[i]
 		# Unconditional: the view interpolates every player every tick (§2.9).
 		p.prev_pos = p.pos
-		if p.dead:
-			continue
-		if i >= frames.size() or frames[i] == null:
-			continue
-		var mv: Vector2 = frames[i].move_vector()
-		if mv == Vector2.ZERO:
-			continue
-		var step: Vector2 = mv * p.move_speed * dt
-		p.pos = Kinematics.move_circle(grid, p.pos, p.radius, step)
+		var before: Vector2 = p.pos
+		if not p.dead and i < frames.size() and frames[i] != null:
+			var mv: Vector2 = frames[i].move_vector()
+			if mv != Vector2.ZERO:
+				var step: Vector2 = mv * p.move_speed * dt
+				p.pos = Kinematics.move_circle(grid, p.pos, p.radius, step)
+		# Serialized applied velocity (SERIAL 10): post-slide truth, every
+		# tick — intercept aim must see a wall-pinned player as stationary.
+		p.vel = (p.pos - before) / dt

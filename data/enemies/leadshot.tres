@@ -1,0 +1,28 @@
+[gd_resource type="Resource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://data/enemy_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/emitter_slot.gd" id="2"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/leadshot_dart.tres" id="3"]
+
+[sub_resource type="Resource" id="slot0"]
+script = ExtResource("2")
+pattern = ExtResource("3")
+trigger_range = 10.0
+telegraph_ticks = 40
+cooldown_ticks = 120
+recover_ticks = 20
+
+[resource]
+script = ExtResource("1")
+id = &"leadshot"
+display_name = "Leadshot"
+hp = 45
+body_radius = 0.35
+move_speed = 2.4
+contact_damage = 0
+contact_cooldown_ticks = 30
+aggro_range = 12.0
+movement_policy = 4
+range_min = 6.0
+range_max = 8.0
+emitters = Array[Resource]([SubResource("slot0")])

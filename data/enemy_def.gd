@@ -5,8 +5,10 @@ extends Resource
 ## stay honest (CORE-36); no accuracy/evasion/crit fields exist or may be
 ## added (CORE-40).
 ##
-## ORBIT and FLANKER are declared for the §2.7 policy grammar but land
-## with their M6 roster rows (Leadshot flanker); until then they anchor.
+## FLANKER landed with Leadshot (M6): orbit-in — spiral to the
+## range_min..range_max band, circle-strafe inside it, chirality from
+## id parity. ORBIT is declared for the §2.7 grammar and anchors until
+## a roster row needs it.
 
 enum MovementPolicy { CHASER, KEEP_RANGE, ORBIT, ANCHOR, FLANKER }
 

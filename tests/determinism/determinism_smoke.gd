@@ -78,6 +78,8 @@ func _init() -> void:
 		failed = true
 	if not _check_m6_data_enemies():
 		failed = true
+	if not _check_leadshot():
+		failed = true
 
 	if failed:
 		quit(1)
@@ -704,6 +706,216 @@ func _run_solo_enemy_once(def: Resource) -> Dictionary:
 		"moved_max": moved_max,
 		"dist_start": dist_start,
 		"dist_min": dist_min,
+	}
+
+
+## M6 Leadshot contract (docs/12 §3.4 row 3, SERIAL 10), mechanized in
+## two runs reading every number from the shipped .tres:
+## STANDING target: double-run hash equality; telegraph leads every
+## volley by exactly its data ticks; volleys on the exact data period;
+## one dart per volley; FLANKER settles into its range band and
+## CIRCULATES (swept bearing ≥ 1 rad — chaser/keep-range sweep ~0);
+## darts hit the stander (vel zero ⇒ intercept degenerates to current
+## aim, the closed-form's own edge case).
+## MOVING target (square-wave perpendicular strafe at 3.0 t/s): darts
+## HIT the mover. At ~8-10 tiles a current-position aim misses a 3.0
+## t/s perpendicular strafer by ~3 tiles (flight ~1 s) — any pattern-12
+## hit on a constant-velocity leg witnesses the lead solve reading the
+## serialized vel. Reversal-straddling volleys miss: that IS the
+## intended counter (jink on the telegraph), not flakiness — the runs
+## are deterministic, so the hit set is fixed.
+func _check_leadshot() -> bool:
+	var ldef: Resource = load("res://data/enemies/leadshot.tres")
+	var slot: Resource = ldef.emitters[0]
+	var pattern: Resource = slot.pattern
+	var pid := int(pattern.pattern_id)
+	var lead := int(slot.telegraph_ticks)
+	var period := int(slot.cooldown_ticks)
+	var ok := true
+
+	var sa := _run_leadshot_once(ldef, false, 600)
+	var sb := _run_leadshot_once(ldef, false, 600)
+	if sa.hashes != sb.hashes:
+		printerr("FAIL: leadshot standing runs diverge")
+		ok = false
+	var ma := _run_leadshot_once(ldef, true, 900)
+	var mb := _run_leadshot_once(ldef, true, 900)
+	if ma.hashes != mb.hashes:
+		printerr("FAIL: leadshot mover runs diverge")
+		ok = false
+
+	for named: Array in [["standing", sa], ["mover", ma]]:
+		var label := String(named[0])
+		var r: Dictionary = named[1]
+		var telegraphs: Array = r.telegraph_ticks_list
+		var attacks: Array = r.attack_ticks
+		if attacks.size() < 3:
+			printerr("FAIL: only %d leadshot volleys (%s)" % [attacks.size(), label])
+			ok = false
+		if telegraphs.size() != attacks.size():
+			printerr(
+				(
+					"FAIL: leadshot %d telegraphs vs %d volleys (%s)"
+					% [telegraphs.size(), attacks.size(), label]
+				)
+			)
+			ok = false
+		for i in mini(telegraphs.size(), attacks.size()):
+			if attacks[i] - telegraphs[i] != lead:
+				printerr(
+					(
+						"FAIL: leadshot telegraph lead %d != %d at volley %d (%s)"
+						% [attacks[i] - telegraphs[i], lead, i, label]
+					)
+				)
+				ok = false
+				break
+		for i in range(1, attacks.size()):
+			if attacks[i] - attacks[i - 1] != period:
+				printerr(
+					(
+						"FAIL: leadshot period %d != %d (%s)"
+						% [attacks[i] - attacks[i - 1], period, label]
+					)
+				)
+				ok = false
+				break
+		for i in r.volley_counts.size():
+			if int(r.volley_counts[i]) != pattern.shots.size():
+				printerr(
+					(
+						"FAIL: leadshot volley %d spawned %d darts (%s)"
+						% [i, int(r.volley_counts[i]), label]
+					)
+				)
+				ok = false
+				break
+		if int(r.other_hits) != 0:
+			printerr(
+				"FAIL: leadshot landed %d non-pattern-%d hits (%s)" % [r.other_hits, pid, label]
+			)
+			ok = false
+
+	if int(sa.pattern_hits) < 3:
+		printerr("FAIL: only %d darts hit the standing player" % int(sa.pattern_hits))
+		ok = false
+	if float(sa.dist_min) < float(ldef.range_min) - 0.6:
+		printerr(
+			(
+				"FAIL: flanker closed to %.2f (band %s-%s)"
+				% [sa.dist_min, ldef.range_min, ldef.range_max]
+			)
+		)
+		ok = false
+	if float(sa.dist_max) > float(ldef.range_max) + 0.6:
+		printerr(
+			(
+				"FAIL: flanker drifted to %.2f (band %s-%s)"
+				% [sa.dist_max, ldef.range_min, ldef.range_max]
+			)
+		)
+		ok = false
+	if absf(float(sa.sweep)) < 1.0:
+		printerr("FAIL: flanker swept only %.2f rad — not circulating" % absf(float(sa.sweep)))
+		ok = false
+	if int(ma.pattern_hits) < 1:
+		printerr("FAIL: no dart hit the strafing player — intercept lead not working")
+		ok = false
+
+	if ok:
+		print(
+			(
+				"m6 leadshot ok: stand volleys=%d hits=%d band=[%.2f, %.2f] sweep=%.2f rad; mover hits=%d lead=%d period=%d"
+				% [
+					sa.attack_ticks.size(),
+					int(sa.pattern_hits),
+					float(sa.dist_min),
+					float(sa.dist_max),
+					float(sa.sweep),
+					int(ma.pattern_hits),
+					lead,
+					period,
+				]
+			)
+		)
+	return ok
+
+
+## Leadshot micro-world: player at (18,16) speed 3.0, leadshot at
+## (28,16) — exactly its 10-tile trigger. mover=false: null input
+## (band/orbit/timing witnesses). mover=true: square-wave perpendicular
+## strafe, reversing every 90 ticks (constant-velocity legs for the
+## intercept witness; ±4.5 tiles of travel stays in the open arena).
+## Band and sweep sample after tick 300 (settled).
+func _run_leadshot_once(ldef: Resource, mover: bool, ticks: int) -> Dictionary:
+	var world := SimWorld.new()
+	world.setup(24, _build_bitgrid())
+	world.set_enemy_defs([ldef])
+	var player := world.add_player(Vector2(18.0, 16.0))
+	player.move_speed = 3.0
+	var enemy: RefCounted = world.add_enemy(0, Vector2(28.0, 16.0))
+	var slot: Resource = ldef.emitters[0]
+	var pattern: Resource = slot.pattern
+	var pid := int(pattern.pattern_id)
+	var hashes: Array[int] = []
+	var telegraph_ticks_list: Array[int] = []
+	var attack_ticks: Array[int] = []
+	var volley_counts: Array[int] = []
+	var pattern_hits := 0
+	var other_hits := 0
+	var dist_min := 1.0e9
+	var dist_max := 0.0
+	var sweep := 0.0
+	var prev_bearing: float = (enemy.pos - player.pos).angle()
+	for t in ticks:
+		var frame: RefCounted = null
+		if mover:
+			frame = InputFrame.new()
+			@warning_ignore("integer_division")
+			frame.move_y = 1 if (t / 90) % 2 == 0 else -1
+			frame.normalized = true
+		world.step([frame])
+		var fired := false
+		var spawned_this_tick := 0
+		for ev: Dictionary in world.events:
+			match int(ev.type):
+				SimEvents.Type.TELEGRAPH_STARTED:
+					if int(ev.id) == enemy.id:
+						telegraph_ticks_list.append(int(ev.tick))
+				SimEvents.Type.ATTACK_STARTED:
+					if int(ev.get("enemy", 0)) == enemy.id:
+						attack_ticks.append(int(ev.tick))
+						fired = true
+				SimEvents.Type.PROJECTILE_SPAWNED:
+					if int(ev.pattern) == pid:
+						spawned_this_tick += 1
+				SimEvents.Type.DAMAGE_APPLIED:
+					if int(ev.target) == player.id:
+						if int(ev.pattern) == pid:
+							pattern_hits += 1
+						else:
+							other_hits += 1
+		if fired:
+			volley_counts.append(spawned_this_tick)
+		var bearing: float = (enemy.pos - player.pos).angle()
+		sweep += wrapf(bearing - prev_bearing, -PI, PI)
+		prev_bearing = bearing
+		if t >= 300:
+			var d: float = enemy.pos.distance_to(player.pos)
+			dist_min = minf(dist_min, d)
+			dist_max = maxf(dist_max, d)
+		if (world.tick % HASH_EVERY) == 0:
+			hashes.append(world.state_hash())
+	return {
+		"hashes": hashes,
+		"telegraph_ticks_list": telegraph_ticks_list,
+		"attack_ticks": attack_ticks,
+		"volley_counts": volley_counts,
+		"pattern_hits": pattern_hits,
+		"other_hits": other_hits,
+		"dist_min": dist_min,
+		"dist_max": dist_max,
+		"sweep": sweep,
 	}
 
 

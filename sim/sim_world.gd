@@ -28,7 +28,7 @@ const HazardStep := preload("res://sim/systems/hazard_step.gd")
 
 const TICKS_PER_SECOND := 60
 const DT := 1.0 / 60.0
-const SERIAL_VERSION := 9
+const SERIAL_VERSION := 10
 
 ## Named PCG32 stream ids (§2.4). rng_vfx deliberately does NOT exist here —
 ## it lives view-side so cosmetics can never perturb gameplay.

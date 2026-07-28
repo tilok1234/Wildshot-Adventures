@@ -15,6 +15,7 @@ extends RefCounted
 const ActorState := preload("res://sim/actor_state.gd")
 const EnemyState := preload("res://sim/enemy_state.gd")
 const EnemyDef := preload("res://data/enemy_def.gd")
+const PatternDef := preload("res://data/pattern_def.gd")
 const SimEvents := preload("res://sim/events.gd")
 const Kinematics := preload("res://sim/systems/kinematics.gd")
 const Damage := preload("res://sim/systems/damage.gd")
@@ -35,6 +36,9 @@ static func run(world: RefCounted) -> void:
 	for e: RefCounted in world.enemies:
 		# Unconditional: the view interpolates every enemy every tick (§2.9).
 		e.prev_pos = e.pos
+		# Serialized applied velocity (SERIAL 10): zero unless _move runs
+		# this tick — WINDUP/FIRE/RECOVER stand still and read as such.
+		e.vel = Vector2.ZERO
 		var def_index: int = e.def_index
 		if def_index < 0 or e.hp <= 0:
 			continue  # inert stand-in, or killed this tick awaiting sweep
@@ -98,7 +102,7 @@ static func run(world: RefCounted) -> void:
 			EnemyState.AIState.WINDUP:
 				if t >= e.state_until:
 					e.ai_state = EnemyState.AIState.FIRE
-					_fire(world, e, def, tpos, t)
+					_fire(world, e, def, target, t)
 			EnemyState.AIState.FIRE:
 				# The volley left on the WINDUP->FIRE transition tick; FIRE
 				# persists one observable tick (explicit 5-state contract).
@@ -125,14 +129,30 @@ static func _move(
 				dir = -toward
 			elif dist > float(def.range_max):
 				dir = toward
+		EnemyDef.MovementPolicy.FLANKER:
+			# Orbit-in (M6 Leadshot, §2.7): spiral toward the band, then
+			# circle-strafe inside it — never a straight radial approach.
+			# Chirality from id parity: authored variation, zero RNG,
+			# stable across serialization (id is serialized state).
+			var tangent := Vector2(-toward.y, toward.x)
+			if e.id % 2 == 1:
+				tangent = -tangent
+			if dist > float(def.range_max):
+				dir = (toward + tangent).normalized()
+			elif dist < float(def.range_min):
+				dir = (tangent - toward).normalized()
+			else:
+				dir = tangent
 		_:
-			# ANCHOR holds ground; ORBIT/FLANKER land with their M6 roster
-			# rows and anchor until then (enemy_def.gd note).
+			# ANCHOR holds ground; ORBIT lands with a roster row that
+			# needs it and anchors until then (enemy_def.gd note).
 			dir = Vector2.ZERO
 	if dir == Vector2.ZERO:
 		return
+	var before: Vector2 = e.pos
 	var step: Vector2 = dir * float(def.move_speed) * dt
 	e.pos = Kinematics.move_circle(grid, e.pos, e.radius, step)
+	e.vel = (e.pos - before) / dt
 
 
 ## First emitter slot whose cooldown gate is open (windup may begin
@@ -149,13 +169,21 @@ static func _ready_slot(e: RefCounted, def: Resource, t: int, dist: float) -> in
 	return -1
 
 
-## Fire the winding slot: aim at the nearest player's CURRENT position
-## (aimed, not predictive — Leadshot's intercept is an M6 aim mode), spawn
-## the authored volley, close the cooldown gate, enter recovery.
-static func _fire(world: RefCounted, e: RefCounted, def: Resource, tpos: Vector2, t: int) -> void:
+## Fire the winding slot: compute the aim vector per the pattern's aim
+## mode (CURRENT = nearest player's position at the fire tick; INTERCEPT
+## = closed-form lead on the target's serialized vel — M6 Leadshot),
+## spawn the authored volley, close the cooldown gate, enter recovery.
+static func _fire(
+	world: RefCounted, e: RefCounted, def: Resource, target: RefCounted, t: int
+) -> void:
 	var es: Resource = def.emitters[e.winding_slot]
 	var pattern: Resource = es.pattern
+	var tpos: Vector2 = target.pos
 	var aim: Vector2 = tpos - e.pos
+	if int(pattern.aim_mode) == PatternDef.AimMode.INTERCEPT and not pattern.shots.is_empty():
+		var tvel: Vector2 = target.vel
+		var shot0: Resource = pattern.shots[0]
+		aim = _intercept_aim(e.pos, tpos, tvel, float(shot0.speed))
 	aim = aim.normalized() if aim.length_squared() > 0.0001 else Vector2.RIGHT
 	(
 		world
@@ -193,3 +221,33 @@ static func _fire(world: RefCounted, e: RefCounted, def: Resource, tpos: Vector2
 	e.cooldowns[e.winding_slot] = t + int(es.cooldown_ticks)
 	e.state_until = t + int(es.recover_ticks)
 	e.winding_slot = -1
+
+
+## Closed-form intercept (M6, CORE-32-deterministic): solve
+## |d + v*t| = s*t for the earliest positive t and aim at the future
+## point. Reads the target's serialized vel — NEVER prev_pos (that is
+## presentation-only). Falls back to the current position when no
+## forward solution exists (target at or beyond shot speed). Returns an
+## UNnormalized aim vector; the caller normalizes.
+static func _intercept_aim(
+	origin: Vector2, tpos: Vector2, tvel: Vector2, shot_speed: float
+) -> Vector2:
+	var d := tpos - origin
+	var a := tvel.dot(tvel) - shot_speed * shot_speed
+	var b := 2.0 * d.dot(tvel)
+	var c := d.dot(d)
+	var t_hit := -1.0
+	if absf(a) < 0.0001:
+		if absf(b) > 0.0001:
+			t_hit = -c / b
+	else:
+		var disc := b * b - 4.0 * a * c
+		if disc >= 0.0:
+			var sq := sqrt(disc)
+			var t1 := (-b - sq) / (2.0 * a)
+			var t2 := (-b + sq) / (2.0 * a)
+			var lo := minf(t1, t2)
+			t_hit = lo if lo > 0.0 else maxf(t1, t2)
+	if t_hit <= 0.0:
+		return d
+	return d + tvel * t_hit

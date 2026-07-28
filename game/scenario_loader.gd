@@ -34,14 +34,15 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 		)
 	)
 	# EnemyDef roster — INDEX ORDER IS CONTRACT (def_index serializes):
-	# 0=rusher, 1=husk_archer, 2=fanmaw, 3=ringer. Append-only; never
-	# reorder. Scenario extras (bot canaries) append after, keeping
-	# standard indexes stable.
+	# 0=rusher, 1=husk_archer, 2=fanmaw, 3=ringer, 4=leadshot.
+	# Append-only; never reorder. Scenario extras (bot canaries) append
+	# after, keeping standard indexes stable.
 	var defs: Array = [
 		load("res://data/enemies/rusher.tres"),
 		load("res://data/enemies/husk_archer.tres"),
 		load("res://data/enemies/fanmaw.tres"),
 		load("res://data/enemies/ringer.tres"),
+		load("res://data/enemies/leadshot.tres"),
 	]
 	for extra: Resource in scenario.extra_enemy_defs:
 		defs.append(extra)

@@ -10,9 +10,17 @@ extends Resource
 ## Pattern-id namespace: 1..3 player weapons, 10+ enemy patterns,
 ## 100 debug emitter; -1 nova, -2 hazard, -3 contact.
 
+## How the aim vector is computed at the fire tick (M6): CURRENT aims
+## at the nearest player's position; INTERCEPT solves the closed-form
+## lead against the target's serialized velocity using the FIRST shot's
+## speed. Deterministic either way — the honest counter to INTERCEPT is
+## changing direction during the telegraph.
+enum AimMode { CURRENT, INTERCEPT }
+
 @export var id: StringName = &""
 ## Unique pattern id carried by every projectile this pattern spawns —
 ## events, death recap, and telemetry read it.
 @export var pattern_id: int = 0
+@export var aim_mode: AimMode = AimMode.CURRENT
 ## Array of ShotDef resources, fired together as one volley.
 @export var shots: Array[Resource] = []
