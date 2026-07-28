@@ -31,6 +31,20 @@ static func run_from_args(args: Dictionary) -> int:
 	var speed_arg := String(args.get("speed", "3.0"))
 	var speed := 3.0 if speed_arg == "lowest" else float(speed_arg)
 	var ticks := int(String(args.get("ticks", "3600")))
+	# M7 policy selection. PRIMARY is canonical; any other policy's
+	# DEFAULT out-name carries the policy suffix so re-adjudication
+	# evidence can never clobber the canonical primary reports.
+	var policy_name := String(args.get("policy", "primary"))
+	var policy_ids := {
+		"primary": DodgePolicy.Policy.PRIMARY,
+		"reactive": DodgePolicy.Policy.REACTIVE,
+		"orbit": DodgePolicy.Policy.ORBIT,
+		"axis": DodgePolicy.Policy.AXIS_STRAFE,
+	}
+	if not policy_ids.has(policy_name):
+		printerr("dodge_proof: unknown --policy=" + policy_name)
+		return 2
+	var policy: int = policy_ids[policy_name]
 	var seeds: Array[int] = []
 	if args.has("seeds"):
 		for s in String(args.seeds).split(",", false):
@@ -40,7 +54,12 @@ static func run_from_args(args: Dictionary) -> int:
 		var runs := int(String(args.get("runs", "5")))
 		for i in runs:
 			seeds.append(base + i)
-	var out_path := String(args.get("out", "res://reports/dodge_%s.json" % String(scenario.id)))
+	var default_out := (
+		"res://reports/dodge_%s.json" % String(scenario.id)
+		if policy_name == "primary"
+		else "res://reports/dodge_%s_%s.json" % [String(scenario.id), policy_name]
+	)
+	var out_path := String(args.get("out", default_out))
 
 	var grid: RefCounted
 	if not String(scenario.worldforge_pack).is_empty():
@@ -55,7 +74,7 @@ static func run_from_args(args: Dictionary) -> int:
 	var run_reports: Array = []
 	var all_pass := true
 	for seed_v in seeds:
-		var r := _run_one(scenario, seed_v, speed, ticks, grid)
+		var r := _run_one(scenario, seed_v, speed, ticks, grid, policy)
 		run_reports.append(r)
 		all_pass = all_pass and int(r.hits) == 0
 		print(
@@ -83,7 +102,13 @@ static func run_from_args(args: Dictionary) -> int:
 		"scenario": String(scenario.id),
 		"scenario_path": scenario_path,
 		"speed": speed,
-		"policy": "primary-16dir-stay-closed-form",
+		"policy":
+		{
+			"primary": "primary-16dir-stay-closed-form",
+			"reactive": "reactive-16dir-melee-on-telegraph",
+			"orbit": "orbit-baseline-no-projection",
+			"axis": "axis-strafe-baseline-no-projection",
+		}[policy_name],
 		"horizon_ticks": DodgePolicy.HORIZON,
 		"ability_used": false,
 		"fire_used": false,
@@ -116,7 +141,12 @@ static func run_from_args(args: Dictionary) -> int:
 
 
 static func _run_one(
-	scenario: Resource, seed_v: int, speed: float, ticks: int, grid: RefCounted
+	scenario: Resource,
+	seed_v: int,
+	speed: float,
+	ticks: int,
+	grid: RefCounted,
+	policy: int = DodgePolicy.Policy.PRIMARY
 ) -> Dictionary:
 	var world: RefCounted = ScenarioLoader.build_world(scenario, seed_v, grid)
 	var player: RefCounted = world.players[0]
@@ -142,7 +172,7 @@ static func _run_one(
 	var heat := PackedInt32Array()
 	heat.resize(HEAT_W * HEAT_H)
 	for t in ticks:
-		var frame: RefCounted = DodgePolicy.compute_frame(world, 0)
+		var frame: RefCounted = DodgePolicy.compute_frame(world, 0, policy)
 		recorder.record_frames([frame])
 		world.step([frame])
 		recorder.after_step()
@@ -163,7 +193,15 @@ static func _run_one(
 			break
 	var repro := ""
 	if hits > 0:
-		repro = "res://reports/repro_%s_seed%d.wsr" % [String(scenario.id), seed_v]
+		var tag := ""
+		match policy:
+			DodgePolicy.Policy.REACTIVE:
+				tag = "_reactive"
+			DodgePolicy.Policy.ORBIT:
+				tag = "_orbit"
+			DodgePolicy.Policy.AXIS_STRAFE:
+				tag = "_axis"
+		repro = "res://reports/repro_%s%s_seed%d.wsr" % [String(scenario.id), tag, seed_v]
 		DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://reports"))
 		recorder.save_wsr(repro, "bot", String(scenario.id))
 	var heat_rows: Array = []

@@ -20,6 +20,19 @@ const EnemyState := preload("res://sim/enemy_state.gd")
 const ProjectilePool := preload("res://sim/projectile_pool.gd")
 const EnemyDef := preload("res://data/enemy_def.gd")
 
+## Policy modes (M7 §2.11). PRIMARY is the canonical proof policy.
+## REACTIVE (ledger #11's re-adjudication route) differs in exactly one
+## model choice: melee-slot enemies are bodies at their RAW radius —
+## the bot may enter trigger range and dodge the windup on its
+## telegraph like a human, instead of treating the whole trigger
+## bubble as do-not-enter. ORBIT and AXIS_STRAFE are deliberately
+## simple baselines (no threat projection) for evidence diversity —
+## they are expected to be worse and their reports say so.
+enum Policy { PRIMARY, REACTIVE, ORBIT, AXIS_STRAFE }
+
+## Baseline axis-strafe flip period (ticks).
+const AXIS_FLIP := 30
+
 ## Projection depth K, in ticks. 60 (1 s) is enough for simulated pursuit
 ## to reveal a closing corner BEFORE the bot enters it — 30/45 with
 ## linear body extrapolation both cornered and failed the rusher proof
@@ -57,13 +70,17 @@ const DIR_Y: Array[int] = [0, 1, 1, 1, 0, -1, -1, -1]
 
 
 ## One InputFrame of pure movement for player_index, re-planned per tick.
-static func compute_frame(world: RefCounted, player_index: int) -> RefCounted:
+static func compute_frame(
+	world: RefCounted, player_index: int, policy: int = Policy.PRIMARY
+) -> RefCounted:
 	var frame := InputFrame.new()
 	var p: RefCounted = world.players[player_index]
 	if p.dead:
 		return frame
 	var t: int = world.tick
-	var threats := _project_threats(world, p)
+	if policy == Policy.ORBIT or policy == Policy.AXIS_STRAFE:
+		return _baseline_frame(world, p, t, policy)
+	var threats := _project_threats(world, p, policy == Policy.REACTIVE)
 	# Fast path: nothing relevant within reach — stand (deterministic).
 	if int(threats.count) == 0:
 		return frame
@@ -245,10 +262,63 @@ static func _wall_clearance(grid: RefCounted, pos: Vector2, max_r: float) -> flo
 	return best
 
 
+## Baseline policies (M7): no projection, one simple rule each. ORBIT
+## walks tangent around the live-enemy centroid; AXIS_STRAFE oscillates
+## perpendicular to the nearest enemy, flipping every AXIS_FLIP ticks.
+## Every emitted frame is still a legal human input.
+static func _baseline_frame(world: RefCounted, p: RefCounted, t: int, policy: int) -> RefCounted:
+	var frame := InputFrame.new()
+	var centroid := Vector2.ZERO
+	var nearest := Vector2.ZERO
+	var best := INF
+	var n := 0
+	for e: RefCounted in world.enemies:
+		if e.def_index < 0 or e.hp <= 0:
+			continue
+		var epos: Vector2 = e.pos
+		centroid += epos
+		n += 1
+		var d2: float = p.pos.distance_squared_to(epos)
+		if d2 < best:
+			best = d2
+			nearest = epos
+	if n == 0:
+		return frame
+	centroid /= float(n)
+	var dir := Vector2.ZERO
+	if policy == Policy.ORBIT:
+		var out: Vector2 = p.pos - centroid
+		var dist := out.length()
+		if dist < 0.001:
+			out = Vector2.RIGHT
+			dist = 1.0
+		var tangent := Vector2(-out.y, out.x) / dist
+		# Hold RING distance while circling: blend radial correction in.
+		var radial: Vector2 = out / dist * clampf(RING - dist, -1.0, 1.0)
+		dir = (tangent + radial).normalized()
+	else:
+		var to_e: Vector2 = nearest - p.pos
+		if to_e.length_squared() < 0.001:
+			to_e = Vector2.RIGHT
+		var perp := Vector2(-to_e.y, to_e.x).normalized()
+		@warning_ignore("integer_division")
+		var flip := -1.0 if (t / AXIS_FLIP) % 2 == 1 else 1.0
+		dir = perp * flip
+	var h := wrapi(roundi(dir.angle() / (TAU / 16.0)), 0, 16)
+	var d := _candidate_dir(h + 1, t)
+	frame.move_x = DIR_X[d]
+	frame.move_y = DIR_Y[d]
+	frame.normalized = true
+	return frame
+
+
 ## Precompute per-tick projected positions for every relevant hostile
 ## projectile (closed-form: motion-program velocity at any age), plus
 ## contact bodies (linear extrapolation) and pending hostile hazards.
-static func _project_threats(world: RefCounted, p: RefCounted) -> Dictionary:
+## reactive=true is the REACTIVE policy's one model change: melee-slot
+## enemies stay bodies at their RAW radius (enter range, dodge the
+## windup on its telegraph) instead of trigger-bubble inflation.
+static func _project_threats(world: RefCounted, p: RefCounted, reactive: bool) -> Dictionary:
 	var pool: RefCounted = world.projectiles
 	var t: int = world.tick
 	var dt: float = world.DT
@@ -353,7 +423,7 @@ static func _project_threats(world: RefCounted, p: RefCounted) -> Dictionary:
 		var melee_trigger := _melee_trigger(e_emitters)
 		if int(def.contact_damage) > 0 or melee_trigger > 0.0:
 			var eff_r: float = e.radius
-			if melee_trigger > 0.0:
+			if melee_trigger > 0.0 and not reactive:
 				eff_r = maxf(eff_r, melee_trigger - float(p.radius))
 			(
 				bodies
