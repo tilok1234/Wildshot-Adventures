@@ -1,8 +1,29 @@
+"""WorldForge pack walkability auditor (ledger #15 diagnostic).
+
+Prints an ASCII layer-vs-walkability grid for a region plus a full-map
+porosity summary. The instrument that convicted the porous-collision
+bug; the re-exported pack must be acquitted by it.
+
+Usage:
+  python tools/diag_walkability_grid.py [pack_dir] [x0 y0 x1 y1]
+
+Defaults: the shipped dusk pack, region 208 126 248 148 (the town the
+evidence came from). Exit code 1 if any walkable cell carries a
+structures-layer tile (post-fix expectation: zero, doors included).
+"""
+
 import base64
 import json
+import sys
 
-p = r"C:\Users\headc\Documents\Wildshot-Adventures\assets\worldforge-packs\small-cold-coastal-pack-dusk"
-w = json.load(open(p + r"\walkability.json"))
+pack = (
+    sys.argv[1]
+    if len(sys.argv) > 1
+    else r"assets\worldforge-packs\small-cold-coastal-pack-dusk"
+)
+region = [int(a) for a in sys.argv[2:6]] if len(sys.argv) >= 6 else [208, 126, 248, 148]
+
+w = json.load(open(pack + r"\walkability.json"))
 W, H = w["width"], w["height"]
 raw = base64.b64decode(w["grid"])
 
@@ -12,10 +33,10 @@ def walkable(x, y):
     return (raw[i // 8] >> (i % 8)) & 1
 
 
-tmj = json.load(open(p + r"\resolved\resolved-map.tmj"))
+tmj = json.load(open(pack + r"\resolved\resolved-map.tmj"))
 layers = {L["name"]: L["data"] for L in tmj["layers"] if L.get("type") == "tilelayer"}
 
-x0, y0, x1, y1 = 208, 126, 248, 148
+x0, y0, x1, y1 = region
 print("legend: S=structure(solid) s=structure(WALKABLE) W=wall F=fence")
 print("        p=props(solid) P=props(WALKABLE) o=overhang(solid) O=overhang(WALKABLE)")
 print("        #=other-solid .=open-walkable   region", (x0, y0), "-", (x1, y1))
@@ -28,13 +49,23 @@ for y in range(y0, y1):
         ch = "." if wk else "#"
         if layers["structures"][idx]:
             ch = "s" if wk else "S"
-        elif layers["wall"][idx]:
+        elif layers.get("wall") and layers["wall"][idx]:
             ch = "W"
-        elif layers["fence"][idx]:
+        elif layers.get("fence") and layers["fence"][idx]:
             ch = "F"
-        elif layers["props-overhang"][idx]:
+        elif layers.get("props-overhang") and layers["props-overhang"][idx]:
             ch = "O" if wk else "o"
-        elif layers["props"][idx]:
+        elif layers.get("props") and layers["props"][idx]:
             ch = "P" if wk else "p"
         row += ch
     print(f"{y:4d} {row}")
+
+structures = layers["structures"]
+n = sum(1 for g in structures if g)
+on_walk = sum(1 for idx, g in enumerate(structures) if g and walkable(idx % W, idx // W))
+flood = w["floodCount"]
+total_walk = sum(1 for y in range(H) for x in range(W) if walkable(x, y))
+print()
+print(f"summary: structure tiles={n}, ON WALKABLE={on_walk} (post-fix expectation: 0)")
+print(f"         walkable cells={total_walk}, floodCount={flood}, spawnCell={w['spawnCell']}")
+sys.exit(1 if on_walk else 0)

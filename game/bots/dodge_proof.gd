@@ -239,8 +239,11 @@ static func _live_hostile_count(world: RefCounted) -> int:
 
 
 ## Min live clearance (tiles) between the player edge and any hostile
-## threat edge this tick — projectiles AND contact-damage bodies — the
-## report's near-miss figure.
+## threat edge this tick — projectiles, contact-damage bodies, AND
+## armed hostile zones (ledger #13 closed, M7: hazard-only enemies
+## previously read near −1 "nothing near" while zones were being
+## dodged; an ARMED zone's edge now counts. Pre-arm zones stay
+## unsampled — they are warnings, not yet threats).
 static func _nearest_threat_clearance(world: RefCounted, player: RefCounted) -> float:
 	var pool: RefCounted = world.projectiles
 	var act: PackedByteArray = pool.active
@@ -266,6 +269,14 @@ static func _nearest_threat_clearance(world: RefCounted, player: RefCounted) -> 
 		var epos: Vector2 = e.pos
 		var d2: float = ppos.distance_to(epos) - e.radius - pr
 		best = minf(best, d2)
+	var t: int = world.tick
+	for hz: Dictionary in world.hazards:
+		if int(hz.faction) != ActorState.FACTION_HOSTILE:
+			continue
+		if t < int(hz.arm_at_tick) or t > int(hz.linger_until):
+			continue
+		var d3: float = ppos.distance_to(Vector2(hz.pos)) - float(hz.radius) - pr
+		best = minf(best, d3)
 	return best
 
 
