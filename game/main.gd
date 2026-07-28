@@ -182,28 +182,27 @@ func _process(_delta: float) -> void:
 			print("replay saved: ", ProjectSettings.globalize_path(path))
 
 
-## M5 stress-density screenshot audit (docs/12 §4 M5, Laws 1/2): let the
-## scripted run reach peak density, then capture the frame to reports/.
-## Legibility is judged by eyes on the PNG — this produces the evidence.
-func _run_density_audit() -> void:
+## Stress-density screenshot audit (M5 Laws 1/2; M6 9-row max + min
+## variants): let the scripted run reach peak density — past the
+## Blightcasters' first cast-arm cycle so armed zones sit under the VFX
+## pile — then capture the frame to reports/. Legibility is judged by
+## eyes on the PNG — this produces the evidence.
+func _run_density_audit(out_name: String) -> void:
 	while world.tick < 420:
 		await get_tree().process_frame
 	await RenderingServer.frame_post_draw
 	var img := get_viewport().get_texture().get_image()
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://reports"))
-	img.save_png(ProjectSettings.globalize_path("res://reports/density_audit_m5.png"))
+	img.save_png(ProjectSettings.globalize_path("res://reports/" + out_name))
 	print(
 		(
-			"density audit captured: reports/density_audit_m5.png (tick %d, %d live hostiles)"
-			% [world.tick, world.enemies.size()]
+			"density audit captured: reports/%s (tick %d, %d live hostiles)"
+			% [out_name, world.tick, world.enemies.size()]
 		)
 	)
 	get_tree().quit()
 
 
-## CORE-50 UI/text scaling: integer multiples only (kit contract), applied
-## live to every HUD surface via a scaled duplicate of the kit theme.
-## World rendering is untouched — this scales UI, not the game.
 ## Idempotent creation of the two named buses (Law 7 / CORE-50): Sfx and
 ## KeyThreats, both sending to Master. Code-created so headless runs and
 ## tests need no bus-layout resource.
@@ -226,6 +225,9 @@ func _apply_audio_level(bus_name: String, level_index: int) -> void:
 	AudioServer.set_bus_volume_db(idx, linear_to_db(maxf(lin, 0.0001)))
 
 
+## CORE-50 UI/text scaling: integer multiples only (kit contract), applied
+## live to every HUD surface via a scaled duplicate of the kit theme.
+## World rendering is untouched — this scales UI, not the game.
 func _apply_ui_scale(k: int) -> void:
 	var th: Theme = load("res://ui/theme.tres").duplicate()
 	th.default_base_scale = float(k)
@@ -372,7 +374,12 @@ func _ready() -> void:
 	# scenario names its arena (visuals + collision from one definition).
 	# --audit=density (M5): fixed stress scenario + scripted max-VFX input
 	# + a Laws-1/2 screenshot to reports/ — persisted settings untouched.
-	var audit_mode := BootArgs.get_arg("audit") == "density"
+	# --audit=density_min (M6 9-row): the same run with every cosmetic/
+	# friendly option forced to its LOWEST setting — the capture proves
+	# hostile channels stay fully visible when the player dials down.
+	var audit_arg := BootArgs.get_arg("audit")
+	var audit_mode := audit_arg == "density" or audit_arg == "density_min"
+	var audit_min := audit_arg == "density_min"
 	var scenario: Resource = load(
 		(
 			"res://tests/bot_scenarios/audit_density.tres"
@@ -439,6 +446,13 @@ func _ready() -> void:
 		effects_lib.density = EFFECT_DENSITY_LEVELS[di]
 		effects_lib.opacity = EFFECT_OPACITY_LEVELS[oi]
 		effects_lib.flash_reduction = bool(Config.get_setting("effects", "flash_reduction", false))
+	elif audit_min:
+		# Minimum-density render pass (M6 9-row): everything the player
+		# CAN dial down IS dialed down; the hostile clamp is what the
+		# capture demonstrates.
+		effects_lib.density = EFFECT_DENSITY_LEVELS[2]
+		effects_lib.opacity = EFFECT_OPACITY_LEVELS[2]
+		effects_lib.flash_reduction = true
 
 	var standins := StandinView.new()
 	standins.world = world
@@ -517,6 +531,9 @@ func _ready() -> void:
 		feedback_settings.kill = true
 		feedback_settings.blocked = true
 		feedback_settings.damage_numbers = DamageNumberView.Mode.FULL
+		if audit_min:
+			# The everything-down accessibility configuration.
+			feedback_settings.damage_numbers = DamageNumberView.Mode.REDUCED
 
 	var flashes := FlashView.new()
 	flashes.driver = driver
@@ -764,7 +781,7 @@ func _ready() -> void:
 		# DAMAGE_IMMUNE; the screenshot is the artifact, not the run.
 		world.enqueue_command({"type": SimWorld.Command.SET_GOD, "on": true})
 		density_meter.visible = true
-		_run_density_audit()
+		_run_density_audit("density_audit_m6_min.png" if audit_min else "density_audit_m6.png")
 
 	print(
 		(
