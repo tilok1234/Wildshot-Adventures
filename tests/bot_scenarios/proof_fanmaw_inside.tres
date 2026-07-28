@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"proof_fanmaw_inside"
+display_name = "PROOF: Fanmaw deep-spawn escape (caught inside the envelope)"
+player_spawn = Vector2(24, 16)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"fanmaw": PackedVector2Array(26.5, 16)
+}
+default_seed = 205

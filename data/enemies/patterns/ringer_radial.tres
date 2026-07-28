@@ -1,0 +1,178 @@
+[gd_resource type="Resource" load_steps=14 format=3]
+
+[ext_resource type="Script" path="res://data/pattern_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+[sub_resource type="Resource" id="shot0"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 5.0
+radius = 0.2
+damage = 7
+ttl_ticks = 72
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="shot1"]
+script = ExtResource("2")
+angle_offset_deg = 30.0
+speed = 5.0
+radius = 0.2
+damage = 7
+ttl_ticks = 72
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="shot2"]
+script = ExtResource("2")
+angle_offset_deg = 60.0
+speed = 5.0
+radius = 0.2
+damage = 7
+ttl_ticks = 72
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="shot3"]
+script = ExtResource("2")
+angle_offset_deg = 90.0
+speed = 5.0
+radius = 0.2
+damage = 7
+ttl_ticks = 72
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="shot4"]
+script = ExtResource("2")
+angle_offset_deg = 120.0
+speed = 5.0
+radius = 0.2
+damage = 7
+ttl_ticks = 72
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="shot5"]
+script = ExtResource("2")
+angle_offset_deg = 150.0
+speed = 5.0
+radius = 0.2
+damage = 7
+ttl_ticks = 72
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="shot6"]
+script = ExtResource("2")
+angle_offset_deg = 180.0
+speed = 5.0
+radius = 0.2
+damage = 7
+ttl_ticks = 72
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="shot7"]
+script = ExtResource("2")
+angle_offset_deg = 210.0
+speed = 5.0
+radius = 0.2
+damage = 7
+ttl_ticks = 72
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="shot8"]
+script = ExtResource("2")
+angle_offset_deg = 240.0
+speed = 5.0
+radius = 0.2
+damage = 7
+ttl_ticks = 72
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="shot9"]
+script = ExtResource("2")
+angle_offset_deg = 270.0
+speed = 5.0
+radius = 0.2
+damage = 7
+ttl_ticks = 72
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="shot10"]
+script = ExtResource("2")
+angle_offset_deg = 300.0
+speed = 5.0
+radius = 0.2
+damage = 7
+ttl_ticks = 72
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="shot11"]
+script = ExtResource("2")
+angle_offset_deg = 330.0
+speed = 5.0
+radius = 0.2
+damage = 7
+ttl_ticks = 72
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[resource]
+script = ExtResource("1")
+id = &"ringer_radial"
+pattern_id = 14
+shots = Array[Resource]([SubResource("shot0"), SubResource("shot1"), SubResource("shot2"), SubResource("shot3"), SubResource("shot4"), SubResource("shot5"), SubResource("shot6"), SubResource("shot7"), SubResource("shot8"), SubResource("shot9"), SubResource("shot10"), SubResource("shot11")])

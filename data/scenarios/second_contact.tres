@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"second_contact"
+display_name = "Second Contact (M6: Fanmaw + Ringer)"
+player_spawn = Vector2(24, 16)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"fanmaw": PackedVector2Array(40, 16),
+"ringer": PackedVector2Array(29, 12)
+}
+default_seed = 10

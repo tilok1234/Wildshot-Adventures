@@ -91,10 +91,18 @@ assembler, projectile, worldforge gates).
 
 Sim first, then data, then proofs — the M5 pattern. Per-behavior needs:
 
-1. **Fanmaw** (fan/cone anchor) + **Ringer** (radial slow chaser):
-   PURE DATA — PatternDef volleys (5-shot 60° fan; 12-shot radial via
-   angle offsets) + EnemyDefs at §3.4 stats. ANCHOR policy exists;
-   CHASER exists.
+1. ~~**Fanmaw** + **Ringer**~~ DONE 2026-07-28 (session log): defs at
+   §3.4 exact, patterns 13/14, roster indexes 2/3, smoke-mechanized
+   contracts, solos + deep-spawn escape + second_contact composition
+   proofs ALL PASS. THREE things the next session must know: (a) the
+   DodgeBot now models ANCHOR enemies as data-derived keep-out discs
+   and orbits ONLY mobile enemies — anchor-free scenarios verified
+   byte-identical; (b) canary_undodgeable is now a FOUR-wall box
+   (the single wall was only undodgeable while the bot chose to stay
+   close — geometric MUST-FAIL now, t23); (c) scenario spawn layouts
+   must not open inside an anchor's envelope and must not leave a
+   habitable pocket between an anchor's disc and a wall (both bit
+   second_contact; heatmaps tell the story in the session log).
 2. **Leadshot** (intercept-aimed flanker): needs (a) INTERCEPT aim
    mode on PatternDef — requires target VELOCITY as sim state
    (ActorState.prev_pos is presentation-only and BANNED for sim reads;

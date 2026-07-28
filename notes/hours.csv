@@ -53,3 +53,4 @@ timestamp,action,note
 2026-07-28T01:05:15,stop,"Session close: generated world playable + all docs/tracker/handoff current. Next chat = M6 from notes/HANDOFF.md."
 2026-07-28T01:09:36,start,"M6 session start: remaining roster (Fanmaw/Ringer/Leadshot/Blightcaster) per HANDOFF work order"
 2026-07-28T01:13:29,note,"DECISION (designer, casual-approve): all four M6 actor mappings confirmed (Leadshot=bandit:sniper, Fanmaw=carniplant:snapvine, Ringer=eyemonster:watcher, Blightcaster=cultist:acolyte); polished sheet drops expected later, same family:variant slots"
+2026-07-28T02:03:47,note,"M6 behaviors 3-4 DONE: Fanmaw+Ringer live at 3.4-exact, smoke-mechanized, DodgeBot learned anchors (keep-out discs, mobile-only centroid), canary strengthened to 4-wall geometric MUST-FAIL, second_contact PASS at solo-ringer margins; all gates green"

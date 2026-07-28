@@ -11,6 +11,8 @@ const PATTERN_NAMES := {
 	3: "Wheelblade",
 	10: "Husk Archer's aimed shot",
 	11: "Rusher's slash",
+	13: "Fanmaw's fan",
+	14: "Ringer's ring burst",
 	-1: "Nova Burst",
 	-2: "Blast Rune",
 	-3: "contact",

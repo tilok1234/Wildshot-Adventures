@@ -10,7 +10,7 @@ display_name = "CANARY: undodgeable (bot MUST fail)"
 player_spawn = Vector2(24, 16)
 standin_positions = PackedVector2Array()
 enemy_spawns = {
-"canary_wall": PackedVector2Array(29, 16)
+"canary_wall": PackedVector2Array(29, 16, 19, 16, 24, 11, 24, 21)
 }
 extra_enemy_defs = Array[Resource]([ExtResource("2")])
 default_seed = 101

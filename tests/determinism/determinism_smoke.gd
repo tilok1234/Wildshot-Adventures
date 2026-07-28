@@ -76,6 +76,8 @@ func _init() -> void:
 		failed = true
 	if not _check_enemy_behavior():
 		failed = true
+	if not _check_m6_data_enemies():
+		failed = true
 
 	if failed:
 		quit(1)
@@ -530,6 +532,178 @@ func _run_husk_once(hdef: Resource) -> Dictionary:
 		"aimed_hits": aimed_hits,
 		"settled_min": settled_min,
 		"settled_max": settled_max,
+	}
+
+
+## M6 pure-data enemy contracts (docs/12 §3.4 rows Fanmaw/Ringer),
+## mechanized like the M5 pair:
+## 1. double-run hash equality for both (the data roster stays deterministic);
+## 2. Fanmaw ANCHORS — position never changes — telegraphs exactly its data
+##    lead before every volley, fires on its data period, and the fan hits
+##    a standing player with pattern-13 damage;
+## 3. Ringer CHASES — closes distance between volleys — telegraphs/fires on
+##    its data timings, and the ring hits a standing player (pattern 14);
+## 4. volley size read from the pool on each first-fire tick equals the
+##    SHIPPED shots-array size (5 fan / 12 radial);
+## 5. all timings/sizes read from the shipped .tres defs — never re-hardcoded.
+func _check_m6_data_enemies() -> bool:
+	var ok := true
+	for spec: Array in [
+		[load("res://data/enemies/fanmaw.tres"), true],
+		[load("res://data/enemies/ringer.tres"), false],
+	]:
+		var def: Resource = spec[0]
+		var anchored: bool = spec[1]
+		var eid := String(def.id)
+		var slot: Resource = def.emitters[0]
+		var pattern: Resource = slot.pattern
+		var pid := int(pattern.pattern_id)
+		var volley_size: int = pattern.shots.size()
+		var lead := int(slot.telegraph_ticks)
+		var period := int(slot.cooldown_ticks)
+		var a := _run_solo_enemy_once(def)
+		var b := _run_solo_enemy_once(def)
+		if a.hashes != b.hashes:
+			printerr("FAIL: %s runs diverge" % eid)
+			ok = false
+		var telegraphs: Array = a.telegraph_ticks_list
+		var attacks: Array = a.attack_ticks
+		if attacks.size() < 3:
+			printerr("FAIL: only %d %s volleys" % [attacks.size(), eid])
+			ok = false
+		if telegraphs.size() != attacks.size():
+			printerr(
+				"FAIL: %s %d telegraphs vs %d volleys" % [eid, telegraphs.size(), attacks.size()]
+			)
+			ok = false
+		for i in mini(telegraphs.size(), attacks.size()):
+			if attacks[i] - telegraphs[i] != lead:
+				printerr(
+					(
+						"FAIL: %s telegraph lead %d != %d at volley %d"
+						% [eid, attacks[i] - telegraphs[i], lead, i]
+					)
+				)
+				ok = false
+				break
+		for i in range(1, attacks.size()):
+			if attacks[i] - attacks[i - 1] != period:
+				printerr(
+					"FAIL: %s fire period %d != %d" % [eid, attacks[i] - attacks[i - 1], period]
+				)
+				ok = false
+				break
+		for i in a.volley_counts.size():
+			if int(a.volley_counts[i]) != volley_size:
+				printerr(
+					(
+						"FAIL: %s volley %d spawned %d shots (shipped pattern has %d)"
+						% [eid, i, int(a.volley_counts[i]), volley_size]
+					)
+				)
+				ok = false
+				break
+		if int(a.pattern_hits) == 0:
+			printerr("FAIL: no pattern-%d hit landed on the standing player (%s)" % [pid, eid])
+			ok = false
+		if int(a.other_hits) != 0:
+			printerr("FAIL: %s landed %d non-pattern-%d hits" % [eid, int(a.other_hits), pid])
+			ok = false
+		if anchored:
+			if float(a.moved_max) > 0.0001:
+				printerr("FAIL: %s moved %.4f tiles — ANCHOR must hold ground" % [eid, a.moved_max])
+				ok = false
+		else:
+			if float(a.dist_min) > float(a.dist_start) - 1.0:
+				printerr(
+					(
+						"FAIL: %s closed only %.2f tiles — CHASER must press in"
+						% [eid, float(a.dist_start) - float(a.dist_min)]
+					)
+				)
+				ok = false
+		if ok:
+			print(
+				(
+					"m6 %s ok: volleys=%d x%d shots lead=%d period=%d hits=%d moved=%.3f closed=%.2f"
+					% [
+						eid,
+						attacks.size(),
+						volley_size,
+						lead,
+						period,
+						int(a.pattern_hits),
+						float(a.moved_max),
+						float(a.dist_start) - float(a.dist_min),
+					]
+				)
+			)
+	return ok
+
+
+## Solo M6 enemy micro-world: standing player at (24,16), enemy at (30,16)
+## (inside both trigger ranges), 900 ticks of null input. Volley size is
+## counted from PROJECTILE_SPAWNED events on each ATTACK_STARTED tick —
+## a pool read would miss shots that spawn point-blank and despawn on
+## their own spawn tick (a pressed-in Ringer does exactly that).
+func _run_solo_enemy_once(def: Resource) -> Dictionary:
+	var world := SimWorld.new()
+	world.setup(23, _build_bitgrid())
+	world.set_enemy_defs([def])
+	var player := world.add_player(Vector2(24.0, 16.0))
+	var enemy: RefCounted = world.add_enemy(0, Vector2(30.0, 16.0))
+	var slot: Resource = def.emitters[0]
+	var pattern: Resource = slot.pattern
+	var pid := int(pattern.pattern_id)
+	var spawn_pos: Vector2 = enemy.pos
+	var dist_start: float = spawn_pos.distance_to(player.pos)
+	var hashes: Array[int] = []
+	var telegraph_ticks_list: Array[int] = []
+	var attack_ticks: Array[int] = []
+	var volley_counts: Array[int] = []
+	var pattern_hits := 0
+	var other_hits := 0
+	var moved_max := 0.0
+	var dist_min := dist_start
+	for t in 900:
+		world.step([null])
+		var fired := false
+		var spawned_this_tick := 0
+		for ev: Dictionary in world.events:
+			match int(ev.type):
+				SimEvents.Type.TELEGRAPH_STARTED:
+					if int(ev.id) == enemy.id:
+						telegraph_ticks_list.append(int(ev.tick))
+				SimEvents.Type.ATTACK_STARTED:
+					if int(ev.get("enemy", 0)) == enemy.id:
+						attack_ticks.append(int(ev.tick))
+						fired = true
+				SimEvents.Type.PROJECTILE_SPAWNED:
+					if int(ev.pattern) == pid:
+						spawned_this_tick += 1
+				SimEvents.Type.DAMAGE_APPLIED:
+					if int(ev.target) == player.id:
+						if int(ev.pattern) == pid:
+							pattern_hits += 1
+						else:
+							other_hits += 1
+		if fired:
+			volley_counts.append(spawned_this_tick)
+		var epos: Vector2 = enemy.pos
+		moved_max = maxf(moved_max, spawn_pos.distance_to(epos))
+		dist_min = minf(dist_min, epos.distance_to(player.pos))
+		if (world.tick % HASH_EVERY) == 0:
+			hashes.append(world.state_hash())
+	return {
+		"hashes": hashes,
+		"telegraph_ticks_list": telegraph_ticks_list,
+		"attack_ticks": attack_ticks,
+		"volley_counts": volley_counts,
+		"pattern_hits": pattern_hits,
+		"other_hits": other_hits,
+		"moved_max": moved_max,
+		"dist_start": dist_start,
+		"dist_min": dist_min,
 	}
 
 

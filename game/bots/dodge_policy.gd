@@ -18,6 +18,7 @@ const Kinematics := preload("res://sim/systems/kinematics.gd")
 const ActorState := preload("res://sim/actor_state.gd")
 const EnemyState := preload("res://sim/enemy_state.gd")
 const ProjectilePool := preload("res://sim/projectile_pool.gd")
+const EnemyDef := preload("res://data/enemy_def.gd")
 
 ## Projection depth K, in ticks. 60 (1 s) is enough for simulated pursuit
 ## to reveal a closing corner BEFORE the bot enters it — 30/45 with
@@ -30,6 +31,19 @@ const HORIZON := 60
 ## (2531 ticks wedged in an aisle nook, proof FAIL #3). Sits between
 ## the Rusher's slash trigger (1.2) and the Husk's fire trigger (7).
 const RING := 4.0
+## ANCHOR-policy enemies cannot chase, so standing outside their shot
+## reach is free and permanent — the CORE-44 lesson packs teach. Each
+## live anchor projects a keep-out disc of its data reach plus this pad;
+## candidates ending inside are penalized (M6 fanmaw composition: RING-4
+## centroid orbiting parked the bot inside the fan envelope and died
+## pinched against the chaser — the bot learns anchors like it learned
+## melee at M5).
+const ANCHOR_PAD := 0.5
+## Keep-out weight per tile of anchor-disc penetration. Strictly above
+## the RING deviation weight (2.0) so the summed score slopes outward
+## everywhere inside the disc instead of plateauing against the ring
+## pull.
+const ANCHOR_W := 3.0
 ## Threat inflation (tiles): projected overlaps use hitbox + this margin,
 ## so near-misses count against a candidate before they become hits.
 const MARGIN := 0.12
@@ -97,6 +111,10 @@ static func compute_frame(world: RefCounted, player_index: int) -> RefCounted:
 			ring_score -= absf(end_pos.distance_to(anchor) - RING) * 2.0
 			var adv := wrapf((end_pos - anchor).angle() - (p.pos - anchor).angle(), -PI, PI)
 			ring_score += adv * 0.8
+		var zones: Array = threats.anchor_zones
+		for z: Dictionary in zones:
+			var zpen := maxf(0.0, float(z.reach) - end_pos.distance_to(Vector2(z.pos)))
+			ring_score -= zpen * ANCHOR_W
 		var better := false
 		if survival > best_survival:
 			better = true
@@ -295,6 +313,7 @@ static func _project_threats(world: RefCounted, p: RefCounted) -> Dictionary:
 	var bodies: Array = []
 	var soft_bodies: Array = []
 	var hazards: Array = []
+	var anchor_zones: Array = []
 	var defs: Array = world.enemy_defs
 	for e: RefCounted in world.enemies:
 		var def_index: int = e.def_index
@@ -304,14 +323,25 @@ static func _project_threats(world: RefCounted, p: RefCounted) -> Dictionary:
 		var epos: Vector2 = e.pos
 		if epos.distance_to(ppos) > RELEVANT_R:
 			continue
-		# Every live enemy repels positioning (they attack when close).
+		# Mobile enemies repel positioning (they attack when close).
 		# HARD pursuit threats: contact-damage bodies (radius = body) AND
 		# melee slashers — their trigger range is a do-not-enter bubble
 		# (the sim starts a windup at center-distance <= trigger), pursued
 		# with the same simulation. Without this, removing contact damage
 		# deleted the bot's long-horizon pack pressure and compositions
 		# failed.
-		soft_bodies.append(epos)
+		# ANCHOR-policy enemies are keep-out DISCS (shot reach from the
+		# def's own data), never orbit targets: an anchor cannot close the
+		# gap, so respecting its envelope costs nothing — while averaging
+		# it into the stationkeeping centroid dragged the bot to point-
+		# blank range of the pack's chasers (second_contact pinch). Only
+		# MOBILE enemies join the orbit cluster.
+		if int(def.movement_policy) == EnemyDef.MovementPolicy.ANCHOR:
+			var reach := _anchor_reach(def, dt)
+			if reach > 0.0:
+				anchor_zones.append({"pos": epos, "reach": reach + ANCHOR_PAD})
+		else:
+			soft_bodies.append(epos)
 		var melee_trigger := _melee_trigger(def)
 		if int(def.contact_damage) > 0 or melee_trigger > 0.0:
 			var eff_r: float = e.radius
@@ -351,8 +381,26 @@ static func _project_threats(world: RefCounted, p: RefCounted) -> Dictionary:
 		"bodies": bodies,
 		"soft_bodies": soft_bodies,
 		"hazards": hazards,
-		"count": n + soft_bodies.size() + hazards.size(),
+		"anchor_zones": anchor_zones,
+		"count": n + soft_bodies.size() + hazards.size() + anchor_zones.size(),
 	}
+
+
+## Max shot reach across a def's emitter slots: spawn offset + flight
+## distance (speed x ttl, closed form — same DT the sim integrates with)
+## + shot radius. 0.0 when the def has no shots.
+static func _anchor_reach(def: Resource, dt: float) -> float:
+	var reach := 0.0
+	var emitters: Array = def.emitters
+	for es: Resource in emitters:
+		var pattern: Resource = es.pattern
+		if pattern == null:
+			continue
+		var shots: Array = pattern.shots
+		for shot: Resource in shots:
+			var flight := float(shot.speed) * float(int(shot.ttl_ticks)) * dt
+			reach = maxf(reach, float(shot.spawn_offset) + flight + float(shot.radius))
+	return reach
 
 
 ## Smallest melee-class trigger range on a def (emitter slots with

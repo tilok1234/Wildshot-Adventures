@@ -296,11 +296,26 @@ same family:variant slots; sheets imported; slash-borrows-fang ledger
 #10 still open); weekly
 GIF #2 (wolves/forest/slash/GENERATED WORLD = fresh material); the
 first_contact adjudication now ALSO covers the world_walk full-pack
-fight (same failure class, same ruling). Next code milestone: M6 (docs/12
-§4 — remaining four behaviors w/ proofs: Leadshot needs INTERCEPT aim
-(target vel = sim state, SERIAL bump) + FLANKER policy; Blightcaster
-needs lingering multi-hit hazards (hazard_step ext, SERIAL bump);
-Fanmaw/Ringer are pure data; Yard Warden elite + PhaseList;
-EffectLibrary pass (ledger #9: cast-flash, density/opacity scaler,
-flash reduction); 9-row acceptance; audio cue map; CORE-34 no-ability
-clear).**
+fight (same failure class, same ruling). M6 IN PROGRESS: FANMAW + RINGER LIVE
+2026-07-28 (pure data at §3.4 EXACT: fan 5x60° pattern 13 / radial
+12x30° pattern 14; roster indexes 2/3 append-only; smoke mechanizes
+both contracts — lead 30/36, period 150/180, anchor-stillness,
+chaser-close, volley sizes from spawn events; Law-4 ordering stays
+monotone 10<12<30<36; §2.6 sustained worst-case now Ringer-led:
+24x4.8=115.2<150, live in the meter). DodgeBot LEARNED ANCHORS (like
+melee at M5): ANCHOR-policy enemies are data-derived keep-out discs
+(shot reach + pad, one-sided W=3), excluded from the orbit centroid —
+mobile enemies only; anchor-free proofs verified BYTE-IDENTICAL.
+CANARY STRENGTHENED: undodgeable wall is now four emitters boxing the
+spawn (single wall was only undodgeable because the old policy chose
+to stay close — MUST-FAIL is geometric now, fails t23). PROOFS:
+fanmaw, fanmaw_inside (deep-spawn escape through active fans),
+ringer solos + second_contact composition ALL PASS 3.0 ability-off
+(near 0.121 = solo-ringer margin); first_contact FAIL preserved
+untouched for adjudication. second_contact (M6 pack: fanmaw 40,16
+zone-guards the east, ringer chases — pull-the-chaser CORE-44 lesson)
+in the picker. Remaining M6: Leadshot (INTERCEPT aim, target vel =
+sim state, SERIAL 10 + golden regen; FLANKER policy), Blightcaster
+(lingering multi-hit hazards, hazard_step ext, SERIAL bump), Yard
+Warden elite + PhaseList, EffectLibrary pass (ledger #9), 9-row
+acceptance, audio cue map, CORE-34 no-ability clear.**

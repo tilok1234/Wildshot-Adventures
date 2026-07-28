@@ -4,11 +4,11 @@
 	"horizon_ticks": 60,
 	"kind": "dodge_proof",
 	"label": "mechanical verification (no gate code reads this — CORE-53)",
-	"pass": false,
+	"pass": true,
 	"policy": "primary-16dir-stay-closed-form",
 	"runs": [
 		{
-			"first_hit_tick": 23,
+			"first_hit_tick": -1,
 			"heatmap": [
 				[
 					0,
@@ -58,7 +58,7 @@
 					0,
 					0,
 					0,
-					24,
+					0,
 					0,
 					0,
 					0,
@@ -71,9 +71,9 @@
 					0,
 					0,
 					0,
+					3520,
+					80,
 					0,
-					0,
-					5,
 					0,
 					0,
 					0,
@@ -123,14 +123,14 @@
 					0
 				]
 			],
-			"hits": 10,
-			"near_miss_min": 0.0260979175567627,
-			"repro": "res://reports/repro_canary_undodgeable_seed1.wsr",
-			"seed": 1,
-			"survived_ticks": 29
+			"hits": 0,
+			"near_miss_min": 2.67773337066174,
+			"repro": "",
+			"seed": 203,
+			"survived_ticks": 3600
 		},
 		{
-			"first_hit_tick": 23,
+			"first_hit_tick": -1,
 			"heatmap": [
 				[
 					0,
@@ -180,7 +180,7 @@
 					0,
 					0,
 					0,
-					24,
+					0,
 					0,
 					0,
 					0,
@@ -193,9 +193,9 @@
 					0,
 					0,
 					0,
+					3520,
+					80,
 					0,
-					0,
-					5,
 					0,
 					0,
 					0,
@@ -245,14 +245,14 @@
 					0
 				]
 			],
-			"hits": 10,
-			"near_miss_min": 0.0260979175567627,
-			"repro": "res://reports/repro_canary_undodgeable_seed2.wsr",
-			"seed": 2,
-			"survived_ticks": 29
+			"hits": 0,
+			"near_miss_min": 2.67773337066174,
+			"repro": "",
+			"seed": 204,
+			"survived_ticks": 3600
 		},
 		{
-			"first_hit_tick": 23,
+			"first_hit_tick": -1,
 			"heatmap": [
 				[
 					0,
@@ -302,7 +302,7 @@
 					0,
 					0,
 					0,
-					24,
+					0,
 					0,
 					0,
 					0,
@@ -315,9 +315,9 @@
 					0,
 					0,
 					0,
+					3520,
+					80,
 					0,
-					0,
-					5,
 					0,
 					0,
 					0,
@@ -367,20 +367,266 @@
 					0
 				]
 			],
-			"hits": 10,
-			"near_miss_min": 0.0260979175567627,
-			"repro": "res://reports/repro_canary_undodgeable_seed3.wsr",
-			"seed": 3,
-			"survived_ticks": 29
+			"hits": 0,
+			"near_miss_min": 2.67773337066174,
+			"repro": "",
+			"seed": 205,
+			"survived_ticks": 3600
+		},
+		{
+			"first_hit_tick": -1,
+			"heatmap": [
+				[
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					0,
+					0,
+					0,
+					3520,
+					80,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				]
+			],
+			"hits": 0,
+			"near_miss_min": 2.67773337066174,
+			"repro": "",
+			"seed": 206,
+			"survived_ticks": 3600
+		},
+		{
+			"first_hit_tick": -1,
+			"heatmap": [
+				[
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					0,
+					0,
+					0,
+					3520,
+					80,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0,
+					0
+				]
+			],
+			"hits": 0,
+			"near_miss_min": 2.67773337066174,
+			"repro": "",
+			"seed": 207,
+			"survived_ticks": 3600
 		}
 	],
-	"scenario": "canary_undodgeable",
-	"scenario_path": "res://tests/bot_scenarios/canary_undodgeable.tres",
+	"scenario": "proof_fanmaw",
+	"scenario_path": "res://tests/bot_scenarios/proof_fanmaw.tres",
 	"seeds": [
-		1,
-		2,
-		3
+		203,
+		204,
+		205,
+		206,
+		207
 	],
 	"speed": 3.0,
-	"ticks_per_run": 1800
+	"ticks_per_run": 3600
 }
