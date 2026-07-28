@@ -1,5 +1,13 @@
 # Wildshot Adventures — Game Repo Contract
 
+> **ECOSYSTEM POINTER (2026-07-29, designer-accepted doc 16).** This
+> repo is one of seven in the Wildshot project. The shared map — what
+> each repo owns, its authority docs, and the hard cross-repo rules
+> (authority flows planning→game→upstream-asks; packs are frozen and
+> validated at every boundary; pins are deliberate) — lives at
+> `Wildshot_adventure_final_planning/docs/16-ECOSYSTEM_MAP.md`.
+> Read your repo's row before working here.
+
 Committed at M0 per the approved Phase A build plan (planning repo
 `docs/12-PHASE_A_LAB_BUILD_PLAN.md` §5). **Every session — human or AI — works
 under this contract.** Read it before touching anything.
