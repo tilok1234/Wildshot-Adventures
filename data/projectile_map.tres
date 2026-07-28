@@ -12,13 +12,19 @@ shots = {
 11: "v0:hostile-fang",
 12: "v0:hostile-dart",
 13: "v0:hostile-fang",
-14: "v0:hostile-burr"
+14: "v0:hostile-burr",
+16: "v0:hostile-heavy-orb",
+17: "v0:hostile-heavy-orb",
+19: "v0:hostile-heavy-orb",
+20: "v0:hostile-heavy-orb",
+21: "v0:hostile-heavy-orb"
 }
 alts = {
 3: "v0:friendly-wheelblade-f2"
 }
 zones = {
 15: "v0:hostile-hazard-zone",
+18: "v0:hostile-hazard-zone",
 -2: "v0:friendly-blast-rune"
 }
 arm_strip = "v0:hostile-hazard-arm"

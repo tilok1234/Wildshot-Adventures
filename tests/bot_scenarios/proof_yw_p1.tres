@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"proof_yw_p1"
+display_name = "Proof: Yard Warden P1 (movement-only holds 100% HP)"
+player_spawn = Vector2(22, 16)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"yard_warden": PackedVector2Array(30, 16)
+}
+default_seed = 208

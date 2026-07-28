@@ -1,0 +1,108 @@
+[gd_resource type="Resource" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://data/pattern_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+[sub_resource type="Resource" id="shot0"]
+script = ExtResource("2")
+angle_offset_deg = -36.0
+speed = 6.0
+radius = 0.18
+damage = 9
+ttl_ticks = 80
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.5
+
+[sub_resource type="Resource" id="shot1"]
+script = ExtResource("2")
+angle_offset_deg = -24.0
+speed = 6.0
+radius = 0.18
+damage = 9
+ttl_ticks = 80
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.5
+
+[sub_resource type="Resource" id="shot2"]
+script = ExtResource("2")
+angle_offset_deg = -12.0
+speed = 6.0
+radius = 0.18
+damage = 9
+ttl_ticks = 80
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.5
+
+[sub_resource type="Resource" id="shot3"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 6.0
+radius = 0.18
+damage = 9
+ttl_ticks = 80
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.5
+
+[sub_resource type="Resource" id="shot4"]
+script = ExtResource("2")
+angle_offset_deg = 12.0
+speed = 6.0
+radius = 0.18
+damage = 9
+ttl_ticks = 80
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.5
+
+[sub_resource type="Resource" id="shot5"]
+script = ExtResource("2")
+angle_offset_deg = 24.0
+speed = 6.0
+radius = 0.18
+damage = 9
+ttl_ticks = 80
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.5
+
+[sub_resource type="Resource" id="shot6"]
+script = ExtResource("2")
+angle_offset_deg = 36.0
+speed = 6.0
+radius = 0.18
+damage = 9
+ttl_ticks = 80
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.5
+
+[resource]
+script = ExtResource("1")
+id = &"yw_fan"
+pattern_id = 17
+shots = Array[Resource]([SubResource("shot0"), SubResource("shot1"), SubResource("shot2"), SubResource("shot3"), SubResource("shot4"), SubResource("shot5"), SubResource("shot6")])

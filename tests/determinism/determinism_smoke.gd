@@ -82,6 +82,10 @@ func _init() -> void:
 		failed = true
 	if not _check_blightcaster():
 		failed = true
+	if not _check_yard_warden():
+		failed = true
+	if not _check_law4_ordering():
+		failed = true
 
 	if failed:
 		quit(1)
@@ -1126,6 +1130,387 @@ func _run_blight_once(bdef: Resource, reactive_walker: bool) -> Dictionary:
 		"dist_min": dist_min,
 		"dist_max": dist_max,
 	}
+
+
+## Yard Warden elite contracts (§3.5, SERIAL 12, planning decision
+## 2026-07-28): HP% thresholds swap phases at EXACT ticks under the
+## scenario damage schedule (top-of-step application, same-tick enemy
+## step); a multi-threshold drop settles at the final phase with ONE
+## crossing event; schedule damage carries pattern -4 through THE
+## damage path; per-phase telegraph leads / volley sizes / periods
+## match the def exactly; the ROTOR radial advances its world-frame
+## aim by rotor_deg_per_tick x elapsed; P2 anchors bit-still; every
+## transition re-arms (entry beat + full telegraph before the first
+## post-flip volley); peak live hostile stays under the elite budget;
+## the kill lands through the normal sweep.
+func _check_yard_warden() -> bool:
+	var wdef: Resource = load("res://data/enemies/yard_warden.tres")
+	var budgets: Resource = load("res://data/budgets.tres")
+	var ok := true
+	if int(wdef.hp) != 400:
+		printerr("FAIL: yard warden hp %d != 400 (§3.5)" % int(wdef.hp))
+		ok = false
+	var plist: Array = wdef.phases.phases
+	if plist.size() != 3:
+		printerr("FAIL: yard warden has %d phases (expected 3)" % plist.size())
+		return false
+	var floors: Array[float] = []
+	for pe: Resource in plist:
+		floors.append(float(pe.hp_floor_pct))
+	if floors != [66.0, 33.0, 0.0]:
+		printerr("FAIL: phase floors %s != [66, 33, 0]" % [floors])
+		ok = false
+
+	# --- Threshold exactness + kill: 136 -> exactly 264 hp (66%) at
+	# t100 must flip to P2 AT t100; 132 more -> exactly 132 (33%) at
+	# t200 flips P3; final 132 -> 0 at t300 kills through the sweep.
+	var thr := _run_warden(
+		wdef,
+		[{"tick": 100, "amount": 136}, {"tick": 200, "amount": 132}, {"tick": 300, "amount": 132}],
+		400
+	)
+	var changes: Array = thr.phase_changes
+	if changes.size() != 2:
+		printerr("FAIL: %d phase changes (expected 2)" % changes.size())
+		ok = false
+	else:
+		var c0: Dictionary = changes[0]
+		var c1: Dictionary = changes[1]
+		if int(c0.tick) != 100 or int(c0.phase) != 1 or int(c0.hp) != 264:
+			printerr("FAIL: first crossing %s != {tick 100, phase 1, hp 264}" % [c0])
+			ok = false
+		if int(c1.tick) != 200 or int(c1.phase) != 2 or int(c1.hp) != 132:
+			printerr("FAIL: second crossing %s != {tick 200, phase 2, hp 132}" % [c1])
+			ok = false
+	if int(thr.elite_kill_tick) != 300:
+		printerr("FAIL: elite kill tick %d != 300" % int(thr.elite_kill_tick))
+		ok = false
+	var sched_ticks: Array = thr.schedule_hit_ticks
+	if sched_ticks != [100, 200, 300]:
+		printerr("FAIL: pattern -4 damage ticks %s != [100, 200, 300]" % [sched_ticks])
+		ok = false
+
+	# --- Multi-threshold single application settles at the FINAL phase
+	# with exactly one crossing event (350 in one hit: 400 -> 50 = P3).
+	var skip := _run_warden(wdef, [{"tick": 50, "amount": 350}], 120)
+	var skip_changes: Array = skip.phase_changes
+	if skip_changes.size() != 1:
+		printerr("FAIL: rapid drop made %d crossings (expected 1)" % skip_changes.size())
+		ok = false
+	else:
+		var sc: Dictionary = skip_changes[0]
+		if int(sc.tick) != 50 or int(sc.phase) != 2:
+			printerr("FAIL: rapid drop settled %s != {tick 50, phase 2}" % [sc])
+			ok = false
+
+	# --- P1 contract (fresh spawn, no schedule): fan (slot order, both
+	# open, dist 6 inside trigger 7) leads exactly 30 with 7 shots;
+	# triple follows at lead 24 with 3; fan period exactly 150.
+	var p1 := _run_warden(wdef, [], 700)
+	if not _assert_pattern(p1, 17, 30, 7, 150, "P1 fan"):
+		ok = false
+	if not _assert_pattern(p1, 16, 24, 3, 90, "P1 triple"):
+		ok = false
+	if not p1.phase_changes.is_empty():
+		printerr("FAIL: movement-only P1 run crossed phases: %s" % [p1.phase_changes])
+		ok = false
+
+	# --- P2 contract (t0 drop to 240): radial lead exactly 36 x12
+	# shots period 120; zone cast places pattern-18 telegraphs; the
+	# first post-flip telegraph honors entry beat 30; the anchor is
+	# bit-still from entry to the run's end; ROTOR advance is exact.
+	var p2 := _run_warden(wdef, [{"tick": 0, "amount": 160}], 700)
+	if not _assert_pattern(p2, 19, 36, 12, 120, "P2 radial"):
+		ok = false
+	var p2_entry: Resource = plist[1]
+	var first_tel := 1 << 30
+	var tel_map: Dictionary = p2.telegraphs
+	for pid: int in tel_map:
+		var arr: Array = tel_map[pid]
+		if not arr.is_empty():
+			first_tel = mini(first_tel, int(arr[0]))
+	if first_tel < int(p2_entry.entry_cooldown_ticks):
+		printerr(
+			(
+				"FAIL: post-flip telegraph at %d before entry beat %d"
+				% [first_tel, int(p2_entry.entry_cooldown_ticks)]
+			)
+		)
+		ok = false
+	if not tel_map.has(18) or (tel_map[18] as Array).size() < 2:
+		printerr("FAIL: P2 zone cast placed %s pattern-18 telegraphs" % [tel_map.get(18, [])])
+		ok = false
+	if float(p2.elite_moved) != 0.0:
+		printerr("FAIL: P2 anchor moved %.6f tiles" % float(p2.elite_moved))
+		ok = false
+	var radial_attacks: Array = (p2.attacks as Dictionary).get(19, [])
+	if radial_attacks.size() >= 2:
+		var a0: Dictionary = radial_attacks[0]
+		var a1: Dictionary = radial_attacks[1]
+		var aim0: Vector2 = a0.aim
+		var aim1: Vector2 = a1.aim
+		var want := deg_to_rad(float(a1.tick - a0.tick) * float(_radial_rotor(wdef)))
+		var got := wrapf(aim1.angle() - aim0.angle(), -PI, PI)
+		if absf(got - wrapf(want, -PI, PI)) > 0.0001:
+			printerr("FAIL: rotor advanced %.5f rad (expected %.5f)" % [got, want])
+			ok = false
+
+	# --- P3 contract (t0 drop to 120): chaser closes on a stander;
+	# burst x4 lead 24, volley x3 lead 40 (INTERCEPT), fan re-used.
+	var p3 := _run_warden(wdef, [{"tick": 0, "amount": 280}], 700)
+	if not _assert_pattern(p3, 21, 24, 4, 60, "P3 burst"):
+		ok = false
+	if not _assert_pattern(p3, 20, 40, 3, 120, "P3 volley"):
+		ok = false
+	# Chase witness: the elite spends most of P3 winding/firing (stand-
+	# still states), so approach is stepwise — 1.5 tiles on a stander
+	# proves the CHASER policy is live without over-fitting the pace.
+	if float(p3.elite_closed) < 1.5:
+		printerr("FAIL: P3 chaser closed only %.2f tiles" % float(p3.elite_closed))
+		ok = false
+
+	# --- Density: worst observed peak across the three phase runs sits
+	# under the elite budget (the proof reports carry the same figure).
+	var peak := maxi(maxi(int(p1.max_live), int(p2.max_live)), int(p3.max_live))
+	if peak > int(budgets.hostile_elite_max):
+		printerr("FAIL: peak %d exceeds elite budget %d" % [peak, int(budgets.hostile_elite_max)])
+		ok = false
+
+	# --- Determinism with the schedule active: twin P2 runs bit-match.
+	var p2b := _run_warden(wdef, [{"tick": 0, "amount": 160}], 700)
+	if p2.hashes != p2b.hashes:
+		printerr("FAIL: schedule-driven runs diverge")
+		ok = false
+
+	if ok:
+		print(
+			(
+				"m6 yard warden ok: crossings@[100,200] kill@300 skip->P3 x1; leads fan=30 triple=24 radial=36 volley=40 burst=24; anchor-still rotor-exact chaser-closed=%.1f peak=%d/%d"
+				% [float(p3.elite_closed), peak, int(budgets.hostile_elite_max)]
+			)
+		)
+	return ok
+
+
+## Multi-slot cadence slack (ticks): the longest a reopened slot gate
+## can wait out the other slots' windup + recover cycles in any §3.5
+## phase (P3 worst case: burst 24+10 plus fan 30+20 ≈ 84).
+const PERIOD_SLACK := 90
+
+
+## Rotor rate of the P2 radial (read from data, never hard-coded).
+func _radial_rotor(wdef: Resource) -> float:
+	var p2: Resource = wdef.phases.phases[1]
+	var emitters: Array = p2.emitters
+	for es: Resource in emitters:
+		var pattern: Resource = es.pattern
+		if pattern != null and int(pattern.pattern_id) == 19:
+			return float(pattern.rotor_deg_per_tick)
+	return 0.0
+
+
+## Assert one elite pattern's contract from a run's event record: first
+## telegraph lead is exactly the slot's, every volley is exactly the
+## def's shot count, and consecutive same-pattern attacks respect the
+## slot cadence: never FASTER than cooldown (the hard law), at most
+## cooldown + PERIOD_SLACK later (multi-slot §3.5 semantics: one state
+## machine serializes attacks, so a slot's reopened gate can wait out
+## another slot's windup + recover — exact periods are a single-slot
+## property the ordinary checks keep).
+func _assert_pattern(
+	run: Dictionary, pid: int, lead: int, volley: int, period: int, label: String
+) -> bool:
+	var ok := true
+	var attacks_map: Dictionary = run.attacks
+	var attacks: Array = attacks_map.get(pid, [])
+	if attacks.is_empty():
+		printerr("FAIL: %s never fired" % label)
+		return false
+	var telegraphs_map: Dictionary = run.telegraphs
+	var tels: Array = telegraphs_map.get(pid, [])
+	if tels.is_empty():
+		printerr("FAIL: %s fired with no telegraph" % label)
+		return false
+	var a0: Dictionary = attacks[0]
+	var got_lead := int(a0.tick) - int(tels[0])
+	if got_lead != lead:
+		printerr("FAIL: %s lead %d != %d" % [label, got_lead, lead])
+		ok = false
+	var volleys_map: Dictionary = run.volley_sizes
+	var sizes: Array = volleys_map.get(pid, [])
+	for s: int in sizes:
+		if s != volley:
+			printerr("FAIL: %s volley %d != %d shots" % [label, s, volley])
+			ok = false
+			break
+	for i in range(1, attacks.size()):
+		var prev: Dictionary = attacks[i - 1]
+		var cur: Dictionary = attacks[i]
+		var gap := int(cur.tick) - int(prev.tick)
+		if gap < period or gap > period + PERIOD_SLACK:
+			printerr(
+				"FAIL: %s gap %d outside [%d, %d]" % [label, gap, period, period + PERIOD_SLACK]
+			)
+			ok = false
+			break
+	return ok
+
+
+## Elite micro-world: standing player at (24,16) speed 3.0 (harness hp
+## allowance — patterns are observed, not dodged; escapability proofs
+## are DodgeBot territory), warden at (30,16) = dist 6. The damage
+## schedule drives phases exactly like a proof scenario would.
+func _run_warden(wdef: Resource, schedule: Array, ticks: int) -> Dictionary:
+	var world := SimWorld.new()
+	world.setup(31, _build_bitgrid())
+	world.set_enemy_defs([wdef])
+	world.set_damage_schedule(schedule)
+	var player := world.add_player(Vector2(24.0, 16.0))
+	player.move_speed = 3.0
+	player.hp = 9000
+	var enemy: RefCounted = world.add_enemy(0, Vector2(30.0, 16.0))
+	var elite_id: int = enemy.id
+	var spawn_pos: Vector2 = enemy.pos
+	var hashes: Array[int] = []
+	var phase_changes: Array = []
+	var telegraphs := {}
+	var attacks := {}
+	var volley_sizes := {}
+	var schedule_hit_ticks: Array[int] = []
+	var elite_kill_tick := -1
+	var max_live := 0
+	var anchor_from := -1
+	var elite_moved := 0.0
+	var dist_start := spawn_pos.distance_to(player.pos)
+	var dist_min := dist_start
+	var anchor_pos := Vector2.ZERO
+	for t in ticks:
+		world.step([null])
+		var spawns_this_tick := {}
+		for ev: Dictionary in world.events:
+			match int(ev.type):
+				SimEvents.Type.PHASE_CHANGED:
+					phase_changes.append(
+						{"tick": int(ev.tick), "phase": int(ev.phase), "hp": int(ev.hp)}
+					)
+					if int(ev.phase) == 1:
+						anchor_from = int(ev.tick)
+						anchor_pos = ev.pos
+				SimEvents.Type.TELEGRAPH_STARTED:
+					var pid := int(ev.get("pattern", 0))
+					if not telegraphs.has(pid):
+						telegraphs[pid] = []
+					(telegraphs[pid] as Array).append(int(ev.tick))
+				SimEvents.Type.ATTACK_STARTED:
+					var apid := int(ev.pattern)
+					if not attacks.has(apid):
+						attacks[apid] = []
+					(attacks[apid] as Array).append(
+						{"tick": int(ev.tick), "aim": ev.aim as Vector2}
+					)
+				SimEvents.Type.PROJECTILE_SPAWNED:
+					var spid := int(ev.pattern)
+					spawns_this_tick[spid] = int(spawns_this_tick.get(spid, 0)) + 1
+				SimEvents.Type.DAMAGE_APPLIED:
+					if int(ev.pattern) == SimWorld.PATTERN_TEST_SCHEDULE:
+						schedule_hit_ticks.append(int(ev.tick))
+				SimEvents.Type.ENTITY_KILLED:
+					if int(ev.id) == elite_id:
+						elite_kill_tick = int(ev.tick)
+		for spid: int in spawns_this_tick:
+			if not volley_sizes.has(spid):
+				volley_sizes[spid] = []
+			(volley_sizes[spid] as Array).append(int(spawns_this_tick[spid]))
+		max_live = maxi(max_live, _live_hostile(world))
+		if elite_kill_tick < 0:
+			var epos: Vector2 = enemy.pos
+			dist_min = minf(dist_min, epos.distance_to(player.pos))
+			if anchor_from >= 0:
+				elite_moved = maxf(elite_moved, epos.distance_to(anchor_pos))
+		if (world.tick % HASH_EVERY) == 0:
+			hashes.append(world.state_hash())
+	return {
+		"hashes": hashes,
+		"phase_changes": phase_changes,
+		"telegraphs": telegraphs,
+		"attacks": attacks,
+		"volley_sizes": volley_sizes,
+		"schedule_hit_ticks": schedule_hit_ticks,
+		"elite_kill_tick": elite_kill_tick,
+		"max_live": max_live,
+		"elite_moved": elite_moved,
+		"elite_closed": dist_start - dist_min,
+	}
+
+
+func _live_hostile(world: RefCounted) -> int:
+	var pool: RefCounted = world.projectiles
+	var act: PackedByteArray = pool.active
+	var fac: PackedByteArray = pool.faction
+	var n := 0
+	for s in pool.CAPACITY:
+		if act[s] == 1 and fac[s] == 1:
+			n += 1
+	return n
+
+
+## CORE-51 Law 4 ordering check as code (§3.4 pattern-review line):
+## telegraph prominence sorted by the DESIGNED danger ranking must be
+## non-decreasing — equal-danger rungs share a value, and a retune that
+## reintroduces an inversion fails here. Values are read live from the
+## defs, never hard-coded.
+func _check_law4_ordering() -> bool:
+	var rows: Array = [
+		["rusher slash", _slot_tele("res://data/enemies/rusher.tres", 0)],
+		["husk aimed", _slot_tele("res://data/enemies/husk_archer.tres", 0)],
+		["yw triple", _phase_slot_tele("res://data/enemies/yard_warden.tres", 0, 1)],
+		["yw burst", _phase_slot_tele("res://data/enemies/yard_warden.tres", 2, 0)],
+		["fanmaw fan", _slot_tele("res://data/enemies/fanmaw.tres", 0)],
+		["yw fan", _phase_slot_tele("res://data/enemies/yard_warden.tres", 0, 0)],
+		["ringer radial", _slot_tele("res://data/enemies/ringer.tres", 0)],
+		["yw radial", _phase_slot_tele("res://data/enemies/yard_warden.tres", 1, 0)],
+		["leadshot dart", _slot_tele("res://data/enemies/leadshot.tres", 0)],
+		["yw volley", _phase_slot_tele("res://data/enemies/yard_warden.tres", 2, 2)],
+		["blight zone arm", _zone_arm("res://data/enemies/blightcaster.tres")],
+		["yw zone arm", _phase_zone_arm("res://data/enemies/yard_warden.tres", 1, 1)],
+	]
+	var prev := -1
+	for row: Array in rows:
+		var v := int(row[1])
+		if v < prev:
+			printerr("FAIL: Law-4 inversion at %s (%d < %d)" % [String(row[0]), v, prev])
+			return false
+		prev = v
+	print("law-4 ordering ok: %d rows non-decreasing, max %d" % [rows.size(), prev])
+	return true
+
+
+func _slot_tele(path: String, slot: int) -> int:
+	var def: Resource = load(path)
+	var es: Resource = def.emitters[slot]
+	return int(es.telegraph_ticks)
+
+
+func _phase_slot_tele(path: String, phase: int, slot: int) -> int:
+	var def: Resource = load(path)
+	var pe: Resource = def.phases.phases[phase]
+	var es: Resource = pe.emitters[slot]
+	return int(es.telegraph_ticks)
+
+
+func _zone_arm(path: String) -> int:
+	var def: Resource = load(path)
+	var es: Resource = def.emitters[0]
+	var hz: Resource = es.hazard
+	return int(hz.arm_ticks)
+
+
+func _phase_zone_arm(path: String, phase: int, slot: int) -> int:
+	var def: Resource = load(path)
+	var pe: Resource = def.phases.phases[phase]
+	var es: Resource = pe.emitters[slot]
+	var hz: Resource = es.hazard
+	return int(hz.arm_ticks)
 
 
 ## Speed-editor sim contract (§3.2/§2.10): the command clamps to the band,

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"proof_yw_p3"
+display_name = "Proof: Yard Warden P3 pin (t0 drop to 120; chase + volleys)"
+player_spawn = Vector2(22, 16)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"yard_warden": PackedVector2Array(30, 16)
+}
+damage_schedule = Array[Dictionary]([{
+"amount": 280,
+"tick": 0
+}])
+default_seed = 210

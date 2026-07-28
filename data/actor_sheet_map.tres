@@ -11,5 +11,6 @@ map = {
 "enemy_leadshot": "bandit:sniper",
 "enemy_ringer": "eyemonster:watcher",
 "enemy_rusher": "wolf:gray",
+"enemy_yard_warden": "scarecrow:strawfield",
 "player": "character-ranger"
 }

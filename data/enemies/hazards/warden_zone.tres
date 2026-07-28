@@ -1,0 +1,12 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/hazard_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+pattern_id = 18
+radius = 1.4
+damage = 14
+arm_ticks = 45
+linger_ticks = 90
+hit_interval_ticks = 30

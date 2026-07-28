@@ -1,0 +1,174 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"proof_yw_full"
+display_name = "Proof: Yard Warden full fight (paced TTK schedule, transitions + kill)"
+player_spawn = Vector2(22, 16)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"yard_warden": PackedVector2Array(30, 16)
+}
+damage_schedule = Array[Dictionary]([{
+"amount": 7,
+"tick": 67
+}, {
+"amount": 7,
+"tick": 127
+}, {
+"amount": 7,
+"tick": 187
+}, {
+"amount": 7,
+"tick": 247
+}, {
+"amount": 7,
+"tick": 307
+}, {
+"amount": 7,
+"tick": 367
+}, {
+"amount": 7,
+"tick": 427
+}, {
+"amount": 7,
+"tick": 487
+}, {
+"amount": 7,
+"tick": 547
+}, {
+"amount": 7,
+"tick": 607
+}, {
+"amount": 7,
+"tick": 667
+}, {
+"amount": 7,
+"tick": 727
+}, {
+"amount": 7,
+"tick": 787
+}, {
+"amount": 7,
+"tick": 847
+}, {
+"amount": 7,
+"tick": 907
+}, {
+"amount": 7,
+"tick": 967
+}, {
+"amount": 6,
+"tick": 1027
+}, {
+"amount": 6,
+"tick": 1087
+}, {
+"amount": 6,
+"tick": 1147
+}, {
+"amount": 30,
+"tick": 1207
+}, {
+"amount": 6,
+"tick": 1267
+}, {
+"amount": 6,
+"tick": 1327
+}, {
+"amount": 6,
+"tick": 1387
+}, {
+"amount": 6,
+"tick": 1447
+}, {
+"amount": 6,
+"tick": 1507
+}, {
+"amount": 6,
+"tick": 1567
+}, {
+"amount": 6,
+"tick": 1627
+}, {
+"amount": 6,
+"tick": 1687
+}, {
+"amount": 6,
+"tick": 1747
+}, {
+"amount": 6,
+"tick": 1807
+}, {
+"amount": 5,
+"tick": 1867
+}, {
+"amount": 5,
+"tick": 1927
+}, {
+"amount": 5,
+"tick": 1987
+}, {
+"amount": 5,
+"tick": 2047
+}, {
+"amount": 5,
+"tick": 2107
+}, {
+"amount": 5,
+"tick": 2167
+}, {
+"amount": 5,
+"tick": 2227
+}, {
+"amount": 5,
+"tick": 2287
+}, {
+"amount": 20,
+"tick": 2413
+}, {
+"amount": 8,
+"tick": 2473
+}, {
+"amount": 8,
+"tick": 2533
+}, {
+"amount": 8,
+"tick": 2593
+}, {
+"amount": 8,
+"tick": 2653
+}, {
+"amount": 8,
+"tick": 2713
+}, {
+"amount": 8,
+"tick": 2773
+}, {
+"amount": 8,
+"tick": 2833
+}, {
+"amount": 8,
+"tick": 2893
+}, {
+"amount": 8,
+"tick": 2953
+}, {
+"amount": 8,
+"tick": 3013
+}, {
+"amount": 8,
+"tick": 3073
+}, {
+"amount": 6,
+"tick": 3133
+}, {
+"amount": 6,
+"tick": 3193
+}, {
+"amount": 20,
+"tick": 3301
+}])
+default_seed = 211

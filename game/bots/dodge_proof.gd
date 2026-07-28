@@ -12,6 +12,7 @@ const ScenarioLoader := preload("res://game/scenario_loader.gd")
 const ReplayRecorder := preload("res://input/replay_recorder.gd")
 const SimEvents := preload("res://sim/events.gd")
 const DodgePolicy := preload("res://game/bots/dodge_policy.gd")
+const ActorState := preload("res://sim/actor_state.gd")
 
 const HEAT_W := 12
 const HEAT_H := 8
@@ -91,6 +92,16 @@ static func run_from_args(args: Dictionary) -> int:
 		"runs": run_reports,
 		"pass": all_pass,
 	}
+	# Elite evidence roll-up (§3.5): worst peak across runs, vs the
+	# budgets.tres ceiling the density meter enforces in play.
+	var peak_max := -1
+	for r: Dictionary in run_reports:
+		if r.has("peak_hostile_live"):
+			peak_max = maxi(peak_max, int(r.peak_hostile_live))
+	if peak_max >= 0:
+		var budgets: Resource = load("res://data/budgets.tres")
+		report["peak_hostile_live_max"] = peak_max
+		report["hostile_elite_budget"] = int(budgets.hostile_elite_max)
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(out_path.get_base_dir()))
 	var f := FileAccess.open(out_path, FileAccess.WRITE)
 	f.store_string(JSON.stringify(report, "\t"))
@@ -110,6 +121,19 @@ static func _run_one(
 	var world: RefCounted = ScenarioLoader.build_world(scenario, seed_v, grid)
 	var player: RefCounted = world.players[0]
 	player.move_speed = speed
+	# Elite runs (§3.5) additionally evidence peak hostile density (the
+	# <= 300 budget line becomes a report field) and every PHASE_CHANGED
+	# crossing. Tracked only when a phased enemy actually SPAWNED — the
+	# def sits in every roster, so a roster scan would grow every
+	# ordinary report and break their byte-identical reproduction.
+	var has_elite := false
+	for e: RefCounted in world.enemies:
+		var edi: int = e.def_index
+		if edi >= 0 and world.enemy_defs[edi].phases != null:
+			has_elite = true
+			break
+	var peak_hostile := 0
+	var phase_log: Array = []
 	var recorder := ReplayRecorder.new()
 	recorder.begin(world)
 	var hits := 0
@@ -127,6 +151,10 @@ static func _run_one(
 				hits += 1
 				if first_hit < 0:
 					first_hit = int(ev.tick)
+			elif has_elite and int(ev.type) == SimEvents.Type.PHASE_CHANGED:
+				phase_log.append({"tick": int(ev.tick), "phase": int(ev.phase), "hp": int(ev.hp)})
+		if has_elite:
+			peak_hostile = maxi(peak_hostile, _live_hostile_count(world))
 		near_miss = minf(near_miss, _nearest_threat_clearance(world, player))
 		var hx := clampi(int(player.pos.x * HEAT_W / float(grid.width)), 0, HEAT_W - 1)
 		var hy := clampi(int(player.pos.y * HEAT_H / float(grid.height)), 0, HEAT_H - 1)
@@ -144,7 +172,7 @@ static func _run_one(
 		for x in HEAT_W:
 			row.append(heat[y * HEAT_W + x])
 		heat_rows.append(row)
-	return {
+	var result := {
 		"seed": seed_v,
 		"hits": hits,
 		"first_hit_tick": first_hit,
@@ -153,6 +181,23 @@ static func _run_one(
 		"heatmap": heat_rows,
 		"repro": repro,
 	}
+	if has_elite:
+		result["peak_hostile_live"] = peak_hostile
+		result["phase_transitions"] = phase_log
+	return result
+
+
+## Live hostile projectile count this tick (the density meter's H
+## figure, computed sim-side for the elite report's peak evidence).
+static func _live_hostile_count(world: RefCounted) -> int:
+	var pool: RefCounted = world.projectiles
+	var act: PackedByteArray = pool.active
+	var fac: PackedByteArray = pool.faction
+	var n := 0
+	for s in pool.CAPACITY:
+		if act[s] == 1 and fac[s] == ActorState.FACTION_HOSTILE:
+			n += 1
+	return n
 
 
 ## Min live clearance (tiles) between the player edge and any hostile
