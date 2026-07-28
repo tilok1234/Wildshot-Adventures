@@ -27,6 +27,9 @@ static func run(world: RefCounted) -> void:
 		if t < arm_at:
 			continue
 		if t == arm_at:
+			# faction rides the event (M6 audio cue map: the armed cue is
+			# hostile-only). Events are not serialized or hashed — payload
+			# additions are replay-safe by construction.
 			(
 				events
 				. append(
@@ -36,6 +39,7 @@ static func run(world: RefCounted) -> void:
 						"id": int(hz.id),
 						"pos": hz.pos,
 						"radius": float(hz.radius),
+						"faction": int(hz.faction),
 					}
 				)
 			)

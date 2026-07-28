@@ -68,6 +68,13 @@ func _init() -> void:
 		quit(1)
 		return
 
+	# CORE-50 per-channel audio keys (M6 audio cue map): same round-trip.
+	config.set_setting("audio", "keythreats", 1)
+	if int(config.get_setting("audio", "keythreats", -1)) != 1:
+		printerr("FAIL: audio/keythreats did not persist")
+		quit(1)
+		return
+
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(TEST_PATH))
 	config.free()
 	print(

@@ -19,6 +19,7 @@ const OptionsMenu := preload("res://ui/options_menu.gd")
 const GifRecorder := preload("res://game/drivers/gif_recorder.gd")
 const FlashView := preload("res://game/views/flash_view.gd")
 const EffectLibrary := preload("res://game/views/effect_library.gd")
+const AudioCueView := preload("res://game/views/audio_cue_view.gd")
 const StatBar := preload("res://ui/stat_bar.gd")
 const DensityMeter := preload("res://ui/density_meter.gd")
 const HazardView := preload("res://game/views/hazard_view.gd")
@@ -68,6 +69,11 @@ var effects_lib: RefCounted = null
 ## Options presets for the CORE-50 effect scaler (index persisted).
 const EFFECT_DENSITY_LEVELS: Array[float] = [1.0, 0.66, 0.33]
 const EFFECT_OPACITY_LEVELS: Array[float] = [1.0, 0.7, 0.4]
+
+## Per-channel audio (CORE-50: separate channels, key threats audible;
+## Law 7). Linear levels per options index; audio/<bus> persists.
+const AUDIO_LEVELS: Array[float] = [1.0, 0.7, 0.4, 0.0]
+const AUDIO_BUSES: Array[String] = ["Master", "Sfx", "KeyThreats"]
 var recap_panel: PanelContainer
 var console: PanelContainer
 var hitboxes: Node2D
@@ -198,6 +204,28 @@ func _run_density_audit() -> void:
 ## CORE-50 UI/text scaling: integer multiples only (kit contract), applied
 ## live to every HUD surface via a scaled duplicate of the kit theme.
 ## World rendering is untouched — this scales UI, not the game.
+## Idempotent creation of the two named buses (Law 7 / CORE-50): Sfx and
+## KeyThreats, both sending to Master. Code-created so headless runs and
+## tests need no bus-layout resource.
+func _ensure_audio_buses() -> void:
+	for bus_name: String in ["Sfx", "KeyThreats"]:
+		if AudioServer.get_bus_index(bus_name) >= 0:
+			continue
+		var idx := AudioServer.bus_count
+		AudioServer.add_bus(idx)
+		AudioServer.set_bus_name(idx, bus_name)
+		AudioServer.set_bus_send(idx, "Master")
+
+
+func _apply_audio_level(bus_name: String, level_index: int) -> void:
+	var idx := AudioServer.get_bus_index(bus_name)
+	if idx < 0:
+		return
+	var lin: float = AUDIO_LEVELS[clampi(level_index, 0, AUDIO_LEVELS.size() - 1)]
+	AudioServer.set_bus_mute(idx, lin <= 0.0)
+	AudioServer.set_bus_volume_db(idx, linear_to_db(maxf(lin, 0.0001)))
+
+
 func _apply_ui_scale(k: int) -> void:
 	var th: Theme = load("res://ui/theme.tres").duplicate()
 	th.default_base_scale = float(k)
@@ -499,6 +527,22 @@ func _ready() -> void:
 	flashes.pattern_map = proj_map
 	add_child(flashes)
 
+	# Law-7 audio: Sfx + KeyThreats buses (the eyes-closed threat channel
+	# stays separate — CORE-50), saved per-channel volumes applied, cue
+	# view consuming the same event relay as every other view.
+	_ensure_audio_buses()
+	for bi in AUDIO_BUSES.size():
+		_apply_audio_level(
+			AUDIO_BUSES[bi],
+			clampi(int(Config.get_setting("audio", AUDIO_BUSES[bi].to_lower(), 0)), 0, 3)
+		)
+	var cue_view := AudioCueView.new()
+	cue_view.driver = driver
+	cue_view.world = world
+	cue_view.cue_map = load("res://data/audio_cue_map.tres")
+	cue_view.pattern_map = proj_map
+	add_child(cue_view)
+
 	var dmg_numbers := DamageNumberView.new()
 	dmg_numbers.driver = driver
 	dmg_numbers.settings = feedback_settings
@@ -647,6 +691,16 @@ func _ready() -> void:
 			effects_lib.flash_reduction = v
 			Config.set_setting("effects", "flash_reduction", v)
 	)
+	for bus_name: String in AUDIO_BUSES:
+		var bn := bus_name
+		options_menu.add_cycle_row(
+			"audio " + bn.to_lower(),
+			["100%", "70%", "40%", "off"],
+			clampi(int(Config.get_setting("audio", bn.to_lower(), 0)), 0, 3),
+			func(i: int) -> void:
+				_apply_audio_level(bn, i)
+				Config.set_setting("audio", bn.to_lower(), i)
+		)
 	options_menu.add_cycle_row(
 		"speed preset (on reset)",
 		["4.0 baseline", "3.0 lowest"],

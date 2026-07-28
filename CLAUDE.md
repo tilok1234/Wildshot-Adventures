@@ -395,5 +395,20 @@ elite had sphere-fallback shots), assembler 8 sheets (scarecrow:
 strawfield was missing — elite had NO body; boot error greps must
 use "ERROR" not "SCRIPT ERROR", lesson recorded). Ledger #9 amended
 (exit = 9-row acceptance record); #14 amended (built, awaits same).
-Remaining M6: 9-row acceptance, audio cue map, CORE-34 no-ability
-clear.**
+AUDIO CUE MAP LIVE
+2026-07-28 (~05:20): Law-7 eyes-closed channel. Buses Sfx +
+KeyThreats (code-created idempotent, both → Master; per-channel
+volume rows 100/70/40/off persisted under [audio] — CORE-50
+separate channels). Seven placeholder cues generated
+deterministically by tools/gen_cue_wavs.py into audio/placeholder/
+(assets/ is .gdignore'd raw-drop land — importers copy OUT of it;
+lesson re-learned with WAVs). data/audio_cue_map.tres = class →
+{wav, bus} + melee_patterns [11]; classification is data-driven
+(zone ids from projectile_map.zones). game/views/audio_cue_view.gd
+consumes the event relay: telegraph_ranged/melee, hazard_cast/
+armed (HAZARD_ARMED now carries faction — events are unserialized,
+payload additions replay-safe), phase_change, player_hit/death;
+8-tick per-class retrigger gate. notes/AUDIO_CUE_MAP.md holds the
+written map + PENDING designer eyes-closed review slot. Remaining
+M6: 9-row acceptance (record prep + designer eyes), CORE-34
+no-ability clear (designer play, session.jsonl evidence).**

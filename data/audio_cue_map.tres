@@ -1,0 +1,37 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/audio_cue_map.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+cues = {
+"hazard_armed": {
+"bus": "KeyThreats",
+"wav": "res://audio/placeholder/hazard_armed.wav"
+},
+"hazard_cast": {
+"bus": "KeyThreats",
+"wav": "res://audio/placeholder/hazard_cast.wav"
+},
+"phase_change": {
+"bus": "KeyThreats",
+"wav": "res://audio/placeholder/phase_change.wav"
+},
+"player_death": {
+"bus": "Sfx",
+"wav": "res://audio/placeholder/player_death.wav"
+},
+"player_hit": {
+"bus": "Sfx",
+"wav": "res://audio/placeholder/player_hit.wav"
+},
+"telegraph_melee": {
+"bus": "KeyThreats",
+"wav": "res://audio/placeholder/telegraph_melee.wav"
+},
+"telegraph_ranged": {
+"bus": "KeyThreats",
+"wav": "res://audio/placeholder/telegraph_ranged.wav"
+}
+}
+melee_patterns = Array[int]([11])
