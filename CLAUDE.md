@@ -480,5 +480,25 @@ adjudication); (3) Warden HP 8.4s-vs-575 (lean: accept 8.4s);
 word). APPROVED TODAY (morning batch): Warden full ratification,
 sphere set + §2.6 amendment, arenas (tree-border taste note);
 M2 movement approval pending the walk on the current build.
-Remaining M7: SoakBot, composition rows for all picker scenarios,
-pre-tester checklist script, export.ps1 dev/tester profiles.**
+LONG PASS COMPLETE (~16:00, designer-authorized, at work): SoakBot
+live (b818e71; 151-segment/543k-tick full-rotation soak CLEAN —
+drift 0, NaN 0, pool 0 — report committed 04d91ef; plus 32 clean
+segments from an earlier soak the assistant accidentally killed:
+the Godot CONSOLE wrapper spawns an engine child named plain
+"godot" — process-kill filters must account for it); composition
+proofs for every picker scenario (d33eba5 — lab_default + three
+meets PASS, seeds 1,2,3); tools/pretester_check.ps1 = the
+one-command M7 gate, ALL GREEN 9.7 min exit 0 (37 steps: RNG lint,
+walkability diag, seven consumer/determinism tests, boot, 25-run
+battery vs an expectations table encoding the wolf-pair FAILs,
+byte-identical check; exclusive-access precondition — concurrent
+Godot instances race .godot and flake determinism steps; loops
+closure-free — pwsh $LASTEXITCODE in GetNewClosure is unreliable).
+THE CHECKLIST'S FIRST CATCH: the smoke wall assert had been failing
+silently since the terrain-radius commit (gate output was piped to
+its tail, exit code unchecked — GATES READ EXIT CODES, NOT PROSE);
+assert now derives from PlayerMove.TERRAIN_RADIUS (4e59412).
+Export pipeline: templates verified present, one-shot design in
+notes/EXPORT_PIPELINE_DESIGN.md. Remaining M7: export.ps1
+dev/tester profiles + the export step in the checklist. DESIGNER
+four-ruling menu unchanged (queue leads with it).**
