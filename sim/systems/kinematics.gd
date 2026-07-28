@@ -13,6 +13,21 @@ const AXIS_Y := 1
 ## Per-tick moves (<= 5.5/60 tiles) are far below one tile, so only the tile
 ## row/column at the leading edge can newly collide. Returns the new
 ## coordinate on the moved axis.
+##
+## Ejection resolves to the TRUE constraint feature (2026-07-28, the
+## M2-movement corner-shiver fix): a face contact ejects to the face
+## plane exactly as before, but a CORNER-arc contact ejects to corner
+## tangency — face -/+ sqrt(r^2 - dy^2), dy = the circle center's
+## cross-axis gap to the tile's cross extent. The old code ejected
+## corner contacts to the full face plane, over-ejecting past tangency
+## by up to r - sqrt(r^2 - dy^2); the next tick freely re-approached,
+## re-hit, re-ejected — a deterministic limit cycle felt as a 2-pixel
+## shiver with ZERO net progress, trapped a visible gap away from any
+## corner ("walking bugs out near structures and props"). The formula
+## degenerates to the face plane at dy = 0, so face-slide behavior is
+## byte-identical; multiple colliding tiles take the most restrictive
+## tangent. At exact tangency the strict < in circle_hits_tile reports
+## no hit, so the rest position is stable.
 static func slide(grid: RefCounted, pos: Vector2, r: float, delta: float, axis: int) -> float:
 	var along := pos.x if axis == AXIS_X else pos.y
 	if delta == 0.0:
@@ -32,7 +47,13 @@ static func slide(grid: RefCounted, pos: Vector2, r: float, delta: float, axis: 
 		var cy := cross if axis == AXIS_X else moved
 		if not circle_hits_tile(cx, cy, r, tx, ty):
 			continue
-		moved = float(lead_tile) - r if delta > 0.0 else float(lead_tile) + 1.0 + r
+		var cross_lo := float(ty) if axis == AXIS_X else float(tx)
+		var dy := absf(cross - clampf(cross, cross_lo, cross_lo + 1.0))
+		var allowed := sqrt(maxf(0.0, r * r - dy * dy))
+		if delta > 0.0:
+			moved = minf(moved, float(lead_tile) - allowed)
+		else:
+			moved = maxf(moved, float(lead_tile) + 1.0 + allowed)
 	return moved
 
 

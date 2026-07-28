@@ -12,7 +12,7 @@
 			"heatmap": [
 				[
 					132,
-					7,
+					8,
 					0,
 					0,
 					0,
@@ -26,10 +26,10 @@
 				],
 				[
 					0,
-					115,
+					114,
 					83,
 					98,
-					91,
+					92,
 					114,
 					19,
 					0,
@@ -124,17 +124,17 @@
 				]
 			],
 			"hits": 13,
-			"near_miss_min": -0.464454180002213,
+			"near_miss_min": -0.458260657638311,
 			"repro": "res://reports/repro_first_contact_seed1.wsr",
 			"seed": 1,
-			"survived_ticks": 1084
+			"survived_ticks": 1085
 		},
 		{
 			"first_hit_tick": 1050,
 			"heatmap": [
 				[
 					132,
-					7,
+					8,
 					0,
 					0,
 					0,
@@ -148,10 +148,10 @@
 				],
 				[
 					0,
-					115,
+					114,
 					83,
 					98,
-					91,
+					92,
 					114,
 					19,
 					0,
@@ -246,17 +246,17 @@
 				]
 			],
 			"hits": 13,
-			"near_miss_min": -0.464454180002213,
+			"near_miss_min": -0.458260657638311,
 			"repro": "res://reports/repro_first_contact_seed2.wsr",
 			"seed": 2,
-			"survived_ticks": 1084
+			"survived_ticks": 1085
 		},
 		{
 			"first_hit_tick": 1050,
 			"heatmap": [
 				[
 					132,
-					7,
+					8,
 					0,
 					0,
 					0,
@@ -270,10 +270,10 @@
 				],
 				[
 					0,
-					115,
+					114,
 					83,
 					98,
-					91,
+					92,
 					114,
 					19,
 					0,
@@ -368,10 +368,10 @@
 				]
 			],
 			"hits": 13,
-			"near_miss_min": -0.464454180002213,
+			"near_miss_min": -0.458260657638311,
 			"repro": "res://reports/repro_first_contact_seed3.wsr",
 			"seed": 3,
-			"survived_ticks": 1084
+			"survived_ticks": 1085
 		}
 	],
 	"scenario": "first_contact",
