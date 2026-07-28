@@ -17,7 +17,7 @@
     "resolved/tileforge-map-data.json": "0b3dbe81794dedd255ec4e9055599c160270761910d800f7574db71e4bc41248",
     "resolved/tileforge-slice.json": "c89faf83fbbc39267cbe348306393bf78f5607ad117b0e413c58cc4ef1b345d2",
     "validation-report.json": "9cefe7b09292e6a718f3c1ddf0392e7061c7e424fe8e248733307a5c24a6ba1e",
-    "walkability.json": "696f0b198b08fac4990f8fcdc2b96ec61e969144492a19c959372924eddb48ca",
+    "walkability.json": "72408bc3cd064fffaee3c15cf9de516699accd0d0ed419b80ec9b49e4d82b65c",
     "world.json": "7dddda61b8c9b1e16b9945089117c6f7bc278c60d4ec1d8751cef4008a2da1cc"
   },
   "generator": {
@@ -39,7 +39,7 @@
     "theme": "dusk"
   },
   "walkability": {
-    "floodCount": 33712,
+    "floodCount": 34556,
     "format": 1,
     "spawnCell": [
       240,
