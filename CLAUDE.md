@@ -670,5 +670,28 @@ coaching; NEVER ask for a play duration — re-engagement stays
 voluntary). Dev profile boots straight in, unchanged. Fixed gates +
 artifact boots + lockdown probe ALL GREEN with the screen aboard.
 DESIGNER-EYES pending: onboarding layout, toast, bundle row (render
-gate). Remaining M8 engineering: comments box (on answer), CORE-50
-option runtime-verification pass, onboarding copy voice pass.**
+gate). CORE-50 RUNTIME-VERIFICATION MECHANIZED (~15:00, long pass
+while designer at work): game/dev/core50_verify.gd = dev-gated
+--verify=core50-low|core50-high CLI (audit-pattern: repoints the
+Config autoload at an injected settings profile BEFORE wiring reads
+it — real settings.cfg untouched; asserts at _ready end that every
+mechanizable option landed in its runtime object: effect density/
+opacity/flash → EffectLibrary, damage numbers + 3 feedback channels,
+3 audio buses mute+dB, hitbox visibility, UI-scale theme, persisted
+remap → live InputMap). BOTH profiles are pretester steps — they
+differ on every asserted value, so the pair proves options CHANGE
+behavior. Lint pins the verify gate line; probe F proves the tester
+exe refuses --verify. notes/CORE50_RUNTIME_CHECKLIST.md = the
+mechanized-vs-designer-eyes map (render half is one tester-build
+pass, checkboxes waiting). EVIDENCE REPORT TOOL LIVE same pass:
+tools/evidence_report.py <bundle.zip|session.jsonl> = designer-side
+Gate-1 facts (per-session durations w/ last-beat bounding, loadout
+speeds, gaps, dev-profile exclusion, contamination scan, summary-code
+recompute vs stored — MEASUREMENTS ONLY; the re-engagement
+operational definition stays a planning §6 lock). Cross-language
+code parity pinned by the WS1-00F-0202-002N vector in BOTH the godot
+test and the py selftest; selftest is a pretester step. GATE AT FULL
+STRENGTH: 17 fixed steps + 25-row battery BYTE-IDENTICAL + export +
+probe = ALL GREEN 12.6 min. M8 engineering now blocked ONLY on
+designer answers (comments box) + designer-side items (copy voice
+pass, laptop pass, rested human pass, itch publish, recruitment).**
