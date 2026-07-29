@@ -1,6 +1,6 @@
 {
   "baseArtifactFormat": 8,
-  "baseGenerationIdentitySha256": "16f4e4b2871f016eb8b255eb385a09c4c3f6178e8a0ce57fff84564daabe7ce3",
+  "baseGenerationIdentitySha256": "032921339efe54da142b071aae14b751774ad05871926e0dfa6fa5396096bd2d",
   "decals": {
     "1": "cracks",
     "10": "waterfall",
@@ -1003,7 +1003,7 @@
     "8": "tavern",
     "9": "smithy"
   },
-  "tileforgeAdapterVersion": 6,
+  "tileforgeAdapterVersion": 7,
   "wallTypes": {
     "1": "wall",
     "2": "palisade",

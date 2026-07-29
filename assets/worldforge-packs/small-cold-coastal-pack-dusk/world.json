@@ -837827,12 +837827,12 @@
   ],
   "formatVersion": 8,
   "generator": {
-    "generationIdentitySha256": "16f4e4b2871f016eb8b255eb385a09c4c3f6178e8a0ce57fff84564daabe7ce3",
-    "generatorBehaviorVersion": 48,
+    "generationIdentitySha256": "032921339efe54da142b071aae14b751774ad05871926e0dfa6fa5396096bd2d",
+    "generatorBehaviorVersion": 59,
     "name": "worldforge",
-    "recipeCompilerVersion": 29,
+    "recipeCompilerVersion": 34,
     "recipeSha256": "80cff5eb69437be55d56a433874887a6a2446f38aad613b2422a73e9c48c6c58",
-    "resolvedConfigSha256": "a9cdf74adbb01dd765a9106bee406da2d22befedf21dd87a98d9c36f155f3205",
+    "resolvedConfigSha256": "a91cce5008fdc933434ac25a997d65996bc9ea9101061a331d73ba0e52eeed7b",
     "seed": 103991,
     "version": "0.1.0"
   },
@@ -846860,6 +846860,15 @@
     "structure.crystal_spire",
     "structure.lighthouse",
     "structure.hunter_lodge",
-    "structure.hermit_hut"
+    "structure.hermit_hut",
+    "structure.windmill",
+    "structure.watermill",
+    "structure.sawmill",
+    "structure.quarry",
+    "structure.store",
+    "structure.warehouse",
+    "structure.guardhouse",
+    "structure.fisher_hut",
+    "structure.tent"
   ]
 }
