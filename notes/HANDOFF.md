@@ -119,19 +119,26 @@ final state:
 
 ## Next work (updated 2026-07-29 ~14:20, M8 early-start session)
 
-**M8 is HALF-EATEN (2026-07-29 afternoon, designer-sanctioned
-early-start; CLAUDE.md milestone graf has full detail):** lockdown
-sweep DONE (lint + artifact probe are pretester steps — 15 fixed
-gates); feedback return path DONE (session lifecycle evidence +
-bundle zip row + WS1- summary code + tools/decode_summary_code.py);
-onboarding screen DONE (once-per-run tester overlay, lowest-speed
-loadout selector, loadout evidence line; ALL COPY PLACEHOLDER).
+**M8 ENGINEERING EXHAUSTED (2026-07-29 afternoon+evening,
+designer-sanctioned early-start; CLAUDE.md milestone graf has full
+detail):** lockdown sweep DONE (lint + artifact probe in the gate);
+feedback return path DONE (session lifecycle evidence + bundle zip
+row + WS1- summary code + tools/decode_summary_code.py); onboarding
+screen DONE (once-per-run tester overlay, lowest-speed loadout
+selector, loadout evidence line; ALL COPY PLACEHOLDER); CORE-50
+runtime verification DONE (--verify=core50-low|high, both pretester
+steps; notes/CORE50_RUNTIME_CHECKLIST.md maps the designer-eyes
+render half); evidence reader DONE (tools/evidence_report.py =
+bundle → Gate-1 facts; re-engagement DEFINITION stays a planning §6
+lock). Gate = 17 fixed steps + 25-row battery + export + probe, ALL
+GREEN 12.6 min.
 
 Engineering-side remaining, in rough order:
 
-1. **M8 leftovers:** comments box (designer answer pending — lean
-   yes), CORE-50 option runtime-verification pass, onboarding copy
-   voice pass (designer). Then designer-side M8: laptop pass, rested
+1. **M8 leftovers (all designer-input-gated):** comments box (on the
+   now-vs-later answer — lean yes), onboarding copy voice pass
+   (designer words), CORE-50 checklist render pass (designer eyes,
+   tester build). Then designer-side M8: laptop pass, rested
    per-pattern human pass, itch publish, recruitment.
 2. **DESIGNER TASTE ANSWERS OPEN (asked ~13:25, Tier 1 one-liners):**
    bundle destination (Desktop default until said otherwise),
