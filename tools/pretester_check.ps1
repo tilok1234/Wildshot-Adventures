@@ -132,11 +132,15 @@ if (-not $SkipBattery) {
     }
 }
 
+Step "export + artifact boots (dev + tester)" {
+    pwsh tools/export.ps1 -BuildProfile both -Quiet
+    return $LASTEXITCODE -eq 0
+}
+
 Write-Host ""
 $dt = (Get-Date) - $t0
 if ($fails.Count -eq 0) {
     Write-Host ("PRE-TESTER CHECK: ALL GREEN ({0:n1} min)" -f $dt.TotalMinutes)
-    Write-Host "TODO not yet covered: tester-profile export (export.ps1 pending)."
     exit 0
 } else {
     Write-Host ("PRE-TESTER CHECK: {0} FAILURE(S) ({1:n1} min):" -f $fails.Count, $dt.TotalMinutes)

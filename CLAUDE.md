@@ -549,4 +549,37 @@ cut). OPEN feel cards stay rested-gated per two-tier: M2 close,
 six ordinaries, audio-in-play; eyes-closed audio evidence open.
 ENGINEERING QUEUE (needs exclusive Godot access — designer's game
 closes first): reactive re-baseline -> Warden 575 -> export.ps1 ->
-WF merge chain -> docs truth-up + pointer blocks.**
+WF merge chain -> docs truth-up + pointer blocks.
+CHAIN EXECUTED 2026-07-29 (~02:00-02:40, designer closed the game and
+said go; session record planning notes/sessions/2026-07-29.md):
+(1) REACTIVE RE-BASELINE LANDED (4b1c2b4) — dodge_proof defaults
+reactive, unsuffixed reports = the record, full 25-row battery
+regenerated (former wolf-pairs PASS; MUST-FAIL canary still fails);
+the three primary FAILs stay watched as [primary] baseline rows +
+committed dodge_*_primary.json (if primary ever PASSES one, the sim
+changed). (2) WARDEN 575 LANDED (59cd087) — floors stay 66/33 pct
+(379.5/189.75), schedules re-derived (p2 drop 230 -> 60%, p3 drop
+403 -> 29.9%, full-fight sums 575 on the same skeleton: transitions
+t1207/t2413, kill t3301), smoke pins green, all elite proofs + meet
+PASS, TTKBot 21 pairs ALL EXACT — Longbolt vs Warden 11.88s (was
+8.38 at 400; design line ~13s; planning §3.5 truthed 0c6c04f).
+(3) EXPORT PIPELINE LIVE — export_presets.cfg (windows-dev debug /
+windows-tester release + custom feature "tester"), main.gd dev_tools
+ONE-FLAG gate (console+god+slowmo+verdict, free speed steps, bot/
+audit CLI; speed presets STAY tester-facing), build_info.gd stamp
+(export.ps1 rewrites via git describe, restores after; tester HUD
+shows it), tools/export.ps1 (export both -> loose worldforge packs
+beside the exe -> zip wildshot-<id>-<profile>.zip -> artifact boot
+check by EXIT CODE -> butler command prepared for designer),
+WorldforgePack.resolve_src exe-relative fallback (assets/ is
+.gdignore'd so packs ship loose; ALSO means a new pack drop swaps
+into a built tester zip with no re-export). PROVEN: both artifacts
+boot exit 0; tester exe on world_walk validated the loose pack (8
+hashes) + rendered 170104 placements + arena ready. pretester gains
+the export step (TODO retired). M7 = ENGINEERING COMPLETE pending
+the final ALL-GREEN checklist run. LESSON: never edit sim data while
+a battery runs (yw rows landed post-edit by luck — sequence edits
+between runs). REMAINING game-side: intake the WF passage-rule dusk
+re-export when the designer's WF agent ships it (supersedes the v57
+export; world_walk re-proof + designer city walk). Audio verdicts
+DEFERRED to Resonance Forge intake by designer call.**

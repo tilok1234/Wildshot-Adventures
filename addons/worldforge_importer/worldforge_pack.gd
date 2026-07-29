@@ -29,10 +29,29 @@ const PACK_FORMAT := 1
 const WALK_ENCODING := "base64-bitpacked-row-major-lsb-first"
 
 
+## Exported builds ship packs as LOOSE FILES beside the exe (assets/ is
+## .gdignore'd raw-drop land and never enters the PCK; loose packs also
+## let a new pack drop swap into a tester build without re-exporting).
+## A res:// pack dir that does not resolve falls back to
+## <exe dir>/<same relative path>. Editor runs and headless tools see
+## the working tree and take the first branch untouched.
+static func resolve_src(src: String) -> String:
+	if FileAccess.file_exists(src + "manifest.json"):
+		return src
+	if src.begins_with("res://") and not OS.has_feature("editor"):
+		var beside := OS.get_executable_path().get_base_dir().path_join(src.trim_prefix("res://"))
+		if not beside.ends_with("/"):
+			beside += "/"
+		if FileAccess.file_exists(beside + "manifest.json"):
+			return beside
+	return src
+
+
 ## Returns {ok, log, bitgrid, spawn, width, height}. bitgrid is the
 ## sim-ready collision grid (solid = NOT walkable) — the future
 ## consumption half receives it as-is.
 static func validate(src: String) -> Dictionary:
+	src = resolve_src(src)
 	var log: Array[String] = []
 	var fail := func(msg: String) -> Dictionary:
 		log.append(msg)

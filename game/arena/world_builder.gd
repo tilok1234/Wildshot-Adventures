@@ -40,6 +40,7 @@ static func build_world_arena(root: Node2D, pack_src: String) -> Dictionary:
 	if manifest == null or tileset == null:
 		push_error("world_builder: tileforge package missing")
 		return {}
+	pack_src = WorldforgePack.resolve_src(pack_src)
 	var pack_manifest: Variant = JSON.parse_string(
 		FileAccess.get_file_as_string(pack_src + "manifest.json")
 	)

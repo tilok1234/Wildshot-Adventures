@@ -28,6 +28,7 @@ const ScenarioLoader := preload("res://game/scenario_loader.gd")
 const RecapTracker := preload("res://game/drivers/recap_tracker.gd")
 const RecapPanel := preload("res://ui/recap_panel.gd")
 const DebugConsole := preload("res://ui/debug_console.gd")
+const BuildInfo := preload("res://build_info.gd")
 const HitboxView := preload("res://game/views/hitbox_view.gd")
 const SimEvents := preload("res://sim/events.gd")
 const RenderLayers := preload("res://game/render_layers.gd")
@@ -79,6 +80,14 @@ var console: PanelContainer
 var hitboxes: Node2D
 var hud_stack: VBoxContainer
 var _console_events := "off"
+## §2.10 tester-profile gate (M7): tester exports carry the custom
+## feature tag "tester" (export preset) and lose every sim-mutating dev
+## tool through this ONE flag — debug console (god/slow-mo/verdict ride
+## inside it), free speed steps, CLI bot/audit modes. Speed PRESETS
+## ([ / ]) stay: lowest-speed is tester-facing by design (§2.10).
+## Defense in depth: replay-dirty stamps + telemetry flags stay live
+## regardless of the gate.
+var dev_tools: bool = not OS.has_feature("tester")
 var _af_on_tex: Texture2D = load("res://uikit/icon_autofire_on.png")
 var _af_off_tex: Texture2D = load("res://uikit/icon_autofire_off.png")
 
@@ -147,17 +156,18 @@ func _process(_delta: float) -> void:
 		_set_speed(3.0)
 	elif Input.is_action_just_pressed("debug_speed_baseline"):
 		_set_speed(4.0)
-	elif Input.is_action_just_pressed("debug_speed_down"):
+	elif dev_tools and Input.is_action_just_pressed("debug_speed_down"):
 		_set_speed(snappedf(cur - 0.1, 0.1))
-	elif Input.is_action_just_pressed("debug_speed_up"):
+	elif dev_tools and Input.is_action_just_pressed("debug_speed_up"):
 		_set_speed(snappedf(cur + 0.1, 0.1))
 	speed_label.text = (
-		"%d fps   spikes %d   speed %.1f t/s%s"
+		"%d fps   spikes %d   speed %.1f t/s%s%s"
 		% [
 			Engine.get_frames_per_second(),
 			driver.spike_count,
 			cur,
 			"   REPLAY-DIRTY" if world.replay_dirty else "",
+			"" if dev_tools else "   " + BuildInfo.BUILD_ID,
 		]
 	)
 	var p: RefCounted = world.players[0]
@@ -360,7 +370,7 @@ func _ready() -> void:
 	# §2.11 bot mode: the documented CLI (godot --headless -- --bot=...)
 	# runs the proof core with zero presentation built, then exits with
 	# the proof's status code.
-	if BootArgs.get_arg("bot") == "dodge_proof":
+	if dev_tools and BootArgs.get_arg("bot") == "dodge_proof":
 		get_tree().quit(DodgeProof.run_from_args(BootArgs.args))
 		return
 	# §2.5 load-time band assertions (M5): boot fails loudly on a Laws-1/2
@@ -378,7 +388,7 @@ func _ready() -> void:
 	# friendly option forced to its LOWEST setting — the capture proves
 	# hostile channels stay fully visible when the player dials down.
 	var audit_arg := BootArgs.get_arg("audit")
-	var audit_mode := audit_arg == "density" or audit_arg == "density_min"
+	var audit_mode := dev_tools and (audit_arg == "density" or audit_arg == "density_min")
 	var audit_min := audit_arg == "density_min"
 	var scenario: Resource = load(
 		(
@@ -642,9 +652,10 @@ func _ready() -> void:
 	hud.add_child(options_menu)
 	recap_panel = RecapPanel.new()
 	hud.add_child(recap_panel)
-	console = DebugConsole.new()
-	console.line_submitted.connect(_console_exec)
-	hud.add_child(console)
+	if dev_tools:
+		console = DebugConsole.new()
+		console.line_submitted.connect(_console_exec)
+		hud.add_child(console)
 	add_child(hud)
 	Input.set_custom_mouse_cursor(
 		load("res://uikit/cursor_crosshair.png"), Input.CURSOR_ARROW, Vector2(5.0, 5.0)
