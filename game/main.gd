@@ -29,6 +29,7 @@ const RecapTracker := preload("res://game/drivers/recap_tracker.gd")
 const SessionLog := preload("res://game/drivers/session_log.gd")
 const FeedbackBundle := preload("res://game/drivers/feedback_bundle.gd")
 const RecapPanel := preload("res://ui/recap_panel.gd")
+const OnboardingScreen := preload("res://ui/onboarding_screen.gd")
 const DebugConsole := preload("res://ui/debug_console.gd")
 const BuildInfo := preload("res://build_info.gd")
 const HitboxView := preload("res://game/views/hitbox_view.gd")
@@ -66,6 +67,10 @@ var gif_recorder: Node
 var rec_label: Label
 var toast_label: Label
 var _toast_gen := 0
+var onboarding: PanelContainer
+var session_log: Node
+## Once per app run, not per scene build — a T reset never re-shows it.
+static var _onboarding_shown := false
 var feedback_settings: Dictionary = {}
 ## EffectLibrary policy object (M6, ledger #9) — cosmetic/friendly
 ## channels only; hostile paths never hold a reference (§2.6 clamp).
@@ -845,11 +850,32 @@ func _ready() -> void:
 
 	# M8 re-engagement evidence: session start/heartbeat/end lines with
 	# build id + wall clock (view-side; the sim never sees the clock).
-	var session := SessionLog.new()
-	session.world = world
-	session.dev_profile = dev_tools
-	session.scenario_id = String(scenario.id)
-	add_child(session)
+	session_log = SessionLog.new()
+	session_log.world = world
+	session_log.dev_profile = dev_tools
+	session_log.scenario_id = String(scenario.id)
+	add_child(session_log)
+
+	# M8 tester onboarding: once per app run, tester profile only — the
+	# arena stays visible and fully paused behind it (CORE-31); Esc is
+	# locked out until start so the overlay owns the only unpause path.
+	if not dev_tools and not _onboarding_shown:
+		onboarding = OnboardingScreen.new()
+		onboarding.build_id = BuildInfo.BUILD_ID
+		hud_stack.get_parent().add_child(onboarding)
+		driver.paused = true
+		driver.pause_locked = true
+		pause_label.visible = false
+		onboarding.start_pressed.connect(
+			func(speed: float) -> void:
+				_onboarding_shown = true
+				_set_speed(speed)
+				session_log.log_loadout(speed)
+				driver.pause_locked = false
+				driver.paused = false
+				onboarding.queue_free()
+				onboarding = null
+		)
 
 	if audit_mode:
 		driver.sampler = AuditSampler.new()

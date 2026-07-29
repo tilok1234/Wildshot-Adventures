@@ -31,6 +31,10 @@ var recorder: RefCounted = null
 ## scene (view-side transform knowledge stays out of input and sim).
 var mouse_tile_provider: Callable = Callable()
 var paused: bool = false
+## While true the pause key is ignored — the onboarding overlay owns
+## pause until the tester presses start (M8). Single-player pause law
+## (CORE-31) is untouched: the sim stays fully frozen either way.
+var pause_locked: bool = false
 ## Slow motion = driver divisor (§2.1): wall time is divided before the
 ## accumulator, dt never changes, so slow-mo runs stay replay-valid.
 var time_divisor: float = 1.0
@@ -50,7 +54,7 @@ var _accumulator: float = 0.0
 
 
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("pause_toggle"):
+	if not pause_locked and Input.is_action_just_pressed("pause_toggle"):
 		paused = not paused
 		pause_changed.emit(paused)
 	if paused or world == null:

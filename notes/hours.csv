@@ -114,3 +114,4 @@ timestamp,action,note
 2026-07-29T13:20:38,note,"Lockdown sweep COMPLETE: lint+probe live as pretester steps (39 steps ALL GREEN 12.5min, battery byte-identical); audit_min hardened; dodge_proof PCK-remap resolution bug fixed (probe's first catch). M8 'tester debug profile verified' mechanized."
 2026-07-29T13:22:35,note,"M8 feedback-bundle item begins: session lifecycle evidence (start/heartbeat/end + build id) then bundle zip flow; 3 taste questions posted to designer"
 2026-07-29T13:31:28,note,"Feedback return path COMPLETE: session lifecycle evidence + bundle zip + summary code w/ decoder + test in gate+CI. 15 fixed gates ALL GREEN. Toast/row await designer eyes."
+2026-07-29T13:59:16,note,"Designer off to work; final block begins: tester onboarding screen + lowest-speed loadout selector (placeholder copy staged for designer voice)"

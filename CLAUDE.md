@@ -656,6 +656,19 @@ checksum/zip) in pretester (15 fixed gates) + CI Linux job. Toast +
 row are DESIGNER-EYES pending next launch (render gate). Taste
 answers pending (Tier 1 when given): bundle location (Desktop
 default), comments box now-vs-later, summary-code paste destination.
-Remaining M8 engineering: comments box (on answer), onboarding
-screen + lowest-speed selector, CORE-50 option runtime-verification
-pass.**
+ONBOARDING SCREEN LIVE (~14:15, last block while designer at work):
+ui/onboarding_screen.gd shown ONCE per app run (static var; T reset
+never re-shows), TESTER PROFILE ONLY, over the paused arena —
+CORE-31 pause with driver.pause_locked (new) so Esc cannot unpause
+under the overlay; the start buttons are the only unpause path.
+Lowest-speed loadout selector = M8 accept line (start standard 4.0 /
+start lowest 3.0 — real buttons); choice logged as a "loadout"
+evidence line via session_log.log_loadout (lowest-speed segments
+attributable per CORE-53). ALL COPY IS PLACEHOLDER, designer voice
+pending — constraints documented in the file (quiet-lab: no
+coaching; NEVER ask for a play duration — re-engagement stays
+voluntary). Dev profile boots straight in, unchanged. Fixed gates +
+artifact boots + lockdown probe ALL GREEN with the screen aboard.
+DESIGNER-EYES pending: onboarding layout, toast, bundle row (render
+gate). Remaining M8 engineering: comments box (on answer), CORE-50
+option runtime-verification pass, onboarding copy voice pass.**

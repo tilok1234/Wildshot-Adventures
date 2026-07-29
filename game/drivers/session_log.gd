@@ -72,6 +72,19 @@ func _process(delta: float) -> void:
 	)
 
 
+## Tester loadout choice (M8 onboarding): the lowest-speed segments the
+## gate protocol needs become attributable evidence via this line.
+func log_loadout(speed: float) -> void:
+	append_line(
+		{
+			"kind": "loadout",
+			"session": _session_id,
+			"unix": int(Time.get_unix_time_from_system()),
+			"speed": speed,
+		}
+	)
+
+
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST or what == NOTIFICATION_PREDELETE:
 		close_session()
