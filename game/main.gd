@@ -489,6 +489,19 @@ func _ready() -> void:
 	hitboxes.visible = bool(Config.get_setting("ui", "hitboxes", false))
 	add_child(hitboxes)
 
+	# Cities-open ruling (2026-07-29): actors and the world's vertical
+	# layers (structures/props/fence/wall) share ONE y-sort space at the
+	# ACTORS band — a house in front of you draws over you, one behind
+	# draws behind — so the reopened between-house gaps read as depth.
+	# CANOPY (32) and every combat band (40+) sit above the space; the
+	# §2.5 ordering is untouched (boot asserts still govern).
+	var actor_space := Node2D.new()
+	actor_space.name = "ActorSortSpace"
+	actor_space.y_sort_enabled = true
+	add_child(actor_space)
+	for sl: TileMapLayer in arena.get("sort_layers", []):
+		sl.reparent(actor_space)
+
 	# Actor source: the assembler pack (§2.14 Amendment v2, docs/14).
 	var lib := AssemblerLibrary.new()
 	var lib_ok := lib.load_manifest()
@@ -500,7 +513,7 @@ func _ready() -> void:
 		av.clock = view_clock
 		av.render_scale = lib.render_scale()
 		av.play("idle-down")
-		add_child(av)
+		actor_space.add_child(av)
 	else:
 		push_error("main: player sheet unavailable — run the assembler importer")
 
@@ -513,7 +526,8 @@ func _ready() -> void:
 		enemy_actors.driver = driver
 		enemy_actors.lib = lib
 		enemy_actors.sheet_map = sheet_map
-		add_child(enemy_actors)
+		enemy_actors.y_sort_enabled = true
+		actor_space.add_child(enemy_actors)
 	var hp_bars := HpBarView.new()
 	hp_bars.world = world
 	hp_bars.clock = view_clock

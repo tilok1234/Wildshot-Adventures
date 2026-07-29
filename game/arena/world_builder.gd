@@ -8,11 +8,18 @@ extends RefCounted
 ## gids are meaningless against a different atlas build.
 ##
 ## v0 limitations (testbed class, deliberate): animated families held at
-## frame 0 (the pixel_match rule); all world layers draw in the FLOOR
-## band in TMJ paint order (no overhead canopy z — actors render above
-## the world, Forest-Walk-pre-canopy style); POIs/settlements/minimap
-## unconsumed. Semantics come from world.json ONLY when that half lands
-## — resolved layers are rendering-only (multi-game rule).
+## frame 0 (the pixel_match rule); POIs/settlements/minimap unconsumed.
+## Semantics come from world.json ONLY when that half lands — resolved
+## layers are rendering-only (multi-game rule).
+##
+## CITIES-OPEN ruling (2026-07-29): structure/prop/fence/wall layers
+## y-sort against actors in main's ActorSortSpace (returned as
+## sort_layers for reparenting). Structures sort as whole BUILDINGS —
+## connected cells share the component's base row via alternative tiles
+## carrying y_sort_origin — so walking the reopened between-house gaps
+## reads as depth (in front = over you, behind = under you) instead of
+## sprites sliding across rooftops. Floor-class layers stay FLOOR band;
+## overhang stays CANOPY; combat bands sit above the space untouched.
 
 const WorldforgePack := preload("res://addons/worldforge_importer/worldforge_pack.gd")
 const RenderLayers := preload("res://game/render_layers.gd")
@@ -90,11 +97,13 @@ static func build_world_arena(root: Node2D, pack_src: String) -> Dictionary:
 	var width := int(report.width)
 	var height := int(report.height)
 	var placements := 0
+	var sort_layers: Array = []
 	for layer_def: Dictionary in tmj.layers:
 		if not layer_def.has("data"):
 			continue
+		var lname := String(layer_def.get("name", "layer"))
 		var layer := TileMapLayer.new()
-		layer.name = String(layer_def.get("name", "layer"))
+		layer.name = lname
 		layer.tile_set = tileset
 		# Overhang-class layers (awnings, eaves — pack naming convention)
 		# ride the CANOPY band: their cells are WALKABLE by design (54%
@@ -104,28 +113,33 @@ static func build_world_arena(root: Node2D, pack_src: String) -> Dictionary:
 		# construction (render band asserts cover it at boot). This
 		# consumes the pack's canopy z one world early; pull-forward
 		# recorded in the planning log 2026-07-28.
-		if String(layer_def.get("name", "")).contains("overhang"):
+		if lname.contains("overhang"):
 			layer.z_index = RenderLayers.CANOPY
 		root.add_child(layer)
 		var data: Array = layer_def.data
+		if lname == "structures":
+			# Whole-building sort (cities-open ruling): see header note.
+			layer.y_sort_enabled = true
+			layer.z_index = RenderLayers.ACTORS
+			placements += _place_structures(layer, data, width, tileset, sets, by_base)
+			sort_layers.append(layer)
+			continue
+		if lname in ["props", "fence", "wall"]:
+			# Single-cell verticals sort per cell (default center origin).
+			layer.y_sort_enabled = true
+			layer.z_index = RenderLayers.ACTORS
+			sort_layers.append(layer)
 		for i in data.size():
 			var gid := int(data[i])
 			if gid == 0:
 				continue
-			for s: Dictionary in sets:
-				if gid >= int(s.first):
-					var fam: Dictionary = by_base[s.base]
-					var local := gid - int(s.first)
-					var frames := int(fam.frames)
-					if frames > 1:
-						local -= local % frames
-					var cols := int(fam.columns)
-					@warning_ignore("integer_division")
-					var coords := Vector2i(local % cols, local / cols)
-					var cell := Vector2i(i % width, i / width)
-					layer.set_cell(cell, int(fam.sid), coords)
-					placements += 1
-					break
+			var t := _resolve_gid(gid, sets, by_base)
+			if t.is_empty():
+				continue
+			@warning_ignore("integer_division")
+			var cell := Vector2i(i % width, i / width)
+			layer.set_cell(cell, int(t.sid), t.coords)
+			placements += 1
 
 	print(
 		(
@@ -143,4 +157,89 @@ static func build_world_arena(root: Node2D, pack_src: String) -> Dictionary:
 		"bitgrid": report.bitgrid,
 		"spawn": report.spawn,
 		"placements": placements,
+		"sort_layers": sort_layers,
 	}
+
+
+## Resolve a TMJ gid against the package tilesets: {sid, coords} or {}.
+static func _resolve_gid(gid: int, sets: Array, by_base: Dictionary) -> Dictionary:
+	for s: Dictionary in sets:
+		if gid >= int(s.first):
+			var fam: Dictionary = by_base[s.base]
+			var local := gid - int(s.first)
+			var frames := int(fam.frames)
+			if frames > 1:
+				local -= local % frames
+			var cols := int(fam.columns)
+			@warning_ignore("integer_division")
+			var coords := Vector2i(local % cols, local / cols)
+			return {"sid": int(fam.sid), "coords": coords}
+	return {}
+
+
+## Alternative-tile ids per (source, coords, sort offset) — process-wide
+## so scene reloads (T reset) reuse alternatives instead of duplicating
+## them on the shared tileforge TileSet resource.
+static var _alt_cache: Dictionary = {}
+
+
+static func _sorted_alt(tileset: TileSet, sid: int, coords: Vector2i, offset_px: int) -> int:
+	if offset_px == 0:
+		return 0
+	var key := "%d/%d,%d/%d" % [sid, coords.x, coords.y, offset_px]
+	if _alt_cache.has(key):
+		return int(_alt_cache[key])
+	var src := tileset.get_source(sid) as TileSetAtlasSource
+	if src == null:
+		return 0
+	var alt := src.create_alternative_tile(coords)
+	src.get_tile_data(coords, alt).y_sort_origin = offset_px
+	_alt_cache[key] = alt
+	return alt
+
+
+## Structures place as y-sorted BUILDINGS: connected cells (4-neighbor)
+## form one building; every cell's sort origin drops to the component's
+## BASE row via _sorted_alt, so a whole facade draws as one depth object
+## and actors weave the between-house gaps with correct occlusion.
+static func _place_structures(
+	layer: TileMapLayer, data: Array, width: int, tileset: TileSet, sets: Array, by_base: Dictionary
+) -> int:
+	var present := {}
+	for i in data.size():
+		if int(data[i]) != 0:
+			present[i] = true
+	var base_row := {}
+	var seen := {}
+	for i: int in present:
+		if seen.has(i):
+			continue
+		var comp: Array[int] = []
+		var queue: Array[int] = [i]
+		seen[i] = true
+		var base := 0
+		while not queue.is_empty():
+			var c: int = queue.pop_back()
+			comp.append(c)
+			@warning_ignore("integer_division")
+			base = maxi(base, c / width)
+			for n: int in [c - 1, c + 1, c - width, c + width]:
+				if not present.has(n) or seen.has(n):
+					continue
+				if absi((n % width) - (c % width)) > 1:
+					continue  # row-wrap guard for the c±1 neighbors
+				seen[n] = true
+				queue.append(n)
+		for c: int in comp:
+			base_row[c] = base
+	var placed := 0
+	for i: int in present:
+		var t := _resolve_gid(int(data[i]), sets, by_base)
+		if t.is_empty():
+			continue
+		@warning_ignore("integer_division")
+		var row := i / width
+		var alt := _sorted_alt(tileset, int(t.sid), t.coords, (int(base_row[i]) - row) * TILE)
+		layer.set_cell(Vector2i(i % width, row), int(t.sid), t.coords, alt)
+		placed += 1
+	return placed
