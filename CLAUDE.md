@@ -576,8 +576,14 @@ WorldforgePack.resolve_src exe-relative fallback (assets/ is
 into a built tester zip with no re-export). PROVEN: both artifacts
 boot exit 0; tester exe on world_walk validated the loose pack (8
 hashes) + rendered 170104 placements + arena ready. pretester gains
-the export step (TODO retired). M7 = ENGINEERING COMPLETE pending
-the final ALL-GREEN checklist run. LESSON: never edit sim data while
+the export step (TODO retired). PASSAGE-RULE PACK INTAKEN same seam
+(3b5ac3d; WF 7b08f35 two-wide rule): west-city 1-wide slaloms sealed,
+2-wide streets open, ~60 sole-access corridors preserved, flood
+34433, porosity still 11, world_walk re-proven. **M7 CLOSED
+2026-07-29 ~02:45: pretester_check ALL GREEN 10.9 min — 11 fixed
+gates + 25-row battery byte-identical + export step (both artifacts
+boot exit 0).** Designer walk on the west-city street = the human
+acceptance of the cities arc, pending. LESSON: never edit sim data while
 a battery runs (yw rows landed post-edit by luck — sequence edits
 between runs). REMAINING game-side: intake the WF passage-rule dusk
 re-export when the designer's WF agent ships it (supersedes the v57
