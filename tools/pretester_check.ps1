@@ -1,9 +1,11 @@
 # Pre-tester-build checklist (docs/12 M7): every gate, one command.
 # Runs the full verification stack and compares the canonical proof
 # battery against the EXPECTED table below. Exit 0 = ship-ready per
-# the current record. Battery expectations encode the CURRENT policy
-# of record (primary) INCLUDING the three wolf-pair FAILs — update the
-# table when the designer rules on reactive-as-canonical.
+# the current record. POLICY OF RECORD: REACTIVE (designer ruling
+# 2026-07-29, Decision Deck register; ledger #11 closed). Canonical
+# unsuffixed rows run reactive by default; the three wolf-pair
+# primary FAILs stay watched as explicit [primary] baseline rows —
+# if primary ever PASSES one, the sim changed under us.
 #
 # Usage: pwsh tools/pretester_check.ps1 [-SkipBattery]
 
@@ -85,7 +87,7 @@ if (-not $SkipBattery) {
     $battery = @(
         @("canary_trivial","1,2,3,4,5",3600,"","","PASS"),
         @("canary_undodgeable","1,2,3",1800,"","","FAIL"),
-        @("proof_rusher","1,2,3,4,5",3600,"","","FAIL"),
+        @("proof_rusher","1,2,3,4,5",3600,"","","PASS"),
         @("proof_husk_archer","1,2,3,4,5",3600,"","","PASS"),
         @("proof_fanmaw","203,204,205,206,207",3600,"","","PASS"),
         @("proof_fanmaw_inside","205,206,207,208,209",3600,"","","PASS"),
@@ -96,14 +98,13 @@ if (-not $SkipBattery) {
         @("proof_yw_p2","209,210,211,212,213",3600,"","","PASS"),
         @("proof_yw_p3","210,211,212,213,214",3600,"","","PASS"),
         @("proof_yw_full","211,212,213,214,215",3600,"","","PASS"),
-        @("forest_walk","1,2,3",3600,"res://reports/dodge_forest_walk_composition.json","","FAIL"),
+        @("forest_walk","1,2,3",3600,"res://reports/dodge_forest_walk_composition.json","","PASS"),
         @("world_walk","1,2,3",3600,"res://reports/dodge_world_walk_composition.json","","PASS"),
-        @("first_contact","1,2,3",3600,"res://reports/dodge_first_contact_composition.json","","FAIL"),
+        @("first_contact","1,2,3",3600,"res://reports/dodge_first_contact_composition.json","","PASS"),
         @("second_contact","10,11,12,13,14",3600,"res://reports/dodge_second_contact_composition.json","","PASS"),
-        @("first_contact","1,2,3",3600,"res://reports/dodge_first_contact_reactive.json","reactive","PASS"),
-        @("world_walk","1,2,3",3600,"res://reports/dodge_world_walk_reactive.json","reactive","PASS"),
-        @("proof_rusher","1,2,3,4,5",3600,"res://reports/dodge_proof_rusher_reactive.json","reactive","PASS"),
-        @("forest_walk","1,2,3",3600,"res://reports/dodge_forest_walk_reactive.json","reactive","PASS"),
+        @("proof_rusher","1,2,3,4,5",3600,"","primary","FAIL"),
+        @("forest_walk","1,2,3",3600,"res://reports/dodge_forest_walk_composition_primary.json","primary","FAIL"),
+        @("first_contact","1,2,3",3600,"res://reports/dodge_first_contact_composition_primary.json","primary","FAIL"),
         @("lab_default","1,2,3",3600,"","","PASS"),
         @("meet_blightcaster","1,2,3",3600,"","","PASS"),
         @("meet_leadshot","1,2,3",3600,"","","PASS"),

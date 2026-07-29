@@ -31,10 +31,12 @@ static func run_from_args(args: Dictionary) -> int:
 	var speed_arg := String(args.get("speed", "3.0"))
 	var speed := 3.0 if speed_arg == "lowest" else float(speed_arg)
 	var ticks := int(String(args.get("ticks", "3600")))
-	# M7 policy selection. PRIMARY is canonical; any other policy's
-	# DEFAULT out-name carries the policy suffix so re-adjudication
-	# evidence can never clobber the canonical primary reports.
-	var policy_name := String(args.get("policy", "primary"))
+	# Policy of record: REACTIVE (designer ruling 2026-07-29, Decision
+	# Deck register — closes ledger #11). Canonical unsuffixed reports
+	# are reactive; any other policy's DEFAULT out-name carries the
+	# policy suffix so alternative-model evidence (e.g. the primary
+	# wolf-pair FAIL baselines) can never clobber the record.
+	var policy_name := String(args.get("policy", "reactive"))
 	var policy_ids := {
 		"primary": DodgePolicy.Policy.PRIMARY,
 		"reactive": DodgePolicy.Policy.REACTIVE,
@@ -56,7 +58,7 @@ static func run_from_args(args: Dictionary) -> int:
 			seeds.append(base + i)
 	var default_out := (
 		"res://reports/dodge_%s.json" % String(scenario.id)
-		if policy_name == "primary"
+		if policy_name == "reactive"
 		else "res://reports/dodge_%s_%s.json" % [String(scenario.id), policy_name]
 	)
 	var out_path := String(args.get("out", default_out))

@@ -161,41 +161,44 @@ Before every commit, per touched area:
 - One approved decision = one commit; milestone records go to the
   planning session log; push BOTH repos.
 
-### Canonical proof battery (all --speed=3.0; state as of 2026-07-28
-### afternoon — tangent slide + corner slip + terrain radius 0.25 +
-### sealed/moss WorldForge pack; POLICY-OF-RECORD RULING PENDING)
+### Canonical proof battery (all --speed=3.0; state 2026-07-29 —
+### POLICY OF RECORD = REACTIVE per the Decision Deck ruling (ledger
+### #11 CLOSED, first_contact adjudication dissolved); Warden HP 575;
+### tangent slide + corner slip + terrain 0.25 + sealed/moss pack)
 
-| scenario | seeds | ticks | expected (primary policy) |
+| scenario | seeds | ticks | expected (reactive record) |
 |---|---|---|---|
 | canary_trivial | 1,2,3,4,5 | 3600 | PASS (MUST-PASS) |
-| canary_undodgeable | 1,2,3 | 1800 | FAIL (MUST-FAIL, ~t23) |
-| proof_rusher | 1,2,3,4,5 | 3600 | **FAIL 4 hits near 0.015 — wolf-pair; reactive PASS 0.181** |
+| canary_undodgeable | 1,2,3 | 1800 | FAIL (MUST-FAIL, geometric 4-wall box) |
+| proof_rusher | 1,2,3,4,5 | 3600 | PASS (former wolf-pair — record flip) |
 | proof_husk_archer | 1,2,3,4,5 | 3600 | PASS |
 | proof_fanmaw | 203..207 | 3600 | PASS (stand-off) |
 | proof_fanmaw_inside | 205..209 | 3600 | PASS (escape) |
 | proof_ringer | 204..208 | 3600 | PASS |
 | proof_leadshot | 206..210 | 3600 | PASS |
-| proof_blightcaster (open-pocket layout 20,12/26,12) | 207..211 | 3600 | PASS (0 hits, near 0.090 — hazard metric live, ledger #13 closed) |
-| forest_walk → dodge_forest_walk_composition.json | 1,2,3 | 3600 | **FAIL 12 hits near 0.003 — wolf-pair; reactive PASS 0.125** |
-| world_walk → dodge_world_walk_composition.json | 1,2,3 | 3600 | PASS (sealed+moss pack; byte-stable through moss intake) |
-| first_contact → dodge_first_contact_composition.json | 1,2,3 | 3600 | **FAIL — wolf-pair; reactive PASS** |
+| proof_blightcaster (open-pocket layout 20,12/26,12) | 207..211 | 3600 | PASS (hazard metric live) |
+| forest_walk → dodge_forest_walk_composition.json | 1,2,3 | 3600 | PASS (former wolf-pair) |
+| world_walk → dodge_world_walk_composition.json | 1,2,3 | 3600 | PASS |
+| first_contact → dodge_first_contact_composition.json | 1,2,3 | 3600 | PASS (former wolf-pair; adjudication dissolved by the ruling) |
 | second_contact → dodge_second_contact_composition.json | 10..14 | 3600 | PASS |
-| proof_yw_p1 | 208..212 | 3600 | PASS |
-| proof_yw_p2 | 209..213 | 3600 | PASS (near now reflects armed zones) |
-| proof_yw_p3 | 210..214 | 3600 | PASS |
-| proof_yw_full | 211..215 | 3600 | PASS (transitions t1207/t2413 + kill t3301; phase_transitions + peak 12/300 in report) |
+| proof_yw_p1 | 208..212 | 3600 | PASS (575: natural P1 pin) |
+| proof_yw_p2 (t0 drop 230 → hp 345 = 60%) | 209..213 | 3600 | PASS |
+| proof_yw_p3 (t0 drop 403 → hp 172 = 29.9%) | 210..214 | 3600 | PASS |
+| proof_yw_full (schedule sums 575; transitions t1207/t2413, kill t3301) | 211..215 | 3600 | PASS |
+| proof_rusher / forest_walk / first_contact **[--policy=primary]** | as above | 3600 | **FAIL — documented primary-model baselines** (dodge_*_primary.json; if primary ever PASSES one, the sim changed under us — investigate) |
+| lab_default + meet_blightcaster/leadshot/yard_warden | 1,2,3 | 3600 | PASS |
 
-**The three wolf-pairs (rusher, forest, first_contact) share ONE
-root**: the primary policy models melee as do-not-enter, and corner
-slip freed wolves from prop snags. REACTIVE (calibrated: passes
-trivial, fails geometric canary, solos wolves) passes all three
-clean — reactive evidence committed as dodge_*_reactive.json.
-PENDING DESIGNER RULING: promote reactive to policy of record
-(closes ledger #11, dissolves the first_contact adjudication). Until
-ruled, the FAILs are honest committed evidence — never launder.
+**Policy of record: REACTIVE** (enter melee range, dodge windups on
+their telegraphs like a human; calibrated — passes trivial, fails the
+geometric canary, solos wolves). dodge_proof DEFAULTS to reactive;
+unsuffixed reports/ are the record; `--policy=primary` (or orbit/axis)
+suffixes its outputs. The old dodge_*_reactive.json evidence files are
+retired — the record absorbed them. Warden is 575 HP [T] per the same
+register (Longbolt TTK 11.88 s measured vs the ~13 s design line;
+ttk_matrix.json carries the full 21-pair matrix).
 
-Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- --scenario=<id> --speed=3.0 --seeds=<list> --ticks=<n> [--out=res://reports/<name>.json]`
-(compositions need the explicit --out names above).
+Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- --scenario=<id> --speed=3.0 --seeds=<list> --ticks=<n> [--out=res://reports/<name>.json] [--policy=primary|orbit|axis]`
+(compositions need the explicit --out names above; default policy = reactive).
 
 ## Hard-won gotchas (cost real debugging — read ALL of them)
 
