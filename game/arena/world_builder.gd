@@ -118,11 +118,17 @@ static func build_world_arena(root: Node2D, pack_src: String) -> Dictionary:
 		root.add_child(layer)
 		var data: Array = layer_def.data
 		if lname == "structures":
-			# Whole-building sort (cities-open ruling): see header note.
-			layer.y_sort_enabled = true
-			layer.z_index = RenderLayers.ACTORS
-			placements += _place_structures(layer, data, width, tileset, sets, by_base)
-			sort_layers.append(layer)
+			# Whole-building sort (cities-open ruling): the flat layer is
+			# replaced by ONE container of per-building mini-layers, each
+			# sorted as a single node at its base row — see the helper.
+			layer.free()
+			var buildings := Node2D.new()
+			buildings.name = "structures"
+			buildings.y_sort_enabled = true
+			buildings.z_index = RenderLayers.ACTORS
+			root.add_child(buildings)
+			placements += _place_structures(buildings, data, width, tileset, sets, by_base)
+			sort_layers.append(buildings)
 			continue
 		if lname in ["props", "fence", "wall"]:
 			# Single-cell verticals sort per cell (default center origin).
@@ -177,39 +183,20 @@ static func _resolve_gid(gid: int, sets: Array, by_base: Dictionary) -> Dictiona
 	return {}
 
 
-## Alternative-tile ids per (source, coords, sort offset) — process-wide
-## so scene reloads (T reset) reuse alternatives instead of duplicating
-## them on the shared tileforge TileSet resource.
-static var _alt_cache: Dictionary = {}
-
-
-static func _sorted_alt(tileset: TileSet, sid: int, coords: Vector2i, offset_px: int) -> int:
-	if offset_px == 0:
-		return 0
-	var key := "%d/%d,%d/%d" % [sid, coords.x, coords.y, offset_px]
-	if _alt_cache.has(key):
-		return int(_alt_cache[key])
-	var src := tileset.get_source(sid) as TileSetAtlasSource
-	if src == null:
-		return 0
-	var alt := src.create_alternative_tile(coords)
-	src.get_tile_data(coords, alt).y_sort_origin = offset_px
-	_alt_cache[key] = alt
-	return alt
-
-
 ## Structures place as y-sorted BUILDINGS: connected cells (4-neighbor)
-## form one building; every cell's sort origin drops to the component's
-## BASE row via _sorted_alt, so a whole facade draws as one depth object
+## form one building, rendered as its own mini TileMapLayer positioned
+## so the NODE's y = the building's base-row bottom edge. The parent
+## container y-sorts whole nodes, so a facade draws as one depth object
 ## and actors weave the between-house gaps with correct occlusion.
+## (No alternative tiles, no shared-tileset mutation — plain layers.)
 static func _place_structures(
-	layer: TileMapLayer, data: Array, width: int, tileset: TileSet, sets: Array, by_base: Dictionary
+	container: Node2D, data: Array, width: int, tileset: TileSet, sets: Array, by_base: Dictionary
 ) -> int:
 	var present := {}
 	for i in data.size():
 		if int(data[i]) != 0:
 			present[i] = true
-	var base_row := {}
+	var placed := 0
 	var seen := {}
 	for i: int in present:
 		if seen.has(i):
@@ -230,16 +217,19 @@ static func _place_structures(
 					continue  # row-wrap guard for the c±1 neighbors
 				seen[n] = true
 				queue.append(n)
+		var building := TileMapLayer.new()
+		building.tile_set = tileset
+		# Sort anchor: the bottom edge of the base row. Cells are indexed
+		# relative to that anchor so world pixels land unchanged.
+		var anchor_row := base + 1
+		building.position = Vector2(0, anchor_row * TILE)
 		for c: int in comp:
-			base_row[c] = base
-	var placed := 0
-	for i: int in present:
-		var t := _resolve_gid(int(data[i]), sets, by_base)
-		if t.is_empty():
-			continue
-		@warning_ignore("integer_division")
-		var row := i / width
-		var alt := _sorted_alt(tileset, int(t.sid), t.coords, (int(base_row[i]) - row) * TILE)
-		layer.set_cell(Vector2i(i % width, row), int(t.sid), t.coords, alt)
-		placed += 1
+			var t := _resolve_gid(int(data[c]), sets, by_base)
+			if t.is_empty():
+				continue
+			@warning_ignore("integer_division")
+			var row := c / width
+			building.set_cell(Vector2i(c % width, row - anchor_row), int(t.sid), t.coords)
+			placed += 1
+		container.add_child(building)
 	return placed

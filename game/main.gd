@@ -499,7 +499,7 @@ func _ready() -> void:
 	actor_space.name = "ActorSortSpace"
 	actor_space.y_sort_enabled = true
 	add_child(actor_space)
-	for sl: TileMapLayer in arena.get("sort_layers", []):
+	for sl: Node2D in arena.get("sort_layers", []):
 		sl.reparent(actor_space)
 
 	# Actor source: the assembler pack (§2.14 Amendment v2, docs/14).
