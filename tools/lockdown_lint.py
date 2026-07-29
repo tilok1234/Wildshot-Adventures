@@ -86,6 +86,9 @@ if len(audit_mode_hits) != 1 or "dev_tools and" not in audit_mode_hits[0]:
 audit_min_hits = [l for l in main_lines if re.search(r"\bvar audit_min\b", l)]
 if len(audit_min_hits) != 1 or "audit_mode and" not in audit_min_hits[0]:
     fail(f"audit_min not audit_mode-gated at declaration: {audit_min_hits}")
+verify_hits = [l for l in main_lines if re.search(r"\bvar verify_mode\b", l)]
+if len(verify_hits) != 1 or "dev_tools and" not in verify_hits[0]:
+    fail(f"verify_mode (--verify CLI) not dev_tools-gated at declaration: {verify_hits}")
 
 # 6. God: SET_GOD is enqueued from exactly two sites (console exec + audit
 #    block), both console/audit-gated; nothing else in game/ enqueues it.

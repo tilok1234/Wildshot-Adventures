@@ -48,6 +48,11 @@ Step "walkability diag (11 route cells)" {
     return $LASTEXITCODE -eq 0
 }
 
+Step "evidence report selftest" {
+    python tools/evidence_report.py --selftest *> $null
+    return $LASTEXITCODE -eq 0
+}
+
 Step "lockdown lint (one-flag gate)" {
     $lout = python tools/lockdown_lint.py 2>&1
     if ($LASTEXITCODE -ne 0) {
@@ -90,6 +95,18 @@ Step "boot clean (no ERROR)" {
     $ready = $out | Select-String -Pattern "arena ready"
     if ($errs) { $errs | Select-Object -First 3 | ForEach-Object { Write-Host "  $_" } }
     return ($ready -and -not $errs)
+}
+
+# CORE-50 runtime verification (M8): both profiles must PASS by marker
+# AND exit code — together they prove every mechanized option CHANGES
+# wired behavior, not just holds a value.
+foreach ($vp in @("core50-low", "core50-high")) {
+    $sw = [System.Diagnostics.Stopwatch]::StartNew()
+    $vout = & $godot --headless --path . -- --verify=$vp 2>&1
+    $vok = ($LASTEXITCODE -eq 0) -and ($vout | Select-String -Pattern "core50 verify \($vp\): PASS")
+    $sw.Stop()
+    Write-Host ("{0,-42} {1}  ({2:n1}s)" -f "core50 wiring ($vp)", $(if ($vok) { "PASS" } else { "FAIL" }), $sw.Elapsed.TotalSeconds)
+    if (-not $vok) { $fails += "core50 wiring ($vp)" }
 }
 
 if (-not $SkipBattery) {

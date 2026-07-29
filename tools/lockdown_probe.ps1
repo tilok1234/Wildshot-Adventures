@@ -117,7 +117,19 @@ if (-not $Quiet) {
     Write-Host ("probe C (tester +audit refused):         {0}" -f $(if ($cOk) { "PASS" } else { "FAIL" }))
 }
 
-# --- E (covers B+C runs): session evidence ----------------------------------
+# --- F: tester --verify refusal ----------------------------------------------
+$r = Invoke-Artifact $testerExe @(
+    "--quit-after", "120", "--", "--verify=core50-low"
+) 90000 "probe_f"
+$fOk = $true
+if ($r.timeout) { $fails += "F: tester verify probe timed out"; $fOk = $false }
+if ($r.code -ne 0) { $fails += "F: tester exe exited $($r.code) on --verify (expected clean normal boot)"; $fOk = $false }
+if ($r.stdout -match "core50 verify") { $fails += "F: tester exe ran the CORE-50 verify CLI"; $fOk = $false }
+if (-not $Quiet) {
+    Write-Host ("probe F (tester +verify refused):        {0}" -f $(if ($fOk) { "PASS" } else { "FAIL" }))
+}
+
+# --- E (covers B+C+F runs): session evidence ---------------------------------
 $appended = Get-AppendedText $sessionLog $sesBefore
 $eOk = $true
 if ($appended -match "DAMAGE_IMMUNE|SET_GOD|slowmo") {

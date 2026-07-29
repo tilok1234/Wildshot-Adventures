@@ -30,6 +30,7 @@ const SessionLog := preload("res://game/drivers/session_log.gd")
 const FeedbackBundle := preload("res://game/drivers/feedback_bundle.gd")
 const RecapPanel := preload("res://ui/recap_panel.gd")
 const OnboardingScreen := preload("res://ui/onboarding_screen.gd")
+const Core50Verify := preload("res://game/dev/core50_verify.gd")
 const DebugConsole := preload("res://ui/debug_console.gd")
 const BuildInfo := preload("res://build_info.gd")
 const HitboxView := preload("res://game/views/hitbox_view.gd")
@@ -409,6 +410,13 @@ func _ready() -> void:
 	# --audit=density_min (M6 9-row): the same run with every cosmetic/
 	# friendly option forced to its LOWEST setting — the capture proves
 	# hostile channels stay fully visible when the player dials down.
+	# CORE-50 runtime-verification CLI (M8): dev-gated like --audit. A
+	# known profile repoints the Config autoload at an injected settings
+	# file BEFORE any wiring reads it (the real settings.cfg is never
+	# touched); the end of _ready asserts the wired state and quits.
+	var verify_arg := BootArgs.get_arg("verify")
+	var verify_mode := dev_tools and Core50Verify.inject_if_known(verify_arg)
+
 	var audit_arg := BootArgs.get_arg("audit")
 	var audit_mode := dev_tools and (audit_arg == "density" or audit_arg == "density_min")
 	# Gate carried locally so the lockdown lint can prove it by grep —
@@ -899,3 +907,12 @@ func _ready() -> void:
 			]
 		)
 	)
+
+	# The CORE-50 verification run asserts AFTER every option is wired
+	# (last thing in _ready) and exits with the verdict.
+	if verify_mode:
+		var vfails := Core50Verify.verify(self, verify_arg)
+		for msg: String in vfails:
+			push_error("core50: " + msg)
+		print("core50 verify (%s): %s" % [verify_arg, "PASS" if vfails.is_empty() else "FAIL"])
+		get_tree().quit(0 if vfails.is_empty() else 1)
