@@ -616,5 +616,8 @@ full-sheet region, frame-0 non-empty per anim/dir/boss; README's
 and committed raw at assets/assembler-boss-pack/ (.gdignore'd; boot
 clean). NO game wiring: importer/library single-cell assumption +
 per-sheet scale story = the deck's boss-sheets card = M8/Phase B
-scope talk. Designer may re-drop improved sheets; re-drops revalidate
-with the tool before replacing the directory.**
+scope talk. RULED (designer, 2026-07-29 ~12:50, Tier 1): keep the
+raw drop as-is, wire in only when a boss sprite is naturally needed;
+polished exact re-exports expected later (same shape — revalidate
+with the tool before replacing the directory). Warden-skin audition
+path + 48px-skin-vs-24px-hurtbox honesty note parked with the card.**

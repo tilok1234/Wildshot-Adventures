@@ -106,3 +106,7 @@ timestamp,action,note
 2026-07-29T03:36:03,stop,"Research review parked (3 nuggets in session log); architecture validated against both docs. Final stop before account switch."
 2026-07-29T03:37:13,start,"Projectile review #2 absorb: filtering check + compliance notes"
 2026-07-29T03:37:52,stop,"Review #2 absorbed + recorded; filtering verified nearest at both levels. Clock stops - account switch for real this time."
+2026-07-29T12:14:48,start,"Session start (new account seam): orientation read - HANDOFF + contract + rituals; awaiting designer task"
+2026-07-29T12:29:29,note,"Boss pack intake begins: 13-bosses-no-dragon zip landed from assembler dist"
+2026-07-29T12:35:01,note,"Boss pack intake COMPLETE: validated (1248 PNGs clean), landed assets/assembler-boss-pack, validator persisted in tools/, both repos pushed. No game wiring - scale story awaits scope talk."
+2026-07-29T12:44:09,note,"Boss ruling recorded: keep raw drop, wire on natural need (Tier 1). Arc closed."
