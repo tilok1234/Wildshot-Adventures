@@ -117,29 +117,42 @@ final state:
   clone at `Documents\world_filler\world_filler`; game-side
   consumption stays POST-GATE-1 per planning docs/17.
 
-## Next work
+## Next work (updated 2026-07-29 ~14:20, M8 early-start session)
 
-Engineering-side, in rough order (all designer-triggerable; nothing
-urgent overnight):
+**M8 is HALF-EATEN (2026-07-29 afternoon, designer-sanctioned
+early-start; CLAUDE.md milestone graf has full detail):** lockdown
+sweep DONE (lint + artifact probe are pretester steps — 15 fixed
+gates); feedback return path DONE (session lifecycle evidence +
+bundle zip row + WS1- summary code + tools/decode_summary_code.py);
+onboarding screen DONE (once-per-run tester overlay, lowest-speed
+loadout selector, loadout evidence line; ALL COPY PLACEHOLDER).
 
-1. **M8 per docs/12 §4** (the notice's P4): laptop pass, tester
-   onboarding flow, feedback bundle, tester-profile lockdown
-   verification sweep. The export pipeline just made all of it real.
-2. **Intakes as they land:** the designer is ACTIVELY iterating
-   eight-holds round-12 (docks) with their WF agent right now — WF is
-   live designer territory; new dusk/world drops may follow. Runbook:
-   notes/PACK_INTAKE_RUNBOOK.md (procedure current, expectations
-   era-stamped — battery matrix lives in this file's table below).
-   **Boss sheets are coming**: 11 bosses done in the assembler at
-   48x48 with cast+death rows (the game's roster is 24x24 — intake
-   needs a per-sheet scale story; the deck's "boss sheets drop" card
-   holds the slot; new bosses = new slots = M8/Phase B scope talk).
-3. **Gate 1 calendar** — recruitment is sized, builds ship, channels
+Engineering-side remaining, in rough order:
+
+1. **M8 leftovers:** comments box (designer answer pending — lean
+   yes), CORE-50 option runtime-verification pass, onboarding copy
+   voice pass (designer). Then designer-side M8: laptop pass, rested
+   per-pattern human pass, itch publish, recruitment.
+2. **DESIGNER TASTE ANSWERS OPEN (asked ~13:25, Tier 1 one-liners):**
+   bundle destination (Desktop default until said otherwise),
+   comments box now-vs-later, summary-code paste destination
+   (Discord/itch/both). DESIGNER-EYES on next launch: onboarding
+   layout, bundle row + toast + Explorer reveal (render gate).
+3. **Intakes as they land:** BOSS PACK INTAKEN 2026-07-29 (13 bosses
+   48x48 raw at assets/assembler-boss-pack/, validator
+   tools/validate_boss_pack.py; RULED keep-raw, wire on natural
+   need; re-drops revalidate with the tool). WF composition passes
+   are ACTIVE designer territory (~30 settlement compositions:
+   chicken coops, harbors...) — new world drops expected; runbook
+   procedure stands, porosity pin is per-drop. Audio pack may drop
+   any day (Resonance Forge); cue swap is zero-code by design, music
+   playback is the one new piece.
+4. **Gate 1 calendar** — recruitment is sized, builds ship, channels
    are live. Scheduling is the designer's; the pipeline is ready.
 
 Designer-side open (do not nag): rested feel cards (M2 formal close,
 six-ordinaries ratification), eight-holds round-12 docks verdict
-(WF-side), Discord link for the record, boss sheets drop when ready.
+(WF-side), Discord link for the record.
 AUDIO IS DEFERRED BY RULING: both audio verdicts (eyes-closed + feel)
 wait for the Resonance Forge integration — placeholder cues will not
 be separately ratified (notes/AUDIO_CUE_MAP.md carries the slot).

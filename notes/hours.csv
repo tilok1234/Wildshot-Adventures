@@ -115,3 +115,4 @@ timestamp,action,note
 2026-07-29T13:22:35,note,"M8 feedback-bundle item begins: session lifecycle evidence (start/heartbeat/end + build id) then bundle zip flow; 3 taste questions posted to designer"
 2026-07-29T13:31:28,note,"Feedback return path COMPLETE: session lifecycle evidence + bundle zip + summary code w/ decoder + test in gate+CI. 15 fixed gates ALL GREEN. Toast/row await designer eyes."
 2026-07-29T13:59:16,note,"Designer off to work; final block begins: tester onboarding screen + lowest-speed loadout selector (placeholder copy staged for designer voice)"
+2026-07-29T14:08:36,stop,"Block complete: onboarding screen live (tester-only overlay, lowest-speed selector, loadout evidence, placeholder copy w/ documented constraints). M8 engineering 3/5 done today (lockdown, feedback path, onboarding). Handoff refreshed, both repos pushed. Clock stops - designer at work, session idle."
