@@ -104,3 +104,5 @@ timestamp,action,note
 2026-07-29T03:26:04,stop,"Handoff pass done: cold-start HANDOFF.md rewritten for the account switch (marathon state, deck era, two-tier, lane rule, reactive record, WYSIWYG cities, all 17 gotchas incl. render-gate + mid-battery + per-drop-pin lessons); ledger swept (#9 #14 #15 closed); queue/export-design/runbook era-stamped. Clock stops for the switch."
 2026-07-29T03:36:01,start,"Projectile research review (designer's two docs)"
 2026-07-29T03:36:03,stop,"Research review parked (3 nuggets in session log); architecture validated against both docs. Final stop before account switch."
+2026-07-29T03:37:13,start,"Projectile review #2 absorb: filtering check + compliance notes"
+2026-07-29T03:37:52,stop,"Review #2 absorbed + recorded; filtering verified nearest at both levels. Clock stops - account switch for real this time."
