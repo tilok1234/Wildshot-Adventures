@@ -23,6 +23,13 @@ under this contract.** Read it before touching anything.
 - **On any conflict between this repo and the planning docs: stop and flag.
   Do not resolve it here.** Conflicts resolve in the planning repo, never in
   game-repo commits.
+- **Stay in this repo's lane (designer rule, 2026-07-29):** game-repo
+  sessions never execute other repos' plans or work (WorldForge,
+  world_filler, TileForge, assembler, Resonance Forge). Upstream needs
+  become recorded asks or a self-contained prompt the designer hands to
+  that repo's own agent. Reading other repos for context is fine;
+  intaking their delivered packs is game-repo work; DOING their work is
+  not.
 
 ## Binding-constraint digest
 
@@ -582,8 +589,19 @@ the export step (TODO retired). PASSAGE-RULE PACK INTAKEN same seam
 34433, porosity still 11, world_walk re-proven. **M7 CLOSED
 2026-07-29 ~02:45: pretester_check ALL GREEN 10.9 min — 11 fixed
 gates + 25-row battery byte-identical + export step (both artifacts
-boot exit 0).** Designer walk on the west-city street = the human
-acceptance of the cities arc, pending. LESSON: never edit sim data while
+boot exit 0).** CITIES ARC ACCEPTED
+2026-07-29 ~03:05 ("hallelujah! finnaly works"): the WF agent's
+WYSIWYG re-export (flood 34739, +306 reopened — 481 one-wide
+inter-house strips walk, 474 reachable, 7 legal courtyard islands;
+seal machinery deleted upstream, -428 lines; collision = art outline
+minus declared pass cells, bidirectional gate, exceptions empty) +
+the game's per-building y-sort space (v2 mini-layers after the
+alt-tile route dropped roofs) = the designer walks between houses.
+Porosity diag re-pinned 44 (33 gateway pass cells + 11 legacy,
+per-drop pin, eyeball-verified 2-wide `ss` gateways). world_walk
+re-proven PASS on the reopened pack. LANE RULE added to Authority
+(game sessions never execute other repos' plans — asks/prompts
+instead). Eight-holds round-12 docks verdict = designer, WF-side.** LESSON: never edit sim data while
 a battery runs (yw rows landed post-edit by luck — sequence edits
 between runs). REMAINING game-side: intake the WF passage-rule dusk
 re-export when the designer's WF agent ships it (supersedes the v57

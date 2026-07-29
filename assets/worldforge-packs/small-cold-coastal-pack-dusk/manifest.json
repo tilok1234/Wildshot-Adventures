@@ -3,7 +3,7 @@
     "tileforge": 7
   },
   "artifactFormat": 8,
-  "baseArtifactSha256": "77bea11a2086db26a4811da7b1077118663a21cce2557ccd2d880012591907a8",
+  "baseArtifactSha256": "576891ad573c3f91da2aaa636e146167479098ae317fd6b8e70a1f8435b38a9f",
   "dimensions": {
     "chunkHeight": 32,
     "chunkWidth": 32,
@@ -15,18 +15,18 @@
     "normalized-recipe.json": "80cff5eb69437be55d56a433874887a6a2446f38aad613b2422a73e9c48c6c58",
     "resolved/resolved-map.tmj": "cc842c3fec809710d7192aa58cb5d36674a06883237dae1215ba69081caeff83",
     "resolved/tileforge-map-data.json": "0b3dbe81794dedd255ec4e9055599c160270761910d800f7574db71e4bc41248",
-    "resolved/tileforge-slice.json": "6fe0c4b33db5b77170a0e83c9f2d987b1c8657675a7844242307953be5a61324",
+    "resolved/tileforge-slice.json": "e359c3149556868ffbfff614fb1678b9ddcd6b263eb75279c7466dc0b50555ce",
     "validation-report.json": "9cefe7b09292e6a718f3c1ddf0392e7061c7e424fe8e248733307a5c24a6ba1e",
-    "walkability.json": "a15202a4129f79b793df87bfd995670f79f07b9c90d925b47ca13b9d892bec93",
-    "world.json": "77bea11a2086db26a4811da7b1077118663a21cce2557ccd2d880012591907a8"
+    "walkability.json": "3121873fb7a3c730c8079b2d8021b32a8e50ad0c9fd7b13d0c6c0c0ecab231f6",
+    "world.json": "576891ad573c3f91da2aaa636e146167479098ae317fd6b8e70a1f8435b38a9f"
   },
   "generator": {
-    "behaviorVersion": 59,
-    "generationIdentitySha256": "032921339efe54da142b071aae14b751774ad05871926e0dfa6fa5396096bd2d",
+    "behaviorVersion": 60,
+    "generationIdentitySha256": "3a511e37b17757cbb0e5dad950c7f48f03ef861fa6b8206c92174edb86797a5c",
     "name": "worldforge",
     "recipeCompilerVersion": 34,
     "recipeSha256": "80cff5eb69437be55d56a433874887a6a2446f38aad613b2422a73e9c48c6c58",
-    "resolvedConfigSha256": "a91cce5008fdc933434ac25a997d65996bc9ea9101061a331d73ba0e52eeed7b",
+    "resolvedConfigSha256": "830d2879cff79f83e33daa4532c684ce6024ebf3595656d3456dbfd76eae141d",
     "seed": 103991,
     "version": "0.1.0"
   },
@@ -39,7 +39,7 @@
     "theme": "dusk"
   },
   "walkability": {
-    "floodCount": 34433,
+    "floodCount": 34739,
     "format": 1,
     "spawnCell": [
       240,

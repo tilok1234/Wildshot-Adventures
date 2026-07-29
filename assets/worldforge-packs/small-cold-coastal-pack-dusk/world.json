@@ -837827,12 +837827,12 @@
   ],
   "formatVersion": 8,
   "generator": {
-    "generationIdentitySha256": "032921339efe54da142b071aae14b751774ad05871926e0dfa6fa5396096bd2d",
-    "generatorBehaviorVersion": 59,
+    "generationIdentitySha256": "3a511e37b17757cbb0e5dad950c7f48f03ef861fa6b8206c92174edb86797a5c",
+    "generatorBehaviorVersion": 60,
     "name": "worldforge",
     "recipeCompilerVersion": 34,
     "recipeSha256": "80cff5eb69437be55d56a433874887a6a2446f38aad613b2422a73e9c48c6c58",
-    "resolvedConfigSha256": "a91cce5008fdc933434ac25a997d65996bc9ea9101061a331d73ba0e52eeed7b",
+    "resolvedConfigSha256": "830d2879cff79f83e33daa4532c684ce6024ebf3595656d3456dbfd76eae141d",
     "seed": 103991,
     "version": "0.1.0"
   },
@@ -846869,6 +846869,7 @@
     "structure.warehouse",
     "structure.guardhouse",
     "structure.fisher_hut",
-    "structure.tent"
+    "structure.tent",
+    "structure.dock"
   ]
 }
