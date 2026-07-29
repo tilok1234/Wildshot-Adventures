@@ -1,0 +1,358 @@
+{
+  "id": "goblin-war-crown",
+  "name": "Goblin War-Crown",
+  "nativeScale": 1,
+  "hardAlpha": true,
+  "directionOrder": [
+    "down",
+    "left",
+    "right",
+    "up"
+  ],
+  "directionPilot": {
+    "profile": {
+      "id": "boss-directions-v1",
+      "version": 1,
+      "frameSize": 48,
+      "sheetWidth": 48,
+      "sheetHeight": 192,
+      "directionOrder": [
+        "down",
+        "left",
+        "right",
+        "up"
+      ],
+      "hardAlpha": true,
+      "exportScale": 1,
+      "animated": false,
+      "effects": false
+    },
+    "sheet": "goblin-war-crown-directions-v1.png",
+    "frames": {
+      "down": "goblin-war-crown-directions-v1-down.png",
+      "left": "goblin-war-crown-directions-v1-left.png",
+      "right": "goblin-war-crown-directions-v1-right.png",
+      "up": "goblin-war-crown-directions-v1-up.png"
+    }
+  },
+  "animationPilot": {
+    "profile": {
+      "id": "boss-animation-v1",
+      "version": 1,
+      "frameSize": 48,
+      "sheetColumns": 20,
+      "sheetWidth": 960,
+      "sheetHeight": 192,
+      "directionOrder": [
+        "down",
+        "left",
+        "right",
+        "up"
+      ],
+      "animations": [
+        {
+          "id": "idle",
+          "name": "Idle",
+          "frames": 2,
+          "ms": 420,
+          "column": 0
+        },
+        {
+          "id": "walk",
+          "name": "Walk",
+          "frames": 4,
+          "ms": 150,
+          "column": 2
+        },
+        {
+          "id": "attack",
+          "name": "Attack",
+          "frames": 4,
+          "ms": 115,
+          "column": 6
+        },
+        {
+          "id": "cast",
+          "name": "Cast",
+          "frames": 4,
+          "ms": 170,
+          "column": 10
+        },
+        {
+          "id": "hurt",
+          "name": "Hurt",
+          "frames": 2,
+          "ms": 140,
+          "column": 14
+        },
+        {
+          "id": "death",
+          "name": "Death",
+          "frames": 4,
+          "ms": 210,
+          "column": 16
+        }
+      ],
+      "hardAlpha": true,
+      "exportScale": 1,
+      "animated": true,
+      "effects": false
+    },
+    "fullSheet": "goblin-war-crown-animation-v1-full.png",
+    "directionSheets": {
+      "down": "goblin-war-crown-animation-v1-direction-down.png",
+      "left": "goblin-war-crown-animation-v1-direction-left.png",
+      "right": "goblin-war-crown-animation-v1-direction-right.png",
+      "up": "goblin-war-crown-animation-v1-direction-up.png"
+    },
+    "animationSheets": {
+      "idle": "goblin-war-crown-animation-v1-animation-idle.png",
+      "walk": "goblin-war-crown-animation-v1-animation-walk.png",
+      "attack": "goblin-war-crown-animation-v1-animation-attack.png",
+      "cast": "goblin-war-crown-animation-v1-animation-cast.png",
+      "hurt": "goblin-war-crown-animation-v1-animation-hurt.png",
+      "death": "goblin-war-crown-animation-v1-animation-death.png"
+    },
+    "frames": {
+      "idle": {
+        "down": [
+          "goblin-war-crown-animation-v1-idle-down-1.png",
+          "goblin-war-crown-animation-v1-idle-down-2.png"
+        ],
+        "left": [
+          "goblin-war-crown-animation-v1-idle-left-1.png",
+          "goblin-war-crown-animation-v1-idle-left-2.png"
+        ],
+        "right": [
+          "goblin-war-crown-animation-v1-idle-right-1.png",
+          "goblin-war-crown-animation-v1-idle-right-2.png"
+        ],
+        "up": [
+          "goblin-war-crown-animation-v1-idle-up-1.png",
+          "goblin-war-crown-animation-v1-idle-up-2.png"
+        ]
+      },
+      "walk": {
+        "down": [
+          "goblin-war-crown-animation-v1-walk-down-1.png",
+          "goblin-war-crown-animation-v1-walk-down-2.png",
+          "goblin-war-crown-animation-v1-walk-down-3.png",
+          "goblin-war-crown-animation-v1-walk-down-4.png"
+        ],
+        "left": [
+          "goblin-war-crown-animation-v1-walk-left-1.png",
+          "goblin-war-crown-animation-v1-walk-left-2.png",
+          "goblin-war-crown-animation-v1-walk-left-3.png",
+          "goblin-war-crown-animation-v1-walk-left-4.png"
+        ],
+        "right": [
+          "goblin-war-crown-animation-v1-walk-right-1.png",
+          "goblin-war-crown-animation-v1-walk-right-2.png",
+          "goblin-war-crown-animation-v1-walk-right-3.png",
+          "goblin-war-crown-animation-v1-walk-right-4.png"
+        ],
+        "up": [
+          "goblin-war-crown-animation-v1-walk-up-1.png",
+          "goblin-war-crown-animation-v1-walk-up-2.png",
+          "goblin-war-crown-animation-v1-walk-up-3.png",
+          "goblin-war-crown-animation-v1-walk-up-4.png"
+        ]
+      },
+      "attack": {
+        "down": [
+          "goblin-war-crown-animation-v1-attack-down-1.png",
+          "goblin-war-crown-animation-v1-attack-down-2.png",
+          "goblin-war-crown-animation-v1-attack-down-3.png",
+          "goblin-war-crown-animation-v1-attack-down-4.png"
+        ],
+        "left": [
+          "goblin-war-crown-animation-v1-attack-left-1.png",
+          "goblin-war-crown-animation-v1-attack-left-2.png",
+          "goblin-war-crown-animation-v1-attack-left-3.png",
+          "goblin-war-crown-animation-v1-attack-left-4.png"
+        ],
+        "right": [
+          "goblin-war-crown-animation-v1-attack-right-1.png",
+          "goblin-war-crown-animation-v1-attack-right-2.png",
+          "goblin-war-crown-animation-v1-attack-right-3.png",
+          "goblin-war-crown-animation-v1-attack-right-4.png"
+        ],
+        "up": [
+          "goblin-war-crown-animation-v1-attack-up-1.png",
+          "goblin-war-crown-animation-v1-attack-up-2.png",
+          "goblin-war-crown-animation-v1-attack-up-3.png",
+          "goblin-war-crown-animation-v1-attack-up-4.png"
+        ]
+      },
+      "cast": {
+        "down": [
+          "goblin-war-crown-animation-v1-cast-down-1.png",
+          "goblin-war-crown-animation-v1-cast-down-2.png",
+          "goblin-war-crown-animation-v1-cast-down-3.png",
+          "goblin-war-crown-animation-v1-cast-down-4.png"
+        ],
+        "left": [
+          "goblin-war-crown-animation-v1-cast-left-1.png",
+          "goblin-war-crown-animation-v1-cast-left-2.png",
+          "goblin-war-crown-animation-v1-cast-left-3.png",
+          "goblin-war-crown-animation-v1-cast-left-4.png"
+        ],
+        "right": [
+          "goblin-war-crown-animation-v1-cast-right-1.png",
+          "goblin-war-crown-animation-v1-cast-right-2.png",
+          "goblin-war-crown-animation-v1-cast-right-3.png",
+          "goblin-war-crown-animation-v1-cast-right-4.png"
+        ],
+        "up": [
+          "goblin-war-crown-animation-v1-cast-up-1.png",
+          "goblin-war-crown-animation-v1-cast-up-2.png",
+          "goblin-war-crown-animation-v1-cast-up-3.png",
+          "goblin-war-crown-animation-v1-cast-up-4.png"
+        ]
+      },
+      "hurt": {
+        "down": [
+          "goblin-war-crown-animation-v1-hurt-down-1.png",
+          "goblin-war-crown-animation-v1-hurt-down-2.png"
+        ],
+        "left": [
+          "goblin-war-crown-animation-v1-hurt-left-1.png",
+          "goblin-war-crown-animation-v1-hurt-left-2.png"
+        ],
+        "right": [
+          "goblin-war-crown-animation-v1-hurt-right-1.png",
+          "goblin-war-crown-animation-v1-hurt-right-2.png"
+        ],
+        "up": [
+          "goblin-war-crown-animation-v1-hurt-up-1.png",
+          "goblin-war-crown-animation-v1-hurt-up-2.png"
+        ]
+      },
+      "death": {
+        "down": [
+          "goblin-war-crown-animation-v1-death-down-1.png",
+          "goblin-war-crown-animation-v1-death-down-2.png",
+          "goblin-war-crown-animation-v1-death-down-3.png",
+          "goblin-war-crown-animation-v1-death-down-4.png"
+        ],
+        "left": [
+          "goblin-war-crown-animation-v1-death-left-1.png",
+          "goblin-war-crown-animation-v1-death-left-2.png",
+          "goblin-war-crown-animation-v1-death-left-3.png",
+          "goblin-war-crown-animation-v1-death-left-4.png"
+        ],
+        "right": [
+          "goblin-war-crown-animation-v1-death-right-1.png",
+          "goblin-war-crown-animation-v1-death-right-2.png",
+          "goblin-war-crown-animation-v1-death-right-3.png",
+          "goblin-war-crown-animation-v1-death-right-4.png"
+        ],
+        "up": [
+          "goblin-war-crown-animation-v1-death-up-1.png",
+          "goblin-war-crown-animation-v1-death-up-2.png",
+          "goblin-war-crown-animation-v1-death-up-3.png",
+          "goblin-war-crown-animation-v1-death-up-4.png"
+        ]
+      }
+    }
+  },
+  "pngCount": 96,
+  "files": [
+    "goblin-war-crown-directions-v1.png",
+    "goblin-war-crown-directions-v1-down.png",
+    "goblin-war-crown-directions-v1-left.png",
+    "goblin-war-crown-directions-v1-right.png",
+    "goblin-war-crown-directions-v1-up.png",
+    "goblin-war-crown-animation-v1-full.png",
+    "goblin-war-crown-animation-v1-direction-down.png",
+    "goblin-war-crown-animation-v1-direction-left.png",
+    "goblin-war-crown-animation-v1-direction-right.png",
+    "goblin-war-crown-animation-v1-direction-up.png",
+    "goblin-war-crown-animation-v1-animation-idle.png",
+    "goblin-war-crown-animation-v1-animation-walk.png",
+    "goblin-war-crown-animation-v1-animation-attack.png",
+    "goblin-war-crown-animation-v1-animation-cast.png",
+    "goblin-war-crown-animation-v1-animation-hurt.png",
+    "goblin-war-crown-animation-v1-animation-death.png",
+    "goblin-war-crown-animation-v1-idle-down-1.png",
+    "goblin-war-crown-animation-v1-idle-down-2.png",
+    "goblin-war-crown-animation-v1-idle-left-1.png",
+    "goblin-war-crown-animation-v1-idle-left-2.png",
+    "goblin-war-crown-animation-v1-idle-right-1.png",
+    "goblin-war-crown-animation-v1-idle-right-2.png",
+    "goblin-war-crown-animation-v1-idle-up-1.png",
+    "goblin-war-crown-animation-v1-idle-up-2.png",
+    "goblin-war-crown-animation-v1-walk-down-1.png",
+    "goblin-war-crown-animation-v1-walk-down-2.png",
+    "goblin-war-crown-animation-v1-walk-down-3.png",
+    "goblin-war-crown-animation-v1-walk-down-4.png",
+    "goblin-war-crown-animation-v1-walk-left-1.png",
+    "goblin-war-crown-animation-v1-walk-left-2.png",
+    "goblin-war-crown-animation-v1-walk-left-3.png",
+    "goblin-war-crown-animation-v1-walk-left-4.png",
+    "goblin-war-crown-animation-v1-walk-right-1.png",
+    "goblin-war-crown-animation-v1-walk-right-2.png",
+    "goblin-war-crown-animation-v1-walk-right-3.png",
+    "goblin-war-crown-animation-v1-walk-right-4.png",
+    "goblin-war-crown-animation-v1-walk-up-1.png",
+    "goblin-war-crown-animation-v1-walk-up-2.png",
+    "goblin-war-crown-animation-v1-walk-up-3.png",
+    "goblin-war-crown-animation-v1-walk-up-4.png",
+    "goblin-war-crown-animation-v1-attack-down-1.png",
+    "goblin-war-crown-animation-v1-attack-down-2.png",
+    "goblin-war-crown-animation-v1-attack-down-3.png",
+    "goblin-war-crown-animation-v1-attack-down-4.png",
+    "goblin-war-crown-animation-v1-attack-left-1.png",
+    "goblin-war-crown-animation-v1-attack-left-2.png",
+    "goblin-war-crown-animation-v1-attack-left-3.png",
+    "goblin-war-crown-animation-v1-attack-left-4.png",
+    "goblin-war-crown-animation-v1-attack-right-1.png",
+    "goblin-war-crown-animation-v1-attack-right-2.png",
+    "goblin-war-crown-animation-v1-attack-right-3.png",
+    "goblin-war-crown-animation-v1-attack-right-4.png",
+    "goblin-war-crown-animation-v1-attack-up-1.png",
+    "goblin-war-crown-animation-v1-attack-up-2.png",
+    "goblin-war-crown-animation-v1-attack-up-3.png",
+    "goblin-war-crown-animation-v1-attack-up-4.png",
+    "goblin-war-crown-animation-v1-cast-down-1.png",
+    "goblin-war-crown-animation-v1-cast-down-2.png",
+    "goblin-war-crown-animation-v1-cast-down-3.png",
+    "goblin-war-crown-animation-v1-cast-down-4.png",
+    "goblin-war-crown-animation-v1-cast-left-1.png",
+    "goblin-war-crown-animation-v1-cast-left-2.png",
+    "goblin-war-crown-animation-v1-cast-left-3.png",
+    "goblin-war-crown-animation-v1-cast-left-4.png",
+    "goblin-war-crown-animation-v1-cast-right-1.png",
+    "goblin-war-crown-animation-v1-cast-right-2.png",
+    "goblin-war-crown-animation-v1-cast-right-3.png",
+    "goblin-war-crown-animation-v1-cast-right-4.png",
+    "goblin-war-crown-animation-v1-cast-up-1.png",
+    "goblin-war-crown-animation-v1-cast-up-2.png",
+    "goblin-war-crown-animation-v1-cast-up-3.png",
+    "goblin-war-crown-animation-v1-cast-up-4.png",
+    "goblin-war-crown-animation-v1-hurt-down-1.png",
+    "goblin-war-crown-animation-v1-hurt-down-2.png",
+    "goblin-war-crown-animation-v1-hurt-left-1.png",
+    "goblin-war-crown-animation-v1-hurt-left-2.png",
+    "goblin-war-crown-animation-v1-hurt-right-1.png",
+    "goblin-war-crown-animation-v1-hurt-right-2.png",
+    "goblin-war-crown-animation-v1-hurt-up-1.png",
+    "goblin-war-crown-animation-v1-hurt-up-2.png",
+    "goblin-war-crown-animation-v1-death-down-1.png",
+    "goblin-war-crown-animation-v1-death-down-2.png",
+    "goblin-war-crown-animation-v1-death-down-3.png",
+    "goblin-war-crown-animation-v1-death-down-4.png",
+    "goblin-war-crown-animation-v1-death-left-1.png",
+    "goblin-war-crown-animation-v1-death-left-2.png",
+    "goblin-war-crown-animation-v1-death-left-3.png",
+    "goblin-war-crown-animation-v1-death-left-4.png",
+    "goblin-war-crown-animation-v1-death-right-1.png",
+    "goblin-war-crown-animation-v1-death-right-2.png",
+    "goblin-war-crown-animation-v1-death-right-3.png",
+    "goblin-war-crown-animation-v1-death-right-4.png",
+    "goblin-war-crown-animation-v1-death-up-1.png",
+    "goblin-war-crown-animation-v1-death-up-2.png",
+    "goblin-war-crown-animation-v1-death-up-3.png",
+    "goblin-war-crown-animation-v1-death-up-4.png"
+  ]
+}

@@ -1,0 +1,358 @@
+{
+  "id": "abyssal-crown-kraken",
+  "name": "Abyssal Crown-Kraken",
+  "nativeScale": 1,
+  "hardAlpha": true,
+  "directionOrder": [
+    "down",
+    "left",
+    "right",
+    "up"
+  ],
+  "directionPilot": {
+    "profile": {
+      "id": "boss-directions-v1",
+      "version": 1,
+      "frameSize": 48,
+      "sheetWidth": 48,
+      "sheetHeight": 192,
+      "directionOrder": [
+        "down",
+        "left",
+        "right",
+        "up"
+      ],
+      "hardAlpha": true,
+      "exportScale": 1,
+      "animated": false,
+      "effects": false
+    },
+    "sheet": "abyssal-crown-kraken-directions-v1.png",
+    "frames": {
+      "down": "abyssal-crown-kraken-directions-v1-down.png",
+      "left": "abyssal-crown-kraken-directions-v1-left.png",
+      "right": "abyssal-crown-kraken-directions-v1-right.png",
+      "up": "abyssal-crown-kraken-directions-v1-up.png"
+    }
+  },
+  "animationPilot": {
+    "profile": {
+      "id": "boss-animation-v1",
+      "version": 1,
+      "frameSize": 48,
+      "sheetColumns": 20,
+      "sheetWidth": 960,
+      "sheetHeight": 192,
+      "directionOrder": [
+        "down",
+        "left",
+        "right",
+        "up"
+      ],
+      "animations": [
+        {
+          "id": "idle",
+          "name": "Idle",
+          "frames": 2,
+          "ms": 420,
+          "column": 0
+        },
+        {
+          "id": "walk",
+          "name": "Walk",
+          "frames": 4,
+          "ms": 150,
+          "column": 2
+        },
+        {
+          "id": "attack",
+          "name": "Attack",
+          "frames": 4,
+          "ms": 115,
+          "column": 6
+        },
+        {
+          "id": "cast",
+          "name": "Cast",
+          "frames": 4,
+          "ms": 170,
+          "column": 10
+        },
+        {
+          "id": "hurt",
+          "name": "Hurt",
+          "frames": 2,
+          "ms": 140,
+          "column": 14
+        },
+        {
+          "id": "death",
+          "name": "Death",
+          "frames": 4,
+          "ms": 210,
+          "column": 16
+        }
+      ],
+      "hardAlpha": true,
+      "exportScale": 1,
+      "animated": true,
+      "effects": false
+    },
+    "fullSheet": "abyssal-crown-kraken-animation-v1-full.png",
+    "directionSheets": {
+      "down": "abyssal-crown-kraken-animation-v1-direction-down.png",
+      "left": "abyssal-crown-kraken-animation-v1-direction-left.png",
+      "right": "abyssal-crown-kraken-animation-v1-direction-right.png",
+      "up": "abyssal-crown-kraken-animation-v1-direction-up.png"
+    },
+    "animationSheets": {
+      "idle": "abyssal-crown-kraken-animation-v1-animation-idle.png",
+      "walk": "abyssal-crown-kraken-animation-v1-animation-walk.png",
+      "attack": "abyssal-crown-kraken-animation-v1-animation-attack.png",
+      "cast": "abyssal-crown-kraken-animation-v1-animation-cast.png",
+      "hurt": "abyssal-crown-kraken-animation-v1-animation-hurt.png",
+      "death": "abyssal-crown-kraken-animation-v1-animation-death.png"
+    },
+    "frames": {
+      "idle": {
+        "down": [
+          "abyssal-crown-kraken-animation-v1-idle-down-1.png",
+          "abyssal-crown-kraken-animation-v1-idle-down-2.png"
+        ],
+        "left": [
+          "abyssal-crown-kraken-animation-v1-idle-left-1.png",
+          "abyssal-crown-kraken-animation-v1-idle-left-2.png"
+        ],
+        "right": [
+          "abyssal-crown-kraken-animation-v1-idle-right-1.png",
+          "abyssal-crown-kraken-animation-v1-idle-right-2.png"
+        ],
+        "up": [
+          "abyssal-crown-kraken-animation-v1-idle-up-1.png",
+          "abyssal-crown-kraken-animation-v1-idle-up-2.png"
+        ]
+      },
+      "walk": {
+        "down": [
+          "abyssal-crown-kraken-animation-v1-walk-down-1.png",
+          "abyssal-crown-kraken-animation-v1-walk-down-2.png",
+          "abyssal-crown-kraken-animation-v1-walk-down-3.png",
+          "abyssal-crown-kraken-animation-v1-walk-down-4.png"
+        ],
+        "left": [
+          "abyssal-crown-kraken-animation-v1-walk-left-1.png",
+          "abyssal-crown-kraken-animation-v1-walk-left-2.png",
+          "abyssal-crown-kraken-animation-v1-walk-left-3.png",
+          "abyssal-crown-kraken-animation-v1-walk-left-4.png"
+        ],
+        "right": [
+          "abyssal-crown-kraken-animation-v1-walk-right-1.png",
+          "abyssal-crown-kraken-animation-v1-walk-right-2.png",
+          "abyssal-crown-kraken-animation-v1-walk-right-3.png",
+          "abyssal-crown-kraken-animation-v1-walk-right-4.png"
+        ],
+        "up": [
+          "abyssal-crown-kraken-animation-v1-walk-up-1.png",
+          "abyssal-crown-kraken-animation-v1-walk-up-2.png",
+          "abyssal-crown-kraken-animation-v1-walk-up-3.png",
+          "abyssal-crown-kraken-animation-v1-walk-up-4.png"
+        ]
+      },
+      "attack": {
+        "down": [
+          "abyssal-crown-kraken-animation-v1-attack-down-1.png",
+          "abyssal-crown-kraken-animation-v1-attack-down-2.png",
+          "abyssal-crown-kraken-animation-v1-attack-down-3.png",
+          "abyssal-crown-kraken-animation-v1-attack-down-4.png"
+        ],
+        "left": [
+          "abyssal-crown-kraken-animation-v1-attack-left-1.png",
+          "abyssal-crown-kraken-animation-v1-attack-left-2.png",
+          "abyssal-crown-kraken-animation-v1-attack-left-3.png",
+          "abyssal-crown-kraken-animation-v1-attack-left-4.png"
+        ],
+        "right": [
+          "abyssal-crown-kraken-animation-v1-attack-right-1.png",
+          "abyssal-crown-kraken-animation-v1-attack-right-2.png",
+          "abyssal-crown-kraken-animation-v1-attack-right-3.png",
+          "abyssal-crown-kraken-animation-v1-attack-right-4.png"
+        ],
+        "up": [
+          "abyssal-crown-kraken-animation-v1-attack-up-1.png",
+          "abyssal-crown-kraken-animation-v1-attack-up-2.png",
+          "abyssal-crown-kraken-animation-v1-attack-up-3.png",
+          "abyssal-crown-kraken-animation-v1-attack-up-4.png"
+        ]
+      },
+      "cast": {
+        "down": [
+          "abyssal-crown-kraken-animation-v1-cast-down-1.png",
+          "abyssal-crown-kraken-animation-v1-cast-down-2.png",
+          "abyssal-crown-kraken-animation-v1-cast-down-3.png",
+          "abyssal-crown-kraken-animation-v1-cast-down-4.png"
+        ],
+        "left": [
+          "abyssal-crown-kraken-animation-v1-cast-left-1.png",
+          "abyssal-crown-kraken-animation-v1-cast-left-2.png",
+          "abyssal-crown-kraken-animation-v1-cast-left-3.png",
+          "abyssal-crown-kraken-animation-v1-cast-left-4.png"
+        ],
+        "right": [
+          "abyssal-crown-kraken-animation-v1-cast-right-1.png",
+          "abyssal-crown-kraken-animation-v1-cast-right-2.png",
+          "abyssal-crown-kraken-animation-v1-cast-right-3.png",
+          "abyssal-crown-kraken-animation-v1-cast-right-4.png"
+        ],
+        "up": [
+          "abyssal-crown-kraken-animation-v1-cast-up-1.png",
+          "abyssal-crown-kraken-animation-v1-cast-up-2.png",
+          "abyssal-crown-kraken-animation-v1-cast-up-3.png",
+          "abyssal-crown-kraken-animation-v1-cast-up-4.png"
+        ]
+      },
+      "hurt": {
+        "down": [
+          "abyssal-crown-kraken-animation-v1-hurt-down-1.png",
+          "abyssal-crown-kraken-animation-v1-hurt-down-2.png"
+        ],
+        "left": [
+          "abyssal-crown-kraken-animation-v1-hurt-left-1.png",
+          "abyssal-crown-kraken-animation-v1-hurt-left-2.png"
+        ],
+        "right": [
+          "abyssal-crown-kraken-animation-v1-hurt-right-1.png",
+          "abyssal-crown-kraken-animation-v1-hurt-right-2.png"
+        ],
+        "up": [
+          "abyssal-crown-kraken-animation-v1-hurt-up-1.png",
+          "abyssal-crown-kraken-animation-v1-hurt-up-2.png"
+        ]
+      },
+      "death": {
+        "down": [
+          "abyssal-crown-kraken-animation-v1-death-down-1.png",
+          "abyssal-crown-kraken-animation-v1-death-down-2.png",
+          "abyssal-crown-kraken-animation-v1-death-down-3.png",
+          "abyssal-crown-kraken-animation-v1-death-down-4.png"
+        ],
+        "left": [
+          "abyssal-crown-kraken-animation-v1-death-left-1.png",
+          "abyssal-crown-kraken-animation-v1-death-left-2.png",
+          "abyssal-crown-kraken-animation-v1-death-left-3.png",
+          "abyssal-crown-kraken-animation-v1-death-left-4.png"
+        ],
+        "right": [
+          "abyssal-crown-kraken-animation-v1-death-right-1.png",
+          "abyssal-crown-kraken-animation-v1-death-right-2.png",
+          "abyssal-crown-kraken-animation-v1-death-right-3.png",
+          "abyssal-crown-kraken-animation-v1-death-right-4.png"
+        ],
+        "up": [
+          "abyssal-crown-kraken-animation-v1-death-up-1.png",
+          "abyssal-crown-kraken-animation-v1-death-up-2.png",
+          "abyssal-crown-kraken-animation-v1-death-up-3.png",
+          "abyssal-crown-kraken-animation-v1-death-up-4.png"
+        ]
+      }
+    }
+  },
+  "pngCount": 96,
+  "files": [
+    "abyssal-crown-kraken-directions-v1.png",
+    "abyssal-crown-kraken-directions-v1-down.png",
+    "abyssal-crown-kraken-directions-v1-left.png",
+    "abyssal-crown-kraken-directions-v1-right.png",
+    "abyssal-crown-kraken-directions-v1-up.png",
+    "abyssal-crown-kraken-animation-v1-full.png",
+    "abyssal-crown-kraken-animation-v1-direction-down.png",
+    "abyssal-crown-kraken-animation-v1-direction-left.png",
+    "abyssal-crown-kraken-animation-v1-direction-right.png",
+    "abyssal-crown-kraken-animation-v1-direction-up.png",
+    "abyssal-crown-kraken-animation-v1-animation-idle.png",
+    "abyssal-crown-kraken-animation-v1-animation-walk.png",
+    "abyssal-crown-kraken-animation-v1-animation-attack.png",
+    "abyssal-crown-kraken-animation-v1-animation-cast.png",
+    "abyssal-crown-kraken-animation-v1-animation-hurt.png",
+    "abyssal-crown-kraken-animation-v1-animation-death.png",
+    "abyssal-crown-kraken-animation-v1-idle-down-1.png",
+    "abyssal-crown-kraken-animation-v1-idle-down-2.png",
+    "abyssal-crown-kraken-animation-v1-idle-left-1.png",
+    "abyssal-crown-kraken-animation-v1-idle-left-2.png",
+    "abyssal-crown-kraken-animation-v1-idle-right-1.png",
+    "abyssal-crown-kraken-animation-v1-idle-right-2.png",
+    "abyssal-crown-kraken-animation-v1-idle-up-1.png",
+    "abyssal-crown-kraken-animation-v1-idle-up-2.png",
+    "abyssal-crown-kraken-animation-v1-walk-down-1.png",
+    "abyssal-crown-kraken-animation-v1-walk-down-2.png",
+    "abyssal-crown-kraken-animation-v1-walk-down-3.png",
+    "abyssal-crown-kraken-animation-v1-walk-down-4.png",
+    "abyssal-crown-kraken-animation-v1-walk-left-1.png",
+    "abyssal-crown-kraken-animation-v1-walk-left-2.png",
+    "abyssal-crown-kraken-animation-v1-walk-left-3.png",
+    "abyssal-crown-kraken-animation-v1-walk-left-4.png",
+    "abyssal-crown-kraken-animation-v1-walk-right-1.png",
+    "abyssal-crown-kraken-animation-v1-walk-right-2.png",
+    "abyssal-crown-kraken-animation-v1-walk-right-3.png",
+    "abyssal-crown-kraken-animation-v1-walk-right-4.png",
+    "abyssal-crown-kraken-animation-v1-walk-up-1.png",
+    "abyssal-crown-kraken-animation-v1-walk-up-2.png",
+    "abyssal-crown-kraken-animation-v1-walk-up-3.png",
+    "abyssal-crown-kraken-animation-v1-walk-up-4.png",
+    "abyssal-crown-kraken-animation-v1-attack-down-1.png",
+    "abyssal-crown-kraken-animation-v1-attack-down-2.png",
+    "abyssal-crown-kraken-animation-v1-attack-down-3.png",
+    "abyssal-crown-kraken-animation-v1-attack-down-4.png",
+    "abyssal-crown-kraken-animation-v1-attack-left-1.png",
+    "abyssal-crown-kraken-animation-v1-attack-left-2.png",
+    "abyssal-crown-kraken-animation-v1-attack-left-3.png",
+    "abyssal-crown-kraken-animation-v1-attack-left-4.png",
+    "abyssal-crown-kraken-animation-v1-attack-right-1.png",
+    "abyssal-crown-kraken-animation-v1-attack-right-2.png",
+    "abyssal-crown-kraken-animation-v1-attack-right-3.png",
+    "abyssal-crown-kraken-animation-v1-attack-right-4.png",
+    "abyssal-crown-kraken-animation-v1-attack-up-1.png",
+    "abyssal-crown-kraken-animation-v1-attack-up-2.png",
+    "abyssal-crown-kraken-animation-v1-attack-up-3.png",
+    "abyssal-crown-kraken-animation-v1-attack-up-4.png",
+    "abyssal-crown-kraken-animation-v1-cast-down-1.png",
+    "abyssal-crown-kraken-animation-v1-cast-down-2.png",
+    "abyssal-crown-kraken-animation-v1-cast-down-3.png",
+    "abyssal-crown-kraken-animation-v1-cast-down-4.png",
+    "abyssal-crown-kraken-animation-v1-cast-left-1.png",
+    "abyssal-crown-kraken-animation-v1-cast-left-2.png",
+    "abyssal-crown-kraken-animation-v1-cast-left-3.png",
+    "abyssal-crown-kraken-animation-v1-cast-left-4.png",
+    "abyssal-crown-kraken-animation-v1-cast-right-1.png",
+    "abyssal-crown-kraken-animation-v1-cast-right-2.png",
+    "abyssal-crown-kraken-animation-v1-cast-right-3.png",
+    "abyssal-crown-kraken-animation-v1-cast-right-4.png",
+    "abyssal-crown-kraken-animation-v1-cast-up-1.png",
+    "abyssal-crown-kraken-animation-v1-cast-up-2.png",
+    "abyssal-crown-kraken-animation-v1-cast-up-3.png",
+    "abyssal-crown-kraken-animation-v1-cast-up-4.png",
+    "abyssal-crown-kraken-animation-v1-hurt-down-1.png",
+    "abyssal-crown-kraken-animation-v1-hurt-down-2.png",
+    "abyssal-crown-kraken-animation-v1-hurt-left-1.png",
+    "abyssal-crown-kraken-animation-v1-hurt-left-2.png",
+    "abyssal-crown-kraken-animation-v1-hurt-right-1.png",
+    "abyssal-crown-kraken-animation-v1-hurt-right-2.png",
+    "abyssal-crown-kraken-animation-v1-hurt-up-1.png",
+    "abyssal-crown-kraken-animation-v1-hurt-up-2.png",
+    "abyssal-crown-kraken-animation-v1-death-down-1.png",
+    "abyssal-crown-kraken-animation-v1-death-down-2.png",
+    "abyssal-crown-kraken-animation-v1-death-down-3.png",
+    "abyssal-crown-kraken-animation-v1-death-down-4.png",
+    "abyssal-crown-kraken-animation-v1-death-left-1.png",
+    "abyssal-crown-kraken-animation-v1-death-left-2.png",
+    "abyssal-crown-kraken-animation-v1-death-left-3.png",
+    "abyssal-crown-kraken-animation-v1-death-left-4.png",
+    "abyssal-crown-kraken-animation-v1-death-right-1.png",
+    "abyssal-crown-kraken-animation-v1-death-right-2.png",
+    "abyssal-crown-kraken-animation-v1-death-right-3.png",
+    "abyssal-crown-kraken-animation-v1-death-right-4.png",
+    "abyssal-crown-kraken-animation-v1-death-up-1.png",
+    "abyssal-crown-kraken-animation-v1-death-up-2.png",
+    "abyssal-crown-kraken-animation-v1-death-up-3.png",
+    "abyssal-crown-kraken-animation-v1-death-up-4.png"
+  ]
+}

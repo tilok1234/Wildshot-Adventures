@@ -606,4 +606,15 @@ a battery runs (yw rows landed post-edit by luck — sequence edits
 between runs). REMAINING game-side: intake the WF passage-rule dusk
 re-export when the designer's WF agent ships it (supersedes the v57
 export; world_walk re-proof + designer city walk). Audio verdicts
-DEFERRED to Resonance Forge intake by designer call.**
+DEFERRED to Resonance Forge intake by designer call. BOSS PACK
+INTAKEN 2026-07-29 (~12:45): established-boss-pack-13-v1 (13 bosses,
+48x48 native, cast+death rows, review-only export from the assembler
+dist zip) validated structurally — tools/validate_boss_pack.py: 1248
+PNGs, hard alpha, every sliced frame pixel-identical to its
+full-sheet region, frame-0 non-empty per anim/dir/boss; README's
+"48x192 direction animation sheets" line is a typo (actual 960x48) —
+and committed raw at assets/assembler-boss-pack/ (.gdignore'd; boot
+clean). NO game wiring: importer/library single-cell assumption +
+per-sheet scale story = the deck's boss-sheets card = M8/Phase B
+scope talk. Designer may re-drop improved sheets; re-drops revalidate
+with the tool before replacing the directory.**

@@ -1,0 +1,148 @@
+{
+  "id": "established-boss-pack-13-v1",
+  "name": "Established Boss Pack - 13 Bosses",
+  "version": 1,
+  "bossCount": 13,
+  "pngCount": 1248,
+  "excludedBossIds": [
+    "fierce-void-dragon"
+  ],
+  "nativeFrameSize": 48,
+  "fullAnimationSheet": {
+    "width": 960,
+    "height": 192,
+    "columns": 20,
+    "rows": 4
+  },
+  "directionOrder": [
+    "down",
+    "left",
+    "right",
+    "up"
+  ],
+  "animations": [
+    {
+      "id": "idle",
+      "name": "Idle",
+      "frames": 2,
+      "ms": 420,
+      "column": 0
+    },
+    {
+      "id": "walk",
+      "name": "Walk",
+      "frames": 4,
+      "ms": 150,
+      "column": 2
+    },
+    {
+      "id": "attack",
+      "name": "Attack",
+      "frames": 4,
+      "ms": 115,
+      "column": 6
+    },
+    {
+      "id": "cast",
+      "name": "Cast",
+      "frames": 4,
+      "ms": 170,
+      "column": 10
+    },
+    {
+      "id": "hurt",
+      "name": "Hurt",
+      "frames": 2,
+      "ms": 140,
+      "column": 14
+    },
+    {
+      "id": "death",
+      "name": "Death",
+      "frames": 4,
+      "ms": 210,
+      "column": 16
+    }
+  ],
+  "hardAlpha": true,
+  "roster": [
+    {
+      "id": "ancient-mirejaw",
+      "name": "Ancient Mirejaw",
+      "folder": "bosses/ancient-mirejaw",
+      "pngCount": 96
+    },
+    {
+      "id": "bone-reliquary-king",
+      "name": "Bone Reliquary King",
+      "folder": "bosses/bone-reliquary-king",
+      "pngCount": 96
+    },
+    {
+      "id": "scorpion-empress",
+      "name": "Scorpion Empress",
+      "folder": "bosses/scorpion-empress",
+      "pngCount": 96
+    },
+    {
+      "id": "cyclops-forge-titan",
+      "name": "Cyclops Forge-Titan",
+      "folder": "bosses/cyclops-forge-titan",
+      "pngCount": 96
+    },
+    {
+      "id": "pit-fiend-juggernaut",
+      "name": "Pit-Fiend Juggernaut",
+      "folder": "bosses/pit-fiend-juggernaut",
+      "pngCount": 96
+    },
+    {
+      "id": "goblin-war-crown",
+      "name": "Goblin War-Crown",
+      "folder": "bosses/goblin-war-crown",
+      "pngCount": 96
+    },
+    {
+      "id": "lava-core-colossus",
+      "name": "Lava-Core Colossus",
+      "folder": "bosses/lava-core-colossus",
+      "pngCount": 96
+    },
+    {
+      "id": "abyssal-crown-kraken",
+      "name": "Abyssal Crown-Kraken",
+      "folder": "bosses/abyssal-crown-kraken",
+      "pngCount": 96
+    },
+    {
+      "id": "sun-crown-griffin",
+      "name": "Sun-Crown Griffin",
+      "folder": "bosses/sun-crown-griffin",
+      "pngCount": 96
+    },
+    {
+      "id": "royal-night-elf-prince",
+      "name": "Royal Night Elf Prince",
+      "folder": "bosses/royal-night-elf-prince",
+      "pngCount": 96
+    },
+    {
+      "id": "living-pyre",
+      "name": "The Living Pyre",
+      "folder": "bosses/living-pyre",
+      "pngCount": 96
+    },
+    {
+      "id": "tide-man-the-blue",
+      "name": "Tide Man the Blue",
+      "folder": "bosses/tide-man-the-blue",
+      "pngCount": 96
+    },
+    {
+      "id": "dryad-of-nature",
+      "name": "The Dryad of Nature",
+      "folder": "bosses/dryad-of-nature",
+      "pngCount": 96
+    }
+  ]
+}
