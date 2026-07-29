@@ -1,5 +1,16 @@
 # Export pipeline design (M7 last item; prereqs verified 2026-07-28)
 
+> **BUILT 2026-07-29 (game 2a0e907) — this note is the design record;
+> the implementation is `export_presets.cfg` + `tools/export.ps1` +
+> main.gd's one-flag `dev_tools` gate + the pretester export step.**
+> Deviations from the sketch below, all deliberate: worldforge packs
+> ship as LOOSE FILES beside the exe (assets/ is .gdignore'd and can
+> never enter the PCK; `WorldforgePack.resolve_src` falls back to
+> exe-relative — bonus: a new pack drop swaps into a built zip without
+> re-export); BOTH speed presets stay tester-facing (only the free
+> ±0.1 steps are gated); dev profile keeps tests/ (its audit modes
+> need them), tester excludes them; boot check reads EXIT CODE only.
+
 Prereqs CONFIRMED: full 4.6.2 template set installed (incl.
 windows_release_x86_64 + console wrapper). No export_presets.cfg yet.
 This note is the one-shot plan for the next session.

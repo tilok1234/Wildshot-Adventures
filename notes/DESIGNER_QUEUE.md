@@ -1,5 +1,19 @@
 # Designer queue — everything waiting on you (updated ~14:20)
 
+> **2026-07-29 ~03:25: THIS FILE IS HISTORICAL.** The 2026-07-29
+> burn-down decided nearly everything below (20 decisions — register:
+> planning `tools/decision_deck_register.json`; sweep: planning
+> `notes/sessions/2026-07-29.md`). The FOUR-RULING MENU is fully
+> decided (grass slits superseded by the cities-open/WYSIWYG arc,
+> reactive = record, Warden 575, six-ordinaries still awaiting the
+> rested word). Still genuinely open designer-side: the rested feel
+> cards (M2 close, six ordinaries, audio-in-play — audio DEFERRED to
+> Resonance Forge intake), eyes-closed audio (same deferral),
+> eight-holds round-12 docks verdict (WF-side), boss sheets drop
+> (48x48, 11 done, cast+death rows exist), Discord link for the
+> record. The DECK is the living queue; this file stays as the
+> readable record of how the queue looked before the deck era.
+
 > **2026-07-28 late: this queue is now dealt as CARDS.** The Decision
 > Deck (your build, adopted) lives at planning
 > `tools/decision_deck.html`; open it, PASTE FROM AI → REPLACE with

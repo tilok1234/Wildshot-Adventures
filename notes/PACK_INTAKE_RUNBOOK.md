@@ -1,5 +1,15 @@
 # WorldForge pack intake runbook — porosity-fix re-drop (2026-07-28)
 
+> **EXECUTED THREE TIMES by 2026-07-29** (sealed pack, two-wide pack,
+> WYSIWYG reopened pack — all clean). The PROCEDURE below stands; the
+> embedded EXPECTATIONS are era-stamped: the battery matrix now lives
+> in notes/HANDOFF.md (reactive record — no wolf-pair FAILs), the
+> porosity diag pin is 44 (per-drop doctrine, see the tool's
+> docstring), and current flood is 34739 (WYSIWYG: walkable ⇔
+> ground-rendered; 7 enclosed courtyard islands are LEGAL
+> walkable-unreachable). Step 3's "first_contact still FAIL" is
+> obsolete.
+
 The seam to run when the agent's re-exported dusk pack lands. Ledger
 #15 is the charge sheet; `tools/diag_walkability_grid.py` is the
 acquittal instrument. The hazard-aware near-miss metric (ledger #13)
