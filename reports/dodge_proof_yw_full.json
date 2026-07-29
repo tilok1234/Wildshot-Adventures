@@ -7,7 +7,7 @@
 	"label": "mechanical verification (no gate code reads this — CORE-53)",
 	"pass": true,
 	"peak_hostile_live_max": 12,
-	"policy": "primary-16dir-stay-closed-form",
+	"policy": "reactive-16dir-melee-on-telegraph",
 	"runs": [
 		{
 			"first_hit_tick": -1,
@@ -130,12 +130,12 @@
 			"peak_hostile_live": 12,
 			"phase_transitions": [
 				{
-					"hp": 240,
+					"hp": 345,
 					"phase": 1,
 					"tick": 1207
 				},
 				{
-					"hp": 120,
+					"hp": 179,
 					"phase": 2,
 					"tick": 2413
 				}
@@ -265,12 +265,12 @@
 			"peak_hostile_live": 12,
 			"phase_transitions": [
 				{
-					"hp": 240,
+					"hp": 345,
 					"phase": 1,
 					"tick": 1207
 				},
 				{
-					"hp": 120,
+					"hp": 179,
 					"phase": 2,
 					"tick": 2413
 				}
@@ -400,12 +400,12 @@
 			"peak_hostile_live": 12,
 			"phase_transitions": [
 				{
-					"hp": 240,
+					"hp": 345,
 					"phase": 1,
 					"tick": 1207
 				},
 				{
-					"hp": 120,
+					"hp": 179,
 					"phase": 2,
 					"tick": 2413
 				}
@@ -535,12 +535,12 @@
 			"peak_hostile_live": 12,
 			"phase_transitions": [
 				{
-					"hp": 240,
+					"hp": 345,
 					"phase": 1,
 					"tick": 1207
 				},
 				{
-					"hp": 120,
+					"hp": 179,
 					"phase": 2,
 					"tick": 2413
 				}
@@ -670,12 +670,12 @@
 			"peak_hostile_live": 12,
 			"phase_transitions": [
 				{
-					"hp": 240,
+					"hp": 345,
 					"phase": 1,
 					"tick": 1207
 				},
 				{
-					"hp": 120,
+					"hp": 179,
 					"phase": 2,
 					"tick": 2413
 				}

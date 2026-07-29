@@ -1156,8 +1156,8 @@ func _check_yard_warden() -> bool:
 	var wdef: Resource = load("res://data/enemies/yard_warden.tres")
 	var budgets: Resource = load("res://data/budgets.tres")
 	var ok := true
-	if int(wdef.hp) != 400:
-		printerr("FAIL: yard warden hp %d != 400 (§3.5)" % int(wdef.hp))
+	if int(wdef.hp) != 575:
+		printerr("FAIL: yard warden hp %d != 575 (§3.5 as ruled 2026-07-29)" % int(wdef.hp))
 		ok = false
 	var plist: Array = wdef.phases.phases
 	if plist.size() != 3:
@@ -1170,12 +1170,13 @@ func _check_yard_warden() -> bool:
 		printerr("FAIL: phase floors %s != [66, 33, 0]" % [floors])
 		ok = false
 
-	# --- Threshold exactness + kill: 136 -> exactly 264 hp (66%) at
-	# t100 must flip to P2 AT t100; 132 more -> exactly 132 (33%) at
-	# t200 flips P3; final 132 -> 0 at t300 kills through the sweep.
+	# --- Threshold exactness + kill (575 HP, floors 379.5/189.75):
+	# 196 -> 379 hp (65.9% <= 66) must flip to P2 AT t100; 190 more ->
+	# 189 hp (32.9% <= 33) at t200 flips P3; final 189 -> 0 at t300
+	# kills through the sweep.
 	var thr := _run_warden(
 		wdef,
-		[{"tick": 100, "amount": 136}, {"tick": 200, "amount": 132}, {"tick": 300, "amount": 132}],
+		[{"tick": 100, "amount": 196}, {"tick": 200, "amount": 190}, {"tick": 300, "amount": 189}],
 		400
 	)
 	var changes: Array = thr.phase_changes
@@ -1185,11 +1186,11 @@ func _check_yard_warden() -> bool:
 	else:
 		var c0: Dictionary = changes[0]
 		var c1: Dictionary = changes[1]
-		if int(c0.tick) != 100 or int(c0.phase) != 1 or int(c0.hp) != 264:
-			printerr("FAIL: first crossing %s != {tick 100, phase 1, hp 264}" % [c0])
+		if int(c0.tick) != 100 or int(c0.phase) != 1 or int(c0.hp) != 379:
+			printerr("FAIL: first crossing %s != {tick 100, phase 1, hp 379}" % [c0])
 			ok = false
-		if int(c1.tick) != 200 or int(c1.phase) != 2 or int(c1.hp) != 132:
-			printerr("FAIL: second crossing %s != {tick 200, phase 2, hp 132}" % [c1])
+		if int(c1.tick) != 200 or int(c1.phase) != 2 or int(c1.hp) != 189:
+			printerr("FAIL: second crossing %s != {tick 200, phase 2, hp 189}" % [c1])
 			ok = false
 	if int(thr.elite_kill_tick) != 300:
 		printerr("FAIL: elite kill tick %d != 300" % int(thr.elite_kill_tick))
@@ -1200,8 +1201,8 @@ func _check_yard_warden() -> bool:
 		ok = false
 
 	# --- Multi-threshold single application settles at the FINAL phase
-	# with exactly one crossing event (350 in one hit: 400 -> 50 = P3).
-	var skip := _run_warden(wdef, [{"tick": 50, "amount": 350}], 120)
+	# with exactly one crossing event (460 in one hit: 575 -> 115 = P3).
+	var skip := _run_warden(wdef, [{"tick": 50, "amount": 460}], 120)
 	var skip_changes: Array = skip.phase_changes
 	if skip_changes.size() != 1:
 		printerr("FAIL: rapid drop made %d crossings (expected 1)" % skip_changes.size())
@@ -1224,11 +1225,11 @@ func _check_yard_warden() -> bool:
 		printerr("FAIL: movement-only P1 run crossed phases: %s" % [p1.phase_changes])
 		ok = false
 
-	# --- P2 contract (t0 drop to 240): radial lead exactly 36 x12
+	# --- P2 contract (t0 drop to 345 = 60%): radial lead exactly 36 x12
 	# shots period 120; zone cast places pattern-18 telegraphs; the
 	# first post-flip telegraph honors entry beat 30; the anchor is
 	# bit-still from entry to the run's end; ROTOR advance is exact.
-	var p2 := _run_warden(wdef, [{"tick": 0, "amount": 160}], 700)
+	var p2 := _run_warden(wdef, [{"tick": 0, "amount": 230}], 700)
 	if not _assert_pattern(p2, 19, 36, 12, 120, "P2 radial"):
 		ok = false
 	var p2_entry: Resource = plist[1]
@@ -1264,9 +1265,10 @@ func _check_yard_warden() -> bool:
 			printerr("FAIL: rotor advanced %.5f rad (expected %.5f)" % [got, want])
 			ok = false
 
-	# --- P3 contract (t0 drop to 120): chaser closes on a stander;
-	# burst x4 lead 24, volley x3 lead 40 (INTERCEPT), fan re-used.
-	var p3 := _run_warden(wdef, [{"tick": 0, "amount": 280}], 700)
+	# --- P3 contract (t0 drop to 172 = 29.9%): chaser closes on a
+	# stander; burst x4 lead 24, volley x3 lead 40 (INTERCEPT), fan
+	# re-used.
+	var p3 := _run_warden(wdef, [{"tick": 0, "amount": 403}], 700)
 	if not _assert_pattern(p3, 21, 24, 4, 60, "P3 burst"):
 		ok = false
 	if not _assert_pattern(p3, 20, 40, 3, 120, "P3 volley"):
@@ -1286,7 +1288,7 @@ func _check_yard_warden() -> bool:
 		ok = false
 
 	# --- Determinism with the schedule active: twin P2 runs bit-match.
-	var p2b := _run_warden(wdef, [{"tick": 0, "amount": 160}], 700)
+	var p2b := _run_warden(wdef, [{"tick": 0, "amount": 230}], 700)
 	if p2.hashes != p2b.hashes:
 		printerr("FAIL: schedule-driven runs diverge")
 		ok = false

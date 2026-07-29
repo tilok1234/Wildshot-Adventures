@@ -7,7 +7,7 @@
 	"label": "mechanical verification (no gate code reads this — CORE-53)",
 	"pass": true,
 	"peak_hostile_live_max": 11,
-	"policy": "primary-16dir-stay-closed-form",
+	"policy": "reactive-16dir-melee-on-telegraph",
 	"runs": [
 		{
 			"first_hit_tick": -1,
@@ -130,7 +130,7 @@
 			"peak_hostile_live": 11,
 			"phase_transitions": [
 				{
-					"hp": 120,
+					"hp": 172,
 					"phase": 2,
 					"tick": 0
 				}
@@ -260,7 +260,7 @@
 			"peak_hostile_live": 11,
 			"phase_transitions": [
 				{
-					"hp": 120,
+					"hp": 172,
 					"phase": 2,
 					"tick": 0
 				}
@@ -390,7 +390,7 @@
 			"peak_hostile_live": 11,
 			"phase_transitions": [
 				{
-					"hp": 120,
+					"hp": 172,
 					"phase": 2,
 					"tick": 0
 				}
@@ -520,7 +520,7 @@
 			"peak_hostile_live": 11,
 			"phase_transitions": [
 				{
-					"hp": 120,
+					"hp": 172,
 					"phase": 2,
 					"tick": 0
 				}
@@ -650,7 +650,7 @@
 			"peak_hostile_live": 11,
 			"phase_transitions": [
 				{
-					"hp": 120,
+					"hp": 172,
 					"phase": 2,
 					"tick": 0
 				}

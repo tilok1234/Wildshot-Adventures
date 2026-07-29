@@ -5,14 +5,14 @@
 [resource]
 script = ExtResource("1")
 id = &"proof_yw_p2"
-display_name = "Proof: Yard Warden P2 pin (t0 drop to 240; inside-spawn escape)"
+display_name = "Proof: Yard Warden P2 pin (t0 drop to 345; inside-spawn escape)"
 player_spawn = Vector2(25, 14)
 standin_positions = PackedVector2Array()
 enemy_spawns = {
 "yard_warden": PackedVector2Array(28, 14)
 }
 damage_schedule = Array[Dictionary]([{
-"amount": 160,
+"amount": 230,
 "tick": 0
 }])
 default_seed = 209
