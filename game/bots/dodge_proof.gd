@@ -285,11 +285,17 @@ static func _nearest_threat_clearance(world: RefCounted, player: RefCounted) -> 
 ## Scenario name shorthand: bare ids look in tests/bot_scenarios first
 ## (canaries + proof isolates), then data/scenarios.
 static func _resolve_scenario(arg: String) -> String:
+	# ResourceLoader.exists, not FileAccess.file_exists: exported builds
+	# remap text resources to binary inside the PCK, where the raw .tres
+	# path no longer exists as a file. Identical in project mode. Found
+	# by the M8 lockdown probe's positive control (dev artifact + --bot).
 	if arg.contains("/"):
-		return arg if FileAccess.file_exists(arg) else ""
+		if ResourceLoader.exists(arg) or FileAccess.file_exists(arg):
+			return arg
+		return ""
 	for root: String in ["res://tests/bot_scenarios/", "res://data/scenarios/"]:
 		var p := root + arg + ".tres"
-		if FileAccess.file_exists(p):
+		if ResourceLoader.exists(p):
 			return p
 	return ""
 

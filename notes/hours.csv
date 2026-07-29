@@ -110,3 +110,5 @@ timestamp,action,note
 2026-07-29T12:29:29,note,"Boss pack intake begins: 13-bosses-no-dragon zip landed from assembler dist"
 2026-07-29T12:35:01,note,"Boss pack intake COMPLETE: validated (1248 PNGs clean), landed assets/assembler-boss-pack, validator persisted in tools/, both repos pushed. No game wiring - scale story awaits scope talk."
 2026-07-29T12:44:09,note,"Boss ruling recorded: keep raw drop, wire on natural need (Tier 1). Arc closed."
+2026-07-29T12:47:13,note,"M8 early-start: tester-profile lockdown verification sweep begins (recon: dev_tools gate + export surface)"
+2026-07-29T13:20:38,note,"Lockdown sweep COMPLETE: lint+probe live as pretester steps (39 steps ALL GREEN 12.5min, battery byte-identical); audit_min hardened; dodge_proof PCK-remap resolution bug fixed (probe's first catch). M8 'tester debug profile verified' mechanized."

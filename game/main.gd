@@ -389,7 +389,10 @@ func _ready() -> void:
 	# hostile channels stay fully visible when the player dials down.
 	var audit_arg := BootArgs.get_arg("audit")
 	var audit_mode := dev_tools and (audit_arg == "density" or audit_arg == "density_min")
-	var audit_min := audit_arg == "density_min"
+	# Gate carried locally so the lockdown lint can prove it by grep —
+	# every use site also nests under audit_mode, but the flag itself
+	# must not depend on that staying true.
+	var audit_min := audit_mode and audit_arg == "density_min"
 	var scenario: Resource = load(
 		(
 			"res://tests/bot_scenarios/audit_density.tres"

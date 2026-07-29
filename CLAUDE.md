@@ -620,4 +620,24 @@ scope talk. RULED (designer, 2026-07-29 ~12:50, Tier 1): keep the
 raw drop as-is, wire in only when a boss sprite is naturally needed;
 polished exact re-exports expected later (same shape — revalidate
 with the tool before replacing the directory). Warden-skin audition
-path + 48px-skin-vs-24px-hurtbox honesty note parked with the card.**
+path + 48px-skin-vs-24px-hurtbox honesty note parked with the card.
+M8 EARLY-START 2026-07-29 (~13:20): TESTER-PROFILE LOCKDOWN SWEEP
+LIVE — tools/lockdown_lint.py (one-flag gate proven at source:
+dev_tools single assignment from the tester feature tag, console
+single gated construction, free-speed/bot/audit gated on their
+checked lines, god/slow-mo/verdict console-only, preset feature tag +
+exclusions pinned) + tools/lockdown_probe.ps1 (artifact probes: dev
+exe + --bot writes a report = positive control; tester exe REFUSES
+bot/audit CLI with clean normal boot; tester session evidence free of
+dev markers; --script surface confirmed DEAD on release templates —
+no preset change needed). Both are permanent pretester steps (39
+steps, ALL GREEN 12.5 min, battery byte-identical). Hardened:
+audit_min gated at its declaration (was gated only by nesting).
+FIXED (the probe's first catch): dodge_proof._resolve_scenario used
+FileAccess.file_exists, which cannot see PCK-remapped resources —
+exported dev builds could never run the documented --bot CLI; now
+ResourceLoader.exists (project mode identical; battery byte-identical
+proves it). M8 accept line "tester debug profile verified" is
+MECHANIZED. Remaining M8 engineering: feedback-bundle flow,
+summary-code fallback, onboarding screen + lowest-speed selector,
+CORE-50 option runtime-verification pass.**

@@ -48,6 +48,15 @@ Step "walkability diag (11 route cells)" {
     return $LASTEXITCODE -eq 0
 }
 
+Step "lockdown lint (one-flag gate)" {
+    $lout = python tools/lockdown_lint.py 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        $lout | Select-Object -Last 8 | ForEach-Object { Write-Host "  $_" }
+        return $false
+    }
+    return $true
+}
+
 $tests = @(
     @("pixel-match", "tests/pixel_match/pixel_match.gd"),
     @("assembler pack + slice", "tests/assembler_pack/assembler_pack_test.gd"),
@@ -135,6 +144,18 @@ if (-not $SkipBattery) {
 Step "export + artifact boots (dev + tester)" {
     pwsh tools/export.ps1 -BuildProfile both -Quiet
     return $LASTEXITCODE -eq 0
+}
+
+# M8 lockdown sweep: probes the artifacts the export step just built —
+# dev runs the bot (positive control), tester refuses bot/audit CLI,
+# session evidence stays free of dev-tool markers.
+Step "lockdown probe (tester artifact)" {
+    $pout = pwsh tools/lockdown_probe.ps1 -Quiet 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        $pout | Select-Object -Last 8 | ForEach-Object { Write-Host "  $_" }
+        return $false
+    }
+    return $true
 }
 
 Write-Host ""
