@@ -113,8 +113,10 @@ final state:
   the Gate 1 calendar is UNBLOCKED. Hours log honestly backfilled
   (net +4h51 incl. a −3h55 sleep-gap correction). Docs 16/17
   accepted. world_filler: freeze RESOLVED upstream, format 1 FINAL,
-  mainline ruled = `claude/freeze-review-resolution-tf6bkf`, proper
-  clone at `Documents\world_filler\world_filler`; game-side
+  mainline **re-ruled 2026-07-30 = `main`** (the designer's approval
+  line, promoted in the janitor session; planning
+  notes/sessions/2026-07-30.md), proper clone at
+  `Documents\world_filler\world_filler` (on `main`); game-side
   consumption stays POST-GATE-1 per planning docs/17.
 
 ## Next work (updated 2026-07-29 ~14:20, M8 early-start session)

@@ -119,3 +119,5 @@ timestamp,action,note
 2026-07-29T14:17:16,start,"Long pass (designer at work): CORE-50 option runtime-verification + evidence report tool + full battery cap"
 2026-07-29T14:37:34,note,"Long pass complete: CORE-50 verification mechanized (both profiles green), evidence report tool + selftest live, gate at 17 fixed steps + battery ALL GREEN 12.6 min byte-identical"
 2026-07-29T14:38:32,stop,"Long pass done: M8 answer-independent engineering EXHAUSTED (lockdown, feedback path, onboarding, CORE-50 verification, evidence reader). Gate 17 fixed + battery ALL GREEN 12.6min byte-identical. Both repos pushed, handoff current. Clock stops - session idle until designer returns."
+2026-07-29T23:41:41,start,"Planning session: repo-handling cleanup discussion (designer present)"
+2026-07-30T00:48:12,stop,"Janitor session complete: phone sessions recovered, 16-tag checkpoint, 7 husks verified, world_filler mainline re-ruled to designer line (evidence-backed), assembler consolidated + pack-source incident closed, music deferred (live session), docs truthed, click-list handed"
