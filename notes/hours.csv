@@ -112,3 +112,5 @@ timestamp,action,note
 2026-07-29T12:44:09,note,"Boss ruling recorded: keep raw drop, wire on natural need (Tier 1). Arc closed."
 2026-07-29T12:47:13,note,"M8 early-start: tester-profile lockdown verification sweep begins (recon: dev_tools gate + export surface)"
 2026-07-29T13:20:38,note,"Lockdown sweep COMPLETE: lint+probe live as pretester steps (39 steps ALL GREEN 12.5min, battery byte-identical); audit_min hardened; dodge_proof PCK-remap resolution bug fixed (probe's first catch). M8 'tester debug profile verified' mechanized."
+2026-07-29T13:22:35,note,"M8 feedback-bundle item begins: session lifecycle evidence (start/heartbeat/end + build id) then bundle zip flow; 3 taste questions posted to designer"
+2026-07-29T13:31:28,note,"Feedback return path COMPLETE: session lifecycle evidence + bundle zip + summary code w/ decoder + test in gate+CI. 15 fixed gates ALL GREEN. Toast/row await designer eyes."

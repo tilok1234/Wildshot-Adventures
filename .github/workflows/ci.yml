@@ -134,6 +134,11 @@ jobs:
       - name: Assembler pack consumer test
         run: ~/godot/godot --headless --path . --script tests/assembler_pack/assembler_pack_test.gd
 
+      # M8 feedback return path: evidence scan / dev-session exclusion /
+      # summary-code checksum / bundle zip. Pure jsonl+zip — Linux-safe.
+      - name: Feedback bundle + summary code
+        run: ~/godot/godot --headless --path . --script tests/feedback/feedback_bundle_test.gd
+
       - name: Upload diff artifacts on failure
         if: failure()
         uses: actions/upload-artifact@v4

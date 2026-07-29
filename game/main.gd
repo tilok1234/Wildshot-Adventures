@@ -26,6 +26,8 @@ const HazardView := preload("res://game/views/hazard_view.gd")
 const DamageNumberView := preload("res://game/views/damage_number_view.gd")
 const ScenarioLoader := preload("res://game/scenario_loader.gd")
 const RecapTracker := preload("res://game/drivers/recap_tracker.gd")
+const SessionLog := preload("res://game/drivers/session_log.gd")
+const FeedbackBundle := preload("res://game/drivers/feedback_bundle.gd")
 const RecapPanel := preload("res://ui/recap_panel.gd")
 const DebugConsole := preload("res://ui/debug_console.gd")
 const BuildInfo := preload("res://build_info.gd")
@@ -62,6 +64,8 @@ var density_meter: PanelContainer
 var hints_label: Label
 var gif_recorder: Node
 var rec_label: Label
+var toast_label: Label
+var _toast_gen := 0
 var feedback_settings: Dictionary = {}
 ## EffectLibrary policy object (M6, ledger #9) — cosmetic/friendly
 ## channels only; hostile paths never hold a reference (§2.6 clamp).
@@ -366,6 +370,19 @@ func _set_speed(speed: float) -> void:
 	)
 
 
+## Transient HUD notice (12 s); later calls replace earlier ones.
+func _show_toast(text: String) -> void:
+	_toast_gen += 1
+	var gen := _toast_gen
+	toast_label.text = text
+	toast_label.visible = true
+	get_tree().create_timer(12.0).timeout.connect(
+		func() -> void:
+			if _toast_gen == gen:
+				toast_label.visible = false
+	)
+
+
 func _ready() -> void:
 	# §2.11 bot mode: the documented CLI (godot --headless -- --bot=...)
 	# runs the proof core with zero presentation built, then exits with
@@ -652,6 +669,12 @@ func _ready() -> void:
 	rec_label.visible = false
 	rec_label.modulate = Color(1.0, 0.35, 0.35)
 	rec_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	# Transient notice line (bundle saved / summary code); auto-hides.
+	toast_label = Label.new()
+	toast_label.visible = false
+	toast_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	toast_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	toast_label.offset_top = 24.0
 	options_menu = OptionsMenu.new()
 	# Live key-hint line: reads the ACTUAL InputMap, so it stays correct
 	# after remaps.
@@ -664,6 +687,7 @@ func _ready() -> void:
 	hud.add_child(autofire_icon)
 	hud.add_child(weapon_label)
 	hud.add_child(rec_label)
+	hud.add_child(toast_label)
 	hud.add_child(hints_label)
 	hud.add_child(density_meter)
 	hud.add_child(options_menu)
@@ -787,6 +811,22 @@ func _ready() -> void:
 			_apply_ui_scale(i + 1)
 	)
 	_apply_ui_scale(ui_scale)
+	# M8 feedback return path (tester-facing, ungated): zip the evidence
+	# to the Desktop, reveal it, and show the summary code for testers
+	# who will paste a code instead of returning a file.
+	options_menu.add_button_row(
+		"feedback",
+		["save bundle"],
+		func(_i: int) -> void:
+			var result := FeedbackBundle.save_bundle()
+			if bool(result.ok):
+				_show_toast(
+					"feedback bundle saved to Desktop\nsummary code: %s" % String(result.code)
+				)
+				OS.shell_show_in_file_manager(String(result.path))
+			else:
+				_show_toast("bundle failed: %s" % String(result.error))
+	)
 	# Persisted window mode (§2.13): fullscreen is the project default;
 	# honor a saved windowed preference.
 	if not bool(Config.get_setting("ui", "fullscreen", true)):
@@ -802,6 +842,14 @@ func _ready() -> void:
 			driver.paused = true
 			recap_panel.show_recap(r, Config.binding_text("scenario_reset"))
 	)
+
+	# M8 re-engagement evidence: session start/heartbeat/end lines with
+	# build id + wall clock (view-side; the sim never sees the clock).
+	var session := SessionLog.new()
+	session.world = world
+	session.dev_profile = dev_tools
+	session.scenario_id = String(scenario.id)
+	add_child(session)
 
 	if audit_mode:
 		driver.sampler = AuditSampler.new()

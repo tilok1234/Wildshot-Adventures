@@ -638,6 +638,24 @@ FileAccess.file_exists, which cannot see PCK-remapped resources —
 exported dev builds could never run the documented --bot CLI; now
 ResourceLoader.exists (project mode identical; battery byte-identical
 proves it). M8 accept line "tester debug profile verified" is
-MECHANIZED. Remaining M8 engineering: feedback-bundle flow,
-summary-code fallback, onboarding screen + lowest-speed selector,
-CORE-50 option runtime-verification pass.**
+MECHANIZED. FEEDBACK RETURN PATH LIVE same seam (~13:45): session
+lifecycle evidence (game/drivers/session_log.gd — session_start/
+heartbeat-30s/end lines w/ build id + wall clock + dev_profile flag;
+alt-F4 bounded by last beat; PREDELETE closes T-reset sessions);
+feedback bundle (game/drivers/feedback_bundle.gd — options-menu
+"feedback: save bundle" row zips session.jsonl+terrain.jsonl+
+settings.cfg+bundle_info to Desktop via ZIPPacker, reveals in
+Explorer, HUD toast shows path+code); summary code WS1-MMM-SSDD-KKKC
+(Crockford b32 + checksum; encode-side contamination exclusion —
+dev_profile sessions and their windows never count;
+tools/decode_summary_code.py = designer-side decoder, checksum
+REFUSES typos). Telemetry field deliberately named dev_profile so
+the lockdown lint's "dev_tools only in main.gd" pin stays maximally
+strict. tests/feedback/feedback_bundle_test.gd (scan/exclusion/code/
+checksum/zip) in pretester (15 fixed gates) + CI Linux job. Toast +
+row are DESIGNER-EYES pending next launch (render gate). Taste
+answers pending (Tier 1 when given): bundle location (Desktop
+default), comments box now-vs-later, summary-code paste destination.
+Remaining M8 engineering: comments box (on answer), onboarding
+screen + lowest-speed selector, CORE-50 option runtime-verification
+pass.**
