@@ -119,7 +119,55 @@ final state:
   `Documents\world_filler\world_filler` (on `main`); game-side
   consumption stays POST-GATE-1 per planning docs/17.
 
-## 2026-07-30 session close (~13:30) — READ THIS FIRST
+## 2026-07-31 session close (~00:15) — b72 intake + crosshair — READ THIS FIRST
+
+Mechanical night session (designer post-shift; zero feel/acceptance
+verdicts recorded, by the ask's own terms). Two arcs, both pushed:
+
+- **b72 OVERWORLD INTAKEN** (delivery sl-0035 → completion sl-0043;
+  game commit dde3101): roads-only delta — every road (city lane,
+  country highway, wilderness trail) is now a one-tile band line;
+  path-2 census 1784→2166 (+382), trails 330→361; 0/1/2 acceptance
+  holds with zero code change (normalized-recipe.json byte-identical —
+  the delta is generator-side). IN-PLACE SUPERSEDE of b71 at the same
+  path; **b71's lock pin RETIRED by per-pack call** (its release stays
+  immutable archive). Full verify-before-drop chain (GitHub digest +
+  zip + manifest + 8-file parity + tag→sourceCommit bbc10cdb) + staged
+  blobs re-hashed byte-true. Addon flood recompute 45202 == manifest;
+  spawn 109,182 unchanged. **Porosity re-pinned 60→64 deliberately**:
+  +4 route cells = two two-wide landmark footprints (structure.ruin
+  182-183,190; structure.stone_circle 249-250,116), both on-flood —
+  reads as sl-0035's severed-landmarks fix; b65 keeps 44. **Cliff line
+  re-confirmed** via the adapter-v4 replica CALIBRATED on b71 first
+  (reproduced the recorded 1456 terraced-peak cells exactly): b72
+  relief IDENTICAL ({169,820,467} by level), zero path-on-rock, zero
+  walkable at terrace>=1. FULL pretester ALL GREEN 19.4 min (17 fixed
+  steps + 28-row battery byte-identical incl world_walk + export +
+  probe). Nothing routes to the overworld yet — loop-routing onto the
+  harbor capital stays the natural next engineering arc (when asked).
+- **CROSSHAIR SCALE PASS** (ask sl-0042 → completion sl-0044; game
+  commit 0a7d69d): the hardware cursor never inherited the integer
+  viewport stretch (11-physical-px speck; designer standing
+  complaint). main.gd now scales it nearest-neighbor by the live
+  integer content scale, kit hotspot re-centered, re-applied on
+  size_changed. Render-only; pack assets untouched (manifest-hashed);
+  lint/boot/smoke green, smoke hashes unchanged. **GAME RELAUNCHED
+  WINDOWED AND FRONTED** (engine log clean, THE LOOP scenario up) —
+  the designer's taste-rule on final size/contrast is the open item;
+  if contrast still fails after sizing, record an upstream kit ask,
+  never a pack-asset hand-edit.
+
+Planning-side state (uncommitted BY DESIGN — the live planning session
+sweeps and commits): ecosystem.lock game pin b71→b72 (pin note carries
+the retirement call); sync log entries sl-0043 (b72 intake, hashes
+verbatim, true-UTC ts) + sl-0044 (crosshair completion). The sl-0035 +
+sl-0042 status flips are planning's sweep, not ours. Hours clock
+STOPPED at close. Append-script lesson recorded: PowerShell
+Measure-Object -Maximum returns a DOUBLE — ':d4' formatting throws
+non-terminating and execution continues; cast [int] before -f, and
+always re-parse + verify after a JSON append (the verify caught it).
+
+## 2026-07-30 session close (~13:30) — the loop's first day (superseded above)
 
 **THE LOOP IS ALIVE AND HAS BEEN PLAYED.** The overnight arc, in five
 acts: (1) dusk **b65** + **Resonance Forge audio v1** intaken via the
