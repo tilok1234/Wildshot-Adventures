@@ -106,25 +106,38 @@ line of code in this repo.
   gameplay; (7) audio as an eyes-closed second channel for key threats;
   (8) death always explainable — an unexplainable death fails review
   regardless of appearance.
-- **CORE-53 [L/P]** — Gate 1 is judged by fresh outside testers, never solely
-  the builder. Every test pattern is verified dodgeable at the lowest intended
-  movement speed — mechanized via the bot harness AND confirmed by rested
-  humans.
-- **CORE-55 [L/P]** — Gate 1 criteria: testers voluntarily re-engage 20+
-  minutes with zero rewards; explainable deaths; lowest-speed dodgeability;
-  dependable controls; frames change how testers fight. **The lab is
-  zero-reward by law**: no loot, XP, quests, or permanent progression exists in
-  any Phase A build.
+- **CORE-53 [L/P — AMENDED BY RULING 2026-07-30]** (sl-0023, planning 593cc27;
+  deck ratification staged; docs/08 prose truth-up pending planning-side) —
+  human judgment moves BEHIND the loop bar: 2–3 warm, WATCHED first-touches
+  (screen-share or in person), designer-scheduled only once the bar holds. The
+  rule's heart survives verbatim — the gate is never judged solely by the
+  builder. Lowest-speed dodgeability verification (bot-mechanized AND
+  confirmed by rested humans) unchanged.
+- **CORE-55 [L/P — GATE 1 REWRITTEN 2026-07-30]** (sl-0023, planning 593cc27) —
+  the recruited-stranger zero-reward gate is RETIRED WITH CAUSE (fresh eyes are
+  nonrenewable and get spent on first touch; failed recruitment reads as
+  verdict when it is only silence). NEW GATE = THE LOOP BAR: an unguided
+  complete run — spawn in the b65 town, walk out, fight through rising danger
+  where loot actually drops and matters, reach the first boss or die trying,
+  death costs something real, dying pulls you to retry immediately — that
+  stays fun for the DESIGNER playing it daily for a week. Feel and stakes over
+  polish. **The zero-reward lab law is thereby lifted for loop work**: loot and
+  death-cost systems are in scope by ruling. Explainable deaths, lowest-speed
+  dodgeability, and dependable controls stay binding. The bar's final wording
+  is the designer's (deck card staged); docs/08+12 prose truth-up pending
+  planning-side.
 - **GDD-16 [P/T]** — Co-op insurance, honored architecturally: no global
   assumption that exactly one player exists (`SimWorld.players` is an array;
   zero player singletons or `get_player()` globals anywhere — enemy AI reads
   the player list); input separated from player simulation
   (InputFrame/InputSource port); stable IDs and serializable state everywhere.
-- **SPEC-A** — The Phase A minimum content bill and instrumentation list
-  (planning `docs/07-PROTOTYPE_SPEC.md` §Phase A) is the scope contract: one
-  greybox arena, one class shell, three deterministic weapon frames, 5–6 enemy
-  behaviors, one elite, one equipped-ability test slot, heavy debug tooling,
-  zero rewards.
+- **SPEC-A [COMPLETE — superseded as the forward scope 2026-07-30]** — The
+  Phase A minimum content bill and instrumentation list (planning
+  `docs/07-PROTOTYPE_SPEC.md` §Phase A) is BUILT: one greybox arena, one class
+  shell, three deterministic weapon frames, 5–6 enemy behaviors, one elite,
+  one equipped-ability test slot, heavy debug tooling, zero rewards. It stands
+  as the Phase A record; the forward scope referent is the Loop milestone
+  (Gate-1 rewrite — see the scope tripwire).
 
 ## The no-RNG rule (restated where you will see it)
 
@@ -147,8 +160,11 @@ runners only**; lint may run on Linux.
 
 ## Quiet-lab rule (gate sessions)
 
-- During tester playtests: no coaching, prompting, explaining, or
-  watching-over-shoulder commentary. Testers play unattended.
+- AMENDED 2026-07-30 (Gate-1 rewrite, sl-0023): gate sessions are now 2–3
+  warm WATCHED first-touches (screen-share or in person), designer-scheduled
+  once the loop bar holds. Watching is SILENT — the no-coaching, no-prompting,
+  no-explaining law holds during the run; the watcher observes, never guides.
+  (Pre-rewrite text: testers play unattended.)
 - **CORE-54 evidence is unprompted only**: game-descriptions harvested
   verbatim from Discord/itch/feedback channels go to the CORE-54 log; the
   in-build comments box is supplementary and its contents are never logged as
@@ -169,11 +185,20 @@ runners only**; lint may run on Linux.
 - Any runtime edit auto-stamps subsequent feel notes PROVISIONAL; the stamp is
   honored, never overridden by enthusiasm at hour 14.
 
-## Scope tripwire
+## Scope tripwire (rewritten 2026-07-30 with Gate 1, sl-0023)
 
-Any work item outside the SPEC-A minimum content bill is **refused and
-ledgered** (`notes/TECH_DEBT_LEDGER.md`), or flagged back to the planning
-repo. Gate 1 must pass before anything beyond the bill is built.
+The forward scope is the **Loop milestone**: loop-assembly work items (run
+flow from the b65 town outward, rising danger, loot that matters, death cost,
+first boss, immediate retry pull) flow from designer direction under the
+talk-before-build law — the bar card is staged for the designer's own words,
+and loop systems get designed with them before they get built. Anything
+outside the loop bar's needs is **refused and ledgered**
+(`notes/TECH_DEBT_LEDGER.md`) or flagged back to the planning repo, exactly as
+before. Test scenes are built to accrete into game content where possible —
+"playable" is a gated artifact. The loop bar must hold (fun for the designer
+daily for a week) before the warm watched first-touches are scheduled. The
+tester-build export pipeline + lockdown profile stay a STANDING GATE
+regardless — clean-stamped zips are what make warm testing frictionless.
 
 ## Hours-log rule (PROD-01)
 
@@ -751,4 +776,26 @@ prove). FULL pretester at next fully-exclusive seam. DESIGNER-EARS
 now runnable (the deferred audio pass runs against REAL audio):
 eyes-closed classes, in-play feel, cue-mapping + duck taste.
 DESIGNER-EYES pending: comments box render. b65 city walk verdict
-still unrecorded.**
+still unrecorded. ATTACK-SOUND PASS same night (86873a5, designer
+ear feedback): player_fire + enemy_fire on ATTACK_STARTED (13
+variations round-robin, zero sim change), telegraph_ranged corrected
+warning→charge, FIFTH channel AttackSfx (own row + off); designer:
+music "sounds good", corrected build "sounds great" (Tier 1,
+provisional); NATURAL-TESTING mode chosen — verdicts accumulate in
+play. Same seam: .gitattributes byte-exactness pin (f5c9c10),
+per-project godot_guard (a4ffbcc), clean audio-era artifacts CUT +
+probed (builds/wildshot-322066c-*.zip, 58.7 MB tester).
+GATE 1 REWRITTEN — ABSORBED 2026-07-30 (~04:30; ask sl-0023,
+planning 593cc27, deck cards staged for rested ratification):
+stranger-tester items RETIRED WITH CAUSE from the owed list
+(recruitment scheduling, itch testers-channel push, stranger-aimed
+onboarding polish); EXPORT PIPELINE + LOCKDOWN stay a standing gate.
+NEXT TARGET = THE LOOP MILESTONE (unguided b65-town→boss run, loot
+that matters, real death cost, immediate retry pull; exit = fun for
+the designer daily for a week; feel/stakes over polish; test scenes
+accrete into content). Digest rows CORE-53/55 + SPEC-A + tripwire +
+quiet-lab updated with ruling provenance. FLAGGED planning-side in
+the completion line: docs/08 CORE-53/55 rows + docs/12 Gate-1 prose
+still carry pre-rewrite text — truth-up owed there. Loop-assembly
+engineering starts from designer direction (talk-before-build; the
+bar card is theirs to word).**

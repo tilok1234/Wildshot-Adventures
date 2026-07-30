@@ -133,13 +133,29 @@ variations round-robin, ATTACK_STARTED hook — zero sim change); FIVE
 channels (Master/Sfx/KeyThreats/Music/AttackSfx) each with off.
 COMMENTS BOX built (bundle comments.txt; typing suppresses hotkeys +
 gameplay input; box-owned pause). M8's last answer-gated engineering
-item is DONE — the Gate 1 critical path is now designer-side.
+item is DONE.
 Designer verdicts so far (chat, Tier 1, marathon-provisional): music
 "sounds good", corrected attack build "sounds great"; NATURAL-TESTING
 mode chosen — b65 city walk + formal ear pass accumulate in play, do
-not nag. ENGINEERING QUEUE: (1) full pretester + FRESH TESTER EXPORT
-at the next quiet seam (current zip predates world/audio/comments);
-(2) GIF #3 material = the town with music; (3) intakes as they land.
+not nag. **GATE 1 REWRITTEN 2026-07-30** (ask sl-0023, planning
+593cc27; game CLAUDE.md digest carries the provenance): stranger
+recruitment, the itch testers-channel push, and stranger-aimed
+onboarding polish are RETIRED WITH CAUSE — fresh eyes are
+nonrenewable and failed recruitment reads as verdict when it is only
+silence. NEXT TARGET = THE LOOP MILESTONE: an unguided complete run
+(b65 town → out → rising danger with loot that matters → first boss
+or die trying; death costs something real; immediate retry pull);
+exit = fun for the DESIGNER playing daily for a week; 2–3 warm
+WATCHED first-touches only at the bar. The export pipeline stays a
+STANDING GATE — clean audio-era zips CUT + probed same night
+(builds/wildshot-322066c-*.zip, 58.7 MB tester). ENGINEERING QUEUE:
+(1) LOOP ASSEMBLY per designer direction (talk-before-build — the
+bar card is staged for their words; expect a design conversation
+first: loot model, death cost, boss choice, danger gradient — none
+spec'd yet, docs/08+12 truth-up owed planning-side); (2) GIF #3
+material = the town with music; (3) intakes as they land; (4)
+optional pretester ALL-GREEN capstone any quiet ~13 min (every
+component passed individually tonight).
 
 ## Next work (updated 2026-07-29 ~14:20, M8 early-start session)
 
