@@ -48,6 +48,14 @@ verdict run against real audio at Forge intake.** Original protocol
 are tellable apart and that key threats read through a busy mix.
 Record verdict + date here.
 
+2026-07-30 (chat, Tier 1, marathon — provisional per two-tier):
+first-mapping enemy-attack cue REJECTED + player-attack silence
+REJECTED (both corrected same seam: charge windup + fire classes);
+corrected build **"sounds great"**; music queue + duck **"sounds
+good"**. Designer chose NATURAL TESTING during continued work — the
+formal eyes-closed pass and the rested ratification stay open and
+accumulate organically; do not nag.
+
 ## Music channel (M8, designer-ruled 2026-07-30, Tier 1)
 
 Rulings: tracks play as a QUEUE in listed order, looping the whole

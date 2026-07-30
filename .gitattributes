@@ -1,0 +1,14 @@
+# Byte-exactness pins (2026-07-30): these trees are consumed by hash
+# gates (pack manifest verification, battery byte-identical checks,
+# replay fixtures) — a fresh clone on Windows must check out the EXACT
+# committed bytes, never autocrlf conversions. Without this, a fresh
+# checkout CRLF-mangles walkability.json etc. and the world_builder
+# hash gate refuses its own repo's pack (flagged at the b65 intake).
+# Scripts/docs deliberately keep default handling: no gate hashes
+# them, and a repo-wide `* -text` flip would dirty the whole working
+# tree (designer decision, not a session's).
+assets/** -text
+audio/** -text
+reports/** -text
+tests/replay_fixtures/** -text
+*.wsr -text

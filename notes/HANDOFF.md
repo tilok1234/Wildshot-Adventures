@@ -1,4 +1,4 @@
-# Session Handoff — written 2026-07-29 (~03:30), end of the marathon seam
+# Session Handoff — written 2026-07-29 (~03:30); UPDATED 2026-07-30 (~04:15, the audio-era seam)
 
 **COLD START — this handoff assumes NO prior context.** You may be a
 fresh Claude instance under a DIFFERENT USER ACCOUNT (the designer
@@ -118,6 +118,28 @@ final state:
   notes/sessions/2026-07-30.md), proper clone at
   `Documents\world_filler\world_filler` (on `main`); game-side
   consumption stays POST-GATE-1 per planning docs/17.
+
+## 2026-07-30 night seam (read this first — it supersedes items below)
+
+Two release-transport intakes landed (the doc 18 §5 flow's first real
+exercises, both hash-verified end to end BEFORE the drop): **dusk b65**
+(flood 34641, porosity pin 44 unchanged — route cells byte-identical;
+battery byte-identical incl world_walk; game commit 5cb0e3b; sync log
+sl-0020) and **Resonance Forge audio v1** (178 files hash-true; commits
+ec12575+aaa7250+86873a5; sync log sl-0022). AUDIO IS LIVE: 4-track
+music queue-on-loop ducking −9 dB under threat cues; real cues from
+the pack's critical set; attack sounds (player+enemy fire, 13
+variations round-robin, ATTACK_STARTED hook — zero sim change); FIVE
+channels (Master/Sfx/KeyThreats/Music/AttackSfx) each with off.
+COMMENTS BOX built (bundle comments.txt; typing suppresses hotkeys +
+gameplay input; box-owned pause). M8's last answer-gated engineering
+item is DONE — the Gate 1 critical path is now designer-side.
+Designer verdicts so far (chat, Tier 1, marathon-provisional): music
+"sounds good", corrected attack build "sounds great"; NATURAL-TESTING
+mode chosen — b65 city walk + formal ear pass accumulate in play, do
+not nag. ENGINEERING QUEUE: (1) full pretester + FRESH TESTER EXPORT
+at the next quiet seam (current zip predates world/audio/comments);
+(2) GIF #3 material = the town with music; (3) intakes as they land.
 
 ## Next work (updated 2026-07-29 ~14:20, M8 early-start session)
 
@@ -287,6 +309,29 @@ Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- -
     `%LOCALAPPDATA%\Packages\Microsoft.ScreenSketch_*\TempState\Recordings\`
     — extract frames with ffmpeg and READ them; their footage
     outranks your theories.
+18. **New importable resources (wav/ogg/png) need a
+    `godot_console --headless --path . --import` pass** before the
+    boot gate — "No loader found for resource" at boot means
+    NOT-IMPORTED-YET, not missing. Commit the generated `.import`
+    (and `.uid`) sidecars; the repo tracks them.
+19. **The pretester's machine-wide Godot guard vs reality:** the
+    `.godot/` race is PER-PROJECT. An editor open on ANOTHER project
+    trips the blanket guard but cannot race this repo — running the
+    gate steps individually (same commands, exit codes) is the
+    legitimate fallback, recorded in the commit. Same-PROJECT
+    instances (the designer's game window) genuinely block; use a
+    background waiter on process exit, and expect the designer to
+    relaunch — ask for ~5 quiet minutes, or defer to session end.
+20. **Release-transport intakes (doc 18 §5)**: verify zipSha256 vs
+    notes+sidecar, manifest seal, per-file hashes, sourceCommit vs
+    tag target — ALL LOCALLY, BEFORE the drop; re-hash after copy.
+    Mismatch = incident + STOP. Big masters can stay in the release
+    (it IS the archive) — commit only what ships; record conversions.
+21. **Fresh-clone byte-exactness**: `.gitattributes` pins the
+    hash-gated trees (assets/audio/reports/replay fixtures) `-text`.
+    The repo-wide `* -text` flip is DELIBERATELY not done — it would
+    show the entire working tree modified (CRLF working copies vs LF
+    blobs) — that is a designer-tapped big-bang, not session hygiene.
 
 ## Open items ledger-side
 
