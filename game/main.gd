@@ -21,6 +21,8 @@ const FlashView := preload("res://game/views/flash_view.gd")
 const EffectLibrary := preload("res://game/views/effect_library.gd")
 const AudioCueView := preload("res://game/views/audio_cue_view.gd")
 const MusicView := preload("res://game/views/music_view.gd")
+const DropView := preload("res://game/views/drop_view.gd")
+const Progress := preload("res://sim/systems/progress.gd")
 const StatBar := preload("res://ui/stat_bar.gd")
 const DensityMeter := preload("res://ui/density_meter.gd")
 const HazardView := preload("res://game/views/hazard_view.gd")
@@ -29,6 +31,8 @@ const ScenarioLoader := preload("res://game/scenario_loader.gd")
 const RecapTracker := preload("res://game/drivers/recap_tracker.gd")
 const SessionLog := preload("res://game/drivers/session_log.gd")
 const FeedbackBundle := preload("res://game/drivers/feedback_bundle.gd")
+const CharacterProfile := preload("res://game/drivers/character_profile.gd")
+const CharacterCreate := preload("res://ui/character_create.gd")
 const RecapPanel := preload("res://ui/recap_panel.gd")
 const OnboardingScreen := preload("res://ui/onboarding_screen.gd")
 const Core50Verify := preload("res://game/dev/core50_verify.gd")
@@ -62,6 +66,8 @@ var weapon_label: Label
 var hp_bar: StatBar
 var mana_bar: StatBar
 var ability_label: Label
+## Loop v1 HUD line: level/xp/gold + the minimal equip surface.
+var loot_label: Label
 var options_menu: PanelContainer
 var density_meter: PanelContainer
 var hints_label: Label
@@ -78,6 +84,11 @@ var feedback_settings: Dictionary = {}
 ## typing suppression and the box-owned pause.
 var comments_box: TextEdit = null
 var _comments_paused := false
+## Loop v1 persistent character (docs/19): {} = none — the creation
+## screen owns the next step. Applied to the world setup-phase.
+var character: Dictionary = {}
+var character_panel: PanelContainer = null
+var _char_save_accum := 0.0
 ## EffectLibrary policy object (M6, ledger #9) — cosmetic/friendly
 ## channels only; hostile paths never hold a reference (§2.6 clamp).
 var effects_lib: RefCounted = null
@@ -109,6 +120,15 @@ var _console_events := "off"
 var dev_tools: bool = not OS.has_feature("tester")
 var _af_on_tex: Texture2D = load("res://uikit/icon_autofire_on.png")
 var _af_off_tex: Texture2D = load("res://uikit/icon_autofire_off.png")
+
+
+func _notification(what: int) -> void:
+	# Loop v1: clean-quit character save (alive only — the death flow
+	# already saved the cost-applied profile).
+	if what == NOTIFICATION_WM_CLOSE_REQUEST and not character.is_empty():
+		if world != null and not world.players.is_empty() and not world.players[0].dead:
+			CharacterProfile.harvest(world, character)
+			CharacterProfile.save_profile(character)
 
 
 ## bar_frame stylebox from the kit manifest (margins 2,2,2,2).
@@ -156,6 +176,17 @@ func _process(_delta: float) -> void:
 			DisplayServer.WINDOW_MODE_WINDOWED if fs else DisplayServer.WINDOW_MODE_FULLSCREEN
 		)
 		Config.set_setting("ui", "fullscreen", not fs)
+	# Loop v1: periodic character save (30 s wall; death/quit save
+	# elsewhere) — a crash costs at most the last beat. Never while dead:
+	# the death flow already saved the COST-APPLIED profile, and a
+	# harvest here would resurrect the pre-cost gold.
+	if not character.is_empty() and world != null and not world.players.is_empty():
+		if not world.players[0].dead:
+			_char_save_accum += _delta
+			if _char_save_accum >= 30.0:
+				_char_save_accum = 0.0
+				CharacterProfile.harvest(world, character)
+				CharacterProfile.save_profile(character)
 	if not typing and console != null and Input.is_action_just_pressed("console_toggle"):
 		console.toggle()
 	if not typing and hitboxes != null and Input.is_action_just_pressed("hitbox_toggle"):
@@ -209,6 +240,34 @@ func _process(_delta: float) -> void:
 	rec_label.visible = gif_recorder != null and gif_recorder.armed
 	if not world.weapon_frames.is_empty():
 		weapon_label.text = String(world.weapon_frames[p.equipped_weapon].display_name)
+	# Loop v1 HUD (docs/19): level/xp/gold + the minimal equip surface.
+	(
+		loot_label
+		. set_text(
+			(
+				"lv %d  xp %d/%d  gold %d\nbolt T%d · scatter T%d · wheel T%d · armor T%d"
+				% [
+					p.level,
+					p.xp,
+					Progress.xp_to_next(world, p.level),
+					p.gold,
+					p.weapon_tiers[0],
+					p.weapon_tiers[1],
+					p.weapon_tiers[2],
+					p.armor_tier,
+				]
+			)
+		)
+	)
+	# Loop moments worth a toast: level-ups + unique pickups.
+	for lev: Dictionary in driver.frame_events:
+		match int(lev.type):
+			SimEvents.Type.LEVEL_UP:
+				_show_toast("LEVEL %d" % int(lev.level))
+			SimEvents.Type.LOOT_PICKED:
+				if int(lev.kind) == SimWorld.DROP_UNIQUE and int(lev.a) < world.unique_defs.size():
+					var ud: Resource = world.unique_defs[int(lev.a)]
+					_show_toast("UNIQUE: %s" % String(ud.display_name))
 	# F10: dump the always-on session recording. NOTE: the main scene is a
 	# hardcoded dev scenario until M4 — saved replays verify only against
 	# the same build (no scenario id exists for it yet); golden fixtures
@@ -393,6 +452,57 @@ func _set_speed(speed: float) -> void:
 	)
 
 
+## Loop v1 (docs/19 ruling 1): the new-character screen — the ONLY
+## place permadeath is chosen. Buttons are the only unpause path
+## (CORE-31 pause_locked, the onboarding pattern).
+func _maybe_show_character_create(pl: Label) -> void:
+	if not character.is_empty():
+		return
+	character_panel = CharacterCreate.new()
+	hud_stack.get_parent().add_child(character_panel)
+	driver.paused = true
+	driver.pause_locked = true
+	pl.visible = false
+	# Member-held panel + self-capturing lambda only — a local capture
+	# here makes a Callable/signal reference cycle that leaks at exit.
+	character_panel.chosen.connect(
+		func(hardcore: bool) -> void:
+			character = CharacterProfile.create(hardcore)
+			character.runs = 1
+			CharacterProfile.save_profile(character)
+			CharacterProfile.apply_to_world(world, character)
+			driver.pause_locked = false
+			driver.paused = false
+			character_panel.queue_free()
+			character_panel = null
+	)
+
+
+## Loop v1 death bookkeeping (docs/19 ruling 1) — once per death, on
+## the recap. Hardcore: the character file dies with the character and
+## the reset key lands on the new-character screen. Normal: harvest,
+## gold percentage cost ([T]), save — equipment never taken. Retry
+## stays ONE key; the run-back is the rest of the price.
+func _on_player_death() -> void:
+	if character.is_empty():
+		return
+	if bool(character.get("hardcore", false)):
+		CharacterProfile.delete_profile()
+		character = {}
+		_show_toast(
+			(
+				"HARDCORE DEATH — character gone. %s starts a new one."
+				% Config.binding_text("scenario_reset")
+			)
+		)
+		return
+	CharacterProfile.harvest(world, character)
+	var lost: int = CharacterProfile.apply_death_cost(character, world.progression)
+	character.deaths = int(character.get("deaths", 0)) + 1
+	CharacterProfile.save_profile(character)
+	_show_toast("death: %d gold lost. %s retries." % [lost, Config.binding_text("scenario_reset")])
+
+
 ## Transient HUD notice (12 s); later calls replace earlier ones.
 func _show_toast(text: String) -> void:
 	_toast_gen += 1
@@ -470,6 +580,17 @@ func _ready() -> void:
 	var preset := clampf(float(Config.get_setting("dev", "speed_preset", 4.0)), 3.0, 5.5)
 	world.players[0].move_speed = preset
 
+	# Loop v1 (docs/19): the persistent character rides every world the
+	# player actually plays; audit/verify runs stay profile-free. Applied
+	# BEFORE the recorder snapshots initial state, so replay headers are
+	# honest about what actually ran.
+	if not (audit_mode or verify_mode):
+		character = CharacterProfile.load_profile()
+		if not character.is_empty():
+			CharacterProfile.apply_to_world(world, character)
+			character.runs = int(character.get("runs", 0)) + 1
+			CharacterProfile.save_profile(character)
+
 	driver = RealtimeDriver.new()
 	driver.world = world
 	driver.sampler = HumanSampler.new()
@@ -538,6 +659,11 @@ func _ready() -> void:
 	hitboxes.world = world
 	hitboxes.visible = bool(Config.get_setting("ui", "hitboxes", false))
 	add_child(hitboxes)
+
+	# Loop v1 ground drops (docs/19): quiet shapes on the LOOT band.
+	var drops_view := DropView.new()
+	drops_view.world = world
+	add_child(drops_view)
 
 	# Cities-open ruling (2026-07-29): actors and the world's vertical
 	# layers (structures/props/fence/wall) share ONE y-sort space at the
@@ -691,11 +817,13 @@ func _ready() -> void:
 	mana_bar.fill_tex = load("res://uikit/bar_fill_mana.png")
 	mana_bar.custom_minimum_size = Vector2(64.0, 8.0)
 	ability_label = Label.new()
+	loot_label = Label.new()
 	hud_stack = VBoxContainer.new()
 	hud_stack.add_theme_constant_override("separation", 2)
 	hud_stack.add_child(ability_label)
 	hud_stack.add_child(hp_bar)
 	hud_stack.add_child(mana_bar)
+	hud_stack.add_child(loot_label)
 	hud_stack.add_child(speed_label)
 	hud_stack.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
 	hud_stack.grow_vertical = Control.GROW_DIRECTION_BEGIN
@@ -906,6 +1034,7 @@ func _ready() -> void:
 		func(r: Dictionary) -> void:
 			driver.paused = true
 			recap_panel.show_recap(r, Config.binding_text("scenario_reset"))
+			_on_player_death()
 	)
 
 	# M8 re-engagement evidence: session start/heartbeat/end lines with
@@ -935,7 +1064,14 @@ func _ready() -> void:
 				driver.paused = false
 				onboarding.queue_free()
 				onboarding = null
+				_maybe_show_character_create(pause_label)
 		)
+
+	# Loop v1 new-character screen (docs/19 ruling 1): whenever no
+	# character exists — first boot, or the boot after a hardcore death.
+	# Tester profile reaches it through the onboarding start press above.
+	if not (audit_mode or verify_mode) and (dev_tools or _onboarding_shown):
+		_maybe_show_character_create(pause_label)
 
 	if audit_mode:
 		driver.sampler = AuditSampler.new()

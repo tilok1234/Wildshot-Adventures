@@ -14,7 +14,8 @@ extends PanelContainer
 signal start_pressed(speed: float)
 
 const COPY_INTRO := (
-	"A test build: no loot, no levels, no progression.\n" + "Play as much or as little as you like."
+	"An early build of the real game: loot drops, levels grow,\n"
+	+ "and dying costs. Play as much or as little as you like."
 )
 const COPY_CONTROLS := (
 	"Move WASD - aim with the mouse - hold to fire.\n"

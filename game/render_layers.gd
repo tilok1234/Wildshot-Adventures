@@ -10,6 +10,7 @@ extends RefCounted
 
 const FLOOR := 0  # TileMapLayers (default z)
 const FRIENDLY_GROUND := 10  # friendly decals + placed zones (Blast Rune)
+const LOOT := 15  # ground drops (Loop v1): quiet, below every threat band
 const HOSTILE_HAZARD_FILL := 20  # spatial grounding only, never sole signal
 const ACTORS := 30
 const CANOPY := 32  # tree crowns: occlude bodies (depth), never bars or any threat band
@@ -36,7 +37,8 @@ static func assert_bands() -> bool:
 	ok = ok and HP_BARS > CANOPY  # bars read through foliage
 	ok = ok and CANOPY > ACTORS  # crowns occlude bodies (depth cue), nothing above
 	ok = ok and ACTORS > HOSTILE_HAZARD_FILL  # hazard FILL grounds under bodies; the RIM warns above
-	ok = ok and HOSTILE_HAZARD_FILL > FRIENDLY_GROUND
+	ok = ok and HOSTILE_HAZARD_FILL > LOOT  # loot never occludes hazard grounding (Law 1)
+	ok = ok and LOOT > FRIENDLY_GROUND
 	ok = ok and FRIENDLY_GROUND > FLOOR
 	if not ok:
 		push_error("render_layers: band ordering violated (CORE-51 Laws 1/2) — fix the constants")
