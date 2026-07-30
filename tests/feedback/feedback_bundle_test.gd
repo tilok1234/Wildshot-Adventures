@@ -62,7 +62,8 @@ func _init() -> void:
 		FeedbackBundle.encode_code(999999, 9999, 9999, 999999).length() == 17, "capped code shape"
 	)
 
-	# Bundle zip: fixture-only log path, temp destination.
+	# Bundle zip: fixture-only log path, temp destination. No comment →
+	# no comments.txt, comment_chars 0.
 	var dest := ProjectSettings.globalize_path("user://logs")
 	var result := FeedbackBundle.save_bundle(dest, FIXTURE)
 	check(bool(result.ok), "bundle ok (%s)" % String(result.get("error", "")))
@@ -71,6 +72,7 @@ func _init() -> void:
 		var names := reader.get_files()
 		check("bundle_info.json" in names, "zip has bundle_info.json")
 		check("session.jsonl" in names, "zip has session.jsonl")
+		check(not "comments.txt" in names, "no comments.txt without a comment")
 		var info: Variant = JSON.parse_string(
 			reader.read_file("bundle_info.json").get_string_from_utf8()
 		)
@@ -81,14 +83,39 @@ func _init() -> void:
 			),
 			"bundle_info carries the bundled log's summary code"
 		)
+		check(info != null and int(info.get("comment_chars", -1)) == 0, "comment_chars 0")
 		reader.close()
 	else:
 		check(false, "zip readable")
 	DirAccess.remove_absolute(String(result.path))
+
+	# Comment ride-along (M8 comments box): trimmed text lands as
+	# comments.txt; the stamp counts its chars. SUPPLEMENTARY by
+	# quiet-lab law — the zip carries it, nothing counts it as CORE-54
+	# evidence.
+	var result2 := FeedbackBundle.save_bundle(dest, FIXTURE, "  the wolves feel fair  ")
+	check(bool(result2.ok), "comment bundle ok")
+	var reader2 := ZIPReader.new()
+	if reader2.open(String(result2.path)) == OK:
+		var names2 := reader2.get_files()
+		check("comments.txt" in names2, "zip has comments.txt")
+		var note := reader2.read_file("comments.txt").get_string_from_utf8()
+		check(note == "the wolves feel fair", "comment trimmed verbatim (got '%s')" % note)
+		var info2: Variant = JSON.parse_string(
+			reader2.read_file("bundle_info.json").get_string_from_utf8()
+		)
+		check(
+			info2 != null and int(info2.get("comment_chars", -1)) == note.length(),
+			"comment_chars matches"
+		)
+		reader2.close()
+	else:
+		check(false, "comment zip readable")
+	DirAccess.remove_absolute(String(result2.path))
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(FIXTURE))
 
 	if fails.is_empty():
-		print("feedback_bundle_test: PASS (scan/exclusion/code/checksum/zip)")
+		print("feedback_bundle_test: PASS (scan/exclusion/code/checksum/zip/comment)")
 		quit(0)
 	else:
 		for m: String in fails:

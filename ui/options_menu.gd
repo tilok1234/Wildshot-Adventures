@@ -42,6 +42,27 @@ func add_cycle_row(title: String, names: Array, initial: int, cb: Callable) -> v
 	_rows.add_child(row)
 
 
+## Free-text row (the M8 comments box): multi-line, returned so the
+## caller can read .text at bundle time. Esc releases focus (the
+## caller's typing suppression keys off has_focus).
+func add_comment_row(title: String, placeholder: String) -> TextEdit:
+	var lbl := Label.new()
+	lbl.text = title
+	_rows.add_child(lbl)
+	var te := TextEdit.new()
+	te.custom_minimum_size = Vector2(260.0, 64.0)
+	te.placeholder_text = placeholder
+	te.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
+	te.gui_input.connect(
+		func(e: InputEvent) -> void:
+			if e is InputEventKey and e.pressed and e.physical_keycode == KEY_ESCAPE:
+				te.release_focus()
+				te.accept_event()
+	)
+	_rows.add_child(te)
+	return te
+
+
 ## Extra control row (e.g. the M4 ability hot-swap). cb receives the
 ## pressed index.
 func add_button_row(title: String, names: Array, cb: Callable) -> void:

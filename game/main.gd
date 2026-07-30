@@ -20,6 +20,7 @@ const GifRecorder := preload("res://game/drivers/gif_recorder.gd")
 const FlashView := preload("res://game/views/flash_view.gd")
 const EffectLibrary := preload("res://game/views/effect_library.gd")
 const AudioCueView := preload("res://game/views/audio_cue_view.gd")
+const MusicView := preload("res://game/views/music_view.gd")
 const StatBar := preload("res://ui/stat_bar.gd")
 const DensityMeter := preload("res://ui/density_meter.gd")
 const HazardView := preload("res://game/views/hazard_view.gd")
@@ -73,6 +74,10 @@ var session_log: Node
 ## Once per app run, not per scene build — a T reset never re-shows it.
 static var _onboarding_shown := false
 var feedback_settings: Dictionary = {}
+## M8 comments box (options menu): read at bundle time; focus drives
+## typing suppression and the box-owned pause.
+var comments_box: TextEdit = null
+var _comments_paused := false
 ## EffectLibrary policy object (M6, ledger #9) — cosmetic/friendly
 ## channels only; hostile paths never hold a reference (§2.6 clamp).
 var effects_lib: RefCounted = null
@@ -83,8 +88,10 @@ const EFFECT_OPACITY_LEVELS: Array[float] = [1.0, 0.7, 0.4]
 
 ## Per-channel audio (CORE-50: separate channels, key threats audible;
 ## Law 7). Linear levels per options index; audio/<bus> persists.
+## Music (M8) is its own channel like the rest — the duck lives in
+## music_view, never in the bus level the user set.
 const AUDIO_LEVELS: Array[float] = [1.0, 0.7, 0.4, 0.0]
-const AUDIO_BUSES: Array[String] = ["Master", "Sfx", "KeyThreats"]
+const AUDIO_BUSES: Array[String] = ["Master", "Sfx", "KeyThreats", "Music"]
 var recap_panel: PanelContainer
 var console: PanelContainer
 var hitboxes: Node2D
@@ -114,18 +121,26 @@ static func _bar_frame_box() -> StyleBoxTexture:
 
 
 func _process(_delta: float) -> void:
+	# M8 comments box: while it has keyboard focus, letter hotkeys and
+	# gameplay input are suppressed — a 't' mid-sentence must never
+	# reset the scene, WASD must not move the player (the sampler sends
+	# neutral frames). Esc still reaches the driver's pause toggle by
+	# design: leaving the box and resuming are the same key.
+	var typing := comments_box != null and comments_box.has_focus()
+	if driver != null and driver.sampler != null:
+		driver.sampler.suppress = typing
 	# §2.9 prev/curr render toggle — view-side only, replay-irrelevant.
-	if view_clock != null and Input.is_action_just_pressed("interp_toggle"):
+	if not typing and view_clock != null and Input.is_action_just_pressed("interp_toggle"):
 		view_clock.interp_enabled = not view_clock.interp_enabled
 		print("render interpolation: ", "ON" if view_clock.interp_enabled else "OFF (snap)")
-	if options_menu != null and Input.is_action_just_pressed("options_toggle"):
+	if not typing and options_menu != null and Input.is_action_just_pressed("options_toggle"):
 		options_menu.toggle()
 		_refresh_hints()
-	if density_meter != null and Input.is_action_just_pressed("density_toggle"):
+	if not typing and density_meter != null and Input.is_action_just_pressed("density_toggle"):
 		density_meter.visible = not density_meter.visible
 	# One-key reseeding reset (§2.10): next seed persisted + logged, full
 	# scene rebuild — no ref-swapping, no stale state.
-	if world != null and Input.is_action_just_pressed("scenario_reset"):
+	if not typing and world != null and Input.is_action_just_pressed("scenario_reset"):
 		Config.set_setting("dev", "seed", world.run_seed + 1)
 		print("scenario reset -> seed %d" % (world.run_seed + 1))
 		get_tree().reload_current_scene()
@@ -139,9 +154,9 @@ func _process(_delta: float) -> void:
 			DisplayServer.WINDOW_MODE_WINDOWED if fs else DisplayServer.WINDOW_MODE_FULLSCREEN
 		)
 		Config.set_setting("ui", "fullscreen", not fs)
-	if console != null and Input.is_action_just_pressed("console_toggle"):
+	if not typing and console != null and Input.is_action_just_pressed("console_toggle"):
 		console.toggle()
-	if hitboxes != null and Input.is_action_just_pressed("hitbox_toggle"):
+	if not typing and hitboxes != null and Input.is_action_just_pressed("hitbox_toggle"):
 		hitboxes.visible = not hitboxes.visible
 		Config.set_setting("ui", "hitboxes", hitboxes.visible)
 	# Event-console tail (§2.10): only while the console is open.
@@ -162,13 +177,13 @@ func _process(_delta: float) -> void:
 	# M2 movement-speed editor: presets + 0.1 steps, routed through the sim
 	# command queue (band-clamped and replay-dirty-stamped sim-side, §3.2).
 	var cur: float = world.players[0].move_speed
-	if Input.is_action_just_pressed("debug_speed_lowest"):
+	if not typing and Input.is_action_just_pressed("debug_speed_lowest"):
 		_set_speed(3.0)
-	elif Input.is_action_just_pressed("debug_speed_baseline"):
+	elif not typing and Input.is_action_just_pressed("debug_speed_baseline"):
 		_set_speed(4.0)
-	elif dev_tools and Input.is_action_just_pressed("debug_speed_down"):
+	elif dev_tools and not typing and Input.is_action_just_pressed("debug_speed_down"):
 		_set_speed(snappedf(cur - 0.1, 0.1))
-	elif dev_tools and Input.is_action_just_pressed("debug_speed_up"):
+	elif dev_tools and not typing and Input.is_action_just_pressed("debug_speed_up"):
 		_set_speed(snappedf(cur + 0.1, 0.1))
 	speed_label.text = (
 		"%d fps   spikes %d   speed %.1f t/s%s%s"
@@ -196,7 +211,7 @@ func _process(_delta: float) -> void:
 	# hardcoded dev scenario until M4 — saved replays verify only against
 	# the same build (no scenario id exists for it yet); golden fixtures
 	# use the registered scenario path.
-	if Input.is_action_just_pressed("replay_save") and driver.recorder != null:
+	if not typing and Input.is_action_just_pressed("replay_save") and driver.recorder != null:
 		var path := "user://replays/session_%d.wsr" % world.tick
 		if driver.recorder.save_wsr(path, "dev", "main_dev_scene"):
 			print("replay saved: ", ProjectSettings.globalize_path(path))
@@ -223,11 +238,11 @@ func _run_density_audit(out_name: String) -> void:
 	get_tree().quit()
 
 
-## Idempotent creation of the two named buses (Law 7 / CORE-50): Sfx and
-## KeyThreats, both sending to Master. Code-created so headless runs and
-## tests need no bus-layout resource.
+## Idempotent creation of the three named buses (Law 7 / CORE-50): Sfx,
+## KeyThreats, and Music (M8), all sending to Master. Code-created so
+## headless runs and tests need no bus-layout resource.
 func _ensure_audio_buses() -> void:
-	for bus_name: String in ["Sfx", "KeyThreats"]:
+	for bus_name: String in ["Sfx", "KeyThreats", "Music"]:
 		if AudioServer.get_bus_index(bus_name) >= 0:
 			continue
 		var idx := AudioServer.bus_count
@@ -617,6 +632,15 @@ func _ready() -> void:
 	cue_view.pattern_map = proj_map
 	add_child(cue_view)
 
+	# M8 music (designer-ruled 2026-07-30): queue-on-loop playlist on
+	# the Music bus, ducking under KeyThreats cues so Law 7's threat
+	# channel stays on top of the mix. The playlist is EMPTY until the
+	# Resonance Forge pack intake fills it — silent no-op until then.
+	var music := MusicView.new()
+	music.playlist = load("res://data/music_playlist.tres")
+	music.cue_view = cue_view
+	add_child(music)
+
 	var dmg_numbers := DamageNumberView.new()
 	dmg_numbers.driver = driver
 	dmg_numbers.settings = feedback_settings
@@ -824,6 +848,30 @@ func _ready() -> void:
 			_apply_ui_scale(i + 1)
 	)
 	_apply_ui_scale(ui_scale)
+	# M8 comments box (designer GO 2026-07-30): SUPPLEMENTARY side-notes
+	# that ride inside the feedback bundle as comments.txt — quiet-lab
+	# law says never CORE-54 evidence (that stays the unprompted
+	# Discord/itch harvest). Focusing the box pauses the game (typing is
+	# not a dodge test); leaving it releases only a pause the box itself
+	# took — a recap or Esc pause is never stolen.
+	comments_box = options_menu.add_comment_row(
+		"comments (optional — saved with the bundle)", "anything you want the dev to read"
+	)
+	comments_box.focus_entered.connect(
+		func() -> void:
+			if not driver.paused:
+				driver.paused = true
+				_comments_paused = true
+				pause_label.visible = true
+	)
+	comments_box.focus_exited.connect(
+		func() -> void:
+			if _comments_paused:
+				_comments_paused = false
+				if not driver.pause_locked:
+					driver.paused = false
+					pause_label.visible = false
+	)
 	# M8 feedback return path (tester-facing, ungated): zip the evidence
 	# to the Desktop, reveal it, and show the summary code for testers
 	# who will paste a code instead of returning a file.
@@ -831,7 +879,9 @@ func _ready() -> void:
 		"feedback",
 		["save bundle"],
 		func(_i: int) -> void:
-			var result := FeedbackBundle.save_bundle()
+			var result := FeedbackBundle.save_bundle(
+				"", FeedbackBundle.SESSION_LOG, comments_box.text
+			)
 			if bool(result.ok):
 				_show_toast(
 					"feedback bundle saved to Desktop\nsummary code: %s" % String(result.code)

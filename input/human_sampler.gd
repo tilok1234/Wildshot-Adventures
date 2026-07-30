@@ -11,6 +11,11 @@ extends RefCounted
 
 const InputFrame := preload("res://sim/input_frame.gd")
 
+## GUI text entry (the M8 comments box) suppresses gameplay input:
+## neutral frames go to the sim while device state keeps being tracked,
+## so no stale autofire/ability edge fires when typing ends.
+var suppress := false
+
 var _prev_autofire := false
 var _prev_ability := false
 var _last_aim := Vector2.RIGHT
@@ -19,6 +24,15 @@ var _last_aim := Vector2.RIGHT
 ## mouse_tile: mouse position in world TILE coordinates (view converts);
 ## player_pos: the sampled player's sim position, tiles.
 func sample(mouse_tile: Vector2, player_pos: Vector2) -> InputFrame:
+	if suppress:
+		var nf := InputFrame.new()
+		nf.normalized = true
+		var qs := InputFrame.quantize_aim(_last_aim)
+		nf.aim_x = qs.x
+		nf.aim_y = qs.y
+		_prev_autofire = Input.is_action_pressed("autofire_toggle")
+		_prev_ability = Input.is_action_pressed("ability")
+		return nf
 	var f := InputFrame.new()
 	f.move_x = (
 		int(Input.is_action_pressed("move_right")) - int(Input.is_action_pressed("move_left"))

@@ -8,6 +8,10 @@ extends Node
 ## cue into noise. Presentation-only: reads events, never the sim;
 ## headless runs instantiate it harmlessly (no device, no output).
 
+## A KeyThreats-bus cue actually played (post retrigger gate) — the
+## music duck rides this (M8, designer-ruled 2026-07-30).
+signal key_threat_cue
+
 const SimEvents := preload("res://sim/events.gd")
 const ActorState := preload("res://sim/actor_state.gd")
 
@@ -84,3 +88,5 @@ func _play(cls: String) -> void:
 		return
 	_last_tick[cls] = t
 	p.play()
+	if String(p.bus) == "KeyThreats":
+		key_threat_cue.emit()

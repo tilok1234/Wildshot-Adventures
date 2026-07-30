@@ -17,7 +17,7 @@ const PROFILES := {
 	{
 		"effects": {"density": 2, "opacity": 2, "flash_reduction": true},
 		"feedback": {"damage_numbers": 0, "impact": false, "kill": false, "blocked": false},
-		"audio": {"master": 3, "sfx": 3, "keythreats": 3},
+		"audio": {"master": 3, "sfx": 3, "keythreats": 3, "music": 3},
 		"ui": {"scale": 1, "hitboxes": false, "fullscreen": false},
 		"dev": {"scenario": "res://data/scenarios/first_contact.tres", "seed": 1},
 	},
@@ -25,7 +25,7 @@ const PROFILES := {
 	{
 		"effects": {"density": 0, "opacity": 0, "flash_reduction": false},
 		"feedback": {"damage_numbers": 2, "impact": true, "kill": true, "blocked": true},
-		"audio": {"master": 0, "sfx": 1, "keythreats": 2},
+		"audio": {"master": 0, "sfx": 1, "keythreats": 2, "music": 1},
 		"ui": {"scale": 2, "hitboxes": true, "fullscreen": false},
 		"dev": {"scenario": "res://data/scenarios/first_contact.tres", "seed": 1},
 	},

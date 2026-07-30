@@ -68,10 +68,16 @@ func _init() -> void:
 		quit(1)
 		return
 
-	# CORE-50 per-channel audio keys (M6 audio cue map): same round-trip.
+	# CORE-50 per-channel audio keys (M6 audio cue map; M8 adds the
+	# Music channel): same round-trip.
 	config.set_setting("audio", "keythreats", 1)
 	if int(config.get_setting("audio", "keythreats", -1)) != 1:
 		printerr("FAIL: audio/keythreats did not persist")
+		quit(1)
+		return
+	config.set_setting("audio", "music", 2)
+	if int(config.get_setting("audio", "music", -1)) != 2:
+		printerr("FAIL: audio/music did not persist")
 		quit(1)
 		return
 

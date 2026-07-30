@@ -28,8 +28,10 @@ const BUNDLE_FILES: Array[String] = [
 
 
 ## Zip the evidence into dest_dir (default: the OS desktop). Returns
-## {ok, path, code, error}.
-static func save_bundle(dest_dir := "", log_path := SESSION_LOG) -> Dictionary:
+## {ok, path, code, error}. A non-empty comment rides along as
+## comments.txt — SUPPLEMENTARY by quiet-lab law: never CORE-54
+## evidence (that stays the unprompted Discord/itch harvest).
+static func save_bundle(dest_dir := "", log_path := SESSION_LOG, comment := "") -> Dictionary:
 	var dir := dest_dir
 	if dir.is_empty():
 		dir = OS.get_system_dir(OS.SYSTEM_DIR_DESKTOP)
@@ -51,11 +53,17 @@ static func save_bundle(dest_dir := "", log_path := SESSION_LOG) -> Dictionary:
 		packer.write_file(bytes)
 		packer.close_file()
 		packed += 1
+	var note := comment.strip_edges()
+	if not note.is_empty():
+		packer.start_file("comments.txt")
+		packer.write_file(note.to_utf8_buffer())
+		packer.close_file()
 	var info := {
 		"build": BuildInfo.BUILD_ID,
 		"utc": Time.get_datetime_string_from_system(true),
 		"summary_code": code,
 		"files": packed,
+		"comment_chars": note.length(),
 	}
 	packer.start_file("bundle_info.json")
 	packer.write_file(JSON.stringify(info, "\t").to_utf8_buffer())
