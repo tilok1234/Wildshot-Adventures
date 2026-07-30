@@ -17,6 +17,10 @@ var clock: RefCounted = null
 var driver: Node = null
 ## AssemblerLibrary instance shared with the player actor.
 var lib: RefCounted = null
+## Optional boss library (Loop v1): same class, 48 px manifest. Tried
+## when the primary library lacks the mapped actor id; render scale
+## comes from whichever library served the sheet.
+var lib_boss: RefCounted = null
 var sheet_map: Resource = null
 
 var _views: Dictionary = {}
@@ -34,14 +38,14 @@ func _process(_delta: float) -> void:
 		seen[e.id] = true
 		if _views.has(e.id):
 			continue
-		var frames := _frames_for(def_index)
-		if frames == null:
+		var got := _frames_for(def_index)
+		if got.frames == null:
 			continue
 		var av := AnimatedActor.new()
-		av.sprite_frames = frames
+		av.sprite_frames = got.frames
 		av.actor = e
 		av.clock = clock
-		av.render_scale = lib.render_scale()
+		av.render_scale = float(got.scale)
 		av.play("idle-down")
 		add_child(av)
 		_views[e.id] = av
@@ -57,24 +61,29 @@ func _process(_delta: float) -> void:
 					av.play_attack(ev.aim)
 
 
-## SpriteFrames per def, built once. A missing mapping errors ONCE and
-## caches null — the sim enemy still runs (hitbox view shows it); the
-## error names the role to add to actor_sheet_map.tres.
-func _frames_for(def_index: int) -> SpriteFrames:
+## {frames, scale} per def, built once. A missing mapping errors ONCE
+## and caches null — the sim enemy still runs (hitbox view shows it);
+## the error names the role to add to actor_sheet_map.tres. The boss
+## library is consulted when the primary lacks the actor id (Loop v1).
+func _frames_for(def_index: int) -> Dictionary:
 	if _frames_by_def.has(def_index):
 		return _frames_by_def[def_index]
 	var def: Resource = world.enemy_defs[def_index]
 	var role := "enemy_" + String(def.id)
 	var actor_id := String(sheet_map.map.get(role, ""))
-	var frames: SpriteFrames = null
-	if actor_id.is_empty() or not lib.has_actor(actor_id):
+	var got := {"frames": null, "scale": 1.0}
+	if not actor_id.is_empty() and lib.has_actor(actor_id):
+		got.frames = lib.build_sprite_frames(actor_id)
+		got.scale = lib.render_scale()
+	elif not actor_id.is_empty() and lib_boss != null and lib_boss.has_actor(actor_id):
+		got.frames = lib_boss.build_sprite_frames(actor_id)
+		got.scale = lib_boss.render_scale()
+	else:
 		push_error(
 			(
 				"enemy_actors_view: no imported sheet for role '%s' (map it in actor_sheet_map.tres)"
 				% role
 			)
 		)
-	else:
-		frames = lib.build_sprite_frames(actor_id)
-	_frames_by_def[def_index] = frames
-	return frames
+	_frames_by_def[def_index] = got
+	return got

@@ -138,7 +138,11 @@ if (-not $SkipBattery) {
         @("lab_default","1,2,3",3600,"","","PASS"),
         @("meet_blightcaster","1,2,3",3600,"","","PASS"),
         @("meet_leadshot","1,2,3",3600,"","","PASS"),
-        @("meet_yard_warden","1,2,3",3600,"","","PASS")
+        @("meet_yard_warden","1,2,3",3600,"","","PASS"),
+        @("loop_ring1","1,2,3",3600,"","","PASS"),
+        @("loop_ring2","1,2,3",3600,"","","PASS"),
+        @("loop_ring3","1,2,3",3600,"","","PASS"),
+        @("proof_brk_site","1,2,3",3600,"","","PASS")
     )
     foreach ($b in $battery) {
         $scen = $b[0]; $seeds = $b[1]; $ticks = $b[2]; $out = $b[3]; $pol = $b[4]; $want = $b[5]

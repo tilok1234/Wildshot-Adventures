@@ -6,6 +6,7 @@
 script = ExtResource("1")
 map = {
 "enemy_blightcaster": "cultist:acolyte",
+"enemy_bone_reliquary_king": "boss:bone-reliquary-king",
 "enemy_fanmaw": "carniplant:snapvine",
 "enemy_husk_archer": "skeleton:archer",
 "enemy_leadshot": "bandit:sniper",

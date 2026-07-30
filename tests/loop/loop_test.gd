@@ -143,6 +143,19 @@ func _init() -> void:
 	up.gold += 1
 	check(u.state_hash() != h1, "gold is hashed state")
 
+	# 8. Bone Reliquary King data pins (docs/19 ruling 4): the Warden kit
+	# at 900 HP [T] — phase floors 594/297, unique table well-formed.
+	var king: Resource = load("res://data/enemies/bone_reliquary_king.tres")
+	check(int(king.hp) == 900, "king hp 900 [T]")
+	check(king.phase_for_hp(595) == 0 and king.phase_for_hp(594) == 1, "king p2 floor 594")
+	check(king.phase_for_hp(298) == 1 and king.phase_for_hp(297) == 2, "king p3 floor 297")
+	check(
+		king.unique_drops.size() == 1 and king.unique_chances.size() == 1,
+		"king unique table parallel arrays"
+	)
+	var uniq: Resource = king.unique_drops[0]
+	check(String(uniq.display_name) == "Reliquary Coil", "unique placeholder present")
+
 	if fails.is_empty():
 		print("loop_test: PASS (drops/streams/curve/damage/armor/pickup/hash)")
 		quit(0)

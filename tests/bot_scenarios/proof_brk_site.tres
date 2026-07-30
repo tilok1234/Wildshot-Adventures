@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"proof_brk_site"
+display_name = "Bone Reliquary King: boss-site dodgeability (P1 pin)"
+worldforge_pack = "res://assets/worldforge-packs/small-cold-coastal-pack-dusk/"
+player_spawn = Vector2(142.5, 125.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"bone_reliquary_king": PackedVector2Array(135.5, 125.5)
+}
+default_seed = 1

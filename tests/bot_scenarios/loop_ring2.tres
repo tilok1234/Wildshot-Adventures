@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"loop_ring2"
+display_name = "Loop gradient proof: ring 2 (midlands)"
+worldforge_pack = "res://assets/worldforge-packs/small-cold-coastal-pack-dusk/"
+player_spawn = Vector2(205.5, 127.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"fanmaw": PackedVector2Array(200.5, 111.5, 190.5, 142.5),
+"husk_archer": PackedVector2Array(198.5, 131.5),
+"ringer": PackedVector2Array(195.5, 129.5),
+"rusher": PackedVector2Array(201.5, 114.5, 203.5, 124.5)
+}
+default_seed = 1

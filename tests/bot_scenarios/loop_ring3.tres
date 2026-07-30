@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"loop_ring3"
+display_name = "Loop gradient proof: ring 3 (dangerous outlands)"
+worldforge_pack = "res://assets/worldforge-packs/small-cold-coastal-pack-dusk/"
+player_spawn = Vector2(184.5, 123.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"blightcaster": PackedVector2Array(177.5, 116.5, 165.5, 135.5),
+"husk_archer": PackedVector2Array(154.5, 120.5, 166.5, 137.5),
+"leadshot": PackedVector2Array(152.5, 118.5),
+"rusher": PackedVector2Array(176.5, 113.5, 176.5, 148.5, 148.5, 142.5)
+}
+default_seed = 1

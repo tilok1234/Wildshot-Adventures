@@ -1,0 +1,21 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"loop"
+display_name = "THE LOOP: town -> Bone Reliquary King"
+worldforge_pack = "res://assets/worldforge-packs/small-cold-coastal-pack-dusk/"
+player_spawn = Vector2(240.5, 125.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"blightcaster": PackedVector2Array(177.5, 116.5, 165.5, 135.5),
+"bone_reliquary_king": PackedVector2Array(135.5, 125.5),
+"fanmaw": PackedVector2Array(200.5, 111.5, 190.5, 142.5),
+"husk_archer": PackedVector2Array(223.5, 117.5, 208.5, 137.5, 217.5, 145.5, 198.5, 131.5, 154.5, 120.5, 166.5, 137.5),
+"leadshot": PackedVector2Array(152.5, 118.5),
+"ringer": PackedVector2Array(195.5, 129.5),
+"rusher": PackedVector2Array(222.5, 117.5, 211.5, 137.5, 201.5, 114.5, 203.5, 124.5, 176.5, 113.5, 176.5, 148.5, 148.5, 142.5)
+}
+default_seed = 1

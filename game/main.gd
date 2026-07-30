@@ -703,6 +703,14 @@ func _ready() -> void:
 		enemy_actors.lib = lib
 		enemy_actors.sheet_map = sheet_map
 		enemy_actors.y_sort_enabled = true
+		# Loop v1 boss library (docs/19 ruling 4): same class, 48 px
+		# manifest; consulted for actor ids the 24 px pack lacks.
+		if FileAccess.file_exists("res://assembler_boss/manifest.json"):
+			var lib_boss := AssemblerLibrary.new()
+			lib_boss.manifest_path = "res://assembler_boss/manifest.json"
+			lib_boss.sheet_root = "res://assembler_boss/"
+			if lib_boss.load_manifest():
+				enemy_actors.lib_boss = lib_boss
 		actor_space.add_child(enemy_actors)
 	var hp_bars := HpBarView.new()
 	hp_bars.world = world

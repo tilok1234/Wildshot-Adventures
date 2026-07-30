@@ -33,14 +33,16 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 			]
 		)
 	)
-	# Loop v1 (docs/19): progression tables ride every world like the
-	# weapon/ability defs — definitions, not state.
+	# Loop v1 (docs/19): progression tables + unique defs ride every
+	# world like the weapon/ability defs — definitions, not state.
 	world.set_progression(load("res://data/progression.tres"))
+	world.set_uniques([load("res://data/uniques/reliquary_coil.tres")])
 	# EnemyDef roster — INDEX ORDER IS CONTRACT (def_index serializes):
 	# 0=rusher, 1=husk_archer, 2=fanmaw, 3=ringer, 4=leadshot,
-	# 5=blightcaster, 6=yard_warden (§3.5 elite). Append-only; never
-	# reorder. Scenario extras (bot canaries) append after, keeping
-	# standard indexes stable.
+	# 5=blightcaster, 6=yard_warden (§3.5 elite), 7=bone_reliquary_king
+	# (Loop v1 first boss, docs/19 ruling 4 — the Warden kit at 900 HP
+	# [T]). Append-only; never reorder. Scenario extras (bot canaries)
+	# append after, keeping standard indexes stable.
 	var defs: Array = [
 		load("res://data/enemies/rusher.tres"),
 		load("res://data/enemies/husk_archer.tres"),
@@ -49,6 +51,7 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 		load("res://data/enemies/leadshot.tres"),
 		load("res://data/enemies/blightcaster.tres"),
 		load("res://data/enemies/yard_warden.tres"),
+		load("res://data/enemies/bone_reliquary_king.tres"),
 	]
 	for extra: Resource in scenario.extra_enemy_defs:
 		defs.append(extra)

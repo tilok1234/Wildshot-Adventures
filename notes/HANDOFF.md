@@ -262,6 +262,7 @@ Before every commit, per touched area:
 | proof_yw_full (schedule sums 575; t1207/t2413, kill t3301) | 211..215 | 3600 | PASS |
 | proof_rusher / forest_walk / first_contact **[--policy=primary]** | as above | 3600 | **FAIL — primary-model baselines** (dodge_*_primary.json; a primary PASS = the sim changed) |
 | lab_default + meet_blightcaster/leadshot/yard_warden | 1,2,3 | 3600 | PASS |
+| loop_ring1/2/3 + proof_brk_site (Loop v1 gradient + boss site, docs/19; ring pulls stay ≤2 pressures by layout) | 1,2,3 | 3600 | PASS |
 
 Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- --scenario=<id> --speed=3.0 --seeds=<list> --ticks=<n> [--out=res://reports/<name>.json] [--policy=primary|orbit|axis]`
 (default policy = reactive; compositions need the explicit --out names).

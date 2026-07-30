@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/unique_def.gd" id="1_uniq"]
+
+[resource]
+script = ExtResource("1_uniq")
+uid = &"reliquary_coil"
+display_name = "Reliquary Coil"
+frame_slot = 0

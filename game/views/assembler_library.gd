@@ -14,6 +14,12 @@ extends RefCounted
 const MANIFEST_PATH := "res://assembler/manifest.json"
 const SHEET_ROOT := "res://assembler/"
 
+## Instance overrides (Loop v1): the boss library is a SECOND instance
+## of this same class pointed at res://assembler_boss/ (cell 48) — the
+## layout math is manifest-driven, so nothing else changes.
+var manifest_path := MANIFEST_PATH
+var sheet_root := SHEET_ROOT
+
 const FALLBACKS := {
 	"cast": ["attack", "idle"],
 	"death": ["hurt", "idle"],
@@ -26,9 +32,9 @@ var _by_id: Dictionary = {}
 
 
 func load_manifest() -> bool:
-	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(MANIFEST_PATH))
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(manifest_path))
 	if parsed == null:
-		push_error("assembler_library: %s missing — run the assembler importer" % MANIFEST_PATH)
+		push_error("assembler_library: %s missing — run the assembler importer" % manifest_path)
 		return false
 	_manifest = parsed
 	for entry: Dictionary in _manifest.actors:
@@ -42,7 +48,7 @@ func has_actor(id: String) -> bool:
 
 func build_sprite_frames(id: String) -> SpriteFrames:
 	var entry: Dictionary = _by_id[id]
-	var tex: Texture2D = load(SHEET_ROOT + String(entry.sheet))
+	var tex: Texture2D = load(sheet_root + String(entry.sheet))
 	if tex == null:
 		push_error("assembler_library: sheet not imported: %s" % entry.sheet)
 		return null

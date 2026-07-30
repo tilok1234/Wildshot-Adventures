@@ -1,0 +1,52 @@
+{
+ "source": "assets/assembler-boss-pack (established-boss-pack-13-v1)",
+ "cell": 48,
+ "export_scale": 1,
+ "frame_contract": {
+  "dirs": [
+   "down",
+   "left",
+   "right",
+   "up"
+  ],
+  "anims": [
+   {
+    "id": "idle",
+    "frames": 2,
+    "ms": 420
+   },
+   {
+    "id": "walk",
+    "frames": 4,
+    "ms": 150
+   },
+   {
+    "id": "attack",
+    "frames": 4,
+    "ms": 115
+   },
+   {
+    "id": "cast",
+    "frames": 4,
+    "ms": 170
+   },
+   {
+    "id": "hurt",
+    "frames": 2,
+    "ms": 140
+   },
+   {
+    "id": "death",
+    "frames": 4,
+    "ms": 210
+   }
+  ]
+ },
+ "actors": [
+  {
+   "id": "boss:bone-reliquary-king",
+   "sheet": "bone-reliquary-king.png",
+   "sha256": "02224bb755f5a504bdd890bf0848e2dc923cf1852af1d5552b15f184a110cfe7"
+  }
+ ]
+}
