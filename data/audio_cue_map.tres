@@ -7,31 +7,31 @@ script = ExtResource("1")
 cues = {
 "hazard_armed": {
 "bus": "KeyThreats",
-"wav": "res://audio/placeholder/hazard_armed.wav"
+"wav": "res://audio/cues/plasma_rifle_explosion.wav"
 },
 "hazard_cast": {
 "bus": "KeyThreats",
-"wav": "res://audio/placeholder/hazard_cast.wav"
+"wav": "res://audio/cues/plasma_rifle_warning.wav"
 },
 "phase_change": {
 "bus": "KeyThreats",
-"wav": "res://audio/placeholder/phase_change.wav"
+"wav": "res://audio/cues/boss_telegraphs_phase_change.wav"
 },
 "player_death": {
 "bus": "Sfx",
-"wav": "res://audio/placeholder/player_death.wav"
+"wav": "res://audio/cues/shield_break_break.wav"
 },
 "player_hit": {
 "bus": "Sfx",
-"wav": "res://audio/placeholder/player_hit.wav"
+"wav": "res://audio/cues/shield_break_hit.wav"
 },
 "telegraph_melee": {
 "bus": "KeyThreats",
-"wav": "res://audio/placeholder/telegraph_melee.wav"
+"wav": "res://audio/cues/boss_telegraphs_attack.wav"
 },
 "telegraph_ranged": {
 "bus": "KeyThreats",
-"wav": "res://audio/placeholder/telegraph_ranged.wav"
+"wav": "res://audio/cues/enemy_laser_warning.wav"
 }
 }
 melee_patterns = Array[int]([11])

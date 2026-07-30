@@ -4,4 +4,4 @@
 
 [resource]
 script = ExtResource("1_mus")
-tracks = Array[String]([])
+tracks = Array[String](["res://audio/music/na01_embertrail_revision_loop.ogg", "res://audio/music/na02_wayfarers_glen_loop.ogg", "res://audio/music/na03_mossbound_roads_loop.ogg", "res://audio/music/na04_rising_frontier_loop.ogg"])

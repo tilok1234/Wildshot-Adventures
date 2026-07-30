@@ -720,4 +720,35 @@ Godot guard tripped on the designer's editor open on ANOTHER project
 gates ran individually, same commands + exit codes; re-run the full
 gate at the next exclusive seam. Planning lock pinned to b65 +
 sync log sl-0020 appended (sl-0004 delivery closed). OPEN: designer
-city walk = the acceptance (feel item, theirs).**
+city walk = the acceptance (feel item, theirs).
+AUDIO ERA OPENS 2026-07-30 (~04:00, same night): three Tier 1 chat
+rulings built same-hour — COMMENTS BOX (options TextEdit →
+comments.txt in the bundle + comment_chars stamp; SUPPLEMENTARY by
+quiet-lab law, never CORE-54; typing suppresses letter hotkeys AND
+gameplay input via HumanSampler.suppress neutral frames — a 't'
+mid-sentence cannot reset the run; box-owned pause on focus, releases
+only its own pause; Esc = leave-box + resume by design); MUSIC
+CHANNEL (fourth bus + options row + [audio] music, core50-asserted
+both profiles); MUSIC PLAYER (music_view: playlist queue in listed
+order looping the whole set; DUCKS −9 dB under KeyThreats cues via
+audio_cue_view.key_threat_cue, fast attack / slow release; duck rides
+player volume_db, composing with the user row). RESONANCE FORGE V1
+INTAKEN same seam — SECOND release-transport intake (doc 18 §5):
+resonance-forge-godot-audio-v1-23a6c659199b, zip sha vs notes +
+sidecar, ALL 178 manifest files hash-true, consumed files re-hashed
+after copy. RF addon/autoload NOT enabled (no middleware — the game
+consumes files through its own machinery). 7 cues from RF's critical
+set → audio/cues/ (mapping + rationale notes/AUDIO_CUE_MAP.md;
+placeholders retired from the map, kept as recorded fallback); 4
+music masters (581 MB WAV) NOT committed — the immutable release is
+the archive, shipped audio is ffmpeg OGG q6 (21.5 MB, hashes in the
+intake commit); playlist na01→na04. Godot --import pass run (11
+sidecars). Gates: boot post-import ERROR-free, settings + feedback
+(both extended), smoke, goldens x10, five pack/kit tests, core50
+pair — ALL GREEN by exit code; battery structurally unaffected
+(bot_runner never loads the main scene, sim untouched — goldens
+prove). FULL pretester at next fully-exclusive seam. DESIGNER-EARS
+now runnable (the deferred audio pass runs against REAL audio):
+eyes-closed classes, in-play feel, cue-mapping + duck taste.
+DESIGNER-EYES pending: comments box render. b65 city walk verdict
+still unrecorded.**

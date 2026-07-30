@@ -157,7 +157,12 @@ Engineering-side remaining, in rough order:
    2026-07-30 via the RELEASE TRANSPORT (doc 18 §5: fetch GitHub
    release by tag, hash-verify vs the notes before the drop): flood
    34641, pin 44 unchanged, battery byte-identical incl world_walk;
-   designer city walk pending = acceptance. Audio pack may drop
+   designer city walk pending = acceptance. RESONANCE FORGE V1
+   INTAKEN 2026-07-30 same night (second release-transport intake):
+   real cues + 4-track music queue live, Music channel + duck + the
+   comments box built on three Tier 1 rulings — full story in
+   notes/AUDIO_CUE_MAP.md; the deferred audio verdicts now run
+   against REAL audio. Audio pack may drop
    any day (Resonance Forge); cue swap is zero-code by design, music
    playback is the one new piece.
 4. **Gate 1 calendar** — recruitment is sized, builds ship, channels

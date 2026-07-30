@@ -9,9 +9,9 @@ NOT under `assets/` (that tree is .gdignore'd raw-drop territory).
 Swapping designed cues in =
 new WAVs + editing the .tres, zero code. Buses: **KeyThreats** is the
 separate eyes-closed threat channel; **Sfx** carries self-feedback.
-Per-channel volumes (Master/Sfx/KeyThreats at 100/70/40/off) live in
-the options menu and persist under `[audio]` (CORE-50 separate
-channels, key threats audible).
+Per-channel volumes (Master/Sfx/KeyThreats/Music at 100/70/40/off)
+live in the options menu and persist under `[audio]` (CORE-50
+separate channels, key threats audible).
 
 | Class | Trigger (event) | Cue contour | Bus |
 |---|---|---|---|
@@ -45,3 +45,66 @@ verdict run against real audio at Forge intake.** Original protocol
 (second_contact or the Warden) eyes closed; confirm the seven classes
 are tellable apart and that key threats read through a busy mix.
 Record verdict + date here.
+
+## Music channel (M8, designer-ruled 2026-07-30, Tier 1)
+
+Rulings: tracks play as a QUEUE in listed order, looping the whole
+queue (per-area assignment stays a future data change on the same
+machinery); music DUCKS under threat cues (−9 dB, fast attack / slow
+release, ~0.35 s hold after the last cue) so the KeyThreats channel
+sits on top of the mix by construction.
+
+Machine half: `data/music_playlist.tres` (stream paths, filled at the
+2026-07-30 intake below) → `game/views/music_view.gd` → **Music**
+bus (fourth CORE-50 channel: own options row + `[audio] music`
+persistence, core50-verify asserted). The duck rides the player's
+volume_db, composing with — never fighting — the user's channel
+volume.
+
+## RESONANCE FORGE INTAKE (2026-07-30, release transport, doc 18 §5)
+
+Artifact `resonance-forge-godot-audio-v1-23a6c659199b`
+(tilok1234/music_soundeffects release; sourceCommit 23a6c659199b...;
+zipSha256 F786126B9DD15159550783BABD4EE2E7DD2EADE80A9D9FB06B1759E1CBF8F8C1)
+— verified locally at intake: zip hash vs notes + sidecar, then ALL
+178 package_manifest files hash-true. The pack's addon/autoload
+(`ResonanceAudio`) is deliberately NOT enabled — no middleware; the
+game consumes FILES through its own cue map + music_view.
+
+Cue mapping (agent-chosen from the pack's own `critical: true` threat
+set; the designer's deferred eyes-closed + feel pass judges it — any
+swap is a one-line .tres edit). Copied BYTE-IDENTICAL to
+`audio/cues/` (placeholders retired from the map; `audio/placeholder/`
++ `tools/gen_cue_wavs.py` stay in-repo as the recorded fallback until
+the ear pass accepts):
+
+| Class | RF file | Why |
+|---|---|---|
+| telegraph_ranged | enemy_laser_warning.wav | the enemy family's critical warning |
+| telegraph_melee | boss_telegraphs_attack.wav | sharp "attack now" contour |
+| hazard_cast | plasma_rifle_warning.wav | third distinct warning contour |
+| hazard_armed | plasma_rifle_explosion.wav | detonation thump, zone-live |
+| phase_change | boss_telegraphs_phase_change.wav | exact intent match |
+| player_hit | shield_break_hit.wav | player-side impact family |
+| player_death | shield_break_break.wav | the break |
+
+Music: four approved seamless loops (na01 Embertrail 100 bpm G,
+na02 Wayfarer's Glen 96 bpm D, na03 Mossbound Roads 92 bpm E mix,
+na04 Rising Frontier 104 bpm A), queue order = na01→na04. Masters are
+138–156 MB WAVs (48 kHz, ~8 min each, 581 MB total) and are NOT
+committed — the immutable release is the archive; the repo carries
+ffmpeg OGG Vorbis q6 conversions (~21.5 MB total) under
+`audio/music/` (command: `ffmpeg -i <wav> -c:a libvorbis -q:a 6`;
+ogg sha256s in the intake commit). Tracks import NON-looping so the
+queue's `finished` advance works; the "seamless loop" property is
+unused under the queue ruling.
+
+Unused pack inventory (recorded, zero wired): enemy_laser
+charge/fire×13/impact/cooldown, plasma_rifle charge/fire×13/impact/
+ui/cooldown, shield_break hit variants v01–v12 + warning,
+boss_telegraphs attention/enrage, pickups ×8 (zero-reward law — no
+pickups exist), ui_feedback ×14 (menu sounds are a future taste
+call), the manifest's music_states table (MENU/EXPLORE/COMBAT/... —
+superseded by the queue ruling; revisit post-Gate-1 if ever), mix/
+crossfade defaults, 24-voice pool. Player weapon fire stays SILENT by
+design (Law 2: player output subordinate).
