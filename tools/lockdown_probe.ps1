@@ -32,10 +32,11 @@ if (-not (Test-Path $devExe) -or -not (Test-Path $testerExe)) {
     exit 2
 }
 # Exclusive access: same doctrine as export/pretester (and probe runs must not
-# interleave session.jsonl with a live game).
-$others = Get-Process godot, godot_console -ErrorAction SilentlyContinue
-if ($others) {
-    Write-Host "lockdown probe: refusing to run - other Godot instance(s) live."
+# interleave session.jsonl with a live game — user:// is this project's).
+# Per-project doctrine via the shared guard (tools/godot_guard.ps1).
+. "$PSScriptRoot\godot_guard.ps1"
+if (Get-BlockingGodot (Split-Path -Parent $PSScriptRoot)) {
+    Write-Host "lockdown probe: refusing to run - Godot instance(s) that can race this project live."
     exit 2
 }
 

@@ -24,10 +24,12 @@ $godot = "$env:USERPROFILE\bin\godot_console.exe"
 
 # Exclusive access (same reasoning as pretester_check: concurrent Godot
 # instances race .godot/ and can corrupt the import cache mid-export).
-$others = Get-Process godot, godot_console -ErrorAction SilentlyContinue
+# Per-project doctrine via the shared guard (tools/godot_guard.ps1).
+. "$PSScriptRoot\godot_guard.ps1"
+$others = Get-BlockingGodot (Split-Path -Parent $PSScriptRoot)
 if ($others) {
-    Write-Host "export: refusing to run - other Godot instance(s):"
-    $others | ForEach-Object { Write-Host ("  pid {0}  {1}" -f $_.Id, $_.ProcessName) }
+    Write-Host "export: refusing to run - Godot instance(s) that can race this project:"
+    $others | ForEach-Object { Write-Host ("  pid {0}  {1}" -f $_.ProcessId, $_.CommandLine) }
     exit 2
 }
 

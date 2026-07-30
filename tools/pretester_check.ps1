@@ -16,14 +16,17 @@ $godot = "$env:USERPROFILE\bin\godot_console.exe"
 $fails = @()
 $t0 = Get-Date
 
-# PRECONDITION: exclusive project access. Concurrent Godot instances
+# PRECONDITION: exclusive PROJECT access. Concurrent Godot instances
 # race the shared .godot/ cache and can flake determinism-critical
 # steps (observed 2026-07-28: goldens verify failed beside a running
-# soak, passed clean solo). Refuse to run rather than flake.
-$others = Get-Process godot, godot_console -ErrorAction SilentlyContinue
+# soak, passed clean solo). Refuse to run rather than flake. The race
+# is per-project: provably-foreign instances (absolute --path to
+# another project) do not block — tools/godot_guard.ps1 (2026-07-30).
+. "$PSScriptRoot\godot_guard.ps1"
+$others = Get-BlockingGodot (Split-Path -Parent $PSScriptRoot)
 if ($others) {
-    Write-Host "PRE-TESTER CHECK: refusing to run - other Godot instance(s) on this machine:"
-    $others | ForEach-Object { Write-Host ("  pid {0}  {1}" -f $_.Id, $_.ProcessName) }
+    Write-Host "PRE-TESTER CHECK: refusing to run - Godot instance(s) that can race this project:"
+    $others | ForEach-Object { Write-Host ("  pid {0}  {1}" -f $_.ProcessId, $_.CommandLine) }
     Write-Host "Close them (game window, soak, batteries) and re-run."
     exit 2
 }
