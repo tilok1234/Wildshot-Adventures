@@ -896,4 +896,16 @@ green; FULL pretester ALL GREEN 19.4 min (17 fixed steps + 28-row
 battery byte-identical incl world_walk + export + lockdown probe).
 Nothing routes to the overworld yet; mechanical intake only, NO feel
 verdicts (designer post-shift). Lock game pin b71→b72; completion
-line ref sl-0035.**
+line ref sl-0035.
+CROSSHAIR SCALE PASS 2026-07-31 (~00:10 local; ask sl-0042,
+taste-rule pending on screen): the hardware cursor never inherited
+the integer viewport stretch — an 11-physical-px speck at 2-3x
+content scale (designer standing complaint). main.gd now scales the
+kit cursor nearest-neighbor by the live integer content scale
+(floor-min of window/base, min 1 — the stretch's own factor), kit
+hotspot 5,5 re-centered to the scaled pixel, re-applied on window
+size_changed (fullscreen/resize tracked). Pack assets untouched
+(manifest-hashed); render-only — aim reads viewport mouse, zero
+mechanics/hurtbox change. Lint (main.gd pins) + boot + smoke green
+(hashes unchanged). If contrast still fails after sizing → upstream
+kit ask, never a hand-edit.**

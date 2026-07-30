@@ -120,6 +120,7 @@ var _console_events := "off"
 var dev_tools: bool = not OS.has_feature("tester")
 var _af_on_tex: Texture2D = load("res://uikit/icon_autofire_on.png")
 var _af_off_tex: Texture2D = load("res://uikit/icon_autofire_off.png")
+var _crosshair_scale := 0
 
 
 func _notification(what: int) -> void:
@@ -344,6 +345,31 @@ func _apply_ui_scale(k: int) -> void:
 	hp_bar.custom_minimum_size = Vector2(64.0 * k, 8.0 * k)
 	mana_bar.custom_minimum_size = Vector2(64.0 * k, 8.0 * k)
 	autofire_icon.scale = Vector2(float(k), float(k))
+
+
+func _apply_crosshair_scale() -> void:
+	# The uikit crosshair is a HARDWARE cursor: 11 px drawn at native
+	# pixel size in window space, so it never inherits the integer
+	# viewport stretch and reads as a speck at gameplay scale. Scale the
+	# texture by the live content scale instead (nearest-neighbor, kit
+	# hotspot 5,5 scaled to the same pixel center) and re-apply whenever
+	# the window scale changes. Render-only: aim math reads the viewport
+	# mouse position and never touches the cursor bitmap.
+	var win := get_window()
+	var base_w := float(ProjectSettings.get_setting("display/window/size/viewport_width"))
+	var base_h := float(ProjectSettings.get_setting("display/window/size/viewport_height"))
+	var k := maxi(1, int(minf(float(win.size.x) / base_w, float(win.size.y) / base_h)))
+	if k == _crosshair_scale:
+		return
+	_crosshair_scale = k
+	var tex := load("res://uikit/cursor_crosshair.png") as Texture2D
+	var img := tex.get_image()
+	img.resize(img.get_width() * k, img.get_height() * k, Image.INTERPOLATE_NEAREST)
+	var pad := floorf(float(k - 1) * 0.5)
+	var hot := 5.0 * float(k) + pad
+	Input.set_custom_mouse_cursor(
+		ImageTexture.create_from_image(img), Input.CURSOR_ARROW, Vector2(hot, hot)
+	)
 
 
 func _console_exec(line: String) -> void:
@@ -873,9 +899,8 @@ func _ready() -> void:
 		console.line_submitted.connect(_console_exec)
 		hud.add_child(console)
 	add_child(hud)
-	Input.set_custom_mouse_cursor(
-		load("res://uikit/cursor_crosshair.png"), Input.CURSOR_ARROW, Vector2(5.0, 5.0)
-	)
+	_apply_crosshair_scale()
+	get_window().size_changed.connect(_apply_crosshair_scale)
 	driver.pause_changed.connect(func(p: bool) -> void: pause_label.visible = p)
 	options_menu.add_button_row(
 		"ability",
