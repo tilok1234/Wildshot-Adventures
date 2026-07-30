@@ -13,6 +13,7 @@ extends RefCounted
 ## through enqueue_command(), drained at the top of the next step.
 
 const Pcg32 := preload("res://sim/pcg32.gd")
+const DropKinds := preload("res://sim/drop_kinds.gd")
 const ActorState := preload("res://sim/actor_state.gd")
 const PlayerState := preload("res://sim/player_state.gd")
 const EnemyState := preload("res://sim/enemy_state.gd")
@@ -25,11 +26,12 @@ const PlayerFire := preload("res://sim/systems/player_fire.gd")
 const EnemyStep := preload("res://sim/systems/enemy_step.gd")
 const ProjectileStep := preload("res://sim/systems/projectile_step.gd")
 const HazardStep := preload("res://sim/systems/hazard_step.gd")
+const LootStep := preload("res://sim/systems/loot_step.gd")
 const Damage := preload("res://sim/systems/damage.gd")
 
 const TICKS_PER_SECOND := 60
 const DT := 1.0 / 60.0
-const SERIAL_VERSION := 12
+const SERIAL_VERSION := 13
 
 ## Damage-source pattern id for the scenario-declared test damage
 ## schedule (§2.11 elite transition proofs; planning log 2026-07-28).
@@ -37,9 +39,22 @@ const SERIAL_VERSION := 12
 const PATTERN_TEST_SCHEDULE := -4
 
 ## Named PCG32 stream ids (§2.4). rng_vfx deliberately does NOT exist here —
-## it lives view-side so cosmetics can never perturb gameplay.
+## it lives view-side so cosmetics can never perturb gameplay. STREAM_LOOT
+## (Loop v1, docs/19) is drawn ONLY by the death-sweep drop rolls, so loot
+## can never perturb enemy variation and vice versa.
 const STREAM_ENEMY := 1
 const STREAM_MISC := 2
+const STREAM_LOOT := 3
+
+## Ground-drop kinds (Loop v1 docs/19; drops entries carry kind + a/b:
+## gold amount / frame+tier / armor tier / ability index / unique index).
+## Canonical ids live in sim/drop_kinds.gd (leaf module — LootStep match
+## patterns need class constants); these aliases keep call sites terse.
+const DROP_GOLD := DropKinds.GOLD
+const DROP_WEAPON := DropKinds.WEAPON
+const DROP_ARMOR := DropKinds.ARMOR
+const DROP_ABILITY := DropKinds.ABILITY
+const DROP_UNIQUE := DropKinds.UNIQUE
 
 enum Command {
 	SPAWN_PROJECTILE,
@@ -66,6 +81,7 @@ var enemies: Array[ActorState] = []
 var projectiles: ProjectilePool = ProjectilePool.new()
 var rng_enemy: Pcg32 = Pcg32.new()
 var rng_misc: Pcg32 = Pcg32.new()
+var rng_loot: Pcg32 = Pcg32.new()
 
 ## True once ANY runtime edit command touched this run (§2.10): the run can
 ## no longer serve as clean replay/feel evidence. Serialized — an edited
@@ -110,6 +126,17 @@ var ability_def: Resource = null
 ## hit_interval_ticks}.
 var hazards: Array[Dictionary] = []
 
+## Live ground drops (Loop v1 docs/19): stable order, serialized —
+## {id, pos, kind, a, b, expires_at_tick}.
+var drops: Array[Dictionary] = []
+
+## Progression tables (Loop v1): definition resource like weapon_frames —
+## excluded from serialize(); the replay header's data hash covers it.
+var progression: Resource = null
+## Unique item definitions (boss-tied, docs/19): definitions, excluded;
+## drops reference them by index.
+var unique_defs: Array = []
+
 ## God/invulnerability flag (§2.10): friendly actors take no damage —
 ## every absorbed hit emits DAMAGE_IMMUNE, so god use is always visible
 ## in logs and no verdict can launder through it. Serialized; toggling
@@ -124,6 +151,7 @@ func setup(p_seed: int, p_bitgrid: RefCounted) -> void:
 	bitgrid = p_bitgrid
 	rng_enemy.seed_stream(p_seed, STREAM_ENEMY)
 	rng_misc.seed_stream(p_seed, STREAM_MISC)
+	rng_loot.seed_stream(p_seed, STREAM_LOOT)
 	projectiles.setup()
 
 
@@ -148,6 +176,52 @@ func set_abilities(defs: Array) -> void:
 ## Setup-phase: install the scenario's test damage schedule (§2.11).
 func set_damage_schedule(entries: Array) -> void:
 	damage_schedule = entries
+
+
+## Setup-phase: progression tables (Loop v1 docs/19).
+func set_progression(prog: Resource) -> void:
+	progression = prog
+
+
+## Setup-phase: unique item defs (boss-tied; drops reference by index).
+func set_uniques(defs: Array) -> void:
+	unique_defs = defs
+
+
+## In-step ground-drop spawn (the death-sweep drop rolls call this).
+## Emits LOOT_DROPPED. TTL from progression ([T]).
+func spawn_drop(pos: Vector2, kind: int, a: int, b := 0) -> void:
+	var ttl := 3600
+	if progression != null:
+		ttl = int(progression.drop_ttl_ticks)
+	var id := _alloc_id()
+	(
+		drops
+		. append(
+			{
+				"id": id,
+				"pos": pos,
+				"kind": kind,
+				"a": a,
+				"b": b,
+				"expires_at_tick": tick + ttl,
+			}
+		)
+	)
+	(
+		events
+		. append(
+			{
+				"type": SimEvents.Type.LOOT_DROPPED,
+				"tick": tick,
+				"id": id,
+				"kind": kind,
+				"pos": pos,
+				"a": a,
+				"b": b,
+			}
+		)
+	)
 
 
 ## In-step hazard placement (systems call this). Emits TelegraphStarted.
@@ -265,6 +339,7 @@ func step(frames: Array) -> void:
 	EnemyStep.run(self)
 	ProjectileStep.run(self)
 	HazardStep.run(self)
+	LootStep.run(self)
 	tick += 1
 
 
@@ -335,6 +410,8 @@ func serialize() -> PackedByteArray:
 	buf.put_64(rng_enemy.inc)
 	buf.put_64(rng_misc.state)
 	buf.put_64(rng_misc.inc)
+	buf.put_64(rng_loot.state)
+	buf.put_64(rng_loot.inc)
 	buf.put_u32(players.size())
 	for p in players:
 		p.serialize_into(buf)
@@ -357,6 +434,16 @@ func serialize() -> PackedByteArray:
 		buf.put_64(int(hz.linger_until))
 		buf.put_64(int(hz.next_damage_tick))
 		buf.put_32(int(hz.hit_interval_ticks))
+	buf.put_u32(drops.size())
+	for d: Dictionary in drops:
+		buf.put_64(int(d.id))
+		var dpos: Vector2 = d.pos
+		buf.put_double(dpos.x)
+		buf.put_double(dpos.y)
+		buf.put_u8(int(d.kind))
+		buf.put_32(int(d.a))
+		buf.put_32(int(d.b))
+		buf.put_64(int(d.expires_at_tick))
 	buf.put_u8(0 if ability_def == null else ability_defs.find(ability_def) + 1)
 	buf.put_u8(1 if god_mode else 0)
 	return buf.data_array

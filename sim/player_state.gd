@@ -20,6 +20,24 @@ var last_fire_held_tick: int = -1000000
 ## cadence multiplier — ledger #2, no stat pipeline).
 var quickdraw_until_tick: int = -1000000
 
+## ---- Loop v1 (docs/19, SERIAL 13). Defaults preserve pre-loop
+## behavior exactly: level 1 grants no bonus, tier 1 multiplies by 1.0,
+## gold/xp start empty. Regen caps moved from constants to these maxes
+## so level growth can raise them (100 = the §3.2 v0 sheet).
+var gold: int = 0
+## XP toward the NEXT level (resets each level-up; the curve lives in
+## data/progression.tres).
+var xp: int = 0
+var level: int = 1
+var max_hp: int = 100
+var max_mana: int = 100
+## Per-frame weapon tier 1–6 (index = weapon slot; 6 = unique-boosted).
+## Picking up a higher-tier drop for a frame raises that slot only —
+## frame CHOICE stays the player's (weapon keys), CORE-32 untouched.
+var weapon_tiers: PackedInt32Array = PackedInt32Array([1, 1, 1])
+## Bitmask of picked-up uniques (index into SimWorld.unique_defs).
+var unique_mask: int = 0
+
 
 func serialize_into(buf: StreamPeerBuffer) -> void:
 	super.serialize_into(buf)
@@ -29,3 +47,12 @@ func serialize_into(buf: StreamPeerBuffer) -> void:
 	buf.put_64(next_fire_tick)
 	buf.put_64(last_fire_held_tick)
 	buf.put_64(quickdraw_until_tick)
+	buf.put_64(gold)
+	buf.put_32(xp)
+	buf.put_u16(level)
+	buf.put_32(max_hp)
+	buf.put_32(max_mana)
+	buf.put_u8(weapon_tiers.size())
+	for wt in weapon_tiers:
+		buf.put_u8(wt)
+	buf.put_u16(unique_mask)

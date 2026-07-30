@@ -22,6 +22,9 @@ enum Type {
 	RESOURCE_SPENT,
 	RESOURCE_REGEN,
 	PHASE_CHANGED,
+	LOOT_DROPPED,
+	LOOT_PICKED,
+	LEVEL_UP,
 }
 
 ## PROJECTILE_DESPAWNED carries one of these (§2.6 typed despawn reasons).

@@ -33,6 +33,9 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 			]
 		)
 	)
+	# Loop v1 (docs/19): progression tables ride every world like the
+	# weapon/ability defs — definitions, not state.
+	world.set_progression(load("res://data/progression.tres"))
 	# EnemyDef roster — INDEX ORDER IS CONTRACT (def_index serializes):
 	# 0=rusher, 1=husk_archer, 2=fanmaw, 3=ringer, 4=leadshot,
 	# 5=blightcaster, 6=yard_warden (§3.5 elite). Append-only; never

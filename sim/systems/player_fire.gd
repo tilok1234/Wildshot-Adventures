@@ -15,6 +15,7 @@ extends RefCounted
 
 const ActorState := preload("res://sim/actor_state.gd")
 const SimEvents := preload("res://sim/events.gd")
+const Progress := preload("res://sim/systems/progress.gd")
 
 ## Tap buffer: a tap that lands during cooldown fires when the gate opens
 ## if it was held within this many ticks (~67 ms) — without it, taps mid-
@@ -75,13 +76,15 @@ static func run(world: RefCounted) -> void:
 		for si in shots.size():
 			var shot: Resource = shots[si]
 			var dir := aim.rotated(deg_to_rad(float(shot.angle_offset_deg)))
+			# Loop v1 (docs/19): tier + level scale the shot's authored
+			# damage — still a pure function of player state, RNG-free.
 			world.spawn_projectile(
 				p.pos + dir * float(shot.spawn_offset),
 				dir * float(shot.speed),
 				float(shot.radius),
 				int(shot.ttl_ticks),
 				ActorState.FACTION_FRIENDLY,
-				int(shot.damage),
+				Progress.shot_damage(world, p, int(shot.damage)),
 				int(wf.pattern_id),
 				int(shot.program),
 				float(shot.prog_a),

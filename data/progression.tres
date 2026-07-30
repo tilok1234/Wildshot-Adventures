@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/progression_def.gd" id="1_prog"]
+
+[resource]
+script = ExtResource("1_prog")
+xp_base = 50
+xp_step = 75
+max_hp_per_level = 8
+mana_per_level = 2
+damage_pct_per_level = 2.0
+tier_damage_mult = Array[float]([1.0, 1.25, 1.55, 1.9, 2.3, 3.0])
+armor_flat_per_tier = Array[int]([0, 1, 2, 4, 6, 9])
+death_gold_pct = 25
+pickup_radius = 0.5
+drop_ttl_ticks = 3600

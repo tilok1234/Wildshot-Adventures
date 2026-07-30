@@ -36,6 +36,24 @@ enum MovementPolicy { CHASER, KEEP_RANGE, ORBIT, ANCHOR, FLANKER }
 ## stays empty. null = ordinary single-phase enemy.
 @export var phases: Resource = null
 
+## ---- Loop v1 drop table (docs/19; every number [T]). Defaults drop
+## NOTHING and grant no XP, so pre-loop scenarios and tests are
+## untouched until data deliberately fills a def.
+@export var xp_value: int = 0
+@export var gold_min: int = 0
+@export var gold_max: int = 0
+## Chance [0,1] that ONE equipment drop rolls on death.
+@export var drop_chance: float = 0.0
+@export var drop_w_weapon: int = 3
+@export var drop_w_armor: int = 2
+@export var drop_w_ability: int = 1
+@export var drop_tier_min: int = 1
+@export var drop_tier_max: int = 1
+## Boss-tied uniques (docs/19 ruling 2): parallel arrays, each rolled
+## independently — no pity, reward breadth is the dry-streak answer.
+@export var unique_drops: Array[Resource] = []
+@export var unique_chances: Array[float] = []
+
 
 ## Active phase for a current HP: first entry whose floor the HP still
 ## exceeds; the last phase catches everything at or below its ceiling.

@@ -9,9 +9,9 @@ extends RefCounted
 const SimEvents := preload("res://sim/events.gd")
 
 const REGEN_PERIOD := 12  # +1 per 12 ticks = 5/s
-const HP_MAX := 100
-const MANA_MAX := 100
 const OUT_OF_COMBAT_TICKS := 300  # 5 s untouched
+# Caps moved to PlayerState.max_hp/max_mana (Loop v1 level growth,
+# SERIAL 13); the v0 sheet's 100/100 are those fields' defaults.
 
 
 static func run(world: RefCounted) -> void:
@@ -20,7 +20,7 @@ static func run(world: RefCounted) -> void:
 	for p: RefCounted in world.players:
 		if p.dead:
 			continue
-		if p.mana < MANA_MAX:
+		if p.mana < p.max_mana:
 			p.mana += 1
 			(
 				world
@@ -36,7 +36,7 @@ static func run(world: RefCounted) -> void:
 					}
 				)
 			)
-		if p.hp < HP_MAX and world.tick - p.last_damaged_tick >= OUT_OF_COMBAT_TICKS:
+		if p.hp < p.max_hp and world.tick - p.last_damaged_tick >= OUT_OF_COMBAT_TICKS:
 			p.hp += 1
 			(
 				world

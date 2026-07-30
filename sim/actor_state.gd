@@ -25,6 +25,12 @@ var last_damaged_tick: int = -1000000
 ## Players die in place (dead flag; recap + restart own the flow).
 ## Enemies never set this — they are removed by the death sweep.
 var dead: bool = false
+## Armor tier 0–5 (Loop v1, docs/19; CORE-40 lean armor/defense stat):
+## flat damage reduction via progression data in THE damage path.
+## 0 = none — the default preserves pre-loop behavior exactly. Enemies
+## keep 0 in v1; the field lives here so future enemy armor is a data
+## change (SERIAL 13).
+var armor_tier: int = 0
 
 
 func serialize_into(buf: StreamPeerBuffer) -> void:
@@ -39,3 +45,4 @@ func serialize_into(buf: StreamPeerBuffer) -> void:
 	buf.put_double(vel.y)
 	buf.put_64(last_damaged_tick)
 	buf.put_u8(1 if dead else 0)
+	buf.put_u8(armor_tier)
