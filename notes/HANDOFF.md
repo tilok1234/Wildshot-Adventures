@@ -119,7 +119,49 @@ final state:
   `Documents\world_filler\world_filler` (on `main`); game-side
   consumption stays POST-GATE-1 per planning docs/17.
 
-## 2026-07-30 dawn seam: LOOP V1 IS BUILT (read this first)
+## 2026-07-30 session close (~13:30) — READ THIS FIRST
+
+**THE LOOP IS ALIVE AND HAS BEEN PLAYED.** The overnight arc, in five
+acts: (1) dusk **b65** + **Resonance Forge audio v1** intaken via the
+new release transport (its first real exercises — music queue +
+duck-under-threats, real cues, attack sounds, FIVE audio channels
+each with off); (2) comments box + per-project godot guard +
+`.gitattributes` byte-exactness pins; (3) **GATE 1 REWRITTEN**
+(sl-0023): stranger recruitment retired WITH CAUSE, the Loop
+milestone adopted as forward scope; (4) **LOOP V1 BUILT** the same
+night (ask sl-0025, completion sl-0033; details in the dawn block
+below): SERIAL 13 loot/XP/gold/armor, persistent character with the
+permadeath toggle at creation, death costs + one-key retry, drops
+rendered, the hand-authored gradient, the BONE RELIQUARY KING, four
+new proofs, full pretester ALL GREEN 13.9 min; (5) **b71 overworld
+intaken** (sl-0034→sl-0036): first STYLED pack (path 0/1/2 accepted,
+zero code change), cliff line confirmed game-side by replicating the
+adapter's terrace math at the source commit, porosity pinned 60,
+lands BESIDE b65 — nothing routes to it yet. Then **FIRST REAL
+PLAY**: the designer ran the loop repeatedly, died to the King twice,
+and ruled in-play (Tier 1, natural-testing): "world becoming alive",
+"a little hard — pay attention and you can do it", retry pull
+holding. Two boss-run GIFs cut at three weights; devlog cuts
+delivered (GIF #3 material, posting is theirs).
+
+STATE: game repo pushed clean (through dc3680d); planning's lock +
+sync log carry everything through sl-0036 uncommitted BY DESIGN
+(planning commits its own files and sweeps sl-0034's flip); hours
+clock STOPPED at session close; all designer verdicts are
+marathon-provisional per two-tier.
+
+NEXT — designer-side (do not nag): daily loop play (the L2 bar clock
+starts on their "judgeable" word); the tree-placement arc rides the
+planning/WF lane (they are routing it themselves); GIF #3 post; [T]
+tuning one-liners whenever a number forms an opinion
+(data/progression.tres + def drop tables = the whole dial surface).
+NEXT — engineering (when asked): route THE LOOP onto the b71
+overworld (scenario line + fresh gradient authoring + proofs — the
+harbor capital is the better town); ledger #16 (replay character
+block) lands naturally with L2; WF re-export intakes as the tree arc
+ships (runbook + release transport + per-drop pins all stand).
+
+## 2026-07-30 dawn seam: LOOP V1 IS BUILT (superseded above; detail stands)
 
 Ask sl-0025 executed same night (docs/19 §3, commits 86459d1→f7b0be6
 + records): **the run exists** — "THE LOOP" picker row: spawn in the
