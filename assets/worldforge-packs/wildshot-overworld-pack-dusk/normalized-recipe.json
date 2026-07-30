@@ -1,0 +1,129 @@
+{
+  "authoredStamps": [],
+  "biases": {
+    "moisturePermille": 0,
+    "northElevationPermille": 0,
+    "temperaturePermille": 0
+  },
+  "budgets": {
+    "landmarkCount": 3,
+    "primaryRouteCount": 3,
+    "regionCount": 8,
+    "settlementCount": 6
+  },
+  "cellOverrides": [],
+  "decoration": {
+    "densityPermille": 400
+  },
+  "landmarks": [
+    {
+      "at": null,
+      "near": null,
+      "relation": "far_from_town",
+      "type": "ruined_city"
+    },
+    {
+      "at": null,
+      "near": null,
+      "relation": "far_from_town",
+      "type": "world_tree"
+    },
+    {
+      "at": null,
+      "near": null,
+      "relation": "coastal",
+      "type": "lighthouse"
+    }
+  ],
+  "recipeFormat": 1,
+  "seed": 2008,
+  "settlementStyle": {
+    "cityWalls": true,
+    "growthPermille": 600,
+    "narrowStreets": true,
+    "organicStreets": true,
+    "scatterPermille": 450,
+    "urbanBlocks": true,
+    "variety": true
+  },
+  "settlements": [],
+  "toggles": {},
+  "world": {
+    "climatePreset": "temperate",
+    "densityPreset": "dense",
+    "sizePreset": "small"
+  },
+  "zones": {
+    "entries": [
+      {
+        "anchor": [
+          128,
+          24
+        ],
+        "elevationPermille": 300,
+        "moisturePermille": -60,
+        "settlementFloor": 1,
+        "temperaturePermille": -380,
+        "weight": 1000
+      },
+      {
+        "anchor": [
+          48,
+          64
+        ],
+        "elevationPermille": 0,
+        "moisturePermille": 180,
+        "settlementFloor": 1,
+        "temperaturePermille": -120,
+        "weight": 900
+      },
+      {
+        "anchor": [
+          128,
+          128
+        ],
+        "elevationPermille": 0,
+        "moisturePermille": 60,
+        "settlementFloor": 1,
+        "temperaturePermille": 30,
+        "weight": 1200
+      },
+      {
+        "anchor": [
+          36,
+          168
+        ],
+        "elevationPermille": 0,
+        "moisturePermille": -260,
+        "settlementFloor": 1,
+        "temperaturePermille": 220,
+        "weight": 900
+      },
+      {
+        "anchor": [
+          128,
+          228
+        ],
+        "elevationPermille": -200,
+        "moisturePermille": 80,
+        "settlementFloor": 1,
+        "temperaturePermille": 140,
+        "weight": 1000
+      },
+      {
+        "anchor": [
+          220,
+          144
+        ],
+        "elevationPermille": 0,
+        "moisturePermille": 220,
+        "settlementFloor": 1,
+        "temperaturePermille": 60,
+        "weight": 900
+      }
+    ],
+    "grid": null,
+    "layout": "anchors",
+    "seams": "hard"
+  }
+}

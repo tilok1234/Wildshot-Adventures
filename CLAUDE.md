@@ -844,4 +844,28 @@ data/scenarios/loop.tres = THE RUN ("THE LOOP" picker row). L2 =
 daily-play tuning; the bar clock starts when the designer calls the
 skeleton judgeable (weekly GIFs fall out free). DESIGNER-EYES/PLAY
 pending: creation screen + drops/HUD render pass, THE RUN itself,
-every [T] rate.**
+every [T] rate.
+B71 OVERWORLD INTAKEN 2026-07-30 (~13:05; re-issued delivery sl-0034
+— b70 retired UNINTAKEN, never fetched): wildshot-overworld-pack-dusk
+@b71 via the release transport, zip + manifest + 8-file parity +
+sourceCommit 6363271 verified pre-drop; staged blobs byte-true.
+FIRST STYLED PACK: path values {0,1,2} (1784 city-lane band cells,
+330 trail cells) — the game chain reads NO semantic path values, so
+the 0/1/2 contract is ACCEPTED with zero code change. CLIFF LINE
+CONFIRMED GAME-SIDE: zero path-band cells on rock AND zero walkable
+cells at any terrace level >= 1 — the pack ships no terrace layer, so
+the adapter-v4 quantization was REPLICATED from WF resolve.ts AT the
+source commit over the intaken grid (1456 terraced-peak cells, all
+non-walkable; NOTE: the chunk 'elevation' layer is raw field
+elevation 141–896, NOT terrace level — the first check used it
+naively and was caught + redone; lesson for future styled intakes).
+Tops stay blocked BY DESIGN; the tops+ramps arc is designer-pending —
+nothing "fixed". Lands BESIDE b65 (which world loads is scenario
+routing; world_walk re-proof BYTE-IDENTICAL — b65 untouched). Addon
+validation green: flood recompute 45184 == manifest; spawn = harbor
+capital 109,182 (matches b70's manifest). Porosity: 60 route cells,
+ALL reading as two-wide gateways/gatehouse footprints — PINNED 60 for
+this drop (per-pack doctrine; b65 stays 44). Boot + smoke green.
+repro_*.wsr SERIAL-13 regen noise swept into the intake commit (was
+dirty-stamping exports). Lock pin added beside b65's; completion
+line appended ref sl-0034.**

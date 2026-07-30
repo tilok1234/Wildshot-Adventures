@@ -1,0 +1,815 @@
+{
+  "baseArtifactFormat": 8,
+  "baseGenerationIdentitySha256": "86354ff2816fd2befba3222ca9120987c0d015cc9ae1340f1d3ba6f4a0990501",
+  "decals": {
+    "1": "cracks",
+    "10": "waterfall",
+    "11": "lilypads",
+    "12": "steppingstones",
+    "13": "driftwood",
+    "14": "frost",
+    "15": "ford",
+    "16": "geyser",
+    "17": "steamvent",
+    "18": "crater",
+    "19": "arrows",
+    "2": "leaves",
+    "20": "battlegear",
+    "21": "runecircle",
+    "22": "crystalfield",
+    "23": "apron",
+    "3": "rubble",
+    "4": "scorch",
+    "5": "puddles",
+    "6": "blood",
+    "7": "webs",
+    "8": "bones",
+    "9": "rapids"
+  },
+  "destinations": [
+    {
+      "id": 0,
+      "kind": "settlement_candidate",
+      "x": 109,
+      "y": 182
+    },
+    {
+      "id": 1,
+      "kind": "settlement_candidate",
+      "x": 210,
+      "y": 53
+    },
+    {
+      "id": 2,
+      "kind": "settlement_candidate",
+      "x": 18,
+      "y": 13
+    },
+    {
+      "id": 3,
+      "kind": "settlement_candidate",
+      "x": 65,
+      "y": 217
+    },
+    {
+      "id": 4,
+      "kind": "settlement_candidate",
+      "x": 143,
+      "y": 195
+    },
+    {
+      "id": 5,
+      "kind": "settlement_candidate",
+      "x": 180,
+      "y": 159
+    },
+    {
+      "id": 6,
+      "kind": "landmark_candidate",
+      "x": 67,
+      "y": 12
+    },
+    {
+      "id": 7,
+      "kind": "landmark_candidate",
+      "x": 95,
+      "y": 12
+    },
+    {
+      "id": 8,
+      "kind": "landmark_candidate",
+      "x": 181,
+      "y": 198
+    }
+  ],
+  "mapH": 256,
+  "mapW": 256,
+  "materials": {
+    "0": "soil",
+    "1": "grass",
+    "10": "muck",
+    "11": "snow",
+    "12": "ice",
+    "13": "gravel",
+    "14": "crackedearth",
+    "15": "ash",
+    "16": "basalt",
+    "17": "cavedirt",
+    "18": "cavestone",
+    "19": "fungal",
+    "2": "water",
+    "20": "dungeonfloor",
+    "21": "templefloor",
+    "22": "shallow",
+    "23": "deep",
+    "24": "bog",
+    "25": "hotspring",
+    "26": "corrupt",
+    "27": "packedroad",
+    "3": "sand",
+    "4": "rock",
+    "5": "stone",
+    "6": "lava",
+    "7": "cobble",
+    "8": "drygrass",
+    "9": "mud"
+  },
+  "pois": [
+    {
+      "id": 0,
+      "type": "poi.city_ruin",
+      "x": 66,
+      "y": 17
+    },
+    {
+      "id": 1,
+      "type": "poi.city_ruin",
+      "x": 63,
+      "y": 10
+    },
+    {
+      "id": 2,
+      "type": "poi.city_ruin",
+      "x": 60,
+      "y": 7
+    },
+    {
+      "id": 3,
+      "type": "poi.city_ruin",
+      "x": 73,
+      "y": 7
+    },
+    {
+      "id": 4,
+      "type": "poi.city_ruin",
+      "x": 63,
+      "y": 7
+    },
+    {
+      "id": 5,
+      "type": "poi.city_ruin",
+      "x": 65,
+      "y": 7
+    },
+    {
+      "id": 6,
+      "type": "poi.city_ruin",
+      "x": 70,
+      "y": 8
+    },
+    {
+      "id": 7,
+      "type": "poi.city_ruin",
+      "x": 60,
+      "y": 10
+    },
+    {
+      "id": 8,
+      "type": "poi.city_ruin",
+      "x": 69,
+      "y": 10
+    },
+    {
+      "id": 9,
+      "type": "poi.city_ruin",
+      "x": 61,
+      "y": 14
+    },
+    {
+      "id": 10,
+      "type": "poi.city_ruin",
+      "x": 63,
+      "y": 14
+    },
+    {
+      "id": 11,
+      "type": "poi.city_ruin",
+      "x": 68,
+      "y": 14
+    },
+    {
+      "id": 12,
+      "type": "poi.city_ruin",
+      "x": 71,
+      "y": 14
+    },
+    {
+      "id": 13,
+      "type": "poi.cave",
+      "x": 160,
+      "y": 148
+    },
+    {
+      "id": 14,
+      "type": "poi.cave",
+      "x": 228,
+      "y": 212
+    },
+    {
+      "id": 15,
+      "type": "poi.cave",
+      "x": 15,
+      "y": 29
+    },
+    {
+      "id": 16,
+      "type": "poi.cave",
+      "x": 169,
+      "y": 130
+    },
+    {
+      "id": 17,
+      "type": "poi.cave",
+      "x": 131,
+      "y": 93
+    },
+    {
+      "id": 18,
+      "type": "poi.cave",
+      "x": 73,
+      "y": 38
+    },
+    {
+      "id": 19,
+      "type": "poi.pass_memorial",
+      "x": 164,
+      "y": 177
+    },
+    {
+      "id": 20,
+      "type": "poi.pass_memorial",
+      "x": 68,
+      "y": 182
+    },
+    {
+      "id": 21,
+      "type": "poi.shipwreck_cove",
+      "x": 88,
+      "y": 205
+    },
+    {
+      "id": 22,
+      "type": "poi.shipwreck_cove",
+      "x": 177,
+      "y": 225
+    },
+    {
+      "id": 23,
+      "type": "poi.witch_circle",
+      "x": 114,
+      "y": 133
+    },
+    {
+      "id": 24,
+      "type": "poi.giant_skeleton",
+      "x": 66,
+      "y": 108
+    },
+    {
+      "id": 25,
+      "type": "poi.ruin",
+      "x": 193,
+      "y": 239
+    },
+    {
+      "id": 26,
+      "type": "poi.hunters_camp",
+      "x": 206,
+      "y": 212
+    },
+    {
+      "id": 27,
+      "type": "poi.bandit_camp",
+      "x": 28,
+      "y": 74
+    },
+    {
+      "id": 28,
+      "type": "poi.ruin",
+      "x": 189,
+      "y": 205
+    },
+    {
+      "id": 29,
+      "type": "poi.lone_cottage",
+      "x": 146,
+      "y": 141
+    },
+    {
+      "id": 30,
+      "type": "poi.trapper_camp",
+      "x": 169,
+      "y": 25
+    },
+    {
+      "id": 31,
+      "type": "poi.standing_stones",
+      "x": 33,
+      "y": 167
+    },
+    {
+      "id": 32,
+      "type": "poi.prospector_camp",
+      "x": 16,
+      "y": 202
+    },
+    {
+      "id": 33,
+      "type": "poi.standing_stones",
+      "x": 15,
+      "y": 225
+    },
+    {
+      "id": 34,
+      "type": "poi.standing_stones",
+      "x": 19,
+      "y": 151
+    },
+    {
+      "id": 35,
+      "type": "poi.standing_stones",
+      "x": 54,
+      "y": 144
+    },
+    {
+      "id": 36,
+      "type": "poi.standing_stones",
+      "x": 82,
+      "y": 230
+    },
+    {
+      "id": 37,
+      "type": "poi.stone_circle",
+      "x": 41,
+      "y": 196
+    },
+    {
+      "id": 38,
+      "type": "poi.standing_stones",
+      "x": 52,
+      "y": 178
+    },
+    {
+      "id": 39,
+      "type": "poi.logging_camp",
+      "x": 148,
+      "y": 173
+    },
+    {
+      "id": 40,
+      "type": "poi.trapper_camp",
+      "x": 181,
+      "y": 8
+    },
+    {
+      "id": 41,
+      "type": "poi.lone_cottage",
+      "x": 100,
+      "y": 123
+    },
+    {
+      "id": 42,
+      "type": "poi.hunters_camp",
+      "x": 248,
+      "y": 174
+    },
+    {
+      "id": 43,
+      "type": "poi.mountain_shrine",
+      "x": 242,
+      "y": 9
+    },
+    {
+      "id": 44,
+      "type": "poi.trapper_camp",
+      "x": 133,
+      "y": 50
+    },
+    {
+      "id": 45,
+      "type": "poi.battlefield",
+      "x": 106,
+      "y": 20
+    },
+    {
+      "id": 46,
+      "type": "poi.fishing_spot",
+      "x": 171,
+      "y": 66
+    },
+    {
+      "id": 47,
+      "type": "poi.standing_stones",
+      "x": 247,
+      "y": 44
+    },
+    {
+      "id": 48,
+      "type": "poi.ruined_watch",
+      "x": 144,
+      "y": 23
+    },
+    {
+      "id": 49,
+      "type": "poi.bandit_camp",
+      "x": 130,
+      "y": 132
+    },
+    {
+      "id": 50,
+      "type": "poi.hunters_camp",
+      "x": 58,
+      "y": 93
+    },
+    {
+      "id": 51,
+      "type": "poi.standing_stones",
+      "x": 45,
+      "y": 226
+    },
+    {
+      "id": 52,
+      "type": "poi.hunters_camp",
+      "x": 88,
+      "y": 137
+    },
+    {
+      "id": 53,
+      "type": "poi.bandit_camp",
+      "x": 103,
+      "y": 67
+    },
+    {
+      "id": 54,
+      "type": "poi.standing_stones",
+      "x": 85,
+      "y": 116
+    },
+    {
+      "id": 55,
+      "type": "poi.mine",
+      "x": 58,
+      "y": 34
+    },
+    {
+      "id": 56,
+      "type": "poi.crystal_outcrop",
+      "x": 226,
+      "y": 8
+    },
+    {
+      "id": 57,
+      "type": "poi.frozen_wreck",
+      "x": 124,
+      "y": 13
+    },
+    {
+      "id": 58,
+      "type": "poi.ruined_watch",
+      "x": 107,
+      "y": 39
+    },
+    {
+      "id": 59,
+      "type": "poi.abandoned_caravan",
+      "x": 59,
+      "y": 56
+    },
+    {
+      "id": 60,
+      "type": "poi.abandoned_homestead",
+      "x": 68,
+      "y": 127
+    },
+    {
+      "id": 61,
+      "type": "poi.steam_vents",
+      "x": 201,
+      "y": 23
+    },
+    {
+      "id": 62,
+      "type": "poi.standing_stones",
+      "x": 241,
+      "y": 132
+    },
+    {
+      "id": 63,
+      "type": "poi.frozen_wreck",
+      "x": 135,
+      "y": 67
+    },
+    {
+      "id": 64,
+      "type": "poi.hunters_camp",
+      "x": 29,
+      "y": 99
+    },
+    {
+      "id": 65,
+      "type": "poi.hunters_camp",
+      "x": 98,
+      "y": 99
+    },
+    {
+      "id": 66,
+      "type": "poi.beast_den",
+      "x": 193,
+      "y": 163
+    },
+    {
+      "id": 67,
+      "type": "poi.standing_stones",
+      "x": 92,
+      "y": 40
+    },
+    {
+      "id": 68,
+      "type": "poi.ruin",
+      "x": 72,
+      "y": 162
+    },
+    {
+      "id": 69,
+      "type": "poi.standing_stones",
+      "x": 31,
+      "y": 221
+    },
+    {
+      "id": 70,
+      "type": "poi.cave",
+      "x": 46,
+      "y": 243
+    },
+    {
+      "id": 71,
+      "type": "poi.hunters_camp",
+      "x": 14,
+      "y": 86
+    },
+    {
+      "id": 72,
+      "type": "poi.ruin",
+      "x": 89,
+      "y": 21
+    },
+    {
+      "id": 73,
+      "type": "poi.crypt",
+      "x": 110,
+      "y": 155
+    },
+    {
+      "id": 74,
+      "type": "poi.standing_stones",
+      "x": 235,
+      "y": 146
+    },
+    {
+      "id": 75,
+      "type": "poi.logging_camp",
+      "x": 41,
+      "y": 29
+    },
+    {
+      "id": 76,
+      "type": "poi.hunters_camp",
+      "x": 221,
+      "y": 227
+    },
+    {
+      "id": 77,
+      "type": "poi.battlefield",
+      "x": 154,
+      "y": 47
+    },
+    {
+      "id": 78,
+      "type": "poi.ruin",
+      "x": 25,
+      "y": 251
+    },
+    {
+      "id": 79,
+      "type": "poi.hunters_camp",
+      "x": 208,
+      "y": 245
+    },
+    {
+      "id": 80,
+      "type": "poi.abandoned_homestead",
+      "x": 182,
+      "y": 189
+    },
+    {
+      "id": 81,
+      "type": "poi.hunters_camp",
+      "x": 25,
+      "y": 57
+    },
+    {
+      "id": 82,
+      "type": "poi.hunters_camp",
+      "x": 43,
+      "y": 113
+    },
+    {
+      "id": 83,
+      "type": "poi.hunters_camp",
+      "x": 129,
+      "y": 160
+    },
+    {
+      "id": 84,
+      "type": "poi.hunters_camp",
+      "x": 234,
+      "y": 163
+    },
+    {
+      "id": 85,
+      "type": "poi.abandoned_caravan",
+      "x": 49,
+      "y": 72
+    },
+    {
+      "id": 86,
+      "type": "poi.hunters_camp",
+      "x": 10,
+      "y": 43
+    },
+    {
+      "id": 87,
+      "type": "poi.mine",
+      "x": 234,
+      "y": 177
+    },
+    {
+      "id": 88,
+      "type": "poi.wayside_shrine",
+      "x": 144,
+      "y": 122
+    },
+    {
+      "id": 89,
+      "type": "poi.mountain_shrine",
+      "x": 225,
+      "y": 22
+    },
+    {
+      "id": 90,
+      "type": "poi.fishing_spot",
+      "x": 48,
+      "y": 159
+    }
+  ],
+  "roadTypes": {
+    "1": "road",
+    "2": "dirtpath",
+    "3": "ruinedroad"
+  },
+  "routes": [
+    {
+      "fromX": 109,
+      "fromY": 182,
+      "id": 0,
+      "routeClass": "street",
+      "toX": 143,
+      "toY": 195
+    },
+    {
+      "fromX": 143,
+      "fromY": 195,
+      "id": 1,
+      "routeClass": "street",
+      "toX": 180,
+      "toY": 159
+    },
+    {
+      "fromX": 109,
+      "fromY": 182,
+      "id": 2,
+      "routeClass": "highway",
+      "toX": 65,
+      "toY": 217
+    },
+    {
+      "fromX": 180,
+      "fromY": 159,
+      "id": 3,
+      "routeClass": "highway",
+      "toX": 210,
+      "toY": 53
+    },
+    {
+      "fromX": 180,
+      "fromY": 159,
+      "id": 4,
+      "routeClass": "highway",
+      "toX": 18,
+      "toY": 13
+    },
+    {
+      "fromX": 67,
+      "fromY": 12,
+      "id": 5,
+      "routeClass": "trail",
+      "toX": 34,
+      "toY": 21
+    },
+    {
+      "fromX": 95,
+      "fromY": 12,
+      "id": 6,
+      "routeClass": "trail",
+      "toX": 122,
+      "toY": 53
+    },
+    {
+      "fromX": 181,
+      "fromY": 198,
+      "id": 7,
+      "routeClass": "trail",
+      "toX": 169,
+      "toY": 195
+    },
+    {
+      "fromX": 109,
+      "fromY": 182,
+      "id": 8,
+      "routeClass": "trail",
+      "toX": 180,
+      "toY": 159
+    },
+    {
+      "fromX": 65,
+      "fromY": 217,
+      "id": 9,
+      "routeClass": "trail",
+      "toX": 143,
+      "toY": 195
+    }
+  ],
+  "structures": {
+    "1": "house",
+    "10": "well",
+    "11": "stall",
+    "12": "rtower",
+    "13": "fisherhut",
+    "14": "wbridge",
+    "15": "wbridgev",
+    "16": "sbridge",
+    "17": "sbridgev",
+    "18": "cavemouth",
+    "19": "mineshaft",
+    "2": "ruin",
+    "20": "farmhouse",
+    "21": "barn",
+    "22": "windmill",
+    "23": "watermill",
+    "24": "sawmill",
+    "25": "quarry",
+    "26": "bakery",
+    "27": "store",
+    "28": "warehouse",
+    "29": "chapel",
+    "3": "monolith",
+    "30": "townhall",
+    "31": "guardhouse",
+    "32": "manor",
+    "33": "fountain",
+    "34": "house_abandoned",
+    "35": "house_burned",
+    "36": "gate_drawbridge",
+    "37": "keep",
+    "38": "gate_ruined",
+    "39": "tent",
+    "4": "cottage",
+    "40": "dock",
+    "41": "lighthouse",
+    "42": "stonecircle",
+    "43": "hunterlodge",
+    "44": "hermithut",
+    "45": "den",
+    "46": "crypt",
+    "47": "ruintemple",
+    "48": "giantskeleton",
+    "49": "buriedstatue",
+    "5": "dungeon",
+    "50": "portal",
+    "51": "crystalspire",
+    "52": "worldtree",
+    "6": "tower",
+    "7": "gate",
+    "8": "tavern",
+    "9": "smithy"
+  },
+  "tileforgeAdapterVersion": 7,
+  "wallTypes": {
+    "1": "wall",
+    "2": "palisade",
+    "3": "ruinedwall",
+    "4": "seawall",
+    "5": "cavewall",
+    "6": "dungeonwall"
+  }
+}
