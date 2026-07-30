@@ -9,9 +9,11 @@ NOT under `assets/` (that tree is .gdignore'd raw-drop territory).
 Swapping designed cues in =
 new WAVs + editing the .tres, zero code. Buses: **KeyThreats** is the
 separate eyes-closed threat channel; **Sfx** carries self-feedback.
-Per-channel volumes (Master/Sfx/KeyThreats/Music at 100/70/40/off)
-live in the options menu and persist under `[audio]` (CORE-50
-separate channels, key threats audible).
+Per-channel volumes (Master/Sfx/KeyThreats/Music/AttackSfx at
+100/70/40/off) live in the options menu and persist under `[audio]`
+(CORE-50 separate channels, key threats audible). AttackSfx
+(designer-ruled 2026-07-30) carries fire feedback ONLY, so attack
+noise turns off without losing hit/death feedback or threat cues.
 
 | Class | Trigger (event) | Cue contour | Bus |
 |---|---|---|---|
@@ -80,13 +82,23 @@ the ear pass accepts):
 
 | Class | RF file | Why |
 |---|---|---|
-| telegraph_ranged | enemy_laser_warning.wav | the enemy family's critical warning |
+| telegraph_ranged | enemy_laser_charge.wav | the windup charge (CORRECTED 2026-07-30 from _warning — designer ear) |
 | telegraph_melee | boss_telegraphs_attack.wav | sharp "attack now" contour |
 | hazard_cast | plasma_rifle_warning.wav | third distinct warning contour |
 | hazard_armed | plasma_rifle_explosion.wav | detonation thump, zone-live |
 | phase_change | boss_telegraphs_phase_change.wav | exact intent match |
 | player_hit | shield_break_hit.wav | player-side impact family |
 | player_death | shield_break_break.wav | the break |
+| player_fire | plasma_rifle_fire + v01–v12 | attack release (designer-ruled audible 2026-07-30) |
+| enemy_fire | enemy_laser_fire + v01–v12 | enemy volley release, same ruling |
+
+Fire classes (ATTACK_STARTED hook — once per release, both factions
+emit it): `wavs` arrays rotate round-robin (deterministic counter, no
+RNG); volume_db −7 (RF's own mastered level); gap_ticks 4 (player —
+under Longbolt's 6.5-tick cadence, still coalescing one volley to one
+cue) / 6 (enemy). Both live on the **AttackSfx** bus — never
+KeyThreats (no threat-channel spam, no music-duck spam), separable to
+off on their own row.
 
 Music: four approved seamless loops (na01 Embertrail 100 bpm G,
 na02 Wayfarer's Glen 96 bpm D, na03 Mossbound Roads 92 bpm E mix,
@@ -100,11 +112,13 @@ queue's `finished` advance works; the "seamless loop" property is
 unused under the queue ruling.
 
 Unused pack inventory (recorded, zero wired): enemy_laser
-charge/fire×13/impact/cooldown, plasma_rifle charge/fire×13/impact/
-ui/cooldown, shield_break hit variants v01–v12 + warning,
-boss_telegraphs attention/enrage, pickups ×8 (zero-reward law — no
-pickups exist), ui_feedback ×14 (menu sounds are a future taste
-call), the manifest's music_states table (MENU/EXPLORE/COMBAT/... —
-superseded by the queue ruling; revisit post-Gate-1 if ever), mix/
-crossfade defaults, 24-voice pool. Player weapon fire stays SILENT by
-design (Law 2: player output subordinate).
+warning/impact/cooldown, plasma_rifle charge/impact/ui/cooldown,
+shield_break hit variants v01–v12 + warning, boss_telegraphs
+attention/enrage, pickups ×8 (zero-reward law — no pickups exist),
+ui_feedback ×14 (menu sounds are a future taste call), the manifest's
+music_states table (MENU/EXPLORE/COMBAT/... — superseded by the queue
+ruling; revisit post-Gate-1 if ever), mix/crossfade defaults,
+24-voice pool. The intake-day "player fire stays silent (Law 2)"
+inference was OVERRULED by designer ruling 2026-07-30 — attacks are
+audible; the Law-2 hierarchy holds through bus separation instead
+(−7 dB defaults, AttackSfx row with off).

@@ -89,9 +89,11 @@ const EFFECT_OPACITY_LEVELS: Array[float] = [1.0, 0.7, 0.4]
 ## Per-channel audio (CORE-50: separate channels, key threats audible;
 ## Law 7). Linear levels per options index; audio/<bus> persists.
 ## Music (M8) is its own channel like the rest — the duck lives in
-## music_view, never in the bus level the user set.
+## music_view, never in the bus level the user set. AttackSfx (M8,
+## designer-ruled) carries fire feedback ONLY, so attack noise can go
+## to off without losing hit/death feedback (Sfx) or threats.
 const AUDIO_LEVELS: Array[float] = [1.0, 0.7, 0.4, 0.0]
-const AUDIO_BUSES: Array[String] = ["Master", "Sfx", "KeyThreats", "Music"]
+const AUDIO_BUSES: Array[String] = ["Master", "Sfx", "KeyThreats", "Music", "AttackSfx"]
 var recap_panel: PanelContainer
 var console: PanelContainer
 var hitboxes: Node2D
@@ -238,11 +240,11 @@ func _run_density_audit(out_name: String) -> void:
 	get_tree().quit()
 
 
-## Idempotent creation of the three named buses (Law 7 / CORE-50): Sfx,
-## KeyThreats, and Music (M8), all sending to Master. Code-created so
-## headless runs and tests need no bus-layout resource.
+## Idempotent creation of the four named buses (Law 7 / CORE-50): Sfx,
+## KeyThreats, Music, and AttackSfx (M8), all sending to Master.
+## Code-created so headless runs and tests need no bus-layout resource.
 func _ensure_audio_buses() -> void:
-	for bus_name: String in ["Sfx", "KeyThreats", "Music"]:
+	for bus_name: String in ["Sfx", "KeyThreats", "Music", "AttackSfx"]:
 		if AudioServer.get_bus_index(bus_name) >= 0:
 			continue
 		var idx := AudioServer.bus_count

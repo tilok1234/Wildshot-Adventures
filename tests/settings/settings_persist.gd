@@ -80,6 +80,11 @@ func _init() -> void:
 		printerr("FAIL: audio/music did not persist")
 		quit(1)
 		return
+	config.set_setting("audio", "attacksfx", 3)
+	if int(config.get_setting("audio", "attacksfx", -1)) != 3:
+		printerr("FAIL: audio/attacksfx did not persist")
+		quit(1)
+		return
 
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(TEST_PATH))
 	config.free()

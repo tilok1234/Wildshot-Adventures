@@ -5,6 +5,12 @@
 [resource]
 script = ExtResource("1")
 cues = {
+"enemy_fire": {
+"bus": "AttackSfx",
+"gap_ticks": 6,
+"volume_db": -7.0,
+"wavs": ["res://audio/cues/enemy_laser_fire.wav", "res://audio/cues/enemy_laser_fire_v01.wav", "res://audio/cues/enemy_laser_fire_v02.wav", "res://audio/cues/enemy_laser_fire_v03.wav", "res://audio/cues/enemy_laser_fire_v04.wav", "res://audio/cues/enemy_laser_fire_v05.wav", "res://audio/cues/enemy_laser_fire_v06.wav", "res://audio/cues/enemy_laser_fire_v07.wav", "res://audio/cues/enemy_laser_fire_v08.wav", "res://audio/cues/enemy_laser_fire_v09.wav", "res://audio/cues/enemy_laser_fire_v10.wav", "res://audio/cues/enemy_laser_fire_v11.wav", "res://audio/cues/enemy_laser_fire_v12.wav"]
+},
 "hazard_armed": {
 "bus": "KeyThreats",
 "wav": "res://audio/cues/plasma_rifle_explosion.wav"
@@ -21,6 +27,12 @@ cues = {
 "bus": "Sfx",
 "wav": "res://audio/cues/shield_break_break.wav"
 },
+"player_fire": {
+"bus": "AttackSfx",
+"gap_ticks": 4,
+"volume_db": -7.0,
+"wavs": ["res://audio/cues/plasma_rifle_fire.wav", "res://audio/cues/plasma_rifle_fire_v01.wav", "res://audio/cues/plasma_rifle_fire_v02.wav", "res://audio/cues/plasma_rifle_fire_v03.wav", "res://audio/cues/plasma_rifle_fire_v04.wav", "res://audio/cues/plasma_rifle_fire_v05.wav", "res://audio/cues/plasma_rifle_fire_v06.wav", "res://audio/cues/plasma_rifle_fire_v07.wav", "res://audio/cues/plasma_rifle_fire_v08.wav", "res://audio/cues/plasma_rifle_fire_v09.wav", "res://audio/cues/plasma_rifle_fire_v10.wav", "res://audio/cues/plasma_rifle_fire_v11.wav", "res://audio/cues/plasma_rifle_fire_v12.wav"]
+},
 "player_hit": {
 "bus": "Sfx",
 "wav": "res://audio/cues/shield_break_hit.wav"
@@ -31,7 +43,7 @@ cues = {
 },
 "telegraph_ranged": {
 "bus": "KeyThreats",
-"wav": "res://audio/cues/enemy_laser_warning.wav"
+"wav": "res://audio/cues/enemy_laser_charge.wav"
 }
 }
 melee_patterns = Array[int]([11])
