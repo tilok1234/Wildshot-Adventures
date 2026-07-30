@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"overworld_walk"
+display_name = "Overworld Walk: harbor capital (dusk b72)"
+worldforge_pack = "res://assets/worldforge-packs/wildshot-overworld-pack-dusk/"
+player_spawn = Vector2(109.5, 182.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {}
+default_seed = 72

@@ -157,12 +157,27 @@ verdicts recorded, by the ask's own terms). Two arcs, both pushed:
   if contrast still fails after sizing, record an upstream kit ask,
   never a pack-asset hand-edit.
 
+- **ROAD LAYER ARC** (ask sl-0047, third task of the night): the
+  render chain was proven HEALTHY by five probes ending in rendered
+  screenshots (reports/road_render_audit_b72_*.png — band roads
+  visible on screen). The designer's bare-street screenshots were the
+  B65 world (THE LOOP), which has no city-band data by upstream
+  design. Real gap = nothing routed to b72. Fix: data-only
+  overworld_walk.tres picker row ("Overworld Walk: harbor capital
+  (dusk b72)", pack spawn, zero enemies) + per-layer placement counts
+  now print at every world load (a zero-placement layer is loud).
+  roadTypesLegacy consulted nowhere game-side (finding, recorded in
+  the completion line). world_walk + battery untouched. Game
+  relaunched fronted — the designer picks the new row via O to
+  taste-rule the road look.
+
 Planning-side state (uncommitted BY DESIGN — the live planning session
 sweeps and commits): ecosystem.lock game pin b71→b72 (pin note carries
 the retirement call); sync log entries sl-0043 (b72 intake, hashes
-verbatim, true-UTC ts) + sl-0044 (crosshair completion). The sl-0035 +
-sl-0042 status flips are planning's sweep, not ours. Hours clock
-STOPPED at close. Append-script lesson recorded: PowerShell
+verbatim, true-UTC ts) + sl-0044 (crosshair completion) + the sl-0047
+road-verdict completion appended at its own seam. The sl-0035 +
+sl-0042 + sl-0047 status flips are planning's sweep, not ours. Hours
+clock STOPPED at close. Append-script lesson recorded: PowerShell
 Measure-Object -Maximum returns a DOUBLE — ':d4' formatting throws
 non-terminating and execution continues; cast [int] before -f, and
 always re-parse + verify after a JSON append (the verify caught it).

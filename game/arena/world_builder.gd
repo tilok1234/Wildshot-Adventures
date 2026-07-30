@@ -97,6 +97,7 @@ static func build_world_arena(root: Node2D, pack_src: String) -> Dictionary:
 	var width := int(report.width)
 	var height := int(report.height)
 	var placements := 0
+	var per_layer := {}
 	var sort_layers: Array = []
 	for layer_def: Dictionary in tmj.layers:
 		if not layer_def.has("data"):
@@ -127,7 +128,9 @@ static func build_world_arena(root: Node2D, pack_src: String) -> Dictionary:
 			buildings.y_sort_enabled = true
 			buildings.z_index = RenderLayers.ACTORS
 			root.add_child(buildings)
-			placements += _place_structures(buildings, data, width, tileset, sets, by_base)
+			var built := _place_structures(buildings, data, width, tileset, sets, by_base)
+			placements += built
+			per_layer[lname] = built
 			sort_layers.append(buildings)
 			continue
 		if lname in ["props", "fence", "wall"]:
@@ -135,6 +138,7 @@ static func build_world_arena(root: Node2D, pack_src: String) -> Dictionary:
 			layer.y_sort_enabled = true
 			layer.z_index = RenderLayers.ACTORS
 			sort_layers.append(layer)
+		var placed := 0
 		for i in data.size():
 			var gid := int(data[i])
 			if gid == 0:
@@ -145,8 +149,17 @@ static func build_world_arena(root: Node2D, pack_src: String) -> Dictionary:
 			@warning_ignore("integer_division")
 			var cell := Vector2i(i % width, i / width)
 			layer.set_cell(cell, int(t.sid), t.coords)
-			placements += 1
+			placed += 1
+		placements += placed
+		per_layer[lname] = placed
 
+	# Per-layer counts stay loud at every load: a layer whose data resolves
+	# to zero placements is a finding, never silence (sl-0047 lesson — the
+	# road layer's absence was invisible in the roll-up total).
+	var counts := ""
+	for k: String in per_layer:
+		counts += "%s=%d " % [k, int(per_layer[k])]
+	print("world_builder: layer placements: " + counts.strip_edges())
 	print(
 		(
 			"world_builder: '%s' rendered — %d placements across %d layers in %d ms"

@@ -908,4 +908,26 @@ size_changed (fullscreen/resize tracked). Pack assets untouched
 (manifest-hashed); render-only — aim reads viewport mouse, zero
 mechanics/hurtbox change. Lint (main.gd pins) + boot + smoke green
 (hashes unchanged). If contrast still fails after sizing → upstream
-kit ask, never a hand-edit.**
+kit ask, never a hand-edit.
+ROAD LAYER VERDICT 2026-07-31 (~01:45 local; ask sl-0047): the render
+chain was NEVER broken — five probes (tres alignment 81/81, tmj
+census 2570/2570 resolved, runtime build 2570 cells set src 59
+correct coords, pixel decode 32/30/32 opaque tiles, RENDERED
+screenshots showing band roads on screen) prove b72 roads draw
+end-to-end; reports/road_render_audit_b72_*.png committed. The
+designer's bare-street screenshots were THE LOOP = the B65 world,
+which carries NO city-band data by upstream design (its road layer =
+943 dirt-path trail cells, placing all along — pre-band corridors
+are carved ground, not road cells). The real gap: NOTHING ROUTED TO
+b72. FIX (data-only): scenarios/overworld_walk.tres — "Overworld
+Walk: harbor capital (dusk b72)" picker row (auto-enumerated), pack
+spawn 109,182, zero enemies (pure look-walk for the taste-rule);
+world_walk untouched (battery pins stand). PLUS world_builder now
+prints per-layer placement counts at every load (suspect-c
+instrumentation made permanent — a zero-placement layer is loud,
+never silent). roadTypesLegacy: grep-proven consulted NOWHERE in
+game code (manifest data only; importer honors fam.tiles, which are
+fully populated post-restoration; tres carries all road tiles) —
+nothing to un-honor game-side. Format+lint+boot+smoke green, smoke
+hashes unchanged; battery untouched. Designer taste-rule on the
+overworld look = theirs, on screen.**
