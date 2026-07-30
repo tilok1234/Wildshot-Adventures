@@ -5,10 +5,17 @@
 > embedded EXPECTATIONS are era-stamped: the battery matrix now lives
 > in notes/HANDOFF.md (reactive record — no wolf-pair FAILs), the
 > porosity diag pin is 44 (per-drop doctrine, see the tool's
-> docstring), and current flood is 34739 (WYSIWYG: walkable ⇔
-> ground-rendered; 7 enclosed courtyard islands are LEGAL
-> walkable-unreachable). Step 3's "first_contact still FAIL" is
-> obsolete.
+> docstring), and current flood is 34641 (b65 intake 2026-07-30;
+> WYSIWYG: walkable ⇔ ground-rendered; enclosed walkable-unreachable
+> islands are LEGAL — 7 courtyards + 13 cells stranded by the b65
+> seals). Step 3's "first_contact still FAIL" is obsolete.
+>
+> **RELEASE TRANSPORT (doc 18 §5, blessed sl-0016, first exercised
+> 2026-07-30):** packs now arrive as GitHub releases from
+> tilok1234/WorldForge, tag = artifact id. BEFORE step 1: download the
+> zip, locally verify zipSha256 + manifestSha256 + per-file manifest
+> parity + sourceCommit against the release notes. Mismatch =
+> incident entry + STOP. Then mirror the extracted pack directory in.
 
 The seam to run when the agent's re-exported dusk pack lands. Ledger
 #15 is the charge sheet; `tools/diag_walkability_grid.py` is the

@@ -700,4 +700,24 @@ test and the py selftest; selftest is a pretester step. GATE AT FULL
 STRENGTH: 17 fixed steps + 25-row battery BYTE-IDENTICAL + export +
 probe = ALL GREEN 12.6 min. M8 engineering now blocked ONLY on
 designer answers (comments box) + designer-side items (copy voice
-pass, laptop pass, rested human pass, itch publish, recruitment).**
+pass, laptop pass, rested human pass, itch publish, recruitment).
+DUSK B65 INTAKEN 2026-07-30 (~03:15) — FIRST RELEASE-TRANSPORT INTAKE
+(doc 18 §5; sl-0016 blessing): GitHub release
+small-cold-coastal-pack-dusk@b65 fetched from tilok1234/WorldForge;
+zipSha256 + manifestSha256 + 8-file parity + sourceCommit 4497729 ALL
+verified locally BEFORE the drop. Runbook §2 green by exit code (pack
+test, porosity diag, boot, determinism smoke). Flood 34739→34641 = 85
+scattered cells SEALED, 0 opened, 13 more stranded off-flood (WF
+furniture-claims-ground retune; walkable-unreachable stays LEGAL under
+WYSIWYG). Porosity pin 44 UNCHANGED — the 44 route cells verified
+BYTE-IDENTICAL to the accepted gateway set (no re-pin needed). 24-row
+battery ON-MATRIX and reports/ BYTE-IDENTICAL INCLUDING world_walk:
+the b65 delta touches no battery path (world_walk re-proof PASS is a
+genuine regeneration, mtime-verified, world_builder hash gate on the
+new pack). pretester_check itself NOT run this seam — its machine-wide
+Godot guard tripped on the designer's editor open on ANOTHER project
+(AI_training_lab; different .godot, no cache race) — so the runbook
+gates ran individually, same commands + exit codes; re-run the full
+gate at the next exclusive seam. Planning lock pinned to b65 +
+sync log sl-0020 appended (sl-0004 delivery closed). OPEN: designer
+city walk = the acceptance (feel item, theirs).**

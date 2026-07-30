@@ -3,7 +3,7 @@
     "tileforge": 7
   },
   "artifactFormat": 8,
-  "baseArtifactSha256": "576891ad573c3f91da2aaa636e146167479098ae317fd6b8e70a1f8435b38a9f",
+  "baseArtifactSha256": "87ccb45544f89d3f0c165437e16c7558efb179af0387daa0f1ca28cc21f7da77",
   "dimensions": {
     "chunkHeight": 32,
     "chunkWidth": 32,
@@ -13,20 +13,20 @@
   "files": {
     "minimap.png": "e827d55c65bd293ff9f15b2a93265ad4f8081b1e5b58290f17a717332b99292d",
     "normalized-recipe.json": "80cff5eb69437be55d56a433874887a6a2446f38aad613b2422a73e9c48c6c58",
-    "resolved/resolved-map.tmj": "cc842c3fec809710d7192aa58cb5d36674a06883237dae1215ba69081caeff83",
-    "resolved/tileforge-map-data.json": "0b3dbe81794dedd255ec4e9055599c160270761910d800f7574db71e4bc41248",
-    "resolved/tileforge-slice.json": "e359c3149556868ffbfff614fb1678b9ddcd6b263eb75279c7466dc0b50555ce",
+    "resolved/resolved-map.tmj": "082e0ed105307c6a63be7630c89dd22a0a729a6ac0f026bcdadd14dcee361932",
+    "resolved/tileforge-map-data.json": "9216c7a701622839b9ac032be28e47656176d71b9eeb4ff6c64e0779090d7ac5",
+    "resolved/tileforge-slice.json": "870f2a3bf1e46a394d5ca83fb22b931d9a06632bf634095fe44187d0dbb99a5b",
     "validation-report.json": "9cefe7b09292e6a718f3c1ddf0392e7061c7e424fe8e248733307a5c24a6ba1e",
-    "walkability.json": "3121873fb7a3c730c8079b2d8021b32a8e50ad0c9fd7b13d0c6c0c0ecab231f6",
-    "world.json": "576891ad573c3f91da2aaa636e146167479098ae317fd6b8e70a1f8435b38a9f"
+    "walkability.json": "16408475771e775140705299290f805f20c150d0c44b06ba907f3ea59d5e9f25",
+    "world.json": "87ccb45544f89d3f0c165437e16c7558efb179af0387daa0f1ca28cc21f7da77"
   },
   "generator": {
-    "behaviorVersion": 60,
-    "generationIdentitySha256": "3a511e37b17757cbb0e5dad950c7f48f03ef861fa6b8206c92174edb86797a5c",
+    "behaviorVersion": 65,
+    "generationIdentitySha256": "5a2ac3bbb8554e2044edd859c3667ca819cfc7fbd363d7041840107ee04e4baa",
     "name": "worldforge",
-    "recipeCompilerVersion": 34,
+    "recipeCompilerVersion": 35,
     "recipeSha256": "80cff5eb69437be55d56a433874887a6a2446f38aad613b2422a73e9c48c6c58",
-    "resolvedConfigSha256": "830d2879cff79f83e33daa4532c684ce6024ebf3595656d3456dbfd76eae141d",
+    "resolvedConfigSha256": "45fc0301a1c61b8b3cd2e185dc1b6c9057bed0327c44056913c9c39ca9c9b668",
     "seed": 103991,
     "version": "0.1.0"
   },
@@ -39,7 +39,7 @@
     "theme": "dusk"
   },
   "walkability": {
-    "floodCount": 34739,
+    "floodCount": 34641,
     "format": 1,
     "spawnCell": [
       240,

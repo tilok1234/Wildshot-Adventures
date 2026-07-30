@@ -43,7 +43,7 @@ Step "RNG lint (sim/ clean)" {
     return $true
 }
 
-Step "walkability diag (11 route cells)" {
+Step "walkability diag (per-drop pin)" {
     python tools/diag_walkability_grid.py *> $null
     return $LASTEXITCODE -eq 0
 }

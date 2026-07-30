@@ -153,7 +153,11 @@ Engineering-side remaining, in rough order:
    need; re-drops revalidate with the tool). WF composition passes
    are ACTIVE designer territory (~30 settlement compositions:
    chicken coops, harbors...) — new world drops expected; runbook
-   procedure stands, porosity pin is per-drop. Audio pack may drop
+   procedure stands, porosity pin is per-drop. Dusk b65 INTAKEN
+   2026-07-30 via the RELEASE TRANSPORT (doc 18 §5: fetch GitHub
+   release by tag, hash-verify vs the notes before the drop): flood
+   34641, pin 44 unchanged, battery byte-identical incl world_walk;
+   designer city walk pending = acceptance. Audio pack may drop
    any day (Resonance Forge); cue swap is zero-code by design, music
    playback is the one new piece.
 4. **Gate 1 calendar** — recruitment is sized, builds ship, channels
@@ -190,9 +194,9 @@ Before every commit, per touched area:
   precedent (2026-07-29) exists because stops were missed.
 - One approved decision = one commit; push BOTH repos at clean seams.
 
-### Canonical proof battery (all --speed=3.0; state 2026-07-29 —
+### Canonical proof battery (all --speed=3.0; state 2026-07-30 —
 ### POLICY OF RECORD = REACTIVE; Warden 575; WYSIWYG dusk pack
-### flood 34739)
+### b65 flood 34641)
 
 | scenario | seeds | ticks | expected (reactive record) |
 |---|---|---|---|

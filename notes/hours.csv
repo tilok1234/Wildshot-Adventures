@@ -121,3 +121,5 @@ timestamp,action,note
 2026-07-29T14:38:32,stop,"Long pass done: M8 answer-independent engineering EXHAUSTED (lockdown, feedback path, onboarding, CORE-50 verification, evidence reader). Gate 17 fixed + battery ALL GREEN 12.6min byte-identical. Both repos pushed, handoff current. Clock stops - session idle until designer returns."
 2026-07-29T23:41:41,start,"Planning session: repo-handling cleanup discussion (designer present)"
 2026-07-30T00:48:12,stop,"Janitor session complete: phone sessions recovered, 16-tag checkpoint, 7 husks verified, world_filler mainline re-ruled to designer line (evidence-backed), assembler consolidated + pack-source incident closed, music deferred (live session), docs truthed, click-list handed"
+2026-07-30T01:11:37,start,"Doc 18 ratification prep: fold agreed edits + janitor evidence, draft deck payload"
+2026-07-30T03:06:59,note,"Dusk b65 intaken via release transport (doc 18 s5 first exercise): zip+manifest+sourceCommit verified pre-drop, runbook gates green by exit code, 24-row battery byte-identical incl world_walk, porosity pin 44 unchanged (route cells identical); city walk handover next"
