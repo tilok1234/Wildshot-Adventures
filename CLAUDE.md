@@ -798,4 +798,50 @@ quiet-lab updated with ruling provenance. FLAGGED planning-side in
 the completion line: docs/08 CORE-53/55 rows + docs/12 Gate-1 prose
 still carry pre-rewrite text — truth-up owed there. Loop-assembly
 engineering starts from designer direction (talk-before-build; the
-bar card is theirs to word).**
+bar card is theirs to word).
+LOOP V1 (L1 SKELETON) ENGINEERING COMPLETE 2026-07-30 (~06:45; ask
+sl-0025 / docs/19 §3; commits 86459d1→f7b0be6): SERIAL 13 —
+PlayerState gold/xp(within-level)/level/max_hp/max_mana/per-frame
+weapon tiers 1–6/unique mask; ActorState armor_tier; STREAM_LOOT
+(drawn ONLY by death-sweep drop rolls — loop_test PROVES rng_enemy
+untouched by loot); serialized ground drops; THE damage path grew
+flat armor mitigation (floor 1; §2.11 schedule bypasses by contract)
++ kill awards (XP→level-ups, lean growth + full refill [T]; ONE fixed
+rng_loot draw sequence per kill); LootStep last in step order (TTL +
+walk-over pickup, upgrades-only auto-equip); tier×level damage in the
+fire path with IDENTITY DEFAULTS — proof_rusher/husk reproduced
+BYTE-IDENTICAL post-change; goldens regenerated deliberately +
+verified 10x. Seven defs' drop tables filled (danger-proportional,
+all [T]; data/progression.tres = THE one tuning file). CHARACTER:
+user://character.json OUTSIDE the sim — permadeath TOGGLE at creation
+only (docs/19 ruling 1); normal death = 25% [T] carried-gold cost +
+the run-back, equipment never taken; hardcore = file deleted, T lands
+on the creation screen; applied setup-phase BEFORE the recorder
+snapshot; heartbeat/quit/death saves (never harvests while dead — the
+cost-applied profile is protected). Death rides the Law-8 recap +
+one-key retry. SURFACES: LOOT band 15 (assertions extended),
+drop_view (shape by kind, tint by tier [T]), HUD lv/xp/gold + three
+frame tiers + armor, LEVEL-UP/UNIQUE toasts. GRADIENT v1 hand-
+authored on the b65 geography (every spawn flood-reach-verified; the
+town component measures EXACTLY manifest flood 34641 — free pack
+cross-check; wf data peeked, not consumed — intake deferred per
+spec): rings ~20-30 / ~37-53 / ~64-94 tiles, the KING at 105. BONE
+RELIQUARY KING live (docs/19 ruling 4): the Warden kit at 900 HP [T]
+(floors 594/297 pinned in loop_test), roster index 7 append-only,
+48px sheet via tools/import_boss_actor.py → res://assembler_boss/
+(assembler-library SECOND INSTANCE — manifest-driven cell 48, REAL
+cast/death rows, no aliases; render scale only, the 24px-hurtbox
+honesty note stands), Reliquary Coil placeholder unique (35%
+independent roll, tier-6-slot model [T] until designer specs).
+PROOFS: loop_ring1/2/3 + proof_brk_site ALL PASS 3.0 ability-off
+seeds 1,2,3 — TWO layout iterations, never weakened (v1 failed
+seed-identical convergence: kiting merged clusters → spaced beyond
+kite-drift; ring3 also recomposed 3-pressure→2-pressure pulls, final
+ZERO hits). Battery 24→28 rows; loop_test joined the fixed gates.
+LEDGER #16 OPENED (replay headers lack the character block — profile
+replays REFUSE verification honestly; proofs unaffected).
+data/scenarios/loop.tres = THE RUN ("THE LOOP" picker row). L2 =
+daily-play tuning; the bar clock starts when the designer calls the
+skeleton judgeable (weekly GIFs fall out free). DESIGNER-EYES/PLAY
+pending: creation screen + drops/HUD render pass, THE RUN itself,
+every [T] rate.**

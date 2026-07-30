@@ -119,7 +119,26 @@ final state:
   `Documents\world_filler\world_filler` (on `main`); game-side
   consumption stays POST-GATE-1 per planning docs/17.
 
-## 2026-07-30 night seam (read this first — it supersedes items below)
+## 2026-07-30 dawn seam: LOOP V1 IS BUILT (read this first)
+
+Ask sl-0025 executed same night (docs/19 §3, commits 86459d1→f7b0be6
++ records): **the run exists** — "THE LOOP" picker row: spawn in the
+b65 town, walk west through three proven danger rings (wolf/archer
+pairs → fanmaw/ringer country → blightcaster/leadshot outlands), the
+BONE RELIQUARY KING at 105 tiles (Warden kit, 900 HP [T], 48px sheet,
+guaranteed T5 + gold + 35% Reliquary Coil placeholder unique). Loot
+drops and matters (T1–T5 per-frame tiers + armor + abilities,
+upgrades-only walk-over pickup), kill XP levels the lean sheet, gold
+carries, death costs 25% [T] carried gold (normal; the permadeath
+toggle at creation is hardcore's home — file deleted) and retry is
+ONE key. SERIAL 13; goldens regenerated; 4 new battery rows (28) +
+loop_test in the fixed gates; ledger #16 opened (replay character
+block). EVERY number is [T] in data/progression.tres + the def drop
+tables — the designer tunes in play; L2 (the daily-play bar clock)
+starts when they call the skeleton judgeable. DESIGNER-EYES pending:
+creation screen, drops/HUD, and THE RUN.
+
+## 2026-07-30 night seam (superseded above; context below)
 
 Two release-transport intakes landed (the doc 18 §5 flow's first real
 exercises, both hash-verified end to end BEFORE the drop): **dusk b65**

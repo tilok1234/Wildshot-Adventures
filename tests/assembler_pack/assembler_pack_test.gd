@@ -37,6 +37,8 @@ func _init() -> void:
 			failed = true
 	else:
 		print("real pack not dropped yet — fixture coverage only (expected pre-export)")
+	if not _boss_mappings_ok():
+		failed = true
 	if failed:
 		quit(1)
 		return
@@ -49,10 +51,34 @@ func _real_roster() -> Array[String]:
 	var roster: Array[String] = []
 	for role: String in sheet_map.map:
 		var id := String(sheet_map.map[role])
+		# Loop v1: "boss:" ids live in res://assembler_boss/ (the 48 px
+		# second library) — validated by _boss_mappings_ok, not here.
+		if id.begins_with("boss:"):
+			continue
 		if not roster.has(id):
 			roster.append(id)
 	roster.sort()
 	return roster
+
+
+## Loop v1: the no-dangling-mapping law for the SECOND library — every
+## "boss:" sheet-map id must exist in the boss manifest.
+func _boss_mappings_ok() -> bool:
+	var sheet_map: Resource = load("res://data/actor_sheet_map.tres")
+	var boss_ids := {}
+	var parsed: Variant = JSON.parse_string(
+		FileAccess.get_file_as_string("res://assembler_boss/manifest.json")
+	)
+	if parsed is Dictionary:
+		for entry: Dictionary in parsed.actors:
+			boss_ids[String(entry.id)] = true
+	var ok := true
+	for role: String in sheet_map.map:
+		var id := String(sheet_map.map[role])
+		if id.begins_with("boss:") and not boss_ids.has(id):
+			printerr("FAIL: boss mapping '%s' not in assembler_boss/manifest.json" % id)
+			ok = false
+	return ok
 
 
 func _fixture_roundtrip() -> bool:

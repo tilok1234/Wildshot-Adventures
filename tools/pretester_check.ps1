@@ -73,6 +73,7 @@ $tests = @(
     @("uikit validate", "tests/uikit/uikit_validate.gd"),
     @("settings persistence", "tests/settings/settings_persist.gd"),
     @("feedback bundle + summary code", "tests/feedback/feedback_bundle_test.gd"),
+    @("loop contracts (drops/curve/pickup)", "tests/loop/loop_test.gd"),
     @("determinism smoke (all contracts)", "tests/determinism/determinism_smoke.gd"),
     @("golden replays x10", "tests/replay_fixtures/verify_replays.gd")
 )
