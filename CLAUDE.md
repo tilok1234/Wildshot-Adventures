@@ -107,7 +107,7 @@ line of code in this repo.
   (8) death always explainable — an unexplainable death fails review
   regardless of appearance.
 - **CORE-53 [L/P — AMENDED BY RULING 2026-07-30]** (sl-0023, planning 593cc27;
-  deck ratification staged; docs/08 prose truth-up pending planning-side) —
+  deck ratification staged; docs/08 row amended planning-side same day) —
   human judgment moves BEHIND the loop bar: 2–3 warm, WATCHED first-touches
   (screen-share or in person), designer-scheduled only once the bar holds. The
   rule's heart survives verbatim — the gate is never judged solely by the
@@ -124,8 +124,8 @@ line of code in this repo.
   polish. **The zero-reward lab law is thereby lifted for loop work**: loot and
   death-cost systems are in scope by ruling. Explainable deaths, lowest-speed
   dodgeability, and dependable controls stay binding. The bar's final wording
-  is the designer's (deck card staged); docs/08+12 prose truth-up pending
-  planning-side.
+  is the designer's (deck card staged); docs/08 rows + docs/12 supersession
+  banner landed planning-side same day (verified 2026-07-30 late).
 - **GDD-16 [P/T]** — Co-op insurance, honored architecturally: no global
   assumption that exactly one player exists (`SimWorld.players` is an array;
   zero player singletons or `get_player()` globals anywhere — enemy AI reads
@@ -796,7 +796,9 @@ the designer daily for a week; feel/stakes over polish; test scenes
 accrete into content). Digest rows CORE-53/55 + SPEC-A + tripwire +
 quiet-lab updated with ruling provenance. FLAGGED planning-side in
 the completion line: docs/08 CORE-53/55 rows + docs/12 Gate-1 prose
-still carry pre-rewrite text — truth-up owed there. Loop-assembly
+still carried pre-rewrite text (TRUTH-UP SINCE LANDED planning-side —
+amendment rows + docs/12 supersession banner verified 2026-07-30 late;
+flag cleared at the b72 intake). Loop-assembly
 engineering starts from designer direction (talk-before-build; the
 bar card is theirs to word).
 LOOP V1 (L1 SKELETON) ENGINEERING COMPLETE 2026-07-30 (~06:45; ask
@@ -868,4 +870,30 @@ ALL reading as two-wide gateways/gatehouse footprints — PINNED 60 for
 this drop (per-pack doctrine; b65 stays 44). Boot + smoke green.
 repro_*.wsr SERIAL-13 regen noise swept into the intake commit (was
 dirty-stamping exports). Lock pin added beside b65's; completion
-line appended ref sl-0034.**
+line appended ref sl-0034.
+B72 OVERWORLD INTAKEN 2026-07-30 (~23:55 local; delivery sl-0035 —
+roads-only delta, IN-PLACE SUPERSEDE of b71 at the same path; b71's
+lock pin RETIRED by per-pack call, its release stays immutable
+archive): wildshot-overworld-pack-dusk@b72 via the release transport,
+GitHub digest + zip + manifest + 8-file parity + tag→sourceCommit
+bbc10cdb verified pre-drop; staged blobs re-hashed byte-true;
+normalized-recipe.json byte-identical to b71 (same recipe, newer
+generator behavior — the delta is generator-side). EVERY ROAD IS A
+BAND LINE NOW: path census value-2 1784→2166 (+382 — country roads
+carry the band), trails 330→361; the 0/1/2 acceptance holds with ZERO
+code change. Addon flood recompute 45202 == manifest (independent
+Python BFS agrees); spawn 109,182 unchanged (harbor capital).
+POROSITY RE-PINNED 60→64 deliberately: exactly +4 route cells (zero
+removed) = two two-wide landmark footprints (structure.ruin
+182-183,190; structure.stone_circle 249-250,116), both on-flood, no
+band beneath — reads as sl-0035's severed-landmarks fix; WYSIWYG-
+legal (b65 keeps 44). CLIFF RE-CONFIRM: the adapter-v4 replica was
+CALIBRATED on the b71 blobs first (reproduced the recorded 1456
+exactly) then run on b72 — relief IDENTICAL (1456 = {169,820,467} by
+level), zero path-on-rock (any value), zero walkable at terrace >= 1;
+the carver grading carries forward exactly as delivered. Boot + smoke
+green; FULL pretester ALL GREEN 19.4 min (17 fixed steps + 28-row
+battery byte-identical incl world_walk + export + lockdown probe).
+Nothing routes to the overworld yet; mechanical intake only, NO feel
+verdicts (designer post-shift). Lock game pin b71→b72; completion
+line ref sl-0035.**
