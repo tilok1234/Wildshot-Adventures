@@ -989,7 +989,9 @@ row relabeled b76; boot clean; FULL pretester ALL GREEN 16.9 min (17
 fixed steps + 28-row battery byte-identical incl world_walk + export
 + lockdown probe). roadTypes 5-8 = unused vocabulary pending their
 own designed round. Lock: b74 game pin superseded in place by b76 +
-NEW game←tileforge pairing pin; sync log sl-0063. NO feel verdicts
+NEW game←tileforge pairing pin; sync log sl-0064 (sl-0063 was taken
+by a concurrent planning entry between routing and close). NO feel
+verdicts
 (mechanical night intake); the designer's on-screen joints/street
 look = the open taste line (the sl-0052/sl-0053 arc continues on
 b76).**

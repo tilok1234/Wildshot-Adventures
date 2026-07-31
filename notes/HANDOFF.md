@@ -125,7 +125,7 @@ Mechanical night intake (designer post-shift; ZERO feel verdicts —
 the on-screen joints/street look is the open taste line, sl-0052/53
 arc continues on b76). Delivery sl-0061 executed hands-free; one
 commit, pushed; full record in CLAUDE.md's milestone line + sync log
-sl-0063. What a future session must know:
+sl-0064. What a future session must know:
 
 - **TileForge is PER-PIN now.** World packs pin the exact package
   build; `world_builder` resolves from a `TILEFORGE_PACKAGES`
