@@ -9,7 +9,7 @@
     "landmarkCount": 3,
     "primaryRouteCount": 3,
     "regionCount": 8,
-    "settlementCount": 6
+    "settlementCount": 7
   },
   "cellOverrides": [],
   "decoration": {
@@ -18,14 +18,26 @@
   "landmarks": [
     {
       "at": null,
-      "near": null,
-      "relation": "far_from_town",
+      "near": {
+        "cell": [
+          150,
+          36
+        ],
+        "radius": 12
+      },
+      "relation": null,
       "type": "ruined_city"
     },
     {
       "at": null,
-      "near": null,
-      "relation": "far_from_town",
+      "near": {
+        "cell": [
+          45,
+          60
+        ],
+        "radius": 14
+      },
+      "relation": null,
       "type": "world_tree"
     },
     {
@@ -46,7 +58,19 @@
     "urbanBlocks": true,
     "variety": true
   },
-  "settlements": [],
+  "settlements": [
+    {
+      "at": null,
+      "near": {
+        "cell": [
+          100,
+          120
+        ],
+        "radius": 10
+      },
+      "rank": 2
+    }
+  ],
   "toggles": {},
   "world": {
     "climatePreset": "temperate",
