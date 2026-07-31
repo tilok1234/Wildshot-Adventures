@@ -3,9 +3,10 @@ extends RefCounted
 ## ruling): validates a game pack (worldforge_pack.gd — hash chain,
 ## walkability, flood) and renders its RESOLVED TMJ layers into
 ## TileMapLayers against the game's own TileForge package. The pack's
-## pinned package identity MUST match the imported tileforge package
-## (checked here: sourceCommit+seed vs tileforge.packageId) — resolved
-## gids are meaningless against a different atlas build.
+## pinned package identity MUST match an imported tileforge package
+## from TILEFORGE_PACKAGES (checked here: sourceCommit+seed vs
+## tileforge.packageId) — resolved gids are meaningless against a
+## different atlas build.
 ##
 ## v0 limitations (testbed class, deliberate): animated families held at
 ## frame 0 (the pixel_match rule); POIs/settlements/minimap unconsumed.
@@ -26,6 +27,20 @@ const RenderLayers := preload("res://game/render_layers.gd")
 
 const TILE := 32
 
+## Imported TileForge package registry, one dir per package BUILD —
+## multiple builds stay imported side by side because committed packs
+## pin different builds (b65-era packs pin the M1 dusk-ae1eecb import
+## at res://tileforge/; the b76 paired drop, sl-0061, pins
+## dusk-9b8b2a2-seed103991). Resolution scans this list for the pack's
+## pinned identity; a pin nothing matches refuses loudly, exactly as
+## the single-package check always did. Future package intakes append
+## one line here (import via addons/tileforge_importer/run_import.gd
+## --package=<dir>).
+const TILEFORGE_PACKAGES: Array[String] = [
+	"res://tileforge/",
+	"res://tileforge_packages/dusk-9b8b2a2-seed103991/",
+]
+
 
 ## Returns {def: {width, height}, bitgrid, spawn: Vector2i, placements}
 ## or {} on failure (every failure is loud).
@@ -40,34 +55,35 @@ static func build_world_arena(root: Node2D, pack_src: String) -> Dictionary:
 	if not report.ok:
 		return {}
 
-	var manifest: Variant = JSON.parse_string(
-		FileAccess.get_file_as_string("res://tileforge/tileforge-manifest.json")
-	)
-	var tileset: TileSet = load("res://tileforge/tileforge.tres")
-	if manifest == null or tileset == null:
-		push_error("world_builder: tileforge package missing")
-		return {}
 	pack_src = WorldforgePack.resolve_src(pack_src)
 	var pack_manifest: Variant = JSON.parse_string(
 		FileAccess.get_file_as_string(pack_src + "manifest.json")
 	)
 	var pinned := String(pack_manifest.tileforge.packageId)
-	var ours := (
-		"%s-%s-seed%d"
-		% [
-			String(pack_manifest.tileforge.theme),
-			String(manifest.sourceCommit),
-			int(manifest.projectSeed),
-		]
-	)
-	if pinned != ours:
+	var theme := String(pack_manifest.tileforge.theme)
+	var manifest: Variant = null
+	var tileset: TileSet = null
+	var available: Array[String] = []
+	for pkg_dir: String in TILEFORGE_PACKAGES:
+		var m: Variant = JSON.parse_string(
+			FileAccess.get_file_as_string(pkg_dir + "tileforge-manifest.json")
+		)
+		if m == null:
+			continue
+		var id := "%s-%s-seed%d" % [theme, String(m.sourceCommit), int(m.projectSeed)]
+		available.append(id)
+		if id == pinned and manifest == null:
+			manifest = m
+			tileset = load(pkg_dir + "tileforge.tres")
+	if manifest == null or tileset == null:
 		push_error(
 			(
-				"world_builder: pack pinned to '%s' but the imported package is '%s' — refusing to render against a different atlas build"
-				% [pinned, ours]
+				"world_builder: pack pinned to '%s' but the imported packages are %s — refusing to render against a different atlas build"
+				% [pinned, str(available)]
 			)
 		)
 		return {}
+	print("world_builder: tileforge package '%s' resolved" % pinned)
 
 	var tmj: Variant = JSON.parse_string(
 		FileAccess.get_file_as_string(pack_src + "resolved/resolved-map.tmj")

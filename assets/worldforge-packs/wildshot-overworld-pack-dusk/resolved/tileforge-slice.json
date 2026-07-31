@@ -1,6 +1,6 @@
 {
   "baseArtifactFormat": 8,
-  "baseGenerationIdentitySha256": "e0fc53ac71a4e56a8b1afbe3d7550e528af9e470d0fe5ed38f4da63ea6e6204f",
+  "baseGenerationIdentitySha256": "50cfcede617a0adb195a07e10dc00c2e4bda4966bba4855eeefb49b442b8d52a",
   "decals": {
     "1": "cracks",
     "10": "waterfall",
@@ -250,14 +250,14 @@
     {
       "id": 21,
       "type": "poi.pass_memorial",
-      "x": 149,
-      "y": 58
+      "x": 66,
+      "y": 177
     },
     {
       "id": 22,
       "type": "poi.pass_memorial",
-      "x": 68,
-      "y": 182
+      "x": 149,
+      "y": 58
     },
     {
       "id": 23,
@@ -285,7 +285,7 @@
     },
     {
       "id": 27,
-      "type": "poi.crypt",
+      "type": "poi.witch_circle",
       "x": 66,
       "y": 108
     },
@@ -297,7 +297,7 @@
     },
     {
       "id": 29,
-      "type": "poi.witch_circle",
+      "type": "poi.hunters_camp",
       "x": 206,
       "y": 212
     },
@@ -519,117 +519,117 @@
     },
     {
       "id": 66,
+      "type": "poi.hunters_camp",
+      "x": 98,
+      "y": 99
+    },
+    {
+      "id": 67,
       "type": "poi.beast_den",
       "x": 193,
       "y": 163
     },
     {
-      "id": 67,
+      "id": 68,
       "type": "poi.standing_stones",
       "x": 92,
       "y": 40
     },
     {
-      "id": 68,
+      "id": 69,
       "type": "poi.standing_stones",
       "x": 31,
       "y": 221
     },
     {
-      "id": 69,
+      "id": 70,
       "type": "poi.cave",
       "x": 46,
       "y": 243
     },
     {
-      "id": 70,
+      "id": 71,
       "type": "poi.hunters_camp",
       "x": 14,
       "y": 86
     },
     {
-      "id": 71,
+      "id": 72,
       "type": "poi.hunters_camp",
       "x": 221,
       "y": 227
     },
     {
-      "id": 72,
+      "id": 73,
       "type": "poi.ruin",
       "x": 25,
       "y": 251
     },
     {
-      "id": 73,
+      "id": 74,
       "type": "poi.hunters_camp",
       "x": 208,
       "y": 245
     },
     {
-      "id": 74,
+      "id": 75,
       "type": "poi.hunters_camp",
       "x": 25,
       "y": 57
     },
     {
-      "id": 75,
+      "id": 76,
       "type": "poi.battlefield",
       "x": 92,
       "y": 24
     },
     {
-      "id": 76,
+      "id": 77,
       "type": "poi.logging_camp",
       "x": 155,
       "y": 203
     },
     {
-      "id": 77,
+      "id": 78,
       "type": "poi.hunters_camp",
       "x": 43,
       "y": 113
     },
     {
-      "id": 78,
+      "id": 79,
       "type": "poi.crypt",
       "x": 114,
       "y": 98
     },
     {
-      "id": 79,
-      "type": "poi.ruin",
+      "id": 80,
+      "type": "poi.crypt",
       "x": 70,
       "y": 126
     },
     {
-      "id": 80,
+      "id": 81,
       "type": "poi.hunters_camp",
       "x": 129,
       "y": 160
     },
     {
-      "id": 81,
+      "id": 82,
       "type": "poi.hunters_camp",
       "x": 234,
       "y": 163
     },
     {
-      "id": 82,
+      "id": 83,
       "type": "poi.graveyard",
       "x": 168,
       "y": 170
     },
     {
-      "id": 83,
+      "id": 84,
       "type": "poi.hunters_camp",
       "x": 10,
       "y": 43
-    },
-    {
-      "id": 84,
-      "type": "poi.hunters_camp",
-      "x": 97,
-      "y": 92
     },
     {
       "id": 85,
@@ -645,9 +645,9 @@
     },
     {
       "id": 87,
-      "type": "poi.hunters_camp",
-      "x": 144,
-      "y": 122
+      "type": "poi.ruin",
+      "x": 149,
+      "y": 125
     },
     {
       "id": 88,
@@ -675,15 +675,20 @@
     },
     {
       "id": 92,
-      "type": "poi.battlefield",
-      "x": 117,
-      "y": 65
+      "type": "poi.fishing_spot",
+      "x": 73,
+      "y": 70
     }
   ],
   "roadTypes": {
     "1": "road",
     "2": "dirtpath",
-    "3": "ruinedroad"
+    "3": "ruinedroad",
+    "4": "street",
+    "5": "gravelway",
+    "6": "flagway",
+    "7": "corduroy",
+    "8": "threshold"
   },
   "routes": [
     {
@@ -755,8 +760,8 @@
       "fromY": 198,
       "id": 8,
       "routeClass": "trail",
-      "toX": 169,
-      "toY": 195
+      "toX": 177,
+      "toY": 196
     },
     {
       "fromX": 109,
@@ -829,7 +834,7 @@
     "8": "tavern",
     "9": "smithy"
   },
-  "tileforgeAdapterVersion": 7,
+  "tileforgeAdapterVersion": 9,
   "wallTypes": {
     "1": "wall",
     "2": "palisade",

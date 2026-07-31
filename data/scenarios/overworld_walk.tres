@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 id = &"overworld_walk"
-display_name = "Overworld Walk: harbor capital (dusk b74)"
+display_name = "Overworld Walk: harbor capital (dusk b76)"
 worldforge_pack = "res://assets/worldforge-packs/wildshot-overworld-pack-dusk/"
 player_spawn = Vector2(109.5, 182.5)
 standin_positions = PackedVector2Array()

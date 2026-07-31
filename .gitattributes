@@ -9,6 +9,7 @@
 # tree (designer decision, not a session's).
 assets/** -text
 audio/** -text
+tileforge_packages/** -text
 reports/** -text
 tests/replay_fixtures/** -text
 *.wsr -text

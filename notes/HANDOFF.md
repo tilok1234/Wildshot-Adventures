@@ -119,7 +119,39 @@ final state:
   `Documents\world_filler\world_filler` (on `main`); game-side
   consumption stays POST-GATE-1 per planning docs/17.
 
-## 2026-07-31 session close (~00:15) — b72 intake + crosshair — READ THIS FIRST
+## 2026-08-01 session close (~00:45) — b76 + 9b8b2a2 PAIRED intake — READ THIS FIRST
+
+Mechanical night intake (designer post-shift; ZERO feel verdicts —
+the on-screen joints/street look is the open taste line, sl-0052/53
+arc continues on b76). Delivery sl-0061 executed hands-free; one
+commit, pushed; full record in CLAUDE.md's milestone line + sync log
+sl-0063. What a future session must know:
+
+- **TileForge is PER-PIN now.** World packs pin the exact package
+  build; `world_builder` resolves from a `TILEFORGE_PACKAGES`
+  registry: `res://tileforge/` (M1 ae1eecb import — b65-era packs,
+  BYTE-UNTOUCHED) + `res://tileforge_packages/dusk-9b8b2a2-seed103991/`
+  (the b76 pairing). Never swap `res://tileforge` in place — new
+  builds land BESIDE it (see gotcha #22).
+- **b76 overworld** superseded b74 in place (b75 superseded
+  pre-intake, never landed). Path contract 0..3: street=3 (pack
+  census 1461; delivery's 1466 = WORLD-side count, world→pack seam,
+  b75-archive-pinned), accepted zero-code — the chain reads no
+  semantic path values (grep re-proof). Porosity 60→60 with ±2 typed
+  (crypt door in at 70-71,127; witch_circle door out at 66-67,109);
+  b65 keeps 44. Cliff replica calibrated on b74 (1456 exact) then
+  b76 = 1447 (−9 typed to 30 rock-edge repaints); zero band-on-rock,
+  zero walkable at terrace≥1.
+- **Road joints render end-to-end**: tmj-driven rendering gets the
+  hand-authored joint gids free (47 cells, mechanized in
+  `tests/worldforge_pack/b76_picker_probe.gd` — which also proves
+  BOTH worlds build through the registry in one run). roadTypes 5-8
+  (gravelway/flagway/corduroy/threshold) are unused vocabulary
+  pending their own designed round.
+- FULL pretester ALL GREEN 16.9 min post-drop (17 fixed + 28-row
+  battery byte-identical incl world_walk + export + lockdown probe).
+
+## 2026-07-31 session close (~00:15) — b72 intake + crosshair
 
 Mechanical night session (designer post-shift; zero feel/acceptance
 verdicts recorded, by the ask's own terms). Two arcs, both pushed:
@@ -469,10 +501,23 @@ Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- -
     Mismatch = incident + STOP. Big masters can stay in the release
     (it IS the archive) — commit only what ships; record conversions.
 21. **Fresh-clone byte-exactness**: `.gitattributes` pins the
-    hash-gated trees (assets/audio/reports/replay fixtures) `-text`.
-    The repo-wide `* -text` flip is DELIBERATELY not done — it would
-    show the entire working tree modified (CRLF working copies vs LF
-    blobs) — that is a designer-tapped big-bang, not session hygiene.
+    hash-gated trees (assets/audio/reports/replay fixtures, and
+    `tileforge_packages/` since b76) `-text`. The repo-wide `* -text`
+    flip is DELIBERATELY not done — it would show the entire working
+    tree modified (CRLF working copies vs LF blobs) — that is a
+    designer-tapped big-bang, not session hygiene.
+22. **TileForge packages are PER-PIN (b76 paired intake)**: every
+    world pack pins the exact package build it was resolved against;
+    `world_builder.TILEFORGE_PACKAGES` is the registry. NEVER swap
+    `res://tileforge/` in place — that breaks every committed pack
+    pinning the old build (b65 = THE LOOP's town). Import new builds
+    BESIDE it: raw drop under `assets/tileforge/`, consumed instance
+    at `res://tileforge_packages/<id>/`, tres via
+    `run_import.gd -- --package=<dir>` (the package's own shipped
+    importer builds it), append the registry line, and the export
+    include filter (`tileforge_packages/*/*.json`) already covers the
+    manifest. A pin matching nothing refuses to render, loudly, by
+    design.
 
 ## Open items ledger-side
 

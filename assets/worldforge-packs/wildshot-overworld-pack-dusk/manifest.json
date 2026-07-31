@@ -1,9 +1,9 @@
 {
   "adapter": {
-    "tileforge": 7
+    "tileforge": 9
   },
   "artifactFormat": 8,
-  "baseArtifactSha256": "5758a5d849fd01ab5962e55ca6f39594bb4ca3eff124a2277fd9cfa18644533c",
+  "baseArtifactSha256": "be42ece84f8a67fb56d8c01a067c788ba71bb65c88b6b48175e5aea7483e8502",
   "dimensions": {
     "chunkHeight": 32,
     "chunkWidth": 32,
@@ -11,35 +11,35 @@
     "width": 256
   },
   "files": {
-    "minimap.png": "cc70a0dd0201b7c5998a79d540e0f8aa1ba3825f555e0eda3b8a490ab68fb483",
+    "minimap.png": "60e4ae57dacd7a852331daaa13cf17b2dd61fc9471ef569e48b55492cfd4bdb7",
     "normalized-recipe.json": "c756cc8d00320430157720390d85929684288f3aaf350ed724b8819b2888fb46",
-    "resolved/resolved-map.tmj": "35493a30139c9f1bf886ac3ff9bf02c4ad7929950f17c5690a5f50259b73a221",
-    "resolved/tileforge-map-data.json": "5c2ee0dc9f0d616147a72a78dd4951d8e5ad7d53fe1c8312a4cbb6925fa537c1",
-    "resolved/tileforge-slice.json": "54497a42cd7fcdd141260fc1ccb33954d5261a07aa77fa6e9c62af7563a6db86",
-    "validation-report.json": "a5adc6d2617bdb3e4b2e372de79791b7b9a7d0a8716d008e36c6670dde2d0fd5",
-    "walkability.json": "0024b42a5815cf4d68a281476b23e57b057c6a0ad5d4a14b4d98474a4107670d",
-    "world.json": "5758a5d849fd01ab5962e55ca6f39594bb4ca3eff124a2277fd9cfa18644533c"
+    "resolved/resolved-map.tmj": "f783e2dd48a3e77e5647dac06910101b428f982f447aa4c1f852b013e6fc50a8",
+    "resolved/tileforge-map-data.json": "f037aafe0b39202d864d9e9b58eb699ca2538913a2b231e10b9b974bf291670a",
+    "resolved/tileforge-slice.json": "438241073972f70e8426ddc0e62543e42591dae987805fe6fac716016c2aad0f",
+    "validation-report.json": "bb31b824c2f327ce7755630268a9c61ffa3455b1000bb43c31f884fc64747d0c",
+    "walkability.json": "fec69c5994d4f4ca3c59d214c1a7a8e8c74f5d09595504256cccb75890b5a898",
+    "world.json": "be42ece84f8a67fb56d8c01a067c788ba71bb65c88b6b48175e5aea7483e8502"
   },
   "generator": {
-    "behaviorVersion": 74,
-    "generationIdentitySha256": "e0fc53ac71a4e56a8b1afbe3d7550e528af9e470d0fe5ed38f4da63ea6e6204f",
+    "behaviorVersion": 76,
+    "generationIdentitySha256": "50cfcede617a0adb195a07e10dc00c2e4bda4966bba4855eeefb49b442b8d52a",
     "name": "worldforge",
     "recipeCompilerVersion": 35,
     "recipeSha256": "c756cc8d00320430157720390d85929684288f3aaf350ed724b8819b2888fb46",
-    "resolvedConfigSha256": "56d4e5f634e11535d58d7b945fbb586884e7eb64d5c99643e5a4006c27ac92c2",
+    "resolvedConfigSha256": "34a3b4072a908a4f5a6bf3a4b9322163c5068cc1109559117118de1cb4461ff8",
     "seed": 2008,
     "version": "0.1.0"
   },
   "pack": "worldforge-game-pack",
   "packFormat": 1,
   "tileforge": {
-    "manifestSha256": "bb10a0aafe6b8fb14be1d3a41bce325202d57a6b277306ae5e6ef9c57f3b2b11",
-    "packageId": "dusk-ae1eecb-seed103991",
-    "packageSha256": "395c16929e3a678668b82f10f952c55c5315f3938450891db2ac3ae1dd4dc1eb",
+    "manifestSha256": "c8b11de523115d4615d8c523770f87cf42cf3975bb9c682f0c484037437e467c",
+    "packageId": "dusk-9b8b2a2-seed103991",
+    "packageSha256": "e09ea40e51f054f9fad6dad4cc96edd99a903ee2bff86f2a3e20e26cf57d84d6",
     "theme": "dusk"
   },
   "walkability": {
-    "floodCount": 45137,
+    "floodCount": 45156,
     "format": 1,
     "spawnCell": [
       109,

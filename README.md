@@ -38,7 +38,7 @@ by rule.
 | Path | Contents |
 |---|---|
 | `assets/` | Raw forge drops (`.gdignore`d — importers consume these): `tileforge/` (theme packages), `assembler-pack/` (full enemy catalog: 57 families / 202 variants + 4 players), `projectile-pack/` (5 styles, pattern-mapped), `worldforge-packs/` (generated worlds; dusk small-cold-coastal committed) |
-| `tileforge/` | The active theme package (dusk) as `res://tileforge/` per its GAME-GUIDE; `tileforge.tres` built by `addons/tileforge_importer/run_import.gd` (headless) |
+| `tileforge/` | The M1 theme package import (dusk-ae1eecb) as `res://tileforge/` per its GAME-GUIDE; `tileforge.tres` built by `addons/tileforge_importer/run_import.gd` (headless). Later package builds live beside it under `tileforge_packages/<id>/` (same driver, `--package=`); `world_builder` resolves each world pack's pinned identity against the registry |
 | `assembler/` | The imported actor roster (player + mapped enemies) — roster-filtered by `addons/assembler_importer` from `data/actor_sheet_map.tres` |
 | `addons/` | `tileforge_importer` (M1), `assembler_importer` (M4/M5, docs/14), `uikit_importer` (M4), `worldforge_importer` (post-M5, docs/15 — validates + consumes generated world packs) |
 | `autoload/` | Config, Telemetry, DebugHub, BootArgs — exactly four, none holding gameplay state |

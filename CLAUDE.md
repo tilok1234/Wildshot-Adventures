@@ -930,4 +930,66 @@ game code (manifest data only; importer honors fam.tiles, which are
 fully populated post-restoration; tres carries all road tiles) —
 nothing to un-honor game-side. Format+lint+boot+smoke green, smoke
 hashes unchanged; battery untouched. Designer taste-rule on the
-overworld look = theirs, on screen.**
+overworld look = theirs, on screen.
+B76 OVERWORLD + TILEFORGE 9B8B2A2 PAIRED INTAKE 2026-08-01 (~00:40
+local; delivery sl-0061 — PAIRED DROP + CONTRACT CHANGE, in-place
+supersede of b74; b75 superseded pre-intake, never landed; b74/b75
+releases stay immutable archive): BOTH releases fetched by tag +
+verified pre-drop (WF zip = GitHub digest = logged 98c3170d, manifest
+8a838922, 8-file parity, tag→4291f796 — the pack manifest carries no
+sourceCommit field, tag target IS that check; TF zip e09ea40e =
+digest, tag→9b8b2a2ebf, 186 files); staged blobs re-hashed byte-true
+after every copy (pack 9 / raw drop 186 / consumed 185). PAIRING
+CROSS-CHECKED: the pack's tileforge block == the TF release's own
+bytes (packageId dusk-9b8b2a2-seed103991 = theme+commit+seed;
+manifestSha256 c8b11de5 == sha256 of the package's manifest;
+packageSha256 == the TF zip sha). SCOPE REPRODUCED INDEPENDENTLY from
+the immutable b75 archive (re-fetched, 25f9d5c1 verified): world.json
+byte-identical modulo exactly 6 identity fields, walkability
+byte-identical, tmj delta = 5 inserted tilesets (+296 tiles:
+gravelway/flagway/corduroy/threshold/roadjoint) renumbering 57,790
+cells identity-preservingly + EXACTLY 47 road-layer joint
+substitutions (31 street_paving + 16 dirt_path), zero anomalies. THE
+ARCHITECTURAL ACT: world_builder resolves the tileforge package BY
+THE PACK'S PIN from the new TILEFORGE_PACKAGES registry —
+res://tileforge (the M1 ae1eecb import) stays BYTE-UNTOUCHED (b65/THE
+LOOP render unchanged; the legacy default rebuild proven
+byte-identical), dusk-9b8b2a2-seed103991 imported BESIDE it at
+res://tileforge_packages/ (raw drop
+assets/tileforge/tileforge-dusk-complete-9b8b2a2; consumed instance
+minus the inert Unity .cs; tres 87 sources built by the package's own
+shipped importer via run_import --package= — the driver grew the
+param, default path unchanged; export include filter + .gitattributes
+-text pin extended). Identity refusal stays loud (pin + available
+ids). PATH 0..3 ACCEPTED ZERO-CODE (grep re-proof: the chain reads no
+semantic path values — no 0..2 pin ever existed; sl-0043 precedent
+holds): pack census {0:63278, 1:230, 2:567, 3:1461}; the delivery's
+570/229/1466 are WORLD-side counts — the world→pack seam (same class
+as world flood 45063 vs pack flood 45156) accounts the −3/+1/−5,
+pinned by the b75 archive diff (1461 predates b76). POROSITY 60→60,
+composition ±2, every cell typed (sl-0052 precedent): ADDED
+(70,127)+(71,127) = poi.crypt [70,126] two-wide pass door (walkable
+ss under solid SS, on-flood); REMOVED (66,109)+(67,109) = b74's
+poi.witch_circle door (footprint withdrawn, cells stay open
+walkable); b74's two off-flood route cells (15-16,29) reconnected
+(off-flood 11→9); pin 60 stands deliberate, b65 keeps 44, diag exit 0
+both. CLIFF LINE: the adapter-v4 replica rebuilt AT 4291f796,
+calibrated on b74 = the recorded 1456={169,820,467} EXACT; b76 =
+1447={170,810,467} — first histogram movement since b71, typed to 30
+rock-edge material repaints (rock 2554→2548, b75 re-dressing); HARD
+INVARIANTS EXACT: zero band-on-rock (any value), zero walkable at
+terrace>=1; the tmj's own cliff layer places 1447 = replica agrees
+with the shipped render. RENDER PROOF MECHANIZED: b76_picker_probe
+(supersedes b74's) builds BOTH worlds in one run — b76 via the new
+package (166,150 placements; road 2301 cells, EXACTLY 47 from the
+road_joint source: the joints draw; the GAME-GUIDE 2.4/2.8 roadJoints
+rule is needed nowhere game-side — tmj-driven rendering gets them
+free as delivered) AND b65 via the legacy import (170,207). Picker
+row relabeled b76; boot clean; FULL pretester ALL GREEN 16.9 min (17
+fixed steps + 28-row battery byte-identical incl world_walk + export
++ lockdown probe). roadTypes 5-8 = unused vocabulary pending their
+own designed round. Lock: b74 game pin superseded in place by b76 +
+NEW game←tileforge pairing pin; sync log sl-0063. NO feel verdicts
+(mechanical night intake); the designer's on-screen joints/street
+look = the open taste line (the sl-0052/sl-0053 arc continues on
+b76).**
