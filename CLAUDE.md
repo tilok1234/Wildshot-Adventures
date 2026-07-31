@@ -994,4 +994,54 @@ by a concurrent planning entry between routing and close). NO feel
 verdicts
 (mechanical night intake); the designer's on-screen joints/street
 look = the open taste line (the sl-0052/sl-0053 arc continues on
-b76).**
+b76).
+B77 OVERWORLD INTAKEN 2026-08-01 (~01:55 local; delivery sl-0066 =
+the sl-0063 prop-walkability arc; NORMAL in-place supersede of b76,
+SAME tileforge pin — sl-0064's per-pin registry holds, zero TF work):
+zip = GitHub digest = logged c9083012, manifest 5166341a, 8-file
+parity, tag→1a20bd22, asset byte-size exactly b76's (fixed-width
+walkability flips); post-copy re-hash byte-true. WALKABILITY-ONLY
+CONFIRMED GAME-SIDE: tmj/map-data/recipe/minimap byte-identical to
+b76 (git shows exactly 4 pack files changed), slice differs only in
+its generation-identity echo, world.json = 3 generator identity
+fields, prop/material/elevation/path chunk layers byte-identical
+(the density-kept claim reproduced). DELTA 100% TYPED BY SPECIES:
+1044 grid cells OPENED, zero sealed, zero flood cells lost — stump
+509 / fallen_log 490 / bone_pile 44 / loot_pile 1, the four sl-0063
+carpet conversions exactly, zero cells without a prop; flood
+45156→46493 (+1337 = 905 newly-walkable + 432 unlocked
+stranded-pocket cells — the designer's 'getting blocked' pockets
+joining the flood; independent lsb-first BFS exact; 139 opened cells
+stay legal walkable-unreachable; world-side 903/425 vs pack 905/432
+= the established world→pack seam). POROSITY: the route-cell set is
+IDENTICAL — 60→60, zero adds/removes (prop flips touch no structure
+cells), pin 60 stands with NO re-pin needed; off-flood route cells
+9→6 — the dock trio (194-196,240) reconnected by unsealed pockets;
+b65 keeps 44; diag exit 0 both. CLIFF CARRIES: material + elevation
+byte-identical (terrace field 1447), zero opened cells on rock —
+zero band-on-rock and zero walkable at terrace≥1 both hold. THE ONE
+sl-0066 GAME-SIDE CHECK — PROVEN ON SCREEN, MECHANIZED:
+tests/worldforge_pack/canopy_render_probe.gd (committed, windowed)
+replicates main's exact construction (world_builder output +
+sort_layers reparented into a y-sorted ACTORS-band space + the
+player as an ACTORS-band ranger sprite); at walkable crown cell
+(110,176), 0/8525 screen pixels inside the crown tile's opaque mask
+differ between ranger-present and ranger-hidden frames — the
+props-overhang crown draws OVER the player with zero leak-through —
+while 4075 out-of-mask pixels differ (the player renders where crown
+art is transparent); evidence committed
+reports/canopy_render_audit_b77_{under,reference}.png (the under
+shot: ranger's lower body swallowed by foliage, control ranger fully
+visible on open grass); ACTORS 30 < CANOPY 32 stays boot-asserted
+band law. b77 ships 2,352 reachable walkable crown cells —
+walk-under is live at scale. Picker row relabeled b77 +
+b77_picker_probe PASS (both worlds resolve their pins; road 2301
+cells / 47 joints carried — tmj byte-identical). Boot clean; FULL
+pretester ALL GREEN 14.3 min (17 fixed + 28-row battery
+byte-identical incl world_walk + export + lockdown probe). Lock: b76
+game pin superseded in place by b77 (the game←tileforge 9b8b2a2
+pairing pin carries unchanged); sync log sl-0067. NO feel verdicts
+(mechanical intake): the DESIGNER'S NAVIGATION WALK is the
+acceptance per sl-0066's own terms — the 'getting blocked' complaint
+is the test. sl-0065 (dev map overlay ask) was not in this session's
+paste — open, untouched.**

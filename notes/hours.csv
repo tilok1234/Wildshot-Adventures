@@ -149,3 +149,4 @@ timestamp,action,note
 2026-07-31T23:56:02,start,""
 2026-08-01T00:45:41,note,"b76+9b8b2a2 PAIRED intake (sl-0061->sl-0064): verified pre-drop (both zips = GitHub digests, tag targets, 8-file parity), b75-archive scope diff (47 joints exact, zero anomalies), per-pin TILEFORGE_PACKAGES registry (b65 byte-untouched, both-worlds probe), path 0..3 zero-code (census typed, world-vs-pack seam pinned), porosity 60->60 +-2 typed, cliff replica 1456-exact calibration -> 1447 typed, FULL pretester ALL GREEN 16.9 min; commits e71b6c6+0dae664 pushed; planning sl-0064 + lock re-pin pushed 248a2bb"
 2026-08-01T00:45:41,stop,""
+2026-08-01T01:23:11,start,"b77 overworld intake session (sl-0066): prop walkability conversion, canopy on-screen proof, typed porosity accounting"

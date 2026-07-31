@@ -1,11 +1,12 @@
-## One-shot probe (b76 intake, sl-0061): the Overworld Walk picker row's
-## pack must validate as the b76 drop — addon validator, flood, spawn,
+## One-shot probe (b77 intake, sl-0066): the Overworld Walk picker row's
+## pack must validate as the b77 drop — addon validator, flood, spawn,
 ## behavior version — AND both committed worlds must build through
-## world_builder's package registry: b76 resolves dusk-9b8b2a2-seed103991
-## (road layer 2301 cells, exactly 47 from the road_joint source — the
-## paired-drop render proof), b65 resolves the legacy M1 import
-## unchanged. Not part of the battery; run ad hoc:
-##   godot_console --headless --path . --script tests/worldforge_pack/b76_picker_probe.gd
+## world_builder's package registry (b77 pins the SAME
+## dusk-9b8b2a2-seed103991 the b76 paired drop bundled; the road layer's
+## 2301 cells with exactly 47 road_joint cells carry forward — the b77
+## delta is walkability-only, tmj byte-identical to b76). b65 resolves
+## the legacy M1 import unchanged. Not part of the battery; run ad hoc:
+##   godot_console --headless --path . --script tests/worldforge_pack/b77_picker_probe.gd
 extends SceneTree
 
 const WorldforgePack := preload("res://addons/worldforge_importer/worldforge_pack.gd")
@@ -19,8 +20,8 @@ func _init() -> void:
 	var scenario: Resource = load("res://data/scenarios/overworld_walk.tres")
 	var pack_path: String = scenario.get("worldforge_pack")
 	print("picker row -> ", pack_path, " (", scenario.get("display_name"), ")")
-	if not String(scenario.get("display_name")).contains("b76"):
-		printerr("FAIL: picker row label is not b76")
+	if not String(scenario.get("display_name")).contains("b77"):
+		printerr("FAIL: picker row label is not b77")
 		quit(1)
 		return
 	var result: Dictionary = WorldforgePack.validate(pack_path)
@@ -34,22 +35,22 @@ func _init() -> void:
 	var flood: int = int(manifest["walkability"]["floodCount"])
 	var spawn: Array = manifest["walkability"]["spawnCell"]
 	print("validated: behavior=", behavior, " flood=", flood, " spawn=", spawn)
-	if behavior != 76 or flood != 45156 or int(spawn[0]) != 109 or int(spawn[1]) != 182:
-		printerr("FAIL: picker row does not load the b76 drop")
+	if behavior != 77 or flood != 46493 or int(spawn[0]) != 109 or int(spawn[1]) != 182:
+		printerr("FAIL: picker row does not load the b77 drop")
 		quit(1)
 		return
 
 	# Both-worlds render proof: the registry resolves each pack's pin.
-	var root_76 := Node2D.new()
-	get_root().add_child(root_76)
-	var arena_76 := WorldBuilder.build_world_arena(root_76, pack_path)
-	if arena_76.is_empty():
-		printerr("FAIL: b76 world did not build (identity/registry)")
+	var root_77 := Node2D.new()
+	get_root().add_child(root_77)
+	var arena_77 := WorldBuilder.build_world_arena(root_77, pack_path)
+	if arena_77.is_empty():
+		printerr("FAIL: b77 world did not build (identity/registry)")
 		quit(1)
 		return
-	var road: TileMapLayer = root_76.get_node_or_null("road")
+	var road: TileMapLayer = root_77.get_node_or_null("road")
 	if road == null:
-		printerr("FAIL: b76 road layer missing")
+		printerr("FAIL: b77 road layer missing")
 		quit(1)
 		return
 	var used := road.get_used_cells()
@@ -67,9 +68,9 @@ func _init() -> void:
 	for cell: Vector2i in used:
 		if road.get_cell_source_id(cell) == joint_sid:
 			joint_cells += 1
-	print("b76 road layer: %d cells, %d from road_joint" % [used.size(), joint_cells])
+	print("b77 road layer: %d cells, %d from road_joint" % [used.size(), joint_cells])
 	if used.size() != 2301 or joint_cells != 47:
-		printerr("FAIL: b76 road layer expected 2301 cells with 47 joints")
+		printerr("FAIL: b77 road layer expected 2301 cells with 47 joints")
 		quit(1)
 		return
 
@@ -82,5 +83,5 @@ func _init() -> void:
 		return
 	print("b65 world builds via legacy import: %d placements" % int(arena_65.placements))
 
-	print("PASS: Overworld Walk picker row loads the b76 overworld (flood 45156, spawn 109,182); both worlds resolve their pinned tileforge packages")
+	print("PASS: Overworld Walk picker row loads the b77 overworld (flood 46493, spawn 109,182); both worlds resolve their pinned tileforge packages")
 	quit(0)

@@ -119,7 +119,32 @@ final state:
   `Documents\world_filler\world_filler` (on `main`); game-side
   consumption stays POST-GATE-1 per planning docs/17.
 
-## 2026-08-01 session close (~00:45) — b76 + 9b8b2a2 PAIRED intake — READ THIS FIRST
+## 2026-08-01 session close (~02:00) — b77 intake: props walk, canopy proven — READ THIS FIRST
+
+Second mechanical night intake (designer post-shift; ZERO feel
+verdicts). Delivery sl-0066 = the prop-walkability conversion
+(sl-0063 arc): carpet/canopy/solid classes over all 84 prop species,
+density byte-identical. One commit, pushed; full record in CLAUDE.md
++ sync log sl-0067. Essentials:
+
+- **Normal in-place supersede** b76→b77, SAME tileforge pin — the
+  per-pin registry needed zero work (probe proves both worlds still
+  resolve; road 2301/47 joints carried, tmj byte-identical).
+- **Walkability-only**: 1044 cells opened (stump 509 / fallen_log
+  490 / bone_pile 44 / loot_pile 1 — typed 100%), zero sealed; flood
+  45156→46493; porosity set IDENTICAL at 60 (no re-pin); cliff
+  invariants carry; b65 untouched.
+- **Canopy check (the sl-0066 game-side check) PROVEN**:
+  `tests/worldforge_pack/canopy_render_probe.gd` + pixel-mask
+  verdict — 0/8525 in-mask pixels differ with/without a ranger under
+  the crown (props-overhang draws over the player), evidence PNGs in
+  reports/. 2,352 walkable crown cells shipped.
+- FULL pretester ALL GREEN 14.3 min. **Designer's navigation walk =
+  the acceptance** (sl-0066: the 'getting blocked' complaint is the
+  test). sl-0065 (dev-profile world-map overlay ask) is OPEN and was
+  NOT routed in this session's paste — do not build it unprompted.
+
+## 2026-08-01 session close (~00:45) — b76 + 9b8b2a2 PAIRED intake
 
 Mechanical night intake (designer post-shift; ZERO feel verdicts —
 the on-screen joints/street look is the open taste line, sl-0052/53
