@@ -7,9 +7,10 @@ extends Resource
 ## fire tick); fans and radials are authored angle offsets, never
 ## random (CORE-32 determinism applies to hostile fire too).
 ##
-## Pattern-id namespace: 1..3 player weapons, 10..15 ordinary enemy
-## patterns, 16..21 Yard Warden elite (§3.5), 100 debug emitter;
-## -1 nova, -2 hazard, -3 contact, -4 test damage schedule (§2.11
+## Pattern-id namespace: 1..6 player weapons (4..6 = the S0 class
+## frames), 10..15 ordinary enemy patterns, 16..21 Yard Warden elite
+## (§3.5), 22..24 Old Tusk (S1 seam 3), 100 debug emitter; -1 nova,
+## -2 hazard, -3 contact, -4 test damage schedule (§2.11
 ## transition-proof hook — never a gameplay source).
 
 ## How the aim vector is computed at the fire tick (M6): CURRENT aims

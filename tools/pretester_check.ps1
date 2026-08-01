@@ -243,7 +243,8 @@ if (-not $SkipBattery) {
         @("overworld_green_boss","1,2,3",3600,"res://reports/dodge_overworld_green_boss_composition.json","","PASS","PASS"),
         @("proof_slice_leash","1,2,3",3600,"","","PASS","PASS"),
         @("proof_green_camp","1,2,3",3600,"","","PASS","PASS"),
-        @("proof_green_ranged","1,2,3",3600,"","","PASS","PASS")
+        @("proof_green_ranged","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_old_tusk","1,2,3",3600,"","","PASS","PASS")
     )
     . "$PSScriptRoot\battery_runner.ps1"
     if ($Workers -le 0) { $Workers = Get-PhysicalCoreCount }

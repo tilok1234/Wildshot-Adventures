@@ -59,6 +59,13 @@ var damage_mod: int = 0
 ## Armed by THE damage path at the death tick; the ability key while
 ## dead confirms early (player_respawn.gd).
 var respawn_at_tick: int = -1
+## S1 seam 3 (SERIAL 18): unique ARMOR item worn — index into
+## balance_frame.json items[] (a slot=="armor" unique row), -1 = the
+## ordinary armor_tier ladder. Set by the UNIQUE pickup path;
+## recompute reads the item's defense/hp/speed_cost INSTEAD of the
+## tier table (block-8 break (c): over-budget defense with a real
+## paired speed cost).
+var armor_item_index: int = -1
 
 
 func serialize_into(buf: StreamPeerBuffer) -> void:
@@ -84,3 +91,4 @@ func serialize_into(buf: StreamPeerBuffer) -> void:
 	buf.put_u16(range_stat)
 	buf.put_32(damage_mod)
 	buf.put_64(respawn_at_tick)
+	buf.put_16(armor_item_index)

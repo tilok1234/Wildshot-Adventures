@@ -39,7 +39,28 @@ static func drop_line(world: RefCounted, d: Dictionary) -> String:
 		DropKinds.UNIQUE:
 			var ui := int(d.a)
 			if ui >= 0 and ui < world.unique_defs.size():
-				return "UNIQUE: %s" % String(world.unique_defs[ui].display_name)
+				var ud: Resource = world.unique_defs[ui]
+				var base := "UNIQUE: %s" % String(ud.display_name)
+				# Items-mapped uniques (S1 seam 3) publish their numbers
+				# like everything else — armor uniques read def/hp/cost.
+				var uid := String(ud.items_id)
+				if not uid.is_empty():
+					var items: Array = world.stat_frame.get("items", [])
+					for it: Dictionary in items:
+						if (
+							String(it.get("id", "")) == uid
+							and String(it.get("slot", "")) == "armor"
+						):
+							return (
+								"%s — +%d def, +%d hp / −%d spd"
+								% [
+									base,
+									int(it.get("defense", 0)),
+									int(it.get("hp", 0)),
+									int(it.get("speed_cost", 0)),
+								]
+							)
+				return base
 			return ""
 	return ""
 

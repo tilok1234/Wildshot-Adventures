@@ -1,0 +1,81 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; OLD TUSK full-fight proof (S1 seam 3; the 3d19a6c schedule
+; precedent): 480 hp paced at 24 every 130 ticks -> P2 crossing at
+; t910 (dealt 168 > the 66% floor), P3 at t1820 (dealt 336), kill
+; t2600, cleanup to 3600. The bot dodges the charger/rage/mire kit
+; through both transitions on the lab arena floor.
+
+[resource]
+script = ExtResource("1")
+id = &"proof_old_tusk"
+display_name = "PROOF: Old Tusk full fight (schedule, transitions + kill)"
+player_spawn = Vector2(22, 16)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"old_tusk": PackedVector2Array(30, 16)
+}
+damage_schedule = Array[Dictionary]([{
+"amount": 24,
+"tick": 130
+}, {
+"amount": 24,
+"tick": 260
+}, {
+"amount": 24,
+"tick": 390
+}, {
+"amount": 24,
+"tick": 520
+}, {
+"amount": 24,
+"tick": 650
+}, {
+"amount": 24,
+"tick": 780
+}, {
+"amount": 24,
+"tick": 910
+}, {
+"amount": 24,
+"tick": 1040
+}, {
+"amount": 24,
+"tick": 1170
+}, {
+"amount": 24,
+"tick": 1300
+}, {
+"amount": 24,
+"tick": 1430
+}, {
+"amount": 24,
+"tick": 1560
+}, {
+"amount": 24,
+"tick": 1690
+}, {
+"amount": 24,
+"tick": 1820
+}, {
+"amount": 24,
+"tick": 1950
+}, {
+"amount": 24,
+"tick": 2080
+}, {
+"amount": 24,
+"tick": 2210
+}, {
+"amount": 24,
+"tick": 2340
+}, {
+"amount": 24,
+"tick": 2470
+}, {
+"amount": 24,
+"tick": 2600
+}])
+default_seed = 1

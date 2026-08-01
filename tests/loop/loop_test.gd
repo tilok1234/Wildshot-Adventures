@@ -247,6 +247,40 @@ func _init() -> void:
 		"lab weapon line falls back to name+tier"
 	)
 
+	# 11. S1 seam 3 — the Hide: an items-mapped UNIQUE equips unique
+	# armor (mask bit + override index through recompute); the grammar
+	# line publishes its numbers like everything else.
+	var hw2: RefCounted = _world_with(ring_def, 97)
+	hw2.set_stat_frame(StatFrame.load_frame())
+	(
+		hw2
+		. set_uniques(
+			[
+				load("res://data/uniques/reliquary_coil.tres"),
+				load("res://data/uniques/old_tusks_hide.tres"),
+			]
+		)
+	)
+	var hp2: RefCounted = hw2.players[0]
+	hp2.class_id = 0
+	StatFrame.recompute(hw2, hp2)
+	hw2.spawn_drop(hp2.pos, SimWorld.DROP_UNIQUE, 1)
+	LootStep.run(hw2)
+	var hitems: Array = hw2.stat_frame.items
+	check(hp2.unique_mask == 2, "hide pickup sets mask bit 1")
+	check(
+		hp2.armor_item_index >= 0 and String(hitems[hp2.armor_item_index].id) == "u-old-tusks-hide",
+		"hide equips the unique armor row"
+	)
+	check(hp2.armor == 12, "worn hide armors 12 through recompute")
+	check(
+		(
+			ItemText.drop_line(hw2, {"kind": SimWorld.DROP_UNIQUE, "a": 1, "b": 0})
+			== "UNIQUE: Old Tusk's Hide — +12 def, +38 hp / −6 spd"
+		),
+		"hide line exact"
+	)
+
 	if fails.is_empty():
 		print("loop_test: PASS (drops/streams/curve/damage/armor/pickup/rings/text/hash)")
 		quit(0)

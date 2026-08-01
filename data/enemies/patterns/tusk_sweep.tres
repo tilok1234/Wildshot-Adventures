@@ -1,0 +1,86 @@
+[gd_resource type="Resource" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://data/pattern_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; OLD TUSK P1+ (S1 seam 3, sl-0104; docs/23 boss disposition — the
+; Warden recipe is the floor): the tusk sweep — a 5-shot 70° heavy
+; cone, short-lived, the boar's melee identity writ large. Elite
+; amber language (Law 3: one elite shot family). Pattern id 22
+; (namespace: 22..24 Old Tusk). Lead 30 rides the emitter slots.
+
+[sub_resource type="Resource" id="shot0"]
+script = ExtResource("2")
+angle_offset_deg = -35.0
+speed = 5.0
+radius = 0.24
+damage = 12
+ttl_ticks = 16
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.5
+
+[sub_resource type="Resource" id="shot1"]
+script = ExtResource("2")
+angle_offset_deg = -17.5
+speed = 5.0
+radius = 0.24
+damage = 12
+ttl_ticks = 16
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.5
+
+[sub_resource type="Resource" id="shot2"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 5.0
+radius = 0.24
+damage = 12
+ttl_ticks = 16
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.5
+
+[sub_resource type="Resource" id="shot3"]
+script = ExtResource("2")
+angle_offset_deg = 17.5
+speed = 5.0
+radius = 0.24
+damage = 12
+ttl_ticks = 16
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.5
+
+[sub_resource type="Resource" id="shot4"]
+script = ExtResource("2")
+angle_offset_deg = 35.0
+speed = 5.0
+radius = 0.24
+damage = 12
+ttl_ticks = 16
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.5
+
+[resource]
+script = ExtResource("1")
+id = &"tusk_sweep"
+pattern_id = 22
+shots = Array[Resource]([SubResource("shot0"), SubResource("shot1"), SubResource("shot2"), SubResource("shot3"), SubResource("shot4")])

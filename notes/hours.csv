@@ -200,3 +200,4 @@ timestamp,action,note
 2026-08-01T23:33:40,note,"S1 Green Country session start (sl-0104): seams + pretester parallelization"
 2026-08-02T00:09:39,note,"S1 seam 1 committed 91b1037 (green roster, 54 variants, re-table, proofs PASS); starting battery parallelization"
 2026-08-02T00:50:31,note,"tooling adopted: parallel battery 9.5 min/69 runs, gate 12.5 min ALL GREEN x2; ring2 red-row catch fixed f40decf"
+2026-08-02T01:14:20,note,"S1 seam 2 committed (T1 loot + rings + grammar); gate ALL GREEN 11.8 min"

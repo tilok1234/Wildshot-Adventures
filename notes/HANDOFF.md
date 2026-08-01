@@ -214,7 +214,7 @@ Before every commit, per touched area:
   (`git add -f reports/...`). Unchanged scenarios must reproduce
   BYTE-IDENTICAL.
 - the one-command gate: `pwsh tools/pretester_check.ps1` = 27 fixed
-  steps + the 69-run two-lane battery (36 floor rows + 33 cap runs;
+  steps + the 71-run two-lane battery (37 floor rows + 34 cap runs;
   pinned FAILs are expectations) + export + lockdown — **~12.5 min
   ALL GREEN since the battery went PARALLEL** (S1 tooling ask:
   tools/battery_runner.ps1 worker pool, default = physical cores,
@@ -275,7 +275,9 @@ Before every commit, per touched area:
 | first_contact **[primary]** | 1,2,3 | 3600 | **FAIL — the standing primary baseline** |
 | lab_default + meet_blightcaster/leadshot/yard_warden | 1,2,3 | 3600 | PASS / PASS — EXCEPT **meet_leadshot cap = PINNED FAIL** (see lane note) |
 | loop_ring1/2/3 + proof_brk_site (b65 loop content, retired-with-honor but still proven) | 1,2,3 | 3600 | PASS / PASS |
-| overworld_green/dry/wet/cold/green_boss → dodge_overworld_*_composition.json | 1,2,3 | 3600 | PASS / PASS |
+| overworld_green/dry/wet/cold → dodge_overworld_*_composition.json | 1,2,3 | 3600 | PASS / PASS |
+| overworld_green_boss → dodge_overworld_green_boss_composition.json (S1 seam 3: OLD TUSK at his site — the Warden stand-in retired; re-baselined) | 1,2,3 | 3600 | PASS / PASS |
+| proof_old_tusk (S1 seam 3: 480-hp paced schedule — P2 @t910, P3 @t1820, kill t2600; charger/rage/mire kit through both transitions) | 1,2,3 | 3600 | PASS / PASS |
 | proof_slice_leash (S0 seam 2: the isolated camp at seed 98,225 — spawn INSIDE its envelope, exactly one site wakes; RE-BASELINED at S1 seam 1: the re-table made it the ranged Green set at density 1.5, margins 1.975 → ~0.120, honest) | 1,2,3 | 3600 | PASS / PASS |
 | proof_green_camp (S1 seam 1: the most isolated MIXED green territory, seed 185,244 — the full melee+ranged re-table at density, near ~0.90) | 1,2,3 | 3600 | PASS / PASS |
 | proof_green_ranged (S1 seam 1: the most isolated green territory of all, seed 108,138, prowler-only → the PURE ranged set: anchors+flanker+aimed, near ~0.121) | 1,2,3 | 3600 | PASS / PASS |

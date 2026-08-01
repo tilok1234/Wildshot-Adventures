@@ -248,6 +248,35 @@ func _init() -> void:
 	Damage.apply(aw, ap, 10, SimWorld.PATTERN_TEST_SCHEDULE)
 	check(ap.hp == hp_now - 10, "test schedule still bypasses all mitigation")
 
+	# 7b. S1 seam 3 — unique armor override (block-8 break (c)): the
+	# worn Hide REPLACES the tier ladder (def 12 vs the T2 budget 8,
+	# T2-chassis hp) and pays a REAL −6 speed before the cap; taking
+	# it off restores the ladder exactly.
+	var hide_idx := -1
+	for i2 in items.size():
+		if String(items[i2].get("id", "")) == "u-old-tusks-hide":
+			hide_idx = i2
+	check(hide_idx >= 0, "the Hide present in balance_frame items")
+	var uw: RefCounted = _class_world("sword", 15)
+	var upx: RefCounted = uw.players[0]
+	upx.armor_tier = 2
+	StatFrame.recompute(uw, upx)
+	var ladder_speed: float = upx.move_speed
+	upx.armor_item_index = hide_idx
+	StatFrame.recompute(uw, upx)
+	check(upx.armor == 12, "Hide defense 12 overrides the T2 ladder's 8")
+	check(upx.max_hp == 120 + 38, "Hide keeps the T2 hp row (the chassis)")
+	check(
+		(
+			absf(upx.move_speed - (ladder_speed - 6.0 * StatFrame.SPEED_TILES_PER_100 / 100.0))
+			< 0.0001
+		),
+		"the −6 speed cost is real"
+	)
+	upx.armor_item_index = -1
+	StatFrame.recompute(uw, upx)
+	check(upx.armor == 8, "removing the override restores the ladder")
+
 	# 8. The movement-integrator HARD CAP (block 6): a smuggled
 	# over-speed write cannot move a class-backed player past 3.45 t/s
 	# (the clamp's negative test); the legacy lab band is untouched.
@@ -356,6 +385,10 @@ func _init() -> void:
 	hw.players[0].ring_index = 5
 	check(hw.state_hash() != h4, "ring_index is hashed state")
 	hw.players[0].ring_index = -1
+	var h4b: int = hw.state_hash()
+	hw.players[0].armor_item_index = 3
+	check(hw.state_hash() != h4b, "armor_item_index is hashed state (SERIAL 18)")
+	hw.players[0].armor_item_index = -1
 	var h5: int = hw.state_hash()
 	hw.players[0].damage_mod = 1
 	check(hw.state_hash() != h5, "damage_mod is hashed state")

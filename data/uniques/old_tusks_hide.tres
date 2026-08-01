@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/unique_def.gd" id="1_uniq"]
+
+; OLD TUSK'S HIDE (S1 seam 3; docs/23 the designer's unique concept):
+; armor, block-8 break (c) over_budget_paired_cost — over-budget
+; defense WITH a real paired speed cost. "The souvenir: his
+; stubbornness." Numbers live in balance_frame.json items[]
+; (u-old-tusks-hide: def 12 / +38 hp / −6 speed; the validator
+; prices the break); this resource is the drop identity + the
+; items[] binding.
+
+[resource]
+script = ExtResource("1_uniq")
+uid = &"old_tusks_hide"
+display_name = "Old Tusk's Hide"
+frame_slot = -1
+items_id = "u-old-tusks-hide"

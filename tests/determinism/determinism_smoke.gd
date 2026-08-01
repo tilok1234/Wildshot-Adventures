@@ -1478,12 +1478,15 @@ func _check_law4_ordering() -> bool:
 		["yw burst", _phase_slot_tele("res://data/enemies/yard_warden.tres", 2, 0)],
 		["fanmaw fan", _slot_tele("res://data/enemies/fanmaw.tres", 0)],
 		["yw fan", _phase_slot_tele("res://data/enemies/yard_warden.tres", 0, 0)],
+		["tusk sweep", _phase_slot_tele("res://data/enemies/old_tusk.tres", 0, 0)],
 		["ringer radial", _slot_tele("res://data/enemies/ringer.tres", 0)],
 		["yw radial", _phase_slot_tele("res://data/enemies/yard_warden.tres", 1, 0)],
 		["leadshot dart", _slot_tele("res://data/enemies/leadshot.tres", 0)],
 		["yw volley", _phase_slot_tele("res://data/enemies/yard_warden.tres", 2, 2)],
+		["gore rush", _phase_slot_tele("res://data/enemies/old_tusk.tres", 1, 1)],
 		["blight zone arm", _zone_arm("res://data/enemies/blightcaster.tres")],
 		["yw zone arm", _phase_zone_arm("res://data/enemies/yard_warden.tres", 1, 1)],
+		["tusk mud arm", _phase_zone_arm("res://data/enemies/old_tusk.tres", 2, 2)],
 	]
 	var prev := -1
 	for row: Array in rows:

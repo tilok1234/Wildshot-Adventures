@@ -108,10 +108,25 @@ static func _apply(world: RefCounted, p: RefCounted, d: Dictionary) -> bool:
 			if (p.unique_mask & (1 << ui)) != 0:
 				return false
 			p.unique_mask |= 1 << ui
+			var udef: Resource = world.unique_defs[ui]
+			# S1 seam 3: an items-mapped unique EQUIPS its balance row
+			# (Old Tusk's Hide — unique armor replaces the tier ladder
+			# via recompute's override branch). Loop-era frame-boost
+			# uniques keep their tier-6 model below.
+			var uitems_id := String(udef.items_id)
+			if not uitems_id.is_empty():
+				var uitems: Array = world.stat_frame.get("items", [])
+				for uii in uitems.size():
+					if String(uitems[uii].get("id", "")) == uitems_id:
+						p.armor_item_index = uii
+						if p.class_id >= 0:
+							StatFrame.recompute(world, p)
+						break
+				return true
 			# Loop-era tier-6 frame boost. Class loadouts are smaller
 			# than the lab trio — bounds-guarded; slice unique
 			# BEHAVIOURS are chapter work (docs/22 block 8).
-			var slot := int(world.unique_defs[ui].frame_slot)
+			var slot := int(udef.frame_slot)
 			if slot >= 0 and slot < p.weapon_tiers.size():
 				p.weapon_tiers[slot] = maxi(p.weapon_tiers[slot], 6)
 			return true

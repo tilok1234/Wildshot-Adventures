@@ -34,6 +34,10 @@ const ENEMY_VOCAB := {
 	"enemy.frost_wraith": 3,
 }
 const BOSS_DEF_INDEX := 6  # yard_warden kit stand-in (docs/20)
+## S1 seam 3: zones whose world boss has its REAL identity (docs/23
+## naming act). Missing zones keep the Warden stand-in until their
+## chapter names them.
+const ZONE_BOSS := {"green": 22}  # old_tusk
 
 ## S1 GREEN RE-TABLE (sl-0104 seam 1): zones with a row here map each
 ## wf placeholder id onto a WEIGHTED SET of the zone's real roster —
@@ -205,12 +209,13 @@ static func build_sites(src: String) -> Dictionary:
 			continue
 		if rule == "world_boss.v1":
 			var bzone := String(region_zone.get(String(pl.get("regionId", "")), ""))
+			var boss_def := int(ZONE_BOSS.get(bzone, BOSS_DEF_INDEX))
 			(
 				sites
 				. append(
 					{
 						"cell": Vector2(float(cx) + 0.5, float(cy) + 0.5),
-						"roster_defs": PackedInt32Array([BOSS_DEF_INDEX]),
+						"roster_defs": PackedInt32Array([boss_def]),
 						"roster_weights": PackedInt32Array([1]),
 						"pack_min": 1,
 						"pack_max": 1,

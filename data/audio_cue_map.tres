@@ -46,4 +46,4 @@ cues = {
 "wav": "res://audio/cues/enemy_laser_charge.wav"
 }
 }
-melee_patterns = Array[int]([11])
+melee_patterns = Array[int]([11, 22])

@@ -253,7 +253,13 @@ func _init() -> void:
 	for s: Dictionary in sites:
 		var rd: PackedInt32Array = s.roster_defs
 		if String(s.kind) == "boss":
-			check(rd.size() == 1 and rd[0] == 6, "boss site carries the Warden kit stand-in")
+			# S1 seam 3: green's boss is OLD TUSK (def 22); other zones
+			# keep the Warden stand-in until their chapters.
+			var want_def := 22 if String(s.zone) == "green" else 6
+			check(
+				rd.size() == 1 and rd[0] == want_def,
+				"boss site carries its zone's identity (green = Old Tusk)"
+			)
 			continue
 		for di in rd:
 			if String(s.zone) == "green":

@@ -1683,3 +1683,38 @@ parse error in the label code — the hang-is-a-parse-error gotcha
 re-earned). Zero new fixed steps (existing gates grew).
 DESIGNER-EYES pending: drops in the field, toast/label taste, the
 two ring concepts, every [T] rate.**
+S1 SEAM 3 — OLD TUSK LIVE 2026-08-02 (~02:00 local; sl-0104 seam 3;
+docs/23 naming act; SERIAL 17→18, next bump 19): the hand-placed
+Green world boss IS the boar — the Warden stand-in RETIRES at his
+site. THE KIT (special never a task; the Warden three-phase recipe
+as floor, zero new sim mechanisms): 480 hp [T] / radius 0.55 / P1
+THE CHARGER (3.0 chaser; TUSK SWEEP pattern 22 = 5x70° heavy cone
+dmg 12 lead 30 — never stand in front) / P2 THE RAGE (≤66%: 3.2,
+quicker sweeps + GORE RUSH pattern 23 = three staggered-speed tusks
+down one INTERCEPT line dmg 14 lead 40 — committed straight running
+punished) / P3 THE MIRE (≤33%: wounded 2.6, blight_zone mud casts —
+the SHARED mud/spore vocabulary arm 45, pattern→lead law holds —
+plus densest sweeps). Elite amber language throughout (Law 3);
+sweep joined the melee cue class; Law-4 = 15 rows monotone; speeds
+all under the 3.6 floor. Sprite boar:blood (no boar among the 13
+48px bosses — Mirejaw is Longjaw's future skin; boss-art polish =
+a designer round). THE FIRST SLICE UNIQUE — OLD TUSK'S HIDE
+(block-8 break (c), validator-priced): T2-chassis armor, defense
+12 vs the T2 budget 8, hp +38, paid with a REAL −6 speed ("the
+souvenir: his stubbornness"); 35% independent roll (no pity, the
+coil precedent) + guaranteed T2 equipment (chance 1.0). MECHANISM:
+PlayerState.armor_item_index (SERIAL 18, hashed) — a worn unique
+REPLACES the armor-tier ladder in recompute (its speed cost counts
+before the hard cap); UniqueDef.items_id binds drop→items row;
+profiles persist BY ID (armor_item_id); unique grammar line
+publishes the numbers ("UNIQUE: Old Tusk's Hide — +12 def, +38 hp
+/ −6 spd", exact-pinned). WIRING: roster 22 append-only; importer
+ZONE_BOSS green→22 (other zones keep the stand-in until named);
+overworld_green_boss re-pointed (row re-baselined deliberately);
+proof_old_tusk = schedule-paced full fight (P2 @t910 / P3 @t1820 /
+kill t2600, the 3d19a6c precedent) PASS BOTH LANES FIRST RUN.
+Battery 37 rows / 71 runs. Goldens re-recorded + verified x10;
+zone-aware boss pins in living_world + green_roster; stat_frame
+override checks (equip/unequip exact, −6 real, hash); loop_test
+Hide pickup + exact line. DESIGNER-EYES/ROUNDS pending: the fight
+itself (feel rounds are scheduled work), Hide numbers, [T] rates.**

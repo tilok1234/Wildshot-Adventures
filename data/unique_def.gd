@@ -9,5 +9,9 @@ extends Resource
 @export var uid: StringName = &""
 @export var display_name: String = ""
 ## Weapon frame slot this unique boosts (0=longbolt, 1=scattercast,
-## 2=wheelblade).
+## 2=wheelblade). -1 = no frame boost (equipment-slot uniques).
 @export var frame_slot: int = 0
+## S1 seam 3: balance_frame.json items[] id this unique EQUIPS (a
+## unique armor/ring row — the validator prices it; block 8). Empty =
+## the loop-era frame-boost model above.
+@export var items_id: String = ""

@@ -60,9 +60,23 @@
 					0,
 					0,
 					0,
+					39,
+					879,
+					606,
 					0,
 					0,
 					0,
+					0
+				],
+				[
+					0,
+					0,
+					0,
+					0,
+					0,
+					946,
+					624,
+					506,
 					0,
 					0,
 					0,
@@ -109,26 +123,23 @@
 					0,
 					0,
 					0
-				],
-				[
-					0,
-					0,
-					0,
-					0,
-					0,
-					0,
-					0,
-					0,
-					0,
-					118,
-					2262,
-					1220
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.0635715514421463,
+			"near_miss_min": 0.115722516179085,
 			"peak_hostile_live": 5,
-			"phase_transitions": [],
+			"phase_transitions": [
+				{
+					"hp": 312,
+					"phase": 1,
+					"tick": 910
+				},
+				{
+					"hp": 144,
+					"phase": 2,
+					"tick": 1820
+				}
+			],
 			"repro": "",
 			"seed": 1,
 			"survived_ticks": 3600
@@ -184,9 +195,23 @@
 					0,
 					0,
 					0,
+					39,
+					879,
+					606,
 					0,
 					0,
 					0,
+					0
+				],
+				[
+					0,
+					0,
+					0,
+					0,
+					0,
+					946,
+					624,
+					506,
 					0,
 					0,
 					0,
@@ -233,26 +258,23 @@
 					0,
 					0,
 					0
-				],
-				[
-					0,
-					0,
-					0,
-					0,
-					0,
-					0,
-					0,
-					0,
-					0,
-					118,
-					2262,
-					1220
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.0635715514421463,
+			"near_miss_min": 0.115722516179085,
 			"peak_hostile_live": 5,
-			"phase_transitions": [],
+			"phase_transitions": [
+				{
+					"hp": 312,
+					"phase": 1,
+					"tick": 910
+				},
+				{
+					"hp": 144,
+					"phase": 2,
+					"tick": 1820
+				}
+			],
 			"repro": "",
 			"seed": 2,
 			"survived_ticks": 3600
@@ -308,9 +330,23 @@
 					0,
 					0,
 					0,
+					39,
+					879,
+					606,
 					0,
 					0,
 					0,
+					0
+				],
+				[
+					0,
+					0,
+					0,
+					0,
+					0,
+					946,
+					624,
+					506,
 					0,
 					0,
 					0,
@@ -357,33 +393,30 @@
 					0,
 					0,
 					0
-				],
-				[
-					0,
-					0,
-					0,
-					0,
-					0,
-					0,
-					0,
-					0,
-					0,
-					118,
-					2262,
-					1220
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.0635715514421463,
+			"near_miss_min": 0.115722516179085,
 			"peak_hostile_live": 5,
-			"phase_transitions": [],
+			"phase_transitions": [
+				{
+					"hp": 312,
+					"phase": 1,
+					"tick": 910
+				},
+				{
+					"hp": 144,
+					"phase": 2,
+					"tick": 1820
+				}
+			],
 			"repro": "",
 			"seed": 3,
 			"survived_ticks": 3600
 		}
 	],
-	"scenario": "overworld_green_boss",
-	"scenario_path": "res://data/scenarios/overworld_green_boss.tres",
+	"scenario": "proof_old_tusk",
+	"scenario_path": "res://tests/bot_scenarios/proof_old_tusk.tres",
 	"seeds": [
 		1,
 		2,

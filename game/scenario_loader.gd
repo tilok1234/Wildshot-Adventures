@@ -39,7 +39,17 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 	# Loop v1 (docs/19): progression tables + unique defs ride every
 	# world like the weapon/ability defs — definitions, not state.
 	world.set_progression(load("res://data/progression.tres"))
-	world.set_uniques([load("res://data/uniques/reliquary_coil.tres")])
+	# Unique defs — mask-bit order is append-only (0 = the loop coil,
+	# 1 = Old Tusk's Hide, S1 seam 3).
+	(
+		world
+		. set_uniques(
+			[
+				load("res://data/uniques/reliquary_coil.tres"),
+				load("res://data/uniques/old_tusks_hide.tres"),
+			]
+		)
+	)
 	# THE STAT FRAME (docs/22, slice S0): balance_frame.json rides every
 	# world as definitions. Inert for class_id -1 players — bot and
 	# legacy worlds stay byte-identical with it aboard.
@@ -51,8 +61,9 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 	# [T]). S1 GREEN ROSTER (sl-0104 seam 1, docs/23 family order):
 	# 8=slime, 9=goblin, 10=boar, 11=wolf, 12=bat, 13=shroom, 14=wasp,
 	# 15=beetle, 16=moth, 17=snail, 18=porcupine, 19=scarecrow,
-	# 20=treant, 21=bandit. Append-only; never reorder. Scenario extras
-	# (bot canaries) append after, keeping standard indexes stable.
+	# 20=treant, 21=bandit, 22=old_tusk (S1 seam 3 — Green's world
+	# boss). Append-only; never reorder. Scenario extras (bot
+	# canaries) append after, keeping standard indexes stable.
 	var defs: Array = [
 		load("res://data/enemies/rusher.tres"),
 		load("res://data/enemies/husk_archer.tres"),
@@ -76,6 +87,7 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 		load("res://data/enemies/scarecrow.tres"),
 		load("res://data/enemies/treant.tres"),
 		load("res://data/enemies/bandit.tres"),
+		load("res://data/enemies/old_tusk.tres"),
 	]
 	for extra: Resource in scenario.extra_enemy_defs:
 		defs.append(extra)

@@ -101,6 +101,16 @@
       "slot": "ring",
       "tier": 4,
       "unique": { "breaks": ["exception_behaviour"], "chassis_fraction": 0.8, "note": "placeholder for the BRK drop - behaviour authored at slice build" }
+    },
+    {
+      "id": "u-old-tusks-hide",
+      "slot": "armor",
+      "tier": 2,
+      "name": "Old Tusk's Hide",
+      "defense": 12,
+      "hp": 38,
+      "speed_cost": 6,
+      "unique": { "breaks": ["over_budget_paired_cost"], "chassis_fraction": 0.8, "note": "S1 seam 3 (docs/23 naming act): T2-chassis armor (hp 38 = the T2 row) with defense 12 vs the T2 budget 8 - the over-budget break - paid with a REAL -6 speed (the souvenir: his stubbornness)" }
     }
   ]
 }

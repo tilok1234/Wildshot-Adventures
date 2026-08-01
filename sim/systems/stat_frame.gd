@@ -168,7 +168,19 @@ static func recompute(world: RefCounted, p: RefCounted) -> void:
 				_apply_trade(trades, ring.trade)
 	var armor_v := 0
 	var armor_hp := 0
-	if p.armor_tier > 0:
+	var armor_speed_cost := 0
+	var items_arr: Array = f.get("items", [])
+	if p.armor_item_index >= 0 and p.armor_item_index < items_arr.size():
+		# S1 seam 3: a worn unique armor REPLACES the tier ladder —
+		# its defense/hp come from the item row, and its speed_cost is
+		# the block-8 break (c) paired price (counted before the hard
+		# cap like every other speed source).
+		var aitem: Dictionary = items_arr[p.armor_item_index]
+		if String(aitem.get("slot", "")) == "armor":
+			armor_v = int(aitem.get("defense", 0))
+			armor_hp = int(aitem.get("hp", 0))
+			armor_speed_cost = int(aitem.get("speed_cost", 0))
+	elif p.armor_tier > 0:
 		var slot: Dictionary = f.armor_slot
 		var defense: Array = slot.defense
 		var hp_table: Array = slot.hp
@@ -188,7 +200,9 @@ static func recompute(world: RefCounted, p: RefCounted) -> void:
 	# Block 6: gear speed is a STAT trade; the hard cap counts
 	# everything combined. The integrator re-applies the cap in t/s so
 	# no later write can leak past it.
-	var speed_stat: int = mini(int(cls.base_speed) + int(trades.speed), SPEED_HARD_CAP)
+	var speed_stat: int = mini(
+		int(cls.base_speed) + int(trades.speed) - armor_speed_cost, SPEED_HARD_CAP
+	)
 	p.move_speed = SPEED_TILES_PER_100 * float(speed_stat) / 100.0
 	p.hp = mini(p.hp, p.max_hp)
 	p.mana = mini(p.mana, p.max_mana)

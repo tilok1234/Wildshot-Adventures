@@ -101,7 +101,14 @@ func _init() -> void:
 		zone_census[s.zone] = int(zone_census.get(s.zone, 0)) + 1
 		if String(s.kind) == "boss":
 			var rd: PackedInt32Array = s.roster_defs
-			check(rd.size() == 1 and rd[0] == 6, "boss site carries the Warden kit stand-in")
+			# S1 seam 3: green's boss has its real identity (Old Tusk,
+			# def 22); the other zones keep the Warden stand-in until
+			# their chapters name them.
+			var want_def := 22 if String(s.zone) == "green" else 6
+			check(
+				rd.size() == 1 and rd[0] == want_def,
+				"boss site carries its zone's identity (green = Old Tusk)"
+			)
 	check(int(zone_census.get("green", 0)) == 94, "green owns 94 sites")
 	# Depth key: lazy Green, fast Snow (docs/23 (c), W-3).
 	var green_ticks := -1

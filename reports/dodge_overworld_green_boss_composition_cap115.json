@@ -6,7 +6,7 @@
 	"kind": "dodge_proof",
 	"label": "mechanical verification (no gate code reads this — CORE-53)",
 	"pass": true,
-	"peak_hostile_live_max": 10,
+	"peak_hostile_live_max": 5,
 	"policy": "reactive-16dir-melee-on-telegraph",
 	"runs": [
 		{
@@ -120,14 +120,14 @@
 					0,
 					0,
 					0,
-					0,
-					0,
-					3600
+					2,
+					2179,
+					1419
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.120406413078308,
-			"peak_hostile_live": 10,
+			"near_miss_min": 0.124453285336494,
+			"peak_hostile_live": 5,
 			"phase_transitions": [],
 			"repro": "",
 			"seed": 1,
@@ -244,14 +244,14 @@
 					0,
 					0,
 					0,
-					0,
-					0,
-					3600
+					2,
+					2179,
+					1419
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.120406413078308,
-			"peak_hostile_live": 10,
+			"near_miss_min": 0.124453285336494,
+			"peak_hostile_live": 5,
 			"phase_transitions": [],
 			"repro": "",
 			"seed": 2,
@@ -368,14 +368,14 @@
 					0,
 					0,
 					0,
-					0,
-					0,
-					3600
+					2,
+					2179,
+					1419
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.120406413078308,
-			"peak_hostile_live": 10,
+			"near_miss_min": 0.124453285336494,
+			"peak_hostile_live": 5,
 			"phase_transitions": [],
 			"repro": "",
 			"seed": 3,

@@ -37,8 +37,9 @@ const DT := 1.0 / 60.0
 ## gold cost + settlement respawn timer for class-backed players in
 ## persistent worlds (PlayerState.respawn_at_tick). Inert everywhere
 ## persistent_respawn is off — every proof world. 16 = living-world
-## sites (seam 2); 15 = docs/22 stat frame (seam 1).
-const SERIAL_VERSION := 17
+## sites (seam 2); 15 = docs/22 stat frame (seam 1). 18 = S1 seam 3:
+## PlayerState.armor_item_index (unique armor — Old Tusk's Hide).
+const SERIAL_VERSION := 18
 
 ## Damage-source pattern id for the scenario-declared test damage
 ## schedule (§2.11 elite transition proofs; planning log 2026-07-28).

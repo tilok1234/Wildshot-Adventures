@@ -1,0 +1,130 @@
+[gd_resource type="Resource" load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://data/enemy_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/emitter_slot.gd" id="2"]
+[ext_resource type="Script" path="res://data/phase_def.gd" id="3"]
+[ext_resource type="Script" path="res://data/phase_list.gd" id="4"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/tusk_sweep.tres" id="5"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/gore_rush.tres" id="6"]
+[ext_resource type="Resource" path="res://data/enemies/hazards/blight_zone.tres" id="7"]
+[ext_resource type="Resource" path="res://data/uniques/old_tusks_hide.tres" id="8"]
+
+; OLD TUSK (S1 seam 3, sl-0104; docs/23 the designer's naming act):
+; the great scarred boar of the SE mud pocket — Green's world boss.
+; Three phases on the proven Warden recipe (never a stat wall):
+; P1 THE CHARGER — a fast chaser whose whole identity is the tusk
+;   sweep cone (get beside him, never in front);
+; P2 THE RAGE — faster, and the gore rush (INTERCEPT) punishes
+;   committed straight-line running;
+; P3 THE MIRE — wounded and slower, but the mud itself fights (the
+;   blight_zone hazard IS the mud vocabulary — shared with shroom,
+;   arm 45 exactly, the pattern->lead law holds) and the sweeps
+;   come denser. All numbers [T]; speeds 3.2 max < the 3.6 floor.
+
+[sub_resource type="Resource" id="p1_sweep"]
+script = ExtResource("2")
+pattern = ExtResource("5")
+trigger_range = 1.8
+telegraph_ticks = 30
+cooldown_ticks = 96
+recover_ticks = 16
+
+[sub_resource type="Resource" id="p2_sweep"]
+script = ExtResource("2")
+pattern = ExtResource("5")
+trigger_range = 1.8
+telegraph_ticks = 30
+cooldown_ticks = 84
+recover_ticks = 12
+
+[sub_resource type="Resource" id="p2_gore"]
+script = ExtResource("2")
+pattern = ExtResource("6")
+trigger_range = 10.0
+telegraph_ticks = 40
+cooldown_ticks = 156
+recover_ticks = 20
+
+[sub_resource type="Resource" id="p3_sweep"]
+script = ExtResource("2")
+pattern = ExtResource("5")
+trigger_range = 1.8
+telegraph_ticks = 30
+cooldown_ticks = 72
+recover_ticks = 10
+
+[sub_resource type="Resource" id="p3_gore"]
+script = ExtResource("2")
+pattern = ExtResource("6")
+trigger_range = 10.0
+telegraph_ticks = 40
+cooldown_ticks = 132
+recover_ticks = 16
+
+[sub_resource type="Resource" id="p3_mud"]
+script = ExtResource("2")
+hazard = ExtResource("7")
+trigger_range = 9.0
+telegraph_ticks = 15
+cooldown_ticks = 168
+recover_ticks = 16
+
+[sub_resource type="Resource" id="phase1"]
+script = ExtResource("3")
+id = &"p1_charger"
+hp_floor_pct = 66.0
+movement_policy = 0
+move_speed = -1.0
+range_min = 0.0
+range_max = 0.0
+entry_cooldown_ticks = 0
+emitters = Array[Resource]([SubResource("p1_sweep")])
+
+[sub_resource type="Resource" id="phase2"]
+script = ExtResource("3")
+id = &"p2_rage"
+hp_floor_pct = 33.0
+movement_policy = 0
+move_speed = 3.2
+range_min = 0.0
+range_max = 0.0
+entry_cooldown_ticks = 30
+emitters = Array[Resource]([SubResource("p2_sweep"), SubResource("p2_gore")])
+
+[sub_resource type="Resource" id="phase3"]
+script = ExtResource("3")
+id = &"p3_mire"
+hp_floor_pct = 0.0
+movement_policy = 0
+move_speed = 2.6
+range_min = 0.0
+range_max = 0.0
+entry_cooldown_ticks = 30
+emitters = Array[Resource]([SubResource("p3_sweep"), SubResource("p3_gore"), SubResource("p3_mud")])
+
+[sub_resource type="Resource" id="phaselist"]
+script = ExtResource("4")
+phases = Array[Resource]([SubResource("phase1"), SubResource("phase2"), SubResource("phase3")])
+
+[resource]
+script = ExtResource("1")
+id = &"old_tusk"
+display_name = "Old Tusk"
+hp = 480
+body_radius = 0.55
+move_speed = 3.0
+contact_damage = 0
+contact_cooldown_ticks = 30
+aggro_range = 14.0
+movement_policy = 0
+range_min = 0.0
+range_max = 0.0
+phases = SubResource("phaselist")
+xp_value = 150
+gold_min = 20
+gold_max = 40
+drop_chance = 1.0
+drop_tier_min = 2
+drop_tier_max = 2
+unique_drops = Array[Resource]([ExtResource("8")])
+unique_chances = Array[float]([0.35])
