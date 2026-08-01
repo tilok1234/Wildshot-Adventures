@@ -83,5 +83,7 @@ func _init() -> void:
 		return
 	print("b65 world builds via legacy import: %d placements" % int(arena_65.placements))
 
-	print("PASS: Overworld Walk picker row loads the b77 overworld (flood 46493, spawn 109,182); both worlds resolve their pinned tileforge packages")
+	print(
+		"PASS: Overworld Walk picker row loads the b77 overworld (flood 46493, spawn 109,182); both worlds resolve their pinned tileforge packages"
+	)
 	quit(0)

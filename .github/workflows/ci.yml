@@ -32,9 +32,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # Forge packages (tileforge/, assets/) are generated build artifacts —
-          # "regenerate rather than hand-edit" — so they are exempt from format.
-          files=$(git ls-files '*.gd' | grep -v '^assets/' | grep -v '^tileforge/' || true)
+          # Forge packages (tileforge/, tileforge_packages/, assets/) are
+          # generated build artifacts — "regenerate rather than hand-edit" —
+          # so they are exempt from format. tileforge_packages/ added at the
+          # sl-0083 seam: the b76 paired intake created the per-pin consumed
+          # tree (byte-pinned in .gitattributes) and the exemption never grew
+          # with it, leaving lint red since 2026-07-31 unnoticed.
+          files=$(git ls-files '*.gd' | grep -v '^assets/' | grep -v '^tileforge/' | grep -v '^tileforge_packages/' || true)
           if [ -z "$files" ]; then
             echo "No project-authored .gd files yet — format check trivially green."
             exit 0
