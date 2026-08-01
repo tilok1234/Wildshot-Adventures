@@ -8,12 +8,16 @@ extends RefCounted
 ## scenarios and the proof battery are byte-identical by construction.
 ##
 ## Game-side conventions [P] (planning sweeps these, docs/22 untouched):
-## - SPEED ANCHOR: speed stat 100 (sword, the floor) == 3.0 tiles/s — the
-##   CORE-53 proof floor every battery row is stamped with. Bases
-##   100/105/110 => 3.0/3.15/3.3 t/s; the ruled +15% HARD CAP (115) =>
-##   3.45 t/s, enforced in the movement integrator (player_move.gd),
-##   never in item data. The designer's ruled revisit ("look at it later
-##   after we tried it some") is this one constant + a proof re-run.
+## - SPEED ANCHOR (RE-RULED sl-0102 after the designer's S0 walk —
+##   the block-6 reservation exercised as designed): speed stat 100
+##   (sword, the floor) == 3.6 tiles/s [T]. Bases 100/105/110 =>
+##   3.60/3.78/3.96 t/s (bow == the old lab feel); the ruled +15%
+##   HARD CAP (115) => 4.14 t/s, enforced in the movement integrator
+##   (player_move.gd), never in item data. The CORE-53 proof floor
+##   moves WITH the anchor: both battery lanes run at 3.6 and 4.14
+##   (the original 3.0 anchor + its proofs are history in the S0
+##   session file). One constant is the whole revisit, per the
+##   ruling.
 ## - THE damage formula is integer-exact: ceil(attack * 0.2) computed as
 ##   (attack*20 + 99)/100 — floats would mis-round exact multiples.
 ## - Class ids 0/1/2 = sword/staff/bow (balance_frame.json "classes"
@@ -31,8 +35,11 @@ const FLOOR_DEN := 100
 
 ## docs/22 block 6 — the ruled numbers, asserted against the json at
 ## load. The cap lives HERE and in the integrator, never in item data.
+## SPEED_TILES_PER_100 is THE anchor constant (sl-0102 [T]: 3.6, was
+## 3.0) — a future feel revisit edits this ONE line and re-runs the
+## proof lanes; everything downstream derives.
 const SPEED_HARD_CAP := 115
-const SPEED_TILES_PER_100 := 3.0
+const SPEED_TILES_PER_100 := 3.6
 const CAP_TILES_PER_S := SPEED_TILES_PER_100 * float(SPEED_HARD_CAP) / 100.0
 
 ## Slice level cap (docs/22 block 5; brackets end at 30).

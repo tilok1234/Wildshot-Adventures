@@ -124,7 +124,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 1.97486414909363,
+			"near_miss_min": 2.06707587242126,
 			"repro": "",
 			"seed": 1,
 			"survived_ticks": 3600
@@ -246,7 +246,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 1.97486414909363,
+			"near_miss_min": 2.06707587242126,
 			"repro": "",
 			"seed": 2,
 			"survived_ticks": 3600
@@ -368,7 +368,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 1.97486414909363,
+			"near_miss_min": 2.06707587242126,
 			"repro": "",
 			"seed": 3,
 			"survived_ticks": 3600
@@ -381,6 +381,6 @@
 		2,
 		3
 	],
-	"speed": 3.0,
+	"speed": 3.6,
 	"ticks_per_run": 3600
 }

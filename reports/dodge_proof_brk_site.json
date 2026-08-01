@@ -126,7 +126,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.12109067440033,
+			"near_miss_min": 0.120780491828918,
 			"peak_hostile_live": 10,
 			"phase_transitions": [],
 			"repro": "",
@@ -250,7 +250,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.12109067440033,
+			"near_miss_min": 0.120780491828918,
 			"peak_hostile_live": 10,
 			"phase_transitions": [],
 			"repro": "",
@@ -374,7 +374,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.12109067440033,
+			"near_miss_min": 0.120780491828918,
 			"peak_hostile_live": 10,
 			"phase_transitions": [],
 			"repro": "",
@@ -389,6 +389,6 @@
 		2,
 		3
 	],
-	"speed": 3.0,
+	"speed": 3.6,
 	"ticks_per_run": 3600
 }

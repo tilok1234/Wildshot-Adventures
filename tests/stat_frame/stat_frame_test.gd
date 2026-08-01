@@ -112,20 +112,21 @@ func _init() -> void:
 	check(StatFrame.taken(40, 20) == 20, "taken 40/20 subtraction lane")
 	check(StatFrame.taken(999, 999) == 200, "taken 999/999 ceil(199.8)=200")
 
-	# 3. Class curves (block 5): bases + per-level, speed anchor 3.0.
+	# 3. Class curves (block 5): bases + per-level; speed anchor 3.6
+	# (sl-0102 re-ruling — the block-6 revisit, one constant).
 	var bow: RefCounted = _class_world("bow")
 	var bp2: RefCounted = bow.players[0]
 	check(bp2.class_id == 2, "bow class id")
 	check(bp2.max_hp == 90 and bp2.max_mana == 70, "bow L1 90hp/70mana")
-	check(absf(bp2.move_speed - 3.3) < 0.0001, "bow speed 110 -> 3.30 t/s")
+	check(absf(bp2.move_speed - 3.96) < 0.0001, "bow speed 110 -> 3.96 t/s")
 	var sword: RefCounted = _class_world("sword")
 	var sp: RefCounted = sword.players[0]
 	check(sp.max_hp == 120 and sp.max_mana == 60, "sword L1 120hp/60mana")
-	check(absf(sp.move_speed - 3.0) < 0.0001, "sword speed 100 -> 3.00 t/s (the proof floor)")
+	check(absf(sp.move_speed - 3.6) < 0.0001, "sword speed 100 -> 3.60 t/s (the proof floor)")
 	var staff: RefCounted = _class_world("staff")
 	var tp: RefCounted = staff.players[0]
 	check(tp.max_hp == 100 and tp.max_mana == 100, "staff L1 100hp/100mana")
-	check(absf(tp.move_speed - 3.15) < 0.0001, "staff speed 105 -> 3.15 t/s")
+	check(absf(tp.move_speed - 3.78) < 0.0001, "staff speed 105 -> 3.78 t/s")
 	tp.level = 30
 	StatFrame.recompute(staff, tp)
 	check(tp.max_hp == 100 + 13 * 29, "staff L30 hp = base + 29 levels")

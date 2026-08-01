@@ -31,6 +31,12 @@ SERIAL 17 (next bump 18); goldens current; all CI green.
 **S0 FOUNDATIONS ARE COMPLETE (2026-08-01, sl-0100 executed as four
 sealed seams; game 695f898→5ad9dbb; the full story is CLAUDE.md's
 milestone tail + planning notes/sessions/2026-08-01-slice-s0.md).**
+**SPEED ANCHOR RE-RULED same night (sl-0102, the block-6 revisit
+fired after the designer's S0 walk): stat 100 == 3.6 t/s [T] —
+sword 3.60 / staff 3.78 / bow 3.96 / cap 4.14; ONE constant
+(StatFrame.SPEED_TILES_PER_100); both proof lanes re-baselined at
+3.6/4.14. The GIF recorder is START-TO-FINISH now too (098a679 —
+the last-10s ring is retired).**
 The stat frame is IN the sim (class lane; legacy lane byte-identical),
 the living world is plumbed (193 leash-gated sites from the content
 pack), CORE-43 overworld death is live (in-sim gold slice + settlement
@@ -227,16 +233,19 @@ Before every commit, per touched area:
 - Cross-repo events ⇒ sync-log entry planning-side (doc 18; no
   event, no entry). Gotcha #25 before appending.
 
-### Canonical proof battery (state 2026-08-01 post-S0 — POLICY OF
-### RECORD = REACTIVE; SERIAL 17; Warden 575; b65 flood 34641).
-### TWO LANES since seam 1 (docs/22 block 6: proofs at floor AND cap
-### FOREVER): every reactive row runs at --speed=3.0 (the CORE-53
-### floor) AND --speed=3.45 (the 115 cap; reports = dodge_*_cap115).
-### Primary rows stay floor-only watch-baselines. PINNED CAP FAIL:
-### proof_ringer at 3.45 (full-speed lattice vs the 0.121 radial gap;
-### floor PASSES = the CORE-33 mandate; repros committed; a verdict
-### MOVE = the sim changed). New since the loop era: proof_slice_leash
-### (the lonely husk camp, one wake, real fight) PASS both lanes.
+### Canonical proof battery (state 2026-08-01 post-sl-0102 — POLICY
+### OF RECORD = REACTIVE; SERIAL 17; Warden 575; b65 flood 34641).
+### TWO LANES (docs/22 block 6: proofs at floor AND cap FOREVER),
+### SPEEDS PER THE sl-0102 RE-ANCHOR (stat 100 == 3.6 t/s [T]):
+### floor lane --speed=3.6 (the CORE-53 floor = sword), cap lane
+### --speed=4.14 (the 115 hard cap; reports keep the dodge_*_cap115
+### names — 115 is the STAT). Primary rows stay floor-only
+### watch-baselines: rusher PASS (re-pinned at 3.6 — it was FAIL at
+### the retired 3.0), forest_walk PASS, first_contact FAIL. The old
+### 3.45 ringer-cap PINNED FAIL retired WITH the anchor (both ringer
+### lanes PASS at 3.6/4.14; the graze was lattice-specific — the S0
+### session file holds the full story). proof_slice_leash (the
+### lonely husk camp, one wake, real fight) PASS both lanes.
 
 | scenario | seeds | ticks | expected (reactive record) |
 |---|---|---|---|
@@ -263,7 +272,6 @@ Before every commit, per touched area:
 | loop_ring1/2/3 + proof_brk_site (b65 loop content, retired-with-honor but still proven; ring2 ringer at 199.5,126.5) | 1,2,3 | 3600 | PASS |
 | overworld_green/dry/wet/cold/green_boss → dodge_overworld_*_composition.json (sl-0094 reference pass on b77 pack sites; cold = zone-heavy solo by the recorded finding) | 1,2,3 | 3600 | PASS |
 | proof_slice_leash (S0 seam 2: living-world leash — the isolated husk camp at seed 98,225; spawn INSIDE its envelope, exactly one site wakes) | 1,2,3 | 3600 | PASS (both lanes) |
-| **proof_ringer [cap115 lane]** | 204..208 | 3600 | **FAIL — PINNED** (see the lane note above) |
 
 Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- --scenario=<id> --speed=3.0 --seeds=<list> --ticks=<n> [--out=res://reports/<name>.json] [--policy=primary|orbit|axis]`
 (default policy = reactive; compositions need the explicit --out names).

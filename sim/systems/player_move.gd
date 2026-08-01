@@ -36,11 +36,12 @@ static func run(world: RefCounted) -> void:
 		if not p.dead and i < frames.size() and frames[i] != null:
 			var mv: Vector2 = frames[i].move_vector()
 			if mv != Vector2.ZERO:
-				# docs/22 block 6: the +15% HARD CAP (115 = 3.45 t/s)
-				# lives HERE, in the movement integrator, applied after
-				# every modifier — item data, console edits, and presets
-				# can never move a class-backed player past it. Legacy
-				# lab players (class_id -1) keep the §3.2 band (3.0-5.5).
+				# docs/22 block 6: the +15% HARD CAP (115; t/s value
+				# derives from the sl-0102 anchor — 4.14 today) lives
+				# HERE, in the movement integrator, applied after every
+				# modifier — item data, console edits, and presets can
+				# never move a class-backed player past it. Legacy lab
+				# players (class_id -1) keep the §3.2 band (3.0-5.5).
 				var spd: float = p.move_speed
 				if p.class_id >= 0:
 					spd = minf(spd, StatFrame.CAP_TILES_PER_S)

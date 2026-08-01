@@ -1551,3 +1551,23 @@ choice + emblems on creation, walk-speed feel (the block-6 revisit
 lever), NPC crowd on screen (sl-0089 watch-items now judgeable),
 weapon tier glyph. NO feel verdicts (hands-free engineering
 session).**
+SPEED ANCHOR RE-RULED same night (sl-0102, ~22:00 local; the
+block-6 feel reservation FIRED after the designer's S0 walk — "a
+tad slow ... a little bit higher since we got so low cap"): stat
+100 == 3.6 t/s [T] (was 3.0) — ONE constant
+(StatFrame.SPEED_TILES_PER_100), proportions 100/105/110 + cap 115
+unchanged → sword 3.60 (the CORE-53 floor) / staff 3.78 / bow 3.96
+(== the old lab feel) / cap 4.14 (the max build now beats the old
+lab standard — the chase has a prize). BOTH proof lanes
+re-baselined at 3.6/4.14 per the block-6 law. Watched rows resolved
+DELIBERATELY: the 3.45 ringer-cap PINNED FAIL retired WITH the
+anchor (both ringer lanes PASS — the graze was lattice-specific);
+rusher [primary] re-pinned FAIL→PASS at the faster floor;
+first_contact [primary] stays FAIL; canaries FAIL both new speeds
+(cap lane calibrated). Legacy lane untouched by construction.
+ALSO same night (view-only, 098a679): GIF recorder rebuilt
+START-TO-FINISH (G starts, G stops, every frame between streams to
+disk) — the last-10s ring silently ate the front of every longer
+recording; the designer asked for the whole recording three times
+(the sl-0078 law). NO feel verdicts pending beyond the standing
+queue; the new speeds ARE the designer's own re-rule.**

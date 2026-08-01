@@ -4,11 +4,11 @@
 	"horizon_ticks": 60,
 	"kind": "dodge_proof",
 	"label": "mechanical verification (no gate code reads this — CORE-53)",
-	"pass": true,
+	"pass": false,
 	"policy": "reactive-16dir-melee-on-telegraph",
 	"runs": [
 		{
-			"first_hit_tick": -1,
+			"first_hit_tick": 316,
 			"heatmap": [
 				[
 					0,
@@ -62,7 +62,7 @@
 					0,
 					0,
 					0,
-					455,
+					391,
 					0,
 					0
 				],
@@ -76,7 +76,7 @@
 					0,
 					0,
 					0,
-					3145,
+					3209,
 					0,
 					0
 				],
@@ -123,14 +123,14 @@
 					0
 				]
 			],
-			"hits": 0,
-			"near_miss_min": 0.130385184288025,
-			"repro": "",
+			"hits": 1,
+			"near_miss_min": 0.0284688115119934,
+			"repro": "res://reports/repro_loop_ring2_reactive_seed1.wsr",
 			"seed": 1,
 			"survived_ticks": 3600
 		},
 		{
-			"first_hit_tick": -1,
+			"first_hit_tick": 316,
 			"heatmap": [
 				[
 					0,
@@ -184,7 +184,7 @@
 					0,
 					0,
 					0,
-					455,
+					391,
 					0,
 					0
 				],
@@ -198,7 +198,7 @@
 					0,
 					0,
 					0,
-					3145,
+					3209,
 					0,
 					0
 				],
@@ -245,14 +245,14 @@
 					0
 				]
 			],
-			"hits": 0,
-			"near_miss_min": 0.130385184288025,
-			"repro": "",
+			"hits": 1,
+			"near_miss_min": 0.0284688115119934,
+			"repro": "res://reports/repro_loop_ring2_reactive_seed2.wsr",
 			"seed": 2,
 			"survived_ticks": 3600
 		},
 		{
-			"first_hit_tick": -1,
+			"first_hit_tick": 316,
 			"heatmap": [
 				[
 					0,
@@ -306,7 +306,7 @@
 					0,
 					0,
 					0,
-					455,
+					391,
 					0,
 					0
 				],
@@ -320,7 +320,7 @@
 					0,
 					0,
 					0,
-					3145,
+					3209,
 					0,
 					0
 				],
@@ -367,9 +367,9 @@
 					0
 				]
 			],
-			"hits": 0,
-			"near_miss_min": 0.130385184288025,
-			"repro": "",
+			"hits": 1,
+			"near_miss_min": 0.0284688115119934,
+			"repro": "res://reports/repro_loop_ring2_reactive_seed3.wsr",
 			"seed": 3,
 			"survived_ticks": 3600
 		}
@@ -381,6 +381,6 @@
 		2,
 		3
 	],
-	"speed": 3.0,
+	"speed": 3.6,
 	"ticks_per_run": 3600
 }

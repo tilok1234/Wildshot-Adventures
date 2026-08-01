@@ -58,7 +58,7 @@
 					0,
 					0,
 					0,
-					24,
+					0,
 					0,
 					0,
 					0,
@@ -73,7 +73,7 @@
 					0,
 					0,
 					0,
-					5,
+					29,
 					0,
 					0,
 					0,
@@ -124,7 +124,7 @@
 				]
 			],
 			"hits": 10,
-			"near_miss_min": 0.0260979175567627,
+			"near_miss_min": 0.0108620166778565,
 			"repro": "res://reports/repro_canary_undodgeable_reactive_seed1.wsr",
 			"seed": 1,
 			"survived_ticks": 29
@@ -180,7 +180,7 @@
 					0,
 					0,
 					0,
-					24,
+					0,
 					0,
 					0,
 					0,
@@ -195,7 +195,7 @@
 					0,
 					0,
 					0,
-					5,
+					29,
 					0,
 					0,
 					0,
@@ -246,7 +246,7 @@
 				]
 			],
 			"hits": 10,
-			"near_miss_min": 0.0260979175567627,
+			"near_miss_min": 0.0108620166778565,
 			"repro": "res://reports/repro_canary_undodgeable_reactive_seed2.wsr",
 			"seed": 2,
 			"survived_ticks": 29
@@ -302,7 +302,7 @@
 					0,
 					0,
 					0,
-					24,
+					0,
 					0,
 					0,
 					0,
@@ -317,7 +317,7 @@
 					0,
 					0,
 					0,
-					5,
+					29,
 					0,
 					0,
 					0,
@@ -368,7 +368,7 @@
 				]
 			],
 			"hits": 10,
-			"near_miss_min": 0.0260979175567627,
+			"near_miss_min": 0.0108620166778565,
 			"repro": "res://reports/repro_canary_undodgeable_reactive_seed3.wsr",
 			"seed": 3,
 			"survived_ticks": 29
@@ -381,6 +381,6 @@
 		2,
 		3
 	],
-	"speed": 3.0,
+	"speed": 3.6,
 	"ticks_per_run": 1800
 }
