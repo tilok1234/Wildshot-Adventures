@@ -38,7 +38,7 @@ func _process(_delta: float) -> void:
 		seen[e.id] = true
 		if _views.has(e.id):
 			continue
-		var got := _frames_for(def_index)
+		var got := _frames_for(def_index, int(e.id))
 		if got.frames == null:
 			continue
 		var av := AnimatedActor.new()
@@ -61,16 +61,25 @@ func _process(_delta: float) -> void:
 					av.play_attack(ev.aim)
 
 
-## {frames, scale} per def, built once. A missing mapping errors ONCE
-## and caches null — the sim enemy still runs (hitbox view shows it);
-## the error names the role to add to actor_sheet_map.tres. The boss
-## library is consulted when the primary lacks the actor id (Loop v1).
-func _frames_for(def_index: int) -> Dictionary:
-	if _frames_by_def.has(def_index):
-		return _frames_by_def[def_index]
+## {frames, scale} per (def, variant), built lazily. S1 (sl-0104):
+## roles with a `variants` list rotate their family's FULL catalog —
+## the variant is picked PER ENEMY from its sim id (deterministic,
+## cosmetic only; the split assigns identity, never behaviour). A
+## missing mapping errors ONCE and caches null — the sim enemy still
+## runs (hitbox view shows it); the error names the role to add to
+## actor_sheet_map.tres. The boss library is consulted when the
+## primary lacks the actor id (Loop v1).
+func _frames_for(def_index: int, enemy_id: int) -> Dictionary:
 	var def: Resource = world.enemy_defs[def_index]
 	var role := "enemy_" + String(def.id)
-	var actor_id := String(sheet_map.map.get(role, ""))
+	var ids: Array = sheet_map.variants.get(role, [])
+	if ids.is_empty():
+		ids = [sheet_map.map.get(role, "")]
+	var variant := enemy_id % ids.size()
+	var cache: Dictionary = _frames_by_def.get_or_add(def_index, {})
+	if cache.has(variant):
+		return cache[variant]
+	var actor_id := String(ids[variant])
 	var got := {"frames": null, "scale": 1.0}
 	if not actor_id.is_empty() and lib.has_actor(actor_id):
 		got.frames = lib.build_sprite_frames(actor_id)
@@ -85,5 +94,5 @@ func _frames_for(def_index: int) -> Dictionary:
 				% role
 			)
 		)
-	_frames_by_def[def_index] = got
+	cache[variant] = got
 	return got

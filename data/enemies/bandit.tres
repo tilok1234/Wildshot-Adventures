@@ -1,0 +1,35 @@
+[gd_resource type="Resource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://data/enemy_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/emitter_slot.gd" id="2"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/husk_aimed.tres" id="3"]
+
+; S1 GREEN ROSTER (sl-0104 seam 1): husk-archer archetype — the
+; roads' humans (docs/23: the Wardens' whole reason). KEEP_RANGE +
+; aimed pattern 10, lead 12 exact, husk cadence; [T], Green band.
+
+[sub_resource type="Resource" id="slot0"]
+script = ExtResource("2")
+pattern = ExtResource("3")
+trigger_range = 7.0
+telegraph_ticks = 12
+cooldown_ticks = 90
+recover_ticks = 20
+
+[resource]
+script = ExtResource("1")
+id = &"bandit"
+display_name = "Bandit"
+hp = 24
+body_radius = 0.3
+move_speed = 2.4
+contact_damage = 0
+contact_cooldown_ticks = 30
+aggro_range = 12.0
+movement_policy = 1
+range_min = 5.0
+range_max = 6.0
+emitters = Array[Resource]([SubResource("slot0")])
+xp_value = 3
+gold_min = 1
+gold_max = 3

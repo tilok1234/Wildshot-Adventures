@@ -33,6 +33,16 @@ reconsider).
 
 ## Placeholder roster → real defs (the vocabulary seed, docs/20 "data-first")
 
+> **S1 SUPERSESSION FOR GREEN (sl-0104 seam 1, 2026-08-02):** the
+> green zone no longer uses this flat table — content_importer's
+> ZONE_VOCAB re-tables each green placeholder onto a weighted set of
+> the zone's REAL 14-family roster (docs/23 enemy split), role-
+> preserved: marauder → the melee eight (slime/goblin/wolf/bat/
+> beetle/boar/snail/porcupine), prowler → the ranged five (bandit/
+> moth/wasp/scarecrow/treant), mire_creeper → shroom. Density ×1.5
+> [T] (the sl-0099 disposition). The table below still governs every
+> OTHER zone until its own chapter re-tables it.
+
 | wf placeholder (census) | real def | rationale (role grammar) |
 |---|---|---|
 | `enemy.marauder` (81) | `rusher` | the common chaser — melee pressure |

@@ -1,0 +1,36 @@
+[gd_resource type="Resource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://data/enemy_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/emitter_slot.gd" id="2"]
+[ext_resource type="Resource" path="res://data/enemies/hazards/blight_zone.tres" id="3"]
+
+; S1 GREEN ROSTER (sl-0104 seam 1): blightcaster archetype — the
+; spore-thrower of the mud pockets. Shares blight_zone VERBATIM
+; (pattern 15, arm 45 = the telegraph; slot windup 15 matches the
+; blightcaster exactly). Lazier cadence; [T], Green band.
+
+[sub_resource type="Resource" id="slot0"]
+script = ExtResource("2")
+hazard = ExtResource("3")
+trigger_range = 7.0
+telegraph_ticks = 15
+cooldown_ticks = 210
+recover_ticks = 20
+
+[resource]
+script = ExtResource("1")
+id = &"shroom"
+display_name = "Shroom"
+hp = 22
+body_radius = 0.35
+move_speed = 1.4
+contact_damage = 0
+contact_cooldown_ticks = 30
+aggro_range = 12.0
+movement_policy = 1
+range_min = 4.5
+range_max = 6.0
+emitters = Array[Resource]([SubResource("slot0")])
+xp_value = 4
+gold_min = 1
+gold_max = 4

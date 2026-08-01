@@ -1,0 +1,34 @@
+[gd_resource type="Resource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://data/enemy_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/emitter_slot.gd" id="2"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/husk_aimed.tres" id="3"]
+
+; S1 GREEN ROSTER (sl-0104 seam 1): husk-archer archetype — the dusk
+; flitter: frail, lazy aimed shot (pattern 10). Lead 12 exact; [T].
+
+[sub_resource type="Resource" id="slot0"]
+script = ExtResource("2")
+pattern = ExtResource("3")
+trigger_range = 6.5
+telegraph_ticks = 12
+cooldown_ticks = 120
+recover_ticks = 16
+
+[resource]
+script = ExtResource("1")
+id = &"moth"
+display_name = "Moth"
+hp = 14
+body_radius = 0.28
+move_speed = 2.6
+contact_damage = 0
+contact_cooldown_ticks = 30
+aggro_range = 12.0
+movement_policy = 1
+range_min = 4.0
+range_max = 5.5
+emitters = Array[Resource]([SubResource("slot0")])
+xp_value = 2
+gold_min = 0
+gold_max = 2

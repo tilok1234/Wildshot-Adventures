@@ -1,0 +1,35 @@
+[gd_resource type="Resource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://data/enemy_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/emitter_slot.gd" id="2"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/rusher_slash.tres" id="3"]
+
+; S1 GREEN ROSTER (sl-0104 seam 1): rusher archetype — the shelled
+; bruiser: slow, sturdy (honest hp, CORE-36 — no enemy armor in S1).
+; Lead 10 exact; [T].
+
+[sub_resource type="Resource" id="slot0"]
+script = ExtResource("2")
+pattern = ExtResource("3")
+trigger_range = 1.2
+telegraph_ticks = 10
+cooldown_ticks = 45
+recover_ticks = 10
+
+[resource]
+script = ExtResource("1")
+id = &"beetle"
+display_name = "Beetle"
+hp = 32
+body_radius = 0.35
+move_speed = 1.8
+contact_damage = 0
+contact_cooldown_ticks = 30
+aggro_range = 12.0
+movement_policy = 0
+range_min = 0.0
+range_max = 0.0
+emitters = Array[Resource]([SubResource("slot0")])
+xp_value = 3
+gold_min = 1
+gold_max = 3

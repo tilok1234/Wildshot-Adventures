@@ -207,6 +207,12 @@ jobs:
       - name: Living world contracts
         run: ~/godot/godot --headless --path . --script tests/living_world/living_world_test.gd
 
+      # S1 seam 1 (sl-0104): Green roster indexes 8..21, the roster-wide
+      # pattern->lead law, variant parity vs the catalog index, the
+      # green re-table + density pins. Data reads only — Linux-safe.
+      - name: Green roster contracts
+        run: ~/godot/godot --headless --path . --script tests/green_roster/green_roster_test.gd
+
       # Slice S0 seam 4: consumed NPC tree (32 looks), deterministic
       # stations on real b77 ground, icon atlas ids. Linux-safe.
       - name: NPC + icon wiring

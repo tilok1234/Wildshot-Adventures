@@ -1571,3 +1571,48 @@ disk) — the last-10s ring silently ate the front of every longer
 recording; the designer asked for the whole recording three times
 (the sl-0078 law). NO feel verdicts pending beyond the standing
 queue; the new speeds ARE the designer's own re-rule.**
+S1 SEAM 1 — THE GREEN ROSTER LIVE 2026-08-02 (~00:30 local; ask
+sl-0104, docs/23 enemy split; hands-free): the zone's 14 families
+as archetype DATA ROWS at indexes 8–21 (docs/23 order: slime/
+goblin/boar/wolf/bat/shroom/wasp/beetle/moth/snail/porcupine/
+scarecrow/treant/bandit) — CORE-44 spread 7 melee-chaser / 2 aimed
+/ 1 flanker-intercept / 2 anchor-fan / 1 chaser-radial / 1 hazard;
+ZERO new patterns: every row REUSES its archetype's PatternDef
+VERBATIM with the archetype's exact telegraph lead (slash 10 /
+aimed 12 / fan 30 / radial 36 / dart 40 / blight arm 45) — the
+recap's pattern→lead law holds roster-wide and is now MECHANIZED
+(one lead per pattern id across every def/phase/hazard,
+negative-tested; Law-4 ordering untouched; projectile_map + audio
+map byte-untouched — the ratified CVD hue language carries whole).
+Green-band stats [T] (hp 10–48 center ~24, speeds 0.9–3.1 all
+under the 3.6 floor, xp avg ≈3 = the balance_frame per-kill;
+equipment drop_chance 0.0 = THE SEAM-2 BOUNDARY, pinned in test).
+ALL 54 VARIANTS PLAY (docs/23 variability ruling): actor_sheet_map
+grew a `variants` dict (full catalog lists, canonical = family
+default); the assembler importer imports variant lists wholesale
+(8→59 sheets; "boss:*" ids structurally skipped — the boss library
+namespace); enemy_actors_view picks PER ENEMY by sim id modulo
+count (deterministic, view-only, cosmetic — the split assigns
+identity, never behaviour). TERRITORIES RE-TABLED role-preservingly
+(the importer's ZONE_VOCAB layer, not new format): green marauder →
+the melee eight / prowler → the ranged five / mire_creeper →
+shroom (mud pockets = spore ground); each set sums EXACTLY 100 so
+entry weight = placeholder × set stays integer-exact; zone tables
+are AUTHORITATIVE (out-of-table id = loud refusal, negative-tested);
+all 44 green territories re-tabled, other zones byte-untouched on
+the flat vocab; encounters inherit automatically. DENSITY ×1.5 [T]
+green-only (pack+maxActive, sl-0099 disposition — the leash makes
+it safe). tests/green_roster/green_roster_test.gd = 27TH FIXED STEP
++ CI row (roster order, lead law, grammar bounds, variant parity
+BOTH directions vs the catalog index + imported library, re-table
+integer-exact pins incl. density 3→5/2-6→3-9, proof-camp premises,
+3 negatives). PROOFS: proof_green_camp (most isolated MIXED
+territory, 185,244, near 0.899) + proof_green_ranged (most isolated
+of all, 108,138, prowler-only → pure ranged set, near 0.121) PASS
+floor+cap seeds 1,2,3; proof_slice_leash RE-BASELINED deliberately
+(husk camp → ranged Green set at density; 1.975 → 0.120, honest
+PASS both lanes); battery 34→36 rows / 69 runs. Sim bytes untouched
+by the append (smoke + goldens x10 byte-identical pre-commit); boot
+clean; living_world/loop/stat_frame/assembler/wiring all green.
+DESIGNER-EYES pending: the Green countryside itself (walk out of
+the capital — every camp now wears the zone's real skins).**

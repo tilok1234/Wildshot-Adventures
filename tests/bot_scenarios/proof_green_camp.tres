@@ -1,0 +1,23 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; S1 GREEN ROSTER composition proof (sl-0104 seam 1): the most
+; isolated MIXED (marauder+prowler) green territory —
+; territory.region.grass.58290.0, seed 185,244, nearest other site
+; 19.2 tiles (dry_grass.62657 SE). Re-tabled at density 1.5 the camp
+; draws 3-9 from the full melee+ranged Green sets — the seam's
+; representative fight. Bot spawns 5 tiles west, walkable by the
+; pack grid; a mid-fight second wake is a legal pull, the verdict
+; judges hits.
+
+[resource]
+script = ExtResource("1")
+id = &"proof_green_camp"
+display_name = "PROOF: green mixed camp (b77, re-tabled)"
+worldforge_pack = "res://assets/worldforge-packs/wildshot-overworld-pack-dusk/"
+content_pack = "res://assets/wildshot-overworld-pack-dusk-content/"
+player_spawn = Vector2(180.5, 244.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {}
+default_seed = 1

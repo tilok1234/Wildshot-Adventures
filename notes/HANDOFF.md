@@ -213,9 +213,9 @@ Before every commit, per touched area:
   (table below), BOTH LANES; commit reports
   (`git add -f reports/...`). Unchanged scenarios must reproduce
   BYTE-IDENTICAL.
-- the one-command gate: `pwsh tools/pretester_check.ps1` = 26 fixed
-  steps + the 67-run two-lane battery (34 floor rows + 31 cap runs;
-  pinned FAILs are expectations) + export + lockdown (~40–45 min).
+- the one-command gate: `pwsh tools/pretester_check.ps1` = 27 fixed
+  steps + the 69-run two-lane battery (36 floor rows + 33 cap runs;
+  pinned FAILs are expectations) + export + lockdown.
   Exit 0 = ship-ready. It REFUSES to run beside another same-project
   Godot instance (incl. the designer's game window — wait for it,
   never kill it; running steps individually, same commands + exit
@@ -268,7 +268,9 @@ Before every commit, per touched area:
 | lab_default + meet_blightcaster/leadshot/yard_warden | 1,2,3 | 3600 | PASS / PASS — EXCEPT **meet_leadshot cap = PINNED FAIL** (see lane note) |
 | loop_ring1/2/3 + proof_brk_site (b65 loop content, retired-with-honor but still proven) | 1,2,3 | 3600 | PASS / PASS |
 | overworld_green/dry/wet/cold/green_boss → dodge_overworld_*_composition.json | 1,2,3 | 3600 | PASS / PASS |
-| proof_slice_leash (S0 seam 2: the isolated husk camp at seed 98,225 — spawn INSIDE its envelope, exactly one site wakes) | 1,2,3 | 3600 | PASS / PASS |
+| proof_slice_leash (S0 seam 2: the isolated camp at seed 98,225 — spawn INSIDE its envelope, exactly one site wakes; RE-BASELINED at S1 seam 1: the re-table made it the ranged Green set at density 1.5, margins 1.975 → ~0.120, honest) | 1,2,3 | 3600 | PASS / PASS |
+| proof_green_camp (S1 seam 1: the most isolated MIXED green territory, seed 185,244 — the full melee+ranged re-table at density, near ~0.90) | 1,2,3 | 3600 | PASS / PASS |
+| proof_green_ranged (S1 seam 1: the most isolated green territory of all, seed 108,138, prowler-only → the PURE ranged set: anchors+flanker+aimed, near ~0.121) | 1,2,3 | 3600 | PASS / PASS |
 
 Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- --scenario=<id> --speed=3.6 --seeds=<list> --ticks=<n> [--out=res://reports/<name>.json] [--policy=primary|orbit|axis]`
 (default policy = reactive; compositions need the explicit --out

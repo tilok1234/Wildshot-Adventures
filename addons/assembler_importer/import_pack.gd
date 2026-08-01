@@ -24,8 +24,20 @@ func _init() -> void:
 	var roster: Array[String] = []
 	for role: String in sheet_map.map:
 		var id := String(sheet_map.map[role])
+		# "boss:*" ids belong to the 48px boss library (res://
+		# assembler_boss, tools/import_boss_actor.py) — not this pack.
+		# Unknown NON-boss ids still refuse loudly below.
+		if id.begins_with("boss:"):
+			continue
 		if not roster.has(id):
 			roster.append(id)
+	# S1 (sl-0104): variant lists import wholesale — every catalog
+	# variant of a listed family ships (docs/23 "all variants play").
+	for role: String in sheet_map.variants:
+		for vid in sheet_map.variants[role]:
+			var id := String(vid)
+			if not roster.has(id):
+				roster.append(id)
 	roster.sort()
 	var report := AssemblerPack.import(SRC, DST, roster)
 	for line: String in report.log:

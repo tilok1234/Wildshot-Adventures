@@ -1,0 +1,35 @@
+[gd_resource type="Resource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://data/enemy_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/emitter_slot.gd" id="2"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/leadshot_dart.tres" id="3"]
+
+; S1 GREEN ROSTER (sl-0104 seam 1): leadshot archetype — the orbiting
+; sting (FLANKER, INTERCEPT dart pattern 12). Lead 40 exact; lazier
+; cadence than the lab flanker; [T], Green band.
+
+[sub_resource type="Resource" id="slot0"]
+script = ExtResource("2")
+pattern = ExtResource("3")
+trigger_range = 7.5
+telegraph_ticks = 40
+cooldown_ticks = 150
+recover_ticks = 14
+
+[resource]
+script = ExtResource("1")
+id = &"wasp"
+display_name = "Wasp"
+hp = 16
+body_radius = 0.25
+move_speed = 2.9
+contact_damage = 0
+contact_cooldown_ticks = 30
+aggro_range = 12.0
+movement_policy = 4
+range_min = 5.0
+range_max = 7.0
+emitters = Array[Resource]([SubResource("slot0")])
+xp_value = 3
+gold_min = 1
+gold_max = 3

@@ -48,8 +48,11 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 	# 0=rusher, 1=husk_archer, 2=fanmaw, 3=ringer, 4=leadshot,
 	# 5=blightcaster, 6=yard_warden (§3.5 elite), 7=bone_reliquary_king
 	# (Loop v1 first boss, docs/19 ruling 4 — the Warden kit at 900 HP
-	# [T]). Append-only; never reorder. Scenario extras (bot canaries)
-	# append after, keeping standard indexes stable.
+	# [T]). S1 GREEN ROSTER (sl-0104 seam 1, docs/23 family order):
+	# 8=slime, 9=goblin, 10=boar, 11=wolf, 12=bat, 13=shroom, 14=wasp,
+	# 15=beetle, 16=moth, 17=snail, 18=porcupine, 19=scarecrow,
+	# 20=treant, 21=bandit. Append-only; never reorder. Scenario extras
+	# (bot canaries) append after, keeping standard indexes stable.
 	var defs: Array = [
 		load("res://data/enemies/rusher.tres"),
 		load("res://data/enemies/husk_archer.tres"),
@@ -59,6 +62,20 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 		load("res://data/enemies/blightcaster.tres"),
 		load("res://data/enemies/yard_warden.tres"),
 		load("res://data/enemies/bone_reliquary_king.tres"),
+		load("res://data/enemies/slime.tres"),
+		load("res://data/enemies/goblin.tres"),
+		load("res://data/enemies/boar.tres"),
+		load("res://data/enemies/wolf.tres"),
+		load("res://data/enemies/bat.tres"),
+		load("res://data/enemies/shroom.tres"),
+		load("res://data/enemies/wasp.tres"),
+		load("res://data/enemies/beetle.tres"),
+		load("res://data/enemies/moth.tres"),
+		load("res://data/enemies/snail.tres"),
+		load("res://data/enemies/porcupine.tres"),
+		load("res://data/enemies/scarecrow.tres"),
+		load("res://data/enemies/treant.tres"),
+		load("res://data/enemies/bandit.tres"),
 	]
 	for extra: Resource in scenario.extra_enemy_defs:
 		defs.append(extra)

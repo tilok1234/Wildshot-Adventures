@@ -3,10 +3,106 @@
 		{
 			"category": "enemy",
 			"family": "bandit",
+			"id": "bandit:brigand",
+			"name": "Bandit - Brigand",
+			"sheet": "enemies/bandit/brigand.png",
+			"variant": "brigand"
+		},
+		{
+			"category": "enemy",
+			"family": "bandit",
 			"id": "bandit:sniper",
 			"name": "Bandit - Sniper",
 			"sheet": "enemies/bandit/sniper.png",
 			"variant": "sniper"
+		},
+		{
+			"category": "enemy",
+			"family": "bandit",
+			"id": "bandit:thug",
+			"name": "Bandit - Thug",
+			"sheet": "enemies/bandit/thug.png",
+			"variant": "thug"
+		},
+		{
+			"category": "enemy",
+			"family": "bat",
+			"id": "bat:cave",
+			"name": "Bat - Cave",
+			"sheet": "enemies/bat/cave.png",
+			"variant": "cave"
+		},
+		{
+			"category": "enemy",
+			"family": "bat",
+			"id": "bat:frost",
+			"name": "Bat - Frost",
+			"sheet": "enemies/bat/frost.png",
+			"variant": "frost"
+		},
+		{
+			"category": "enemy",
+			"family": "bat",
+			"id": "bat:moss",
+			"name": "Bat - Moss",
+			"sheet": "enemies/bat/moss.png",
+			"variant": "moss"
+		},
+		{
+			"category": "enemy",
+			"family": "bat",
+			"id": "bat:vampire",
+			"name": "Bat - Vampire",
+			"sheet": "enemies/bat/vampire.png",
+			"variant": "vampire"
+		},
+		{
+			"category": "enemy",
+			"family": "beetle",
+			"id": "beetle:bomber",
+			"name": "Beetle - Bomber",
+			"sheet": "enemies/beetle/bomber.png",
+			"variant": "bomber"
+		},
+		{
+			"category": "enemy",
+			"family": "beetle",
+			"id": "beetle:scarab",
+			"name": "Beetle - Scarab",
+			"sheet": "enemies/beetle/scarab.png",
+			"variant": "scarab"
+		},
+		{
+			"category": "enemy",
+			"family": "beetle",
+			"id": "beetle:stag",
+			"name": "Beetle - Stag",
+			"sheet": "enemies/beetle/stag.png",
+			"variant": "stag"
+		},
+		{
+			"category": "enemy",
+			"family": "boar",
+			"id": "boar:ash",
+			"name": "Boar - Ash",
+			"sheet": "enemies/boar/ash.png",
+			"variant": "ash"
+		},
+		{
+			"category": "enemy",
+			"family": "boar",
+			"id": "boar:blood",
+			"name": "Boar - Blood",
+			"sheet": "enemies/boar/blood.png",
+			"variant": "blood"
+		},
+		{
+			"category": "enemy",
+			"family": "boar",
+			"id": "boar:tusker",
+			"name": "Boar - Tusker",
+			"sheet": "enemies/boar/tusker.png",
+			"variant": "tusker"
 		},
 		{
 			"category": "enemy",
@@ -87,11 +183,171 @@
 		},
 		{
 			"category": "enemy",
+			"family": "goblin",
+			"id": "goblin:archer",
+			"name": "Goblin - Archer",
+			"sheet": "enemies/goblin/archer.png",
+			"variant": "archer"
+		},
+		{
+			"category": "enemy",
+			"family": "goblin",
+			"id": "goblin:brute",
+			"name": "Goblin - Hobgoblin",
+			"sheet": "enemies/goblin/brute.png",
+			"variant": "brute"
+		},
+		{
+			"category": "enemy",
+			"family": "goblin",
+			"id": "goblin:chief",
+			"name": "Goblin - Chief",
+			"sheet": "enemies/goblin/chief.png",
+			"variant": "chief"
+		},
+		{
+			"category": "enemy",
+			"family": "goblin",
+			"id": "goblin:scout",
+			"name": "Goblin - Scout",
+			"sheet": "enemies/goblin/scout.png",
+			"variant": "scout"
+		},
+		{
+			"category": "enemy",
+			"family": "goblin",
+			"id": "goblin:shaman",
+			"name": "Goblin - Shaman",
+			"sheet": "enemies/goblin/shaman.png",
+			"variant": "shaman"
+		},
+		{
+			"category": "enemy",
+			"family": "moth",
+			"id": "moth:ember",
+			"name": "Moth - Emberwing",
+			"sheet": "enemies/moth/ember.png",
+			"variant": "ember"
+		},
+		{
+			"category": "enemy",
+			"family": "moth",
+			"id": "moth:frost",
+			"name": "Moth - Frostsilk",
+			"sheet": "enemies/moth/frost.png",
+			"variant": "frost"
+		},
+		{
+			"category": "enemy",
+			"family": "moth",
+			"id": "moth:moon",
+			"name": "Moth - Moonwing",
+			"sheet": "enemies/moth/moon.png",
+			"variant": "moon"
+		},
+		{
+			"category": "enemy",
+			"family": "moth",
+			"id": "moth:plague",
+			"name": "Moth - Plague dust",
+			"sheet": "enemies/moth/plague.png",
+			"variant": "plague"
+		},
+		{
+			"category": "enemy",
+			"family": "porcupine",
+			"id": "porcupine:ember",
+			"name": "Porcupine - Emberback",
+			"sheet": "enemies/porcupine/ember.png",
+			"variant": "ember"
+		},
+		{
+			"category": "enemy",
+			"family": "porcupine",
+			"id": "porcupine:forest",
+			"name": "Porcupine - Forest",
+			"sheet": "enemies/porcupine/forest.png",
+			"variant": "forest"
+		},
+		{
+			"category": "enemy",
+			"family": "porcupine",
+			"id": "porcupine:frost",
+			"name": "Porcupine - Frostspine",
+			"sheet": "enemies/porcupine/frost.png",
+			"variant": "frost"
+		},
+		{
+			"category": "enemy",
+			"family": "porcupine",
+			"id": "porcupine:venom",
+			"name": "Porcupine - Venom quill",
+			"sheet": "enemies/porcupine/venom.png",
+			"variant": "venom"
+		},
+		{
+			"category": "enemy",
+			"family": "scarecrow",
+			"id": "scarecrow:frostbound",
+			"name": "Scarecrow - Frostbound",
+			"sheet": "enemies/scarecrow/frostbound.png",
+			"variant": "frostbound"
+		},
+		{
+			"category": "enemy",
+			"family": "scarecrow",
+			"id": "scarecrow:infernal",
+			"name": "Scarecrow - Infernal",
+			"sheet": "enemies/scarecrow/infernal.png",
+			"variant": "infernal"
+		},
+		{
+			"category": "enemy",
+			"family": "scarecrow",
+			"id": "scarecrow:plaguecrow",
+			"name": "Scarecrow - Plaguecrow",
+			"sheet": "enemies/scarecrow/plaguecrow.png",
+			"variant": "plaguecrow"
+		},
+		{
+			"category": "enemy",
 			"family": "scarecrow",
 			"id": "scarecrow:strawfield",
 			"name": "Scarecrow - Strawfield",
 			"sheet": "enemies/scarecrow/strawfield.png",
 			"variant": "strawfield"
+		},
+		{
+			"category": "enemy",
+			"family": "shroom",
+			"id": "shroom:earth",
+			"name": "Shroom - Earth",
+			"sheet": "enemies/shroom/earth.png",
+			"variant": "earth"
+		},
+		{
+			"category": "enemy",
+			"family": "shroom",
+			"id": "shroom:sky",
+			"name": "Shroom - Sky",
+			"sheet": "enemies/shroom/sky.png",
+			"variant": "sky"
+		},
+		{
+			"category": "enemy",
+			"family": "shroom",
+			"id": "shroom:toad",
+			"name": "Shroom - Toadcap",
+			"sheet": "enemies/shroom/toad.png",
+			"variant": "toad"
+		},
+		{
+			"category": "enemy",
+			"family": "shroom",
+			"id": "shroom:violet",
+			"name": "Shroom - Violet",
+			"sheet": "enemies/shroom/violet.png",
+			"variant": "violet"
 		},
 		{
 			"category": "enemy",
@@ -103,11 +359,163 @@
 		},
 		{
 			"category": "enemy",
+			"family": "slime",
+			"id": "slime:aqua",
+			"name": "Slime - Aqua",
+			"sheet": "enemies/slime/aqua.png",
+			"variant": "aqua"
+		},
+		{
+			"category": "enemy",
+			"family": "slime",
+			"id": "slime:honey",
+			"name": "Slime - Honey",
+			"sheet": "enemies/slime/honey.png",
+			"variant": "honey"
+		},
+		{
+			"category": "enemy",
+			"family": "slime",
+			"id": "slime:lime",
+			"name": "Slime - Lime",
+			"sheet": "enemies/slime/lime.png",
+			"variant": "lime"
+		},
+		{
+			"category": "enemy",
+			"family": "slime",
+			"id": "slime:magma",
+			"name": "Slime - Magma",
+			"sheet": "enemies/slime/magma.png",
+			"variant": "magma"
+		},
+		{
+			"category": "enemy",
+			"family": "slime",
+			"id": "slime:rock",
+			"name": "Slime - Rock",
+			"sheet": "enemies/slime/rock.png",
+			"variant": "rock"
+		},
+		{
+			"category": "enemy",
+			"family": "slime",
+			"id": "slime:rose",
+			"name": "Slime - Rose",
+			"sheet": "enemies/slime/rose.png",
+			"variant": "rose"
+		},
+		{
+			"category": "enemy",
+			"family": "slime",
+			"id": "slime:shadow",
+			"name": "Slime - Shadow",
+			"sheet": "enemies/slime/shadow.png",
+			"variant": "shadow"
+		},
+		{
+			"category": "enemy",
+			"family": "snail",
+			"id": "snail:crystal",
+			"name": "Snail - Crystal slime",
+			"sheet": "enemies/snail/crystal.png",
+			"variant": "crystal"
+		},
+		{
+			"category": "enemy",
+			"family": "snail",
+			"id": "snail:iron",
+			"name": "Snail - Iron shell",
+			"sheet": "enemies/snail/iron.png",
+			"variant": "iron"
+		},
+		{
+			"category": "enemy",
+			"family": "snail",
+			"id": "snail:magma",
+			"name": "Snail - Magma",
+			"sheet": "enemies/snail/magma.png",
+			"variant": "magma"
+		},
+		{
+			"category": "enemy",
+			"family": "snail",
+			"id": "snail:meadow",
+			"name": "Snail - Meadow",
+			"sheet": "enemies/snail/meadow.png",
+			"variant": "meadow"
+		},
+		{
+			"category": "enemy",
+			"family": "treant",
+			"id": "treant:blighted",
+			"name": "Treant - Blighted",
+			"sheet": "enemies/treant/blighted.png",
+			"variant": "blighted"
+		},
+		{
+			"category": "enemy",
+			"family": "treant",
+			"id": "treant:oak",
+			"name": "Treant - Oak",
+			"sheet": "enemies/treant/oak.png",
+			"variant": "oak"
+		},
+		{
+			"category": "enemy",
+			"family": "treant",
+			"id": "treant:willow",
+			"name": "Treant - Willow",
+			"sheet": "enemies/treant/willow.png",
+			"variant": "willow"
+		},
+		{
+			"category": "enemy",
+			"family": "wasp",
+			"id": "wasp:hornet",
+			"name": "Wasp - Hornet",
+			"sheet": "enemies/wasp/hornet.png",
+			"variant": "hornet"
+		},
+		{
+			"category": "enemy",
+			"family": "wasp",
+			"id": "wasp:royal",
+			"name": "Wasp - Royal",
+			"sheet": "enemies/wasp/royal.png",
+			"variant": "royal"
+		},
+		{
+			"category": "enemy",
+			"family": "wasp",
+			"id": "wasp:yellowjacket",
+			"name": "Wasp - Yellowjacket",
+			"sheet": "enemies/wasp/yellowjacket.png",
+			"variant": "yellowjacket"
+		},
+		{
+			"category": "enemy",
+			"family": "wolf",
+			"id": "wolf:dire",
+			"name": "Wolf - Dire",
+			"sheet": "enemies/wolf/dire.png",
+			"variant": "dire"
+		},
+		{
+			"category": "enemy",
 			"family": "wolf",
 			"id": "wolf:gray",
 			"name": "Wolf - Gray",
 			"sheet": "enemies/wolf/gray.png",
 			"variant": "gray"
+		},
+		{
+			"category": "enemy",
+			"family": "wolf",
+			"id": "wolf:timber",
+			"name": "Wolf - Timber",
+			"sheet": "enemies/wolf/timber.png",
+			"variant": "timber"
 		}
 	],
 	"cell": 24,

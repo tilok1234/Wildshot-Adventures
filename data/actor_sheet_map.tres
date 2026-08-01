@@ -2,16 +2,53 @@
 
 [ext_resource type="Script" path="res://data/actor_sheet_map.gd" id="1"]
 
+; S1 GREEN ROSTER (sl-0104 seam 1): the 14 Green families join the
+; map (canonical = the catalog default_variant) and carry their FULL
+; variant lists (docs/23 "all variants play" ruling — 54 Green looks,
+; zero new assets). Lists are catalog order from
+; assets/assembler-pack/indexes/enemy-families.json; the green roster
+; test pins both-direction parity against that index.
+
 [resource]
 script = ExtResource("1")
 map = {
+"enemy_bandit": "bandit:thug",
+"enemy_bat": "bat:cave",
+"enemy_beetle": "beetle:scarab",
 "enemy_blightcaster": "cultist:acolyte",
+"enemy_boar": "boar:tusker",
 "enemy_bone_reliquary_king": "boss:bone-reliquary-king",
 "enemy_fanmaw": "carniplant:snapvine",
+"enemy_goblin": "goblin:scout",
 "enemy_husk_archer": "skeleton:archer",
 "enemy_leadshot": "bandit:sniper",
+"enemy_moth": "moth:moon",
+"enemy_porcupine": "porcupine:forest",
 "enemy_ringer": "eyemonster:watcher",
 "enemy_rusher": "wolf:gray",
+"enemy_scarecrow": "scarecrow:strawfield",
+"enemy_shroom": "shroom:toad",
+"enemy_slime": "slime:lime",
+"enemy_snail": "snail:meadow",
+"enemy_treant": "treant:oak",
+"enemy_wasp": "wasp:yellowjacket",
+"enemy_wolf": "wolf:gray",
 "enemy_yard_warden": "scarecrow:strawfield",
 "player": "character-ranger"
+}
+variants = {
+"enemy_bandit": ["bandit:thug", "bandit:brigand", "bandit:sniper"],
+"enemy_bat": ["bat:cave", "bat:frost", "bat:vampire", "bat:moss"],
+"enemy_beetle": ["beetle:scarab", "beetle:stag", "beetle:bomber"],
+"enemy_boar": ["boar:tusker", "boar:ash", "boar:blood"],
+"enemy_goblin": ["goblin:scout", "goblin:brute", "goblin:shaman", "goblin:archer", "goblin:chief"],
+"enemy_moth": ["moth:moon", "moth:plague", "moth:frost", "moth:ember"],
+"enemy_porcupine": ["porcupine:forest", "porcupine:venom", "porcupine:frost", "porcupine:ember"],
+"enemy_scarecrow": ["scarecrow:strawfield", "scarecrow:plaguecrow", "scarecrow:frostbound", "scarecrow:infernal"],
+"enemy_shroom": ["shroom:toad", "shroom:violet", "shroom:earth", "shroom:sky"],
+"enemy_slime": ["slime:lime", "slime:aqua", "slime:magma", "slime:shadow", "slime:honey", "slime:rock", "slime:rose"],
+"enemy_snail": ["snail:meadow", "snail:iron", "snail:crystal", "snail:magma"],
+"enemy_treant": ["treant:oak", "treant:willow", "treant:blighted"],
+"enemy_wasp": ["wasp:yellowjacket", "wasp:hornet", "wasp:royal"],
+"enemy_wolf": ["wolf:gray", "wolf:timber", "wolf:dire"]
 }

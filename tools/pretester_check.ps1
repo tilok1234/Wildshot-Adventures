@@ -130,6 +130,7 @@ $tests = @(
     @("loop contracts (drops/curve/pickup)", "tests/loop/loop_test.gd"),
     @("stat frame (docs/22 in the sim)", "tests/stat_frame/stat_frame_test.gd"),
     @("living world (leash/respawn/importer)", "tests/living_world/living_world_test.gd"),
+    @("green roster (S1 re-table/variants)", "tests/green_roster/green_roster_test.gd"),
     @("npc + icon wiring (seam 4)", "tests/wiring/npc_icon_wiring_test.gd"),
     @("determinism smoke (all contracts)", "tests/determinism/determinism_smoke.gd"),
     @("golden replays x10", "tests/replay_fixtures/verify_replays.gd")
@@ -230,7 +231,9 @@ if (-not $SkipBattery) {
         @("overworld_wet","1,2,3",3600,"res://reports/dodge_overworld_wet_composition.json","","PASS","PASS"),
         @("overworld_cold","1,2,3",3600,"res://reports/dodge_overworld_cold_composition.json","","PASS","PASS"),
         @("overworld_green_boss","1,2,3",3600,"res://reports/dodge_overworld_green_boss_composition.json","","PASS","PASS"),
-        @("proof_slice_leash","1,2,3",3600,"","","PASS","PASS")
+        @("proof_slice_leash","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_green_camp","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_green_ranged","1,2,3",3600,"","","PASS","PASS")
     )
     foreach ($b in $battery) {
         $scen = $b[0]; $seeds = $b[1]; $ticks = $b[2]; $out = $b[3]; $pol = $b[4]

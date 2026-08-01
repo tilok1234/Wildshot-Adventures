@@ -1,0 +1,35 @@
+[gd_resource type="Resource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://data/enemy_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/emitter_slot.gd" id="2"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/ringer_radial.tres" id="3"]
+
+; S1 GREEN ROSTER (sl-0104 seam 1): ringer archetype — the quill
+; burst (CHASER + radial pattern 14) at a much lazier period. Lead
+; 36 exact; [T], Green band.
+
+[sub_resource type="Resource" id="slot0"]
+script = ExtResource("2")
+pattern = ExtResource("3")
+trigger_range = 5.0
+telegraph_ticks = 36
+cooldown_ticks = 240
+recover_ticks = 20
+
+[resource]
+script = ExtResource("1")
+id = &"porcupine"
+display_name = "Porcupine"
+hp = 26
+body_radius = 0.32
+move_speed = 2.0
+contact_damage = 0
+contact_cooldown_ticks = 30
+aggro_range = 12.0
+movement_policy = 0
+range_min = 0.0
+range_max = 0.0
+emitters = Array[Resource]([SubResource("slot0")])
+xp_value = 4
+gold_min = 1
+gold_max = 4

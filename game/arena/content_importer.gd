@@ -9,6 +9,8 @@ extends RefCounted
 ##   tiers is the ruled model);
 ## - the placeholder-roster vocabulary maps onto the standard def
 ##   roster (indexes are scenario_loader's append-only contract);
+##   S1 (sl-0104): zones in ZONE_VOCAB re-table each placeholder onto
+##   the zone's REAL roster role-preservingly (docs/23 enemy split);
 ## - nightOnly is carried-but-unconsumed vocabulary (no night system):
 ##   night rosters spawn as normal presence, the reference-pass
 ##   precedent.
@@ -32,6 +34,29 @@ const ENEMY_VOCAB := {
 	"enemy.frost_wraith": 3,
 }
 const BOSS_DEF_INDEX := 6  # yard_warden kit stand-in (docs/20)
+
+## S1 GREEN RE-TABLE (sl-0104 seam 1): zones with a row here map each
+## wf placeholder id onto a WEIGHTED SET of the zone's real roster —
+## role-preserving (the pack's authored melee/ranged/hazard mix per
+## territory survives; the families diversify inside it). Each set
+## sums to EXACTLY 100 so entry weight = placeholder weight x set
+## weight keeps every cross-role ratio integer-exact. A zone listed
+## here is AUTHORITATIVE: a roster id missing from its table is an
+## unknown id (loud refusal), never a silent flat-vocab fallback.
+## Def indexes 8..21 = the Green 14 (scenario_loader contract).
+const ZONE_VOCAB := {
+	"green":
+	{
+		"enemy.marauder":
+		[[8, 28], [9, 20], [11, 14], [12, 12], [15, 8], [10, 6], [17, 6], [18, 6]],
+		"enemy.prowler": [[21, 32], [16, 26], [14, 22], [19, 12], [20, 8]],
+		"enemy.mire_creeper": [[13, 100]],
+	},
+}
+## Zone density multiplier on pack_size + max_active [T] (sl-0099:
+## "enemy density too low", self-dispositioned as slice tuning — the
+## leash exists now, so Green rises deliberately).
+const ZONE_DENSITY := {"green": 1.5}
 
 ## Depth-keyed respawn bases in ticks [T] (docs/23 (c): lazy in Green,
 ## fast in Snow — W-3). Keyed by the pack's own zone prefixes.
@@ -98,32 +123,53 @@ static func build_sites(src: String) -> Dictionary:
 	var cell_owner: Dictionary = {}
 	var region_territories: Dictionary = {}
 
+	var retabled: Dictionary = {}
 	var territories: Array = terr.get("territories", [])
 	for t: Dictionary in territories:
+		var zone := String(region_zone.get(String(t.get("regionId", "")), ""))
+		var zone_table: Dictionary = ZONE_VOCAB.get(zone, {})
 		var roster: Array = t.get("roster", [])
 		var roster_defs := PackedInt32Array()
 		var roster_weights := PackedInt32Array()
 		for r: Dictionary in roster:
 			var eid := String(r.get("enemyId", ""))
+			var w := int(r.get("weightPercent", 1))
+			if not zone_table.is_empty():
+				# Re-tabled zone: the zone table is authoritative.
+				if not zone_table.has(eid):
+					unknown_ids[eid] = true
+					push_error(
+						(
+							"content_importer: roster enemyId '%s' not in the '%s' zone table"
+							% [eid, zone]
+						)
+					)
+					continue
+				for pair: Array in zone_table[eid]:
+					roster_defs.append(int(pair[0]))
+					roster_weights.append(w * int(pair[1]))
+				continue
 			if not ENEMY_VOCAB.has(eid):
 				unknown_ids[eid] = true
 				push_error("content_importer: unknown roster enemyId '" + eid + "'")
 				continue
 			roster_defs.append(int(ENEMY_VOCAB[eid]))
-			roster_weights.append(int(r.get("weightPercent", 1)))
+			roster_weights.append(w)
 		if roster_defs.is_empty():
 			log.append("territory %s: empty mapped roster, skipped" % String(t.get("id", "?")))
 			continue
+		if not zone_table.is_empty():
+			retabled[zone] = int(retabled.get(zone, 0)) + 1
 		var seed_cell: Array = t.get("seedCell", [0, 0])
 		var pack_size: Array = t.get("packSize", [2, 6])
-		var zone := String(region_zone.get(String(t.get("regionId", "")), ""))
+		var density := float(ZONE_DENSITY.get(zone, 1.0))
 		var site := {
 			"cell": Vector2(float(int(seed_cell[0])) + 0.5, float(int(seed_cell[1])) + 0.5),
 			"roster_defs": roster_defs,
 			"roster_weights": roster_weights,
-			"pack_min": int(pack_size[0]),
-			"pack_max": int(pack_size[1]),
-			"max_active": int(t.get("maxActive", 6)),
+			"pack_min": roundi(float(int(pack_size[0])) * density),
+			"pack_max": roundi(float(int(pack_size[1])) * density),
+			"max_active": roundi(float(int(t.get("maxActive", 6))) * density),
 			"respawn_ticks": _respawn_ticks(zone, String(t.get("respawnPressure", "medium")), 1),
 			"kind": "territory",
 			"zone": zone,
@@ -225,6 +271,7 @@ static func build_sites(src: String) -> Dictionary:
 		"bosses": bosses,
 		"dungeons_skipped": dungeons_skipped,
 		"unknown_ids": unknown_ids.size(),
+		"retabled": retabled,
 	}
 	print(
 		(

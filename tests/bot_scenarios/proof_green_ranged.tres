@@ -1,0 +1,22 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; S1 GREEN ROSTER composition proof (sl-0104 seam 1): the most
+; isolated green territory of all — territory.region.grass.30297.0,
+; seed 108,138, nearest other site 20.1 tiles — and prowler-only, so
+; the re-table draws the PURE RANGED set (bandit/moth/wasp/
+; scarecrow/treant) at density 1.5 (maxActive 5 -> 8): anchors, a
+; flanker, and aimed fire together on real b77 ground. Bot spawns 5
+; tiles west, walkable by the pack grid.
+
+[resource]
+script = ExtResource("1")
+id = &"proof_green_ranged"
+display_name = "PROOF: green ranged camp (b77, re-tabled)"
+worldforge_pack = "res://assets/worldforge-packs/wildshot-overworld-pack-dusk/"
+content_pack = "res://assets/wildshot-overworld-pack-dusk-content/"
+player_spawn = Vector2(103.5, 138.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {}
+default_seed = 1
