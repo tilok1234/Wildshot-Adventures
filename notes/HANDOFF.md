@@ -1,10 +1,17 @@
 # Session Handoff — rewritten 2026-08-01 (~15:40, pre-slice-build seam)
 
-**COLD START — this handoff assumes NO prior context.** You may be a
-fresh Claude instance under a DIFFERENT USER ACCOUNT (the designer
-switches on usage limits; this handoff is written for exactly that).
-Read the game repo's `CLAUDE.md` first (auto-loads; BINDING contract +
-the authoritative milestone tracker — its milestone line is the full
+**COLD START — this handoff assumes NO prior context.** You are
+almost certainly a fresh Claude instance under a **NEW USER ACCOUNT**:
+the designer switched accounts right before the slice build
+(2026-08-01, announced at this handoff's seam) — that is expected, not
+an anomaly. Nothing repo-side gates on the Claude account: git
+identity and gh auth are machine-local and unchanged, both repos push
+over the machine's stored credentials, and this file + `CLAUDE.md` +
+planning `docs/23` are the complete context carrier (do not expect
+prior-session Claude memory to exist under the new account — if a
+memory directory is present but empty, that is why). Read the game
+repo's `CLAUDE.md` first (auto-loads; BINDING contract + the
+authoritative milestone tracker — its milestone line is the full
 append-only history this file deliberately does not repeat). This file
 carries the current session state and the hard-won lessons the
 contract doesn't.
