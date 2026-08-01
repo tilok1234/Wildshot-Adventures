@@ -63,6 +63,10 @@ try {
         # 2. Loose worldforge packs beside the exe (resolve_src fallback).
         Copy-Item (Join-Path $repo "assets\worldforge-packs") `
             (Join-Path $outDir "assets\worldforge-packs") -Recurse
+        # 2b. The living-world content pack (slice S0 seam 2): the slice
+        # scenario's spawn tables resolve the same loose-beside-exe way.
+        Copy-Item (Join-Path $repo "assets\wildshot-overworld-pack-dusk-content") `
+            (Join-Path $outDir "assets\wildshot-overworld-pack-dusk-content") -Recurse
         # 3. Zip: wildshot-<describe>-<profile>.zip
         $zip = Join-Path $repo ("builds\wildshot-{0}-{1}.zip" -f $buildId, $p)
         if (Test-Path $zip) { Remove-Item $zip -Force }

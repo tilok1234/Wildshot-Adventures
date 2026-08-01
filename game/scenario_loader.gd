@@ -10,6 +10,7 @@ extends RefCounted
 const SimWorld := preload("res://sim/sim_world.gd")
 const PropColliders := preload("res://game/arena/prop_colliders.gd")
 const StatFrame := preload("res://sim/systems/stat_frame.gd")
+const ContentImporter := preload("res://game/arena/content_importer.gd")
 
 
 static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) -> RefCounted:
@@ -91,6 +92,21 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 				break
 		if not known:
 			push_error("scenario '%s': unknown enemy id '%s'" % [String(scenario.id), eid])
+	# Living-world sites (docs/23 S0, seam 2): the content pack's
+	# territories + placements become leash-gated spawn tables; initial
+	# populations draw here (setup-phase, before the recorder snapshot).
+	# A refused pack errors loudly — never a quietly dead world.
+	if not String(scenario.content_pack).is_empty():
+		var imported := ContentImporter.build_sites(String(scenario.content_pack))
+		if bool(imported.ok):
+			world.set_site_defs(imported.sites)
+		else:
+			push_error(
+				(
+					"scenario '%s': content pack refused (%s)"
+					% [String(scenario.id), String(scenario.content_pack)]
+				)
+			)
 	# sl-0078 fit rule: pack scenarios attach art-matched prop discs +
 	# the walk grid HERE — the one construction path main, DodgeBot,
 	# soak, and replay verification share, so player and bot walk

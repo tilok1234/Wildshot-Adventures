@@ -13,6 +13,11 @@ extends Resource
 ## arena def (the generated-test-arena ruling): validated + rendered by
 ## game/arena/world_builder.gd; collision comes from walkability.json.
 @export var worldforge_pack: String = ""
+## When set, the world_filler content pack at this dir becomes the
+## living-world spawn tables (docs/23 S0 (d): territories + placements
+## via game/arena/content_importer.gd — leash-gated sites, no new
+## authoring format). Empty = no sites (every pre-slice scenario).
+@export var content_pack: String = ""
 @export var player_spawn: Vector2 = Vector2(24.0, 16.0)
 @export var standin_positions: PackedVector2Array = PackedVector2Array()
 ## EnemyDef id (String) -> PackedVector2Array of tile positions. Spawn

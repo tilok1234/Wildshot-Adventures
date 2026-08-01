@@ -1,0 +1,25 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; Living-world leash proof (docs/23 S0 seam 2): the bot spawns 6
+; tiles from the LONELY green territory (seed 98,225 — the only
+; site whose nearest neighbor is beyond 31 tiles), INSIDE its
+; husk-camp fire envelope: the leash wakes exactly this one site,
+; the authored pack (2-3 husk archers, maxActive 3) fights for
+; real, and every other site provably stays dormant. Layout
+; iterated twice under never-weaken: (145,109) was itself a site
+; cell (wake ring on the bot's head, 9 hits @t21); (126,94) woke
+; one site at 11 tiles but melee-lean draws pinned at the tether
+; line and never fought (near_miss -1, a vacuous pass).
+
+[resource]
+script = ExtResource("1")
+id = &"proof_slice_leash"
+display_name = "PROOF: slice leash (lonely husk camp, b77)"
+worldforge_pack = "res://assets/worldforge-packs/wildshot-overworld-pack-dusk/"
+content_pack = "res://assets/wildshot-overworld-pack-dusk-content/"
+player_spawn = Vector2(104.5, 225.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {}
+default_seed = 1

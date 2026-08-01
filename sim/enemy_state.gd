@@ -23,6 +23,11 @@ var spawned_at_tick: int = 0
 ## PHASE_CHANGED, windup interrupt) fire exactly once per crossing, so
 ## the edge-detection state must restore with the run.
 var phase_index: int = 0
+## Living-world site this enemy belongs to (index into
+## SimWorld.site_defs; -1 = siteless, every pre-slice enemy). Site
+## members tether to their site and fold back into its dormant
+## population when it sleeps (docs/23 S0 plumbing, SERIAL 16).
+var site_index: int = -1
 
 
 func serialize_into(buf: StreamPeerBuffer) -> void:
@@ -37,3 +42,4 @@ func serialize_into(buf: StreamPeerBuffer) -> void:
 	buf.put_64(next_contact_tick)
 	buf.put_64(spawned_at_tick)
 	buf.put_u8(phase_index)
+	buf.put_16(site_index)

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; SLICE v0.1 (sl-0098/sl-0100): THE WORLD IS THE TEST. The b77 dusk
+; overworld with the content pack's territories + placements live as
+; leash-gated sites (docs/23 S0 plumbing v1) — the world persists and
+; refills, no run framing. Spawn = the harbor capital.
+
+[resource]
+script = ExtResource("1")
+id = &"slice_overworld"
+display_name = "THE SLICE: overworld (dusk b77, living world)"
+worldforge_pack = "res://assets/worldforge-packs/wildshot-overworld-pack-dusk/"
+content_pack = "res://assets/wildshot-overworld-pack-dusk-content/"
+player_spawn = Vector2(109.5, 182.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {}
+default_seed = 100

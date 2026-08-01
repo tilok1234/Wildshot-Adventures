@@ -19,6 +19,7 @@ const PatternDef := preload("res://data/pattern_def.gd")
 const SimEvents := preload("res://sim/events.gd")
 const Kinematics := preload("res://sim/systems/kinematics.gd")
 const Damage := preload("res://sim/systems/damage.gd")
+const SiteStep := preload("res://sim/systems/site_step.gd")
 
 ## Damage-source pattern id for body contact (namespace: pattern_def.gd).
 const PATTERN_CONTACT := -3
@@ -63,6 +64,29 @@ static func run(world: RefCounted) -> void:
 			var pe: Resource = def.phase_entry(e.phase_index)
 			rmin = float(pe.range_min)
 			rmax = float(pe.range_max)
+
+		# TERRITORY TETHER (docs/23 S0 plumbing (b), seam 2): a site
+		# member beyond its tether disengages and walks straight home —
+		# nobody migrates, chases end at the territory line. An
+		# in-progress windup cancels (an unkept telegraph cannot kill,
+		# Law 8). At the exact boundary it alternates step-home /
+		# re-engage — bounded edge-guarding, which reads as "it will
+		# not chase past its ground".
+		if e.site_index >= 0 and e.site_index < world.site_defs.size():
+			var site_def: Dictionary = world.site_defs[e.site_index]
+			var home: Vector2 = site_def.cell
+			var epos_now: Vector2 = e.pos
+			var home_dist: float = epos_now.distance_to(home)
+			if home_dist > SiteStep.TETHER_RADIUS:
+				e.ai_state = EnemyState.AIState.IDLE
+				e.winding_slot = -1
+				var toward_home: Vector2 = (home - epos_now) / home_dist
+				e.pos = Kinematics.move_circle(
+					grid, epos_now, e.radius, toward_home * float(e.move_speed) * dt
+				)
+				var epos_after: Vector2 = e.pos
+				e.vel = (epos_after - epos_now) / dt
+				continue
 
 		# Nearest living player: linear scan, first-wins ties (stable §2.4).
 		var target: RefCounted = null

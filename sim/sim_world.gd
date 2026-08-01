@@ -24,6 +24,7 @@ const PlayerRegen := preload("res://sim/systems/player_regen.gd")
 const PlayerAbility := preload("res://sim/systems/player_ability.gd")
 const PlayerFire := preload("res://sim/systems/player_fire.gd")
 const EnemyStep := preload("res://sim/systems/enemy_step.gd")
+const SiteStep := preload("res://sim/systems/site_step.gd")
 const ProjectileStep := preload("res://sim/systems/projectile_step.gd")
 const HazardStep := preload("res://sim/systems/hazard_step.gd")
 const LootStep := preload("res://sim/systems/loot_step.gd")
@@ -31,11 +32,11 @@ const Damage := preload("res://sim/systems/damage.gd")
 
 const TICKS_PER_SECOND := 60
 const DT := 1.0 / 60.0
-## 15 = docs/22 stat frame enters the sim (slice S0 seam 1, sl-0100):
-## class-backed player lane (class curves, THE damage formula, stepped
-## XP, derived stats, the 115 movement cap) + armor value on actors.
-## Legacy-lane (class_id -1) behavior is identity by construction.
-const SERIAL_VERSION := 15
+## 16 = living-world plumbing v1 (slice S0 seam 2, sl-0100): leash-
+## gated spawn sites (dormant populations, away-only respawn timers,
+## enemy site tethers). Site-less worlds serialize an empty site list
+## and behave byte-identically. 15 = docs/22 stat frame (seam 1).
+const SERIAL_VERSION := 16
 
 ## Damage-source pattern id for the scenario-declared test damage
 ## schedule (§2.11 elite transition proofs; planning log 2026-07-28).
@@ -152,6 +153,20 @@ var progression: Resource = null
 ## tuning source for the class-backed lane. Definitions like progression
 ## above: excluded from serialize(); {} keeps every lane legacy.
 var stat_frame: Dictionary = {}
+
+## Living-world SITE DEFINITIONS (docs/23 S0 plumbing v1): built by the
+## content importer from the vendored pack's territories + placements.
+## Definitions like enemy_defs — excluded from serialize(); a replay
+## reproduces them because it names its scenario. Empty = no sites (the
+## default; every pre-slice world).
+## Entry: {cell: Vector2, roster_defs: PackedInt32Array,
+##   roster_weights: PackedInt32Array, pack_min, pack_max, max_active,
+##   respawn_ticks, kind: String}
+var site_defs: Array = []
+## Living-world SITE STATE (SERIAL 16), parallel to site_defs: awake
+## flag, away-only respawn timer, and the dormant population (def_index
+## + hp per member — damaged survivors stay damaged across sleeps).
+var sites: Array[Dictionary] = []
 ## Unique item definitions (boss-tied, docs/19): definitions, excluded;
 ## drops reference them by index.
 var unique_defs: Array = []
@@ -209,6 +224,25 @@ func set_progression(prog: Resource) -> void:
 ## Setup-phase: the parsed stat frame (docs/22; StatFrame.load_frame).
 func set_stat_frame(f: Dictionary) -> void:
 	stat_frame = f
+
+
+## Setup-phase: install living-world site definitions and draw every
+## site's INITIAL population (rng_enemy — authored variation; a fresh
+## world's sites are fully stocked before the recorder snapshot).
+## Single-entry rosters and fixed pack sizes draw nothing, so boss
+## sites never consume the stream.
+func set_site_defs(defs: Array) -> void:
+	site_defs = defs
+	sites = []
+	for def: Dictionary in defs:
+		var site := {
+			"awake": false,
+			"respawn_at": -1,
+			"pop_def": PackedInt32Array(),
+			"pop_hp": PackedInt32Array(),
+		}
+		SiteStep.fill_population(self, def, site)
+		sites.append(site)
 
 
 ## Setup-phase: unique item defs (boss-tied; drops reference by index).
@@ -364,6 +398,7 @@ func step(frames: Array) -> void:
 	PlayerMove.run(self)
 	PlayerAbility.run(self)
 	PlayerFire.run(self)
+	SiteStep.run(self)
 	EnemyStep.run(self)
 	ProjectileStep.run(self)
 	HazardStep.run(self)
@@ -474,6 +509,16 @@ func serialize() -> PackedByteArray:
 		buf.put_64(int(d.expires_at_tick))
 	buf.put_u8(0 if ability_def == null else ability_defs.find(ability_def) + 1)
 	buf.put_u8(1 if god_mode else 0)
+	buf.put_u32(sites.size())
+	for s: Dictionary in sites:
+		buf.put_u8(1 if bool(s.awake) else 0)
+		buf.put_64(int(s.respawn_at))
+		var pop_def: PackedInt32Array = s.pop_def
+		var pop_hp: PackedInt32Array = s.pop_hp
+		buf.put_u16(pop_def.size())
+		for m in pop_def.size():
+			buf.put_u16(pop_def[m])
+			buf.put_32(pop_hp[m])
 	return buf.data_array
 
 

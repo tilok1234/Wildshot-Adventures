@@ -201,6 +201,12 @@ jobs:
       - name: Stat frame contracts
         run: ~/godot/godot --headless --path . --script tests/stat_frame/stat_frame_test.gd
 
+      # docs/23 S0 living world (slice seam 2): importer census +
+      # leash/respawn/tether mechanics + slice-world determinism.
+      # Pack reads are byte-pinned FileAccess — Linux-safe.
+      - name: Living world contracts
+        run: ~/godot/godot --headless --path . --script tests/living_world/living_world_test.gd
+
       - name: Upload diff artifacts on failure
         if: failure()
         uses: actions/upload-artifact@v4

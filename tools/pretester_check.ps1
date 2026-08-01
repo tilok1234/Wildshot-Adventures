@@ -129,6 +129,7 @@ $tests = @(
     @("feedback bundle + summary code", "tests/feedback/feedback_bundle_test.gd"),
     @("loop contracts (drops/curve/pickup)", "tests/loop/loop_test.gd"),
     @("stat frame (docs/22 in the sim)", "tests/stat_frame/stat_frame_test.gd"),
+    @("living world (leash/respawn/importer)", "tests/living_world/living_world_test.gd"),
     @("determinism smoke (all contracts)", "tests/determinism/determinism_smoke.gd"),
     @("golden replays x10", "tests/replay_fixtures/verify_replays.gd")
 )
@@ -220,7 +221,8 @@ if (-not $SkipBattery) {
         @("overworld_dry","1,2,3",3600,"res://reports/dodge_overworld_dry_composition.json","","PASS","PASS"),
         @("overworld_wet","1,2,3",3600,"res://reports/dodge_overworld_wet_composition.json","","PASS","PASS"),
         @("overworld_cold","1,2,3",3600,"res://reports/dodge_overworld_cold_composition.json","","PASS","PASS"),
-        @("overworld_green_boss","1,2,3",3600,"res://reports/dodge_overworld_green_boss_composition.json","","PASS","PASS")
+        @("overworld_green_boss","1,2,3",3600,"res://reports/dodge_overworld_green_boss_composition.json","","PASS","PASS"),
+        @("proof_slice_leash","1,2,3",3600,"","","PASS","PASS")
     )
     foreach ($b in $battery) {
         $scen = $b[0]; $seeds = $b[1]; $ticks = $b[2]; $out = $b[3]; $pol = $b[4]
