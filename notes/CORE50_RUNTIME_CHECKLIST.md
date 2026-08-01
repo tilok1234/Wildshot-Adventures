@@ -38,10 +38,12 @@ Launch the tester exe, flip each in options (O), confirm the LOOK:
       options row agree).
 - [ ] UI scale x2: every HUD surface doubles (bars, meter, options,
       recap, hints) — nothing clips off-screen at 1280x720.
-- [ ] Audio rows: each bus audibly steps 100/70/40/off independently;
-      KeyThreats off silences telegraphs but Sfx stays (eyes-closed
-      REAL-audio judgment stays DEFERRED to Resonance Forge intake by
-      ruling — this row is only "the knob works").
+- [ ] Audio rows: each bus audibly steps 100/70/40/off independently
+      (five buses since M8: Master/Sfx/KeyThreats/Music/AttackSfx);
+      KeyThreats off silences telegraphs but Sfx stays. Real audio is
+      LIVE since the Resonance Forge intake (2026-07-30); the
+      eyes-closed/feel verdicts accumulate in natural-testing mode
+      (notes/AUDIO_CUE_MAP.md) — this row is only "the knob works".
 - [ ] Remap in tester build: rebind fire, confirm it takes + persists
       across relaunch.
 - [ ] Onboarding screen: lowest-speed button actually starts at 3.0

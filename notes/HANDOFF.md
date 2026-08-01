@@ -1,426 +1,185 @@
-# Session Handoff — written 2026-07-29 (~03:30); UPDATED 2026-07-30 (~04:15, the audio-era seam)
+# Session Handoff — rewritten 2026-08-01 (~02:45, post-b77 seam)
 
 **COLD START — this handoff assumes NO prior context.** You may be a
 fresh Claude instance under a DIFFERENT USER ACCOUNT (the designer
-switches on usage limits; this handoff was written for exactly that).
+switches on usage limits; this handoff is written for exactly that).
 Read the game repo's `CLAUDE.md` first (auto-loads; BINDING contract +
-the authoritative milestone tracker) — this file carries the session
-state and hard-won lessons the contract doesn't.
+the authoritative milestone tracker — its milestone line is the full
+append-only history this file deliberately does not repeat). This file
+carries the current session state and the hard-won lessons the
+contract doesn't.
 
 ## §0 What this project is (60 seconds)
 
 Wildshot Adventures: a solo-developed RotMG-inspired top-down realtime
 bullet-hell ARPG in **Godot 4.6.2 (pinned), typed GDScript, custom
-deterministic sim, no Godot physics in gameplay**. Current phase:
-"Phase A" — a zero-reward combat-feel laboratory that outside testers
-must enjoy for 20+ minutes on movement-dodging alone (Gate 1). Two
-repos + a seven-repo ecosystem:
+deterministic sim, no Godot physics in gameplay**. Serialization
+SERIAL 13; goldens current; all CI green.
+
+Current phase: **the Loop era.** Gate 1 was REWRITTEN 2026-07-30
+(sl-0023): the recruited-stranger zero-reward gate is retired with
+cause; the bar is an unguided complete run — spawn in town, fight out
+through rising danger where loot drops and matters, reach the first
+boss or die trying, death costs something real, retry pulls
+immediately — that stays **fun for the designer playing daily**. The
+zero-reward lab law is lifted for loop work. Loop v1 is BUILT and has
+been PLAYED (positive in-play verdicts, marathon-provisional). Warm
+WATCHED first-touches get scheduled only once the loop bar holds.
 
 - **Game repo (you are here):** `C:\Users\headc\Documents\Wildshot-Adventures`,
-  branch `main`. Implements; never reinterprets design. Serialization
-  v12; goldens current; ALL CI green.
+  branch `main`. Implements; never reinterprets design.
 - **Planning repo (design authority):**
   `C:\Users\headc\Documents\Wildshot_adventure_final_planning` — ONE
   branch, `claude/questionnaire-note-taking-9vl2sl` (no main; do not
-  create one). `git fetch` at session start and check for new
-  `claude/*` branches (designer web sessions); fast-forward in only if
-  they fork cleanly from the working tip.
-- **The ecosystem map** (planning `docs/16-ECOSYSTEM_MAP.md`,
-  designer-accepted) names all seven repos, their authority docs, and
-  the cross-repo rules. Every repo's read-me-first doc carries a
-  pointer block to it. **LANE RULE (designer, 2026-07-29, in the
-  CLAUDE.md Authority section): game-repo sessions NEVER execute other
-  repos' plans/work.** Upstream needs become recorded asks or a
-  self-contained prompt the designer pastes to that repo's own agent —
-  that relay pattern shipped two WorldForge arcs in one night. Reading
-  other repos for context is fine; intaking their delivered packs is
-  game-repo work.
+  create one). Its `tools/sync_log.json` is the cross-repo logbook
+  (doc 18); `tools/ecosystem.lock.json` holds the pins.
+- **The ecosystem map** (planning `docs/16-ECOSYSTEM_MAP.md`) names
+  all seven repos and the hard cross-repo rules. **LANE RULE: game
+  sessions NEVER execute other repos' plans/work.** Upstream needs
+  become recorded asks or a self-contained prompt the designer hands
+  to that repo's own agent. Reading other repos for context is fine;
+  INTAKING their delivered packs is game-repo work.
 
 ## §0.5 Working with the designer
 
 Solo dev, handle mmoabsurd (publicly **sarepat** — itch page
-https://sarepat.itch.io/wildshot-adventures is LIVE with devlog + GIFs
-#1/#2). Big nerd, goes hard. Works a 15:00–23:00 shift — **"rested"
+https://sarepat.itch.io/wildshot-adventures is LIVE with devlog +
+GIFs). Big nerd, goes hard. Works a 15:00–23:00 shift — **"rested"
 keys on hours into THEIR waking day, never wall clock** (home at
-midnight ≈ their 17:00; the two-tier verdict system below encodes
-this). They iterate by PLAYING: ship, then relaunch the game for them
-(`Start-Process` detached `~/bin/godot.exe --path .`; window opens
-BEHIND — front it via user32 SetForegroundWindow; kill old godot
-first). **Compact keyboard: NO F1–F12 keys, ever.** Standing authority
-to commit and push both repos at every clean seam.
+midnight ≈ their 17:00). They iterate by PLAYING: ship, then relaunch
+the game for them (`Start-Process` detached `~/bin/godot.exe
+--path .`; window opens BEHIND — front it via user32
+SetForegroundWindow; kill old godot first — the console wrapper
+spawns an engine child named plain "godot"). **Compact keyboard: NO
+F1–F12 keys, ever.** Standing authority to commit and push both repos
+at every clean seam.
 
-- **Two-tier verdicts (ruled 2026-07-29):** in-session designer calls
-  count as decisions immediately; feel items additionally get one
-  rested ratification. Marathons + dirty runs stay PROVISIONAL
-  regardless.
-- **THE DECISION DECK is the decision register**: the designer's own
-  tool (planning `tools/decision_deck.html`, Desktop launcher .bat).
-  They deal cards, decide, EXPORT; the JSON gets committed as planning
-  `tools/decision_deck_register.json` and the session sweeps decisions
-  into records + executes GOs. **PLAIN-LANGUAGE RULE: anything written
-  FOR the designer (card text, ruling menus) uses zero repo jargon —
-  say what each option concretely does.** They asked twice; it's law.
-- They are private by temperament — public surface stays game-forward
-  (posts = the game moving; never "build your brand" suggestions).
-  They explicitly licensed nudging the tester-pipeline cadence (weekly
-  GIF etc.), one line at natural seams.
+- **Two-tier verdicts:** in-session designer calls count immediately;
+  feel items additionally get one rested ratification. Marathons +
+  dirty runs stay PROVISIONAL regardless. Feel verdicts accept rested
+  humans only — never a bot.
+- **THE DECISION DECK is the decision register** (planning
+  `tools/decision_deck.html` + register JSON; they deal, decide,
+  export; sessions sweep). **PLAIN-LANGUAGE RULE: anything written
+  FOR the designer uses zero repo jargon** — say what each option
+  concretely does. They asked twice; it's law.
+- Private by temperament — public surface stays game-forward. They
+  licensed nudging the weekly-GIF cadence, one line at natural seams.
 - When they ship a pack mid-task, integrating it beats finishing your
-  plan. When they ask to SEE something, render and send it (4x
+  plan. When they ask to SEE something, render and send it (4×
   nearest-neighbor reads well). When THEY show YOU something (GIF,
-  screenshot, video), treat it as primary evidence — this session's
-  biggest diagnosis failure ended the moment their footage was read
-  frame by frame.
+  screenshot, video), treat it as primary evidence — read the frames.
 
-## Where things stand (2026-07-29, the marathon seam)
+## §1 Where things stand (2026-08-01)
 
-**M0–M7 ALL ENGINEERING-COMPLETE AND CLOSED.** The one-command gate
-`tools/pretester_check.ps1` runs ALL GREEN (~11 min: 11 fixed gates,
-25-row proof battery byte-identical against committed reports, export
-step building + boot-checking BOTH artifacts). Highlights of the
-final state:
+**M0–M8 engineering complete.** The one-command ship gate
+`tools/pretester_check.ps1` runs ALL GREEN (~14–19 min: 17 fixed
+steps, 28-row proof battery byte-identical against committed reports,
+export step building + boot-checking BOTH artifacts, lockdown probe).
+Last full run: 2026-08-01 at the b77 intake, 14.3 min.
 
-- **Reactive is the DodgeBot policy of record** (ruled; ledger #11
-  closed). dodge_proof DEFAULTS to reactive; unsuffixed reports/ are
-  the record; the three former wolf-pair FAILs PASS and stay watched
-  as `[--policy=primary]` MUST-FAIL baseline rows (a primary PASS
-  means the sim changed — investigate).
-- **Yard Warden: 575 HP [T]** (ruled; ~13 s Longbolt intent — TTKBot
-  measures 11.88 s, 21/21 pairs EXACT). Phase floors 66/33 pct;
-  schedules re-derived (p2 drop 230, p3 drop 403, full-fight sums 575,
-  transitions t1207/t2413, kill t3301); smoke pins tick-exact.
-- **Export pipeline LIVE** (M7's last item): `tools/export.ps1` →
-  dev + tester zips (feature tag `tester`; main.gd's ONE-FLAG
-  `dev_tools` gate strips console/god/slow-mo/free-speed/bot+audit
-  CLI; speed presets stay), build-id stamp on the tester HUD,
-  worldforge packs LOOSE beside the exe (`resolve_src` fallback; pack
-  drops swap into built zips), artifact boot check by EXIT CODE,
-  butler command prepared (designer pushes; itch channel
-  pipe-testers).
-- **THE CITIES ARC (the night's saga, accepted in play —
-  "hallelujah! finnaly works"):** cities are WYSIWYG-walkable. The
-  designer's WF agent deleted the whole seal machinery upstream
-  (collision = art outline minus declared pass cells; bidirectional
-  gate; exceptions EMPTY) and re-exported dusk: flood 34739, 481
-  one-wide inter-house strips walk, 7 enclosed courtyard islands are
-  LEGAL walkable-unreachable. Game half: **ActorSortSpace** — actors +
-  structure/props/fence/wall layers y-sort together at the ACTORS
-  band; structures render as PER-BUILDING mini TileMapLayers anchored
-  at base-row bottom edge (v1 via alternative tiles DROPPED ROOFS —
-  see gotchas). Porosity diag re-pinned 44 (per-drop doctrine in the
-  tool's docstring).
-- **Decision Deck era:** 20 decisions burned 2026-07-29 (register
-  committed). Recruitment sizing ruled (10–16, ≥4 strangers/cycle) —
-  the Gate 1 calendar is UNBLOCKED. Hours log honestly backfilled
-  (net +4h51 incl. a −3h55 sleep-gap correction). Docs 16/17
-  accepted. world_filler: freeze RESOLVED upstream, format 1 FINAL,
-  mainline **re-ruled 2026-07-30 = `main`** (the designer's approval
-  line, promoted in the janitor session; planning
-  notes/sessions/2026-07-30.md), proper clone at
-  `Documents\world_filler\world_filler` (on `main`); game-side
-  consumption stays POST-GATE-1 per planning docs/17.
+- **THE LOOP (v1, SERIAL 13):** "THE LOOP" picker row — spawn in the
+  b65 town, three proven danger rings westward, the BONE RELIQUARY
+  KING at 105 tiles (Warden kit, 900 HP [T]). Loot tiers T1–T5 +
+  armor + XP/levels + carried gold; death costs 25% [T] carried gold
+  (permadeath toggle at creation = hardcore); one-key retry. EVERY
+  number is [T] in `data/progression.tres` + the def drop tables.
+  L2 (daily-play tuning) starts when the designer calls the skeleton
+  "judgeable". Ledger #16 (replay character block) lands with L2.
+- **Worlds, two committed lineages** (per-pack pins, doc-18 release
+  transport, `notes/PACK_INTAKE_RUNBOOK.md`):
+  `small-cold-coastal-pack-dusk` **b65** (THE LOOP's town +
+  world_walk battery row; porosity pin 44; renders via the legacy M1
+  tileforge import) and `wildshot-overworld-pack-dusk` **b77**
+  (Overworld Walk picker row; flood 46493, spawn 109,182; porosity
+  pin 60; renders via the 9b8b2a2 package). b77 = the
+  prop-walkability drop: carpet/canopy/solid classes, 2,352 walkable
+  crown cells, walk-under canopy PROVEN on screen
+  (reports/canopy_render_audit_b77_*.png + pixel-mask verdict in the
+  intake record). Road joints (47 cells) render since b76.
+- **TileForge is PER-PIN** (b76 paired drop):
+  `world_builder.TILEFORGE_PACKAGES` = `res://tileforge/` (M1
+  ae1eecb build — b65-era packs) + 
+  `res://tileforge_packages/dusk-9b8b2a2-seed103991/`. Packs resolve
+  by their pinned identity; mismatches refuse loudly. See gotcha #22
+  before touching anything tileforge-shaped.
+- **Combat record:** REACTIVE is the DodgeBot policy of record; the
+  three wolf-pair primary FAILs stay watched as `[--policy=primary]`
+  MUST-FAIL baselines. Warden 575 HP [T] (~12 s Longbolt, TTKBot
+  21/21 EXACT). Six ordinaries + elite all proof-passed at 3.0
+  ability-off. Nine-row acceptance signed (rows 1/2/3/6/9,
+  2026-07-29); sphere projectile set is the shipped look.
+- **Audio era live** (Resonance Forge v1 intaken 2026-07-30): real
+  cues on the data-driven map, 4-track music queue ducking −9 dB
+  under threats, attack sounds (round-robin, zero sim change), FIVE
+  channels (Master/Sfx/KeyThreats/Music/AttackSfx) each with off.
+  Designer verdicts so far positive (Tier 1, provisional);
+  NATURAL-TESTING mode — verdicts accumulate in play, do not nag.
+- **Tester pipeline standing:** export.ps1 dev+tester zips, one-flag
+  dev_tools lockdown (lint + artifact probe in the gate), onboarding
+  screen (copy = placeholder, designer voice pending), feedback
+  bundle + WS1- summary codes + evidence_report.py. CORE-50 wiring
+  mechanized both profiles; the RENDER half of the checklist
+  (designer eyes, tester build) is still unchecked
+  (`notes/CORE50_RUNTIME_CHECKLIST.md`).
 
-## 2026-08-01 session close (~02:00) — b77 intake: props walk, canopy proven — READ THIS FIRST
+## §2 Open — designer-side (do not nag; the deck + planning carry these)
 
-Second mechanical night intake (designer post-shift; ZERO feel
-verdicts). Delivery sl-0066 = the prop-walkability conversion
-(sl-0063 arc): carpet/canopy/solid classes over all 84 prop species,
-density byte-identical. One commit, pushed; full record in CLAUDE.md
-+ sync log sl-0067. Essentials:
+- **b77 navigation walk** = THE sl-0066 acceptance (the "getting
+  blocked" complaint is the test; conversion shipped, walk pending).
+- THE LOOP "judgeable" call — starts the L2 daily-bar clock.
+- Crosshair size/contrast taste-rule (sl-0042 pass shipped).
+- b65 city walk (open since that intake).
+- Rested ratification stack: M2 formal close, six ordinaries, all
+  marathon-provisional loop/audio verdicts.
+- CORE-50 render checklist pass + onboarding copy voice pass.
+- Weekly GIF cadence (theirs to post; material exists every week).
 
-- **Normal in-place supersede** b76→b77, SAME tileforge pin — the
-  per-pin registry needed zero work (probe proves both worlds still
-  resolve; road 2301/47 joints carried, tmj byte-identical).
-- **Walkability-only**: 1044 cells opened (stump 509 / fallen_log
-  490 / bone_pile 44 / loot_pile 1 — typed 100%), zero sealed; flood
-  45156→46493; porosity set IDENTICAL at 60 (no re-pin); cliff
-  invariants carry; b65 untouched.
-- **Canopy check (the sl-0066 game-side check) PROVEN**:
-  `tests/worldforge_pack/canopy_render_probe.gd` + pixel-mask
-  verdict — 0/8525 in-mask pixels differ with/without a ranger under
-  the crown (props-overhang draws over the player), evidence PNGs in
-  reports/. 2,352 walkable crown cells shipped.
-- FULL pretester ALL GREEN 14.3 min. **Designer's navigation walk =
-  the acceptance** (sl-0066: the 'getting blocked' complaint is the
-  test). sl-0065 (dev-profile world-map overlay ask) is OPEN and was
-  NOT routed in this session's paste — do not build it unprompted.
+Resolved recently so you don't re-open them: b76 street/joints look
+APPROVED on the walk (2026-07-31); CORE-34 no-ability clear DONE;
+boss pack intaken raw-by-ruling (wire only on natural need).
 
-## 2026-08-01 session close (~00:45) — b76 + 9b8b2a2 PAIRED intake
+## §3 Open — engineering (when asked)
 
-Mechanical night intake (designer post-shift; ZERO feel verdicts —
-the on-screen joints/street look is the open taste line, sl-0052/53
-arc continues on b76). Delivery sl-0061 executed hands-free; one
-commit, pushed; full record in CLAUDE.md's milestone line + sync log
-sl-0064. What a future session must know:
+- **sl-0065: dev-profile world-map overlay + corner minimap** (render
+  each pack's own minimap.png + player dot; PLAYER map stays Part II
+  per doc 13). ROUTED planning→game but NOT yet handed in a session
+  paste — build it when the designer/planning paste arrives, not
+  before.
+- Loop-routing onto the b77 harbor capital (scenario + gradient +
+  proofs — the natural next content arc; talk-before-build).
+- Intakes as deliveries land (runbook + per-pack pins + paired-TF
+  doctrine). WF/TF/RF re-drops all follow the same transport.
+- Ledger #16 replay character block (rides L2).
 
-- **TileForge is PER-PIN now.** World packs pin the exact package
-  build; `world_builder` resolves from a `TILEFORGE_PACKAGES`
-  registry: `res://tileforge/` (M1 ae1eecb import — b65-era packs,
-  BYTE-UNTOUCHED) + `res://tileforge_packages/dusk-9b8b2a2-seed103991/`
-  (the b76 pairing). Never swap `res://tileforge` in place — new
-  builds land BESIDE it (see gotcha #22).
-- **b76 overworld** superseded b74 in place (b75 superseded
-  pre-intake, never landed). Path contract 0..3: street=3 (pack
-  census 1461; delivery's 1466 = WORLD-side count, world→pack seam,
-  b75-archive-pinned), accepted zero-code — the chain reads no
-  semantic path values (grep re-proof). Porosity 60→60 with ±2 typed
-  (crypt door in at 70-71,127; witch_circle door out at 66-67,109);
-  b65 keeps 44. Cliff replica calibrated on b74 (1456 exact) then
-  b76 = 1447 (−9 typed to 30 rock-edge repaints); zero band-on-rock,
-  zero walkable at terrace≥1.
-- **Road joints render end-to-end**: tmj-driven rendering gets the
-  hand-authored joint gids free (47 cells, mechanized in
-  `tests/worldforge_pack/b76_picker_probe.gd` — which also proves
-  BOTH worlds build through the registry in one run). roadTypes 5-8
-  (gravelway/flagway/corduroy/threshold) are unused vocabulary
-  pending their own designed round.
-- FULL pretester ALL GREEN 16.9 min post-drop (17 fixed + 28-row
-  battery byte-identical incl world_walk + export + lockdown probe).
-
-## 2026-07-31 session close (~00:15) — b72 intake + crosshair
-
-Mechanical night session (designer post-shift; zero feel/acceptance
-verdicts recorded, by the ask's own terms). Two arcs, both pushed:
-
-- **b72 OVERWORLD INTAKEN** (delivery sl-0035 → completion sl-0043;
-  game commit dde3101): roads-only delta — every road (city lane,
-  country highway, wilderness trail) is now a one-tile band line;
-  path-2 census 1784→2166 (+382), trails 330→361; 0/1/2 acceptance
-  holds with zero code change (normalized-recipe.json byte-identical —
-  the delta is generator-side). IN-PLACE SUPERSEDE of b71 at the same
-  path; **b71's lock pin RETIRED by per-pack call** (its release stays
-  immutable archive). Full verify-before-drop chain (GitHub digest +
-  zip + manifest + 8-file parity + tag→sourceCommit bbc10cdb) + staged
-  blobs re-hashed byte-true. Addon flood recompute 45202 == manifest;
-  spawn 109,182 unchanged. **Porosity re-pinned 60→64 deliberately**:
-  +4 route cells = two two-wide landmark footprints (structure.ruin
-  182-183,190; structure.stone_circle 249-250,116), both on-flood —
-  reads as sl-0035's severed-landmarks fix; b65 keeps 44. **Cliff line
-  re-confirmed** via the adapter-v4 replica CALIBRATED on b71 first
-  (reproduced the recorded 1456 terraced-peak cells exactly): b72
-  relief IDENTICAL ({169,820,467} by level), zero path-on-rock, zero
-  walkable at terrace>=1. FULL pretester ALL GREEN 19.4 min (17 fixed
-  steps + 28-row battery byte-identical incl world_walk + export +
-  probe). Nothing routes to the overworld yet — loop-routing onto the
-  harbor capital stays the natural next engineering arc (when asked).
-- **CROSSHAIR SCALE PASS** (ask sl-0042 → completion sl-0044; game
-  commit 0a7d69d): the hardware cursor never inherited the integer
-  viewport stretch (11-physical-px speck; designer standing
-  complaint). main.gd now scales it nearest-neighbor by the live
-  integer content scale, kit hotspot re-centered, re-applied on
-  size_changed. Render-only; pack assets untouched (manifest-hashed);
-  lint/boot/smoke green, smoke hashes unchanged. **GAME RELAUNCHED
-  WINDOWED AND FRONTED** (engine log clean, THE LOOP scenario up) —
-  the designer's taste-rule on final size/contrast is the open item;
-  if contrast still fails after sizing, record an upstream kit ask,
-  never a pack-asset hand-edit.
-
-- **ROAD LAYER ARC** (ask sl-0047, third task of the night): the
-  render chain was proven HEALTHY by five probes ending in rendered
-  screenshots (reports/road_render_audit_b72_*.png — band roads
-  visible on screen). The designer's bare-street screenshots were the
-  B65 world (THE LOOP), which has no city-band data by upstream
-  design. Real gap = nothing routed to b72. Fix: data-only
-  overworld_walk.tres picker row ("Overworld Walk: harbor capital
-  (dusk b72)", pack spawn, zero enemies) + per-layer placement counts
-  now print at every world load (a zero-placement layer is loud).
-  roadTypesLegacy consulted nowhere game-side (finding, recorded in
-  the completion line). world_walk + battery untouched. Game
-  relaunched fronted — the designer picks the new row via O to
-  taste-rule the road look.
-
-Planning-side state (uncommitted BY DESIGN — the live planning session
-sweeps and commits): ecosystem.lock game pin b71→b72 (pin note carries
-the retirement call); sync log entries sl-0043 (b72 intake, hashes
-verbatim, true-UTC ts) + sl-0044 (crosshair completion) + the sl-0047
-road-verdict completion appended at its own seam. The sl-0035 +
-sl-0042 + sl-0047 status flips are planning's sweep, not ours. Hours
-clock STOPPED at close. Append-script lesson recorded: PowerShell
-Measure-Object -Maximum returns a DOUBLE — ':d4' formatting throws
-non-terminating and execution continues; cast [int] before -f, and
-always re-parse + verify after a JSON append (the verify caught it).
-
-## 2026-07-30 session close (~13:30) — the loop's first day (superseded above)
-
-**THE LOOP IS ALIVE AND HAS BEEN PLAYED.** The overnight arc, in five
-acts: (1) dusk **b65** + **Resonance Forge audio v1** intaken via the
-new release transport (its first real exercises — music queue +
-duck-under-threats, real cues, attack sounds, FIVE audio channels
-each with off); (2) comments box + per-project godot guard +
-`.gitattributes` byte-exactness pins; (3) **GATE 1 REWRITTEN**
-(sl-0023): stranger recruitment retired WITH CAUSE, the Loop
-milestone adopted as forward scope; (4) **LOOP V1 BUILT** the same
-night (ask sl-0025, completion sl-0033; details in the dawn block
-below): SERIAL 13 loot/XP/gold/armor, persistent character with the
-permadeath toggle at creation, death costs + one-key retry, drops
-rendered, the hand-authored gradient, the BONE RELIQUARY KING, four
-new proofs, full pretester ALL GREEN 13.9 min; (5) **b71 overworld
-intaken** (sl-0034→sl-0036): first STYLED pack (path 0/1/2 accepted,
-zero code change), cliff line confirmed game-side by replicating the
-adapter's terrace math at the source commit, porosity pinned 60,
-lands BESIDE b65 — nothing routes to it yet. Then **FIRST REAL
-PLAY**: the designer ran the loop repeatedly, died to the King twice,
-and ruled in-play (Tier 1, natural-testing): "world becoming alive",
-"a little hard — pay attention and you can do it", retry pull
-holding. Two boss-run GIFs cut at three weights; devlog cuts
-delivered (GIF #3 material, posting is theirs).
-
-STATE: game repo pushed clean (through dc3680d); planning's lock +
-sync log carry everything through sl-0036 uncommitted BY DESIGN
-(planning commits its own files and sweeps sl-0034's flip); hours
-clock STOPPED at session close; all designer verdicts are
-marathon-provisional per two-tier.
-
-NEXT — designer-side (do not nag): daily loop play (the L2 bar clock
-starts on their "judgeable" word); the tree-placement arc rides the
-planning/WF lane (they are routing it themselves); GIF #3 post; [T]
-tuning one-liners whenever a number forms an opinion
-(data/progression.tres + def drop tables = the whole dial surface).
-NEXT — engineering (when asked): route THE LOOP onto the b71
-overworld (scenario line + fresh gradient authoring + proofs — the
-harbor capital is the better town); ledger #16 (replay character
-block) lands naturally with L2; WF re-export intakes as the tree arc
-ships (runbook + release transport + per-drop pins all stand).
-
-## 2026-07-30 dawn seam: LOOP V1 IS BUILT (superseded above; detail stands)
-
-Ask sl-0025 executed same night (docs/19 §3, commits 86459d1→f7b0be6
-+ records): **the run exists** — "THE LOOP" picker row: spawn in the
-b65 town, walk west through three proven danger rings (wolf/archer
-pairs → fanmaw/ringer country → blightcaster/leadshot outlands), the
-BONE RELIQUARY KING at 105 tiles (Warden kit, 900 HP [T], 48px sheet,
-guaranteed T5 + gold + 35% Reliquary Coil placeholder unique). Loot
-drops and matters (T1–T5 per-frame tiers + armor + abilities,
-upgrades-only walk-over pickup), kill XP levels the lean sheet, gold
-carries, death costs 25% [T] carried gold (normal; the permadeath
-toggle at creation is hardcore's home — file deleted) and retry is
-ONE key. SERIAL 13; goldens regenerated; 4 new battery rows (28) +
-loop_test in the fixed gates; ledger #16 opened (replay character
-block). EVERY number is [T] in data/progression.tres + the def drop
-tables — the designer tunes in play; L2 (the daily-play bar clock)
-starts when they call the skeleton judgeable. DESIGNER-EYES pending:
-creation screen, drops/HUD, and THE RUN.
-
-## 2026-07-30 night seam (superseded above; context below)
-
-Two release-transport intakes landed (the doc 18 §5 flow's first real
-exercises, both hash-verified end to end BEFORE the drop): **dusk b65**
-(flood 34641, porosity pin 44 unchanged — route cells byte-identical;
-battery byte-identical incl world_walk; game commit 5cb0e3b; sync log
-sl-0020) and **Resonance Forge audio v1** (178 files hash-true; commits
-ec12575+aaa7250+86873a5; sync log sl-0022). AUDIO IS LIVE: 4-track
-music queue-on-loop ducking −9 dB under threat cues; real cues from
-the pack's critical set; attack sounds (player+enemy fire, 13
-variations round-robin, ATTACK_STARTED hook — zero sim change); FIVE
-channels (Master/Sfx/KeyThreats/Music/AttackSfx) each with off.
-COMMENTS BOX built (bundle comments.txt; typing suppresses hotkeys +
-gameplay input; box-owned pause). M8's last answer-gated engineering
-item is DONE.
-Designer verdicts so far (chat, Tier 1, marathon-provisional): music
-"sounds good", corrected attack build "sounds great"; NATURAL-TESTING
-mode chosen — b65 city walk + formal ear pass accumulate in play, do
-not nag. **GATE 1 REWRITTEN 2026-07-30** (ask sl-0023, planning
-593cc27; game CLAUDE.md digest carries the provenance): stranger
-recruitment, the itch testers-channel push, and stranger-aimed
-onboarding polish are RETIRED WITH CAUSE — fresh eyes are
-nonrenewable and failed recruitment reads as verdict when it is only
-silence. NEXT TARGET = THE LOOP MILESTONE: an unguided complete run
-(b65 town → out → rising danger with loot that matters → first boss
-or die trying; death costs something real; immediate retry pull);
-exit = fun for the DESIGNER playing daily for a week; 2–3 warm
-WATCHED first-touches only at the bar. The export pipeline stays a
-STANDING GATE — clean audio-era zips CUT + probed same night
-(builds/wildshot-322066c-*.zip, 58.7 MB tester). ENGINEERING QUEUE:
-(1) LOOP ASSEMBLY per designer direction (talk-before-build — the
-bar card is staged for their words; expect a design conversation
-first: loot model, death cost, boss choice, danger gradient — none
-spec'd yet, docs/08+12 truth-up owed planning-side); (2) GIF #3
-material = the town with music; (3) intakes as they land; (4)
-optional pretester ALL-GREEN capstone any quiet ~13 min (every
-component passed individually tonight).
-
-## Next work (updated 2026-07-29 ~14:20, M8 early-start session)
-
-**M8 ENGINEERING EXHAUSTED (2026-07-29 afternoon+evening,
-designer-sanctioned early-start; CLAUDE.md milestone graf has full
-detail):** lockdown sweep DONE (lint + artifact probe in the gate);
-feedback return path DONE (session lifecycle evidence + bundle zip
-row + WS1- summary code + tools/decode_summary_code.py); onboarding
-screen DONE (once-per-run tester overlay, lowest-speed loadout
-selector, loadout evidence line; ALL COPY PLACEHOLDER); CORE-50
-runtime verification DONE (--verify=core50-low|high, both pretester
-steps; notes/CORE50_RUNTIME_CHECKLIST.md maps the designer-eyes
-render half); evidence reader DONE (tools/evidence_report.py =
-bundle → Gate-1 facts; re-engagement DEFINITION stays a planning §6
-lock). Gate = 17 fixed steps + 25-row battery + export + probe, ALL
-GREEN 12.6 min.
-
-Engineering-side remaining, in rough order:
-
-1. **M8 leftovers (all designer-input-gated):** comments box (on the
-   now-vs-later answer — lean yes), onboarding copy voice pass
-   (designer words), CORE-50 checklist render pass (designer eyes,
-   tester build). Then designer-side M8: laptop pass, rested
-   per-pattern human pass, itch publish, recruitment.
-2. **DESIGNER TASTE ANSWERS OPEN (asked ~13:25, Tier 1 one-liners):**
-   bundle destination (Desktop default until said otherwise),
-   comments box now-vs-later, summary-code paste destination
-   (Discord/itch/both). DESIGNER-EYES on next launch: onboarding
-   layout, bundle row + toast + Explorer reveal (render gate).
-3. **Intakes as they land:** BOSS PACK INTAKEN 2026-07-29 (13 bosses
-   48x48 raw at assets/assembler-boss-pack/, validator
-   tools/validate_boss_pack.py; RULED keep-raw, wire on natural
-   need; re-drops revalidate with the tool). WF composition passes
-   are ACTIVE designer territory (~30 settlement compositions:
-   chicken coops, harbors...) — new world drops expected; runbook
-   procedure stands, porosity pin is per-drop. Dusk b65 INTAKEN
-   2026-07-30 via the RELEASE TRANSPORT (doc 18 §5: fetch GitHub
-   release by tag, hash-verify vs the notes before the drop): flood
-   34641, pin 44 unchanged, battery byte-identical incl world_walk;
-   designer city walk pending = acceptance. RESONANCE FORGE V1
-   INTAKEN 2026-07-30 same night (second release-transport intake):
-   real cues + 4-track music queue live, Music channel + duck + the
-   comments box built on three Tier 1 rulings — full story in
-   notes/AUDIO_CUE_MAP.md; the deferred audio verdicts now run
-   against REAL audio. Audio pack may drop
-   any day (Resonance Forge); cue swap is zero-code by design, music
-   playback is the one new piece.
-4. **Gate 1 calendar** — recruitment is sized, builds ship, channels
-   are live. Scheduling is the designer's; the pipeline is ready.
-
-Designer-side open (do not nag): rested feel cards (M2 formal close,
-six-ordinaries ratification), eight-holds round-12 docks verdict
-(WF-side), Discord link for the record.
-AUDIO IS DEFERRED BY RULING: both audio verdicts (eyes-closed + feel)
-wait for the Resonance Forge integration — placeholder cues will not
-be separately ratified (notes/AUDIO_CUE_MAP.md carries the slot).
-
-## Session rituals (the gates)
+## §4 Session rituals (the gates)
 
 Before every commit, per touched area:
 - format: `python -m gdtoolkit.formatter <files>` (it REFLOWS —
   re-grep before editing formatted files).
-- smoke: `godot_console --headless --path . --script tests/determinism/determinism_smoke.gd`
-  (mechanized contracts for all six ordinaries + the Warden at 575).
-- goldens: any sim/serialization change ⇒ bump SERIAL_VERSION,
-  regenerate + verify, say so in the commit. Next bump is 13.
+- smoke: `godot_console --headless --path . --script tests/determinism/determinism_smoke.gd`.
+- goldens: any sim/serialization change ⇒ bump SERIAL_VERSION
+  (next bump is **14**), regenerate + verify ×10, say so in the
+  commit.
 - boot: `godot_console --headless --path . --quit-after 90` grep
   "arena ready|ERROR" (use "ERROR", not "SCRIPT ERROR").
 - proofs: re-run canaries + every touched proof with CANONICAL SEEDS
-  (table below); commit reports (`git add -f reports/*.json`).
+  (table below); commit reports (`git add -f reports/...`).
   Unchanged scenarios must reproduce BYTE-IDENTICAL.
 - the one-command gate: `pwsh tools/pretester_check.ps1` = everything
-  incl. the battery + export step. Exit 0 = ship-ready. It REFUSES to
-  run beside any other Godot instance — close the game first.
+  incl. battery + export + lockdown. Exit 0 = ship-ready. It REFUSES
+  to run beside another same-project Godot instance.
 - godot binaries: `~/bin/godot_console.exe` (headless) / `godot.exe`
   (play, detached + front).
-- hourslog start/stop/note around ALL work (PROD-01). Check the tail
-  for a dangling start. Honest stops at seams — the backfill
-  precedent (2026-07-29) exists because stops were missed.
+- hourslog start/stop/note around ALL work (PROD-01); check the tail
+  for a dangling start; honest stops at seams.
 - One approved decision = one commit; push BOTH repos at clean seams.
+- Cross-repo events ⇒ sync-log entry planning-side (doc 18; no
+  event, no entry). Gotcha #24 before appending.
 
-### Canonical proof battery (all --speed=3.0; state 2026-07-30 —
-### POLICY OF RECORD = REACTIVE; Warden 575; WYSIWYG dusk pack
-### b65 flood 34641)
+### Canonical proof battery (all --speed=3.0; state 2026-08-01 —
+### POLICY OF RECORD = REACTIVE; Warden 575; b65 flood 34641; the
+### overworld pack is NOT in the battery — world_walk is b65)
 
 | scenario | seeds | ticks | expected (reactive record) |
 |---|---|---|---|
@@ -434,7 +193,7 @@ Before every commit, per touched area:
 | proof_leadshot | 206..210 | 3600 | PASS |
 | proof_blightcaster (open-pocket 20,12/26,12) | 207..211 | 3600 | PASS |
 | forest_walk → dodge_forest_walk_composition.json | 1,2,3 | 3600 | PASS |
-| world_walk → dodge_world_walk_composition.json | 1,2,3 | 3600 | PASS (WYSIWYG pack) |
+| world_walk → dodge_world_walk_composition.json | 1,2,3 | 3600 | PASS (b65 pack) |
 | first_contact → dodge_first_contact_composition.json | 1,2,3 | 3600 | PASS |
 | second_contact → dodge_second_contact_composition.json | 10..14 | 3600 | PASS |
 | proof_yw_p1 | 208..212 | 3600 | PASS (575: natural P1 pin) |
@@ -443,7 +202,7 @@ Before every commit, per touched area:
 | proof_yw_full (schedule sums 575; t1207/t2413, kill t3301) | 211..215 | 3600 | PASS |
 | proof_rusher / forest_walk / first_contact **[--policy=primary]** | as above | 3600 | **FAIL — primary-model baselines** (dodge_*_primary.json; a primary PASS = the sim changed) |
 | lab_default + meet_blightcaster/leadshot/yard_warden | 1,2,3 | 3600 | PASS |
-| loop_ring1/2/3 + proof_brk_site (Loop v1 gradient + boss site, docs/19; ring pulls stay ≤2 pressures by layout) | 1,2,3 | 3600 | PASS |
+| loop_ring1/2/3 + proof_brk_site (Loop v1 gradient + boss site; ring pulls stay ≤2 pressures by layout) | 1,2,3 | 3600 | PASS |
 
 Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- --scenario=<id> --speed=3.0 --seeds=<list> --ticks=<n> [--out=res://reports/<name>.json] [--policy=primary|orbit|axis]`
 (default policy = reactive; compositions need the explicit --out names).
@@ -490,19 +249,20 @@ Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- -
     for them and ask before committing render work. (Also the
     concrete lesson: Godot alternative-tile creation at runtime
     dropped cells; per-building mini TileMapLayers was the fix.)
-14. **The porosity diag pin (44) is per-pack-drop** — a new drop that
-    moves the number gets eyeballed (2-wide `ss` gateways = pass
-    cells = fine) and re-pinned deliberately, never silently. 7
-    walkable-unreachable courtyard islands are LEGAL under WYSIWYG.
+14. **Porosity diag pins are PER-PACK-DROP** (b65 = 44, overworld =
+    60 at b77) — a drop that moves a number gets eyeballed (2-wide
+    `ss` gateways = pass cells = fine) and re-pinned deliberately,
+    never silently; type every changed cell (species / structure
+    family / on-flood — the sl-0052 precedent). Walkable-unreachable
+    cells are LEGAL under WYSIWYG.
 15. The verdict console command enforces sources (feel rejects
     bot-proof); god/slow-mo stamp runs replay-dirty. Feel notes are
     PROVISIONAL until the two-tier rested pass.
 16. Godot user data: `%APPDATA%\Godot\app_userdata\Wildshot Adventures\`
     — logs/session.jsonl (evidence stream), logs/terrain.jsonl (snag
-    positions — THE instrument that finally located the cities
-    problem from the designer's actual walk), gif_frames/ (G dumps;
-    tools/gif.ps1 converts; the -Fps flag changes PLAYBACK not
-    sampling — use direct ffmpeg `fps=` filters to shrink).
+    positions), gif_frames/ (G dumps; tools/gif.ps1 converts; the
+    -Fps flag changes PLAYBACK not sampling — use direct ffmpeg
+    `fps=` filters to shrink).
 17. The designer's screen recordings land in
     `%LOCALAPPDATA%\Packages\Microsoft.ScreenSketch_*\TempState\Recordings\`
     — extract frames with ffmpeg and READ them; their footage
@@ -512,25 +272,23 @@ Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- -
     boot gate — "No loader found for resource" at boot means
     NOT-IMPORTED-YET, not missing. Commit the generated `.import`
     (and `.uid`) sidecars; the repo tracks them.
-19. **The pretester's machine-wide Godot guard vs reality:** the
-    `.godot/` race is PER-PROJECT. An editor open on ANOTHER project
-    trips the blanket guard but cannot race this repo — running the
-    gate steps individually (same commands, exit codes) is the
-    legitimate fallback, recorded in the commit. Same-PROJECT
-    instances (the designer's game window) genuinely block; use a
-    background waiter on process exit, and expect the designer to
-    relaunch — ask for ~5 quiet minutes, or defer to session end.
-20. **Release-transport intakes (doc 18 §5)**: verify zipSha256 vs
-    notes+sidecar, manifest seal, per-file hashes, sourceCommit vs
-    tag target — ALL LOCALLY, BEFORE the drop; re-hash after copy.
-    Mismatch = incident + STOP. Big masters can stay in the release
-    (it IS the archive) — commit only what ships; record conversions.
+19. **The pretester's Godot guard is per-project** (godot_guard.ps1):
+    provably-foreign instances don't block; same-PROJECT instances
+    (the designer's game window) genuinely do — expect the designer
+    to relaunch, ask for ~5 quiet minutes, or defer to session end.
+    Running the gate steps individually (same commands, exit codes)
+    is the recorded fallback when a foreign editor trips a check.
+20. **Release-transport intakes (doc 18 §5)**: verify zipSha256 (=
+    GitHub's computed asset digest) + manifest seal + per-file hashes
+    + tag→sourceCommit — ALL LOCALLY, BEFORE the drop; re-hash after
+    copy. Mismatch = incident + STOP. Big masters can stay in the
+    release (it IS the archive) — commit only what ships; record
+    conversions.
 21. **Fresh-clone byte-exactness**: `.gitattributes` pins the
-    hash-gated trees (assets/audio/reports/replay fixtures, and
-    `tileforge_packages/` since b76) `-text`. The repo-wide `* -text`
-    flip is DELIBERATELY not done — it would show the entire working
-    tree modified (CRLF working copies vs LF blobs) — that is a
-    designer-tapped big-bang, not session hygiene.
+    hash-gated trees (assets/audio/reports/replay fixtures +
+    `tileforge_packages/`) `-text`. The repo-wide `* -text` flip is
+    DELIBERATELY not done — designer-tapped big-bang, not session
+    hygiene.
 22. **TileForge packages are PER-PIN (b76 paired intake)**: every
     world pack pins the exact package build it was resolved against;
     `world_builder.TILEFORGE_PACKAGES` is the registry. NEVER swap
@@ -539,14 +297,29 @@ Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- -
     BESIDE it: raw drop under `assets/tileforge/`, consumed instance
     at `res://tileforge_packages/<id>/`, tres via
     `run_import.gd -- --package=<dir>` (the package's own shipped
-    importer builds it), append the registry line, and the export
-    include filter (`tileforge_packages/*/*.json`) already covers the
-    manifest. A pin matching nothing refuses to render, loudly, by
-    design.
+    importer builds it), append the registry line; the export include
+    filter (`tileforge_packages/*/*.json`) already covers manifests.
+    A pin matching nothing refuses to render, loudly, by design.
+23. **Delivery censuses can be WORLD-side numbers** — the pack
+    differs by the world→pack seam (same class as pack flood ≠ world
+    flood). Measure the PACK; pin any discrepancy by re-fetching the
+    predecessor's immutable release and diffing (the b76 1466-vs-1461
+    street-census lesson; also how the 47-joint render delta was
+    independently reproduced).
+24. **Planning sync-log appends race the live planning session**:
+    verify the next free sl-#### id AT WRITE TIME (sl-0063 was taken
+    mid-intake once), splice with the FILE'S OWN EOL convention (it
+    has flipped LF↔CRLF between sessions), re-parse + verify after
+    every append, and commit planning-side promptly. Entries are
+    append-only; status flips are planning's sweep, not ours.
 
-## Open items ledger-side
+## Ledger + scope
 
-Ledger (notes/TECH_DEBT_LEDGER.md): #1–#15 all closed or Phase-C
-deferred as of 2026-07-29 — read it before adding anything new.
-Scope tripwire stands: anything outside the SPEC-A bill is refused
-and ledgered. Gate 1 must pass before building beyond the bill.
+Ledger (`notes/TECH_DEBT_LEDGER.md`): #16 is the only OPEN entry
+(replay character block — rides L2); #1–#15 closed or Phase-C
+deferred with recorded exits. The scope tripwire is the LOOP
+MILESTONE (Gate-1 rewrite): loop-assembly work flows from designer
+direction under talk-before-build; anything outside the loop bar's
+needs is refused and ledgered or flagged to planning. Test scenes
+accrete into game content where possible; the tester-build export
+pipeline + lockdown stay a STANDING GATE regardless.

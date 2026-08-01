@@ -1,5 +1,19 @@
 # Designer queue — everything waiting on you (updated ~14:20)
 
+> **2026-08-01 (post-b77 seam): still historical — the LIVE queue is
+> planning-side** (the Decision Deck + the "rested-day remainder" in
+> planning `notes/sessions/`). Genuinely open designer-side right now,
+> for orientation only: **b77 navigation walk** (THE sl-0066
+> acceptance — the "getting blocked" complaint is the test), THE LOOP
+> "judgeable" call (starts the L2 daily-bar clock), crosshair
+> size/contrast taste-rule (sl-0042), b65 city walk, rested M2 close +
+> six-ordinaries ratification, CORE-50 render checklist pass (tester
+> build, notes/CORE50_RUNTIME_CHECKLIST.md), onboarding copy voice
+> pass, audio verdicts accumulating in natural-testing mode. Resolved
+> since the last banner: b76 street/joints look APPROVED on the walk
+> (2026-07-31); CORE-34 no-ability clear DONE; boss sheets DROPPED
+> (raw, unwired by ruling); GIFs #2/#3 material delivered.
+
 > **2026-07-29 ~03:25: THIS FILE IS HISTORICAL.** The 2026-07-29
 > burn-down decided nearly everything below (20 decisions — register:
 > planning `tools/decision_deck_register.json`; sweep: planning

@@ -1,21 +1,39 @@
 # WorldForge pack intake runbook — porosity-fix re-drop (2026-07-28)
 
-> **EXECUTED THREE TIMES by 2026-07-29** (sealed pack, two-wide pack,
-> WYSIWYG reopened pack — all clean). The PROCEDURE below stands; the
-> embedded EXPECTATIONS are era-stamped: the battery matrix now lives
-> in notes/HANDOFF.md (reactive record — no wolf-pair FAILs), the
-> porosity diag pin is 44 (per-drop doctrine, see the tool's
-> docstring), and current flood is 34641 (b65 intake 2026-07-30;
-> WYSIWYG: walkable ⇔ ground-rendered; enclosed walkable-unreachable
-> islands are LEGAL — 7 courtyards + 13 cells stranded by the b65
-> seals). Step 3's "first_contact still FAIL" is obsolete.
+> **CURRENT STATE (2026-08-01, after ten clean intakes through b77).**
+> The PROCEDURE below stands; the embedded EXPECTATIONS are
+> era-stamped — live values: TWO committed worlds, per-pack porosity
+> pins (`small-cold-coastal-pack-dusk` b65 = **44**;
+> `wildshot-overworld-pack-dusk` b77 = **60**, flood 46493, spawn
+> 109,182 — the diag takes pack dir + region + allowed as args); the
+> battery matrix lives in notes/HANDOFF.md (28 rows, reactive
+> record); walkable-unreachable cells are LEGAL under WYSIWYG. Step
+> 3's "first_contact still FAIL" is obsolete.
 >
 > **RELEASE TRANSPORT (doc 18 §5, blessed sl-0016, first exercised
-> 2026-07-30):** packs now arrive as GitHub releases from
+> 2026-07-30):** packs arrive as GitHub releases from
 > tilok1234/WorldForge, tag = artifact id. BEFORE step 1: download the
-> zip, locally verify zipSha256 + manifestSha256 + per-file manifest
-> parity + sourceCommit against the release notes. Mismatch =
-> incident entry + STOP. Then mirror the extracted pack directory in.
+> zip, locally verify zipSha256 (= GitHub's computed asset digest) +
+> manifestSha256 + per-file manifest parity + tag→sourceCommit against
+> the delivery line. Mismatch = incident entry + STOP. Then mirror the
+> extracted pack directory in and RE-HASH after copy.
+>
+> **PAIRED TILEFORGE DOCTRINE (b76, sl-0061/sl-0064):** every pack
+> pins `tileforge.packageId`; `world_builder.TILEFORGE_PACKAGES`
+> resolves per-pin and refuses mismatches. If a delivery pins a NEW
+> package build, it is a PAIRED DROP: import the TF release BESIDE
+> the existing instances (raw under `assets/tileforge/`, consumed at
+> `res://tileforge_packages/<id>/`, tres via
+> `run_import.gd -- --package=<dir>`), append the registry line —
+> NEVER swap `res://tileforge/` in place (HANDOFF gotcha #22).
+> Same-pin drops (b77 class) need zero TF work.
+>
+> **MEASUREMENT LESSONS (b76/b77):** delivery-line censuses can be
+> WORLD-side numbers — the pack differs by the world→pack seam (the
+> same class that makes pack flood ≠ world flood); measure the PACK,
+> and pin discrepancies via an immutable-archive diff of the
+> predecessor release. Type every walkability/porosity delta cell
+> (species / structure family / on-flood) per the sl-0052 precedent.
 
 The seam to run when the agent's re-exported dusk pack lands. Ledger
 #15 is the charge sheet; `tools/diag_walkability_grid.py` is the
@@ -24,9 +42,11 @@ is already in the harness and rides this battery.
 
 ## 1 — Drop
 
-Replace `assets/worldforge-packs/small-cold-coastal-pack-dusk/` with
-the new export (whole directory, byte-for-byte from WorldForge's
-staging output).
+Replace the delivered pack's own directory under
+`assets/worldforge-packs/` (whole directory, byte-for-byte from the
+verified release; in-place supersede is the norm — the predecessor
+release stays the immutable archive). b65 and the overworld are
+SEPARATE lineages with separate pins; a drop touches exactly one.
 
 ## 2 — Validate (all must pass before any proof runs)
 

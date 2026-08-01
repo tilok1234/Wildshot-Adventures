@@ -152,3 +152,6 @@ timestamp,action,note
 2026-08-01T01:23:11,start,"b77 overworld intake session (sl-0066): prop walkability conversion, canopy on-screen proof, typed porosity accounting"
 2026-08-01T01:55:12,note,"b77 intaken (sl-0066->sl-0067): walkability-only delta 100% typed by species (1044 opened: stump 509/fallen_log 490/bone_pile 44/loot_pile 1; zero sealed), flood 46493 BFS-exact, porosity set identical 60 (no re-pin), cliff carries, canopy walk-under PROVEN on screen (pixel-mask 0/8525 in-mask diffs; PNGs committed), same TF pin zero work, FULL pretester ALL GREEN 14.3 min; game 89aa034 + planning b23b0f3 pushed"
 2026-08-01T01:55:12,stop,""
+2026-08-01T02:16:44,start,"docs staleness sweep + handoff rewrite (post-b77 seam)"
+2026-08-01T02:22:21,note,"docs staleness sweep: README (loop-era blurb, shipped-set/tools/tests/CI truth-up), HANDOFF fully rewritten as cold-start (history stays in CLAUDE.md; gotchas 23 world-vs-pack seam + 24 sync-log id/EOL race added; per-pack pins current), runbook era banner (two lineages, paired-TF doctrine, measurement lessons), designer-queue current banner, audio-map pickup line, CORE50 audio row; ledger/nine-row/export-design verified current, no changes needed"
+2026-08-01T02:22:21,stop,""
