@@ -1086,3 +1086,42 @@ probe on REBUILT artifacts). Part II player map stays deferred (doc
 through that designed round. NO feel verdicts (night engineering);
 the designer's first N-press on the overworld walk is the
 acceptance.**
+PINCH DIAGNOSIS DELIVERED 2026-08-01 (~04:15 local; ask sl-0070
+executed hands-free, NO FIXES; game e991118; sync log sl-0072 — the
+planning commit header misnames it sl-0071, record-fix d17fc25:
+sl-0071 was taken concurrently by the deck sweep 283a4e9; the
+write-time id guard placed the entry correctly): the b77 walk
+finding ("visual gaps between solid props refuse passage") is typed.
+DELIVERABLES: tools/diag_pinch.py (committed census baseline — the
+measure any fix lever is judged against), tests/pinch_probe/
+pinch_move_probe.gd (real Kinematics at TERRAIN_RADIUS 0.25, 3.0
+t/s), reports/pinch_diagnosis_b77.{md,json}. Species mapping
+cross-checked EXACT vs the sl-0067 intake (carpet 509/490/44/1).
+CENSUS: 2,003 corner-touch pinches (diagonal solid pair, both shared
+orthos open — zero-width for any circle); 1,901 prop-involved; 1,143
+with both open sides on the flood (811 wild / 332 settlement). ALL
+1,143 are SHORTCUT-denials — component-boundary count is ZERO, so
+opening any changes no connectivity, only path length (lever A is
+flood-safe by construction). Detours: 6/6/102 min/med/max; 22 sites
+force >40 tiles. 1-wide lanes: 3,635 cells (2,296 prop, on-flood).
+TYPING: DATA-closed EMPTY — zero causeless solids after full
+attribution (lessons: 173 "mystery" grass solids were FENCE cells —
+read the fence chunk layer; 752 were wetland BOG, de-facto solid
+terrain, 22/1082 swamp cells walk). GEOMETRY-closed = the whole
+complaint class. FEEL-closed empty for the player body. MOVEMENT
+(probe on shipped kinematics): corner-SLIDES around lone corners (24
+vs 15 open ticks through the zone, then free), 1-wide lanes at
+open-ground speed (90 vs 90; +4.4% misaligned), honest HARD-STOP
+only at zero-width — exact double-tangency wedge rest, late-60-tick
+motion 0.0000, zero shiver. No movement bug; the stop IS the
+geometry. LEVER PICK = DESIGNER'S (facts in the report): A = WF
+clearance re-gen (sl-0063's recorded follow-up; relocate-never-
+delete; connectivity provably unchanged; pain order 22>40 → 94>20 →
+dense regions); B = corner-sliding ALREADY SHIPPED, cannot open
+zero-width; C = sub-cell colliders, breaks the WYSIWYG/flood
+contract, deliberate act only. No WF ask opened (the pick precedes
+upstream work). CONCURRENT planning sweep sl-0071 (deck deal) landed
+mid-session: two new pillars, Gate-1 rewrite RATIFIED, loop frame
+RATIFIED, crosshair RATIFIED+closed, eyes-closed audio evidence
+CAPTURED planning-side — the notes/AUDIO_CUE_MAP.md review slot now
+OWES the write from that evidence (queued, unrouted this session).**

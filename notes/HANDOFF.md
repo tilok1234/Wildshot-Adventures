@@ -134,8 +134,14 @@ Last full run: 2026-08-01 at the sl-0065 dev-map seam, 17.1 min.
 
 ## §2 Open — designer-side (do not nag; the deck + planning carry these)
 
+- **sl-0070 pinch lever pick** (A: WF clearance re-gen / B: already
+  shipped / C: sub-cell colliders = contract break): numbers in
+  `reports/pinch_diagnosis_b77.md` (sync log sl-0072). 1,143
+  reachable prop corner-touch pinches, all shortcut-denials; data +
+  movement both honest — the pick is pure design.
 - **b77 navigation walk** = THE sl-0066 acceptance (the "getting
-  blocked" complaint is the test; conversion shipped, walk pending).
+  blocked" complaint is the test; conversion shipped, walk pending —
+  first finding produced sl-0070 above).
 - THE LOOP "judgeable" call — starts the L2 daily-bar clock.
 - Crosshair size/contrast taste-rule (sl-0042 pass shipped).
 - b65 city walk (open since that intake).
@@ -155,6 +161,13 @@ boss pack intaken raw-by-ruling (wire only on natural need).
   the acceptance.
 - Loop-routing onto the b77 harbor capital (scenario + gradient +
   proofs — the natural next content arc; talk-before-build).
+- **notes/AUDIO_CUE_MAP.md eyes-closed slot OWES the write**: the
+  evidence was captured planning-side in the sl-0071 deck sweep
+  (2026-08-01) — pull the verdict wording from that sweep, honor
+  two-tier stamps. Small records task, unrouted so far.
+- sl-0070 fix lever engineering fires only AFTER the designer's pick
+  (A = WF ask, not game work; B = shipped; C = deliberate contract
+  act with its own design round).
 - Intakes as deliveries land (runbook + per-pack pins + paired-TF
   doctrine). WF/TF/RF re-drops all follow the same transport.
 - Ledger #16 replay character block (rides L2).
