@@ -11,19 +11,21 @@ extends RefCounted
 
 const Kinematics := preload("res://sim/systems/kinematics.gd")
 
-## Locomotion radius vs terrain (2026-07-28, designer-directed
-## walk-close feel, [T]): the player's feet hug walls to sprite-edge
-## distance instead of stopping at the full combat circle. The 0.35
+## Locomotion radius vs terrain (2026-07-28 walk-close feel; RETUNED
+## 2026-08-01 by THE FIT RULE, sl-0078 designer-directed: "if there is
+## more then enough for the character sprite to go between it it
+## should be able to go between it"): the body IS the character
+## sprite's visible feet — ranger frame 0 rows 19-22 measure exactly
+## 10 px wide, so the radius is 5/32 tiles, art-exact. The 0.35
 ## HURTBOX (ActorState.radius) is untouched everywhere it matters —
-## projectile/hazard/contact hits, the hitbox indicator, recaps — this
-## constant governs terrain sliding only. DodgeBot walks with the same
-## value (one locomotion truth, bot honesty §2.8).
-const TERRAIN_RADIUS := 0.25
+## projectile/hazard/contact hits, the hitbox indicator, recaps —
+## this constant governs terrain sliding only. DodgeBot walks with
+## the same value (one locomotion truth, bot honesty §2.8).
+const TERRAIN_RADIUS := 0.15625
 
 
 static func run(world: RefCounted) -> void:
 	var frames: Array = world.current_frames
-	var grid: RefCounted = world.bitgrid
 	var dt: float = world.DT
 	for i in world.players.size():
 		var p: RefCounted = world.players[i]
@@ -34,7 +36,11 @@ static func run(world: RefCounted) -> void:
 			var mv: Vector2 = frames[i].move_vector()
 			if mv != Vector2.ZERO:
 				var step: Vector2 = mv * p.move_speed * dt
-				p.pos = Kinematics.move_circle(grid, p.pos, TERRAIN_RADIUS, step)
+				# sl-0078: players walk the fit-rule truth (walk_grid +
+				# art-matched prop discs); enemies stay on the full grid.
+				p.pos = Kinematics.move_circle(
+					world.walk_grid, p.pos, TERRAIN_RADIUS, step, world.prop_discs
+				)
 		# Serialized applied velocity (SERIAL 10): post-slide truth, every
 		# tick — intercept aim must see a wall-pinned player as stationary.
 		p.vel = (p.pos - before) / dt

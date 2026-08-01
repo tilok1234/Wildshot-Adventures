@@ -8,7 +8,7 @@
 	"policy": "primary-16dir-stay-closed-form",
 	"runs": [
 		{
-			"first_hit_tick": 483,
+			"first_hit_tick": 486,
 			"heatmap": [
 				[
 					0,
@@ -123,14 +123,14 @@
 					0
 				]
 			],
-			"hits": 4,
-			"near_miss_min": 0.0151931434869766,
+			"hits": 1,
+			"near_miss_min": 0.0160912662744522,
 			"repro": "res://reports/repro_proof_rusher_seed1.wsr",
 			"seed": 1,
 			"survived_ticks": 3600
 		},
 		{
-			"first_hit_tick": 483,
+			"first_hit_tick": 486,
 			"heatmap": [
 				[
 					0,
@@ -245,14 +245,14 @@
 					0
 				]
 			],
-			"hits": 4,
-			"near_miss_min": 0.0151931434869766,
+			"hits": 1,
+			"near_miss_min": 0.0160912662744522,
 			"repro": "res://reports/repro_proof_rusher_seed2.wsr",
 			"seed": 2,
 			"survived_ticks": 3600
 		},
 		{
-			"first_hit_tick": 483,
+			"first_hit_tick": 486,
 			"heatmap": [
 				[
 					0,
@@ -367,14 +367,14 @@
 					0
 				]
 			],
-			"hits": 4,
-			"near_miss_min": 0.0151931434869766,
+			"hits": 1,
+			"near_miss_min": 0.0160912662744522,
 			"repro": "res://reports/repro_proof_rusher_seed3.wsr",
 			"seed": 3,
 			"survived_ticks": 3600
 		},
 		{
-			"first_hit_tick": 483,
+			"first_hit_tick": 486,
 			"heatmap": [
 				[
 					0,
@@ -489,14 +489,14 @@
 					0
 				]
 			],
-			"hits": 4,
-			"near_miss_min": 0.0151931434869766,
+			"hits": 1,
+			"near_miss_min": 0.0160912662744522,
 			"repro": "res://reports/repro_proof_rusher_seed4.wsr",
 			"seed": 4,
 			"survived_ticks": 3600
 		},
 		{
-			"first_hit_tick": 483,
+			"first_hit_tick": 486,
 			"heatmap": [
 				[
 					0,
@@ -611,8 +611,8 @@
 					0
 				]
 			],
-			"hits": 4,
-			"near_miss_min": 0.0151931434869766,
+			"hits": 1,
+			"near_miss_min": 0.0160912662744522,
 			"repro": "res://reports/repro_proof_rusher_seed5.wsr",
 			"seed": 5,
 			"survived_ticks": 3600

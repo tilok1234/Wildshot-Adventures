@@ -53,7 +53,12 @@ static func run(world: RefCounted) -> void:
 	var reg_id: PackedInt64Array = pool.reg_id
 	var reg_pass: PackedByteArray = pool.reg_pass
 	var reg_count: PackedByteArray = pool.reg_count
-	var grid: RefCounted = world.bitgrid
+	# sl-0078 projectile coherence: shots collide with the SAME terrain
+	# truth the player walks (walk_grid + art-matched prop discs) — one
+	# truth for walking and shooting, or shots die on invisible cell
+	# corners exactly where the player now threads.
+	var grid: RefCounted = world.walk_grid
+	var discs: Dictionary = world.prop_discs
 	var players: Array = world.players
 	var enemies: Array = world.enemies
 	var events: Array[Dictionary] = world.events
@@ -109,7 +114,10 @@ static func run(world: RefCounted) -> void:
 
 		# Terrain (§2.3): projectiles collide predictably with visible
 		# solid tiles; out-of-world is solid, so nothing escapes the arena.
+		# Prop discs share the walk truth (sl-0078 coherence amendment).
 		var cell := _terrain_cell(grid, x, y, r)
+		if cell < 0:
+			cell = _terrain_disc(discs, x, y, r)
 		if cell >= 0:
 			pool.despawn(s)
 			(
@@ -233,6 +241,26 @@ static func _step_pierce(
 	for k in reg_count[s]:
 		if not overlapped.has(reg_id[base + k]):
 			reg_pass[base + k] = reg_pass[base + k] & 0x7F
+
+
+## Circle-vs-prop-disc over the 3x3 cell neighborhood (sl-0078): the
+## same encoded owner cell as a tile hit, or -1. Fixed y-then-x cell
+## order + fixed per-cell array order — deterministic.
+static func _terrain_disc(discs: Dictionary, x: float, y: float, r: float) -> int:
+	if discs.is_empty():
+		return -1
+	var ccx := int(floorf(x))
+	var ccy := int(floorf(y))
+	for cy in range(ccy - 1, ccy + 2):
+		for cx in range(ccx - 1, ccx + 2):
+			var arr: Array = discs.get(Vector2i(cx, cy), [])
+			for dsc: Vector3 in arr:
+				var ddx := x - dsc.x
+				var ddy := y - dsc.y
+				var rr := r + dsc.z
+				if ddx * ddx + ddy * ddy < rr * rr:
+					return (cx + 32768) + (cy + 32768) * 65536
+	return -1
 
 
 ## Circle-vs-solid-tiles over the cells the circle's AABB overlaps, using

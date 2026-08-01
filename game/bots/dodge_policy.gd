@@ -16,6 +16,7 @@ extends RefCounted
 const InputFrame := preload("res://sim/input_frame.gd")
 const Kinematics := preload("res://sim/systems/kinematics.gd")
 const PlayerMove := preload("res://sim/systems/player_move.gd")
+const ProjectileStep := preload("res://sim/systems/projectile_step.gd")
 const ActorState := preload("res://sim/actor_state.gd")
 const EnemyState := preload("res://sim/enemy_state.gd")
 const ProjectilePool := preload("res://sim/projectile_pool.gd")
@@ -89,6 +90,9 @@ static func compute_frame(
 	# touch one; checked ONCE per tick, exact slide used only then.
 	# Candidate walks use the LOCOMOTION radius (one truth with
 	# player_move); threat clearances keep the combat hurtbox.
+	# sl-0078: checked against the CONSERVATIVE bitgrid — every prop
+	# disc lives in a bitgrid-solid cell by construction, so this one
+	# check also arms exact slides wherever discs are reachable.
 	var reach: float = p.move_speed * HORIZON * world.DT + PlayerMove.TERRAIN_RADIUS + 0.1
 	var use_slide := not _clear_of_walls(world.bitgrid, p.pos, reach)
 	# Stationkeeping anchor: the CENTROID of nearby live enemies — packs
@@ -125,6 +129,12 @@ static func compute_frame(
 		var survival := int(result.survival)
 		var clearance := float(result.clearance)
 		var end_pos: Vector2 = result.end
+		# Positioning stays CONSERVATIVE (sl-0078): prop fields keep
+		# repelling the stationkeeper even though the body can thread
+		# them — a pocket the sprite fits is not a pocket to LIVE in
+		# (the 0.35 hurtbox cannot dodge inside sprite-width gaps;
+		# loop_ring2 parked 3600 ticks in one and got clipped at t436).
+		# Escapes still WALK the true fit-rule model in _score.
 		var wall_pen := maxf(0.0, 2.5 - _wall_clearance(world.bitgrid, end_pos, 3.0)) * 2.0
 		var ring_score := -wall_pen
 		if has_anchor:
@@ -181,7 +191,8 @@ static func _candidate_dir(c: int, t: int) -> int:
 static func _score(
 	world: RefCounted, p: RefCounted, c: int, t: int, threats: Dictionary, use_slide: bool
 ) -> Dictionary:
-	var grid: RefCounted = world.bitgrid
+	var grid: RefCounted = world.walk_grid
+	var discs: Dictionary = world.prop_discs
 	var dt: float = world.DT
 	var speed: float = p.move_speed
 	var pr: float = p.radius
@@ -209,7 +220,9 @@ static func _score(
 			if use_slide:
 				# Walk with the locomotion radius (player_move parity);
 				# pr below stays the combat hurtbox for threat overlap.
-				pos = Kinematics.move_circle(grid, pos, PlayerMove.TERRAIN_RADIUS, mv * speed * dt)
+				pos = Kinematics.move_circle(
+					grid, pos, PlayerMove.TERRAIN_RADIUS, mv * speed * dt, discs
+				)
 			else:
 				pos += mv * speed * dt
 		var step_positions: Array = proj_pos[h - 1]
@@ -362,6 +375,14 @@ static func _project_threats(world: RefCounted, p: RefCounted, reactive: bool) -
 		proj_r[i] = rad[s]
 		proj_gone[i] = ttl[s]  # despawns when remaining ttl reaches 0
 		cur[i] = Vector2(px[s], py[s])
+	# sl-0078: the projection shares the sim's terrain truth — a shot
+	# that dies on a wall or a prop disc stops threatening from that
+	# step on (one truth for the sim and the model; previously the
+	# model conservatively assumed terrain never kills shots, and the
+	# fit rule's tighter margins made that over-estimate cost real
+	# dodges — loop_ring2's t436 clip found it).
+	var wgrid: RefCounted = world.walk_grid
+	var wdiscs: Dictionary = world.prop_discs
 	var proj_pos: Array = []
 	for h in range(1, HORIZON + 1):
 		var step: Array = []
@@ -384,6 +405,13 @@ static func _project_threats(world: RefCounted, p: RefCounted, reactive: bool) -
 						v = Vector2(-dx_[s], -dy_[s]) * pc[s]
 			cur[i] = Vector2(cur[i]) + v * dt
 			step[i] = cur[i]
+			if proj_gone[i] >= h:
+				var q: Vector2 = cur[i]
+				if (
+					ProjectileStep._terrain_cell(wgrid, q.x, q.y, rad[s]) >= 0
+					or ProjectileStep._terrain_disc(wdiscs, q.x, q.y, rad[s]) >= 0
+				):
+					proj_gone[i] = h - 1
 		proj_pos.append(step)
 	var bodies: Array = []
 	var soft_bodies: Array = []

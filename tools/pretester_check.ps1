@@ -3,9 +3,14 @@
 # battery against the EXPECTED table below. Exit 0 = ship-ready per
 # the current record. POLICY OF RECORD: REACTIVE (designer ruling
 # 2026-07-29, Decision Deck register; ledger #11 closed). Canonical
-# unsuffixed rows run reactive by default; the three wolf-pair
-# primary FAILs stay watched as explicit [primary] baseline rows —
-# if primary ever PASSES one, the sim changed under us.
+# unsuffixed rows run reactive by default; the wolf-pair primary
+# baseline rows stay watched — if a primary row's verdict MOVES, the
+# sim changed under us. RE-PINNED 2026-08-01 (sl-0078 fit-rule
+# collision, the deliberate sim change): forest_walk [primary]
+# flipped FAIL->PASS (slimmer body + prop discs freed the primary
+# model's forest pockets); rusher + first_contact [primary] stay
+# FAIL. loop_ring2 layout iterated once under never-weaken (ringer
+# off the thicket lip it predated).
 #
 # Usage: pwsh tools/pretester_check.ps1 [-SkipBattery]
 
@@ -136,7 +141,7 @@ if (-not $SkipBattery) {
         @("first_contact","1,2,3",3600,"res://reports/dodge_first_contact_composition.json","","PASS"),
         @("second_contact","10,11,12,13,14",3600,"res://reports/dodge_second_contact_composition.json","","PASS"),
         @("proof_rusher","1,2,3,4,5",3600,"","primary","FAIL"),
-        @("forest_walk","1,2,3",3600,"res://reports/dodge_forest_walk_composition_primary.json","primary","FAIL"),
+        @("forest_walk","1,2,3",3600,"res://reports/dodge_forest_walk_composition_primary.json","primary","PASS"),
         @("first_contact","1,2,3",3600,"res://reports/dodge_first_contact_composition_primary.json","primary","FAIL"),
         @("lab_default","1,2,3",3600,"","","PASS"),
         @("meet_blightcaster","1,2,3",3600,"","","PASS"),

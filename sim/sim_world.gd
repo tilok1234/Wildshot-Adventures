@@ -31,7 +31,10 @@ const Damage := preload("res://sim/systems/damage.gd")
 
 const TICKS_PER_SECOND := 60
 const DT := 1.0 / 60.0
-const SERIAL_VERSION := 13
+## 14 = sl-0078 fit-rule collision (player radius 5/32 + art-matched
+## prop discs + projectile coherence): sim behavior changed, so stale
+## replays must refuse verification honestly.
+const SERIAL_VERSION := 14
 
 ## Damage-source pattern id for the scenario-declared test damage
 ## schedule (§2.11 elite transition proofs; planning log 2026-07-28).
@@ -76,6 +79,17 @@ var run_seed: int = 0
 ## Stable monotonic entity ids, never reused within a run (§2.1).
 var next_entity_id: int = 1
 var bitgrid: RefCounted = null
+## sl-0078 fit rule: the PLAYER + PROJECTILE terrain truth. walk_grid =
+## bitgrid minus art-matched solid-prop cells (defaults to bitgrid
+## itself — arena worlds and packless scenarios are byte-unchanged);
+## prop_discs maps cell -> Array[Vector3(x, y, r)] sub-cell colliders
+## measured from each cell's own sprite base. The bitgrid stays the
+## CONSERVATIVE FLOOR: enemies, floods, spawns, and every upstream
+## contract (porosity, world_walk, pack validation) keep their meaning.
+## Static setup data like bitgrid — rebuilt deterministically from the
+## scenario's pack, never serialized.
+var walk_grid: RefCounted = null
+var prop_discs: Dictionary = {}
 var players: Array[PlayerState] = []
 var enemies: Array[ActorState] = []
 var projectiles: ProjectilePool = ProjectilePool.new()
@@ -149,6 +163,10 @@ var _commands: Array[Dictionary] = []
 func setup(p_seed: int, p_bitgrid: RefCounted) -> void:
 	run_seed = p_seed
 	bitgrid = p_bitgrid
+	# Fit-rule defaults (sl-0078): identical collision until a pack
+	# scenario attaches its measured prop discs (scenario_loader).
+	walk_grid = p_bitgrid
+	prop_discs = {}
 	rng_enemy.seed_stream(p_seed, STREAM_ENEMY)
 	rng_misc.seed_stream(p_seed, STREAM_MISC)
 	rng_loot.seed_stream(p_seed, STREAM_LOOT)

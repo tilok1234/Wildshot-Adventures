@@ -59,56 +59,21 @@ static func build_world_arena(root: Node2D, pack_src: String) -> Dictionary:
 	var pack_manifest: Variant = JSON.parse_string(
 		FileAccess.get_file_as_string(pack_src + "manifest.json")
 	)
-	var pinned := String(pack_manifest.tileforge.packageId)
-	var theme := String(pack_manifest.tileforge.theme)
-	var manifest: Variant = null
-	var tileset: TileSet = null
-	var available: Array[String] = []
-	for pkg_dir: String in TILEFORGE_PACKAGES:
-		var m: Variant = JSON.parse_string(
-			FileAccess.get_file_as_string(pkg_dir + "tileforge-manifest.json")
-		)
-		if m == null:
-			continue
-		var id := "%s-%s-seed%d" % [theme, String(m.sourceCommit), int(m.projectSeed)]
-		available.append(id)
-		if id == pinned and manifest == null:
-			manifest = m
-			tileset = load(pkg_dir + "tileforge.tres")
-	if manifest == null or tileset == null:
-		push_error(
-			(
-				"world_builder: pack pinned to '%s' but the imported packages are %s — refusing to render against a different atlas build"
-				% [pinned, str(available)]
-			)
-		)
+	var pkg := resolve_package(pack_manifest)
+	if pkg.is_empty():
 		return {}
-	print("world_builder: tileforge package '%s' resolved" % pinned)
+	var manifest: Variant = pkg.manifest
+	var tileset: TileSet = pkg.tileset
+	print("world_builder: tileforge package '%s' resolved" % String(pkg.pinned))
 
 	var tmj: Variant = JSON.parse_string(
 		FileAccess.get_file_as_string(pack_src + "resolved/resolved-map.tmj")
 	)
-	# Family lookup by tsj/image basename + per-family source id, columns,
-	# frames (frame-0 snap for animated families).
-	var by_base := {}
-	var index := 0
-	for fam_key: String in manifest.families:
-		var fam: Dictionary = manifest.families[fam_key]
-		var base_key := String(fam.image).get_basename()
-		by_base[base_key] = {
-			"sid": tileset.get_source_id(index),
-			"columns": int(fam.atlas.get("columns", 12)),
-			"frames": int(fam.get("frames", 1)),
-		}
-		index += 1
-	var sets: Array = []
-	for ts: Dictionary in tmj.tilesets:
-		var base := String(ts.source).get_basename()
-		if not by_base.has(base):
-			push_error("world_builder: tmj tileset '%s' not in the tileforge package" % base)
-			return {}
-		sets.append({"first": int(ts.firstgid), "base": base})
-	sets.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a.first > b.first)
+	var tables := gid_tables(manifest, tileset, tmj)
+	if tables.is_empty():
+		return {}
+	var by_base: Dictionary = tables.by_base
+	var sets: Array = tables.sets
 
 	var width := int(report.width)
 	var height := int(report.height)
@@ -194,6 +159,64 @@ static func build_world_arena(root: Node2D, pack_src: String) -> Dictionary:
 		"placements": placements,
 		"sort_layers": sort_layers,
 	}
+
+
+## Resolve the pack's pinned TileForge package from the registry:
+## {manifest, tileset, pinned} or {} (loud refusal on a pin nothing
+## matches — rendering against a different atlas build is meaningless).
+## Extracted at sl-0078 so prop_colliders shares the exact resolution.
+static func resolve_package(pack_manifest: Variant) -> Dictionary:
+	var pinned := String(pack_manifest.tileforge.packageId)
+	var theme := String(pack_manifest.tileforge.theme)
+	var manifest: Variant = null
+	var tileset: TileSet = null
+	var available: Array[String] = []
+	for pkg_dir: String in TILEFORGE_PACKAGES:
+		var m: Variant = JSON.parse_string(
+			FileAccess.get_file_as_string(pkg_dir + "tileforge-manifest.json")
+		)
+		if m == null:
+			continue
+		var id := "%s-%s-seed%d" % [theme, String(m.sourceCommit), int(m.projectSeed)]
+		available.append(id)
+		if id == pinned and manifest == null:
+			manifest = m
+			tileset = load(pkg_dir + "tileforge.tres")
+	if manifest == null or tileset == null:
+		push_error(
+			(
+				"world_builder: pack pinned to '%s' but the imported packages are %s — refusing to render against a different atlas build"
+				% [pinned, str(available)]
+			)
+		)
+		return {}
+	return {"manifest": manifest, "tileset": tileset, "pinned": pinned}
+
+
+## Family lookup by tsj/image basename + per-family source id, columns,
+## frames (frame-0 snap for animated families), plus the tmj tileset
+## ranges sorted for gid resolution: {by_base, sets} or {}.
+static func gid_tables(manifest: Variant, tileset: TileSet, tmj: Variant) -> Dictionary:
+	var by_base := {}
+	var index := 0
+	for fam_key: String in manifest.families:
+		var fam: Dictionary = manifest.families[fam_key]
+		var base_key := String(fam.image).get_basename()
+		by_base[base_key] = {
+			"sid": tileset.get_source_id(index),
+			"columns": int(fam.atlas.get("columns", 12)),
+			"frames": int(fam.get("frames", 1)),
+		}
+		index += 1
+	var sets: Array = []
+	for ts: Dictionary in tmj.tilesets:
+		var base := String(ts.source).get_basename()
+		if not by_base.has(base):
+			push_error("world_builder: tmj tileset '%s' not in the tileforge package" % base)
+			return {}
+		sets.append({"first": int(ts.firstgid), "base": base})
+	sets.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a.first > b.first)
+	return {"by_base": by_base, "sets": sets}
 
 
 ## Resolve a TMJ gid against the package tilesets: {sid, coords} or {}.

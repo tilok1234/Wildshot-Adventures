@@ -8,6 +8,7 @@ extends RefCounted
 ## scenarios changing.
 
 const SimWorld := preload("res://sim/sim_world.gd")
+const PropColliders := preload("res://game/arena/prop_colliders.gd")
 
 
 static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) -> RefCounted:
@@ -85,4 +86,9 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 				break
 		if not known:
 			push_error("scenario '%s': unknown enemy id '%s'" % [String(scenario.id), eid])
+	# sl-0078 fit rule: pack scenarios attach art-matched prop discs +
+	# the walk grid HERE — the one construction path main, DodgeBot,
+	# soak, and replay verification share, so player and bot walk
+	# byte-identical collision by construction. No-op when packless.
+	PropColliders.attach(world, scenario)
 	return world

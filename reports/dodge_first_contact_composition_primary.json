@@ -8,10 +8,10 @@
 	"policy": "primary-16dir-stay-closed-form",
 	"runs": [
 		{
-			"first_hit_tick": 1053,
+			"first_hit_tick": 1056,
 			"heatmap": [
 				[
-					751,
+					1294,
 					8,
 					0,
 					0,
@@ -123,17 +123,17 @@
 					0
 				]
 			],
-			"hits": 14,
-			"near_miss_min": 0.00622389614582064,
+			"hits": 12,
+			"near_miss_min": 0.00409338772296908,
 			"repro": "res://reports/repro_first_contact_seed1.wsr",
 			"seed": 1,
-			"survived_ticks": 1704
+			"survived_ticks": 2247
 		},
 		{
-			"first_hit_tick": 1053,
+			"first_hit_tick": 1056,
 			"heatmap": [
 				[
-					751,
+					1294,
 					8,
 					0,
 					0,
@@ -245,17 +245,17 @@
 					0
 				]
 			],
-			"hits": 14,
-			"near_miss_min": 0.00622389614582064,
+			"hits": 12,
+			"near_miss_min": 0.00409338772296908,
 			"repro": "res://reports/repro_first_contact_seed2.wsr",
 			"seed": 2,
-			"survived_ticks": 1704
+			"survived_ticks": 2247
 		},
 		{
-			"first_hit_tick": 1053,
+			"first_hit_tick": 1056,
 			"heatmap": [
 				[
-					751,
+					1294,
 					8,
 					0,
 					0,
@@ -367,11 +367,11 @@
 					0
 				]
 			],
-			"hits": 14,
-			"near_miss_min": 0.00622389614582064,
+			"hits": 12,
+			"near_miss_min": 0.00409338772296908,
 			"repro": "res://reports/repro_first_contact_seed3.wsr",
 			"seed": 3,
-			"survived_ticks": 1704
+			"survived_ticks": 2247
 		}
 	],
 	"scenario": "first_contact",
