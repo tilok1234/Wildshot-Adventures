@@ -11,7 +11,7 @@ player_spawn = Vector2(205.5, 127.5)
 standin_positions = PackedVector2Array()
 enemy_spawns = {
 "fanmaw": PackedVector2Array(200.5, 111.5, 190.5, 142.5),
-"husk_archer": PackedVector2Array(198.5, 131.5),
+"husk_archer": PackedVector2Array(196.5, 134.5),
 "ringer": PackedVector2Array(199.5, 126.5),
 "rusher": PackedVector2Array(201.5, 114.5, 203.5, 124.5)
 }
