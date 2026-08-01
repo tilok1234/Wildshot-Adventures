@@ -130,6 +130,7 @@ $tests = @(
     @("loop contracts (drops/curve/pickup)", "tests/loop/loop_test.gd"),
     @("stat frame (docs/22 in the sim)", "tests/stat_frame/stat_frame_test.gd"),
     @("living world (leash/respawn/importer)", "tests/living_world/living_world_test.gd"),
+    @("npc + icon wiring (seam 4)", "tests/wiring/npc_icon_wiring_test.gd"),
     @("determinism smoke (all contracts)", "tests/determinism/determinism_smoke.gd"),
     @("golden replays x10", "tests/replay_fixtures/verify_replays.gd")
 )

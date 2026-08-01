@@ -1,0 +1,128 @@
+extends SceneTree
+## SEAM-4 WIRING contracts (sl-0100; packs cleared by sl-0098): the
+## consumed NPC tree (res://npcs/ — importer-translated manifest in
+## the assembler_library shape) builds SpriteFrames for all 32 looks;
+## stations are deterministic, zone-matched, and walkable on the real
+## b77 grid; the consumed icon atlas serves every id the UI requests.
+## NEGATIVE-TESTED (corrupt manifest refused; unknown icon id nulls
+## loudly). Exit 0 = green.
+
+const AssemblerLibrary := preload("res://game/views/assembler_library.gd")
+const NpcView := preload("res://game/views/npc_view.gd")
+const IconAtlas := preload("res://ui/icon_atlas.gd")
+const WorldforgePack := preload("res://addons/worldforge_importer/worldforge_pack.gd")
+
+const CONTENT_PACK := "res://assets/wildshot-overworld-pack-dusk-content/"
+const SPAWN := Vector2(109.5, 182.5)
+
+var fails: Array[String] = []
+
+
+func check(cond: bool, name: String) -> void:
+	if not cond:
+		fails.append(name)
+
+
+func _init() -> void:
+	# 1. The consumed NPC tree: manifest + all 32 sheets + frames.
+	var lib: RefCounted = AssemblerLibrary.new()
+	lib.manifest_path = "res://npcs/manifest.json"
+	lib.sheet_root = "res://npcs/"
+	check(lib.load_manifest(), "npc manifest loads (run tools/import_npcs.py)")
+	var manifest: Variant = JSON.parse_string(
+		FileAccess.get_file_as_string("res://npcs/manifest.json")
+	)
+	check(manifest is Dictionary, "npc manifest parses")
+	var md: Dictionary = manifest
+	check(int(md.cell) == 24 and int(md.export_scale) == 1, "24px @1x — the enemy-pack scale")
+	var contract: Dictionary = md.frame_contract
+	var dirs: Array = contract.dirs
+	var anims: Array = contract.anims
+	check(dirs.size() == 4, "four directions")
+	var cols := 0
+	for a: Dictionary in anims:
+		cols += int(a.frames)
+	check(cols == 20, "anim spans fill the 20-column sheet")
+	var actors: Array = md.actors
+	check(actors.size() == 32, "32 looks (13 named + 10 givers + 9 ambient)")
+	var groups := {}
+	for a: Dictionary in actors:
+		groups[a.group] = int(groups.get(a.group, 0)) + 1
+		var frames: SpriteFrames = lib.build_sprite_frames(String(a.id))
+		if frames == null:
+			fails.append("frames build: " + String(a.id))
+			continue
+		check(frames.has_animation("idle-down"), "idle-down exists: " + String(a.id))
+		check(frames.has_animation("death-down"), "real death row rides: " + String(a.id))
+	check(int(groups.get("named-role", 0)) == 13, "13 named roles")
+	check(int(groups.get("zone-quest-giver", 0)) == 10, "10 zone quest-givers")
+	check(int(groups.get("ambient-villager", 0)) == 9, "9 ambient villagers")
+
+	# 2. Stations: deterministic, zone-matched, walkable on real b77.
+	var wf := WorldforgePack.validate("res://assets/worldforge-packs/wildshot-overworld-pack-dusk/")
+	check(bool(wf.ok), "b77 validates")
+	if bool(wf.ok):
+		var plan: Variant = JSON.parse_string(
+			FileAccess.get_file_as_string(CONTENT_PACK + "content-plan.json")
+		)
+		var grid: RefCounted = wf.bitgrid
+		var st_a: Array = NpcView.compute_stations(md, plan, grid, SPAWN)
+		var st_b: Array = NpcView.compute_stations(md, plan, grid, SPAWN)
+		check(st_a.size() == 32, "all 32 looks get a station")
+		check(JSON.stringify(str(st_a)) == JSON.stringify(str(st_b)), "stations deterministic")
+		var giver_points: Array[Vector2] = []
+		var givers: Array = plan.get("giverSlots", [])
+		for g: Dictionary in givers:
+			var gid := String(g.get("id", ""))
+			if not gid.begins_with("giver.zone."):
+				continue
+			var cell: Array = g.get("cell", [0, 0])
+			giver_points.append(Vector2(float(int(cell[0])) + 0.5, float(int(cell[1])) + 0.5))
+		var at_giver := 0
+		var near_spawn := 0
+		for st: Dictionary in st_a:
+			var c: Vector2 = st.cell
+			check(not grid.is_solid(int(floorf(c.x)), int(floorf(c.y))), "station walkable")
+			for gp: Vector2 in giver_points:
+				if c.distance_to(gp) <= 5.0:
+					at_giver += 1
+					break
+			if c.distance_to(SPAWN) <= 30.0:
+				near_spawn += 1
+		check(
+			at_giver >= 8,
+			"zone quest-givers stand at their giver slots, nudge-tolerant (%d)" % at_giver
+		)
+		check(near_spawn >= 20, "the settlement crowd gathers at the capital (%d)" % near_spawn)
+
+	# 3. Icons: every id the UI requests exists and cuts a region.
+	var need: Array[String] = ["currency.gold"]
+	for fam: String in [
+		"item.weapon.sword.arming", "item.weapon.bow.recurve", "item.weapon.staff.longstaff"
+	]:
+		for t in range(1, 6):
+			need.append("%s.t%d" % [fam, t])
+	for id: String in need:
+		check(IconAtlas.has_icon(id), "icon exists: " + id)
+		var tex: Texture2D = IconAtlas.icon(id)
+		check(tex != null and tex.get_width() == 16, "icon cuts 16px: " + id)
+
+	# 4. Negatives: corrupt manifest refused; unknown icon id nulls.
+	var bad_dir := "user://wiring_test/"
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(bad_dir))
+	var bf := FileAccess.open(bad_dir + "manifest.json", FileAccess.WRITE)
+	bf.store_string("{ broken")
+	bf.close()
+	var bad_lib: RefCounted = AssemblerLibrary.new()
+	bad_lib.manifest_path = bad_dir + "manifest.json"
+	bad_lib.sheet_root = bad_dir
+	check(not bad_lib.load_manifest(), "corrupt npc manifest refused")
+	check(IconAtlas.icon("no.such.icon") == null, "unknown icon id returns null, loudly")
+
+	if fails.is_empty():
+		print("npc_icon_wiring_test: PASS (npcs/stations/icons/negatives)")
+		quit(0)
+	else:
+		for m: String in fails:
+			printerr("npc_icon_wiring_test FAIL: " + m)
+		quit(1)

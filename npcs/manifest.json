@@ -1,0 +1,303 @@
+{
+	"source": "wildshot-npc-slice-v1 (assembler bf6269c; sl-0089 intake)",
+	"cell": 24,
+	"export_scale": 1,
+	"frame_contract": {
+		"dirs": [
+			"down",
+			"left",
+			"right",
+			"up"
+		],
+		"anims": [
+			{
+				"id": "idle",
+				"ms": 420,
+				"frames": 2
+			},
+			{
+				"id": "walk",
+				"ms": 150,
+				"frames": 4
+			},
+			{
+				"id": "attack",
+				"ms": 115,
+				"frames": 4
+			},
+			{
+				"id": "cast",
+				"ms": 130,
+				"frames": 4
+			},
+			{
+				"id": "hurt",
+				"ms": 140,
+				"frames": 2
+			},
+			{
+				"id": "death",
+				"ms": 160,
+				"frames": 4
+			}
+		]
+	},
+	"actors": [
+		{
+			"id": "warden-representative",
+			"sheet": "warden-representative.png",
+			"name": "Warden Representative",
+			"group": "named-role",
+			"zone": "capital",
+			"role": "faction-representative"
+		},
+		{
+			"id": "prospector-representative",
+			"sheet": "prospector-representative.png",
+			"name": "Prospector Representative",
+			"group": "named-role",
+			"zone": "capital",
+			"role": "faction-representative"
+		},
+		{
+			"id": "circle-representative",
+			"sheet": "circle-representative.png",
+			"name": "Circle Representative",
+			"group": "named-role",
+			"zone": "capital",
+			"role": "faction-representative"
+		},
+		{
+			"id": "free-company-representative",
+			"sheet": "free-company-representative.png",
+			"name": "Free Company Representative",
+			"group": "named-role",
+			"zone": "capital",
+			"role": "faction-representative"
+		},
+		{
+			"id": "capital-general-merchant",
+			"sheet": "capital-general-merchant.png",
+			"name": "Capital General Merchant",
+			"group": "named-role",
+			"zone": "capital",
+			"role": "vendor"
+		},
+		{
+			"id": "settlement-trader",
+			"sheet": "settlement-trader.png",
+			"name": "Settlement Trader",
+			"group": "named-role",
+			"zone": "multi-zone",
+			"role": "vendor"
+		},
+		{
+			"id": "capital-stash-keeper",
+			"sheet": "capital-stash-keeper.png",
+			"name": "Capital Stash-Keeper",
+			"group": "named-role",
+			"zone": "capital",
+			"role": "banker-stash-keeper"
+		},
+		{
+			"id": "capital-smith-artisan",
+			"sheet": "capital-smith-artisan.png",
+			"name": "Capital Smith-Artisan",
+			"group": "named-role",
+			"zone": "capital",
+			"role": "crafter"
+		},
+		{
+			"id": "dock-fisher-teacher",
+			"sheet": "dock-fisher-teacher.png",
+			"name": "Dock Fisher",
+			"group": "named-role",
+			"zone": "capital-docks",
+			"role": "fisher-teacher"
+		},
+		{
+			"id": "meadow-herbalist",
+			"sheet": "meadow-herbalist.png",
+			"name": "Meadow Herbalist",
+			"group": "named-role",
+			"zone": "green-country",
+			"role": "herbalist-forager"
+		},
+		{
+			"id": "capital-gate-guard",
+			"sheet": "capital-gate-guard.png",
+			"name": "Capital Gate Guard",
+			"group": "named-role",
+			"zone": "capital-gate",
+			"role": "guard"
+		},
+		{
+			"id": "capital-field-guard",
+			"sheet": "capital-field-guard.png",
+			"name": "Capital Field Guard",
+			"group": "named-role",
+			"zone": "capital-safety-belt",
+			"role": "guard"
+		},
+		{
+			"id": "rough-outpost-guard",
+			"sheet": "rough-outpost-guard.png",
+			"name": "Rough Outpost Guard",
+			"group": "named-role",
+			"zone": "multi-zone-outpost",
+			"role": "guard"
+		},
+		{
+			"id": "green-country-farmer",
+			"sheet": "green-country-farmer.png",
+			"name": "Green-Country Farmer",
+			"group": "zone-quest-giver",
+			"zone": "green-country",
+			"role": "farmer-quest-giver"
+		},
+		{
+			"id": "green-country-shepherd",
+			"sheet": "green-country-shepherd.png",
+			"name": "Green-Country Shepherd",
+			"group": "zone-quest-giver",
+			"zone": "green-country",
+			"role": "shepherd-quest-giver"
+		},
+		{
+			"id": "green-country-orchard-keeper",
+			"sheet": "green-country-orchard-keeper.png",
+			"name": "Green-Country Orchard Keeper",
+			"group": "zone-quest-giver",
+			"zone": "green-country",
+			"role": "orchard-quest-giver"
+		},
+		{
+			"id": "dry-reach-claim-prospector",
+			"sheet": "dry-reach-claim-prospector.png",
+			"name": "Dry-Reach Claim Prospector",
+			"group": "zone-quest-giver",
+			"zone": "dry-reach",
+			"role": "prospector-quest-giver"
+		},
+		{
+			"id": "dry-reach-caravan-scout",
+			"sheet": "dry-reach-caravan-scout.png",
+			"name": "Dry-Reach Caravan Scout",
+			"group": "zone-quest-giver",
+			"zone": "dry-reach",
+			"role": "caravan-quest-giver"
+		},
+		{
+			"id": "wetland-reed-cutter",
+			"sheet": "wetland-reed-cutter.png",
+			"name": "Wetland Reed-Cutter",
+			"group": "zone-quest-giver",
+			"zone": "wetland",
+			"role": "reed-cutter-quest-giver"
+		},
+		{
+			"id": "wetland-marsh-fisher",
+			"sheet": "wetland-marsh-fisher.png",
+			"name": "Wetland Marsh Fisher",
+			"group": "zone-quest-giver",
+			"zone": "wetland",
+			"role": "fisher-quest-giver"
+		},
+		{
+			"id": "wetland-ferryman",
+			"sheet": "wetland-ferryman.png",
+			"name": "Wetland Ferryman",
+			"group": "zone-quest-giver",
+			"zone": "wetland",
+			"role": "ferryman-quest-giver"
+		},
+		{
+			"id": "snow-country-trapper",
+			"sheet": "snow-country-trapper.png",
+			"name": "Snow-Country Trapper",
+			"group": "zone-quest-giver",
+			"zone": "snow-country",
+			"role": "trapper-quest-giver"
+		},
+		{
+			"id": "snow-country-wayfinder",
+			"sheet": "snow-country-wayfinder.png",
+			"name": "Snow-Country Wayfinder",
+			"group": "zone-quest-giver",
+			"zone": "snow-country",
+			"role": "wayfinder-quest-giver"
+		},
+		{
+			"id": "ambient-elder",
+			"sheet": "ambient-elder.png",
+			"name": "Village Elder",
+			"group": "ambient-villager",
+			"zone": "multi-zone",
+			"role": "elder"
+		},
+		{
+			"id": "ambient-young-errand-runner",
+			"sheet": "ambient-young-errand-runner.png",
+			"name": "Young Errand-Runner",
+			"group": "ambient-villager",
+			"zone": "multi-zone",
+			"role": "youth"
+		},
+		{
+			"id": "ambient-dockworker",
+			"sheet": "ambient-dockworker.png",
+			"name": "Dockworker",
+			"group": "ambient-villager",
+			"zone": "capital-docks",
+			"role": "dockworker"
+		},
+		{
+			"id": "ambient-farmhand",
+			"sheet": "ambient-farmhand.png",
+			"name": "Farmhand",
+			"group": "ambient-villager",
+			"zone": "green-country",
+			"role": "farmhand"
+		},
+		{
+			"id": "ambient-market-goer-a",
+			"sheet": "ambient-market-goer-a.png",
+			"name": "Market-Goer A",
+			"group": "ambient-villager",
+			"zone": "capital-market",
+			"role": "market-goer"
+		},
+		{
+			"id": "ambient-market-goer-b",
+			"sheet": "ambient-market-goer-b.png",
+			"name": "Market-Goer B",
+			"group": "ambient-villager",
+			"zone": "capital-market",
+			"role": "market-goer"
+		},
+		{
+			"id": "ambient-beggar",
+			"sheet": "ambient-beggar.png",
+			"name": "Beggar",
+			"group": "ambient-villager",
+			"zone": "capital",
+			"role": "beggar"
+		},
+		{
+			"id": "ambient-wanderer",
+			"sheet": "ambient-wanderer.png",
+			"name": "Wanderer",
+			"group": "ambient-villager",
+			"zone": "multi-zone",
+			"role": "wanderer"
+		},
+		{
+			"id": "ambient-courier",
+			"sheet": "ambient-courier.png",
+			"name": "Courier",
+			"group": "ambient-villager",
+			"zone": "multi-zone",
+			"role": "courier"
+		}
+	]
+}

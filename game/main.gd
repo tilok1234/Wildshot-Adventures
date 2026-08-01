@@ -38,6 +38,9 @@ const OnboardingScreen := preload("res://ui/onboarding_screen.gd")
 const CrosshairStyles := preload("res://ui/crosshair_styles.gd")
 const Core50Verify := preload("res://game/dev/core50_verify.gd")
 const MapOverlay := preload("res://game/dev/map_overlay.gd")
+const NpcView := preload("res://game/views/npc_view.gd")
+const ContentImporter := preload("res://game/arena/content_importer.gd")
+const IconAtlas := preload("res://ui/icon_atlas.gd")
 const WorldforgePack := preload("res://addons/worldforge_importer/worldforge_pack.gd")
 const DebugConsole := preload("res://ui/debug_console.gd")
 const BuildInfo := preload("res://build_info.gd")
@@ -59,6 +62,16 @@ const AuditSampler := preload("res://game/bots/audit_sampler.gd")
 
 const TILE := 32.0
 
+## Seam 4 [P]: class weapon archetype -> icon-pack glyph family (the
+## tier suffix .tN completes the id). Families match the
+## balance_frame sample items (arming sword / recurve bow /
+## longstaff).
+const ICON_WEAPON_FAMILIES := {
+	"slow_heavy": "item.weapon.sword.arming",
+	"fast_light": "item.weapon.bow.recurve",
+	"long_reach": "item.weapon.staff.longstaff",
+}
+
 var bitgrid: RefCounted
 var world: SimWorld
 var driver: RealtimeDriver
@@ -66,6 +79,9 @@ var view_clock: ViewClock
 var speed_label: Label
 var autofire_icon: TextureRect
 var weapon_label: Label
+## Seam 4: the equipped weapon's icon-pack tier glyph (class lane).
+var weapon_icon: TextureRect
+var _weapon_icon_key := ""
 var hp_bar: StatBar
 var mana_bar: StatBar
 var ability_label: Label
@@ -285,6 +301,22 @@ func _process(_delta: float) -> void:
 	rec_label.visible = gif_recorder != null and gif_recorder.armed
 	if not world.weapon_frames.is_empty():
 		weapon_label.text = String(world.weapon_frames[p.equipped_weapon].display_name)
+		# Icon pack glyph: class archetype x tier (seam 4). Cached by
+		# key — the atlas cut runs only when the slot actually changes.
+		var icon_key := ""
+		if p.class_id >= 0:
+			var arch := String(world.weapon_frames[p.equipped_weapon].archetype)
+			var glyph_family: String = ICON_WEAPON_FAMILIES.get(arch, "")
+			if not glyph_family.is_empty():
+				var tier := clampi(int(p.weapon_tiers[p.equipped_weapon]), 1, 5)
+				icon_key = "%s.t%d" % [glyph_family, tier]
+		if icon_key != _weapon_icon_key:
+			_weapon_icon_key = icon_key
+			if icon_key.is_empty():
+				weapon_icon.visible = false
+			else:
+				weapon_icon.texture = IconAtlas.icon(icon_key)
+				weapon_icon.visible = weapon_icon.texture != null
 	# Level/xp/gold + the minimal equip surface. Class lane (docs/22):
 	# class name + its one weapon slot; legacy lane keeps the lab trio.
 	var xp_next: int = Progress.xp_to_next(world, p.level, p.class_id)
@@ -851,6 +883,24 @@ func _ready() -> void:
 			if lib_boss.load_manifest():
 				enemy_actors.lib_boss = lib_boss
 		actor_space.add_child(enemy_actors)
+	# NPC presence (slice S0 seam 4, W-8): the 32 pack looks stationed
+	# at giver slots + the settlement crowd — pure view inside the same
+	# y-sort space, only where a content pack rides the scenario.
+	if not String(scenario.content_pack).is_empty():
+		var lib_npc := AssemblerLibrary.new()
+		lib_npc.manifest_path = "res://npcs/manifest.json"
+		lib_npc.sheet_root = "res://npcs/"
+		if lib_npc.load_manifest():
+			var npcs := NpcView.new()
+			npcs.y_sort_enabled = true
+			npcs.setup(
+				lib_npc,
+				ContentImporter.resolve_src(String(scenario.content_pack)),
+				bitgrid,
+				scenario.player_spawn
+			)
+			actor_space.add_child(npcs)
+
 	var hp_bars := HpBarView.new()
 	hp_bars.world = world
 	hp_bars.clock = view_clock
@@ -952,7 +1002,20 @@ func _ready() -> void:
 	autofire_icon.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
 	autofire_icon.position = Vector2(4.0, 4.0)
 	weapon_label = Label.new()
-	weapon_label.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	# Icon pack (seam 4): the equipped weapon's tier glyph rides beside
+	# the name — class lane only (lab frames keep text-only).
+	weapon_icon = TextureRect.new()
+	weapon_icon.custom_minimum_size = Vector2(16.0, 16.0)
+	weapon_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	weapon_icon.visible = false
+	var weapon_row := HBoxContainer.new()
+	weapon_row.add_theme_constant_override("separation", 4)
+	weapon_row.add_child(weapon_icon)
+	weapon_row.add_child(weapon_label)
+	weapon_row.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	weapon_row.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	weapon_row.offset_right = -4.0
+	weapon_row.offset_top = 4.0
 	# Bottom-left HUD column: container-managed so nothing can clip off
 	# the screen edge (a hand-offset label did exactly that once).
 	hp_bar = StatBar.new()
@@ -999,7 +1062,7 @@ func _ready() -> void:
 	hud.add_child(pause_label)
 	hud.add_child(hud_stack)
 	hud.add_child(autofire_icon)
-	hud.add_child(weapon_label)
+	hud.add_child(weapon_row)
 	hud.add_child(rec_label)
 	hud.add_child(toast_label)
 	hud.add_child(hints_label)

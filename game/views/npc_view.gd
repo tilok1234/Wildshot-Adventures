@@ -1,0 +1,148 @@
+extends Node2D
+## NPC presence layer (slice S0 seam 4, sl-0100: "NPCs stationed in
+## settlements — presence over motion", W-8). PURE VIEW: no sim actor,
+## no AI, no interaction surface, nothing an aim or damage path could
+## ever read (CORE-35 stays absolute). Each of the 32 pack looks
+## stands at a deterministic station playing idle:
+## - ZONE QUEST-GIVERS at their zone's content-pack giver-slot cells
+##   (in slot order; the pack authored those cells);
+## - everyone else (named roles, ambient crowd, multi-zone looks,
+##   giver overflow) scattered around the settlement spawn on a
+##   deterministic golden-angle spiral, walkability-probed on the
+##   conservative bitgrid.
+## Sits inside main's y-sorted ActorSortSpace so players walk in
+## front of and behind NPCs like any other body. Quest wiring is
+## chapter work — today they hold the ground the quests will stand
+## on.
+
+const AssemblerLibrary := preload("res://game/views/assembler_library.gd")
+
+const TILE := 32.0
+## NPC manifest zone -> content-plan giver-slot zone prefix.
+const ZONE_MAP := {
+	"green-country": "green",
+	"dry-reach": "dry",
+	"wetland": "wet",
+	"snow-country": "cold",
+}
+
+var _stations: Array[Dictionary] = []
+
+
+## Build stations + sprites. `content_pack` = the resolved pack dir;
+## `bitgrid` = the world's conservative grid; `spawn` = the
+## settlement spawn cell the crowd scatters around.
+func setup(lib: RefCounted, content_pack: String, bitgrid: RefCounted, spawn: Vector2) -> bool:
+	var npc_manifest: Variant = JSON.parse_string(
+		FileAccess.get_file_as_string("res://npcs/manifest.json")
+	)
+	if not npc_manifest is Dictionary:
+		push_error("npc_view: res://npcs/manifest.json missing — run tools/import_npcs.py")
+		return false
+	var plan: Variant = JSON.parse_string(
+		FileAccess.get_file_as_string(content_pack + "content-plan.json")
+	)
+	if not plan is Dictionary:
+		push_error("npc_view: content pack unreadable at " + content_pack)
+		return false
+	_stations = compute_stations(npc_manifest, plan, bitgrid, spawn)
+	for st: Dictionary in _stations:
+		var frames: SpriteFrames = lib.build_sprite_frames(String(st.id))
+		if frames == null:
+			continue
+		var spr := AnimatedSprite2D.new()
+		spr.sprite_frames = frames
+		spr.scale = Vector2.ONE * lib.render_scale()
+		var cell: Vector2 = st.cell
+		spr.position = cell * TILE
+		spr.play("idle-down")
+		add_child(spr)
+	return true
+
+
+## Deterministic station table — static + pure so the wiring test pins
+## it without a scene. Returns [{id, cell: Vector2 (center)}].
+static func compute_stations(
+	npc_manifest: Dictionary, plan: Dictionary, bitgrid: RefCounted, spawn: Vector2
+) -> Array[Dictionary]:
+	# Zone giver cells in slot order, skipping slots parked on the
+	# spawn cell itself (the capital system slots all point there —
+	# the crowd spiral owns that ground).
+	var zone_cells: Dictionary = {}
+	var givers: Array = plan.get("giverSlots", [])
+	for g: Dictionary in givers:
+		var gid := String(g.get("id", ""))
+		if not gid.begins_with("giver.zone."):
+			continue
+		var zid := String(g.get("zoneId", ""))
+		var zparts := zid.split(".")
+		var zkey := zparts[1] if zparts.size() >= 2 else zid
+		var cell: Array = g.get("cell", [0, 0])
+		var cv := Vector2(float(int(cell[0])) + 0.5, float(int(cell[1])) + 0.5)
+		if cv.distance_to(spawn) < 2.0:
+			continue
+		if not zone_cells.has(zkey):
+			zone_cells[zkey] = []
+		(zone_cells[zkey] as Array).append(cv)
+	var used: Dictionary = {}
+	var out: Array[Dictionary] = []
+	var crowd: Array[String] = []
+	var actors: Array = npc_manifest.get("actors", [])
+	for a: Dictionary in actors:
+		var aid := String(a.get("id", ""))
+		var group := String(a.get("group", ""))
+		var zone := String(a.get("zone", ""))
+		var zkey := String(ZONE_MAP.get(zone, ""))
+		if group == "zone-quest-giver" and not zkey.is_empty() and zone_cells.has(zkey):
+			var cells: Array = zone_cells[zkey]
+			var next_i := int(used.get(zkey, 0))
+			if next_i < cells.size():
+				used[zkey] = next_i + 1
+				# Giver cells are pack-authored at structures — some sit
+				# on solid footprint cells (doorsteps). Nudge to the
+				# nearest walkable cell, deterministically.
+				out.append({"id": aid, "cell": _nudge_walkable(bitgrid, cells[next_i])})
+				continue
+		crowd.append(aid)
+	# Settlement crowd: golden-angle spiral, walkability-probed.
+	var spiral_i := 0
+	for aid: String in crowd:
+		var cell := _spiral_cell(bitgrid, spawn, spiral_i)
+		spiral_i = int(cell.z) + 1
+		out.append({"id": aid, "cell": Vector2(cell.x, cell.y)})
+	return out
+
+
+## Nearest walkable cell center to `cell` (itself if open): scans
+## rings of increasing radius in fixed row-major order — deterministic.
+static func _nudge_walkable(bitgrid: RefCounted, cell: Vector2) -> Vector2:
+	var cx := int(floorf(cell.x))
+	var cy := int(floorf(cell.y))
+	if not bitgrid.is_solid(cx, cy):
+		return cell
+	for r in range(1, 5):
+		for dy in range(-r, r + 1):
+			for dx in range(-r, r + 1):
+				if maxi(absi(dx), absi(dy)) != r:
+					continue
+				if not bitgrid.is_solid(cx + dx, cy + dy):
+					return Vector2(float(cx + dx) + 0.5, float(cy + dy) + 0.5)
+	return cell
+
+
+## Next walkable golden-angle spiral cell from `start_i` (z = the
+## index consumed, so callers keep the sequence deterministic).
+static func _spiral_cell(bitgrid: RefCounted, spawn: Vector2, start_i: int) -> Vector3:
+	for i in range(start_i, start_i + 80):
+		var r := 1.8 + 0.32 * float(i)
+		var theta := float(i) * 2.399963
+		var probe: Vector2 = spawn + Vector2(cos(theta), sin(theta)) * r
+		var cx := int(floorf(probe.x))
+		var cy := int(floorf(probe.y))
+		if not bitgrid.is_solid(cx, cy):
+			return Vector3(float(cx) + 0.5, float(cy) + 0.5, float(i))
+	return Vector3(spawn.x, spawn.y, float(start_i))
+
+
+func station_count() -> int:
+	return _stations.size()

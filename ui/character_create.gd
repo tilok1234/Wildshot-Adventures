@@ -10,7 +10,15 @@ extends PanelContainer
 
 signal chosen(hardcore: bool, cls: String)
 
+const IconAtlas := preload("res://ui/icon_atlas.gd")
+
 const COPY_TITLE := "NEW CHARACTER"
+## Icon-pack T1 weapon glyphs as class emblems (seam 4 [P]).
+const CLASS_ICONS := {
+	"sword": "item.weapon.sword.arming.t1",
+	"staff": "item.weapon.staff.longstaff.t1",
+	"bow": "item.weapon.bow.recurve.t1",
+}
 const COPY_NORMAL := (
 	"NORMAL - dying sends you back to a settlement and costs part of\n"
 	+ "your carried gold. Your equipment is never taken."
@@ -51,6 +59,12 @@ func _ready() -> void:
 		var cls := String(row[0])
 		var line := HBoxContainer.new()
 		line.add_theme_constant_override("separation", 8)
+		var emblem := TextureRect.new()
+		emblem.custom_minimum_size = Vector2(20.0, 20.0)
+		emblem.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		if IconAtlas.has_icon(String(CLASS_ICONS[cls])):
+			emblem.texture = IconAtlas.icon(String(CLASS_ICONS[cls]))
+		line.add_child(emblem)
 		var pick := Button.new()
 		pick.toggle_mode = true
 		pick.text = cls
