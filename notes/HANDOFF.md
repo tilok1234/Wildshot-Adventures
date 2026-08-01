@@ -14,7 +14,7 @@ contract doesn't.
 Wildshot Adventures: a solo-developed RotMG-inspired top-down realtime
 bullet-hell ARPG in **Godot 4.6.2 (pinned), typed GDScript, custom
 deterministic sim, no Godot physics in gameplay**. Serialization
-SERIAL 13; goldens current; all CI green.
+SERIAL 14 (next bump 15); goldens current; all CI green.
 
 Current phase: **the Loop era.** Gate 1 was REWRITTEN 2026-07-30
 (sl-0023): the recruited-stranger zero-reward gate is retired with
@@ -76,7 +76,18 @@ at every clean seam.
 `tools/pretester_check.ps1` runs ALL GREEN (~14–19 min: 19 fixed
 steps, 28-row proof battery byte-identical against committed reports,
 export step building + boot-checking BOTH artifacts, lockdown probe).
-Last full run: 2026-08-01 at the sl-0077 crosshair seam, 16.8 min.
+Last full run: 2026-08-01 at the sl-0078 fit-rule seam, 16.9 min.
+
+- **THE FIT RULE (sl-0078, 2026-08-01, SERIAL 14):** sprite fits ⇒
+  character passes. Solid PROPS block by art-measured sub-cell discs
+  (`game/arena/prop_colliders.gd`, measured per tile at load); the
+  player's terrain body = the ranger's feet, `TERRAIN_RADIUS =
+  0.15625` (10 px / 2 / 32 — art-derived); projectiles share the
+  same truth (coherence). HURTBOX 0.35 untouched. The cell bitgrid
+  stays the CONSERVATIVE FLOOR (enemies grid-walk it; floods/
+  porosity/upstream contracts unchanged; b77 current). One attach
+  point in ScenarioLoader — bot/sim collision identical by
+  construction. Acceptance = the designer's red-line walk.
 
 - **THE LOOP (v1, SERIAL 13):** "THE LOOP" picker row — spawn in the
   b65 town, three proven danger rings westward, the BONE RELIQUARY
@@ -181,7 +192,7 @@ Before every commit, per touched area:
   re-grep before editing formatted files).
 - smoke: `godot_console --headless --path . --script tests/determinism/determinism_smoke.gd`.
 - goldens: any sim/serialization change ⇒ bump SERIAL_VERSION
-  (next bump is **14**), regenerate + verify ×10, say so in the
+  (next bump is **15**), regenerate + verify ×10, say so in the
   commit.
 - boot: `godot_console --headless --path . --quit-after 90` grep
   "arena ready|ERROR" (use "ERROR", not "SCRIPT ERROR").
@@ -197,7 +208,7 @@ Before every commit, per touched area:
   for a dangling start; honest stops at seams.
 - One approved decision = one commit; push BOTH repos at clean seams.
 - Cross-repo events ⇒ sync-log entry planning-side (doc 18; no
-  event, no entry). Gotcha #24 before appending.
+  event, no entry). Gotcha #25 before appending.
 
 ### Canonical proof battery (all --speed=3.0; state 2026-08-01 —
 ### POLICY OF RECORD = REACTIVE; Warden 575; b65 flood 34641; the
@@ -222,9 +233,10 @@ Before every commit, per touched area:
 | proof_yw_p2 (t0 drop 230 → 60%) | 209..213 | 3600 | PASS |
 | proof_yw_p3 (t0 drop 403 → 29.9%) | 210..214 | 3600 | PASS |
 | proof_yw_full (schedule sums 575; t1207/t2413, kill t3301) | 211..215 | 3600 | PASS |
-| proof_rusher / forest_walk / first_contact **[--policy=primary]** | as above | 3600 | **FAIL — primary-model baselines** (dodge_*_primary.json; a primary PASS = the sim changed) |
+| proof_rusher / first_contact **[--policy=primary]** | as above | 3600 | **FAIL — primary-model baselines** (dodge_*_primary.json; a verdict MOVE = the sim changed) |
+| forest_walk **[--policy=primary]** | 1,2,3 | 3600 | **PASS — re-pinned 2026-08-01** (sl-0078 fit rule freed the primary model's forest pockets; the flip IS the deliberate-change signature) |
 | lab_default + meet_blightcaster/leadshot/yard_warden | 1,2,3 | 3600 | PASS |
-| loop_ring1/2/3 + proof_brk_site (Loop v1 gradient + boss site; ring pulls stay ≤2 pressures by layout) | 1,2,3 | 3600 | PASS |
+| loop_ring1/2/3 + proof_brk_site (Loop v1 gradient + boss site; ring pulls stay ≤2 pressures by layout; ring2 ringer at 199.5,126.5 since the sl-0078 never-weaken iteration) | 1,2,3 | 3600 | PASS |
 
 Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- --scenario=<id> --speed=3.0 --seeds=<list> --ticks=<n> [--out=res://reports/<name>.json] [--policy=primary|orbit|axis]`
 (default policy = reactive; compositions need the explicit --out names).
@@ -329,7 +341,16 @@ Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- -
     predecessor's immutable release and diffing (the b76 1466-vs-1461
     street-census lesson; also how the 47-joint render delta was
     independently reproduced).
-24. **Planning sync-log appends race the live planning session**:
+24. **The fit rule's terrain has TWO truths (sl-0078)**: player +
+    projectiles walk `walk_grid` + prop discs (art-true); enemies,
+    floods, spawn checks, porosity, and every POSITIONING heuristic
+    in the bot stay on the conservative `bitgrid`. Prop thickets are
+    walkable-but-shot-exposed: they shed chasers but not shots, and
+    the 0.35 hurtbox cannot dodge inside sprite-width gaps — the bot
+    deliberately refuses to LIVE in them (wall_pen on bitgrid), while
+    escapes still thread them. Smoke wall floor derives to 1.15625.
+    Any new bot heuristic must pick its grid deliberately.
+25. **Planning sync-log appends race the live planning session**:
     verify the next free sl-#### id AT WRITE TIME (sl-0063 was taken
     mid-intake once), splice with the FILE'S OWN EOL convention (it
     has flipped LF↔CRLF between sessions), re-parse + verify after

@@ -1151,3 +1151,57 @@ closed it, gate re-ran ALL GREEN 16.8 min (19 fixed + 28-row battery
 byte-identical + export + probe). DESIGNER-EYES pending: the four
 styles on screen (preview sheet committed). Icon Tier-0 stays
 sequenced after the Loop acceptance per the ask's own note.**
+THE FIT RULE LIVE 2026-08-01 (~06:30 local; ask sl-0078 — the
+DESIGNER-DIRECTED COLLISION CHANGE, deliberate design act invoked;
+game 549e587; SERIAL 13→14, next bump 15): "if there is more then
+enough for the character sprite to go between it it should be able
+to go between it" — BOTH HALVES BUILT. (1) PROP DISCS:
+game/arena/prop_colliders.gd measures every solid prop cell's OWN
+sprite base at load (lowest-opaque 6px band → width + centroid; THIN
+0.85 per "when in doubt, thinner"; bounds 0.06–0.42) — b77 opens
+7,560 prop cells (236 tiles measured), b65 opens 6,996 (252): THE
+LOOP + world_walk carry the rule. Cause guards keep structures/
+fences/cliffs/water/rock/bog full-cell (round-1 scope). (2) PLAYER
+BODY: PlayerMove.TERRAIN_RADIUS 0.25 → 0.15625 = the ranger's FEET
+exactly (frame-0 rows 19-22 = 10 px = 5/32 t, art-derived, not
+tuned). HURTBOX 0.35 BYTE-UNTOUCHED (combat-safety addendum; dodge
+fairness intact). PROJECTILE COHERENCE (addendum accepted): shots
+collide with walk_grid + the same discs — one truth for walking and
+shooting. ARCHITECTURE: SimWorld.walk_grid + prop_discs (defaults =
+bitgrid/{} — arena worlds byte-unchanged); the bitgrid stays the
+CONSERVATIVE FLOOR (enemies grid-walk it, floods/porosity/spawns/
+upstream contracts keep their meaning; b77 stays current, ZERO
+upstream work); ONE attach point in ScenarioLoader = main/DodgeBot/
+soak/replay-verify walk identical collision by construction;
+Kinematics grew disc contacts in the ONE shared slide (curved
+clamps, strict-tangency rest, corner slip curls around trunks;
+empty dict = byte-identical enemy path). DODGEBOT: candidate walks
+on the true model; threat projection now TERRAIN-AWARE (shots die
+on walls/discs in the model — the ttl-only over-estimate cost real
+dodges at fit-rule margins); POSITIONING heuristics deliberately
+stay conservative on the bitgrid — a pocket the sprite fits is NOT
+a pocket to live in (the 0.35 hurtbox cannot dodge inside
+sprite-width gaps; loop_ring2 parked in a b65 thicket and was
+clipped t434 by the ringer radial at 0.011 — the forensics run is
+the record). ONE LAYOUT ITERATION under never-weaken: the ring2/
+loop ringer spawn left the thicket lip it predated (195.5,129.5 →
+199.5,126.5, mirrored loop.tres + proof; re-proof 0 hits, near
+0.130). MECHANIZED ACCEPTANCE SHADOW (tests/pinch_probe/
+fit_rule_probe.gd): the census desert red-line lane CROSSES t=51,
+the worst tree-band pinch (detour 62) CROSSES t=23, while
+legacy-0.25 AND the enemy model stay blocked at both — the
+asymmetry is proven, the zero-width class opens exactly where art
+shows ground. CONSEQUENCES DISCHARGED: goldens re-recorded +
+verified x10; smoke PASS (wall floor self-derived 1.15625 — the
+constant-derived assert doing its job); FINAL BATTERY 28/28
+ON-MATRIX with forest_walk [primary] RE-PINNED FAIL→PASS (the
+deliberate-change signature; rusher/first_contact primary stay
+FAIL; MUST-FAIL canary still FAILS); stale repro leftovers of
+already-resolved failures swept from reports/. FULL pretester ALL
+GREEN 16.9 min (19 fixed + 28-row battery byte-identical + export +
+lockdown probe on rebuilt artifacts). NEW TACTICAL REGIME recorded:
+prop thickets are walkable-but-shot-exposed — enterable cover that
+sheds chasers but not projectiles; the L2 daily-play read on it is
+the designer's. ACCEPTANCE = the designer's walk along their own
+three red-line screenshots; game relaunched for them at close. NO
+feel verdicts (engineering session).**
