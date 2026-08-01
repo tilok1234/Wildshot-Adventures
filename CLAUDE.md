@@ -1286,3 +1286,42 @@ Windowed closes are silent now — remaining stderr is the
 RealtimeDriver's designed slew telemetry. Gotcha #27 recorded (sweep
 solo with full stderr, characterize in a minimal project before
 touching code, fix lifecycle — never filter stderr).**
+NPC SLICE ROSTER INTAKEN 2026-08-01 (~12:50 local; delivery sl-0089 —
+raw drop beside the other assembler packs, NO WIRING until slice
+build post-Loop-acceptance): wildshot-npc-slice-v1@bf6269c fetched
+by tag from the ASSEMBLER'S FIRST RELEASE; GH computed digest ==
+local sha256 == the delivery record (301,736 bytes); tag → bf6269ca
+= the assembler main tip (compare IDENTICAL) and the manifest's own
+provenance block (sl-0045 publish gate) claims cleanPushedSource at
+the same commit — independently confirmed, the b7eae05f class
+closed end-to-end and exercised from the consumer side for the
+first time. 70 files staged (32 character sheets + 32 regen recipes
++ library + NPC_BRIEF + README + review pair). HASH DOCTRINE
+INVERTED vs icons: the manifest SHIPS per-file sha256s — 69/69
+VERIFIED at staging (not generated) + 32/32 character-entry
+cross-checks; the passport pins only manifest.json + the verified
+provenance. FIXED GATE tools/validate_npc_pack.py = 21ST FIXED STEP
++ CI row (manifest pin, provenance, shipped-hash parity both
+directions, unique ids, 480x96 sheets in the 20x4 layout — 24x24
+logical at exportScale 1 — binary alpha, recipes/library/
+contact-map parse); NEGATIVE-TESTED (corrupt sheet + deleted recipe
++ edited manifest → exit 1, all three named). ROUTED SCALE CHECK
+REPORTED, zero changes: FULL consistency with the enemy-pack
+consumption — 24px @1x == cell 24 × export_scale 1, same direction
+order down/left/right/up, same rows=dirs / cols=anim-spans
+semantics (the exact frame_contract geometry assembler_library
+derives); NPC anims SUPERSET with real cast/death rows (the
+library's cast→attack / death→hurt aliases become real for NPCs);
+wiring-time work = manifest-schema translation only (character-pack
+v3 vs frame_contract; small adapter or third library instance).
+Boot clean; pretester ALL GREEN 3.1 min (21 fixed + export + probe;
+battery deliberately skipped — zero sim change, smoke + goldens x10
+hashes unmoved; full gate rides the next exclusive seam). Lock pin
+added (second game←assembler pin); sync log sl-0092. RIDER
+DISCHARGED BY CONFIRMATION: the docs/08+12 truth-up flag already
+carries its inline cleared annotation (b72 intake) — no stale flag
+stands, no edit; the milestone tail reflects the loop era.
+Designer-side per sl-0089: approval [P], on-screen taste rides
+slice wiring; watch-items (named-vs-villager blur → quest markers;
+dark-outfit dusk contrast → one-field regen) ride the wiring round.
+NO feel verdicts (hands-free mechanical intake).**

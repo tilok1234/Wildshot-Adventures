@@ -30,7 +30,7 @@ only once the loop bar holds.
   `C:\Users\headc\Documents\Wildshot_adventure_final_planning` — ONE
   branch, `claude/questionnaire-note-taking-9vl2sl` (no main; do not
   create one). Its `tools/sync_log.json` is the cross-repo logbook
-  (doc 18, entries through sl-0086 as of this writing);
+  (doc 18, entries through sl-0092 as of this writing);
   `tools/ecosystem.lock.json` holds the pins.
 - **The ecosystem map** (planning `docs/16-ECOSYSTEM_MAP.md`) names
   all seven repos and the hard cross-repo rules. **LANE RULE: game
@@ -76,13 +76,13 @@ at every clean seam.
 ## §1 Where things stand (2026-08-01, post-sl-0085 icon intake)
 
 **M0–M8 engineering complete.** The one-command ship gate
-`tools/pretester_check.ps1` runs ALL GREEN (~15–19 min: 20 fixed
+`tools/pretester_check.ps1` runs ALL GREEN (~15–19 min: 21 fixed
 steps, 28-row proof battery byte-identical against committed reports,
 export step building + boot-checking BOTH artifacts, lockdown probe).
 Last full run: 2026-08-01 at the sl-0078 fit-rule seam, 16.9 min; the
-sl-0085 icon seam ran fixed steps + export + probe green in 3.5 min
-(`-SkipBattery`, deliberate — zero sim change, assets are
-`.gdignore`'d).
+sl-0085 icon and sl-0092 NPC seams ran fixed steps + export + probe
+green in ~3 min each (`-SkipBattery`, deliberate — zero sim change,
+assets are `.gdignore`'d).
 
 - **THE FIT RULE (sl-0078, 2026-08-01, SERIAL 14) — the newest big
   thing:** "if the character sprite visibly fits through a gap, the
@@ -160,6 +160,18 @@ sl-0085 icon seam ran fixed steps + export + probe green in 3.5 min
   FIRES ONLY AFTER the Loop acceptance run (sl-0082 ruling; sl-0077
   Tier-0 sequencing note). Tool-source push owed from the
   designer's other PC (sl-0083 insurance line).
+- **NPC slice roster v1 vendored UNWIRED (sl-0089 → sl-0092,
+  2026-08-01):** 32 characters (13 named roles / 10 zone
+  quest-givers / 9 ambient villagers) from the assembler's FIRST
+  release — provenance proven end-to-end (tag == main tip; manifest
+  `cleanPushedSource` independently confirmed). 24×24 @1x, 20×4
+  sheets with REAL cast/death rows; scale treatment IDENTICAL to
+  the enemy pack (sl-0092 report — wiring needs only a
+  character-pack-v3 schema adapter). The manifest ships per-file
+  sha256s (verified at intake, not generated); the passport pins
+  the manifest; fixed gate `tools/validate_npc_pack.py` (21st step
+  + CI row). WIRING AT SLICE BUILD, post-Loop-acceptance, alongside
+  the icons.
 - **Tester pipeline standing:** export.ps1 dev+tester zips, one-flag
   dev_tools lockdown (lint + artifact probe in the gate), onboarding
   screen (copy = placeholder, designer voice pending), feedback
@@ -213,6 +225,12 @@ ruling (the designer picked and it shipped).
   the Loop acceptance run; when it fires, sl-0083's watch-items ride
   along (abstract skill-node rows re-judged in the tree UI;
   ability-charm tiers eyeballed vs the in-pack deutan sheet).
+- NPC wiring — same gate (slice build): a character-pack-v3 manifest
+  adapter or a third `assembler_library` instance (scale/layout
+  already match the enemy pack — sl-0092 report); watch-items ride
+  along (named-vs-villager readability via overhead quest markers —
+  the icon set has them; dark-outfit contrast on dusk ground is a
+  one-field regen upstream).
 
 ## §4 Session rituals (the gates)
 
