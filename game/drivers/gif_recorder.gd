@@ -1,41 +1,42 @@
 extends Node
-## Armed-mode GIF recorder (docs/12 §2.10/§2.12): press gif_dump (default
-## G) to START capturing, press again to STOP and dump the ring (last
-## ~10 s, 30 fps, base res) as a PNG sequence for tools/gif.ps1.
+## START-TO-FINISH GIF recorder (2026-08-01, the designer's want,
+## stated three times: "the whole recording from start to finish"):
+## press gif_dump (G) to START, press again to STOP. Frames STREAM to
+## the dump dir as they are captured — no ring, no trailing-window
+## truncation, no length cap (disk-bound: ~6 MB/s of PNGs at 30 fps
+## 640x360) — and the dump is complete the instant recording stops,
+## so nothing downstream can race a flush. The pre-S0 ring design
+## (last-10-s trailing window) is RETIRED: it silently threw away the
+## start of every recording longer than 10 s.
 ##
-## Why armed instead of always-on: viewport readback measured 32 ms per
-## capture on the dev machine (GPU→CPU sync stall) — an always-on ring
-## halves the frame rate of the whole game. While armed the game still
-## pays that cost (fps visibly dips during capture); that is the accepted
-## price for devlog moments. Async RenderingDevice readback is the
-## recorded improvement path (ledger #7). Purely view-side; headless
-## captures nothing.
+## Armed cost (unchanged in kind, ledger #7): the 32 ms viewport
+## readback stalls the game while REC is on — footage inherits that
+## slowdown; async RenderingDevice readback stays the recorded
+## improvement path. The per-frame PNG encode (~2-5 ms at 640x360)
+## rides the same accepted dip. Purely view-side; headless captures
+## nothing.
 
 const FPS := 30
-const SECONDS := 10
-const CAPACITY := FPS * SECONDS
 
 var armed := false
 
-var _ring: Array[Image] = []
-var _head := 0
-var _count := 0
+var _dir := ""
+var _index := 0
 var _every_other := false
-
-
-func _ready() -> void:
-	_ring.resize(CAPACITY)
 
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("gif_dump"):
 		armed = not armed
 		if armed:
-			_head = 0
-			_count = 0
-			print("gif_recorder: recording (press again to stop + dump)")
+			_dir = "user://gif_frames/dump_%d" % Time.get_ticks_msec()
+			DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(_dir))
+			_index = 0
+			print("gif_recorder: recording START-TO-FINISH (press again to stop)")
 		else:
-			_dump()
+			var os_path := ProjectSettings.globalize_path(_dir)
+			print("gif_recorder: %d frames -> %s" % [_index, os_path])
+			print('gif_recorder: convert with  tools/gif.ps1 -FramesDir "%s"' % os_path)
 	if not armed:
 		return
 	# Half-rate capture: every second rendered frame at 60 fps ≈ 30 fps.
@@ -48,21 +49,5 @@ func _process(_delta: float) -> void:
 	var img := tex.get_image()
 	if img == null or img.is_empty():
 		return  # headless — nothing to capture
-	_ring[_head] = img
-	_head = (_head + 1) % CAPACITY
-	_count = mini(_count + 1, CAPACITY)
-
-
-func _dump() -> void:
-	if _count == 0:
-		print("gif_recorder: ring empty, nothing to dump")
-		return
-	var dir := "user://gif_frames/dump_%d" % Time.get_ticks_msec()
-	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(dir))
-	var start := (_head - _count + CAPACITY) % CAPACITY
-	for i in _count:
-		var img := _ring[(start + i) % CAPACITY]
-		img.save_png("%s/frame_%04d.png" % [dir, i])
-	var os_path := ProjectSettings.globalize_path(dir)
-	print("gif_recorder: %d frames -> %s" % [_count, os_path])
-	print('gif_recorder: convert with  tools/gif.ps1 -FramesDir "%s"' % os_path)
+	img.save_png("%s/frame_%04d.png" % [_dir, _index])
+	_index += 1
