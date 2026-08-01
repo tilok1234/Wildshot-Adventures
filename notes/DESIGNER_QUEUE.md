@@ -1,18 +1,20 @@
 # Designer queue — everything waiting on you (updated ~14:20)
 
-> **2026-08-01 (post-b77 seam): still historical — the LIVE queue is
-> planning-side** (the Decision Deck + the "rested-day remainder" in
-> planning `notes/sessions/`). Genuinely open designer-side right now,
-> for orientation only: **b77 navigation walk** (THE sl-0066
-> acceptance — the "getting blocked" complaint is the test), THE LOOP
-> "judgeable" call (starts the L2 daily-bar clock), crosshair
-> size/contrast taste-rule (sl-0042), b65 city walk, rested M2 close +
-> six-ordinaries ratification, CORE-50 render checklist pass (tester
-> build, notes/CORE50_RUNTIME_CHECKLIST.md), onboarding copy voice
-> pass, audio verdicts accumulating in natural-testing mode. Resolved
-> since the last banner: b76 street/joints look APPROVED on the walk
-> (2026-07-31); CORE-34 no-ability clear DONE; boss sheets DROPPED
-> (raw, unwired by ruling); GIFs #2/#3 material delivered.
+> **2026-08-01 LATE (post-fit-rule seam): still historical — the LIVE
+> queue is planning-side** (the Decision Deck + planning
+> `notes/sessions/`; the current open list lives in
+> notes/HANDOFF.md §2). Genuinely open designer-side right now, for
+> orientation only: **THE RED-LINE WALK** (the sl-0078 fit-rule
+> acceptance — walk your three screenshot spots; in practice it also
+> serves the b77 navigation-walk line), THE LOOP "judgeable" call,
+> crosshair styles + dev map on screen, prop-thicket taste read, b65
+> city walk, rested ratification stack, CORE-50 render checklist,
+> onboarding voice, weekly GIF (fresh material: threading between
+> trees). Resolved since the last banner: crosshair fix RATIFIED +
+> closed AND styles/size shipped (sl-0077); eyes-closed audio
+> evidence captured + slot written; the pinch-lever pick DISCHARGED
+> by the fit-rule ruling (sl-0078 shipped, SERIAL 14); dev world map
+> shipped (sl-0065).
 
 > **2026-07-29 ~03:25: THIS FILE IS HISTORICAL.** The 2026-07-29
 > burn-down decided nearly everything below (20 decisions — register:

@@ -52,8 +52,8 @@ by rule.
 | `input/` | HumanSampler, ReplaySource, `bot/` — three equal InputSources |
 | `game/` | Main scene, render layers, `views/` (presentation only — never mutates sim) |
 | `ui/` | HUD, menus, options |
-| `tests/` | `pixel_match/`, `assembler_pack/`, `projectile_pack/`, `uikit/`, `worldforge_pack/` (validator test + per-drop one-shot probes), `settings/`, `feedback/`, `loop/`, `determinism/` (the smoke), `replay_fixtures/` (golden replays), `bot_scenarios/` (proof isolates + calibration canaries + the density-audit scenario) |
-| `tools/` | `pretester_check.ps1` (THE one-command ship gate), `export.ps1` (dev+tester zips), `lockdown_lint.py`/`lockdown_probe.ps1`, `diag_walkability_grid.py` (porosity, per-drop pins), `evidence_report.py` + `decode_summary_code.py`, `hourslog.ps1`/`hours_report.ps1`, `gif.ps1` (F-rowless: G arms the ring buffer), `godot_guard.ps1`, `validate_boss_pack.py`, `import_boss_actor.py`, `gen_cue_wavs.py` |
+| `tests/` | `pixel_match/`, `assembler_pack/`, `projectile_pack/`, `uikit/`, `worldforge_pack/` (validator test + per-drop one-shot probes), `settings/`, `feedback/`, `loop/`, `dev_map/` (minimap consumer + render probe), `crosshair/` (styles contract + preview), `pinch_probe/` (fit-rule + movement diagnosis probes), `determinism/` (the smoke), `replay_fixtures/` (golden replays), `bot_scenarios/` (proof isolates + calibration canaries + the density-audit scenario) |
+| `tools/` | `pretester_check.ps1` (THE one-command ship gate), `export.ps1` (dev+tester zips), `lockdown_lint.py`/`lockdown_probe.ps1`, `diag_walkability_grid.py` (porosity, per-drop pins), `diag_pinch.py` (prop-pinch census baseline), `evidence_report.py` + `decode_summary_code.py`, `hourslog.ps1`/`hours_report.ps1`, `gif.ps1` (F-rowless: G arms the ring buffer), `godot_guard.ps1`, `validate_boss_pack.py`, `import_boss_actor.py`, `gen_cue_wavs.py` |
 | `notes/` | `hours.csv`, `TECH_DEBT_LEDGER.md`, `HANDOFF.md` (cold-start briefing for any new session), `PACK_INTAKE_RUNBOOK.md` (world-pack drops), per-area records (nine-row, audio map, CORE-50 checklist) |
 | `reports/` | Committed mechanical evidence: the canonical proof battery (byte-identical gate), stress/density + render audit captures — bot/harness output, never feel evidence |
 
@@ -64,7 +64,8 @@ grep under `sim/` + GDScript format check; forge packages exempt as
 generated artifacts); determinism-smoke (double-run hash compare + golden
 replays ×10, Windows runner — the determinism scope is
 same-build/same-platform); pixel-match (TileForge §4 acceptance + net16
-masks + uikit/projectile/worldforge/assembler/feedback validations). The
-full ship gate — 17 fixed steps + the 28-row proof battery byte-identical
-+ export both-artifacts-boot + lockdown probe — runs locally as
-`tools/pretester_check.ps1` (needs exclusive project access; ~15 min).
+masks + uikit/projectile/worldforge/assembler/feedback/dev-map/crosshair
+validations). The full ship gate — 19 fixed steps + the 28-row proof
+battery byte-identical + export both-artifacts-boot + lockdown probe —
+runs locally as `tools/pretester_check.ps1` (needs exclusive project
+access; ~15–19 min).
