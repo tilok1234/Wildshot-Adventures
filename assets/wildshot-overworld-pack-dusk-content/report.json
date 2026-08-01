@@ -1,0 +1,77 @@
+{
+  "analysisVersion": 4,
+  "base": {
+    "artifactFormat": 8,
+    "generationIdentitySha256": "bd4b931780b3e85dfba94974338cf7dd578ca047b5a78d2bb779d18a9f74e1ba"
+  },
+  "directorBehaviorVersion": 24,
+  "directorRecipeSha256": "f100dccb178687f63a19c78f51bee0eb7c536d5830f0be90818537ffc5307e21",
+  "gates": [
+    {
+      "details": [],
+      "id": "G1",
+      "name": "placements on valid ground",
+      "status": "pass"
+    },
+    {
+      "details": [],
+      "id": "G2",
+      "name": "exclusion symmetry",
+      "status": "pass"
+    },
+    {
+      "details": [],
+      "id": "G3",
+      "name": "territories on valid ground",
+      "status": "pass"
+    },
+    {
+      "details": [],
+      "id": "G4",
+      "name": "budgets place or explain",
+      "status": "pass"
+    },
+    {
+      "details": [],
+      "id": "G5",
+      "name": "danger progression",
+      "status": "pass"
+    },
+    {
+      "details": [],
+      "id": "G6",
+      "name": "locks held",
+      "status": "pass"
+    },
+    {
+      "details": [],
+      "id": "G7",
+      "name": "base identity",
+      "status": "pass"
+    },
+    {
+      "details": [],
+      "id": "G8",
+      "name": "determinism round-trip",
+      "status": "pass"
+    },
+    {
+      "details": [],
+      "id": "G9",
+      "name": "painted zones respected",
+      "status": "pass"
+    }
+  ],
+  "ok": true,
+  "recipeName": "dusk-overworld-direction",
+  "reportFormat": 1,
+  "rulePacks": {
+    "analysis": 4,
+    "export": 3,
+    "placement": 9,
+    "plan": 12,
+    "territory": 5,
+    "validate": 4
+  },
+  "strict": false
+}

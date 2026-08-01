@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"overworld_wet"
+display_name = "Overworld Ref: Wetlands LV16-22 (sl-0093 sites + border camp)"
+worldforge_pack = "res://assets/worldforge-packs/wildshot-overworld-pack-dusk/"
+player_spawn = Vector2(192.5, 149.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"blightcaster": PackedVector2Array(180.5, 143.5, 204.5, 171.5),
+"fanmaw": PackedVector2Array(204.5, 172.5),
+"husk_archer": PackedVector2Array(200.5, 169.5, 201.5, 169.5),
+"rusher": PackedVector2Array(181.5, 143.5, 203.5, 171.5)
+}
+default_seed = 83

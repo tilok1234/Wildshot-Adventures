@@ -93,6 +93,18 @@ Step "npc pack validate (manifest+passport)" {
     return $true
 }
 
+# sl-0093 dusk content pack (REFERENCE ONLY, docs/20 step 1): files-table
+# + passport pins, designer locks at exact cells, and the b77 base
+# pairing — refuses loudly if either side drifts.
+Step "content pack validate (pairing+locks)" {
+    $cout = python tools/validate_content_pack.py 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        $cout | Select-Object -Last 8 | ForEach-Object { Write-Host "  $_" }
+        return $false
+    }
+    return $true
+}
+
 $tests = @(
     @("pixel-match", "tests/pixel_match/pixel_match.gd"),
     @("assembler pack + slice", "tests/assembler_pack/assembler_pack_test.gd"),
@@ -173,7 +185,12 @@ if (-not $SkipBattery) {
         @("loop_ring1","1,2,3",3600,"","","PASS"),
         @("loop_ring2","1,2,3",3600,"","","PASS"),
         @("loop_ring3","1,2,3",3600,"","","PASS"),
-        @("proof_brk_site","1,2,3",3600,"","","PASS")
+        @("proof_brk_site","1,2,3",3600,"","","PASS"),
+        @("overworld_green","1,2,3",3600,"res://reports/dodge_overworld_green_composition.json","","PASS"),
+        @("overworld_dry","1,2,3",3600,"res://reports/dodge_overworld_dry_composition.json","","PASS"),
+        @("overworld_wet","1,2,3",3600,"res://reports/dodge_overworld_wet_composition.json","","PASS"),
+        @("overworld_cold","1,2,3",3600,"res://reports/dodge_overworld_cold_composition.json","","PASS"),
+        @("overworld_green_boss","1,2,3",3600,"res://reports/dodge_overworld_green_boss_composition.json","","PASS")
     )
     foreach ($b in $battery) {
         $scen = $b[0]; $seeds = $b[1]; $ticks = $b[2]; $out = $b[3]; $pol = $b[4]; $want = $b[5]

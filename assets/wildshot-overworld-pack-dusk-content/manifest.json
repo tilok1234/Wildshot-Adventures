@@ -1,0 +1,43 @@
+{
+  "adapter": {
+    "name": "worldfiller",
+    "version": "0.1.0"
+  },
+  "analysisVersion": 4,
+  "base": {
+    "artifactFormat": 8,
+    "artifactSha256": "32f9e741e19757beef862248f769282deabdbe93fa690824090870cf88972791",
+    "generationIdentitySha256": "bd4b931780b3e85dfba94974338cf7dd578ca047b5a78d2bb779d18a9f74e1ba",
+    "height": 256,
+    "width": 256
+  },
+  "counts": {
+    "placementFailures": 4,
+    "placements": 127,
+    "territories": 92,
+    "territoryFailures": 37,
+    "unboundAnchors": 23
+  },
+  "directorBehaviorVersion": 24,
+  "directorRecipeSha256": "f100dccb178687f63a19c78f51bee0eb7c536d5830f0be90818537ffc5307e21",
+  "directorSeed": 109182,
+  "files": {
+    "content-plan.json": "1409dc343de33affac7877fd5df26d0af712411cabe5dc1d467b23f517897a95",
+    "placements.json": "697958094b887d70b661db6e52cfa367b83fadda4c3717d81a7f0d41e63e1469",
+    "report.json": "a88fdd93e3205af3a93ccb55f5156b70d19b7d6e2bb289e8f29d1ae38383d517",
+    "territories.json": "9491ecc26d0270eaefcb857ca43f120eb9190c4a92c310e1aa28ae99382baadf"
+  },
+  "pack": "worldfiller-content-pack",
+  "packFormat": 3,
+  "recipeName": "dusk-overworld-direction",
+  "rulePacks": {
+    "analysis": 4,
+    "export": 3,
+    "placement": 9,
+    "plan": 12,
+    "territory": 5,
+    "validate": 4
+  },
+  "sourceCommit": "6be201e5710c54884aa3039dd8386b9511d8e78b",
+  "world": "wildshot-overworld-pack-dusk"
+}

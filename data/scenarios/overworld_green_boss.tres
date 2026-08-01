@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"overworld_green_boss"
+display_name = "Overworld Ref: Green world boss site 249,244 (kit stand-in)"
+worldforge_pack = "res://assets/worldforge-packs/wildshot-overworld-pack-dusk/"
+player_spawn = Vector2(243.5, 245.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"yard_warden": PackedVector2Array(249.5, 244.5)
+}
+default_seed = 85

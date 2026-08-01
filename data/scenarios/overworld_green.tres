@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"overworld_green"
+display_name = "Overworld Ref: Green Country LV1-7 (sl-0093 sites)"
+worldforge_pack = "res://assets/worldforge-packs/wildshot-overworld-pack-dusk/"
+player_spawn = Vector2(145.5, 109.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"husk_archer": PackedVector2Array(131.5, 119.5, 132.5, 123.5, 144.5, 138.5),
+"rusher": PackedVector2Array(146.5, 112.5, 146.5, 113.5, 131.5, 123.5, 143.5, 135.5)
+}
+default_seed = 81

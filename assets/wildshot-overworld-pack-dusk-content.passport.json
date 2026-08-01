@@ -1,0 +1,45 @@
+{
+  "formatVersion": 1,
+  "artifact": "wildshot-overworld-pack-dusk-content-c0bf28638648",
+  "pack": "worldfiller-content-pack",
+  "packFormat": 3,
+  "world": "wildshot-overworld-pack-dusk",
+  "recipeName": "dusk-overworld-direction",
+  "source": {
+    "repository": "tilok1234/world_filler",
+    "releaseTag": "wildshot-overworld-pack-dusk-content-c0bf28638648",
+    "sourceCommit": "6be201e5710c54884aa3039dd8386b9511d8e78b",
+    "sourceCommitVerified": "tag targets it; compare vs main = contained (behind_by 0); embedded as manifest.sourceCommit (the wf publish gate)",
+    "zipAsset": "wildshot-overworld-pack-dusk-content-c0bf28638648.zip",
+    "zipSha256": "13e0759d1275dc55f9e17814166acfb332bdd8c0813ddb202cf1196b29863db6",
+    "zipBytes": 82592,
+    "digestVerified": "GitHub computed asset digest == local sha256 == the sl-0093 record"
+  },
+  "manifestSha256": "c0bf2863864804001704371c44aaabcf43a76c32e373137deacc51007482486c",
+  "renderSha256": {
+    "renders/danger.png": "c47626fb5ecd06317d57541cc5a820cd36275d7cf48d4044ac3f608f434d68e5",
+    "renders/placements.png": "c52a18ebd1167e1fea8bc751253a8d1b8d456cdfde8604e1995beb217df8c67c",
+    "renders/territories.png": "3507ddb34e8ecaff57be80e08c955b5693f98abbe5691abcf615d3f9f122fd6e"
+  },
+  "basePairing": {
+    "world": "wildshot-overworld-pack-dusk (b77, the vendored world)",
+    "generationIdentitySha256": "bd4b931780b3e85dfba94974338cf7dd578ca047b5a78d2bb779d18a9f74e1ba",
+    "artifactSha256": "32f9e741e19757beef862248f769282deabdbe93fa690824090870cf88972791",
+    "verified": "at intake: identity field == vendored world.json generator block; artifactSha256 == sha256(vendored world.json); format 8; 256x256 (wf verifyPack semantics replicated)"
+  },
+  "intake": {
+    "date": "2026-08-01",
+    "deliveryRef": "sl-0093",
+    "hashDoctrine": "the manifest's files table pins the 4 payloads (verified, not generated); this passport pins manifest.json + the 3 unhashed renders",
+    "wiring": "REFERENCE ONLY per docs/20 step 1 - no importer, no sim consumption; the reference pass hand-authors spawn tables + boss sites FROM it; step 2 = the designer's feel verdict",
+    "gate": "tools/validate_content_pack.py - fixed pretester step + CI row; manifest pin + files-table parity + b77 base pairing (loud refusal) + payload structure"
+  },
+  "census": {
+    "files": 8,
+    "placements": 127,
+    "territories": 92,
+    "placementFailures": 4,
+    "territoryFailures": 37,
+    "unboundAnchors": 23
+  }
+}

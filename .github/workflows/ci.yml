@@ -67,6 +67,16 @@ jobs:
           pip install --quiet pillow
           python3 tools/validate_npc_pack.py
 
+      # sl-0093 dusk content pack (reference only): files-table + passport
+      # pins, the eight designer locks, and the b77 base pairing (loud
+      # refusal on drift either side). Linux-safe.
+      - name: Content pack validation (pairing + locks)
+        shell: bash
+        run: |
+          set -euo pipefail
+          pip install --quiet pillow
+          python3 tools/validate_content_pack.py
+
   # M2 job (tracker line "determinism smoke test"): double-run state-hash
   # compare. Sim execution — §2.4 scope is same-build/same-platform (Windows),
   # so this MUST run on a Windows runner; a Linux runner would false-alarm on

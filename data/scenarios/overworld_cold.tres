@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"overworld_cold"
+display_name = "Overworld Ref: Snow Country LV23-30 (sl-0093 site, zone heavy)"
+worldforge_pack = "res://assets/worldforge-packs/wildshot-overworld-pack-dusk/"
+player_spawn = Vector2(118.5, 62.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"ringer": PackedVector2Array(119.5, 53.5)
+}
+default_seed = 84
