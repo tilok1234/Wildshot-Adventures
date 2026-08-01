@@ -26,7 +26,21 @@ build GO is the designer's word; talk-before-build is LAW.
 Wildshot Adventures: a solo-developed RotMG-inspired top-down realtime
 bullet-hell ARPG in **Godot 4.6.2 (pinned), typed GDScript, custom
 deterministic sim, no Godot physics in gameplay**. Serialization
-SERIAL 14 (next bump 15); goldens current; all CI green.
+SERIAL 17 (next bump 18); goldens current; all CI green.
+
+**S0 FOUNDATIONS ARE COMPLETE (2026-08-01, sl-0100 executed as four
+sealed seams; game 695f898→5ad9dbb; the full story is CLAUDE.md's
+milestone tail + planning notes/sessions/2026-08-01-slice-s0.md).**
+The stat frame is IN the sim (class lane; legacy lane byte-identical),
+the living world is plumbed (193 leash-gated sites from the content
+pack), CORE-43 overworld death is live (in-sim gold slice + settlement
+respawn, no run framing), and the 32 NPCs + icons are wired. **THE
+SLICE picker row exists** (slice_overworld — b77 + content pack +
+persistent world). S0 STOPPED at the routing's stop line: **S1 (Green
+chapter content) needs its own designer routing — do not start it
+without the word.** Designer-eyes queue: THE SLICE walk, class
+creation screen, walk-speed feel (block-6 revisit lever), the NPC
+crowd, the weapon tier glyph.
 
 Current phase: **THE SLICE ERA** (sl-0098, designer Tier 1, 2026-08-01:
 "the world is the test"). **Slice v0.1 is the ONE milestone**: the
@@ -166,19 +180,23 @@ lockdown probe**. CI lint additionally runs the three pack validators
 - Icon tool-source push from the other PC (sl-0083 insurance);
   deutan-sheet eyeball rides icon wiring.
 
-## §3 Open — engineering (the slice, on the GO)
+## §3 Open — engineering (post-S0)
 
-- **THE SLICE BUILD** per planning docs/23 — S0 (activation leash +
-  density retune) opens it; chapter-by-chapter, Green Country first;
-  wiring rounds for icons (Tier-0 surfaces) + NPCs (manifest adapter
-  or third `assembler_library` instance) + the stat frame (SERIAL
-  bump, goldens, full battery discipline — the paper numbers are the
-  spec); the content-pack importer is docs/23 S0 work informed by
-  `notes/OVERWORLD_REFERENCE_PASS.md`.
+- **S1 — GREEN COUNTRY (docs/23) awaits ITS OWN ROUTING — the
+  designer's word, never assumed.** The chapter recipe: Green's
+  group tuned at its sites, T1 drops + levels 1–7, the hand-placed
+  world boss made special + first unique(s), the Green dungeon
+  stand-in + boss, 3–5 reason-tagged generic quests, fishing/
+  foraging v1, all three classes playable. S0 left the ground ready:
+  sites live, stat frame under everything, death honest, NPCs
+  standing where the quests will hang.
+- Density tuning is now DATA (authored pack sizes × the leash [T]
+  radii in site_step.gd) — expect it inside S1's feel rounds.
 - Intakes as deliveries land (runbook + per-pack pins + paired-TF
   doctrine; passport + fixed-gate pattern for non-world packs).
-- Ledger #16 (replay character block) + #17 (fit-rule round-1 scope:
-  arena-def props still full-cell).
+- Ledger #16 (replay character block — class/ring fields joined the
+  gap at seam 1) + #17 (fit-rule round-1 scope: arena-def props
+  still full-cell).
 
 ## §4 Session rituals (the gates)
 
@@ -194,12 +212,13 @@ Before every commit, per touched area:
 - proofs: re-run canaries + every touched proof with CANONICAL SEEDS
   (table below); commit reports (`git add -f reports/...`).
   Unchanged scenarios must reproduce BYTE-IDENTICAL.
-- the one-command gate: `pwsh tools/pretester_check.ps1` = 23 fixed
-  steps + 33-row battery + export + lockdown (~20–25 min). Exit 0 =
-  ship-ready. It REFUSES to run beside another same-project Godot
-  instance (incl. the designer's game window — wait for it, never
-  kill it; running steps individually, same commands + exit codes,
-  is the recorded fallback).
+- the one-command gate: `pwsh tools/pretester_check.ps1` = 26 fixed
+  steps + the 67-run battery (34 floor rows + 31 cap115 runs; two
+  pinned FAILs are expectations, not failures) + export + lockdown
+  (~40–45 min). Exit 0 = ship-ready. It REFUSES to run beside
+  another same-project Godot instance (incl. the designer's game
+  window — wait for it, never kill it; running steps individually,
+  same commands + exit codes, is the recorded fallback).
 - godot binaries: `~/bin/godot_console.exe` (headless) / `godot.exe`
   (play, detached + front).
 - hourslog start/stop/note around ALL work (PROD-01); honest stops at
@@ -208,8 +227,16 @@ Before every commit, per touched area:
 - Cross-repo events ⇒ sync-log entry planning-side (doc 18; no
   event, no entry). Gotcha #25 before appending.
 
-### Canonical proof battery (all --speed=3.0; 33 rows; state 2026-08-01 —
-### POLICY OF RECORD = REACTIVE; SERIAL 14; Warden 575; b65 flood 34641)
+### Canonical proof battery (state 2026-08-01 post-S0 — POLICY OF
+### RECORD = REACTIVE; SERIAL 17; Warden 575; b65 flood 34641).
+### TWO LANES since seam 1 (docs/22 block 6: proofs at floor AND cap
+### FOREVER): every reactive row runs at --speed=3.0 (the CORE-53
+### floor) AND --speed=3.45 (the 115 cap; reports = dodge_*_cap115).
+### Primary rows stay floor-only watch-baselines. PINNED CAP FAIL:
+### proof_ringer at 3.45 (full-speed lattice vs the 0.121 radial gap;
+### floor PASSES = the CORE-33 mandate; repros committed; a verdict
+### MOVE = the sim changed). New since the loop era: proof_slice_leash
+### (the lonely husk camp, one wake, real fight) PASS both lanes.
 
 | scenario | seeds | ticks | expected (reactive record) |
 |---|---|---|---|
@@ -235,6 +262,8 @@ Before every commit, per touched area:
 | lab_default + meet_blightcaster/leadshot/yard_warden | 1,2,3 | 3600 | PASS |
 | loop_ring1/2/3 + proof_brk_site (b65 loop content, retired-with-honor but still proven; ring2 ringer at 199.5,126.5) | 1,2,3 | 3600 | PASS |
 | overworld_green/dry/wet/cold/green_boss → dodge_overworld_*_composition.json (sl-0094 reference pass on b77 pack sites; cold = zone-heavy solo by the recorded finding) | 1,2,3 | 3600 | PASS |
+| proof_slice_leash (S0 seam 2: living-world leash — the isolated husk camp at seed 98,225; spawn INSIDE its envelope, exactly one site wakes) | 1,2,3 | 3600 | PASS (both lanes) |
+| **proof_ringer [cap115 lane]** | 204..208 | 3600 | **FAIL — PINNED** (see the lane note above) |
 
 Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- --scenario=<id> --speed=3.0 --seeds=<list> --ticks=<n> [--out=res://reports/<name>.json] [--policy=primary|orbit|axis]`
 (default policy = reactive; compositions need the explicit --out names).
@@ -367,20 +396,31 @@ Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- -
     the gate commands solo with full stderr, characterize in a
     minimal project BEFORE touching code, fix lifecycle — never
     filter stderr.
-28. **The sim has NO ACTIVATION LEASH (the sl-0094 cold finding —
-    load-bearing for the slice):** every mobile enemy in a world
-    scenario converges on the player from t0; "separate pulls" merge
-    into one eventual fight, so authored density reads low and
-    multi-pressure zones cannot be expressed honestly yet. The
-    docs/23 S0 leash (territory semantics: maxActive /
-    respawnPressure) fixes density and the importer's spawn surface
-    IN ONE MOVE — build it before authoring dense zones. Two riders
-    from the same finding: pairing viability is TERRAIN-CLASS-
-    dependent (a lab-proven pairing can clip at fit-rule margins on
-    world ground), and point-openness is NOT orbit-openness (cliff
-    bands outside a sampled radius pinned the bot at margin 0.000) —
-    site suitability for orbit-class fights needs a real clearance
-    model.
+28. **The activation leash EXISTS since S0 seam 2** (site_step.gd:
+    wake 22 / sleep 30 / tether 12, away-only respawn). The
+    HISTORICAL finding (sl-0094): without it every mobile enemy
+    converged from t0 — that is why the reference-pass scenarios
+    were authored sparse. Two riders STILL standing: pairing
+    viability is TERRAIN-CLASS-dependent (a lab-proven pairing can
+    clip at fit-rule margins on world ground), and point-openness is
+    NOT orbit-openness (cliff bands outside a sampled radius pinned
+    the bot at margin 0.000) — site suitability for orbit-class
+    fights still needs a real clearance model (upstream wf
+    conversation material).
+29. **Gate scripts: the EXIT CODE must cover EVERY verdict.** A
+    seam-1 re-sweep script gated only its floor spots — a cap row
+    flipped PASS→FAIL mid-output under exit 0 and the tail read
+    green. Batteries print per-row; scripts COMPARE per-row and
+    fail loudly on any mismatch (the final sweep pattern).
+30. **Never spawn a scenario player ON or NEAR a site cell** — the
+    leash wakes the site and the wake ring materializes the pack on
+    their head (9 hits @t21 the first time). Probe candidate spawns
+    against site positions (the seam-2 session file has the probe
+    pattern); the capital spawn is verified CLEAN (zero sites within
+    26). Related: a passive bot outside the TETHER pins melee packs
+    at the line (vacuous near −1 "pass") — proofs must fight INSIDE
+    the envelope; players cannot exploit this (tether 12 > max
+    weapon reach ~9.4).
 
 ## Ledger + scope
 

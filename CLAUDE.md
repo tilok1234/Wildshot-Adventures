@@ -1456,3 +1456,98 @@ slice session reads planning docs/23 FIRST. Docs sweep this seam:
 README (slice scope, pack/tool inventory, 23/33 gate), designer
 queue banner, runbook header, this file's tripwire + CORE-55 row,
 HANDOFF rewritten for the slice-era cold start.**
+SLICE S0 FOUNDATIONS COMPLETE 2026-08-01 (~22:45 local; ask sl-0100
+executed as FOUR SEALED SEAMS, gates green per seam, never two open;
+session record planning notes/sessions/2026-08-01-slice-s0.md; game
+695f898→4acca00→8c0ce7a→5ad9dbb): **SEAM 1 — THE STAT FRAME IN THE
+SIM (SERIAL 15):** docs/22 blocks 1–8 as code on the class-backed
+lane (class_id 0/1/2 sword/staff/bow; -1 = legacy lane, byte-
+identical BY CONSTRUCTION — floor battery reproduced byte-identical);
+THE formula max(attack−armor, ceil(attack·0.2)) integer-exact in THE
+damage path (hostile lane armed for future enemy armor at armor 0
+identity); balance_frame.json = the single tuning source, loader
+REFUSES ruled-shape drift (negative-tested); class curves + stepped
+XP (20,600 to cap 30, NO damage from levels, refill [T]); three
+class weapon frames (arc-3 @0.6/s, bolt @2.0/s, pierce-3 @1.2/s;
+patterns 4/5/6 on existing friendly sprites) on the json tier
+tables, .tres T1 pinned vs table; paired-trade grammar + ring slot
+end-to-end (content = chapter work); armor slot = defense+HP per
+tier; MOVEMENT-INTEGRATOR HARD CAP 3.45 t/s (115) — smuggled writes
+clamped, negative-tested; GAME-SIDE [P] SPEED ANCHOR: stat 100 ==
+3.0 t/s (the CORE-53 proof floor) → bases 3.0/3.15/3.3 — THE FEEL
+FLAG: class walk speeds sit under the old 4.0 lab preset; the ruled
+one-line revisit stands. Profile v2 (class at creation, class frame
+replaces the lab trio, v1 = fresh start); HUD class lane + bars on
+real maxes; ledger #16 amended. **THE CAP LANE BORN (block 6:
+proofs at floor AND cap FOREVER):** battery split floor/cap115; the
+maiden sweep caught proof_ringer cap FAIL (seed-invariant 4-hit
+graze @t2033 — full-3.45 lattice coarsens past the 0.121 radial
+gap); a half-duty policy rescue was built, DISPROVEN at lane scale
+(re-routed first_contact cap into a new 0.048 graze), REVERTED to
+the record byte-for-byte; **ringer cap FAIL PINNED as a documented
+baseline** (floor = the CORE-33 mandate PASSES; repros committed; a
+verdict MOVE = the sim changed); canary fails at BOTH speeds.
+stat_frame_test = fixed step. **SEAM 2 — LIVING-WORLD PLUMBING v1
+(SERIAL 16; docs/23 a–d; docs/20 step 3 DISCHARGED):** site_step =
+activation leash (wake ≤22 / sleep >30 hysteresis; wake spawns the
+dormant population at deterministic bitgrid-probed slots; sleep
+FOLDS live members back with current hp BY ID — no kill events, no
+loot; kills+damage persist) + away-only depth-keyed respawn (arms
+ONLY dormant — nothing pops in faces STRUCTURALLY; zone bases [T]
+green 10800/dry 9000/wet 7200/cold 5400, pressure multiplier,
+bosses ×3 lazy); enemy_step TETHER 12 (disengage + walk home,
+windup canceled; 12 > every class weapon reach ~9.4 — no shoot-
+from-safety exists); content_importer reads the vendored pack's
+territories+placements DIRECTLY as spawn tables (193 sites = 92
+territories + 97 encounters inheriting covering/nearest territory
+tables + 4 world bosses on the Warden kit stand-in; 15 territory-
+less encounters counted-skipped; 11 dungeon bindings recorded for
+chapter work; reference-pass vocabulary, nightOnly carried
+unconsumed; loud negative-tested refusals). **THE SLICE PICKER ROW
+LIVE** (slice_overworld: b77 + content pack + persistent_world;
+capital spawn CLEAN — zero sites within 26). proof_slice_leash =
+battery row 34 (iterated twice under never-weaken: first spawn WAS
+a site cell — wake ring on the bot's head 9 hits @t21; second
+exposed tether edge-guarding vs a passive bot, vacuous near −1;
+final = INSIDE the lonely husk camp's envelope, seed 98,225
+isolated 31 tiles: real fight, one wake, PASS floor 1.975 / cap
+2.053). living_world_test = fixed step; export ships the content
+pack loose beside the exe. The sl-0099 density finding is now
+authored DATA × the leash. **SEAM 3 — OVERWORLD DEATH (SERIAL 17;
+CORE-43, sl-0098 NO RUN FRAMING):** THE damage path takes the [T]
+25% carried-gold slice IN-SIM at the death tick + arms the
+settlement respawn (240t [T]); player_respawn (first in step)
+revives at respawn_cell on timer or EARLY via the ability key while
+dead (meaningless to a corpse otherwise — replay-honest, zero
+format change); full refill — THE WALK BACK is the price;
+persistent worlds keep RUNNING through death (recap unpaused,
+hides on respawn; RecapTracker re-arms per death — Law 8 holds for
+death #2+); dead-in-place stands for labs/proofs/HARDCORE;
+"never cheaper than teleporting" satisfied by absence (recorded).
+**SEAM 4 — WIRING (view-only, zero sim change; the sl-0098 hold
+discharged):** import_npcs.py translates the character-v3 manifest
+into the assembler_library shape (the sl-0092 adapter, mechanical —
+same 24px/20×4 contract) → res://npcs/ + a THIRD library instance;
+npc_view = PURE VIEW (CORE-35 absolute): zone quest-givers at
+content-pack giver-slot cells (walkability-nudged — 3 authored
+cells sit on doorstep solids), the crowd on a deterministic golden-
+angle spiral around the settlement spawn, inside the y-sorted
+ActorSortSpace; WINDOWED RENDER EVIDENCE committed + read
+(reports/npc_render_audit_capital.png — the crowd stands on the
+plaza). Icons: atlas pair → res://icons/ (470 glyphs / 2 files);
+icon_atlas.gd cuts by id; wired cheap = equipped weapon TIER GLYPH
+top-right (class lane) + class emblems on the creation screen.
+npc_icon_wiring_test = fixed step. **S0 GATE: FULL PRETESTER ALL
+GREEN 42.4 min on an exclusive seam — 26 fixed steps + 67-run
+battery (34 floor + 31 cap + 2 pinned FAILs) byte-identical +
+export + lockdown probe; artifact-verified: balance_frame.json IS
+in the export (zero stat-frame errors on the dev exe boot), the
+content pack ships loose beside the exe.** Green Country is alive
+and walkable with the stat frame underneath. **S0 STOPS HERE by
+routing — S1 (Green chapter content) needs its own designer word.**
+DESIGNER-EYES/PLAY pending: THE SLICE row itself (leave the
+capital, fight the living sites, level, die, walk back), class
+choice + emblems on creation, walk-speed feel (the block-6 revisit
+lever), NPC crowd on screen (sl-0089 watch-items now judgeable),
+weapon tier glyph. NO feel verdicts (hands-free engineering
+session).**
