@@ -300,8 +300,19 @@ func _init() -> void:
 	pwp.gold = 55
 	pwp.ring_index = ring_idx
 	CharacterProfile.harvest(pw, harvested)
-	check(int(harvested.gold) == 55 and int(harvested.ring_index) == ring_idx, "harvest carries")
+	# S1 seam 2: the profile keys the ring BY ID (items[] evolves
+	# chapter by chapter; a raw index would silently re-point saves).
+	check(
+		int(harvested.gold) == 55 and String(harvested.ring_id) == "t2-ring-of-reach",
+		"harvest carries (ring by id)"
+	)
 	check(String(harvested["class"]) == "staff", "harvest keeps the class")
+	var re_applied: RefCounted = _world(19)
+	CharacterProfile.apply_to_world(re_applied, harvested)
+	check(
+		re_applied.players[0].ring_index == ring_idx,
+		"apply resolves ring_id back to the live items index"
+	)
 	var v1 := {"version": 1, "hardcore": false, "gold": 999}
 	var v1_path := bad_dir + "/character_v1.json"
 	var v1f := FileAccess.open(v1_path, FileAccess.WRITE)

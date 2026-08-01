@@ -1643,3 +1643,43 @@ re-proven 0 hits both lanes (0.148 floor / 0.123 cap). NEW LAW
 (gotcha #32): a re-baseline is not done until the full gate runs on
 it — the fast battery makes that cheap. Second full gate ALL GREEN
 12.5 min sealed seam 1 + the adoption together.**
+S1 SEAM 2 — T1 LOOT LIVE IN GREEN 2026-08-02 (~01:30 local; sl-0104
+seam 2; hands-free): the Loop-v1 drop machinery meets the docs/22
+frame in Green. GREEN DROP TABLES [T]: fodder 0.03 / light 0.06 /
+big bodies 0.10–0.12, tiers T1 with a T2 trickle from the big five
+only (boar/porcupine/scarecrow/shroom/treant) — the green test's
+seam-2 boundary pin FLIPPED deliberately to "live and small-honest"
+(chance ≤0.15, tier_max ≤2, rings big-bodies-only). THE RING SLOT
+GETS CONTENT (block 4/7): DropKinds.RING + EnemyDef.drop_w_ring
+(default 0 = every pre-slice def's kill-roll draw SEQUENCE
+byte-identical — proven by the smoke hash landing UNCHANGED
+c0498aae/5daf14c6 and the battery byte gate); the ring branch picks
+among stat-frame ring items AT the drawn tier; TWO T1 RINGS in
+balance_frame.json (Ring of Haste +2 spd/−8 hp, Ring of Claws +2
+dmg/−2 def — both sanctioned pairs, validator green); walk-over
+equips ONLY an empty slot ([T] — rings are a choice, not a ladder;
+swap semantics = a designer call later); legacy (class −1) players
+refuse rings. PROFILES KEY RINGS BY ID now (ring_id replaces
+ring_index in character.json — items[] evolves chapter by chapter
+and a raw index would silently re-point saves; the sim keeps the
+integer index, serialization untouched; no version bump — no
+profile could hold a ring before tonight). THE ONE ITEM-TEXT
+GRAMMAR (docs/22 "every number visible" + block-7 "every tooltip
+reads the same way"): game/views/item_text.gd = the single
+compose point — weapon "T1 Bow — 6 dmg @ 2.0/s" (tier table +
+cadence), armor "T1 Armor — +5 def, +30 hp", ring "Ring of Haste —
++2 spd / −8 hp", unique/ability/gold lines; pickup TOASTS speak it
+(gold stays silent — the HUD counter is its readout) and the
+GROUND LABEL shows it for the nearest drop within 1.8 t (drop_view;
+LOOT band — the label rides UNDER threat, Law 1 outranks
+convenience); ring shape = orange circle outline, tint-by-tier
+family. Exact grammar lines are TEST-PINNED (loop_test §10);
+ring mechanics negative-tested (occupied slot grounds, legacy
+refuses); loop_test grew §9/§10 (drops/…/rings/text/hash);
+stat_frame_test round-trips ring_id both ways. WINDOWED EVIDENCE
+committed: reports/loot_label_audit.png (all six kinds + the label
+line, read by eyes; the probe's first run caught a type-inference
+parse error in the label code — the hang-is-a-parse-error gotcha
+re-earned). Zero new fixed steps (existing gates grew).
+DESIGNER-EYES pending: drops in the field, toast/label taste, the
+two ring concepts, every [T] rate.**

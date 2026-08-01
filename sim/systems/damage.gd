@@ -169,7 +169,11 @@ static func _award_kill(world: RefCounted, e: RefCounted) -> void:
 		var ww := int(def.drop_w_weapon)
 		var wa := int(def.drop_w_armor)
 		var wb := int(def.drop_w_ability)
-		var total := ww + wa + wb
+		# S1 seam 2: rings join the kind roll ONLY when a def sets the
+		# weight — wr == 0 leaves total, roll, and every draw below
+		# byte-identical for the whole pre-slice roster.
+		var wr := int(def.drop_w_ring)
+		var total := ww + wa + wb + wr
 		if total > 0:
 			var roll: int = rng.next_bounded(total)
 			var tier: int = (
@@ -182,10 +186,25 @@ static func _award_kill(world: RefCounted, e: RefCounted) -> void:
 				)
 			elif roll < ww + wa:
 				world.spawn_drop(e.pos, world.DROP_ARMOR, tier)
-			else:
+			elif roll < ww + wa + wb:
 				world.spawn_drop(
 					e.pos, world.DROP_ABILITY, rng.next_bounded(world.ability_defs.size())
 				)
+			else:
+				# Ring: pick among the stat frame's ring items AT the
+				# drawn tier (block-7 one-pair trades; docs/22 block 4).
+				# No ring at that tier = no drop — the green test pins
+				# that T1 rings exist wherever wr > 0.
+				var candidates := PackedInt32Array()
+				var items: Array = world.stat_frame.get("items", [])
+				for ii in items.size():
+					var it: Dictionary = items[ii]
+					if String(it.get("slot", "")) == "ring" and int(it.get("tier", -1)) == tier:
+						candidates.append(ii)
+				if not candidates.is_empty():
+					world.spawn_drop(
+						e.pos, world.DROP_RING, candidates[rng.next_bounded(candidates.size())]
+					)
 	var uniques: Array = def.unique_drops
 	for ui in uniques.size():
 		if rng.next_unit() < float(def.unique_chances[ui]):

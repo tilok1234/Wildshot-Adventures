@@ -46,6 +46,7 @@ const DebugConsole := preload("res://ui/debug_console.gd")
 const BuildInfo := preload("res://build_info.gd")
 const HitboxView := preload("res://game/views/hitbox_view.gd")
 const SimEvents := preload("res://sim/events.gd")
+const ItemText := preload("res://game/views/item_text.gd")
 const RenderLayers := preload("res://game/render_layers.gd")
 const AssemblerLibrary := preload("res://game/views/assembler_library.gd")
 const AnimatedActor := preload("res://game/views/animated_actor.gd")
@@ -356,16 +357,21 @@ func _process(_delta: float) -> void:
 				)
 			)
 		)
-	# Loop moments worth a toast: level-ups, unique pickups, and the
-	# CORE-43 death/respawn beats (persistent worlds, seam 3).
+	# Loop moments worth a toast: level-ups, pickups (S1 seam 2: every
+	# equipment pickup speaks the ONE item-text grammar; gold stays
+	# silent — the HUD counter is its readout), and the CORE-43
+	# death/respawn beats (persistent worlds, seam 3).
 	for lev: Dictionary in driver.frame_events:
 		match int(lev.type):
 			SimEvents.Type.LEVEL_UP:
 				_show_toast("LEVEL %d" % int(lev.level))
 			SimEvents.Type.LOOT_PICKED:
-				if int(lev.kind) == SimWorld.DROP_UNIQUE and int(lev.a) < world.unique_defs.size():
-					var ud: Resource = world.unique_defs[int(lev.a)]
-					_show_toast("UNIQUE: %s" % String(ud.display_name))
+				if int(lev.kind) != SimWorld.DROP_GOLD:
+					var line := ItemText.drop_line(
+						world, {"kind": int(lev.kind), "a": int(lev.a), "b": int(lev.b)}
+					)
+					if not line.is_empty():
+						_show_toast(line)
 			SimEvents.Type.PLAYER_RESPAWNED:
 				if recap_panel != null:
 					recap_panel.visible = false

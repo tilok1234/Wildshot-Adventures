@@ -86,6 +86,21 @@ static func _apply(world: RefCounted, p: RefCounted, d: Dictionary) -> bool:
 				return false
 			world.ability_def = world.ability_defs[idx]
 			return true
+		DropKinds.RING:
+			# S1 seam 2 [T]: rings are a CHOICE, not a ladder (block 7) —
+			# walk-over equips only an EMPTY slot; an occupied slot
+			# leaves the ring on the ground (no inventory in v1; swap
+			# semantics are a designer call later). Class lane only —
+			# ring_index feeds StatFrame.recompute's trade sheet.
+			var ri := int(d.a)
+			if p.class_id < 0 or p.ring_index >= 0:
+				return false
+			var ritems: Array = world.stat_frame.get("items", [])
+			if ri < 0 or ri >= ritems.size():
+				return false
+			p.ring_index = ri
+			StatFrame.recompute(world, p)
+			return true
 		DropKinds.UNIQUE:
 			var ui := int(d.a)
 			if ui < 0 or ui >= world.unique_defs.size():

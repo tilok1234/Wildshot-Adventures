@@ -33,3 +33,7 @@ emitters = Array[Resource]([SubResource("slot0")])
 xp_value = 5
 gold_min = 2
 gold_max = 5
+drop_chance = 0.12
+drop_w_ring = 1
+drop_tier_min = 1
+drop_tier_max = 2

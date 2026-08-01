@@ -48,7 +48,7 @@ static func create(hardcore: bool, cls := "bow") -> Dictionary:
 		"level": 1,
 		"weapon_tiers": [1],
 		"armor_tier": 0,
-		"ring_index": -1,
+		"ring_id": "",
 		"unique_mask": 0,
 		"ability_index": 0,
 		"deaths": 0,
@@ -107,7 +107,10 @@ static func apply_to_world(world: RefCounted, d: Dictionary) -> void:
 	p.weapon_tiers = wt
 	p.equipped_weapon = 0
 	p.armor_tier = clampi(int(d.get("armor_tier", 0)), 0, 5)
-	p.ring_index = int(d.get("ring_index", -1))
+	# S1 seam 2: profiles key the ring BY ID — items[] evolves chapter
+	# by chapter and a raw index would silently re-point saved rings.
+	# The sim keeps the integer index (serialization unchanged).
+	p.ring_index = _ring_index_for(world, String(d.get("ring_id", "")))
 	p.unique_mask = int(d.get("unique_mask", 0))
 	StatFrame.recompute(world, p)
 	p.hp = p.max_hp
@@ -132,9 +135,29 @@ static func harvest(world: RefCounted, d: Dictionary) -> void:
 		tiers.append(wt)
 	d.weapon_tiers = tiers
 	d.armor_tier = p.armor_tier
-	d.ring_index = p.ring_index
+	d.ring_id = _ring_id_for(world, p.ring_index)
 	d.unique_mask = p.unique_mask
 	d.ability_index = maxi(0, world.ability_defs.find(world.ability_def))
+
+
+## Ring id <-> stat-frame items[] index (S1 seam 2): the profile's
+## stable key is the ID; the sim's serialized field stays the index.
+static func _ring_index_for(world: RefCounted, ring_id: String) -> int:
+	if ring_id.is_empty():
+		return -1
+	var items: Array = world.stat_frame.get("items", [])
+	for i in items.size():
+		var it: Dictionary = items[i]
+		if String(it.get("slot", "")) == "ring" and String(it.get("id", "")) == ring_id:
+			return i
+	return -1
+
+
+static func _ring_id_for(world: RefCounted, ring_index: int) -> String:
+	var items: Array = world.stat_frame.get("items", [])
+	if ring_index < 0 or ring_index >= items.size():
+		return ""
+	return String(items[ring_index].get("id", ""))
 
 
 ## Normal-mode death: percentage of CARRIED gold ([T] rate from

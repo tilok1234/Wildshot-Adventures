@@ -156,7 +156,21 @@ func _init() -> void:
 		check(float(d.move_speed) < FLOOR_SPEED, label + ": kiteable under the 3.6 floor")
 		check(int(d.hp) >= 10 and int(d.hp) <= 48, label + ": Green-band hp")
 		check(int(d.xp_value) > 0, label + ": xp set")
-		check(float(d.drop_chance) == 0.0, label + ": equipment drops empty until seam 2")
+		# Seam 2 flipped the boundary pin DELIBERATELY: T1 loot is live.
+		# Chances stay small-honest; tiers stay in the Green bracket
+		# (T1, T2 trickle from the big bodies only).
+		check(
+			float(d.drop_chance) > 0.0 and float(d.drop_chance) <= 0.15,
+			label + ": T1 drop chance live and small-honest"
+		)
+		check(
+			int(d.drop_tier_min) == 1 and int(d.drop_tier_max) <= 2,
+			label + ": drops stay in the Green bracket"
+		)
+		check(
+			int(d.drop_w_ring) == 0 or int(d.drop_w_ring) > 0 and int(d.drop_tier_max) == 2,
+			label + ": rings only from the big bodies"
+		)
 		check(int(d.movement_policy) in PROVEN_POLICIES, label + ": proven policy")
 		for slot: Resource in d.emitters:
 			if slot.hazard != null:

@@ -47,6 +47,10 @@ enum MovementPolicy { CHASER, KEEP_RANGE, ORBIT, ANCHOR, FLANKER }
 @export var drop_w_weapon: int = 3
 @export var drop_w_armor: int = 2
 @export var drop_w_ability: int = 1
+## S1 seam 2: ring-drop weight. Default 0 keeps every pre-slice def's
+## kill-roll draw SEQUENCE byte-identical (the weight only joins the
+## kind roll when set).
+@export var drop_w_ring: int = 0
 @export var drop_tier_min: int = 1
 @export var drop_tier_max: int = 1
 ## Boss-tied uniques (docs/19 ruling 2): parallel arrays, each rolled

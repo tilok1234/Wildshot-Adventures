@@ -10,3 +10,6 @@ const WEAPON := 1
 const ARMOR := 2
 const ABILITY := 3
 const UNIQUE := 4
+## S1 seam 2 (sl-0104): ring drops — `a` = the balance_frame items[]
+## index (block-7 one-pair trade; the pure situational slot).
+const RING := 5

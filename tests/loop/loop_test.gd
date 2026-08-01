@@ -11,6 +11,8 @@ const EnemyDefScript := preload("res://data/enemy_def.gd")
 const Progress := preload("res://sim/systems/progress.gd")
 const Damage := preload("res://sim/systems/damage.gd")
 const LootStep := preload("res://sim/systems/loot_step.gd")
+const StatFrame := preload("res://sim/systems/stat_frame.gd")
+const ItemText := preload("res://game/views/item_text.gd")
 
 var fails: Array[String] = []
 
@@ -156,8 +158,97 @@ func _init() -> void:
 	var uniq: Resource = king.unique_drops[0]
 	check(String(uniq.display_name) == "Reliquary Coil", "unique placeholder present")
 
+	# 9. S1 seam 2 — RING drops (block 7: the pure situational slot).
+	# wr joins the kind roll ONLY when set (wr=0 defs keep their exact
+	# draw sequence — the repo-wide pin is the battery byte gate); the
+	# ring branch picks among ring items AT the drawn tier; walk-over
+	# equips only an EMPTY slot and wires the trade through recompute.
+	var ring_def: Resource = EnemyDefScript.new()
+	ring_def.id = &"ring_dummy"
+	ring_def.hp = 10
+	ring_def.drop_chance = 1.0
+	ring_def.drop_w_weapon = 0
+	ring_def.drop_w_armor = 0
+	ring_def.drop_w_ability = 0
+	ring_def.drop_w_ring = 1
+	ring_def.drop_tier_min = 1
+	ring_def.drop_tier_max = 1
+	var rw: RefCounted = _world_with(ring_def, 91)
+	rw.set_stat_frame(StatFrame.load_frame())
+	var rp: RefCounted = rw.players[0]
+	rp.class_id = 2  # bow lane; recompute derives speed/hp for trades
+	rp.level = 1
+	StatFrame.recompute(rw, rp)
+	var base_speed: float = rp.move_speed
+	var base_hp: int = rp.max_hp
+	_kill_n(rw, 1)
+	check(rw.drops.size() == 1, "ring def drops exactly one ring")
+	var rd: Dictionary = rw.drops[0]
+	check(int(rd.kind) == SimWorld.DROP_RING, "drop kind is RING")
+	var ritems: Array = rw.stat_frame.items
+	var rit: Dictionary = ritems[int(rd.a)]
+	check(String(rit.slot) == "ring" and int(rit.tier) == 1, "ring branch picks a T1 ring item")
+	rp.pos = rd.pos
+	LootStep.run(rw)
+	check(rp.ring_index == int(rd.a) and rw.drops.is_empty(), "empty slot equips the ring")
+	check(rp.move_speed != base_speed or rp.max_hp != base_hp, "ring trade wires through recompute")
+	# Occupied slot: the next ring stays on the ground (a choice, not
+	# a ladder — swap semantics are a designer call later).
+	_kill_n(rw, 1)
+	var held: int = rp.ring_index
+	rp.pos = rw.drops[0].pos
+	LootStep.run(rw)
+	check(rw.drops.size() == 1 and rp.ring_index == held, "occupied slot leaves rings grounded")
+	# Legacy lane: class -1 never equips rings.
+	var lw: RefCounted = _world_with(ring_def, 93)
+	lw.set_stat_frame(StatFrame.load_frame())
+	_kill_n(lw, 1)
+	lw.players[0].pos = lw.drops[0].pos
+	LootStep.run(lw)
+	check(lw.players[0].ring_index == -1 and lw.drops.size() == 1, "legacy player refuses rings")
+
+	# 10. THE ONE ITEM-TEXT GRAMMAR (docs/22: every number visible; one
+	# grammar everywhere) — exact lines, pinned.
+	var haste_idx := -1
+	for ii in ritems.size():
+		if String(ritems[ii].get("id", "")) == "t1-ring-of-haste":
+			haste_idx = ii
+	check(haste_idx >= 0, "ring of haste present")
+	check(
+		(
+			ItemText.drop_line(rw, {"kind": SimWorld.DROP_RING, "a": haste_idx, "b": 0})
+			== "Ring of Haste — +2 spd / −8 hp"
+		),
+		"ring line exact"
+	)
+	check(
+		(
+			ItemText.drop_line(rw, {"kind": SimWorld.DROP_ARMOR, "a": 1, "b": 0})
+			== "T1 Armor — +5 def, +30 hp"
+		),
+		"armor line exact"
+	)
+	check(
+		ItemText.drop_line(rw, {"kind": SimWorld.DROP_GOLD, "a": 12, "b": 0}) == "12 gold",
+		"gold line exact"
+	)
+	var cw: RefCounted = _world_with(ring_def, 95)
+	cw.set_stat_frame(StatFrame.load_frame())
+	cw.set_weapons([load("res://data/weapons/class_bow.tres")])
+	check(
+		(
+			ItemText.drop_line(cw, {"kind": SimWorld.DROP_WEAPON, "a": 0, "b": 1})
+			== "T1 Bow — 6 dmg @ 2.0/s"
+		),
+		"class weapon line exact (tier table + cadence)"
+	)
+	check(
+		ItemText.drop_line(u, {"kind": SimWorld.DROP_WEAPON, "a": 0, "b": 2}) == "T2 Longbolt",
+		"lab weapon line falls back to name+tier"
+	)
+
 	if fails.is_empty():
-		print("loop_test: PASS (drops/streams/curve/damage/armor/pickup/hash)")
+		print("loop_test: PASS (drops/streams/curve/damage/armor/pickup/rings/text/hash)")
 		quit(0)
 	else:
 		for m: String in fails:

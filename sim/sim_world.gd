@@ -62,6 +62,7 @@ const DROP_WEAPON := DropKinds.WEAPON
 const DROP_ARMOR := DropKinds.ARMOR
 const DROP_ABILITY := DropKinds.ABILITY
 const DROP_UNIQUE := DropKinds.UNIQUE
+const DROP_RING := DropKinds.RING
 
 enum Command {
 	SPAWN_PROJECTILE,

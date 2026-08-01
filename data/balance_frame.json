@@ -87,6 +87,8 @@
     "note": "[P] paper multipliers - arc cleaves clumps, pierce owns lines, fast stream tracks movers; the bot-run realized-DPS matrix replaces these at slice build (block 3's measurement mechanism)"
   },
   "items": [
+    { "id": "t1-ring-of-haste", "slot": "ring", "tier": 1, "name": "Ring of Haste", "trade": { "up": "speed", "up_amount": 2, "down": "hp", "down_amount": 8 } },
+    { "id": "t1-ring-of-claws", "slot": "ring", "tier": 1, "name": "Ring of Claws", "trade": { "up": "damage", "up_amount": 2, "down": "defense", "down_amount": 2 } },
     { "id": "t1-arming-sword", "slot": "weapon", "tier": 1, "frame": "slow_heavy" },
     { "id": "t2-recurve-bow", "slot": "weapon", "tier": 2, "frame": "fast_light" },
     { "id": "t3-ashen-staff", "slot": "weapon", "tier": 3, "frame": "long_reach" },
