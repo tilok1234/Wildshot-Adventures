@@ -1125,3 +1125,29 @@ mid-session: two new pillars, Gate-1 rewrite RATIFIED, loop frame
 RATIFIED, crosshair RATIFIED+closed, eyes-closed audio evidence
 CAPTURED planning-side — the notes/AUDIO_CUE_MAP.md review slot now
 OWES the write from that evidence (queued, unrouted this session).**
+CROSSHAIR STYLES + SIZE LIVE 2026-08-01 (~05:30 local; ask sl-0077
+executed hands-free; game 4b4c6ec; the designer's deck-note on the
+ratified crosshair card): ui/crosshair_styles.gd — style 0 "classic"
+= the ratified kit cursor VERBATIM at native 11 px (byte-identity is
+a mechanized test pin); styles dot / ring / cross-x drawn at request
+time in the kit's OWN two colors sampled from its pixels (kit
+re-drop re-skins all styles; silhouette-only differentiation,
+CORE-50 + doc-13 cursor spec: odd, lit true-center, light core + 1px
+dark rim — all mechanized per style x size). Size ladder 9/11/13/15.
+Two options cycle rows, BOTH profiles (player-facing, ungated),
+[ui] persisted, applied live via the sl-0042 content-scale path
+(general hotspot = true center; ratified 5*k+pad reproduced at 11).
+ZERO SIM IMPACT PROVEN: smoke hashes byte-identical pre/post.
+tests/crosshair/crosshair_styles_test.gd = 19TH FIXED STEP + CI row,
+writes committed evidence reports/crosshair_styles_preview.png (four
+silhouettes distinct at every size, checked by eyes). core50_verify
+grew both rows on both profiles; settings test round-trips the keys;
+checklist rows added. RIDER DONE: AUDIO_CUE_MAP eyes-closed slot
+carries the 2026-08-01 deck evidence line (seven classes
+distinguishable) — the sl-0071 queued hand-off discharged. GATE
+INTERRUPTED ONCE, honestly: the designer's play window blocked the
+pretester (guard exit 2); clock stopped for the wait, designer
+closed it, gate re-ran ALL GREEN 16.8 min (19 fixed + 28-row battery
+byte-identical + export + probe). DESIGNER-EYES pending: the four
+styles on screen (preview sheet committed). Icon Tier-0 stays
+sequenced after the Loop acceptance per the ask's own note.**

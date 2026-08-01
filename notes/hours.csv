@@ -159,3 +159,7 @@ timestamp,action,note
 2026-08-01T03:06:44,stop,""
 2026-08-01T03:26:10,start,""
 2026-08-01T03:41:01,stop,""
+2026-08-01T04:25:15,start,""
+2026-08-01T04:33:40,note,"sl-0077 build complete + individual gates green; full pretester blocked by the designer's play window (pid 9552) - clock pauses for the wait"
+2026-08-01T04:33:40,stop,""
+2026-08-01T04:55:08,start,""

@@ -73,10 +73,10 @@ at every clean seam.
 ## §1 Where things stand (2026-08-01)
 
 **M0–M8 engineering complete.** The one-command ship gate
-`tools/pretester_check.ps1` runs ALL GREEN (~14–19 min: 18 fixed
+`tools/pretester_check.ps1` runs ALL GREEN (~14–19 min: 19 fixed
 steps, 28-row proof battery byte-identical against committed reports,
 export step building + boot-checking BOTH artifacts, lockdown probe).
-Last full run: 2026-08-01 at the sl-0065 dev-map seam, 17.1 min.
+Last full run: 2026-08-01 at the sl-0077 crosshair seam, 16.8 min.
 
 - **THE LOOP (v1, SERIAL 13):** "THE LOOP" picker row — spawn in the
   b65 town, three proven danger rings westward, the BONE RELIQUARY
@@ -161,10 +161,12 @@ boss pack intaken raw-by-ruling (wire only on natural need).
   the acceptance.
 - Loop-routing onto the b77 harbor capital (scenario + gradient +
   proofs — the natural next content arc; talk-before-build).
-- **notes/AUDIO_CUE_MAP.md eyes-closed slot OWES the write**: the
-  evidence was captured planning-side in the sl-0071 deck sweep
-  (2026-08-01) — pull the verdict wording from that sweep, honor
-  two-tier stamps. Small records task, unrouted so far.
+- ~~AUDIO_CUE_MAP eyes-closed slot~~ WRITTEN 2026-08-01 (sl-0077
+  rider, 4b4c6ec): seven classes distinguishable per the sl-0071
+  deck evidence.
+- Crosshair styles (sl-0077, 4b4c6ec): four silhouettes + size
+  ladder live in options, both profiles; designer-eyes on screen
+  pending (preview: reports/crosshair_styles_preview.png).
 - sl-0070 fix lever engineering fires only AFTER the designer's pick
   (A = WF ask, not game work; B = shipped; C = deliberate contract
   act with its own design round).
