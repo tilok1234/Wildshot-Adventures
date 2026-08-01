@@ -72,6 +72,7 @@ $tests = @(
     @("worldforge pack validator", "tests/worldforge_pack/worldforge_pack_test.gd"),
     @("dev map minimap consumer", "tests/dev_map/dev_map_test.gd"),
     @("uikit validate", "tests/uikit/uikit_validate.gd"),
+    @("crosshair styles + preview", "tests/crosshair/crosshair_styles_test.gd"),
     @("settings persistence", "tests/settings/settings_persist.gd"),
     @("feedback bundle + summary code", "tests/feedback/feedback_bundle_test.gd"),
     @("loop contracts (drops/curve/pickup)", "tests/loop/loop_test.gd"),

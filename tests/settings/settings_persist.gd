@@ -86,6 +86,19 @@ func _init() -> void:
 		quit(1)
 		return
 
+	# sl-0077 crosshair style + size keys ([ui] section): same
+	# round-trip the two options rows use.
+	config.set_setting("ui", "crosshair_style", 2)
+	if int(config.get_setting("ui", "crosshair_style", -1)) != 2:
+		printerr("FAIL: ui/crosshair_style did not persist")
+		quit(1)
+		return
+	config.set_setting("ui", "crosshair_size", 13)
+	if int(config.get_setting("ui", "crosshair_size", -1)) != 13:
+		printerr("FAIL: ui/crosshair_size did not persist")
+		quit(1)
+		return
+
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(TEST_PATH))
 	config.free()
 	print(

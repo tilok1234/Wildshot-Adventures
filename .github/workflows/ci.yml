@@ -118,6 +118,12 @@ jobs:
       - name: UI kit validation
         run: ~/godot/godot --headless --path . --script tests/uikit/uikit_validate.gd
 
+      # sl-0077 crosshair styles: doc-13 cursor contract per style x
+      # size (odd, true center, kit two-color palette, 1 px rim) + the
+      # ratified-default byte pin. Pure Image ops — Linux-safe.
+      - name: Crosshair styles contract
+        run: ~/godot/godot --headless --path . --script tests/crosshair/crosshair_styles_test.gd
+
       # Projectile pack + map consistency (M-FX curation; Law-2/8 hostile
       # coverage guard). Pure image reads — Linux-safe.
       - name: Projectile-pack validation

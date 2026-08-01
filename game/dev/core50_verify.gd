@@ -18,7 +18,14 @@ const PROFILES := {
 		"effects": {"density": 2, "opacity": 2, "flash_reduction": true},
 		"feedback": {"damage_numbers": 0, "impact": false, "kill": false, "blocked": false},
 		"audio": {"master": 3, "sfx": 3, "keythreats": 3, "music": 3, "attacksfx": 3},
-		"ui": {"scale": 1, "hitboxes": false, "fullscreen": false},
+		"ui":
+		{
+			"scale": 1,
+			"hitboxes": false,
+			"fullscreen": false,
+			"crosshair_style": 1,
+			"crosshair_size": 9,
+		},
 		"dev": {"scenario": "res://data/scenarios/first_contact.tres", "seed": 1},
 	},
 	"core50-high":
@@ -26,7 +33,14 @@ const PROFILES := {
 		"effects": {"density": 0, "opacity": 0, "flash_reduction": false},
 		"feedback": {"damage_numbers": 2, "impact": true, "kill": true, "blocked": true},
 		"audio": {"master": 0, "sfx": 1, "keythreats": 2, "music": 1, "attacksfx": 2},
-		"ui": {"scale": 2, "hitboxes": true, "fullscreen": false},
+		"ui":
+		{
+			"scale": 2,
+			"hitboxes": true,
+			"fullscreen": false,
+			"crosshair_style": 2,
+			"crosshair_size": 15,
+		},
 		"dev": {"scenario": "res://data/scenarios/first_contact.tres", "seed": 1},
 	},
 }
@@ -136,6 +150,24 @@ static func verify(m: Node, profile: String) -> Array[String]:
 		fails.append("ui scale %d not applied to HUD theme" % int(vals.ui.scale))
 	elif th.default_font_size != 10 * int(vals.ui.scale):
 		fails.append("ui font size not scaled")
+
+	# sl-0077 crosshair style + size -> the applied cursor state (main
+	# caches what it handed Input.set_custom_mouse_cursor — the cursor
+	# itself has no getter; the render half stays designer eyes).
+	if int(m.get("_crosshair_style")) != int(vals.ui.crosshair_style):
+		fails.append(
+			(
+				"crosshair style %d not wired (applied %d)"
+				% [int(vals.ui.crosshair_style), int(m.get("_crosshair_style"))]
+			)
+		)
+	if int(m.get("_crosshair_size")) != int(vals.ui.crosshair_size):
+		fails.append(
+			(
+				"crosshair size %d not wired (applied %d)"
+				% [int(vals.ui.crosshair_size), int(m.get("_crosshair_size"))]
+			)
+		)
 
 	# Remap path (full remapping from start): high profile only.
 	if profile == "core50-high":

@@ -35,6 +35,7 @@ const CharacterProfile := preload("res://game/drivers/character_profile.gd")
 const CharacterCreate := preload("res://ui/character_create.gd")
 const RecapPanel := preload("res://ui/recap_panel.gd")
 const OnboardingScreen := preload("res://ui/onboarding_screen.gd")
+const CrosshairStyles := preload("res://ui/crosshair_styles.gd")
 const Core50Verify := preload("res://game/dev/core50_verify.gd")
 const MapOverlay := preload("res://game/dev/map_overlay.gd")
 const WorldforgePack := preload("res://addons/worldforge_importer/worldforge_pack.gd")
@@ -127,6 +128,11 @@ var dev_tools: bool = not OS.has_feature("tester")
 var _af_on_tex: Texture2D = load("res://uikit/icon_autofire_on.png")
 var _af_off_tex: Texture2D = load("res://uikit/icon_autofire_off.png")
 var _crosshair_scale := 0
+## sl-0077 player options ([ui] crosshair_style / crosshair_size):
+## applied cursor state, sentinel -1 so the first apply always fires.
+## core50_verify asserts these against the injected profile.
+var _crosshair_style := -1
+var _crosshair_size := -1
 
 
 func _notification(what: int) -> void:
@@ -371,25 +377,36 @@ func _apply_ui_scale(k: int) -> void:
 
 
 func _apply_crosshair_scale() -> void:
-	# The uikit crosshair is a HARDWARE cursor: 11 px drawn at native
-	# pixel size in window space, so it never inherits the integer
-	# viewport stretch and reads as a speck at gameplay scale. Scale the
-	# texture by the live content scale instead (nearest-neighbor, kit
-	# hotspot 5,5 scaled to the same pixel center) and re-apply whenever
-	# the window scale changes. Render-only: aim math reads the viewport
-	# mouse position and never touches the cursor bitmap.
+	# The uikit crosshair is a HARDWARE cursor: drawn at native pixel
+	# size in window space, so it never inherits the integer viewport
+	# stretch and reads as a speck at gameplay scale. Scale the texture
+	# by the live content scale instead (nearest-neighbor, hotspot at
+	# the true center pixel) and re-apply whenever the window scale
+	# changes. sl-0077: the base bitmap now comes from the player's
+	# style + size options ([ui]); style 0 at size 11 IS the ratified
+	# kit bitmap verbatim, so the default reproduces the sl-0042 pass
+	# exactly. Render-only: aim math reads the viewport mouse position
+	# and never touches the cursor bitmap.
 	var win := get_window()
 	var base_w := float(ProjectSettings.get_setting("display/window/size/viewport_width"))
 	var base_h := float(ProjectSettings.get_setting("display/window/size/viewport_height"))
 	var k := maxi(1, int(minf(float(win.size.x) / base_w, float(win.size.y) / base_h)))
-	if k == _crosshair_scale:
+	var style := CrosshairStyles.clamp_style(
+		int(Config.get_setting("ui", "crosshair_style", CrosshairStyles.DEFAULT_STYLE))
+	)
+	var size := CrosshairStyles.clamp_size(
+		int(Config.get_setting("ui", "crosshair_size", CrosshairStyles.DEFAULT_SIZE))
+	)
+	if k == _crosshair_scale and style == _crosshair_style and size == _crosshair_size:
 		return
 	_crosshair_scale = k
-	var tex := load("res://uikit/cursor_crosshair.png") as Texture2D
-	var img := tex.get_image()
+	_crosshair_style = style
+	_crosshair_size = size
+	var img := CrosshairStyles.build_base_image(style, size)
+	var center := (img.get_width() - 1) / 2
 	img.resize(img.get_width() * k, img.get_height() * k, Image.INTERPOLATE_NEAREST)
 	var pad := floorf(float(k - 1) * 0.5)
-	var hot := 5.0 * float(k) + pad
+	var hot := float(center) * float(k) + pad
 	Input.set_custom_mouse_cursor(
 		ImageTexture.create_from_image(img), Input.CURSOR_ARROW, Vector2(hot, hot)
 	)
@@ -1053,6 +1070,34 @@ func _ready() -> void:
 		func(i: int) -> void:
 			Config.set_setting("ui", "scale", i + 1)
 			_apply_ui_scale(i + 1)
+	)
+	# sl-0077 crosshair style + size (player-facing, both profiles):
+	# shapes differ by silhouette, never hue (CORE-50); "classic" = the
+	# ratified kit crosshair, untouched default. Applies live.
+	options_menu.add_cycle_row(
+		"crosshair style",
+		CrosshairStyles.STYLE_NAMES,
+		CrosshairStyles.clamp_style(
+			int(Config.get_setting("ui", "crosshair_style", CrosshairStyles.DEFAULT_STYLE))
+		),
+		func(i: int) -> void:
+			Config.set_setting("ui", "crosshair_style", i)
+			_apply_crosshair_scale()
+	)
+	var xhair_sizes: Array = []
+	for s: int in CrosshairStyles.SIZES:
+		xhair_sizes.append("%d px" % s)
+	options_menu.add_cycle_row(
+		"crosshair size",
+		xhair_sizes,
+		CrosshairStyles.SIZES.find(
+			CrosshairStyles.clamp_size(
+				int(Config.get_setting("ui", "crosshair_size", CrosshairStyles.DEFAULT_SIZE))
+			)
+		),
+		func(i: int) -> void:
+			Config.set_setting("ui", "crosshair_size", CrosshairStyles.SIZES[i])
+			_apply_crosshair_scale()
 	)
 	_apply_ui_scale(ui_scale)
 	# M8 comments box (designer GO 2026-07-30): SUPPLEMENTARY side-notes

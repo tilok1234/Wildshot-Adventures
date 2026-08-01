@@ -21,6 +21,7 @@
 | Audio Master / Sfx / KeyThreats (incl. off=mute) | AudioServer mute + dB per bus |
 | Hitbox indicator | hitboxes.visible |
 | UI/text scale x1/x2 | scaled theme base_scale + font_size on every HUD surface |
+| Crosshair style + size (sl-0077) | main._crosshair_style/_crosshair_size applied state (+ tests/settings round-trip) |
 | Remapping (persisted path -> live InputMap) | injected move_up=J is live (+ tests/settings round-trip) |
 | Hold/toggle fire | sim-side autofire latch, smoke-mechanized since M3 (CORE-32 proofs) |
 
@@ -38,6 +39,9 @@ Launch the tester exe, flip each in options (O), confirm the LOOK:
       options row agree).
 - [ ] UI scale x2: every HUD surface doubles (bars, meter, options,
       recap, hints) — nothing clips off-screen at 1280x720.
+- [ ] Crosshair styles (sl-0077): all four silhouettes readable on
+      every floor; size steps visibly 9/11/13/15; "classic" at 11 is
+      the exact ratified look (preview: reports/crosshair_styles_preview.png).
 - [ ] Audio rows: each bus audibly steps 100/70/40/off independently
       (five buses since M8: Master/Sfx/KeyThreats/Music/AttackSfx);
       KeyThreats off silences telegraphs but Sfx stays. Real audio is

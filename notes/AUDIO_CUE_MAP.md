@@ -56,6 +56,10 @@ good"**. Designer chose NATURAL TESTING during continued work — the
 formal eyes-closed pass and the rested ratification stay open and
 accumulate organically; do not nag.
 
+2026-08-01 (Decision Deck evidence, sl-0071 sweep; written per the
+sl-0077 rider): eyes-closed evidence CAPTURED against the RF cues —
+**the seven classes are distinguishable.**
+
 ## Music channel (M8, designer-ruled 2026-07-30, Tier 1)
 
 Rulings: tracks play as a QUEUE in listed order, looping the whole
