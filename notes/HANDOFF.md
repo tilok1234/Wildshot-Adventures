@@ -215,7 +215,15 @@ Before every commit, per touched area:
   BYTE-IDENTICAL.
 - the one-command gate: `pwsh tools/pretester_check.ps1` = 27 fixed
   steps + the 69-run two-lane battery (36 floor rows + 33 cap runs;
-  pinned FAILs are expectations) + export + lockdown.
+  pinned FAILs are expectations) + export + lockdown — **~12.5 min
+  ALL GREEN since the battery went PARALLEL** (S1 tooling ask:
+  tools/battery_runner.ps1 worker pool, default = physical cores,
+  hard cap 10, longest-first from reports/battery_timings.json;
+  every verdict marker+exit-code gated; the reports/-clean byte
+  gate is the final word). `-Workers 1` = the serial path. A pool
+  row failure ALWAYS re-verifies solo before diagnosis — but
+  remember the first catch: the "flake" was a real red row the
+  serial era had already committed (see gotcha #32).
   Exit 0 = ship-ready. It REFUSES to run beside another same-project
   Godot instance (incl. the designer's game window — wait for it,
   never kill it; running steps individually, same commands + exit
@@ -451,6 +459,15 @@ names; cap runs use --speed=4.14 + an explicit --out=..._cap115.json).
     predictable). Humans tap-modulate out of both. Every new anchor
     re-rolls which rows it bites — that's WHY both lanes re-run on
     any speed change, and why pins are per-anchor.
+32. **A RE-BASELINE IS NOT DONE UNTIL THE FULL GATE RUNS ON IT.**
+    The sl-0102 speed re-anchor regenerated all 65+ reports and
+    committed loop_ring2's floor FAIL (1 seed-invariant husk pinch
+    graze, near 0.028) as the record — the expectations table said
+    PASS and nobody ran the full battery-vs-table compare after the
+    regeneration. The parallel battery's FIRST full run caught it
+    (fixed f40decf: husk off the pinch corridor, mirrored in
+    loop.tres, 0 hits both lanes). The fast gate makes the rule
+    cheap: regenerate → full gate → commit, always in that order.
 
 ## Ledger + scope
 
@@ -462,7 +479,9 @@ path); #1–#15 closed or deferred with recorded exits. The scope
 tripwire is **SLICE V0.1** (sl-0098 — the world is the test): slice
 work flows from designer direction under talk-before-build via
 planning docs/23; anything outside the slice bill's needs is refused
-and ledgered or flagged to planning. **S1 does not start without its
-own routing.** The tester-build export pipeline + lockdown stay a
-STANDING GATE (current debt: re-export + probe at the next exclusive
-seam, post-sl-0102).
+and ledgered or flagged to planning. **S1 IS ROUTED (sl-0104) and
+running as sealed seams** — seam 1 (Green roster) landed 91b1037;
+the suggested order continues loot → Old Tusk → the Warren → quests
+→ fishing/foraging; the chapter gate is the designer LIVING in
+Green. The tester-build export pipeline + lockdown stay a STANDING
+GATE (green at the 2026-08-02 full gates; no standing debt).

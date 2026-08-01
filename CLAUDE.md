@@ -1616,3 +1616,30 @@ by the append (smoke + goldens x10 byte-identical pre-commit); boot
 clean; living_world/loop/stat_frame/assembler/wiring all green.
 DESIGNER-EYES pending: the Green countryside itself (walk out of
 the capital — every camp now wears the zone's real skins).**
+THE BATTERY RUNS N-WIDE 2026-08-02 (~00:45 local; the designer-
+approved tooling ask, docs/23 tooling lane; rode between seams as
+routed): tools/battery_runner.ps1 = a worker pool over the
+battery's independent replay runs — default workers = PHYSICAL CORE
+COUNT (auto-detect, 8 here), HARD CAP 10 (the designer's ceiling),
+longest-rows-first from a machine-local timing table
+(reports/battery_timings.json, gitignored); every verdict
+DOUBLE-GATED (PASS/FAIL marker AND exit code); coverage untouched —
+the pretester's table stays authoritative, -Workers 1 = the serial
+path, and the reports/-clean byte gate stays the final word (a
+cache race can only surface as a loud FAIL, never a silent wrong
+verdict). ADOPTION PROOF: the full parallel battery reproduced the
+serially-produced committed record BYTE-IDENTICAL — 69 runs in 9.5
+min wall, FULL GATE ALL GREEN 12.5 min (was ~40-45 serial; the
+≲10-min battery target met). **THE FIRST FULL RUN CAUGHT A RED ROW
+HIDING IN THE GREEN RECORD (fix f40decf):** the sl-0102 re-anchor
+had committed loop_ring2's floor-lane FAIL as the record (1
+seed-invariant husk pinch graze @t316, near 0.028 — the 3.45→3.6
+floor move walked the deterministic dance into a point-blank
+squeeze) and no full gate ran after that re-baseline. Diagnosed by
+probe (the husk, NOT the ringer), fixed per the ring2 precedent
+(never-weaken layout iteration: husk 198.5,131.5 → 196.5,134.5,
+walkable/in-aggro/composition intact, MIRRORED in loop.tres),
+re-proven 0 hits both lanes (0.148 floor / 0.123 cap). NEW LAW
+(gotcha #32): a re-baseline is not done until the full gate runs on
+it — the fast battery makes that cheap. Second full gate ALL GREEN
+12.5 min sealed seam 1 + the adoption together.**

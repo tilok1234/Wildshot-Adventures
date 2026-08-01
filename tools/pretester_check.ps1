@@ -12,9 +12,19 @@
 # FAIL. loop_ring2 layout iterated once under never-weaken (ringer
 # off the thicket lip it predated).
 #
-# Usage: pwsh tools/pretester_check.ps1 [-SkipBattery]
+# Usage: pwsh tools/pretester_check.ps1 [-SkipBattery] [-Workers N]
+#
+# BATTERY PARALLELIZATION (S1 tooling ask, designer-approved; docs/23
+# tooling lane): the battery rows run in a worker pool
+# (tools/battery_runner.ps1) — default workers = physical core count,
+# HARD CAP 10 (the designer's ceiling), longest rows first from the
+# machine-local timing table. -Workers 1 = the serial path. Adoption
+# proof 2026-08-02: the parallel pass reproduced the serial record
+# BYTE-IDENTICAL across all 69 runs (reports/ git-clean) with every
+# verdict marker+exit-code gated. Coverage is LAW: the table below
+# stays authoritative, no row is ever trimmed by the pool.
 
-param([switch]$SkipBattery)
+param([switch]$SkipBattery, [int]$Workers = 0)
 
 $ErrorActionPreference = "Continue"
 $godot = "$env:USERPROFILE\bin\godot_console.exe"
@@ -235,30 +245,18 @@ if (-not $SkipBattery) {
         @("proof_green_camp","1,2,3",3600,"","","PASS","PASS"),
         @("proof_green_ranged","1,2,3",3600,"","","PASS","PASS")
     )
-    foreach ($b in $battery) {
-        $scen = $b[0]; $seeds = $b[1]; $ticks = $b[2]; $out = $b[3]; $pol = $b[4]
-        $runs = @(,@("3.6", $out, $b[5]))
-        if ($b[6]) {
-            $capout = if ($out) { $out -replace "\.json$","_cap115.json" } else { "res://reports/dodge_${scen}_cap115.json" }
-            $runs += ,@("4.14", $capout, $b[6])
-        }
-        foreach ($r in $runs) {
-            $speed = $r[0]; $rout = $r[1]; $want = $r[2]
-            $tag = if ($pol) { " [$pol]" } else { "" }
-            if ($speed -ne "3.6") { $tag += " [cap115]" }
-            $bname = "battery: $scen$tag (expect $want)"
-            $sw = [System.Diagnostics.Stopwatch]::StartNew()
-            $ba = @("--headless","--path",".","--script","game/bots/bot_runner.gd","--","--scenario=$scen","--speed=$speed","--seeds=$seeds","--ticks=$ticks")
-            if ($rout) { $ba += "--out=$rout" }
-            if ($pol) { $ba += "--policy=$pol" }
-            $res = & $godot @ba 2>&1 | Select-String -Pattern "\((PASS|FAIL)\)" | Select-Object -Last 1
-            $got = $res -replace '.*\((PASS|FAIL)\).*','$1'
-            $ok = ($got -eq $want)
-            $sw.Stop()
-            Write-Host ("{0,-42} {1}  ({2:n1}s)" -f $bname, $(if ($ok) { "PASS" } else { "FAIL" }), $sw.Elapsed.TotalSeconds)
-            if (-not $ok) { $fails += $bname }
-        }
+    . "$PSScriptRoot\battery_runner.ps1"
+    if ($Workers -le 0) { $Workers = Get-PhysicalCoreCount }
+    $Workers = [Math]::Min($Workers, 10)
+    $bsw = [System.Diagnostics.Stopwatch]::StartNew()
+    $bres = Invoke-BatteryParallel -Battery $battery -Workers $Workers -Godot $godot `
+        -TimingPath (Join-Path (Split-Path -Parent $PSScriptRoot) "reports/battery_timings.json")
+    $bsw.Stop()
+    foreach ($r in $bres) {
+        Write-Host ("{0,-42} {1}  ({2:n1}s)" -f $r.Name, $(if ($r.Ok) { "PASS" } else { "FAIL" }), $r.Seconds)
+        if (-not $r.Ok) { $fails += $r.Name }
     }
+    Write-Host ("battery: {0} runs on {1} workers in {2:n1} min wall" -f @($bres).Count, $Workers, $bsw.Elapsed.TotalMinutes)
     Step "battery byte-identical (reports/ clean)" {
         $dirty = git status --porcelain reports/ | Where-Object { $_ -notmatch "repro_.*\.wsr" }
         if ($dirty) { $dirty | ForEach-Object { Write-Host "  dirty: $_" }; return $false }
