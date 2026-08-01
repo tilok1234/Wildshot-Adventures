@@ -1406,4 +1406,9 @@ overworld feel session) blocked the pretester; the calculator gate
 commands + exit codes, the recorded fallback); the full 23-step +
 33-row gate rides the next exclusive seam. NO WIRING — the stat
 frame enters the sim at slice build; the numbers exist before the
-code does. Sync log sl-0096.**
+code does. Sync log sl-0096. SEAM CLOSED same day (~15:07): the
+designer closed their play window and said go — FULL pretester ALL
+GREEN 24.4 min at full strength (23 fixed steps + 33-row battery
+byte-identical incl the five overworld rows' first canonical run +
+export + lockdown probe). The deferred-gate debt from the
+sl-0094/0096 sessions is cleared.**

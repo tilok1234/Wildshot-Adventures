@@ -79,14 +79,12 @@ at every clean seam.
 `tools/pretester_check.ps1` runs ALL GREEN (23 fixed steps, 33-row
 proof battery byte-identical against committed reports, export step
 building + boot-checking BOTH artifacts, lockdown probe). Last full
-run: 2026-08-01 at the sl-0078 fit-rule seam (16.9 min, then 28
-rows); the sl-0085/0092/0094 intake seams ran fixed steps + export +
-probe green in ~3 min each (`-SkipBattery`, deliberate — zero sim
-change; the five overworld rows added at sl-0094 ran at authoring).
-The sl-0096 balance seam could not run the gate at all (the
-designer's play window held the project — gotcha #19); its own
-python gates ran individually green. **The full 23-step + 33-row
-gate rides the next exclusive seam.**
+run: **2026-08-01 ~15:07, ALL GREEN 24.4 min at full strength — 23
+fixed steps + 33-row battery byte-identical (the five overworld
+reference rows' first canonical run) + export + lockdown probe** —
+the seam the sl-0094/0096 sessions deferred, run the moment the
+designer closed their play window. The intake seams before it ran
+`-SkipBattery` deliberately (zero sim change each).
 
 - **THE FIT RULE (sl-0078, 2026-08-01, SERIAL 14) — the newest big
   thing:** "if the character sprite visibly fits through a gap, the
