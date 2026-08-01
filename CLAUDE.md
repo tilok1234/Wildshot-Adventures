@@ -1372,3 +1372,38 @@ deliberately — the five NEW rows ran at authoring; full 33-row gate
 rides the next exclusive seam). STEP 2 ARMED: the designer's feel
 session on the five picker rows — the danger ramp, the boss spot,
 the territory texture. NO feel verdicts (hands-free session).**
+THE BALANCE CALCULATOR LIVE 2026-08-01 (~15:05 local; ask sl-0095 —
+docs/22 block 9, the stat talk's closing deliverable; PAPER-FIRST,
+zero sim contact): data/balance_frame.json = the ONE versioned
+game-owned file mirroring the docs/22 tables (game owns the file,
+planning owns the design; docs/22 never amended game-side).
+Concrete numbers DERIVED [P] inside the nine ruled blocks: weapon
+DPS budgets 12 × 1.4^t with the three frames at ±10% (slow-heavy
++~7-10%, fast-light ≈ budget, long-reach −~9%); enemy typical hits
+10/16/26/40 with obtainable armor at exactly 0.5× every bracket
+(plateau flags all clear incl the T5 capstone at 0.65×); trash HP
+24/32/48/64 back-solved to 4 reference hits at every band; armor-
+slot HP 30/38/49/63/81 (+25-30% steps); class curves sword 120+16 /
+staff 100+13 / bow 90+11 with speed 100/105/110 cap 115; XP stepped
+100/400/800/1400 = 20,600 to cap-30 (~33-37 kills/level); the six-
+pair grammar; unique one-break + chassis 70-90%. Game-side
+conventions FLAGGED [P] for planning's sweep (hits reference =
+the budget-exact fast-light frame; class↔frame mapping sword=
+slow-heavy/bow=fast-light/staff=long-reach; TTD = one tanked
+stream at 1/1.2s). tools/balance_calc.py = 23RD FIXED STEP + CI
+row, hard-coding the ruled constants as the design contract (data
+drift FAILS loudly); ALL FIVE GATES PASS: TTK 2.0-3.3s invariant
+per class, TTD 47→26s tapering (the world sharpens faster than you
+toughen), armor liveness clean, pattern fairness holds at every
+tier (arc owns clumps, pierce owns lines, stream owns movers; none
+best everywhere), 4 hits + ≤3-digit numbers, item validator green;
+NEGATIVE-TESTED per the routing (smuggled un-paired uplift +
+two-break unique → exit 1, findings named — TECH-16 discharged on
+paper). GATE NOTE (gotcha #19 honored): the designer's play window
+(godot.exe --path ., opened 14:25 mid-session — possibly the
+overworld feel session) blocked the pretester; the calculator gate
++ negative tests + ps1/yaml parses ran individually green (same
+commands + exit codes, the recorded fallback); the full 23-step +
+33-row gate rides the next exclusive seam. NO WIRING — the stat
+frame enters the sim at slice build; the numbers exist before the
+code does. Sync log sl-0096.**

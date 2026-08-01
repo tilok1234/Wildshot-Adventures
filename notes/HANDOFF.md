@@ -30,7 +30,7 @@ only once the loop bar holds.
   `C:\Users\headc\Documents\Wildshot_adventure_final_planning` — ONE
   branch, `claude/questionnaire-note-taking-9vl2sl` (no main; do not
   create one). Its `tools/sync_log.json` is the cross-repo logbook
-  (doc 18, entries through sl-0094 as of this writing);
+  (doc 18, entries through sl-0096 as of this writing);
   `tools/ecosystem.lock.json` holds the pins.
 - **The ecosystem map** (planning `docs/16-ECOSYSTEM_MAP.md`) names
   all seven repos and the hard cross-repo rules. **LANE RULE: game
@@ -76,14 +76,17 @@ at every clean seam.
 ## §1 Where things stand (2026-08-01, post-sl-0085 icon intake)
 
 **M0–M8 engineering complete.** The one-command ship gate
-`tools/pretester_check.ps1` runs ALL GREEN (22 fixed steps, 33-row
+`tools/pretester_check.ps1` runs ALL GREEN (23 fixed steps, 33-row
 proof battery byte-identical against committed reports, export step
 building + boot-checking BOTH artifacts, lockdown probe). Last full
 run: 2026-08-01 at the sl-0078 fit-rule seam (16.9 min, then 28
 rows); the sl-0085/0092/0094 intake seams ran fixed steps + export +
 probe green in ~3 min each (`-SkipBattery`, deliberate — zero sim
 change; the five overworld rows added at sl-0094 ran at authoring).
-The full 33-row gate rides the next exclusive seam.
+The sl-0096 balance seam could not run the gate at all (the
+designer's play window held the project — gotcha #19); its own
+python gates ran individually green. **The full 23-step + 33-row
+gate rides the next exclusive seam.**
 
 - **THE FIT RULE (sl-0078, 2026-08-01, SERIAL 14) — the newest big
   thing:** "if the character sprite visibly fits through a gap, the
@@ -161,6 +164,18 @@ The full 33-row gate rides the next exclusive seam.
   FIRES ONLY AFTER the Loop acceptance run (sl-0082 ruling; sl-0077
   Tier-0 sequencing note). Tool-source push owed from the
   designer's other PC (sl-0083 insurance line).
+- **THE STAT FRAME ON PAPER (sl-0095 → sl-0096, 2026-08-01):**
+  docs/22's nine designer-ruled blocks live as
+  `data/balance_frame.json` (game-owned numbers [P] inside the
+  ruled frame; planning owns the design — never amend docs/22
+  game-side) + `tools/balance_calc.py` (23rd step + CI row): five
+  gates all green — TTK/TTD bands, armor 0.5× everywhere with
+  plateau flags clear, pattern fairness at every tier, 4 hits +
+  ≤3-digit numbers, and the item validator (negative-tested). THE
+  damage formula everywhere: `taken = max(attack − armor,
+  ceil(attack × 0.2))`. NO sim contact — the frame enters at slice
+  build; game-side conventions are flagged `[P]` in the file for
+  planning's sweep.
 - **Dusk content pack + THE OVERWORLD REFERENCE PASS (sl-0093 →
   sl-0094, 2026-08-01):** world_filler's first game-side artifact —
   REFERENCE ONLY (docs/20 step 1, no importer) at
