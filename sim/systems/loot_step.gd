@@ -10,6 +10,7 @@ extends RefCounted
 
 const SimEvents := preload("res://sim/events.gd")
 const DropKinds := preload("res://sim/drop_kinds.gd")
+const StatFrame := preload("res://sim/systems/stat_frame.gd")
 
 
 static func run(world: RefCounted) -> void:
@@ -72,6 +73,10 @@ static func _apply(world: RefCounted, p: RefCounted, d: Dictionary) -> bool:
 			if atier <= p.armor_tier:
 				return false
 			p.armor_tier = atier
+			# Class lane: armor carries defense + HP (docs/22 block 4) —
+			# re-derive; no free heal, current hp only ever clamps down.
+			if p.class_id >= 0:
+				StatFrame.recompute(world, p)
 			return true
 		DropKinds.ABILITY:
 			var idx := int(d.a)
@@ -88,7 +93,11 @@ static func _apply(world: RefCounted, p: RefCounted, d: Dictionary) -> bool:
 			if (p.unique_mask & (1 << ui)) != 0:
 				return false
 			p.unique_mask |= 1 << ui
+			# Loop-era tier-6 frame boost. Class loadouts are smaller
+			# than the lab trio — bounds-guarded; slice unique
+			# BEHAVIOURS are chapter work (docs/22 block 8).
 			var slot := int(world.unique_defs[ui].frame_slot)
-			p.weapon_tiers[slot] = maxi(p.weapon_tiers[slot], 6)
+			if slot >= 0 and slot < p.weapon_tiers.size():
+				p.weapon_tiers[slot] = maxi(p.weapon_tiers[slot], 6)
 			return true
 	return false

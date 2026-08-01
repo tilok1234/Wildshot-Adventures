@@ -38,6 +38,23 @@ var weapon_tiers: PackedInt32Array = PackedInt32Array([1, 1, 1])
 ## Bitmask of picked-up uniques (index into SimWorld.unique_defs).
 var unique_mask: int = 0
 
+## ---- The stat frame (docs/22, SERIAL 15). class_id -1 = the
+## pre-slice LEGACY LANE: every derived stat below stays at its
+## identity default and the loop-era progression math applies
+## unchanged, so bare test scenarios and the whole proof battery are
+## byte-identical by construction. 0/1/2 = sword/staff/bow
+## (StatFrame.CLASS_IDS order = balance_frame.json key order).
+var class_id: int = -1
+## Ring slot: index into balance_frame.json items[] (a slot=="ring"
+## row), -1 = none. Ring CONTENT lands with chapter drops; the slot +
+## paired-trade derivation are frame machinery (docs/22 block 7).
+var ring_index: int = -1
+## Derived stats (StatFrame.recompute) — 100/100/0 identity for the
+## legacy lane. Serialized: the fire path reads them every volley.
+var attack_speed_stat: int = 100
+var range_stat: int = 100
+var damage_mod: int = 0
+
 
 func serialize_into(buf: StreamPeerBuffer) -> void:
 	super.serialize_into(buf)
@@ -56,3 +73,8 @@ func serialize_into(buf: StreamPeerBuffer) -> void:
 	for wt in weapon_tiers:
 		buf.put_u8(wt)
 	buf.put_u16(unique_mask)
+	buf.put_8(class_id)
+	buf.put_16(ring_index)
+	buf.put_u16(attack_speed_stat)
+	buf.put_u16(range_stat)
+	buf.put_32(damage_mod)

@@ -31,10 +31,11 @@ const Damage := preload("res://sim/systems/damage.gd")
 
 const TICKS_PER_SECOND := 60
 const DT := 1.0 / 60.0
-## 14 = sl-0078 fit-rule collision (player radius 5/32 + art-matched
-## prop discs + projectile coherence): sim behavior changed, so stale
-## replays must refuse verification honestly.
-const SERIAL_VERSION := 14
+## 15 = docs/22 stat frame enters the sim (slice S0 seam 1, sl-0100):
+## class-backed player lane (class curves, THE damage formula, stepped
+## XP, derived stats, the 115 movement cap) + armor value on actors.
+## Legacy-lane (class_id -1) behavior is identity by construction.
+const SERIAL_VERSION := 15
 
 ## Damage-source pattern id for the scenario-declared test damage
 ## schedule (§2.11 elite transition proofs; planning log 2026-07-28).
@@ -147,6 +148,10 @@ var drops: Array[Dictionary] = []
 ## Progression tables (Loop v1): definition resource like weapon_frames —
 ## excluded from serialize(); the replay header's data hash covers it.
 var progression: Resource = null
+## THE STAT FRAME (docs/22): parsed data/balance_frame.json — the single
+## tuning source for the class-backed lane. Definitions like progression
+## above: excluded from serialize(); {} keeps every lane legacy.
+var stat_frame: Dictionary = {}
 ## Unique item definitions (boss-tied, docs/19): definitions, excluded;
 ## drops reference them by index.
 var unique_defs: Array = []
@@ -199,6 +204,11 @@ func set_damage_schedule(entries: Array) -> void:
 ## Setup-phase: progression tables (Loop v1 docs/19).
 func set_progression(prog: Resource) -> void:
 	progression = prog
+
+
+## Setup-phase: the parsed stat frame (docs/22; StatFrame.load_frame).
+func set_stat_frame(f: Dictionary) -> void:
+	stat_frame = f
 
 
 ## Setup-phase: unique item defs (boss-tied; drops reference by index).

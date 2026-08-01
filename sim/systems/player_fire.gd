@@ -52,9 +52,14 @@ static func run(world: RefCounted) -> void:
 		if aim == Vector2.ZERO:
 			aim = Vector2.RIGHT
 		aim = aim.normalized()
+		# Attack-speed stat (docs/22 block 1/7): scales the frame's
+		# cadence; the != 100 gate makes identity STRUCTURAL for the
+		# legacy lane (no float ever runs at the default).
+		var cadence := int(wf.cadence_ticks)
+		if p.attack_speed_stat != 100:
+			cadence = maxi(1, roundi(float(cadence) * 100.0 / float(p.attack_speed_stat)))
 		# Quickdraw (ledger #2): hard-coded 2/3 cadence while buffed —
 		# +50% attack speed, no stat pipeline.
-		var cadence := int(wf.cadence_ticks)
 		if world.tick < p.quickdraw_until_tick:
 			cadence = maxi(1, (cadence * 2 + 2) / 3)
 		p.next_fire_tick = world.tick + cadence
@@ -76,13 +81,19 @@ static func run(world: RefCounted) -> void:
 		for si in shots.size():
 			var shot: Resource = shots[si]
 			var dir := aim.rotated(deg_to_rad(float(shot.angle_offset_deg)))
-			# Loop v1 (docs/19): tier + level scale the shot's authored
-			# damage — still a pure function of player state, RNG-free.
+			# Range stat (docs/22 block 1/7) scales shot lifetime —
+			# reach = speed x ttl; structural identity at 100.
+			var ttl := int(shot.ttl_ticks)
+			if p.range_stat != 100:
+				ttl = maxi(1, roundi(float(ttl) * float(p.range_stat) / 100.0))
+			# Damage: docs/22 tier table for the class lane, Loop v1
+			# tier/level multipliers for legacy — still a pure function
+			# of player state, RNG-free (Progress.shot_damage).
 			world.spawn_projectile(
 				p.pos + dir * float(shot.spawn_offset),
 				dir * float(shot.speed),
 				float(shot.radius),
-				int(shot.ttl_ticks),
+				ttl,
 				ActorState.FACTION_FRIENDLY,
 				Progress.shot_damage(world, p, int(shot.damage)),
 				int(wf.pattern_id),

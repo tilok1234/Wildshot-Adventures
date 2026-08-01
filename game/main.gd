@@ -269,8 +269,10 @@ func _process(_delta: float) -> void:
 	)
 	var p: RefCounted = world.players[0]
 	autofire_icon.texture = _af_on_tex if p.autofire_on else _af_off_tex
-	hp_bar.value = p.hp / 100.0
-	mana_bar.value = p.mana / 100.0
+	# Bars read the player's real maxes (class curves move them —
+	# docs/22 block 5; the old /100 was the v0 sheet's constant).
+	hp_bar.value = p.hp / maxf(1.0, float(p.max_hp))
+	mana_bar.value = p.mana / maxf(1.0, float(p.max_mana))
 	var adef: Resource = world.ability_def
 	if adef != null:
 		var affordable: bool = p.mana >= int(adef.mana_cost)
@@ -279,25 +281,45 @@ func _process(_delta: float) -> void:
 	rec_label.visible = gif_recorder != null and gif_recorder.armed
 	if not world.weapon_frames.is_empty():
 		weapon_label.text = String(world.weapon_frames[p.equipped_weapon].display_name)
-	# Loop v1 HUD (docs/19): level/xp/gold + the minimal equip surface.
-	(
-		loot_label
-		. set_text(
-			(
-				"lv %d  xp %d/%d  gold %d\nbolt T%d · scatter T%d · wheel T%d · armor T%d"
-				% [
-					p.level,
-					p.xp,
-					Progress.xp_to_next(world, p.level),
-					p.gold,
-					p.weapon_tiers[0],
-					p.weapon_tiers[1],
-					p.weapon_tiers[2],
-					p.armor_tier,
-				]
+	# Level/xp/gold + the minimal equip surface. Class lane (docs/22):
+	# class name + its one weapon slot; legacy lane keeps the lab trio.
+	var xp_next: int = Progress.xp_to_next(world, p.level, p.class_id)
+	var xp_part := (
+		"lv %d  xp %d/%d" % [p.level, p.xp, xp_next] if xp_next > 0 else "lv %d  MAX" % p.level
+	)
+	if p.class_id >= 0:
+		(
+			loot_label
+			. set_text(
+				(
+					"%s  gold %d\n%s T%d · armor T%d"
+					% [
+						xp_part,
+						p.gold,
+						String(world.weapon_frames[p.equipped_weapon].display_name),
+						p.weapon_tiers[p.equipped_weapon],
+						p.armor_tier,
+					]
+				)
 			)
 		)
-	)
+	else:
+		(
+			loot_label
+			. set_text(
+				(
+					"%s  gold %d\nbolt T%d · scatter T%d · wheel T%d · armor T%d"
+					% [
+						xp_part,
+						p.gold,
+						p.weapon_tiers[0],
+						p.weapon_tiers[1],
+						p.weapon_tiers[2],
+						p.armor_tier,
+					]
+				)
+			)
+		)
 	# Loop moments worth a toast: level-ups + unique pickups.
 	for lev: Dictionary in driver.frame_events:
 		match int(lev.type):
@@ -546,8 +568,8 @@ func _maybe_show_character_create(pl: Label) -> void:
 	# Member-held panel + self-capturing lambda only — a local capture
 	# here makes a Callable/signal reference cycle that leaks at exit.
 	character_panel.chosen.connect(
-		func(hardcore: bool) -> void:
-			character = CharacterProfile.create(hardcore)
+		func(hardcore: bool, cls: String) -> void:
+			character = CharacterProfile.create(hardcore, cls)
 			character.runs = 1
 			CharacterProfile.save_profile(character)
 			CharacterProfile.apply_to_world(world, character)
@@ -659,6 +681,11 @@ func _ready() -> void:
 	# lands in the replay header's speed snapshot.
 	var preset := clampf(float(Config.get_setting("dev", "speed_preset", 4.0)), 3.0, 5.5)
 	world.players[0].move_speed = preset
+	# docs/22: the stat frame is load-bearing for the slice — a build
+	# where balance_frame.json failed to load must fail the boot gate
+	# loudly, never quietly fall back to the legacy lane.
+	if world.stat_frame.is_empty():
+		push_error("main: stat frame missing — balance_frame.json failed to load")
 
 	# Loop v1 (docs/19): the persistent character rides every world the
 	# player actually plays; audit/verify runs stay profile-free. Applied

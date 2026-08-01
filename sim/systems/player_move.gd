@@ -10,6 +10,7 @@ extends RefCounted
 ## sim_world.gd, which preloads this system).
 
 const Kinematics := preload("res://sim/systems/kinematics.gd")
+const StatFrame := preload("res://sim/systems/stat_frame.gd")
 
 ## Locomotion radius vs terrain (2026-07-28 walk-close feel; RETUNED
 ## 2026-08-01 by THE FIT RULE, sl-0078 designer-directed: "if there is
@@ -35,7 +36,15 @@ static func run(world: RefCounted) -> void:
 		if not p.dead and i < frames.size() and frames[i] != null:
 			var mv: Vector2 = frames[i].move_vector()
 			if mv != Vector2.ZERO:
-				var step: Vector2 = mv * p.move_speed * dt
+				# docs/22 block 6: the +15% HARD CAP (115 = 3.45 t/s)
+				# lives HERE, in the movement integrator, applied after
+				# every modifier — item data, console edits, and presets
+				# can never move a class-backed player past it. Legacy
+				# lab players (class_id -1) keep the §3.2 band (3.0-5.5).
+				var spd: float = p.move_speed
+				if p.class_id >= 0:
+					spd = minf(spd, StatFrame.CAP_TILES_PER_S)
+				var step: Vector2 = mv * spd * dt
 				# sl-0078: players walk the fit-rule truth (walk_grid +
 				# art-matched prop discs); enemies stay on the full grid.
 				p.pos = Kinematics.move_circle(

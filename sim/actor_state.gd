@@ -31,6 +31,11 @@ var dead: bool = false
 ## keep 0 in v1; the field lives here so future enemy armor is a data
 ## change (SERIAL 13).
 var armor_tier: int = 0
+## Armor VALUE — the defense number THE docs/22 formula subtracts
+## (SERIAL 15, stat frame): derived for class-backed players
+## (StatFrame.recompute), plain data for future enemy armor. 0 makes
+## the formula identity, so every pre-frame actor is byte-unchanged.
+var armor: int = 0
 
 
 func serialize_into(buf: StreamPeerBuffer) -> void:
@@ -46,3 +51,4 @@ func serialize_into(buf: StreamPeerBuffer) -> void:
 	buf.put_64(last_damaged_tick)
 	buf.put_u8(1 if dead else 0)
 	buf.put_u8(armor_tier)
+	buf.put_32(armor)

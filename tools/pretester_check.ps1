@@ -128,6 +128,7 @@ $tests = @(
     @("settings persistence", "tests/settings/settings_persist.gd"),
     @("feedback bundle + summary code", "tests/feedback/feedback_bundle_test.gd"),
     @("loop contracts (drops/curve/pickup)", "tests/loop/loop_test.gd"),
+    @("stat frame (docs/22 in the sim)", "tests/stat_frame/stat_frame_test.gd"),
     @("determinism smoke (all contracts)", "tests/determinism/determinism_smoke.gd"),
     @("golden replays x10", "tests/replay_fixtures/verify_replays.gd")
 )
@@ -168,56 +169,82 @@ foreach ($vp in @("core50-low", "core50-high")) {
 }
 
 if (-not $SkipBattery) {
-    # scenario, seeds, ticks, out (or ""), policy (or ""), expected
+    # scenario, seeds, ticks, out (or ""), policy (or ""), expected at
+    # the 3.0 floor, expected at the 115 cap (3.45; "" = floor-only row).
+    # CAP LANE (docs/22 block 6, slice S0 seam 1): DodgeBot proofs run
+    # at BOTH the CORE-53 floor and the ruled +15% hard cap FOREVER —
+    # cap reports land beside the floor record as dodge_*_cap115.json.
+    # Primary rows stay floor-only (watch-baselines of the alternative
+    # model, not proofs of record). The MUST-FAIL canary fails at BOTH
+    # speeds (geometric box; verified at the seam-1 sweep 2026-08-01).
+    # PINNED FINDING — proof_ringer cap FAIL (seam-1 sweep, seed-
+    # invariant 4-hit graze @t2033, near 0): at full 3.45 commitment
+    # the 16-heading lattice coarsens past the solo-ringer radial gap
+    # (0.121 floor margin). The FLOOR row (the CORE-33 mandate) PASSES;
+    # a real capped player keeps the floor dodge via tap modulation the
+    # model cannot express. A half-duty policy fix was built and
+    # REVERTED WITH CAUSE: safe-phase tie participation provably
+    # re-routed first_contact cap into a NEW 0.048 graze — global
+    # scoring knobs move other rows. Pinned FAIL, watched: a verdict
+    # MOVE on this row means the sim (or policy) changed under us.
     $battery = @(
-        @("canary_trivial","1,2,3,4,5",3600,"","","PASS"),
-        @("canary_undodgeable","1,2,3",1800,"","","FAIL"),
-        @("proof_rusher","1,2,3,4,5",3600,"","","PASS"),
-        @("proof_husk_archer","1,2,3,4,5",3600,"","","PASS"),
-        @("proof_fanmaw","203,204,205,206,207",3600,"","","PASS"),
-        @("proof_fanmaw_inside","205,206,207,208,209",3600,"","","PASS"),
-        @("proof_ringer","204,205,206,207,208",3600,"","","PASS"),
-        @("proof_leadshot","206,207,208,209,210",3600,"","","PASS"),
-        @("proof_blightcaster","207,208,209,210,211",3600,"","","PASS"),
-        @("proof_yw_p1","208,209,210,211,212",3600,"","","PASS"),
-        @("proof_yw_p2","209,210,211,212,213",3600,"","","PASS"),
-        @("proof_yw_p3","210,211,212,213,214",3600,"","","PASS"),
-        @("proof_yw_full","211,212,213,214,215",3600,"","","PASS"),
-        @("forest_walk","1,2,3",3600,"res://reports/dodge_forest_walk_composition.json","","PASS"),
-        @("world_walk","1,2,3",3600,"res://reports/dodge_world_walk_composition.json","","PASS"),
-        @("first_contact","1,2,3",3600,"res://reports/dodge_first_contact_composition.json","","PASS"),
-        @("second_contact","10,11,12,13,14",3600,"res://reports/dodge_second_contact_composition.json","","PASS"),
-        @("proof_rusher","1,2,3,4,5",3600,"","primary","FAIL"),
-        @("forest_walk","1,2,3",3600,"res://reports/dodge_forest_walk_composition_primary.json","primary","PASS"),
-        @("first_contact","1,2,3",3600,"res://reports/dodge_first_contact_composition_primary.json","primary","FAIL"),
-        @("lab_default","1,2,3",3600,"","","PASS"),
-        @("meet_blightcaster","1,2,3",3600,"","","PASS"),
-        @("meet_leadshot","1,2,3",3600,"","","PASS"),
-        @("meet_yard_warden","1,2,3",3600,"","","PASS"),
-        @("loop_ring1","1,2,3",3600,"","","PASS"),
-        @("loop_ring2","1,2,3",3600,"","","PASS"),
-        @("loop_ring3","1,2,3",3600,"","","PASS"),
-        @("proof_brk_site","1,2,3",3600,"","","PASS"),
-        @("overworld_green","1,2,3",3600,"res://reports/dodge_overworld_green_composition.json","","PASS"),
-        @("overworld_dry","1,2,3",3600,"res://reports/dodge_overworld_dry_composition.json","","PASS"),
-        @("overworld_wet","1,2,3",3600,"res://reports/dodge_overworld_wet_composition.json","","PASS"),
-        @("overworld_cold","1,2,3",3600,"res://reports/dodge_overworld_cold_composition.json","","PASS"),
-        @("overworld_green_boss","1,2,3",3600,"res://reports/dodge_overworld_green_boss_composition.json","","PASS")
+        @("canary_trivial","1,2,3,4,5",3600,"","","PASS","PASS"),
+        @("canary_undodgeable","1,2,3",1800,"","","FAIL","FAIL"),
+        @("proof_rusher","1,2,3,4,5",3600,"","","PASS","PASS"),
+        @("proof_husk_archer","1,2,3,4,5",3600,"","","PASS","PASS"),
+        @("proof_fanmaw","203,204,205,206,207",3600,"","","PASS","PASS"),
+        @("proof_fanmaw_inside","205,206,207,208,209",3600,"","","PASS","PASS"),
+        @("proof_ringer","204,205,206,207,208",3600,"","","PASS","FAIL"),
+        @("proof_leadshot","206,207,208,209,210",3600,"","","PASS","PASS"),
+        @("proof_blightcaster","207,208,209,210,211",3600,"","","PASS","PASS"),
+        @("proof_yw_p1","208,209,210,211,212",3600,"","","PASS","PASS"),
+        @("proof_yw_p2","209,210,211,212,213",3600,"","","PASS","PASS"),
+        @("proof_yw_p3","210,211,212,213,214",3600,"","","PASS","PASS"),
+        @("proof_yw_full","211,212,213,214,215",3600,"","","PASS","PASS"),
+        @("forest_walk","1,2,3",3600,"res://reports/dodge_forest_walk_composition.json","","PASS","PASS"),
+        @("world_walk","1,2,3",3600,"res://reports/dodge_world_walk_composition.json","","PASS","PASS"),
+        @("first_contact","1,2,3",3600,"res://reports/dodge_first_contact_composition.json","","PASS","PASS"),
+        @("second_contact","10,11,12,13,14",3600,"res://reports/dodge_second_contact_composition.json","","PASS","PASS"),
+        @("proof_rusher","1,2,3,4,5",3600,"","primary","FAIL",""),
+        @("forest_walk","1,2,3",3600,"res://reports/dodge_forest_walk_composition_primary.json","primary","PASS",""),
+        @("first_contact","1,2,3",3600,"res://reports/dodge_first_contact_composition_primary.json","primary","FAIL",""),
+        @("lab_default","1,2,3",3600,"","","PASS","PASS"),
+        @("meet_blightcaster","1,2,3",3600,"","","PASS","PASS"),
+        @("meet_leadshot","1,2,3",3600,"","","PASS","PASS"),
+        @("meet_yard_warden","1,2,3",3600,"","","PASS","PASS"),
+        @("loop_ring1","1,2,3",3600,"","","PASS","PASS"),
+        @("loop_ring2","1,2,3",3600,"","","PASS","PASS"),
+        @("loop_ring3","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_brk_site","1,2,3",3600,"","","PASS","PASS"),
+        @("overworld_green","1,2,3",3600,"res://reports/dodge_overworld_green_composition.json","","PASS","PASS"),
+        @("overworld_dry","1,2,3",3600,"res://reports/dodge_overworld_dry_composition.json","","PASS","PASS"),
+        @("overworld_wet","1,2,3",3600,"res://reports/dodge_overworld_wet_composition.json","","PASS","PASS"),
+        @("overworld_cold","1,2,3",3600,"res://reports/dodge_overworld_cold_composition.json","","PASS","PASS"),
+        @("overworld_green_boss","1,2,3",3600,"res://reports/dodge_overworld_green_boss_composition.json","","PASS","PASS")
     )
     foreach ($b in $battery) {
-        $scen = $b[0]; $seeds = $b[1]; $ticks = $b[2]; $out = $b[3]; $pol = $b[4]; $want = $b[5]
-        $tag = if ($pol) { " [$pol]" } else { "" }
-        $bname = "battery: $scen$tag (expect $want)"
-        $sw = [System.Diagnostics.Stopwatch]::StartNew()
-        $ba = @("--headless","--path",".","--script","game/bots/bot_runner.gd","--","--scenario=$scen","--speed=3.0","--seeds=$seeds","--ticks=$ticks")
-        if ($out) { $ba += "--out=$out" }
-        if ($pol) { $ba += "--policy=$pol" }
-        $res = & $godot @ba 2>&1 | Select-String -Pattern "\((PASS|FAIL)\)" | Select-Object -Last 1
-        $got = $res -replace '.*\((PASS|FAIL)\).*','$1'
-        $ok = ($got -eq $want)
-        $sw.Stop()
-        Write-Host ("{0,-42} {1}  ({2:n1}s)" -f $bname, $(if ($ok) { "PASS" } else { "FAIL" }), $sw.Elapsed.TotalSeconds)
-        if (-not $ok) { $fails += $bname }
+        $scen = $b[0]; $seeds = $b[1]; $ticks = $b[2]; $out = $b[3]; $pol = $b[4]
+        $runs = @(,@("3.0", $out, $b[5]))
+        if ($b[6]) {
+            $capout = if ($out) { $out -replace "\.json$","_cap115.json" } else { "res://reports/dodge_${scen}_cap115.json" }
+            $runs += ,@("3.45", $capout, $b[6])
+        }
+        foreach ($r in $runs) {
+            $speed = $r[0]; $rout = $r[1]; $want = $r[2]
+            $tag = if ($pol) { " [$pol]" } else { "" }
+            if ($speed -ne "3.0") { $tag += " [cap115]" }
+            $bname = "battery: $scen$tag (expect $want)"
+            $sw = [System.Diagnostics.Stopwatch]::StartNew()
+            $ba = @("--headless","--path",".","--script","game/bots/bot_runner.gd","--","--scenario=$scen","--speed=$speed","--seeds=$seeds","--ticks=$ticks")
+            if ($rout) { $ba += "--out=$rout" }
+            if ($pol) { $ba += "--policy=$pol" }
+            $res = & $godot @ba 2>&1 | Select-String -Pattern "\((PASS|FAIL)\)" | Select-Object -Last 1
+            $got = $res -replace '.*\((PASS|FAIL)\).*','$1'
+            $ok = ($got -eq $want)
+            $sw.Stop()
+            Write-Host ("{0,-42} {1}  ({2:n1}s)" -f $bname, $(if ($ok) { "PASS" } else { "FAIL" }), $sw.Elapsed.TotalSeconds)
+            if (-not $ok) { $fails += $bname }
+        }
     }
     Step "battery byte-identical (reports/ clean)" {
         $dirty = git status --porcelain reports/ | Where-Object { $_ -notmatch "repro_.*\.wsr" }

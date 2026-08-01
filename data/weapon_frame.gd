@@ -12,3 +12,8 @@ extends Resource
 @export var cadence_ticks: int = 30
 ## Array of ShotDef resources, fired together as one volley.
 @export var shots: Array[Resource] = []
+## docs/22 block 3 frame archetype ("slow_heavy" / "fast_light" /
+## "long_reach"): class-backed players draw per-shot damage from the
+## balance_frame.json tier table for this archetype. Empty = a lab
+## frame — the Loop v1 damage math applies unchanged.
+@export var archetype: StringName = &""

@@ -9,6 +9,7 @@ extends RefCounted
 
 const SimWorld := preload("res://sim/sim_world.gd")
 const PropColliders := preload("res://game/arena/prop_colliders.gd")
+const StatFrame := preload("res://sim/systems/stat_frame.gd")
 
 
 static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) -> RefCounted:
@@ -38,6 +39,10 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 	# world like the weapon/ability defs — definitions, not state.
 	world.set_progression(load("res://data/progression.tres"))
 	world.set_uniques([load("res://data/uniques/reliquary_coil.tres")])
+	# THE STAT FRAME (docs/22, slice S0): balance_frame.json rides every
+	# world as definitions. Inert for class_id -1 players — bot and
+	# legacy worlds stay byte-identical with it aboard.
+	world.set_stat_frame(StatFrame.load_frame())
 	# EnemyDef roster — INDEX ORDER IS CONTRACT (def_index serializes):
 	# 0=rusher, 1=husk_archer, 2=fanmaw, 3=ringer, 4=leadshot,
 	# 5=blightcaster, 6=yard_warden (§3.5 elite), 7=bone_reliquary_king

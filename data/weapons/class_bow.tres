@@ -1,0 +1,33 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://data/weapon_frame.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; docs/22 fast_light frame (slice S0): 2.0 shots/s (cadence 30), one
+; quick bolt — the budget-exact reference frame (block 3); the fast
+; stream tracks movers. Per-shot damage 6 documents T1; the CLASS
+; LANE reads the balance_frame.json tier table (6/8/12/16/23).
+; Handling flavor [P]: reach ~6.8 tiles, small quick shot.
+
+[sub_resource type="Resource" id="shot0"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 16.0
+radius = 0.125
+damage = 6
+ttl_ticks = 24
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.35
+
+[resource]
+script = ExtResource("1")
+id = &"class_bow"
+display_name = "Bow"
+pattern_id = 5
+cadence_ticks = 30
+shots = Array[Resource]([SubResource("shot0")])
+archetype = &"fast_light"

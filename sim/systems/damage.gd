@@ -12,6 +12,7 @@ extends RefCounted
 const ActorState := preload("res://sim/actor_state.gd")
 const SimEvents := preload("res://sim/events.gd")
 const Progress := preload("res://sim/systems/progress.gd")
+const StatFrame := preload("res://sim/systems/stat_frame.gd")
 
 
 ## Apply `amount` to actor `a`. hit_slot >= 0 marks a projectile hit and
@@ -38,11 +39,17 @@ static func apply(
 			)
 		)
 		return
-	# Loop v1 armor (docs/19, CORE-40 lean defense): flat mitigation for
-	# friendly targets through THE path — every source uniform. The §2.11
-	# test schedule bypasses it by contract (mitigation-bypassing tag).
-	if a.faction == ActorState.FACTION_FRIENDLY and pattern != world.PATTERN_TEST_SCHEDULE:
-		amount = Progress.mitigate(world, a, amount)
+	# Mitigation through THE path — every source uniform. The §2.11 test
+	# schedule bypasses it by contract (mitigation-bypassing tag).
+	# Friendly: two lanes inside Progress.mitigate (docs/22 formula for
+	# class-backed, Loop v1 flat table frozen for legacy). Hostile: THE
+	# formula on the armor VALUE — 0 today, so enemy armor is a data
+	# change when a chapter needs it, never a code change.
+	if pattern != world.PATTERN_TEST_SCHEDULE:
+		if a.faction == ActorState.FACTION_FRIENDLY:
+			amount = Progress.mitigate(world, a, amount)
+		elif a.armor > 0:
+			amount = StatFrame.taken(amount, a.armor)
 	a.hp -= amount
 	a.last_damaged_tick = t
 	# Player death: dies in place (recap + restart own the flow); enemy
