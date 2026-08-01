@@ -1,0 +1,37 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "capital-gate-guard",
+  "name": "Capital Gate Guard",
+  "group": "named-role",
+  "role": "guard",
+  "zone": "capital-gate",
+  "use": "Capital gate security and visible settlement safety-belt fiction.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "human",
+    "bodyBuild": "heroic",
+    "skin": "tan",
+    "hairStyle": "short",
+    "hairColor": "black",
+    "expression": "determined",
+    "faceDetail": "scar",
+    "headgear": "plumed",
+    "outfit": "plate",
+    "outfitTier": "tier3",
+    "outfitColor": "royal",
+    "weapon": "spear",
+    "weaponTier": "tier2",
+    "shield": "heater",
+    "shieldTier": "tier3",
+    "offhand": "none",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

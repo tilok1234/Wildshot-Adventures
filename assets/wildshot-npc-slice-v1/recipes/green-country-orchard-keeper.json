@@ -1,0 +1,37 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "green-country-orchard-keeper",
+  "name": "Green-Country Orchard Keeper",
+  "group": "zone-quest-giver",
+  "role": "orchard-quest-giver",
+  "zone": "green-country",
+  "use": "Orchard, roadside, hedgerow, and gathering quest chains.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "elf",
+    "bodyBuild": "classic",
+    "skin": "tan",
+    "hairStyle": "ponytail",
+    "hairColor": "ginger",
+    "expression": "happy",
+    "faceDetail": "blush",
+    "headgear": "bandana",
+    "outfit": "tunic",
+    "outfitTier": "tier1",
+    "outfitColor": "forest",
+    "weapon": "none",
+    "weaponTier": "tier1",
+    "shield": "none",
+    "shieldTier": "tier1",
+    "offhand": "lantern",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

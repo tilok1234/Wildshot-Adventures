@@ -1,0 +1,38 @@
+{
+  "formatVersion": 1,
+  "artifact": "wildshot-npc-slice-v1@bf6269c",
+  "id": "wildshot-npc-slice-v1",
+  "name": "Wildshot NPC Slice v1",
+  "packFormat": "8-bit-sprite-assembler-character-pack v3",
+  "source": {
+    "repository": "tilok1234/8-bit-sprite-assembler",
+    "releaseTag": "wildshot-npc-slice-v1@bf6269c",
+    "sourceCommit": "bf6269ca6fc07b3d95a826c95ec6c9c29c6daf53",
+    "sourceCommitVerified": "tag resolves to it; compare vs main = identical (the assembler main tip at intake); manifest provenance agrees (cleanPushedSource true, containingBranches origin/main) - the sl-0045 publish gate's claim independently confirmed",
+    "zipAsset": "wildshot-npc-slice-v1.zip",
+    "zipSha256": "548e0c9608a190983ac9705b6e1c9c36f29c2390022ebe55d85dc74919c23607",
+    "zipBytes": 301736,
+    "zipRootPrefix": "wildshot-npc-slice-v1/",
+    "digestVerified": "GitHub computed asset digest == local sha256 == the sl-0089 record"
+  },
+  "manifestSha256": "47bc45dd8ac30a3621dfbfa588a694feea5fde146f0486994f45db61eb395935",
+  "intake": {
+    "date": "2026-08-01",
+    "deliveryRef": "sl-0089",
+    "hashDoctrine": "per-file sha256s SHIPPED in the manifest and VERIFIED at intake (69/69 files hash-true + 32 character-entry hashes cross-checked) - not generated; this passport pins only manifest.json, the one file the manifest cannot hash",
+    "wiring": "NONE by ruling - NPCs wire at slice build, post-Loop-acceptance, alongside the icons (sl-0089); designer approval stands [P], taste rides first on-screen",
+    "gate": "tools/validate_npc_pack.py - fixed pretester step + CI row; manifest contract + shipped-hash parity + this passport's manifest pin"
+  },
+  "census": {
+    "files": 70,
+    "characters": 32,
+    "recipes": 32,
+    "review": 2,
+    "groups": {
+      "total": 32,
+      "named-role": 13,
+      "zone-quest-giver": 10,
+      "ambient-villager": 9
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "rough-outpost-guard",
+  "name": "Rough Outpost Guard",
+  "group": "named-role",
+  "role": "guard",
+  "zone": "multi-zone-outpost",
+  "use": "Rougher reusable guard for outposts and exposed settlement edges.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "orc",
+    "bodyBuild": "sturdy",
+    "skin": "orc",
+    "hairStyle": "mohawk",
+    "hairColor": "black",
+    "expression": "angry",
+    "faceDetail": "warpaint",
+    "headgear": "horns",
+    "outfit": "leather",
+    "outfitTier": "tier2",
+    "outfitColor": "umber",
+    "weapon": "axe",
+    "weaponTier": "tier2",
+    "shield": "round",
+    "shieldTier": "tier1",
+    "offhand": "none",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

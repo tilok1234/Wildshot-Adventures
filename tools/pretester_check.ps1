@@ -81,6 +81,18 @@ Step "icon pack validate (manifest+passport)" {
     return $true
 }
 
+# sl-0089 NPC slice roster raw drop (unwired by ruling): the manifest
+# ships its own per-file sha256s — verified, plus the passport's
+# manifest pin and the 480x96 / 20x4 / 24px sheet contract.
+Step "npc pack validate (manifest+passport)" {
+    $nout = python tools/validate_npc_pack.py 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        $nout | Select-Object -Last 8 | ForEach-Object { Write-Host "  $_" }
+        return $false
+    }
+    return $true
+}
+
 $tests = @(
     @("pixel-match", "tests/pixel_match/pixel_match.gd"),
     @("assembler pack + slice", "tests/assembler_pack/assembler_pack_test.gd"),

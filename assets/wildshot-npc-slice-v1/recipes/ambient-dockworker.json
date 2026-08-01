@@ -1,0 +1,37 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "ambient-dockworker",
+  "name": "Dockworker",
+  "group": "ambient-villager",
+  "role": "dockworker",
+  "zone": "capital-docks",
+  "use": "Dock crowd, loading work, fishing settlement, and harbor greetings.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "dwarf",
+    "bodyBuild": "sturdy",
+    "skin": "brown",
+    "hairStyle": "short",
+    "hairColor": "black",
+    "expression": "neutral",
+    "faceDetail": "beard",
+    "headgear": "bandana",
+    "outfit": "tunic",
+    "outfitTier": "tier1",
+    "outfitColor": "teal",
+    "weapon": "none",
+    "weaponTier": "tier1",
+    "shield": "none",
+    "shieldTier": "tier1",
+    "offhand": "none",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

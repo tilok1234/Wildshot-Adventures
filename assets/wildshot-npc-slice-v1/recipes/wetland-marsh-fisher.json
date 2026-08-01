@@ -1,0 +1,37 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "wetland-marsh-fisher",
+  "name": "Wetland Marsh Fisher",
+  "group": "zone-quest-giver",
+  "role": "fisher-quest-giver",
+  "zone": "wetland",
+  "use": "Marsh catch, dangerous water, bait, and river-beast quest chains.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "human",
+    "bodyBuild": "sturdy",
+    "skin": "deep",
+    "hairStyle": "afro",
+    "hairColor": "black",
+    "expression": "happy",
+    "faceDetail": "beard",
+    "headgear": "cap",
+    "outfit": "tunic",
+    "outfitTier": "tier1",
+    "outfitColor": "teal",
+    "weapon": "spear",
+    "weaponTier": "tier1",
+    "shield": "none",
+    "shieldTier": "tier1",
+    "offhand": "none",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "capital-stash-keeper",
+  "name": "Capital Stash-Keeper",
+  "group": "named-role",
+  "role": "banker-stash-keeper",
+  "zone": "capital",
+  "use": "Face for the per-character hub stash and banking fiction.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "dwarf",
+    "bodyBuild": "classic",
+    "skin": "pale",
+    "hairStyle": "short",
+    "hairColor": "white",
+    "expression": "neutral",
+    "faceDetail": "glasses",
+    "headgear": "none",
+    "outfit": "cape",
+    "outfitTier": "tier3",
+    "outfitColor": "purple",
+    "weapon": "none",
+    "weaponTier": "tier1",
+    "shield": "none",
+    "shieldTier": "tier1",
+    "offhand": "none",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

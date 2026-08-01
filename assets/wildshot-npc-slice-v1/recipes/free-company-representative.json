@@ -1,0 +1,38 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "free-company-representative",
+  "name": "Free Company Representative",
+  "group": "named-role",
+  "role": "faction-representative",
+  "zone": "capital",
+  "faction": "free-company",
+  "use": "Mercenary-casual faction standing anchor and later contract vendor.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "human",
+    "bodyBuild": "classic",
+    "skin": "brown",
+    "hairStyle": "messy",
+    "hairColor": "brown",
+    "expression": "happy",
+    "faceDetail": "eyepatch",
+    "headgear": "bandana",
+    "outfit": "leather",
+    "outfitTier": "tier2",
+    "outfitColor": "crimson",
+    "weapon": "sword",
+    "weaponTier": "tier2",
+    "shield": "buckler",
+    "shieldTier": "tier2",
+    "offhand": "none",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

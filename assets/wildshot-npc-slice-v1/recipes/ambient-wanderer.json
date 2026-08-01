@@ -1,0 +1,37 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "ambient-wanderer",
+  "name": "Wanderer",
+  "group": "ambient-villager",
+  "role": "wanderer",
+  "zone": "multi-zone",
+  "use": "Roadside, camp, and settlement-edge ambient traveler.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "lizardfolk",
+    "bodyBuild": "lean",
+    "skin": "tan",
+    "hairStyle": "bald",
+    "hairColor": "brown",
+    "expression": "neutral",
+    "faceDetail": "warpaint",
+    "headgear": "hood",
+    "outfit": "ranger",
+    "outfitTier": "tier1",
+    "outfitColor": "umber",
+    "weapon": "dagger",
+    "weaponTier": "tier1",
+    "shield": "none",
+    "shieldTier": "tier1",
+    "offhand": "lantern",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

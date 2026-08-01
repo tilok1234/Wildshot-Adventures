@@ -1,0 +1,264 @@
+{
+  "width": 768,
+  "height": 384,
+  "columns": 8,
+  "rows": 4,
+  "cells": [
+    {
+      "index": 1,
+      "row": 1,
+      "column": 1,
+      "id": "warden-representative",
+      "name": "Warden Representative",
+      "group": "named-role"
+    },
+    {
+      "index": 2,
+      "row": 1,
+      "column": 2,
+      "id": "prospector-representative",
+      "name": "Prospector Representative",
+      "group": "named-role"
+    },
+    {
+      "index": 3,
+      "row": 1,
+      "column": 3,
+      "id": "circle-representative",
+      "name": "Circle Representative",
+      "group": "named-role"
+    },
+    {
+      "index": 4,
+      "row": 1,
+      "column": 4,
+      "id": "free-company-representative",
+      "name": "Free Company Representative",
+      "group": "named-role"
+    },
+    {
+      "index": 5,
+      "row": 1,
+      "column": 5,
+      "id": "capital-general-merchant",
+      "name": "Capital General Merchant",
+      "group": "named-role"
+    },
+    {
+      "index": 6,
+      "row": 1,
+      "column": 6,
+      "id": "settlement-trader",
+      "name": "Settlement Trader",
+      "group": "named-role"
+    },
+    {
+      "index": 7,
+      "row": 1,
+      "column": 7,
+      "id": "capital-stash-keeper",
+      "name": "Capital Stash-Keeper",
+      "group": "named-role"
+    },
+    {
+      "index": 8,
+      "row": 1,
+      "column": 8,
+      "id": "capital-smith-artisan",
+      "name": "Capital Smith-Artisan",
+      "group": "named-role"
+    },
+    {
+      "index": 9,
+      "row": 2,
+      "column": 1,
+      "id": "dock-fisher-teacher",
+      "name": "Dock Fisher",
+      "group": "named-role"
+    },
+    {
+      "index": 10,
+      "row": 2,
+      "column": 2,
+      "id": "meadow-herbalist",
+      "name": "Meadow Herbalist",
+      "group": "named-role"
+    },
+    {
+      "index": 11,
+      "row": 2,
+      "column": 3,
+      "id": "capital-gate-guard",
+      "name": "Capital Gate Guard",
+      "group": "named-role"
+    },
+    {
+      "index": 12,
+      "row": 2,
+      "column": 4,
+      "id": "capital-field-guard",
+      "name": "Capital Field Guard",
+      "group": "named-role"
+    },
+    {
+      "index": 13,
+      "row": 2,
+      "column": 5,
+      "id": "rough-outpost-guard",
+      "name": "Rough Outpost Guard",
+      "group": "named-role"
+    },
+    {
+      "index": 14,
+      "row": 2,
+      "column": 6,
+      "id": "green-country-farmer",
+      "name": "Green-Country Farmer",
+      "group": "zone-quest-giver"
+    },
+    {
+      "index": 15,
+      "row": 2,
+      "column": 7,
+      "id": "green-country-shepherd",
+      "name": "Green-Country Shepherd",
+      "group": "zone-quest-giver"
+    },
+    {
+      "index": 16,
+      "row": 2,
+      "column": 8,
+      "id": "green-country-orchard-keeper",
+      "name": "Green-Country Orchard Keeper",
+      "group": "zone-quest-giver"
+    },
+    {
+      "index": 17,
+      "row": 3,
+      "column": 1,
+      "id": "dry-reach-claim-prospector",
+      "name": "Dry-Reach Claim Prospector",
+      "group": "zone-quest-giver"
+    },
+    {
+      "index": 18,
+      "row": 3,
+      "column": 2,
+      "id": "dry-reach-caravan-scout",
+      "name": "Dry-Reach Caravan Scout",
+      "group": "zone-quest-giver"
+    },
+    {
+      "index": 19,
+      "row": 3,
+      "column": 3,
+      "id": "wetland-reed-cutter",
+      "name": "Wetland Reed-Cutter",
+      "group": "zone-quest-giver"
+    },
+    {
+      "index": 20,
+      "row": 3,
+      "column": 4,
+      "id": "wetland-marsh-fisher",
+      "name": "Wetland Marsh Fisher",
+      "group": "zone-quest-giver"
+    },
+    {
+      "index": 21,
+      "row": 3,
+      "column": 5,
+      "id": "wetland-ferryman",
+      "name": "Wetland Ferryman",
+      "group": "zone-quest-giver"
+    },
+    {
+      "index": 22,
+      "row": 3,
+      "column": 6,
+      "id": "snow-country-trapper",
+      "name": "Snow-Country Trapper",
+      "group": "zone-quest-giver"
+    },
+    {
+      "index": 23,
+      "row": 3,
+      "column": 7,
+      "id": "snow-country-wayfinder",
+      "name": "Snow-Country Wayfinder",
+      "group": "zone-quest-giver"
+    },
+    {
+      "index": 24,
+      "row": 3,
+      "column": 8,
+      "id": "ambient-elder",
+      "name": "Village Elder",
+      "group": "ambient-villager"
+    },
+    {
+      "index": 25,
+      "row": 4,
+      "column": 1,
+      "id": "ambient-young-errand-runner",
+      "name": "Young Errand-Runner",
+      "group": "ambient-villager"
+    },
+    {
+      "index": 26,
+      "row": 4,
+      "column": 2,
+      "id": "ambient-dockworker",
+      "name": "Dockworker",
+      "group": "ambient-villager"
+    },
+    {
+      "index": 27,
+      "row": 4,
+      "column": 3,
+      "id": "ambient-farmhand",
+      "name": "Farmhand",
+      "group": "ambient-villager"
+    },
+    {
+      "index": 28,
+      "row": 4,
+      "column": 4,
+      "id": "ambient-market-goer-a",
+      "name": "Market-Goer A",
+      "group": "ambient-villager"
+    },
+    {
+      "index": 29,
+      "row": 4,
+      "column": 5,
+      "id": "ambient-market-goer-b",
+      "name": "Market-Goer B",
+      "group": "ambient-villager"
+    },
+    {
+      "index": 30,
+      "row": 4,
+      "column": 6,
+      "id": "ambient-beggar",
+      "name": "Beggar",
+      "group": "ambient-villager"
+    },
+    {
+      "index": 31,
+      "row": 4,
+      "column": 7,
+      "id": "ambient-wanderer",
+      "name": "Wanderer",
+      "group": "ambient-villager"
+    },
+    {
+      "index": 32,
+      "row": 4,
+      "column": 8,
+      "id": "ambient-courier",
+      "name": "Courier",
+      "group": "ambient-villager"
+    }
+  ]
+}

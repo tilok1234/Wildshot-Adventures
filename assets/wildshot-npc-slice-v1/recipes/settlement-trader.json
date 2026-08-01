@@ -1,0 +1,37 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "settlement-trader",
+  "name": "Settlement Trader",
+  "group": "named-role",
+  "role": "vendor",
+  "zone": "multi-zone",
+  "use": "Reusable trader look for satellite settlements and zone camps.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "goblin",
+    "bodyBuild": "lean",
+    "skin": "orc",
+    "hairStyle": "bowl",
+    "hairColor": "black",
+    "expression": "happy",
+    "faceDetail": "none",
+    "headgear": "cap",
+    "outfit": "leather",
+    "outfitTier": "tier1",
+    "outfitColor": "forest",
+    "weapon": "none",
+    "weaponTier": "tier1",
+    "shield": "none",
+    "shieldTier": "tier1",
+    "offhand": "lantern",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

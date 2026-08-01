@@ -1,0 +1,37 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "snow-country-trapper",
+  "name": "Snow-Country Trapper",
+  "group": "zone-quest-giver",
+  "role": "trapper-quest-giver",
+  "zone": "snow-country",
+  "use": "Tracks, pelts, predator, snare, and isolated-camp quest chains.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "beastkin",
+    "bodyBuild": "sturdy",
+    "skin": "pale",
+    "hairStyle": "messy",
+    "hairColor": "white",
+    "expression": "determined",
+    "faceDetail": "scar",
+    "headgear": "hood",
+    "outfit": "ranger",
+    "outfitTier": "tier2",
+    "outfitColor": "charcoal",
+    "weapon": "bow",
+    "weaponTier": "tier2",
+    "shield": "none",
+    "shieldTier": "tier1",
+    "offhand": "none",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

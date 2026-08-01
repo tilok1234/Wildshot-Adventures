@@ -1,0 +1,37 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "ambient-young-errand-runner",
+  "name": "Young Errand-Runner",
+  "group": "ambient-villager",
+  "role": "youth",
+  "zone": "multi-zone",
+  "use": "Youthful town silhouette for errands, greetings, and recognition chatter.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "human",
+    "bodyBuild": "lean",
+    "skin": "peach",
+    "hairStyle": "bowl",
+    "hairColor": "blonde",
+    "expression": "happy",
+    "faceDetail": "blush",
+    "headgear": "none",
+    "outfit": "tunic",
+    "outfitTier": "tier1",
+    "outfitColor": "royal",
+    "weapon": "none",
+    "weaponTier": "tier1",
+    "shield": "none",
+    "shieldTier": "tier1",
+    "offhand": "none",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

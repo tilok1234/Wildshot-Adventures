@@ -1,0 +1,37 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "snow-country-wayfinder",
+  "name": "Snow-Country Wayfinder",
+  "group": "zone-quest-giver",
+  "role": "wayfinder-quest-giver",
+  "zone": "snow-country",
+  "use": "Lost patrol, whiteout route, beacon, and mountain-pass quest chains.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "human",
+    "bodyBuild": "lean",
+    "skin": "pale",
+    "hairStyle": "braids",
+    "hairColor": "black",
+    "expression": "neutral",
+    "faceDetail": "warpaint",
+    "headgear": "hood",
+    "outfit": "cape",
+    "outfitTier": "tier2",
+    "outfitColor": "teal",
+    "weapon": "spear",
+    "weaponTier": "tier1",
+    "shield": "none",
+    "shieldTier": "tier1",
+    "offhand": "lantern",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

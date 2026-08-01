@@ -1,0 +1,37 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "meadow-herbalist",
+  "name": "Meadow Herbalist",
+  "group": "named-role",
+  "role": "herbalist-forager",
+  "zone": "green-country",
+  "use": "Foraging teacher, collection turn-ins, and meadow-edge quest-giver.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "elf",
+    "bodyBuild": "lean",
+    "skin": "brown",
+    "hairStyle": "ponytail",
+    "hairColor": "brown",
+    "expression": "neutral",
+    "faceDetail": "none",
+    "headgear": "hood",
+    "outfit": "ranger",
+    "outfitTier": "tier2",
+    "outfitColor": "forest",
+    "weapon": "none",
+    "weaponTier": "tier1",
+    "shield": "none",
+    "shieldTier": "tier1",
+    "offhand": "lantern",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

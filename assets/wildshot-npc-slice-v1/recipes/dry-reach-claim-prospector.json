@@ -1,0 +1,37 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "dry-reach-claim-prospector",
+  "name": "Dry-Reach Claim Prospector",
+  "group": "zone-quest-giver",
+  "role": "prospector-quest-giver",
+  "zone": "dry-reach",
+  "use": "Claim, cave, ore, and camp-purpose quest chains; axe is the pick surrogate.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "dwarf",
+    "bodyBuild": "lean",
+    "skin": "brown",
+    "hairStyle": "braids",
+    "hairColor": "ginger",
+    "expression": "determined",
+    "faceDetail": "scar",
+    "headgear": "cap",
+    "outfit": "leather",
+    "outfitTier": "tier1",
+    "outfitColor": "umber",
+    "weapon": "axe",
+    "weaponTier": "tier1",
+    "shield": "none",
+    "shieldTier": "tier1",
+    "offhand": "lantern",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

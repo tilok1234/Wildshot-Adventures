@@ -1,0 +1,37 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "ambient-elder",
+  "name": "Village Elder",
+  "group": "ambient-villager",
+  "role": "elder",
+  "zone": "multi-zone",
+  "use": "Greeting, rumor, recognition, and village-history dialogue.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "human",
+    "bodyBuild": "lean",
+    "skin": "pale",
+    "hairStyle": "long",
+    "hairColor": "white",
+    "expression": "neutral",
+    "faceDetail": "glasses",
+    "headgear": "none",
+    "outfit": "robe",
+    "outfitTier": "tier1",
+    "outfitColor": "umber",
+    "weapon": "none",
+    "weaponTier": "tier1",
+    "shield": "none",
+    "shieldTier": "tier1",
+    "offhand": "none",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

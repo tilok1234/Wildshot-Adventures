@@ -1,0 +1,38 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "circle-representative",
+  "name": "Circle Representative",
+  "group": "named-role",
+  "role": "faction-representative",
+  "zone": "capital",
+  "faction": "circle",
+  "use": "Scholarly faction standing anchor and later arcane vendor duty.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "elf",
+    "bodyBuild": "lean",
+    "skin": "pale",
+    "hairStyle": "long",
+    "hairColor": "white",
+    "expression": "neutral",
+    "faceDetail": "glasses",
+    "headgear": "circlet",
+    "outfit": "robe",
+    "outfitTier": "tier3",
+    "outfitColor": "teal",
+    "weapon": "staff",
+    "weaponTier": "tier2",
+    "shield": "none",
+    "shieldTier": "tier1",
+    "offhand": "none",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

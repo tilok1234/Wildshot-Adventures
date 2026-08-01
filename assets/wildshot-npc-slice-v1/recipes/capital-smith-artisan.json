@@ -1,0 +1,37 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "capital-smith-artisan",
+  "name": "Capital Smith-Artisan",
+  "group": "named-role",
+  "role": "crafter",
+  "zone": "capital",
+  "use": "Commission-style crafting face: bring X, receive Y.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "orc",
+    "bodyBuild": "sturdy",
+    "skin": "orc",
+    "hairStyle": "mohawk",
+    "hairColor": "black",
+    "expression": "determined",
+    "faceDetail": "beard",
+    "headgear": "bandana",
+    "outfit": "leather",
+    "outfitTier": "tier2",
+    "outfitColor": "umber",
+    "weapon": "warhammer",
+    "weaponTier": "tier2",
+    "shield": "none",
+    "shieldTier": "tier1",
+    "offhand": "none",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

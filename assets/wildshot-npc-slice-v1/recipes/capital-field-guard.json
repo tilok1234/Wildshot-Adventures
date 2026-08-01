@@ -1,0 +1,37 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "capital-field-guard",
+  "name": "Capital Field Guard",
+  "group": "named-role",
+  "role": "guard",
+  "zone": "capital-safety-belt",
+  "use": "Patrol presence at the near fields and belt edge.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "human",
+    "bodyBuild": "sturdy",
+    "skin": "peach",
+    "hairStyle": "short",
+    "hairColor": "blonde",
+    "expression": "determined",
+    "faceDetail": "none",
+    "headgear": "helm",
+    "outfit": "plate",
+    "outfitTier": "tier2",
+    "outfitColor": "royal",
+    "weapon": "sword",
+    "weaponTier": "tier2",
+    "shield": "round",
+    "shieldTier": "tier2",
+    "offhand": "none",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

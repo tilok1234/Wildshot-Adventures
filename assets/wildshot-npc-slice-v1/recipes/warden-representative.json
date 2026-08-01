@@ -1,0 +1,38 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "warden-representative",
+  "name": "Warden Representative",
+  "group": "named-role",
+  "role": "faction-representative",
+  "zone": "capital",
+  "faction": "wardens",
+  "use": "Faction standing anchor; later doubles as Warden vendor or duty officer.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "human",
+    "bodyBuild": "sturdy",
+    "skin": "tan",
+    "hairStyle": "short",
+    "hairColor": "black",
+    "expression": "determined",
+    "faceDetail": "scar",
+    "headgear": "plumed",
+    "outfit": "plate",
+    "outfitTier": "tier3",
+    "outfitColor": "royal",
+    "weapon": "sword",
+    "weaponTier": "tier2",
+    "shield": "tower",
+    "shieldTier": "tier3",
+    "offhand": "none",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

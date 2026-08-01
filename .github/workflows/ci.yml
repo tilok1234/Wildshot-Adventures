@@ -57,6 +57,16 @@ jobs:
           pip install --quiet pillow
           python3 tools/validate_icon_pack.py
 
+      # sl-0089 NPC slice roster: the manifest ships per-file sha256s
+      # (assembler publish-gate provenance) — verify them + the passport's
+      # manifest pin + the 480x96 / 20x4 / 24px sheet contract. Linux-safe.
+      - name: NPC pack validation (manifest pins + passport)
+        shell: bash
+        run: |
+          set -euo pipefail
+          pip install --quiet pillow
+          python3 tools/validate_npc_pack.py
+
   # M2 job (tracker line "determinism smoke test"): double-run state-hash
   # compare. Sim execution — §2.4 scope is same-build/same-platform (Windows),
   # so this MUST run on a Windows runner; a Linux runner would false-alarm on

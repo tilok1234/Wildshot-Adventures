@@ -1,0 +1,37 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "ambient-courier",
+  "name": "Courier",
+  "group": "ambient-villager",
+  "role": "courier",
+  "zone": "multi-zone",
+  "use": "Moving town life, message hooks, tavern traffic, and cross-zone reuse.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "goblin",
+    "bodyBuild": "lean",
+    "skin": "orc",
+    "hairStyle": "spiky",
+    "hairColor": "ginger",
+    "expression": "determined",
+    "faceDetail": "none",
+    "headgear": "bandana",
+    "outfit": "leather",
+    "outfitTier": "tier1",
+    "outfitColor": "crimson",
+    "weapon": "none",
+    "weaponTier": "tier1",
+    "shield": "none",
+    "shieldTier": "tier1",
+    "offhand": "lantern",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

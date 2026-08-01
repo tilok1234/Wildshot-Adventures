@@ -1,0 +1,37 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "dry-reach-caravan-scout",
+  "name": "Dry-Reach Caravan Scout",
+  "group": "zone-quest-giver",
+  "role": "caravan-quest-giver",
+  "zone": "dry-reach",
+  "use": "Road, caravan, ambush, route, and supply quest chains.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "tiefling",
+    "bodyBuild": "lean",
+    "skin": "tan",
+    "hairStyle": "topknot",
+    "hairColor": "black",
+    "expression": "neutral",
+    "faceDetail": "eyepatch",
+    "headgear": "hood",
+    "outfit": "ranger",
+    "outfitTier": "tier2",
+    "outfitColor": "umber",
+    "weapon": "crossbow",
+    "weaponTier": "tier2",
+    "shield": "none",
+    "shieldTier": "tier1",
+    "offhand": "none",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

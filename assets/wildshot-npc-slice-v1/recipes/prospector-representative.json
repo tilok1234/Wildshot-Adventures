@@ -1,0 +1,38 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "prospector-representative",
+  "name": "Prospector Representative",
+  "group": "named-role",
+  "role": "faction-representative",
+  "zone": "capital",
+  "faction": "prospectors",
+  "use": "Faction standing anchor; axe is the current mining-pick surrogate.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "dwarf",
+    "bodyBuild": "sturdy",
+    "skin": "tan",
+    "hairStyle": "braids",
+    "hairColor": "ginger",
+    "expression": "determined",
+    "faceDetail": "beard",
+    "headgear": "cap",
+    "outfit": "leather",
+    "outfitTier": "tier2",
+    "outfitColor": "umber",
+    "weapon": "axe",
+    "weaponTier": "tier2",
+    "shield": "none",
+    "shieldTier": "tier1",
+    "offhand": "lantern",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

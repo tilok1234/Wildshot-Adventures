@@ -1,0 +1,37 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "green-country-shepherd",
+  "name": "Green-Country Shepherd",
+  "group": "zone-quest-giver",
+  "role": "shepherd-quest-giver",
+  "zone": "green-country",
+  "use": "Wolf and lost-livestock quest chains; club is the current crook surrogate.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "human",
+    "bodyBuild": "lean",
+    "skin": "peach",
+    "hairStyle": "messy",
+    "hairColor": "blonde",
+    "expression": "neutral",
+    "faceDetail": "none",
+    "headgear": "hood",
+    "outfit": "ranger",
+    "outfitTier": "tier1",
+    "outfitColor": "forest",
+    "weapon": "club",
+    "weaponTier": "tier1",
+    "shield": "none",
+    "shieldTier": "tier1",
+    "offhand": "none",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

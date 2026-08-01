@@ -1,0 +1,37 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "dock-fisher-teacher",
+  "name": "Dock Fisher",
+  "group": "named-role",
+  "role": "fisher-teacher",
+  "zone": "capital-docks",
+  "use": "Fishing teacher, collection turn-ins, and dock quest-giver.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "human",
+    "bodyBuild": "lean",
+    "skin": "deep",
+    "hairStyle": "braids",
+    "hairColor": "black",
+    "expression": "happy",
+    "faceDetail": "none",
+    "headgear": "cap",
+    "outfit": "tunic",
+    "outfitTier": "tier1",
+    "outfitColor": "teal",
+    "weapon": "spear",
+    "weaponTier": "tier1",
+    "shield": "none",
+    "shieldTier": "tier1",
+    "offhand": "none",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}

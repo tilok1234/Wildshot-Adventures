@@ -1,0 +1,37 @@
+{
+  "format": "8-bit-sprite-assembler-npc-recipe",
+  "version": 1,
+  "id": "capital-general-merchant",
+  "name": "Capital General Merchant",
+  "group": "named-role",
+  "role": "vendor",
+  "zone": "capital",
+  "use": "Baseline-gear catch-up floor and capital general merchant.",
+  "kind": "player",
+  "spec": {
+    "kind": "player",
+    "species": "human",
+    "bodyBuild": "classic",
+    "skin": "peach",
+    "hairStyle": "short",
+    "hairColor": "blonde",
+    "expression": "happy",
+    "faceDetail": "mustache",
+    "headgear": "cap",
+    "outfit": "tunic",
+    "outfitTier": "tier2",
+    "outfitColor": "royal",
+    "weapon": "none",
+    "weaponTier": "tier1",
+    "shield": "none",
+    "shieldTier": "tier1",
+    "offhand": "none",
+    "palette": null
+  },
+  "presentation": {
+    "shadeMode": "form",
+    "outlineMode": "none",
+    "effects": "off",
+    "bakedShadow": false
+  }
+}
