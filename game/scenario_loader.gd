@@ -64,6 +64,11 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 		defs.append(extra)
 	world.set_enemy_defs(defs)
 	world.set_damage_schedule(scenario.damage_schedule)
+	# CORE-43 (seam 3): the settlement respawn point = the scenario's
+	# spawn. persistent_respawn itself is armed by main once the
+	# PROFILE is known (normal-mode character in a persistent-world
+	# scenario) — bot and replay builds stay dead-in-place.
+	world.respawn_cell = scenario.player_spawn
 	world.add_player(scenario.player_spawn)
 	for p in scenario.standin_positions:
 		world.add_enemy_standin(p)

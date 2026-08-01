@@ -54,6 +54,11 @@ var ring_index: int = -1
 var attack_speed_stat: int = 100
 var range_stat: int = 100
 var damage_mod: int = 0
+## CORE-43 (SERIAL 17): tick this dead player revives at the
+## settlement (persistent worlds only; -1 = no respawn pending).
+## Armed by THE damage path at the death tick; the ability key while
+## dead confirms early (player_respawn.gd).
+var respawn_at_tick: int = -1
 
 
 func serialize_into(buf: StreamPeerBuffer) -> void:
@@ -78,3 +83,4 @@ func serialize_into(buf: StreamPeerBuffer) -> void:
 	buf.put_u16(attack_speed_stat)
 	buf.put_u16(range_stat)
 	buf.put_32(damage_mod)
+	buf.put_64(respawn_at_tick)

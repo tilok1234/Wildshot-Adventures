@@ -13,6 +13,7 @@ id = &"slice_overworld"
 display_name = "THE SLICE: overworld (dusk b77, living world)"
 worldforge_pack = "res://assets/worldforge-packs/wildshot-overworld-pack-dusk/"
 content_pack = "res://assets/wildshot-overworld-pack-dusk-content/"
+persistent_world = true
 player_spawn = Vector2(109.5, 182.5)
 standin_positions = PackedVector2Array()
 enemy_spawns = {}

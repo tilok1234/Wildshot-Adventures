@@ -21,6 +21,7 @@ const ProjectilePool := preload("res://sim/projectile_pool.gd")
 const SimEvents := preload("res://sim/events.gd")
 const PlayerMove := preload("res://sim/systems/player_move.gd")
 const PlayerRegen := preload("res://sim/systems/player_regen.gd")
+const PlayerRespawn := preload("res://sim/systems/player_respawn.gd")
 const PlayerAbility := preload("res://sim/systems/player_ability.gd")
 const PlayerFire := preload("res://sim/systems/player_fire.gd")
 const EnemyStep := preload("res://sim/systems/enemy_step.gd")
@@ -32,11 +33,12 @@ const Damage := preload("res://sim/systems/damage.gd")
 
 const TICKS_PER_SECOND := 60
 const DT := 1.0 / 60.0
-## 16 = living-world plumbing v1 (slice S0 seam 2, sl-0100): leash-
-## gated spawn sites (dormant populations, away-only respawn timers,
-## enemy site tethers). Site-less worlds serialize an empty site list
-## and behave byte-identically. 15 = docs/22 stat frame (seam 1).
-const SERIAL_VERSION := 16
+## 17 = overworld death (slice S0 seam 3, sl-0100; CORE-43): in-sim
+## gold cost + settlement respawn timer for class-backed players in
+## persistent worlds (PlayerState.respawn_at_tick). Inert everywhere
+## persistent_respawn is off — every proof world. 16 = living-world
+## sites (seam 2); 15 = docs/22 stat frame (seam 1).
+const SERIAL_VERSION := 17
 
 ## Damage-source pattern id for the scenario-declared test damage
 ## schedule (§2.11 elite transition proofs; planning log 2026-07-28).
@@ -167,6 +169,16 @@ var site_defs: Array = []
 ## flag, away-only respawn timer, and the dormant population (def_index
 ## + hp per member — damaged survivors stay damaged across sleeps).
 var sites: Array[Dictionary] = []
+
+## CORE-43 overworld death (slice S0 seam 3). Setup config like the
+## defs (unserialized; the scenario + profile determine it): when
+## true, a class-backed player's death costs carried gold IN-SIM and
+## respawns them at respawn_cell — the world persists, no run
+## framing (sl-0098). False = dead-in-place (every lab/proof world,
+## hardcore characters, profile-free runs).
+var persistent_respawn: bool = false
+## Where persistent respawn lands — the scenario's settlement spawn.
+var respawn_cell: Vector2 = Vector2.ZERO
 ## Unique item definitions (boss-tied, docs/19): definitions, excluded;
 ## drops reference them by index.
 var unique_defs: Array = []
@@ -394,6 +406,7 @@ func step(frames: Array) -> void:
 	current_frames = frames
 	_drain_commands()
 	_apply_damage_schedule()
+	PlayerRespawn.run(self)
 	PlayerRegen.run(self)
 	PlayerMove.run(self)
 	PlayerAbility.run(self)

@@ -18,6 +18,13 @@ extends Resource
 ## via game/arena/content_importer.gd — leash-gated sites, no new
 ## authoring format). Empty = no sites (every pre-slice scenario).
 @export var content_pack: String = ""
+## Persistent-world scenario (sl-0098: NO run framing — the world
+## persists and refills). With a NORMAL-mode character aboard, death
+## becomes the CORE-43 overworld shape: in-sim gold cost + respawn at
+## the settlement + the walk back; T never rebuilds the world's
+## meaning (it still reseeds — a lab tool, not a run). Hardcore and
+## profile-free (bot) play keep dead-in-place.
+@export var persistent_world: bool = false
 @export var player_spawn: Vector2 = Vector2(24.0, 16.0)
 @export var standin_positions: PackedVector2Array = PackedVector2Array()
 ## EnemyDef id (String) -> PackedVector2Array of tile positions. Spawn

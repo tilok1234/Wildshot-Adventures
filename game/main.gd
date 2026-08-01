@@ -90,6 +90,10 @@ var _comments_paused := false
 ## Loop v1 persistent character (docs/19): {} = none — the creation
 ## screen owns the next step. Applied to the world setup-phase.
 var character: Dictionary = {}
+## CORE-43 (seam 3): whether the ACTIVE scenario is a persistent
+## world — cached for the creation-screen path, which arms
+## world.persistent_respawn after the class/mode choice.
+var _scenario_persistent := false
 var character_panel: PanelContainer = null
 var _char_save_accum := 0.0
 ## EffectLibrary policy object (M6, ledger #9) — cosmetic/friendly
@@ -320,7 +324,8 @@ func _process(_delta: float) -> void:
 				)
 			)
 		)
-	# Loop moments worth a toast: level-ups + unique pickups.
+	# Loop moments worth a toast: level-ups, unique pickups, and the
+	# CORE-43 death/respawn beats (persistent worlds, seam 3).
 	for lev: Dictionary in driver.frame_events:
 		match int(lev.type):
 			SimEvents.Type.LEVEL_UP:
@@ -329,6 +334,10 @@ func _process(_delta: float) -> void:
 				if int(lev.kind) == SimWorld.DROP_UNIQUE and int(lev.a) < world.unique_defs.size():
 					var ud: Resource = world.unique_defs[int(lev.a)]
 					_show_toast("UNIQUE: %s" % String(ud.display_name))
+			SimEvents.Type.PLAYER_RESPAWNED:
+				if recap_panel != null:
+					recap_panel.visible = false
+				_show_toast("back at the settlement — the walk out is yours")
 	# F10: dump the always-on session recording. NOTE: the main scene is a
 	# hardcoded dev scenario until M4 — saved replays verify only against
 	# the same build (no scenario id exists for it yet); golden fixtures
@@ -573,6 +582,7 @@ func _maybe_show_character_create(pl: Label) -> void:
 			character.runs = 1
 			CharacterProfile.save_profile(character)
 			CharacterProfile.apply_to_world(world, character)
+			world.persistent_respawn = _scenario_persistent and not hardcore
 			driver.pause_locked = false
 			driver.paused = false
 			character_panel.queue_free()
@@ -580,11 +590,13 @@ func _maybe_show_character_create(pl: Label) -> void:
 	)
 
 
-## Loop v1 death bookkeeping (docs/19 ruling 1) — once per death, on
-## the recap. Hardcore: the character file dies with the character and
-## the reset key lands on the new-character screen. Normal: harvest,
-## gold percentage cost ([T]), save — equipment never taken. Retry
-## stays ONE key; the run-back is the rest of the price.
+## Death bookkeeping — once per death, on the recap. Hardcore: the
+## character file dies with the character and the reset key lands on
+## the new-character screen. PERSISTENT WORLD (CORE-43, seam 3): the
+## SIM already took the gold slice at the death tick — harvest the
+## post-cost profile and save; the sim's settlement respawn owns the
+## comeback (no run framing). Legacy loop worlds: profile-side cost +
+## the one-key retry, unchanged.
 func _on_player_death() -> void:
 	if character.is_empty():
 		return
@@ -596,6 +608,18 @@ func _on_player_death() -> void:
 				"HARDCORE DEATH — character gone. %s starts a new one."
 				% Config.binding_text("scenario_reset")
 			)
+		)
+		return
+	if world.persistent_respawn:
+		CharacterProfile.harvest(world, character)
+		character.deaths = int(character.get("deaths", 0)) + 1
+		CharacterProfile.save_profile(character)
+		var gold_lost := 0
+		for ev: Dictionary in driver.frame_events:
+			if int(ev.type) == SimEvents.Type.ENTITY_KILLED and bool(ev.get("player", false)):
+				gold_lost = int(ev.get("gold_lost", 0))
+		_show_toast(
+			"death: %d gold lost — you wake at the settlement. [Space] wakes you now." % gold_lost
 		)
 		return
 	CharacterProfile.harvest(world, character)
@@ -691,12 +715,20 @@ func _ready() -> void:
 	# player actually plays; audit/verify runs stay profile-free. Applied
 	# BEFORE the recorder snapshots initial state, so replay headers are
 	# honest about what actually ran.
+	_scenario_persistent = bool(scenario.persistent_world)
 	if not (audit_mode or verify_mode):
 		character = CharacterProfile.load_profile()
 		if not character.is_empty():
 			CharacterProfile.apply_to_world(world, character)
 			character.runs = int(character.get("runs", 0)) + 1
 			CharacterProfile.save_profile(character)
+			# CORE-43 (seam 3): a NORMAL-mode character in a
+			# persistent-world scenario dies the overworld way —
+			# in-sim gold slice + settlement respawn. Hardcore keeps
+			# dead-in-place (the file is the stake).
+			world.persistent_respawn = (
+				_scenario_persistent and not bool(character.get("hardcore", false))
+			)
 
 	driver = RealtimeDriver.new()
 	driver.world = world
@@ -1190,7 +1222,12 @@ func _ready() -> void:
 	add_child(recap)
 	recap.recap_ready.connect(
 		func(r: Dictionary) -> void:
-			driver.paused = true
+			# Persistent worlds keep RUNNING through your death (the
+			# world does not wait — sl-0098); the recap still shows
+			# (Law 8) and hides itself on the settlement respawn.
+			# Everywhere else: pause + one-key retry, unchanged.
+			if not world.persistent_respawn:
+				driver.paused = true
 			recap_panel.show_recap(r, Config.binding_text("scenario_reset"))
 			_on_player_death()
 	)

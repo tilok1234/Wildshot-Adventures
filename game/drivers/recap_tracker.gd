@@ -21,7 +21,10 @@ var _done := false
 
 
 func _process(_delta: float) -> void:
-	if driver == null or world == null or _done:
+	# _done gates EMISSION, not processing — the tracker must keep
+	# reading events to see PLAYER_RESPAWNED and re-arm (persistent
+	# worlds die more than once).
+	if driver == null or world == null:
 		return
 	var player_ids := {}
 	for p: RefCounted in world.players:
@@ -47,9 +50,16 @@ func _process(_delta: float) -> void:
 					)
 			SimEvents.Type.ENTITY_KILLED:
 				if bool(ev.get("player", false)):
-					_emit_recap(int(ev.tick))
+					if not _done:
+						_emit_recap(int(ev.tick))
 				elif int(ev.get("def_index", -1)) >= 0:
 					_log_enemy_kill(ev)
+			SimEvents.Type.PLAYER_RESPAWNED:
+				# Persistent worlds (CORE-43, seam 3): every death gets
+				# its recap — re-arm with a fresh trace for the next
+				# life (Law 8 holds for death #2 and onward).
+				_done = false
+				_hits.clear()
 	var cutoff: int = world.tick - TRACE_TICKS
 	while not _hits.is_empty() and int(_hits[0].tick) < cutoff:
 		_hits.pop_front()

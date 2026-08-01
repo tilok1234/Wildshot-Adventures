@@ -18,6 +18,8 @@ const ContentImporter := preload("res://game/arena/content_importer.gd")
 const ScenarioLoader := preload("res://game/scenario_loader.gd")
 const WorldforgePack := preload("res://addons/worldforge_importer/worldforge_pack.gd")
 const SimEvents := preload("res://sim/events.gd")
+const StatFrame := preload("res://sim/systems/stat_frame.gd")
+const CharacterProfile := preload("res://game/drivers/character_profile.gd")
 
 const PACK := "res://assets/wildshot-overworld-pack-dusk-content/"
 
@@ -257,8 +259,74 @@ func _init() -> void:
 		_step(c, 60)
 		check(a.serialize() != c.serialize(), "different seed diverges")
 
+	# 9. CORE-43 overworld death (seam 3): in-sim gold slice at the
+	# death tick, settlement respawn on the timer, ability-key early
+	# confirm; dead-in-place stands everywhere the flag is off.
+	var dw: RefCounted = _synth_world(21)
+	dw.set_stat_frame(StatFrame.load_frame())
+	CharacterProfile.apply_to_world(dw, CharacterProfile.create(false, "bow"))
+	dw.persistent_respawn = true
+	dw.respawn_cell = Vector2(10.5, 16.5)
+	var dp: RefCounted = dw.players[0]
+	dp.gold = 100
+	dp.pos = Vector2(40.5, 16.5)
+	Damage.apply(dw, dp, 99999, 0)
+	check(dp.dead, "player dies in place first")
+	check(dp.gold == 75, "death takes the 25% gold slice IN-SIM [T]")
+	check(dp.respawn_at_tick == dw.tick + 240, "settlement respawn timer armed")
+	var death_ev_gold := -1
+	for ev: Dictionary in dw.events:
+		if int(ev.type) == SimEvents.Type.ENTITY_KILLED and bool(ev.get("player", false)):
+			death_ev_gold = int(ev.get("gold_lost", -1))
+	check(death_ev_gold == 25, "death event carries gold_lost for the toast")
+	_step(dw, 239)
+	check(dp.dead, "still dead one tick before the timer")
+	_step(dw, 2)
+	check(not dp.dead, "timer respawn fires")
+	check(dp.pos == Vector2(10.5, 16.5), "respawn lands at the settlement")
+	check(
+		dp.hp == dp.max_hp and dp.mana == dp.max_mana,
+		"respawn refills (the walk back is the price)"
+	)
+	var saw_respawn := false
+	for ev: Dictionary in dw.events:
+		if int(ev.type) == SimEvents.Type.PLAYER_RESPAWNED:
+			saw_respawn = true
+	check(saw_respawn, "PLAYER_RESPAWNED emitted")
+	# Early confirm: the ability key while dead.
+	dp.pos = Vector2(40.5, 16.5)
+	Damage.apply(dw, dp, 99999, 0)
+	check(dp.dead and dp.gold == 57, "second death costs again (75 - 18 = 57)")
+	var confirm_frame: RefCounted = InputFrame.new()
+	confirm_frame.ability_pressed = true
+	dw.step([confirm_frame])
+	check(not dp.dead, "ability key while dead respawns immediately")
+	check(dp.pos == Vector2(10.5, 16.5), "early respawn lands at the settlement too")
+	# Negative: the flag off = dead-in-place, gold untouched (every
+	# lab/proof world, hardcore characters).
+	var nw: RefCounted = _synth_world(23)
+	nw.set_stat_frame(StatFrame.load_frame())
+	CharacterProfile.apply_to_world(nw, CharacterProfile.create(false, "bow"))
+	var np: RefCounted = nw.players[0]
+	np.gold = 100
+	Damage.apply(nw, np, 99999, 0)
+	check(np.dead and np.gold == 100, "non-persistent death: no cost, dead in place")
+	_step(nw, 300)
+	check(np.dead, "non-persistent stays dead through any wait")
+	# Negative: a LEGACY (class -1) player in a persistent world keeps
+	# dead-in-place — bot worlds never respawn.
+	var lw2: RefCounted = _synth_world(25)
+	lw2.persistent_respawn = true
+	lw2.respawn_cell = Vector2(10.5, 16.5)
+	var lp2: RefCounted = lw2.players[0]
+	lp2.gold = 100
+	Damage.apply(lw2, lp2, 99999, 0)
+	check(lp2.dead and lp2.gold == 100, "legacy player: persistent flag changes nothing")
+	_step(lw2, 300)
+	check(lp2.dead, "legacy player stays dead")
+
 	if fails.is_empty():
-		print("living_world_test: PASS (census/leash/respawn/tether/rng/hash/determinism)")
+		print("living_world_test: PASS (census/leash/respawn/tether/rng/hash/determinism/death)")
 		quit(0)
 	else:
 		for m: String in fails:

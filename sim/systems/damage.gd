@@ -13,6 +13,7 @@ const ActorState := preload("res://sim/actor_state.gd")
 const SimEvents := preload("res://sim/events.gd")
 const Progress := preload("res://sim/systems/progress.gd")
 const StatFrame := preload("res://sim/systems/stat_frame.gd")
+const PlayerRespawn := preload("res://sim/systems/player_respawn.gd")
 
 
 ## Apply `amount` to actor `a`. hit_slot >= 0 marks a projectile hit and
@@ -52,11 +53,23 @@ static func apply(
 			amount = StatFrame.taken(amount, a.armor)
 	a.hp -= amount
 	a.last_damaged_tick = t
-	# Player death: dies in place (recap + restart own the flow); enemy
-	# death stays with the sweep.
+	# Player death. Persistent worlds (CORE-43, slice seam 3): the
+	# gold cost lands IN-SIM at the death tick ([T] percentage of
+	# CARRIED gold, progression data) and the settlement respawn
+	# timer arms — the world persists, no run framing (sl-0098).
+	# Everywhere else: dies in place (recap + restart own the flow).
+	# Enemy death stays with the sweep.
 	if a.hp <= 0 and a.faction == ActorState.FACTION_FRIENDLY and not a.dead:
 		a.hp = 0
 		a.dead = true
+		var gold_lost := 0
+		if world.persistent_respawn and a.class_id >= 0:
+			var pct := 25
+			if world.progression != null:
+				pct = int(world.progression.death_gold_pct)
+			gold_lost = a.gold * pct / 100
+			a.gold -= gold_lost
+			a.respawn_at_tick = t + PlayerRespawn.RESPAWN_DELAY_TICKS
 		(
 			events
 			. append(
@@ -66,6 +79,7 @@ static func apply(
 					"id": a.id,
 					"pos": a.pos,
 					"player": true,
+					"gold_lost": gold_lost,
 				}
 			)
 		)
