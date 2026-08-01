@@ -43,6 +43,10 @@ const KEY_ACTIONS := {
 	# M4 debug console + hitbox display.
 	"console_toggle": KEY_QUOTELEFT,
 	"hitbox_toggle": KEY_H,
+	# sl-0065 dev map overlay (fullscreen map / corner minimap; dev
+	# profile only — the overlay node never constructs in tester
+	# builds, so the key is inert there).
+	"map_toggle": KEY_N,
 }
 ## Modifier-key actions (registered separately): Alt+Enter fullscreen.
 const ALT_KEY_ACTIONS := {

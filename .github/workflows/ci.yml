@@ -129,6 +129,12 @@ jobs:
       - name: WorldForge pack validator
         run: ~/godot/godot --headless --path . --script tests/worldforge_pack/worldforge_pack_test.gd
 
+      # sl-0065 dev-map consumer: pack minimap.png present/loadable/
+      # grid-proportional for every pack-routed scenario; hide-by-
+      # absence for arena scenarios. Pure JSON/PNG reads — Linux-safe.
+      - name: Dev map minimap consumer
+        run: ~/godot/godot --headless --path . --script tests/dev_map/dev_map_test.gd
+
       # docs/14: assembler-pack consumer — fixture round-trip always;
       # real-pack validation activates when the drop lands. Linux-safe.
       - name: Assembler pack consumer test

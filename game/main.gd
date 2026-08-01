@@ -36,6 +36,8 @@ const CharacterCreate := preload("res://ui/character_create.gd")
 const RecapPanel := preload("res://ui/recap_panel.gd")
 const OnboardingScreen := preload("res://ui/onboarding_screen.gd")
 const Core50Verify := preload("res://game/dev/core50_verify.gd")
+const MapOverlay := preload("res://game/dev/map_overlay.gd")
+const WorldforgePack := preload("res://addons/worldforge_importer/worldforge_pack.gd")
 const DebugConsole := preload("res://ui/debug_console.gd")
 const BuildInfo := preload("res://build_info.gd")
 const HitboxView := preload("res://game/views/hitbox_view.gd")
@@ -107,6 +109,10 @@ const AUDIO_LEVELS: Array[float] = [1.0, 0.7, 0.4, 0.0]
 const AUDIO_BUSES: Array[String] = ["Master", "Sfx", "KeyThreats", "Music", "AttackSfx"]
 var recap_panel: PanelContainer
 var console: PanelContainer
+## sl-0065 dev world-map overlay (pack minimap + player dot). Null in
+## tester builds (gated construction, lint-pinned) AND for scenarios
+## whose pack ships no minimap.png — hidden by absence, not by flag.
+var map_overlay: Control = null
 var hitboxes: Node2D
 var hud_stack: VBoxContainer
 var _console_events := "off"
@@ -141,6 +147,17 @@ static func _bar_frame_box() -> StyleBoxTexture:
 	sb.texture_margin_right = 2.0
 	sb.texture_margin_bottom = 2.0
 	return sb
+
+
+## sl-0065: the active pack's own minimap.png, resolved pack-relative
+## (same exe-relative fallback as every other pack read). Empty when
+## the scenario is arena-built; a pack missing the file fails the
+## overlay's load — hidden by absence either way. If minimap
+## resolution ever proves insufficient on screen, that is a WorldForge
+## ask, never a game-side upscale hack.
+static func _scenario_minimap_path(scenario: Resource) -> String:
+	var pack := String(scenario.worldforge_pack)
+	return "" if pack.is_empty() else WorldforgePack.resolve_src(pack) + "minimap.png"
 
 
 func _process(_delta: float) -> void:
@@ -193,6 +210,12 @@ func _process(_delta: float) -> void:
 	if not typing and hitboxes != null and Input.is_action_just_pressed("hitbox_toggle"):
 		hitboxes.visible = not hitboxes.visible
 		Config.set_setting("ui", "hitboxes", hitboxes.visible)
+	# sl-0065 dev world map: one key cycles off -> corner minimap ->
+	# fullscreen. The overlay only exists when the active pack ships a
+	# minimap.png; on pack-less scenarios the key is quietly inert.
+	if dev_tools and not typing and Input.is_action_just_pressed("map_toggle"):
+		if map_overlay != null:
+			map_overlay.cycle()
 	# Event-console tail (§2.10): only while the console is open.
 	if console != null and console.visible and _console_events != "off":
 		for ev: Dictionary in driver.frame_events:
@@ -465,6 +488,11 @@ func _refresh_hints() -> void:
 		["console_toggle", "console"],
 	]:
 		parts.append("%s %s" % [Config.binding_text(entry[0]), entry[1]])
+	# sl-0065: the map hint only when the overlay actually exists (dev
+	# profile + a pack that ships a minimap) — the hints line stays
+	# honest on arena scenarios and in tester builds.
+	if map_overlay != null:
+		parts.append("%s map" % Config.binding_text("map_toggle"))
 	hints_label.text = "  ".join(parts)
 
 
@@ -891,6 +919,22 @@ func _ready() -> void:
 	hud.add_child(toast_label)
 	hud.add_child(hints_label)
 	hud.add_child(density_meter)
+	# sl-0065 dev world-map overlay: the pack's own minimap.png + player
+	# dot (raw texture, zero new art). Added BELOW options/recap/console
+	# in the child order so a fullscreen map never buries an open menu
+	# or a death recap. Scenarios without a pack minimap simply never
+	# get the node (the map key stays inert); tester builds never
+	# construct it (one-flag gate, lint-pinned like the console).
+	if dev_tools:
+		map_overlay = MapOverlay.new()
+		map_overlay.world = world
+		map_overlay.mouse_tile = driver.mouse_tile_provider
+		map_overlay.grid_size = Vector2i(int(def.width), int(def.height))
+		if map_overlay.load_minimap(_scenario_minimap_path(scenario)):
+			hud.add_child(map_overlay)
+		else:
+			map_overlay.free()
+			map_overlay = null
 	hud.add_child(options_menu)
 	recap_panel = RecapPanel.new()
 	hud.add_child(recap_panel)

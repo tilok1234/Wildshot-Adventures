@@ -68,8 +68,40 @@ if ctor_lines:
     if not gated:
         fail("DebugConsole.new() is not directly inside an `if dev_tools:` block")
 
+# 2b. Dev map overlay (sl-0065): console-class construction contract.
+#     Exactly three sites: main's gated block + the two dev_map test
+#     harnesses (tests/* is excluded from the tester artifact — the
+#     exclusion filter itself is pinned in section 9 below).
+mo_all = sorted(
+    (p.relative_to(REPO), text.count("MapOverlay.new()"))
+    for p, text in repo_gd.items()
+    if "MapOverlay.new()" in text
+)
+if mo_all != [
+    (Path("game/main.gd"), 1),
+    (Path("tests/dev_map/dev_map_test.gd"), 1),
+    (Path("tests/dev_map/map_overlay_probe.gd"), 1),
+]:
+    fail(f"MapOverlay construction sites drifted: {mo_all}")
+mo_lines = [i for i, l in enumerate(main_lines) if "MapOverlay.new()" in l]
+if mo_lines:
+    i = mo_lines[0]
+    mo_indent = len(main_lines[i]) - len(main_lines[i].lstrip("\t"))
+    mo_gated = False
+    for j in range(i - 1, max(i - 12, -1), -1):
+        line = main_lines[j]
+        if not line.strip():
+            continue
+        indent = len(line) - len(line.lstrip("\t"))
+        if indent < mo_indent:
+            mo_gated = line.strip().startswith("if dev_tools")
+            break
+    if not mo_gated:
+        fail("MapOverlay.new() is not directly inside an `if dev_tools` block")
+
 # 3. Free speed steps: both fine-step inputs carry the gate on the same line.
-for action in ("debug_speed_down", "debug_speed_up"):
+#    The sl-0065 map toggle rides the same rule.
+for action in ("debug_speed_down", "debug_speed_up", "map_toggle"):
     hits = [l for l in main_lines if action in l and "is_action_just_pressed" in l]
     if len(hits) != 1 or "dev_tools and" not in hits[0]:
         fail(f"{action} input check not dev_tools-gated: {hits}")
