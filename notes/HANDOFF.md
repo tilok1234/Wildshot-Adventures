@@ -30,7 +30,7 @@ only once the loop bar holds.
   `C:\Users\headc\Documents\Wildshot_adventure_final_planning` — ONE
   branch, `claude/questionnaire-note-taking-9vl2sl` (no main; do not
   create one). Its `tools/sync_log.json` is the cross-repo logbook
-  (doc 18, entries through sl-0085 as of this writing);
+  (doc 18, entries through sl-0086 as of this writing);
   `tools/ecosystem.lock.json` holds the pins.
 - **The ecosystem map** (planning `docs/16-ECOSYSTEM_MAP.md`) names
   all seven repos and the hard cross-repo rules. **LANE RULE: game
@@ -155,10 +155,11 @@ sl-0085 icon seam ran fixed steps + export + probe green in 3.5 min
   T1–T5 complete, CORE-50 proof sheets in-pack — sits raw at
   `assets/wildshot-icons-proto_0.1.0/` with a passport beside it
   (per-file sha256s; the manifest ships none) and a fixed gate
-  (`tools/validate_icon_pack.py`, 20th step + CI row) refusing byte
-  drift. WIRING FIRES ONLY AFTER the Loop acceptance run (sl-0082
-  ruling; sl-0077 Tier-0 sequencing note). Tool-source push owed
-  from the designer's other PC (sl-0083 insurance line).
+  (`tools/validate_icon_pack.py`, 20th step + CI row — verified
+  green on a fresh Linux checkout) refusing byte drift. WIRING
+  FIRES ONLY AFTER the Loop acceptance run (sl-0082 ruling; sl-0077
+  Tier-0 sequencing note). Tool-source push owed from the
+  designer's other PC (sl-0083 insurance line).
 - **Tester pipeline standing:** export.ps1 dev+tester zips, one-flag
   dev_tools lockdown (lint + artifact probe in the gate), onboarding
   screen (copy = placeholder, designer voice pending), feedback
@@ -389,6 +390,15 @@ Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- -
     NAME THE REAL ID in the commit message (a misnamed header needs a
     record-fix commit — d17fc25 precedent). Entries are append-only;
     status flips are planning's sweep, not ours.
+26. **CI lint is a second gate nobody watches live** — the pretester
+    does NOT run gdformat; an intake that adds a generated .gd tree
+    must extend ci.yml's format-exemption filter (assets/,
+    tileforge/, tileforge_packages/) or lint goes red silently (the
+    b76/b77 seams left it red for a day; caught at the sl-0083 seam
+    because the new icon CI row sat skipped behind the red step).
+    Never hand-format a consumed package tree — extend the filter
+    instead. After any push, `gh run list` → the lint job concluding
+    is the fast signal (the Windows jobs queue for hours behind it).
 
 ## Ledger + scope
 

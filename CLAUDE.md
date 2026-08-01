@@ -1238,3 +1238,21 @@ game←icon-forge pin); sync log sl-0085. NOTHING renders the icons
 unchanged from sl-0083: tool-source push owed; deutan-sheet eyeball
 rides the wiring round. NO feel verdicts (hands-free mechanical
 intake).**
+CI LINT REPAIR same seam (~12:05 local; found watching the icon
+row's first CI run): the ubuntu lint job's gdformat step had been
+RED since the b76/b77 seams — the b76 paired intake created the
+per-pin consumed tree tileforge_packages/ (generated, byte-pinned)
+and the format exemption never grew with it (3 package .gd files),
+plus the b77 picker probe shipped unformatted (1 authored file).
+Nobody noticed: the session gate is the pretester, which does not
+run gdformat, and the Windows CI jobs queue for hours. FIX: ci.yml
+exemption extended to tileforge_packages/ (never hand-format a
+consumed package — it is byte-pinned); b77_picker_probe.gd
+formatted (one print reflow, zero logic); local check 126/126;
+pretester -SkipBattery re-run ALL GREEN 3.2 min (smoke + goldens
+x10 hashes unmoved). POST-PUSH VERIFIED (run 30694311402): lint job
+SUCCESS with the icon row EXECUTING on a fresh Linux checkout — the
+assets/** -text chain + passport hashes + pillow decode proven
+end-to-end; the gate's CI half is genuinely live. Handoff gotcha
+#26 added (check the lint job after every push — it is the fast
+signal; grow the exemption with every generated tree).**
