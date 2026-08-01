@@ -30,7 +30,7 @@ only once the loop bar holds.
   `C:\Users\headc\Documents\Wildshot_adventure_final_planning` — ONE
   branch, `claude/questionnaire-note-taking-9vl2sl` (no main; do not
   create one). Its `tools/sync_log.json` is the cross-repo logbook
-  (doc 18, entries through sl-0092 as of this writing);
+  (doc 18, entries through sl-0094 as of this writing);
   `tools/ecosystem.lock.json` holds the pins.
 - **The ecosystem map** (planning `docs/16-ECOSYSTEM_MAP.md`) names
   all seven repos and the hard cross-repo rules. **LANE RULE: game
@@ -76,13 +76,14 @@ at every clean seam.
 ## §1 Where things stand (2026-08-01, post-sl-0085 icon intake)
 
 **M0–M8 engineering complete.** The one-command ship gate
-`tools/pretester_check.ps1` runs ALL GREEN (~15–19 min: 21 fixed
-steps, 28-row proof battery byte-identical against committed reports,
-export step building + boot-checking BOTH artifacts, lockdown probe).
-Last full run: 2026-08-01 at the sl-0078 fit-rule seam, 16.9 min; the
-sl-0085 icon and sl-0092 NPC seams ran fixed steps + export + probe
-green in ~3 min each (`-SkipBattery`, deliberate — zero sim change,
-assets are `.gdignore`'d).
+`tools/pretester_check.ps1` runs ALL GREEN (22 fixed steps, 33-row
+proof battery byte-identical against committed reports, export step
+building + boot-checking BOTH artifacts, lockdown probe). Last full
+run: 2026-08-01 at the sl-0078 fit-rule seam (16.9 min, then 28
+rows); the sl-0085/0092/0094 intake seams ran fixed steps + export +
+probe green in ~3 min each (`-SkipBattery`, deliberate — zero sim
+change; the five overworld rows added at sl-0094 ran at authoring).
+The full 33-row gate rides the next exclusive seam.
 
 - **THE FIT RULE (sl-0078, 2026-08-01, SERIAL 14) — the newest big
   thing:** "if the character sprite visibly fits through a gap, the
@@ -160,6 +161,19 @@ assets are `.gdignore`'d).
   FIRES ONLY AFTER the Loop acceptance run (sl-0082 ruling; sl-0077
   Tier-0 sequencing note). Tool-source push owed from the
   designer's other PC (sl-0083 insurance line).
+- **Dusk content pack + THE OVERWORLD REFERENCE PASS (sl-0093 →
+  sl-0094, 2026-08-01):** world_filler's first game-side artifact —
+  REFERENCE ONLY (docs/20 step 1, no importer) at
+  `assets/wildshot-overworld-pack-dusk-content/`; fixed gate
+  `tools/validate_content_pack.py` (22nd step + CI row) pins bytes,
+  the eight designer locks, and the b77 base pairing (loud refusal).
+  The hand-authored pass: `notes/OVERWORLD_REFERENCE_PASS.md` (the
+  step-3 importer-spec input) + FIVE proof-PASSED picker scenarios
+  (`overworld_green/dry/wet/cold/green_boss`) on real pack site
+  cells — battery rows 29–33. THE COLD FINDING is the big datum: no
+  activation leash → multi-pull zone density needs territory
+  semantics (the importer question, with numbers). **STEP 2 = the
+  designer's feel session on those five rows.**
 - **NPC slice roster v1 vendored UNWIRED (sl-0089 → sl-0092,
   2026-08-01):** 32 characters (13 named roles / 10 zone
   quest-givers / 9 ambient villagers) from the assembler's FIRST
@@ -182,6 +196,11 @@ assets are `.gdignore`'d).
 
 ## §2 Open — designer-side (do not nag; the deck + planning carry these)
 
+- **THE OVERWORLD FEEL SESSION** (docs/20 step 2, armed sl-0094):
+  play the five `Overworld Ref:` picker rows — does directed
+  placement feel right (the danger ramp, the boss spot at 249,244,
+  the territory texture)? Their verdict decides whether step 3 (the
+  importer) gets planned or the mapping/recipe iterates first.
 - **THE RED-LINE WALK** = the sl-0078 acceptance: walk the three
   screenshot spots (desert lane, tree-band wall, sparse scatter) —
   pass wherever the sprite visibly fits, or the round reopens. This
@@ -288,6 +307,7 @@ Before every commit, per touched area:
 | forest_walk **[--policy=primary]** | 1,2,3 | 3600 | **PASS — re-pinned 2026-08-01** (sl-0078 fit rule freed the primary model's forest pockets; the flip IS the deliberate-change signature) |
 | lab_default + meet_blightcaster/leadshot/yard_warden | 1,2,3 | 3600 | PASS |
 | loop_ring1/2/3 + proof_brk_site (Loop v1 gradient + boss site; ring pulls ≤2 pressures by layout; ring2 ringer at 199.5,126.5 since sl-0078) | 1,2,3 | 3600 | PASS |
+| overworld_green/dry/wet/cold/green_boss → dodge_overworld_*_composition.json (sl-0094 reference pass on b77 pack sites; cold = zone-heavy solo by the recorded finding) | 1,2,3 | 3600 | PASS |
 
 Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- --scenario=<id> --speed=3.0 --seeds=<list> --ticks=<n> [--out=res://reports/<name>.json] [--policy=primary|orbit|axis]`
 (default policy = reactive; compositions need the explicit --out names).

@@ -1325,3 +1325,50 @@ Designer-side per sl-0089: approval [P], on-screen taste rides
 slice wiring; watch-items (named-vs-villager blur → quest markers;
 dark-outfit dusk contrast → one-field regen) ride the wiring round.
 NO feel verdicts (hands-free mechanical intake).**
+DUSK CONTENT PACK INTAKEN + THE OVERWORLD REFERENCE PASS AUTHORED
+2026-08-01 (~14:20 local; delivery sl-0093 — docs/20 step 1, both
+halves one seam; REFERENCE ONLY, no importer, no sim consumption):
+wildshot-overworld-pack-dusk-content-c0bf28638648 fetched by tag
+from world_filler (GH digest == local sha 13e0759d... == the
+record; sourceCommit 6be201e contained in wf main; manifest sha ==
+the release notes == the artifact-id's own prefix). 8 files
+vendored; the manifest files table (4 payload sha256s) VERIFIED at
+staging; passport pins manifest + 3 renders. B77 BASE PAIRING
+VERIFIED BOTH IDENTIFIERS (generationIdentitySha256 bd4b9317... ==
+the vendored generator block; base.artifactSha256 == sha256 of the
+vendored world.json 32f9e741...; format 8; 256x256) and MECHANIZED
+as a loud refusal in tools/validate_content_pack.py = 22ND FIXED
+STEP + CI row (also pins the EIGHT designer locks at exact cells,
+rule census 112/11/4, 9189 territory cells, the 41-failure honest
+record, 23 unbound anchors, report 9/9 gates); NEGATIVE-TESTED.
+THE REFERENCE PASS: notes/OVERWORLD_REFERENCE_PASS.md = the step-3
+importer-spec input (brackets Green 1-7 / Dry 8-15 / Wet 16-22 /
+Snow 23-30 per sl-0087, zone=level flat tiers, wf dangerBand
+deliberately unused; vocabulary marauder→rusher, prowler→husk,
+night_shade→leadshot [nightOnly recorded], mire_creeper→
+blightcaster, frost_wraith→ringer; boss identity reserved for the
+designer's lore act). FIVE picker scenarios on REAL pack site cells
+(all 24 authored cells walkability-verified): overworld_green/dry/
+wet/cold + overworld_green_boss (the hand-placed 249,244 site,
+Warden kit stand-in, approach outside the pack's 6x6 arena box);
+the 180,143 border camp TUNED playably in wet (blightcaster+rusher
+entry-wet); cold camps tabled; ruined city UNMARKED (zero authored
+cells in the box). PROOFS ALL FIVE PASS reactive 3.0 ability-off
+seeds 1,2,3 x 3600; BATTERY 28→33 ROWS; cold margin 0.121 == the
+lab solo-ringer margin exactly. THE COLD FINDING (six failed
+layouts, all recorded with numbers): (1) NO ACTIVATION LEASH —
+every mobile pull converges from t0; multi-pull zone density waits
+on activation/territory semantics (maxActive/respawnPressure = THE
+importer spawn-surface question); (2) husk-volley alignment clips
+ringer orbits at fit-rule margins on b77 ground (FIRST@1350
+invariant across support casts) — pairing viability is
+terrain-class-dependent; (3) point-openness ≠ orbit-openness (the
+157,39 site scores 0.97 yet pins at margin 0.000 — cliff bands;
+wf's clearance term is the upstream home for a real model). Snow
+ships as the zone-heavy solo demo. Lock: the doc-17 world_filler
+NONE placeholder REPLACED by the first real pin; sync log sl-0094.
+Fixed gates + export + probe ALL GREEN 3.3 min (battery skipped
+deliberately — the five NEW rows ran at authoring; full 33-row gate
+rides the next exclusive seam). STEP 2 ARMED: the designer's feel
+session on the five picker rows — the danger ramp, the boss spot,
+the territory texture. NO feel verdicts (hands-free session).**
