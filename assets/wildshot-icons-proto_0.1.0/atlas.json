@@ -1,0 +1,2829 @@
+{
+  "set": "wildshot-icons-proto",
+  "version": "0.1.0",
+  "image": "atlas.png",
+  "size": 16,
+  "cols": 10,
+  "frames": {
+    "item.weapon.sword.arming.t1": {
+      "x": 0,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.sword.arming.t2": {
+      "x": 16,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.sword.arming.t3": {
+      "x": 32,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.sword.arming.t4": {
+      "x": 48,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.sword.arming.t5": {
+      "x": 64,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.sword.greatsword.t1": {
+      "x": 80,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.sword.greatsword.t2": {
+      "x": 96,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.sword.greatsword.t3": {
+      "x": 112,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.sword.greatsword.t4": {
+      "x": 128,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.sword.greatsword.t5": {
+      "x": 144,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.sword.twin.t1": {
+      "x": 0,
+      "y": 16,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.sword.twin.t2": {
+      "x": 16,
+      "y": 16,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.sword.twin.t3": {
+      "x": 32,
+      "y": 16,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.sword.twin.t4": {
+      "x": 48,
+      "y": 16,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.sword.twin.t5": {
+      "x": 64,
+      "y": 16,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.sword.cleaver.t1": {
+      "x": 80,
+      "y": 16,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.sword.cleaver.t2": {
+      "x": 96,
+      "y": 16,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.sword.cleaver.t3": {
+      "x": 112,
+      "y": 16,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.sword.cleaver.t4": {
+      "x": 128,
+      "y": 16,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.sword.cleaver.t5": {
+      "x": 144,
+      "y": 16,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.bow.longbow.t1": {
+      "x": 0,
+      "y": 32,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.bow.longbow.t2": {
+      "x": 16,
+      "y": 32,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.bow.longbow.t3": {
+      "x": 32,
+      "y": 32,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.bow.longbow.t4": {
+      "x": 48,
+      "y": 32,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.bow.longbow.t5": {
+      "x": 64,
+      "y": 32,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.bow.recurve.t1": {
+      "x": 80,
+      "y": 32,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.bow.recurve.t2": {
+      "x": 96,
+      "y": 32,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.bow.recurve.t3": {
+      "x": 112,
+      "y": 32,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.bow.recurve.t4": {
+      "x": 128,
+      "y": 32,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.bow.recurve.t5": {
+      "x": 144,
+      "y": 32,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.bow.crossbow.t1": {
+      "x": 0,
+      "y": 48,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.bow.crossbow.t2": {
+      "x": 16,
+      "y": 48,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.bow.crossbow.t3": {
+      "x": 32,
+      "y": 48,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.bow.crossbow.t4": {
+      "x": 48,
+      "y": 48,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.bow.crossbow.t5": {
+      "x": 64,
+      "y": 48,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.bow.ballista.t1": {
+      "x": 80,
+      "y": 48,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.bow.ballista.t2": {
+      "x": 96,
+      "y": 48,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.bow.ballista.t3": {
+      "x": 112,
+      "y": 48,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.bow.ballista.t4": {
+      "x": 128,
+      "y": 48,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.bow.ballista.t5": {
+      "x": 144,
+      "y": 48,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.staff.longstaff.t1": {
+      "x": 0,
+      "y": 64,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.staff.longstaff.t2": {
+      "x": 16,
+      "y": 64,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.staff.longstaff.t3": {
+      "x": 32,
+      "y": 64,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.staff.longstaff.t4": {
+      "x": 48,
+      "y": 64,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.staff.longstaff.t5": {
+      "x": 64,
+      "y": 64,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.staff.wand.t1": {
+      "x": 80,
+      "y": 64,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.staff.wand.t2": {
+      "x": 96,
+      "y": 64,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.staff.wand.t3": {
+      "x": 112,
+      "y": 64,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.staff.wand.t4": {
+      "x": 128,
+      "y": 64,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.staff.wand.t5": {
+      "x": 144,
+      "y": 64,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.staff.scepter.t1": {
+      "x": 0,
+      "y": 80,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.staff.scepter.t2": {
+      "x": 16,
+      "y": 80,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.staff.scepter.t3": {
+      "x": 32,
+      "y": 80,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.staff.scepter.t4": {
+      "x": 48,
+      "y": 80,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.staff.scepter.t5": {
+      "x": 64,
+      "y": 80,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.staff.greatstaff.t1": {
+      "x": 80,
+      "y": 80,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.staff.greatstaff.t2": {
+      "x": 96,
+      "y": 80,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.staff.greatstaff.t3": {
+      "x": 112,
+      "y": 80,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.staff.greatstaff.t4": {
+      "x": 128,
+      "y": 80,
+      "w": 16,
+      "h": 16
+    },
+    "item.weapon.staff.greatstaff.t5": {
+      "x": 144,
+      "y": 80,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.sword.bulwark.t1": {
+      "x": 0,
+      "y": 96,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.sword.bulwark.t2": {
+      "x": 16,
+      "y": 96,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.sword.bulwark.t3": {
+      "x": 32,
+      "y": 96,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.sword.bulwark.t4": {
+      "x": 48,
+      "y": 96,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.sword.bulwark.t5": {
+      "x": 64,
+      "y": 96,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.sword.skirmish.t1": {
+      "x": 80,
+      "y": 96,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.sword.skirmish.t2": {
+      "x": 96,
+      "y": 96,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.sword.skirmish.t3": {
+      "x": 112,
+      "y": 96,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.sword.skirmish.t4": {
+      "x": 128,
+      "y": 96,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.sword.skirmish.t5": {
+      "x": 144,
+      "y": 96,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.sword.attuned.t1": {
+      "x": 0,
+      "y": 112,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.sword.attuned.t2": {
+      "x": 16,
+      "y": 112,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.sword.attuned.t3": {
+      "x": 32,
+      "y": 112,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.sword.attuned.t4": {
+      "x": 48,
+      "y": 112,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.sword.attuned.t5": {
+      "x": 64,
+      "y": 112,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.bow.bulwark.t1": {
+      "x": 80,
+      "y": 112,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.bow.bulwark.t2": {
+      "x": 96,
+      "y": 112,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.bow.bulwark.t3": {
+      "x": 112,
+      "y": 112,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.bow.bulwark.t4": {
+      "x": 128,
+      "y": 112,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.bow.bulwark.t5": {
+      "x": 144,
+      "y": 112,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.bow.skirmish.t1": {
+      "x": 0,
+      "y": 128,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.bow.skirmish.t2": {
+      "x": 16,
+      "y": 128,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.bow.skirmish.t3": {
+      "x": 32,
+      "y": 128,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.bow.skirmish.t4": {
+      "x": 48,
+      "y": 128,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.bow.skirmish.t5": {
+      "x": 64,
+      "y": 128,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.bow.attuned.t1": {
+      "x": 80,
+      "y": 128,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.bow.attuned.t2": {
+      "x": 96,
+      "y": 128,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.bow.attuned.t3": {
+      "x": 112,
+      "y": 128,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.bow.attuned.t4": {
+      "x": 128,
+      "y": 128,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.bow.attuned.t5": {
+      "x": 144,
+      "y": 128,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.staff.bulwark.t1": {
+      "x": 0,
+      "y": 144,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.staff.bulwark.t2": {
+      "x": 16,
+      "y": 144,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.staff.bulwark.t3": {
+      "x": 32,
+      "y": 144,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.staff.bulwark.t4": {
+      "x": 48,
+      "y": 144,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.staff.bulwark.t5": {
+      "x": 64,
+      "y": 144,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.staff.skirmish.t1": {
+      "x": 80,
+      "y": 144,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.staff.skirmish.t2": {
+      "x": 96,
+      "y": 144,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.staff.skirmish.t3": {
+      "x": 112,
+      "y": 144,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.staff.skirmish.t4": {
+      "x": 128,
+      "y": 144,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.staff.skirmish.t5": {
+      "x": 144,
+      "y": 144,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.staff.attuned.t1": {
+      "x": 0,
+      "y": 160,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.staff.attuned.t2": {
+      "x": 16,
+      "y": 160,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.staff.attuned.t3": {
+      "x": 32,
+      "y": 160,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.staff.attuned.t4": {
+      "x": 48,
+      "y": 160,
+      "w": 16,
+      "h": 16
+    },
+    "item.armor.staff.attuned.t5": {
+      "x": 64,
+      "y": 160,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.grudge_band.t1": {
+      "x": 80,
+      "y": 160,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.grudge_band.t2": {
+      "x": 96,
+      "y": 160,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.grudge_band.t3": {
+      "x": 112,
+      "y": 160,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.grudge_band.t4": {
+      "x": 128,
+      "y": 160,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.grudge_band.t5": {
+      "x": 144,
+      "y": 160,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.spark_loop.t1": {
+      "x": 0,
+      "y": 176,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.spark_loop.t2": {
+      "x": 16,
+      "y": 176,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.spark_loop.t3": {
+      "x": 32,
+      "y": 176,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.spark_loop.t4": {
+      "x": 48,
+      "y": 176,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.spark_loop.t5": {
+      "x": 64,
+      "y": 176,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.close_call.t1": {
+      "x": 80,
+      "y": 176,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.close_call.t2": {
+      "x": 96,
+      "y": 176,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.close_call.t3": {
+      "x": 112,
+      "y": 176,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.close_call.t4": {
+      "x": 128,
+      "y": 176,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.close_call.t5": {
+      "x": 144,
+      "y": 176,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.crowd_coil.t1": {
+      "x": 0,
+      "y": 192,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.crowd_coil.t2": {
+      "x": 16,
+      "y": 192,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.crowd_coil.t3": {
+      "x": 32,
+      "y": 192,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.crowd_coil.t4": {
+      "x": 48,
+      "y": 192,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.crowd_coil.t5": {
+      "x": 64,
+      "y": 192,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.duelist_seal.t1": {
+      "x": 80,
+      "y": 192,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.duelist_seal.t2": {
+      "x": 96,
+      "y": 192,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.duelist_seal.t3": {
+      "x": 112,
+      "y": 192,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.duelist_seal.t4": {
+      "x": 128,
+      "y": 192,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.duelist_seal.t5": {
+      "x": 144,
+      "y": 192,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.featherweight.t1": {
+      "x": 0,
+      "y": 208,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.featherweight.t2": {
+      "x": 16,
+      "y": 208,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.featherweight.t3": {
+      "x": 32,
+      "y": 208,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.featherweight.t4": {
+      "x": 48,
+      "y": 208,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.featherweight.t5": {
+      "x": 64,
+      "y": 208,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.misers_knot.t1": {
+      "x": 80,
+      "y": 208,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.misers_knot.t2": {
+      "x": 96,
+      "y": 208,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.misers_knot.t3": {
+      "x": 112,
+      "y": 208,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.misers_knot.t4": {
+      "x": 128,
+      "y": 208,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.misers_knot.t5": {
+      "x": 144,
+      "y": 208,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.anchor.t1": {
+      "x": 0,
+      "y": 224,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.anchor.t2": {
+      "x": 16,
+      "y": 224,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.anchor.t3": {
+      "x": 32,
+      "y": 224,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.anchor.t4": {
+      "x": 48,
+      "y": 224,
+      "w": 16,
+      "h": 16
+    },
+    "item.ring.anchor.t5": {
+      "x": 64,
+      "y": 224,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.sword.dash_strike": {
+      "x": 80,
+      "y": 224,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.sword.whirlwind": {
+      "x": 96,
+      "y": 224,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.sword.ground_slam": {
+      "x": 112,
+      "y": 224,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.sword.parry_stance": {
+      "x": 128,
+      "y": 224,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.sword.leaping_smash": {
+      "x": 144,
+      "y": 224,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.sword.returning_blade": {
+      "x": 0,
+      "y": 240,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.sword.war_shout": {
+      "x": 16,
+      "y": 240,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.sword.taunt": {
+      "x": 32,
+      "y": 240,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.sword.rending_slash": {
+      "x": 48,
+      "y": 240,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.sword.sunder": {
+      "x": 64,
+      "y": 240,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.sword.execute": {
+      "x": 80,
+      "y": 240,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.sword.frenzy": {
+      "x": 96,
+      "y": 240,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.sword.stoneskin": {
+      "x": 112,
+      "y": 240,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.sword.bull_charge": {
+      "x": 128,
+      "y": 240,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.sword.blade_nova": {
+      "x": 144,
+      "y": 240,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.sword.hook_chain": {
+      "x": 0,
+      "y": 256,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.sword.second_wind": {
+      "x": 16,
+      "y": 256,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.bow.snare_trap": {
+      "x": 32,
+      "y": 256,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.bow.fan_arrows": {
+      "x": 48,
+      "y": 256,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.bow.piercing_bolt": {
+      "x": 64,
+      "y": 256,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.bow.arrow_storm": {
+      "x": 80,
+      "y": 256,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.bow.caltrops": {
+      "x": 96,
+      "y": 256,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.bow.smoke_bomb": {
+      "x": 112,
+      "y": 256,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.bow.combat_roll": {
+      "x": 128,
+      "y": 256,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.bow.hunters_mark": {
+      "x": 144,
+      "y": 256,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.bow.ricochet": {
+      "x": 0,
+      "y": 272,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.bow.blast_arrow": {
+      "x": 16,
+      "y": 272,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.bow.venom_arrow": {
+      "x": 32,
+      "y": 272,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.bow.decoy": {
+      "x": 48,
+      "y": 272,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.bow.falcon_call": {
+      "x": 64,
+      "y": 272,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.bow.quickdraw": {
+      "x": 80,
+      "y": 272,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.bow.staggering_shot": {
+      "x": 96,
+      "y": 272,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.bow.grapple_line": {
+      "x": 112,
+      "y": 272,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.bow.snipe": {
+      "x": 128,
+      "y": 272,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.staff.arc_bolt": {
+      "x": 144,
+      "y": 272,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.staff.barrier_dome": {
+      "x": 0,
+      "y": 288,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.staff.blink": {
+      "x": 16,
+      "y": 288,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.staff.gravity_well": {
+      "x": 32,
+      "y": 288,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.staff.comet_drop": {
+      "x": 48,
+      "y": 288,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.staff.frost_field": {
+      "x": 64,
+      "y": 288,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.staff.flame_fan": {
+      "x": 80,
+      "y": 288,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.staff.mending_pulse": {
+      "x": 96,
+      "y": 288,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.staff.summon_wisp": {
+      "x": 112,
+      "y": 288,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.staff.mirror_image": {
+      "x": 128,
+      "y": 288,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.staff.overcharge": {
+      "x": 144,
+      "y": 288,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.staff.storm_call": {
+      "x": 0,
+      "y": 304,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.staff.grasping_roots": {
+      "x": 16,
+      "y": 304,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.staff.focus_beam": {
+      "x": 32,
+      "y": 304,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.staff.slow_bubble": {
+      "x": 48,
+      "y": 304,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.staff.rune_snare": {
+      "x": 64,
+      "y": 304,
+      "w": 16,
+      "h": 16
+    },
+    "item.ability.staff.hexshape": {
+      "x": 80,
+      "y": 304,
+      "w": 16,
+      "h": 16
+    },
+    "item.unique.emberbrand": {
+      "x": 96,
+      "y": 304,
+      "w": 16,
+      "h": 16
+    },
+    "item.unique.patience": {
+      "x": 112,
+      "y": 304,
+      "w": 16,
+      "h": 16
+    },
+    "item.unique.splitjaw": {
+      "x": 128,
+      "y": 304,
+      "w": 16,
+      "h": 16
+    },
+    "item.unique.thornreel": {
+      "x": 144,
+      "y": 304,
+      "w": 16,
+      "h": 16
+    },
+    "item.unique.latchkey": {
+      "x": 0,
+      "y": 320,
+      "w": 16,
+      "h": 16
+    },
+    "item.unique.skipstone": {
+      "x": 16,
+      "y": 320,
+      "w": 16,
+      "h": 16
+    },
+    "item.unique.undertow": {
+      "x": 32,
+      "y": 320,
+      "w": 16,
+      "h": 16
+    },
+    "item.unique.mothlight": {
+      "x": 48,
+      "y": 320,
+      "w": 16,
+      "h": 16
+    },
+    "item.unique.hearthplate": {
+      "x": 64,
+      "y": 320,
+      "w": 16,
+      "h": 16
+    },
+    "item.unique.molt": {
+      "x": 80,
+      "y": 320,
+      "w": 16,
+      "h": 16
+    },
+    "item.unique.rootmantle": {
+      "x": 96,
+      "y": 320,
+      "w": 16,
+      "h": 16
+    },
+    "item.unique.counterweight": {
+      "x": 112,
+      "y": 320,
+      "w": 16,
+      "h": 16
+    },
+    "item.unique.second_skin": {
+      "x": 128,
+      "y": 320,
+      "w": 16,
+      "h": 16
+    },
+    "item.unique.echo_band": {
+      "x": 144,
+      "y": 320,
+      "w": 16,
+      "h": 16
+    },
+    "item.unique.firstlight": {
+      "x": 0,
+      "y": 336,
+      "w": 16,
+      "h": 16
+    },
+    "item.unique.grudgekeeper": {
+      "x": 16,
+      "y": 336,
+      "w": 16,
+      "h": 16
+    },
+    "item.unique.beggars_band": {
+      "x": 32,
+      "y": 336,
+      "w": 16,
+      "h": 16
+    },
+    "item.unique.bottled_thunder": {
+      "x": 48,
+      "y": 336,
+      "w": 16,
+      "h": 16
+    },
+    "item.unique.lodestone": {
+      "x": 64,
+      "y": 336,
+      "w": 16,
+      "h": 16
+    },
+    "item.unique.hushbell": {
+      "x": 80,
+      "y": 336,
+      "w": 16,
+      "h": 16
+    },
+    "currency.gold": {
+      "x": 96,
+      "y": 336,
+      "w": 16,
+      "h": 16
+    },
+    "currency.attempts": {
+      "x": 112,
+      "y": 336,
+      "w": 16,
+      "h": 16
+    },
+    "currency.run_timer": {
+      "x": 128,
+      "y": 336,
+      "w": 16,
+      "h": 16
+    },
+    "stat.damage": {
+      "x": 144,
+      "y": 336,
+      "w": 16,
+      "h": 16
+    },
+    "stat.defense": {
+      "x": 0,
+      "y": 352,
+      "w": 16,
+      "h": 16
+    },
+    "stat.max_health": {
+      "x": 16,
+      "y": 352,
+      "w": 16,
+      "h": 16
+    },
+    "stat.attack_speed": {
+      "x": 32,
+      "y": 352,
+      "w": 16,
+      "h": 16
+    },
+    "stat.crit": {
+      "x": 48,
+      "y": 352,
+      "w": 16,
+      "h": 16
+    },
+    "stat.evasion": {
+      "x": 64,
+      "y": 352,
+      "w": 16,
+      "h": 16
+    },
+    "stat.move_speed": {
+      "x": 80,
+      "y": 352,
+      "w": 16,
+      "h": 16
+    },
+    "stat.health_regen": {
+      "x": 96,
+      "y": 352,
+      "w": 16,
+      "h": 16
+    },
+    "stat.resource_regen": {
+      "x": 112,
+      "y": 352,
+      "w": 16,
+      "h": 16
+    },
+    "access.portal.forest": {
+      "x": 128,
+      "y": 352,
+      "w": 16,
+      "h": 16
+    },
+    "access.portal.cavern": {
+      "x": 144,
+      "y": 352,
+      "w": 16,
+      "h": 16
+    },
+    "access.portal.ruins": {
+      "x": 0,
+      "y": 368,
+      "w": 16,
+      "h": 16
+    },
+    "access.portal.peak": {
+      "x": 16,
+      "y": 368,
+      "w": 16,
+      "h": 16
+    },
+    "access.portal.raid": {
+      "x": 32,
+      "y": 368,
+      "w": 16,
+      "h": 16
+    },
+    "access.key.dungeon": {
+      "x": 48,
+      "y": 368,
+      "w": 16,
+      "h": 16
+    },
+    "access.key.field": {
+      "x": 64,
+      "y": 368,
+      "w": 16,
+      "h": 16
+    },
+    "access.key.vault": {
+      "x": 80,
+      "y": 368,
+      "w": 16,
+      "h": 16
+    },
+    "access.trophy.emblem": {
+      "x": 96,
+      "y": 368,
+      "w": 16,
+      "h": 16
+    },
+    "access.trophy.crown": {
+      "x": 112,
+      "y": 368,
+      "w": 16,
+      "h": 16
+    },
+    "access.quest.letter": {
+      "x": 128,
+      "y": 368,
+      "w": 16,
+      "h": 16
+    },
+    "access.quest.bundle": {
+      "x": 144,
+      "y": 368,
+      "w": 16,
+      "h": 16
+    },
+    "access.quest.relic": {
+      "x": 0,
+      "y": 384,
+      "w": 16,
+      "h": 16
+    },
+    "access.quest.jar": {
+      "x": 16,
+      "y": 384,
+      "w": 16,
+      "h": 16
+    },
+    "access.quest.flare": {
+      "x": 32,
+      "y": 384,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.onslaught.heavier_blows": {
+      "x": 48,
+      "y": 384,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.onslaught.bladestorm": {
+      "x": 64,
+      "y": 384,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.onslaught.followthrough": {
+      "x": 80,
+      "y": 384,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.onslaught.quickened_grip": {
+      "x": 96,
+      "y": 384,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.onslaught.drawblood": {
+      "x": 112,
+      "y": 384,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.onslaught.momentum": {
+      "x": 128,
+      "y": 384,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.onslaught.first_in": {
+      "x": 144,
+      "y": 384,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.onslaught.relentless": {
+      "x": 0,
+      "y": 400,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.onslaught.executioner": {
+      "x": 16,
+      "y": 400,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.onslaught.berserk_pact": {
+      "x": 32,
+      "y": 400,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.stonewall.thick_skin": {
+      "x": 48,
+      "y": 400,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.stonewall.steady_feet": {
+      "x": 64,
+      "y": 400,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.stonewall.shrug_it_off": {
+      "x": 80,
+      "y": 400,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.stonewall.bracing_stance": {
+      "x": 96,
+      "y": 400,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.stonewall.weathered": {
+      "x": 112,
+      "y": 400,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.stonewall.slow_burn": {
+      "x": 128,
+      "y": 400,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.stonewall.guarded_swing": {
+      "x": 144,
+      "y": 400,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.stonewall.bastion": {
+      "x": 0,
+      "y": 416,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.stonewall.retaliation": {
+      "x": 16,
+      "y": 416,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.stonewall.last_stand": {
+      "x": 32,
+      "y": 416,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.warcry.loud_arrival": {
+      "x": 48,
+      "y": 416,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.warcry.rally": {
+      "x": 64,
+      "y": 416,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.warcry.long_echo": {
+      "x": 80,
+      "y": 416,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.warcry.menace": {
+      "x": 96,
+      "y": 416,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.warcry.battle_rhythm": {
+      "x": 112,
+      "y": 416,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.warcry.carrying_voice": {
+      "x": 128,
+      "y": 416,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.warcry.war_drum": {
+      "x": 144,
+      "y": 416,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.warcry.warlords_call": {
+      "x": 0,
+      "y": 432,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.warcry.shatter_cry": {
+      "x": 16,
+      "y": 432,
+      "w": 16,
+      "h": 16
+    },
+    "skill.sword.warcry.anthem": {
+      "x": 32,
+      "y": 432,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.deadeye.steady_hand": {
+      "x": 48,
+      "y": 432,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.deadeye.long_shot": {
+      "x": 64,
+      "y": 432,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.deadeye.weak_spot": {
+      "x": 80,
+      "y": 432,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.deadeye.focused_draw": {
+      "x": 96,
+      "y": 432,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.deadeye.followup": {
+      "x": 112,
+      "y": 432,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.deadeye.marked_prey": {
+      "x": 128,
+      "y": 432,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.deadeye.clean_kill": {
+      "x": 144,
+      "y": 432,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.deadeye.deathmark": {
+      "x": 0,
+      "y": 448,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.deadeye.windhold": {
+      "x": 16,
+      "y": 448,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.deadeye.one_true_shot": {
+      "x": 32,
+      "y": 448,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.fieldcraft.tripline": {
+      "x": 48,
+      "y": 448,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.fieldcraft.sharper_teeth": {
+      "x": 64,
+      "y": 448,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.fieldcraft.wide_net": {
+      "x": 80,
+      "y": 448,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.fieldcraft.quick_rig": {
+      "x": 96,
+      "y": 448,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.fieldcraft.scavenger": {
+      "x": 112,
+      "y": 448,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.fieldcraft.spare_kit": {
+      "x": 128,
+      "y": 448,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.fieldcraft.poisoned_ground": {
+      "x": 144,
+      "y": 448,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.fieldcraft.springloaded": {
+      "x": 0,
+      "y": 464,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.fieldcraft.minefield": {
+      "x": 16,
+      "y": 464,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.fieldcraft.the_hunt": {
+      "x": 32,
+      "y": 464,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.windstep.fleet": {
+      "x": 48,
+      "y": 464,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.windstep.soft_landing": {
+      "x": 64,
+      "y": 464,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.windstep.slipstream": {
+      "x": 80,
+      "y": 464,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.windstep.runners_draw": {
+      "x": 96,
+      "y": 464,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.windstep.tailwind": {
+      "x": 112,
+      "y": 464,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.windstep.breather": {
+      "x": 128,
+      "y": 464,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.windstep.light_pack": {
+      "x": 144,
+      "y": 464,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.windstep.phantom_step": {
+      "x": 0,
+      "y": 480,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.windstep.gale_line": {
+      "x": 16,
+      "y": 480,
+      "w": 16,
+      "h": 16
+    },
+    "skill.bow.windstep.untouchable": {
+      "x": 32,
+      "y": 480,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.ruin.heavy_bolts": {
+      "x": 48,
+      "y": 480,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.ruin.long_arc": {
+      "x": 64,
+      "y": 480,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.ruin.overspill": {
+      "x": 80,
+      "y": 480,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.ruin.concussive": {
+      "x": 96,
+      "y": 480,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.ruin.focus": {
+      "x": 112,
+      "y": 480,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.ruin.aftershock": {
+      "x": 128,
+      "y": 480,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.ruin.deep_reserves": {
+      "x": 144,
+      "y": 480,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.ruin.cataclysm": {
+      "x": 0,
+      "y": 496,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.ruin.overload": {
+      "x": 16,
+      "y": 496,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.ruin.starfall": {
+      "x": 32,
+      "y": 496,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.wardweave.harder_wards": {
+      "x": 48,
+      "y": 496,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.wardweave.wide_dome": {
+      "x": 64,
+      "y": 496,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.wardweave.lingering_wards": {
+      "x": 80,
+      "y": 496,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.wardweave.deflection": {
+      "x": 96,
+      "y": 496,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.wardweave.calm_within": {
+      "x": 112,
+      "y": 496,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.wardweave.quick_weave": {
+      "x": 128,
+      "y": 496,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.wardweave.anchored": {
+      "x": 144,
+      "y": 496,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.wardweave.aegis": {
+      "x": 0,
+      "y": 512,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.wardweave.sanctum": {
+      "x": 16,
+      "y": 512,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.wardweave.woven_fate": {
+      "x": 32,
+      "y": 512,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.flow.swift_current": {
+      "x": 48,
+      "y": 512,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.flow.undercurrent": {
+      "x": 64,
+      "y": 512,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.flow.eddy": {
+      "x": 80,
+      "y": 512,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.flow.ebb": {
+      "x": 96,
+      "y": 512,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.flow.rising_tide": {
+      "x": 112,
+      "y": 512,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.flow.steady_flow": {
+      "x": 128,
+      "y": 512,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.flow.backwash": {
+      "x": 144,
+      "y": 512,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.flow.riptide": {
+      "x": 0,
+      "y": 528,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.flow.confluence": {
+      "x": 16,
+      "y": 528,
+      "w": 16,
+      "h": 16
+    },
+    "skill.staff.flow.stillwater": {
+      "x": 32,
+      "y": 528,
+      "w": 16,
+      "h": 16
+    },
+    "hud.status.guard": {
+      "x": 48,
+      "y": 528,
+      "w": 16,
+      "h": 16
+    },
+    "hud.status.burning": {
+      "x": 64,
+      "y": 528,
+      "w": 16,
+      "h": 16
+    },
+    "hud.status.immune": {
+      "x": 80,
+      "y": 528,
+      "w": 16,
+      "h": 16
+    },
+    "hud.status.protected": {
+      "x": 96,
+      "y": 528,
+      "w": 16,
+      "h": 16
+    },
+    "hud.status.hasted": {
+      "x": 112,
+      "y": 528,
+      "w": 16,
+      "h": 16
+    },
+    "hud.status.regen": {
+      "x": 128,
+      "y": 528,
+      "w": 16,
+      "h": 16
+    },
+    "hud.status.slowed": {
+      "x": 144,
+      "y": 528,
+      "w": 16,
+      "h": 16
+    },
+    "hud.status.rooted": {
+      "x": 0,
+      "y": 544,
+      "w": 16,
+      "h": 16
+    },
+    "hud.status.stunned": {
+      "x": 16,
+      "y": 544,
+      "w": 16,
+      "h": 16
+    },
+    "hud.status.vulnerable": {
+      "x": 32,
+      "y": 544,
+      "w": 16,
+      "h": 16
+    },
+    "hud.status.boss_enrage": {
+      "x": 48,
+      "y": 544,
+      "w": 16,
+      "h": 16
+    },
+    "hud.status.boss_phase": {
+      "x": 64,
+      "y": 544,
+      "w": 16,
+      "h": 16
+    },
+    "map.hub": {
+      "x": 80,
+      "y": 544,
+      "w": 16,
+      "h": 16
+    },
+    "map.quest": {
+      "x": 96,
+      "y": 544,
+      "w": 16,
+      "h": 16
+    },
+    "map.player": {
+      "x": 112,
+      "y": 544,
+      "w": 16,
+      "h": 16
+    },
+    "map.dungeon": {
+      "x": 128,
+      "y": 544,
+      "w": 16,
+      "h": 16
+    },
+    "map.raid": {
+      "x": 144,
+      "y": 544,
+      "w": 16,
+      "h": 16
+    },
+    "map.world_boss": {
+      "x": 0,
+      "y": 560,
+      "w": 16,
+      "h": 16
+    },
+    "map.quest_turnin": {
+      "x": 16,
+      "y": 560,
+      "w": 16,
+      "h": 16
+    },
+    "map.landmark": {
+      "x": 32,
+      "y": 560,
+      "w": 16,
+      "h": 16
+    },
+    "map.fishing": {
+      "x": 48,
+      "y": 560,
+      "w": 16,
+      "h": 16
+    },
+    "map.foraging": {
+      "x": 64,
+      "y": 560,
+      "w": 16,
+      "h": 16
+    },
+    "map.travel_open": {
+      "x": 80,
+      "y": 560,
+      "w": 16,
+      "h": 16
+    },
+    "map.travel_locked": {
+      "x": 96,
+      "y": 560,
+      "w": 16,
+      "h": 16
+    },
+    "map.pin": {
+      "x": 112,
+      "y": 560,
+      "w": 16,
+      "h": 16
+    },
+    "map.exit": {
+      "x": 128,
+      "y": 560,
+      "w": 16,
+      "h": 16
+    },
+    "map.vendor": {
+      "x": 144,
+      "y": 560,
+      "w": 16,
+      "h": 16
+    },
+    "map.stash": {
+      "x": 0,
+      "y": 576,
+      "w": 16,
+      "h": 16
+    },
+    "quest.available": {
+      "x": 16,
+      "y": 576,
+      "w": 16,
+      "h": 16
+    },
+    "quest.in_progress": {
+      "x": 32,
+      "y": 576,
+      "w": 16,
+      "h": 16
+    },
+    "quest.turn_in": {
+      "x": 48,
+      "y": 576,
+      "w": 16,
+      "h": 16
+    },
+    "quest.complete": {
+      "x": 64,
+      "y": 576,
+      "w": 16,
+      "h": 16
+    },
+    "quest.locked": {
+      "x": 80,
+      "y": 576,
+      "w": 16,
+      "h": 16
+    },
+    "quest.new": {
+      "x": 96,
+      "y": 576,
+      "w": 16,
+      "h": 16
+    },
+    "quest.tracked": {
+      "x": 112,
+      "y": 576,
+      "w": 16,
+      "h": 16
+    },
+    "quest.failed": {
+      "x": 128,
+      "y": 576,
+      "w": 16,
+      "h": 16
+    },
+    "emblem.class.sword": {
+      "x": 144,
+      "y": 576,
+      "w": 16,
+      "h": 16
+    },
+    "emblem.class.bow": {
+      "x": 0,
+      "y": 592,
+      "w": 16,
+      "h": 16
+    },
+    "emblem.class.staff": {
+      "x": 16,
+      "y": 592,
+      "w": 16,
+      "h": 16
+    },
+    "emblem.faction.wardens": {
+      "x": 32,
+      "y": 592,
+      "w": 16,
+      "h": 16
+    },
+    "emblem.faction.prospectors": {
+      "x": 48,
+      "y": 592,
+      "w": 16,
+      "h": 16
+    },
+    "emblem.faction.circle": {
+      "x": 64,
+      "y": 592,
+      "w": 16,
+      "h": 16
+    },
+    "emblem.faction.free_company": {
+      "x": 80,
+      "y": 592,
+      "w": 16,
+      "h": 16
+    },
+    "frame.rarity.common": {
+      "x": 96,
+      "y": 592,
+      "w": 16,
+      "h": 16
+    },
+    "frame.rarity.uncommon": {
+      "x": 112,
+      "y": 592,
+      "w": 16,
+      "h": 16
+    },
+    "frame.rarity.rare": {
+      "x": 128,
+      "y": 592,
+      "w": 16,
+      "h": 16
+    },
+    "frame.rarity.unique": {
+      "x": 144,
+      "y": 592,
+      "w": 16,
+      "h": 16
+    },
+    "input.key_blank": {
+      "x": 0,
+      "y": 608,
+      "w": 16,
+      "h": 16
+    },
+    "input.w": {
+      "x": 16,
+      "y": 608,
+      "w": 16,
+      "h": 16
+    },
+    "input.a": {
+      "x": 32,
+      "y": 608,
+      "w": 16,
+      "h": 16
+    },
+    "input.s": {
+      "x": 48,
+      "y": 608,
+      "w": 16,
+      "h": 16
+    },
+    "input.d": {
+      "x": 64,
+      "y": 608,
+      "w": 16,
+      "h": 16
+    },
+    "input.wasd": {
+      "x": 80,
+      "y": 608,
+      "w": 16,
+      "h": 16
+    },
+    "input.space": {
+      "x": 96,
+      "y": 608,
+      "w": 16,
+      "h": 16
+    },
+    "input.shift": {
+      "x": 112,
+      "y": 608,
+      "w": 16,
+      "h": 16
+    },
+    "input.ctrl": {
+      "x": 128,
+      "y": 608,
+      "w": 16,
+      "h": 16
+    },
+    "input.tab": {
+      "x": 144,
+      "y": 608,
+      "w": 16,
+      "h": 16
+    },
+    "input.esc": {
+      "x": 0,
+      "y": 624,
+      "w": 16,
+      "h": 16
+    },
+    "input.e": {
+      "x": 16,
+      "y": 624,
+      "w": 16,
+      "h": 16
+    },
+    "input.q": {
+      "x": 32,
+      "y": 624,
+      "w": 16,
+      "h": 16
+    },
+    "input.r": {
+      "x": 48,
+      "y": 624,
+      "w": 16,
+      "h": 16
+    },
+    "input.f": {
+      "x": 64,
+      "y": 624,
+      "w": 16,
+      "h": 16
+    },
+    "input.mouse_l": {
+      "x": 80,
+      "y": 624,
+      "w": 16,
+      "h": 16
+    },
+    "input.mouse_r": {
+      "x": 96,
+      "y": 624,
+      "w": 16,
+      "h": 16
+    },
+    "input.mouse_m": {
+      "x": 112,
+      "y": 624,
+      "w": 16,
+      "h": 16
+    },
+    "input.wheel": {
+      "x": 128,
+      "y": 624,
+      "w": 16,
+      "h": 16
+    },
+    "input.mouse_move": {
+      "x": 144,
+      "y": 624,
+      "w": 16,
+      "h": 16
+    },
+    "collect.mount.dusk_elk": {
+      "x": 0,
+      "y": 640,
+      "w": 16,
+      "h": 16
+    },
+    "collect.mount.trail_boar": {
+      "x": 16,
+      "y": 640,
+      "w": 16,
+      "h": 16
+    },
+    "collect.mount.marsh_strider": {
+      "x": 32,
+      "y": 640,
+      "w": 16,
+      "h": 16
+    },
+    "collect.mount.cliff_goat": {
+      "x": 48,
+      "y": 640,
+      "w": 16,
+      "h": 16
+    },
+    "collect.pet.lantern_wisp": {
+      "x": 64,
+      "y": 640,
+      "w": 16,
+      "h": 16
+    },
+    "collect.pet.pocket_fox": {
+      "x": 80,
+      "y": 640,
+      "w": 16,
+      "h": 16
+    },
+    "collect.pet.burrow_owl": {
+      "x": 96,
+      "y": 640,
+      "w": 16,
+      "h": 16
+    },
+    "collect.pet.ember_toad": {
+      "x": 112,
+      "y": 640,
+      "w": 16,
+      "h": 16
+    },
+    "collect.trophy.hunt": {
+      "x": 128,
+      "y": 640,
+      "w": 16,
+      "h": 16
+    },
+    "collect.trophy.angler": {
+      "x": 144,
+      "y": 640,
+      "w": 16,
+      "h": 16
+    },
+    "collect.trophy.botanist": {
+      "x": 0,
+      "y": 656,
+      "w": 16,
+      "h": 16
+    },
+    "collect.trophy.raid_banner": {
+      "x": 16,
+      "y": 656,
+      "w": 16,
+      "h": 16
+    },
+    "collect.trophy.speedrun": {
+      "x": 32,
+      "y": 656,
+      "w": 16,
+      "h": 16
+    },
+    "collect.trophy.collector": {
+      "x": 48,
+      "y": 656,
+      "w": 16,
+      "h": 16
+    },
+    "collect.title.ribbon": {
+      "x": 64,
+      "y": 656,
+      "w": 16,
+      "h": 16
+    },
+    "collect.title.laurel": {
+      "x": 80,
+      "y": 656,
+      "w": 16,
+      "h": 16
+    },
+    "collect.title.signet": {
+      "x": 96,
+      "y": 656,
+      "w": 16,
+      "h": 16
+    },
+    "collect.title.banner_pin": {
+      "x": 112,
+      "y": 656,
+      "w": 16,
+      "h": 16
+    },
+    "collect.token.skin_sword": {
+      "x": 128,
+      "y": 656,
+      "w": 16,
+      "h": 16
+    },
+    "collect.token.skin_bow": {
+      "x": 144,
+      "y": 656,
+      "w": 16,
+      "h": 16
+    },
+    "collect.token.skin_staff": {
+      "x": 0,
+      "y": 672,
+      "w": 16,
+      "h": 16
+    },
+    "collect.token.finish": {
+      "x": 16,
+      "y": 672,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f01": {
+      "x": 32,
+      "y": 672,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f02": {
+      "x": 48,
+      "y": 672,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f03": {
+      "x": 64,
+      "y": 672,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f04": {
+      "x": 80,
+      "y": 672,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f05": {
+      "x": 96,
+      "y": 672,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f06": {
+      "x": 112,
+      "y": 672,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f07": {
+      "x": 128,
+      "y": 672,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f08": {
+      "x": 144,
+      "y": 672,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f09": {
+      "x": 0,
+      "y": 688,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f10": {
+      "x": 16,
+      "y": 688,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f11": {
+      "x": 32,
+      "y": 688,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f12": {
+      "x": 48,
+      "y": 688,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f13": {
+      "x": 64,
+      "y": 688,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f14": {
+      "x": 80,
+      "y": 688,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f15": {
+      "x": 96,
+      "y": 688,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f16": {
+      "x": 112,
+      "y": 688,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f17": {
+      "x": 128,
+      "y": 688,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f18": {
+      "x": 144,
+      "y": 688,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f19": {
+      "x": 0,
+      "y": 704,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f20": {
+      "x": 16,
+      "y": 704,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f21": {
+      "x": 32,
+      "y": 704,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f22": {
+      "x": 48,
+      "y": 704,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f23": {
+      "x": 64,
+      "y": 704,
+      "w": 16,
+      "h": 16
+    },
+    "collect.fish.f24": {
+      "x": 80,
+      "y": 704,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p01": {
+      "x": 96,
+      "y": 704,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p02": {
+      "x": 112,
+      "y": 704,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p03": {
+      "x": 128,
+      "y": 704,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p04": {
+      "x": 144,
+      "y": 704,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p05": {
+      "x": 0,
+      "y": 720,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p06": {
+      "x": 16,
+      "y": 720,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p07": {
+      "x": 32,
+      "y": 720,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p08": {
+      "x": 48,
+      "y": 720,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p09": {
+      "x": 64,
+      "y": 720,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p10": {
+      "x": 80,
+      "y": 720,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p11": {
+      "x": 96,
+      "y": 720,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p12": {
+      "x": 112,
+      "y": 720,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p13": {
+      "x": 128,
+      "y": 720,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p14": {
+      "x": 144,
+      "y": 720,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p15": {
+      "x": 0,
+      "y": 736,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p16": {
+      "x": 16,
+      "y": 736,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p17": {
+      "x": 32,
+      "y": 736,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p18": {
+      "x": 48,
+      "y": 736,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p19": {
+      "x": 64,
+      "y": 736,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p20": {
+      "x": 80,
+      "y": 736,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p21": {
+      "x": 96,
+      "y": 736,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p22": {
+      "x": 112,
+      "y": 736,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p23": {
+      "x": 128,
+      "y": 736,
+      "w": 16,
+      "h": 16
+    },
+    "collect.flower.p24": {
+      "x": 144,
+      "y": 736,
+      "w": 16,
+      "h": 16
+    }
+  }
+}

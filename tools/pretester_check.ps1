@@ -70,6 +70,17 @@ Step "lockdown lint (one-flag gate)" {
     return $true
 }
 
+# sl-0083 icon-pack raw drop (unwired by ruling): manifest contract +
+# per-file sha256s vs the intake passport — refuses byte drift.
+Step "icon pack validate (manifest+passport)" {
+    $iout = python tools/validate_icon_pack.py 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        $iout | Select-Object -Last 8 | ForEach-Object { Write-Host "  $_" }
+        return $false
+    }
+    return $true
+}
+
 $tests = @(
     @("pixel-match", "tests/pixel_match/pixel_match.gd"),
     @("assembler pack + slice", "tests/assembler_pack/assembler_pack_test.gd"),

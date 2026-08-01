@@ -42,6 +42,17 @@ jobs:
           pip install --quiet "gdtoolkit==4.*"
           gdformat --check $files
 
+      # sl-0083 icon-pack raw drop: manifest contract (exists/decodes/16x16/
+      # unique ids/atlas coherence) + per-file sha256s vs the intake
+      # passport. Pure file reads, checkout byte-exact (assets/** -text) —
+      # Linux-safe.
+      - name: Icon pack validation (manifest + passport byte pin)
+        shell: bash
+        run: |
+          set -euo pipefail
+          pip install --quiet pillow
+          python3 tools/validate_icon_pack.py
+
   # M2 job (tracker line "determinism smoke test"): double-run state-hash
   # compare. Sim execution — §2.4 scope is same-build/same-platform (Windows),
   # so this MUST run on a Windows runner; a Linux runner would false-alarm on

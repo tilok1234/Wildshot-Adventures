@@ -1,0 +1,3837 @@
+{
+  "set": "wildshot-icons-proto",
+  "version": "0.1.0",
+  "size": 16,
+  "palette": {
+    "mode": "dusk",
+    "roles": {
+      "ink": "#221c2b",
+      "shadow": "#332b40",
+      "pale": "#e8e0d4",
+      "metal_hi": "#b8c0cc",
+      "metal_mid": "#7d8794",
+      "metal_lo": "#4a5160",
+      "wood_hi": "#a8784f",
+      "wood_lo": "#6e4a30",
+      "leather": "#8a6242",
+      "cloth": "#5f5570",
+      "focus": "#8fd0c8",
+      "ember": "#d98a4a",
+      "nature": "#7ba05a",
+      "gold": "#d4b05a",
+      "blood": "#a04848"
+    }
+  },
+  "glyphs": [
+    {
+      "id": "item.weapon.sword.arming.t1",
+      "file": "glyphs/item.weapon.sword.arming.t1.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 1,
+      "name": "Arming Sword (rough)"
+    },
+    {
+      "id": "item.weapon.sword.arming.t2",
+      "file": "glyphs/item.weapon.sword.arming.t2.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 2,
+      "name": "Arming Sword (iron)"
+    },
+    {
+      "id": "item.weapon.sword.arming.t3",
+      "file": "glyphs/item.weapon.sword.arming.t3.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 3,
+      "name": "Arming Sword (steel)"
+    },
+    {
+      "id": "item.weapon.sword.arming.t4",
+      "file": "glyphs/item.weapon.sword.arming.t4.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 4,
+      "name": "Arming Sword (dusk-silver)"
+    },
+    {
+      "id": "item.weapon.sword.arming.t5",
+      "file": "glyphs/item.weapon.sword.arming.t5.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 5,
+      "name": "Arming Sword (star-metal)"
+    },
+    {
+      "id": "item.weapon.sword.greatsword.t1",
+      "file": "glyphs/item.weapon.sword.greatsword.t1.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 1,
+      "name": "Greatsword (rough)"
+    },
+    {
+      "id": "item.weapon.sword.greatsword.t2",
+      "file": "glyphs/item.weapon.sword.greatsword.t2.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 2,
+      "name": "Greatsword (iron)"
+    },
+    {
+      "id": "item.weapon.sword.greatsword.t3",
+      "file": "glyphs/item.weapon.sword.greatsword.t3.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 3,
+      "name": "Greatsword (steel)"
+    },
+    {
+      "id": "item.weapon.sword.greatsword.t4",
+      "file": "glyphs/item.weapon.sword.greatsword.t4.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 4,
+      "name": "Greatsword (dusk-silver)"
+    },
+    {
+      "id": "item.weapon.sword.greatsword.t5",
+      "file": "glyphs/item.weapon.sword.greatsword.t5.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 5,
+      "name": "Greatsword (star-metal)"
+    },
+    {
+      "id": "item.weapon.sword.twin.t1",
+      "file": "glyphs/item.weapon.sword.twin.t1.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 1,
+      "name": "Twin Blades (rough)"
+    },
+    {
+      "id": "item.weapon.sword.twin.t2",
+      "file": "glyphs/item.weapon.sword.twin.t2.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 2,
+      "name": "Twin Blades (iron)"
+    },
+    {
+      "id": "item.weapon.sword.twin.t3",
+      "file": "glyphs/item.weapon.sword.twin.t3.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 3,
+      "name": "Twin Blades (steel)"
+    },
+    {
+      "id": "item.weapon.sword.twin.t4",
+      "file": "glyphs/item.weapon.sword.twin.t4.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 4,
+      "name": "Twin Blades (dusk-silver)"
+    },
+    {
+      "id": "item.weapon.sword.twin.t5",
+      "file": "glyphs/item.weapon.sword.twin.t5.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 5,
+      "name": "Twin Blades (star-metal)"
+    },
+    {
+      "id": "item.weapon.sword.cleaver.t1",
+      "file": "glyphs/item.weapon.sword.cleaver.t1.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 1,
+      "name": "War Cleaver (rough)"
+    },
+    {
+      "id": "item.weapon.sword.cleaver.t2",
+      "file": "glyphs/item.weapon.sword.cleaver.t2.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 2,
+      "name": "War Cleaver (iron)"
+    },
+    {
+      "id": "item.weapon.sword.cleaver.t3",
+      "file": "glyphs/item.weapon.sword.cleaver.t3.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 3,
+      "name": "War Cleaver (steel)"
+    },
+    {
+      "id": "item.weapon.sword.cleaver.t4",
+      "file": "glyphs/item.weapon.sword.cleaver.t4.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 4,
+      "name": "War Cleaver (dusk-silver)"
+    },
+    {
+      "id": "item.weapon.sword.cleaver.t5",
+      "file": "glyphs/item.weapon.sword.cleaver.t5.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 5,
+      "name": "War Cleaver (star-metal)"
+    },
+    {
+      "id": "item.weapon.bow.longbow.t1",
+      "file": "glyphs/item.weapon.bow.longbow.t1.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 1,
+      "name": "Longbow (rough)"
+    },
+    {
+      "id": "item.weapon.bow.longbow.t2",
+      "file": "glyphs/item.weapon.bow.longbow.t2.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 2,
+      "name": "Longbow (iron)"
+    },
+    {
+      "id": "item.weapon.bow.longbow.t3",
+      "file": "glyphs/item.weapon.bow.longbow.t3.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 3,
+      "name": "Longbow (steel)"
+    },
+    {
+      "id": "item.weapon.bow.longbow.t4",
+      "file": "glyphs/item.weapon.bow.longbow.t4.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 4,
+      "name": "Longbow (dusk-silver)"
+    },
+    {
+      "id": "item.weapon.bow.longbow.t5",
+      "file": "glyphs/item.weapon.bow.longbow.t5.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 5,
+      "name": "Longbow (star-metal)"
+    },
+    {
+      "id": "item.weapon.bow.recurve.t1",
+      "file": "glyphs/item.weapon.bow.recurve.t1.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 1,
+      "name": "Recurve Bow (rough)"
+    },
+    {
+      "id": "item.weapon.bow.recurve.t2",
+      "file": "glyphs/item.weapon.bow.recurve.t2.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 2,
+      "name": "Recurve Bow (iron)"
+    },
+    {
+      "id": "item.weapon.bow.recurve.t3",
+      "file": "glyphs/item.weapon.bow.recurve.t3.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 3,
+      "name": "Recurve Bow (steel)"
+    },
+    {
+      "id": "item.weapon.bow.recurve.t4",
+      "file": "glyphs/item.weapon.bow.recurve.t4.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 4,
+      "name": "Recurve Bow (dusk-silver)"
+    },
+    {
+      "id": "item.weapon.bow.recurve.t5",
+      "file": "glyphs/item.weapon.bow.recurve.t5.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 5,
+      "name": "Recurve Bow (star-metal)"
+    },
+    {
+      "id": "item.weapon.bow.crossbow.t1",
+      "file": "glyphs/item.weapon.bow.crossbow.t1.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 1,
+      "name": "Heavy Crossbow (rough)"
+    },
+    {
+      "id": "item.weapon.bow.crossbow.t2",
+      "file": "glyphs/item.weapon.bow.crossbow.t2.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 2,
+      "name": "Heavy Crossbow (iron)"
+    },
+    {
+      "id": "item.weapon.bow.crossbow.t3",
+      "file": "glyphs/item.weapon.bow.crossbow.t3.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 3,
+      "name": "Heavy Crossbow (steel)"
+    },
+    {
+      "id": "item.weapon.bow.crossbow.t4",
+      "file": "glyphs/item.weapon.bow.crossbow.t4.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 4,
+      "name": "Heavy Crossbow (dusk-silver)"
+    },
+    {
+      "id": "item.weapon.bow.crossbow.t5",
+      "file": "glyphs/item.weapon.bow.crossbow.t5.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 5,
+      "name": "Heavy Crossbow (star-metal)"
+    },
+    {
+      "id": "item.weapon.bow.ballista.t1",
+      "file": "glyphs/item.weapon.bow.ballista.t1.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 1,
+      "name": "Hand Ballista (rough)"
+    },
+    {
+      "id": "item.weapon.bow.ballista.t2",
+      "file": "glyphs/item.weapon.bow.ballista.t2.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 2,
+      "name": "Hand Ballista (iron)"
+    },
+    {
+      "id": "item.weapon.bow.ballista.t3",
+      "file": "glyphs/item.weapon.bow.ballista.t3.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 3,
+      "name": "Hand Ballista (steel)"
+    },
+    {
+      "id": "item.weapon.bow.ballista.t4",
+      "file": "glyphs/item.weapon.bow.ballista.t4.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 4,
+      "name": "Hand Ballista (dusk-silver)"
+    },
+    {
+      "id": "item.weapon.bow.ballista.t5",
+      "file": "glyphs/item.weapon.bow.ballista.t5.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 5,
+      "name": "Hand Ballista (star-metal)"
+    },
+    {
+      "id": "item.weapon.staff.longstaff.t1",
+      "file": "glyphs/item.weapon.staff.longstaff.t1.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 1,
+      "name": "Long Staff (rough)"
+    },
+    {
+      "id": "item.weapon.staff.longstaff.t2",
+      "file": "glyphs/item.weapon.staff.longstaff.t2.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 2,
+      "name": "Long Staff (iron)"
+    },
+    {
+      "id": "item.weapon.staff.longstaff.t3",
+      "file": "glyphs/item.weapon.staff.longstaff.t3.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 3,
+      "name": "Long Staff (steel)"
+    },
+    {
+      "id": "item.weapon.staff.longstaff.t4",
+      "file": "glyphs/item.weapon.staff.longstaff.t4.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 4,
+      "name": "Long Staff (dusk-silver)"
+    },
+    {
+      "id": "item.weapon.staff.longstaff.t5",
+      "file": "glyphs/item.weapon.staff.longstaff.t5.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 5,
+      "name": "Long Staff (star-metal)"
+    },
+    {
+      "id": "item.weapon.staff.wand.t1",
+      "file": "glyphs/item.weapon.staff.wand.t1.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 1,
+      "name": "Wand (rough)"
+    },
+    {
+      "id": "item.weapon.staff.wand.t2",
+      "file": "glyphs/item.weapon.staff.wand.t2.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 2,
+      "name": "Wand (iron)"
+    },
+    {
+      "id": "item.weapon.staff.wand.t3",
+      "file": "glyphs/item.weapon.staff.wand.t3.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 3,
+      "name": "Wand (steel)"
+    },
+    {
+      "id": "item.weapon.staff.wand.t4",
+      "file": "glyphs/item.weapon.staff.wand.t4.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 4,
+      "name": "Wand (dusk-silver)"
+    },
+    {
+      "id": "item.weapon.staff.wand.t5",
+      "file": "glyphs/item.weapon.staff.wand.t5.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 5,
+      "name": "Wand (star-metal)"
+    },
+    {
+      "id": "item.weapon.staff.scepter.t1",
+      "file": "glyphs/item.weapon.staff.scepter.t1.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 1,
+      "name": "Scepter (rough)"
+    },
+    {
+      "id": "item.weapon.staff.scepter.t2",
+      "file": "glyphs/item.weapon.staff.scepter.t2.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 2,
+      "name": "Scepter (iron)"
+    },
+    {
+      "id": "item.weapon.staff.scepter.t3",
+      "file": "glyphs/item.weapon.staff.scepter.t3.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 3,
+      "name": "Scepter (steel)"
+    },
+    {
+      "id": "item.weapon.staff.scepter.t4",
+      "file": "glyphs/item.weapon.staff.scepter.t4.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 4,
+      "name": "Scepter (dusk-silver)"
+    },
+    {
+      "id": "item.weapon.staff.scepter.t5",
+      "file": "glyphs/item.weapon.staff.scepter.t5.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 5,
+      "name": "Scepter (star-metal)"
+    },
+    {
+      "id": "item.weapon.staff.greatstaff.t1",
+      "file": "glyphs/item.weapon.staff.greatstaff.t1.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 1,
+      "name": "Greatstaff (rough)"
+    },
+    {
+      "id": "item.weapon.staff.greatstaff.t2",
+      "file": "glyphs/item.weapon.staff.greatstaff.t2.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 2,
+      "name": "Greatstaff (iron)"
+    },
+    {
+      "id": "item.weapon.staff.greatstaff.t3",
+      "file": "glyphs/item.weapon.staff.greatstaff.t3.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 3,
+      "name": "Greatstaff (steel)"
+    },
+    {
+      "id": "item.weapon.staff.greatstaff.t4",
+      "file": "glyphs/item.weapon.staff.greatstaff.t4.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 4,
+      "name": "Greatstaff (dusk-silver)"
+    },
+    {
+      "id": "item.weapon.staff.greatstaff.t5",
+      "file": "glyphs/item.weapon.staff.greatstaff.t5.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 5,
+      "name": "Greatstaff (star-metal)"
+    },
+    {
+      "id": "item.armor.sword.bulwark.t1",
+      "file": "glyphs/item.armor.sword.bulwark.t1.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 1,
+      "name": "Bulwark Plate (rough)"
+    },
+    {
+      "id": "item.armor.sword.bulwark.t2",
+      "file": "glyphs/item.armor.sword.bulwark.t2.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 2,
+      "name": "Bulwark Plate (iron)"
+    },
+    {
+      "id": "item.armor.sword.bulwark.t3",
+      "file": "glyphs/item.armor.sword.bulwark.t3.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 3,
+      "name": "Bulwark Plate (steel)"
+    },
+    {
+      "id": "item.armor.sword.bulwark.t4",
+      "file": "glyphs/item.armor.sword.bulwark.t4.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 4,
+      "name": "Bulwark Plate (dusk-silver)"
+    },
+    {
+      "id": "item.armor.sword.bulwark.t5",
+      "file": "glyphs/item.armor.sword.bulwark.t5.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 5,
+      "name": "Bulwark Plate (star-metal)"
+    },
+    {
+      "id": "item.armor.sword.skirmish.t1",
+      "file": "glyphs/item.armor.sword.skirmish.t1.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 1,
+      "name": "Skirmish Plate (rough)"
+    },
+    {
+      "id": "item.armor.sword.skirmish.t2",
+      "file": "glyphs/item.armor.sword.skirmish.t2.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 2,
+      "name": "Skirmish Plate (iron)"
+    },
+    {
+      "id": "item.armor.sword.skirmish.t3",
+      "file": "glyphs/item.armor.sword.skirmish.t3.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 3,
+      "name": "Skirmish Plate (steel)"
+    },
+    {
+      "id": "item.armor.sword.skirmish.t4",
+      "file": "glyphs/item.armor.sword.skirmish.t4.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 4,
+      "name": "Skirmish Plate (dusk-silver)"
+    },
+    {
+      "id": "item.armor.sword.skirmish.t5",
+      "file": "glyphs/item.armor.sword.skirmish.t5.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 5,
+      "name": "Skirmish Plate (star-metal)"
+    },
+    {
+      "id": "item.armor.sword.attuned.t1",
+      "file": "glyphs/item.armor.sword.attuned.t1.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 1,
+      "name": "Attuned Plate (rough)"
+    },
+    {
+      "id": "item.armor.sword.attuned.t2",
+      "file": "glyphs/item.armor.sword.attuned.t2.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 2,
+      "name": "Attuned Plate (iron)"
+    },
+    {
+      "id": "item.armor.sword.attuned.t3",
+      "file": "glyphs/item.armor.sword.attuned.t3.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 3,
+      "name": "Attuned Plate (steel)"
+    },
+    {
+      "id": "item.armor.sword.attuned.t4",
+      "file": "glyphs/item.armor.sword.attuned.t4.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 4,
+      "name": "Attuned Plate (dusk-silver)"
+    },
+    {
+      "id": "item.armor.sword.attuned.t5",
+      "file": "glyphs/item.armor.sword.attuned.t5.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "tier": 5,
+      "name": "Attuned Plate (star-metal)"
+    },
+    {
+      "id": "item.armor.bow.bulwark.t1",
+      "file": "glyphs/item.armor.bow.bulwark.t1.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 1,
+      "name": "Bulwark Harness (rough)"
+    },
+    {
+      "id": "item.armor.bow.bulwark.t2",
+      "file": "glyphs/item.armor.bow.bulwark.t2.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 2,
+      "name": "Bulwark Harness (iron)"
+    },
+    {
+      "id": "item.armor.bow.bulwark.t3",
+      "file": "glyphs/item.armor.bow.bulwark.t3.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 3,
+      "name": "Bulwark Harness (steel)"
+    },
+    {
+      "id": "item.armor.bow.bulwark.t4",
+      "file": "glyphs/item.armor.bow.bulwark.t4.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 4,
+      "name": "Bulwark Harness (dusk-silver)"
+    },
+    {
+      "id": "item.armor.bow.bulwark.t5",
+      "file": "glyphs/item.armor.bow.bulwark.t5.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 5,
+      "name": "Bulwark Harness (star-metal)"
+    },
+    {
+      "id": "item.armor.bow.skirmish.t1",
+      "file": "glyphs/item.armor.bow.skirmish.t1.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 1,
+      "name": "Skirmish Harness (rough)"
+    },
+    {
+      "id": "item.armor.bow.skirmish.t2",
+      "file": "glyphs/item.armor.bow.skirmish.t2.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 2,
+      "name": "Skirmish Harness (iron)"
+    },
+    {
+      "id": "item.armor.bow.skirmish.t3",
+      "file": "glyphs/item.armor.bow.skirmish.t3.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 3,
+      "name": "Skirmish Harness (steel)"
+    },
+    {
+      "id": "item.armor.bow.skirmish.t4",
+      "file": "glyphs/item.armor.bow.skirmish.t4.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 4,
+      "name": "Skirmish Harness (dusk-silver)"
+    },
+    {
+      "id": "item.armor.bow.skirmish.t5",
+      "file": "glyphs/item.armor.bow.skirmish.t5.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 5,
+      "name": "Skirmish Harness (star-metal)"
+    },
+    {
+      "id": "item.armor.bow.attuned.t1",
+      "file": "glyphs/item.armor.bow.attuned.t1.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 1,
+      "name": "Attuned Harness (rough)"
+    },
+    {
+      "id": "item.armor.bow.attuned.t2",
+      "file": "glyphs/item.armor.bow.attuned.t2.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 2,
+      "name": "Attuned Harness (iron)"
+    },
+    {
+      "id": "item.armor.bow.attuned.t3",
+      "file": "glyphs/item.armor.bow.attuned.t3.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 3,
+      "name": "Attuned Harness (steel)"
+    },
+    {
+      "id": "item.armor.bow.attuned.t4",
+      "file": "glyphs/item.armor.bow.attuned.t4.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 4,
+      "name": "Attuned Harness (dusk-silver)"
+    },
+    {
+      "id": "item.armor.bow.attuned.t5",
+      "file": "glyphs/item.armor.bow.attuned.t5.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "tier": 5,
+      "name": "Attuned Harness (star-metal)"
+    },
+    {
+      "id": "item.armor.staff.bulwark.t1",
+      "file": "glyphs/item.armor.staff.bulwark.t1.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 1,
+      "name": "Bulwark Mantle (rough)"
+    },
+    {
+      "id": "item.armor.staff.bulwark.t2",
+      "file": "glyphs/item.armor.staff.bulwark.t2.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 2,
+      "name": "Bulwark Mantle (iron)"
+    },
+    {
+      "id": "item.armor.staff.bulwark.t3",
+      "file": "glyphs/item.armor.staff.bulwark.t3.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 3,
+      "name": "Bulwark Mantle (steel)"
+    },
+    {
+      "id": "item.armor.staff.bulwark.t4",
+      "file": "glyphs/item.armor.staff.bulwark.t4.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 4,
+      "name": "Bulwark Mantle (dusk-silver)"
+    },
+    {
+      "id": "item.armor.staff.bulwark.t5",
+      "file": "glyphs/item.armor.staff.bulwark.t5.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 5,
+      "name": "Bulwark Mantle (star-metal)"
+    },
+    {
+      "id": "item.armor.staff.skirmish.t1",
+      "file": "glyphs/item.armor.staff.skirmish.t1.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 1,
+      "name": "Skirmish Mantle (rough)"
+    },
+    {
+      "id": "item.armor.staff.skirmish.t2",
+      "file": "glyphs/item.armor.staff.skirmish.t2.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 2,
+      "name": "Skirmish Mantle (iron)"
+    },
+    {
+      "id": "item.armor.staff.skirmish.t3",
+      "file": "glyphs/item.armor.staff.skirmish.t3.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 3,
+      "name": "Skirmish Mantle (steel)"
+    },
+    {
+      "id": "item.armor.staff.skirmish.t4",
+      "file": "glyphs/item.armor.staff.skirmish.t4.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 4,
+      "name": "Skirmish Mantle (dusk-silver)"
+    },
+    {
+      "id": "item.armor.staff.skirmish.t5",
+      "file": "glyphs/item.armor.staff.skirmish.t5.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 5,
+      "name": "Skirmish Mantle (star-metal)"
+    },
+    {
+      "id": "item.armor.staff.attuned.t1",
+      "file": "glyphs/item.armor.staff.attuned.t1.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 1,
+      "name": "Attuned Mantle (rough)"
+    },
+    {
+      "id": "item.armor.staff.attuned.t2",
+      "file": "glyphs/item.armor.staff.attuned.t2.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 2,
+      "name": "Attuned Mantle (iron)"
+    },
+    {
+      "id": "item.armor.staff.attuned.t3",
+      "file": "glyphs/item.armor.staff.attuned.t3.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 3,
+      "name": "Attuned Mantle (steel)"
+    },
+    {
+      "id": "item.armor.staff.attuned.t4",
+      "file": "glyphs/item.armor.staff.attuned.t4.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 4,
+      "name": "Attuned Mantle (dusk-silver)"
+    },
+    {
+      "id": "item.armor.staff.attuned.t5",
+      "file": "glyphs/item.armor.staff.attuned.t5.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "tier": 5,
+      "name": "Attuned Mantle (star-metal)"
+    },
+    {
+      "id": "item.ring.grudge_band.t1",
+      "file": "glyphs/item.ring.grudge_band.t1.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 1,
+      "name": "Grudge Band (rough)"
+    },
+    {
+      "id": "item.ring.grudge_band.t2",
+      "file": "glyphs/item.ring.grudge_band.t2.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 2,
+      "name": "Grudge Band (iron)"
+    },
+    {
+      "id": "item.ring.grudge_band.t3",
+      "file": "glyphs/item.ring.grudge_band.t3.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 3,
+      "name": "Grudge Band (steel)"
+    },
+    {
+      "id": "item.ring.grudge_band.t4",
+      "file": "glyphs/item.ring.grudge_band.t4.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 4,
+      "name": "Grudge Band (dusk-silver)"
+    },
+    {
+      "id": "item.ring.grudge_band.t5",
+      "file": "glyphs/item.ring.grudge_band.t5.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 5,
+      "name": "Grudge Band (star-metal)"
+    },
+    {
+      "id": "item.ring.spark_loop.t1",
+      "file": "glyphs/item.ring.spark_loop.t1.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 1,
+      "name": "Spark Loop (rough)"
+    },
+    {
+      "id": "item.ring.spark_loop.t2",
+      "file": "glyphs/item.ring.spark_loop.t2.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 2,
+      "name": "Spark Loop (iron)"
+    },
+    {
+      "id": "item.ring.spark_loop.t3",
+      "file": "glyphs/item.ring.spark_loop.t3.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 3,
+      "name": "Spark Loop (steel)"
+    },
+    {
+      "id": "item.ring.spark_loop.t4",
+      "file": "glyphs/item.ring.spark_loop.t4.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 4,
+      "name": "Spark Loop (dusk-silver)"
+    },
+    {
+      "id": "item.ring.spark_loop.t5",
+      "file": "glyphs/item.ring.spark_loop.t5.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 5,
+      "name": "Spark Loop (star-metal)"
+    },
+    {
+      "id": "item.ring.close_call.t1",
+      "file": "glyphs/item.ring.close_call.t1.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 1,
+      "name": "Close-Call Ring (rough)"
+    },
+    {
+      "id": "item.ring.close_call.t2",
+      "file": "glyphs/item.ring.close_call.t2.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 2,
+      "name": "Close-Call Ring (iron)"
+    },
+    {
+      "id": "item.ring.close_call.t3",
+      "file": "glyphs/item.ring.close_call.t3.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 3,
+      "name": "Close-Call Ring (steel)"
+    },
+    {
+      "id": "item.ring.close_call.t4",
+      "file": "glyphs/item.ring.close_call.t4.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 4,
+      "name": "Close-Call Ring (dusk-silver)"
+    },
+    {
+      "id": "item.ring.close_call.t5",
+      "file": "glyphs/item.ring.close_call.t5.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 5,
+      "name": "Close-Call Ring (star-metal)"
+    },
+    {
+      "id": "item.ring.crowd_coil.t1",
+      "file": "glyphs/item.ring.crowd_coil.t1.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 1,
+      "name": "Crowd Coil (rough)"
+    },
+    {
+      "id": "item.ring.crowd_coil.t2",
+      "file": "glyphs/item.ring.crowd_coil.t2.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 2,
+      "name": "Crowd Coil (iron)"
+    },
+    {
+      "id": "item.ring.crowd_coil.t3",
+      "file": "glyphs/item.ring.crowd_coil.t3.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 3,
+      "name": "Crowd Coil (steel)"
+    },
+    {
+      "id": "item.ring.crowd_coil.t4",
+      "file": "glyphs/item.ring.crowd_coil.t4.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 4,
+      "name": "Crowd Coil (dusk-silver)"
+    },
+    {
+      "id": "item.ring.crowd_coil.t5",
+      "file": "glyphs/item.ring.crowd_coil.t5.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 5,
+      "name": "Crowd Coil (star-metal)"
+    },
+    {
+      "id": "item.ring.duelist_seal.t1",
+      "file": "glyphs/item.ring.duelist_seal.t1.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 1,
+      "name": "Duelist's Seal (rough)"
+    },
+    {
+      "id": "item.ring.duelist_seal.t2",
+      "file": "glyphs/item.ring.duelist_seal.t2.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 2,
+      "name": "Duelist's Seal (iron)"
+    },
+    {
+      "id": "item.ring.duelist_seal.t3",
+      "file": "glyphs/item.ring.duelist_seal.t3.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 3,
+      "name": "Duelist's Seal (steel)"
+    },
+    {
+      "id": "item.ring.duelist_seal.t4",
+      "file": "glyphs/item.ring.duelist_seal.t4.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 4,
+      "name": "Duelist's Seal (dusk-silver)"
+    },
+    {
+      "id": "item.ring.duelist_seal.t5",
+      "file": "glyphs/item.ring.duelist_seal.t5.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 5,
+      "name": "Duelist's Seal (star-metal)"
+    },
+    {
+      "id": "item.ring.featherweight.t1",
+      "file": "glyphs/item.ring.featherweight.t1.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 1,
+      "name": "Featherweight Band (rough)"
+    },
+    {
+      "id": "item.ring.featherweight.t2",
+      "file": "glyphs/item.ring.featherweight.t2.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 2,
+      "name": "Featherweight Band (iron)"
+    },
+    {
+      "id": "item.ring.featherweight.t3",
+      "file": "glyphs/item.ring.featherweight.t3.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 3,
+      "name": "Featherweight Band (steel)"
+    },
+    {
+      "id": "item.ring.featherweight.t4",
+      "file": "glyphs/item.ring.featherweight.t4.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 4,
+      "name": "Featherweight Band (dusk-silver)"
+    },
+    {
+      "id": "item.ring.featherweight.t5",
+      "file": "glyphs/item.ring.featherweight.t5.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 5,
+      "name": "Featherweight Band (star-metal)"
+    },
+    {
+      "id": "item.ring.misers_knot.t1",
+      "file": "glyphs/item.ring.misers_knot.t1.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 1,
+      "name": "Miser's Knot (rough)"
+    },
+    {
+      "id": "item.ring.misers_knot.t2",
+      "file": "glyphs/item.ring.misers_knot.t2.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 2,
+      "name": "Miser's Knot (iron)"
+    },
+    {
+      "id": "item.ring.misers_knot.t3",
+      "file": "glyphs/item.ring.misers_knot.t3.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 3,
+      "name": "Miser's Knot (steel)"
+    },
+    {
+      "id": "item.ring.misers_knot.t4",
+      "file": "glyphs/item.ring.misers_knot.t4.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 4,
+      "name": "Miser's Knot (dusk-silver)"
+    },
+    {
+      "id": "item.ring.misers_knot.t5",
+      "file": "glyphs/item.ring.misers_knot.t5.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 5,
+      "name": "Miser's Knot (star-metal)"
+    },
+    {
+      "id": "item.ring.anchor.t1",
+      "file": "glyphs/item.ring.anchor.t1.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 1,
+      "name": "Anchor Ring (rough)"
+    },
+    {
+      "id": "item.ring.anchor.t2",
+      "file": "glyphs/item.ring.anchor.t2.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 2,
+      "name": "Anchor Ring (iron)"
+    },
+    {
+      "id": "item.ring.anchor.t3",
+      "file": "glyphs/item.ring.anchor.t3.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 3,
+      "name": "Anchor Ring (steel)"
+    },
+    {
+      "id": "item.ring.anchor.t4",
+      "file": "glyphs/item.ring.anchor.t4.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 4,
+      "name": "Anchor Ring (dusk-silver)"
+    },
+    {
+      "id": "item.ring.anchor.t5",
+      "file": "glyphs/item.ring.anchor.t5.png",
+      "size": 16,
+      "kind": "item",
+      "tier": 5,
+      "name": "Anchor Ring (star-metal)"
+    },
+    {
+      "id": "item.ability.sword.dash_strike",
+      "file": "glyphs/item.ability.sword.dash_strike.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "name": "Dash Strike"
+    },
+    {
+      "id": "item.ability.sword.whirlwind",
+      "file": "glyphs/item.ability.sword.whirlwind.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "name": "Whirlwind"
+    },
+    {
+      "id": "item.ability.sword.ground_slam",
+      "file": "glyphs/item.ability.sword.ground_slam.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "name": "Ground Slam"
+    },
+    {
+      "id": "item.ability.sword.parry_stance",
+      "file": "glyphs/item.ability.sword.parry_stance.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "name": "Parry Stance"
+    },
+    {
+      "id": "item.ability.sword.leaping_smash",
+      "file": "glyphs/item.ability.sword.leaping_smash.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "name": "Leaping Smash"
+    },
+    {
+      "id": "item.ability.sword.returning_blade",
+      "file": "glyphs/item.ability.sword.returning_blade.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "name": "Returning Blade"
+    },
+    {
+      "id": "item.ability.sword.war_shout",
+      "file": "glyphs/item.ability.sword.war_shout.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "name": "War Shout"
+    },
+    {
+      "id": "item.ability.sword.taunt",
+      "file": "glyphs/item.ability.sword.taunt.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "name": "Taunting Bellow"
+    },
+    {
+      "id": "item.ability.sword.rending_slash",
+      "file": "glyphs/item.ability.sword.rending_slash.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "name": "Rending Slash"
+    },
+    {
+      "id": "item.ability.sword.sunder",
+      "file": "glyphs/item.ability.sword.sunder.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "name": "Sunder"
+    },
+    {
+      "id": "item.ability.sword.execute",
+      "file": "glyphs/item.ability.sword.execute.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "name": "Execute"
+    },
+    {
+      "id": "item.ability.sword.frenzy",
+      "file": "glyphs/item.ability.sword.frenzy.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "name": "Frenzy"
+    },
+    {
+      "id": "item.ability.sword.stoneskin",
+      "file": "glyphs/item.ability.sword.stoneskin.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "name": "Stoneskin Stance"
+    },
+    {
+      "id": "item.ability.sword.bull_charge",
+      "file": "glyphs/item.ability.sword.bull_charge.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "name": "Bull Charge"
+    },
+    {
+      "id": "item.ability.sword.blade_nova",
+      "file": "glyphs/item.ability.sword.blade_nova.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "name": "Blade Nova"
+    },
+    {
+      "id": "item.ability.sword.hook_chain",
+      "file": "glyphs/item.ability.sword.hook_chain.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "name": "Hook Chain"
+    },
+    {
+      "id": "item.ability.sword.second_wind",
+      "file": "glyphs/item.ability.sword.second_wind.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "name": "Second Wind"
+    },
+    {
+      "id": "item.ability.bow.snare_trap",
+      "file": "glyphs/item.ability.bow.snare_trap.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "name": "Snare Trap"
+    },
+    {
+      "id": "item.ability.bow.fan_arrows",
+      "file": "glyphs/item.ability.bow.fan_arrows.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "name": "Fan of Arrows"
+    },
+    {
+      "id": "item.ability.bow.piercing_bolt",
+      "file": "glyphs/item.ability.bow.piercing_bolt.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "name": "Piercing Bolt"
+    },
+    {
+      "id": "item.ability.bow.arrow_storm",
+      "file": "glyphs/item.ability.bow.arrow_storm.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "name": "Arrow Storm"
+    },
+    {
+      "id": "item.ability.bow.caltrops",
+      "file": "glyphs/item.ability.bow.caltrops.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "name": "Caltrops"
+    },
+    {
+      "id": "item.ability.bow.smoke_bomb",
+      "file": "glyphs/item.ability.bow.smoke_bomb.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "name": "Smoke Bomb"
+    },
+    {
+      "id": "item.ability.bow.combat_roll",
+      "file": "glyphs/item.ability.bow.combat_roll.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "name": "Combat Roll"
+    },
+    {
+      "id": "item.ability.bow.hunters_mark",
+      "file": "glyphs/item.ability.bow.hunters_mark.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "name": "Hunter's Mark"
+    },
+    {
+      "id": "item.ability.bow.ricochet",
+      "file": "glyphs/item.ability.bow.ricochet.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "name": "Ricochet Shot"
+    },
+    {
+      "id": "item.ability.bow.blast_arrow",
+      "file": "glyphs/item.ability.bow.blast_arrow.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "name": "Blast Arrow"
+    },
+    {
+      "id": "item.ability.bow.venom_arrow",
+      "file": "glyphs/item.ability.bow.venom_arrow.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "name": "Venom Arrow"
+    },
+    {
+      "id": "item.ability.bow.decoy",
+      "file": "glyphs/item.ability.bow.decoy.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "name": "Decoy"
+    },
+    {
+      "id": "item.ability.bow.falcon_call",
+      "file": "glyphs/item.ability.bow.falcon_call.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "name": "Falcon Call"
+    },
+    {
+      "id": "item.ability.bow.quickdraw",
+      "file": "glyphs/item.ability.bow.quickdraw.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "name": "Quickdraw"
+    },
+    {
+      "id": "item.ability.bow.staggering_shot",
+      "file": "glyphs/item.ability.bow.staggering_shot.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "name": "Staggering Shot"
+    },
+    {
+      "id": "item.ability.bow.grapple_line",
+      "file": "glyphs/item.ability.bow.grapple_line.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "name": "Grapple Line"
+    },
+    {
+      "id": "item.ability.bow.snipe",
+      "file": "glyphs/item.ability.bow.snipe.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "name": "Snipe"
+    },
+    {
+      "id": "item.ability.staff.arc_bolt",
+      "file": "glyphs/item.ability.staff.arc_bolt.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "name": "Arc Bolt"
+    },
+    {
+      "id": "item.ability.staff.barrier_dome",
+      "file": "glyphs/item.ability.staff.barrier_dome.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "name": "Barrier Dome"
+    },
+    {
+      "id": "item.ability.staff.blink",
+      "file": "glyphs/item.ability.staff.blink.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "name": "Blink"
+    },
+    {
+      "id": "item.ability.staff.gravity_well",
+      "file": "glyphs/item.ability.staff.gravity_well.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "name": "Gravity Well"
+    },
+    {
+      "id": "item.ability.staff.comet_drop",
+      "file": "glyphs/item.ability.staff.comet_drop.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "name": "Comet Drop"
+    },
+    {
+      "id": "item.ability.staff.frost_field",
+      "file": "glyphs/item.ability.staff.frost_field.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "name": "Frost Field"
+    },
+    {
+      "id": "item.ability.staff.flame_fan",
+      "file": "glyphs/item.ability.staff.flame_fan.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "name": "Flame Fan"
+    },
+    {
+      "id": "item.ability.staff.mending_pulse",
+      "file": "glyphs/item.ability.staff.mending_pulse.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "name": "Mending Pulse"
+    },
+    {
+      "id": "item.ability.staff.summon_wisp",
+      "file": "glyphs/item.ability.staff.summon_wisp.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "name": "Summon Wisp"
+    },
+    {
+      "id": "item.ability.staff.mirror_image",
+      "file": "glyphs/item.ability.staff.mirror_image.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "name": "Mirror Image"
+    },
+    {
+      "id": "item.ability.staff.overcharge",
+      "file": "glyphs/item.ability.staff.overcharge.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "name": "Overcharge"
+    },
+    {
+      "id": "item.ability.staff.storm_call",
+      "file": "glyphs/item.ability.staff.storm_call.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "name": "Storm Call"
+    },
+    {
+      "id": "item.ability.staff.grasping_roots",
+      "file": "glyphs/item.ability.staff.grasping_roots.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "name": "Grasping Roots"
+    },
+    {
+      "id": "item.ability.staff.focus_beam",
+      "file": "glyphs/item.ability.staff.focus_beam.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "name": "Focus Beam"
+    },
+    {
+      "id": "item.ability.staff.slow_bubble",
+      "file": "glyphs/item.ability.staff.slow_bubble.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "name": "Slow Bubble"
+    },
+    {
+      "id": "item.ability.staff.rune_snare",
+      "file": "glyphs/item.ability.staff.rune_snare.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "name": "Rune Snare"
+    },
+    {
+      "id": "item.ability.staff.hexshape",
+      "file": "glyphs/item.ability.staff.hexshape.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "name": "Hexshape"
+    },
+    {
+      "id": "item.unique.emberbrand",
+      "file": "glyphs/item.unique.emberbrand.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "name": "Emberbrand"
+    },
+    {
+      "id": "item.unique.patience",
+      "file": "glyphs/item.unique.patience.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "name": "Patience"
+    },
+    {
+      "id": "item.unique.splitjaw",
+      "file": "glyphs/item.unique.splitjaw.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "sword",
+      "name": "Splitjaw"
+    },
+    {
+      "id": "item.unique.thornreel",
+      "file": "glyphs/item.unique.thornreel.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "name": "Thornreel"
+    },
+    {
+      "id": "item.unique.latchkey",
+      "file": "glyphs/item.unique.latchkey.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "name": "Latchkey"
+    },
+    {
+      "id": "item.unique.skipstone",
+      "file": "glyphs/item.unique.skipstone.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "bow",
+      "name": "Skipstone"
+    },
+    {
+      "id": "item.unique.undertow",
+      "file": "glyphs/item.unique.undertow.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "name": "Undertow"
+    },
+    {
+      "id": "item.unique.mothlight",
+      "file": "glyphs/item.unique.mothlight.png",
+      "size": 16,
+      "kind": "item",
+      "cls": "staff",
+      "name": "Mothlight"
+    },
+    {
+      "id": "item.unique.hearthplate",
+      "file": "glyphs/item.unique.hearthplate.png",
+      "size": 16,
+      "kind": "item",
+      "name": "Hearthplate"
+    },
+    {
+      "id": "item.unique.molt",
+      "file": "glyphs/item.unique.molt.png",
+      "size": 16,
+      "kind": "item",
+      "name": "Molt"
+    },
+    {
+      "id": "item.unique.rootmantle",
+      "file": "glyphs/item.unique.rootmantle.png",
+      "size": 16,
+      "kind": "item",
+      "name": "Rootmantle"
+    },
+    {
+      "id": "item.unique.counterweight",
+      "file": "glyphs/item.unique.counterweight.png",
+      "size": 16,
+      "kind": "item",
+      "name": "Counterweight"
+    },
+    {
+      "id": "item.unique.second_skin",
+      "file": "glyphs/item.unique.second_skin.png",
+      "size": 16,
+      "kind": "item",
+      "name": "Second Skin"
+    },
+    {
+      "id": "item.unique.echo_band",
+      "file": "glyphs/item.unique.echo_band.png",
+      "size": 16,
+      "kind": "item",
+      "name": "Echo Band"
+    },
+    {
+      "id": "item.unique.firstlight",
+      "file": "glyphs/item.unique.firstlight.png",
+      "size": 16,
+      "kind": "item",
+      "name": "Firstlight Ring"
+    },
+    {
+      "id": "item.unique.grudgekeeper",
+      "file": "glyphs/item.unique.grudgekeeper.png",
+      "size": 16,
+      "kind": "item",
+      "name": "Grudgekeeper"
+    },
+    {
+      "id": "item.unique.beggars_band",
+      "file": "glyphs/item.unique.beggars_band.png",
+      "size": 16,
+      "kind": "item",
+      "name": "Beggar's Band"
+    },
+    {
+      "id": "item.unique.bottled_thunder",
+      "file": "glyphs/item.unique.bottled_thunder.png",
+      "size": 16,
+      "kind": "item",
+      "name": "Bottled Thunder"
+    },
+    {
+      "id": "item.unique.lodestone",
+      "file": "glyphs/item.unique.lodestone.png",
+      "size": 16,
+      "kind": "item",
+      "name": "Lodestone"
+    },
+    {
+      "id": "item.unique.hushbell",
+      "file": "glyphs/item.unique.hushbell.png",
+      "size": 16,
+      "kind": "item",
+      "name": "Hushbell"
+    },
+    {
+      "id": "currency.gold",
+      "file": "glyphs/currency.gold.png",
+      "size": 16,
+      "kind": "currency",
+      "name": "Gold"
+    },
+    {
+      "id": "currency.attempts",
+      "file": "glyphs/currency.attempts.png",
+      "size": 16,
+      "kind": "currency",
+      "name": "Attempt Counter"
+    },
+    {
+      "id": "currency.run_timer",
+      "file": "glyphs/currency.run_timer.png",
+      "size": 16,
+      "kind": "currency",
+      "name": "Run Timer"
+    },
+    {
+      "id": "stat.damage",
+      "file": "glyphs/stat.damage.png",
+      "size": 16,
+      "kind": "stat",
+      "name": "Damage"
+    },
+    {
+      "id": "stat.defense",
+      "file": "glyphs/stat.defense.png",
+      "size": 16,
+      "kind": "stat",
+      "name": "Defense"
+    },
+    {
+      "id": "stat.max_health",
+      "file": "glyphs/stat.max_health.png",
+      "size": 16,
+      "kind": "stat",
+      "name": "Max Health"
+    },
+    {
+      "id": "stat.attack_speed",
+      "file": "glyphs/stat.attack_speed.png",
+      "size": 16,
+      "kind": "stat",
+      "name": "Attack Speed"
+    },
+    {
+      "id": "stat.crit",
+      "file": "glyphs/stat.crit.png",
+      "size": 16,
+      "kind": "stat",
+      "name": "Crit Chance"
+    },
+    {
+      "id": "stat.evasion",
+      "file": "glyphs/stat.evasion.png",
+      "size": 16,
+      "kind": "stat",
+      "name": "Evasion"
+    },
+    {
+      "id": "stat.move_speed",
+      "file": "glyphs/stat.move_speed.png",
+      "size": 16,
+      "kind": "stat",
+      "name": "Move Speed"
+    },
+    {
+      "id": "stat.health_regen",
+      "file": "glyphs/stat.health_regen.png",
+      "size": 16,
+      "kind": "stat",
+      "name": "Health Regen"
+    },
+    {
+      "id": "stat.resource_regen",
+      "file": "glyphs/stat.resource_regen.png",
+      "size": 16,
+      "kind": "stat",
+      "name": "Resource Regen"
+    },
+    {
+      "id": "access.portal.forest",
+      "file": "glyphs/access.portal.forest.png",
+      "size": 16,
+      "kind": "access",
+      "name": "Forest Gate"
+    },
+    {
+      "id": "access.portal.cavern",
+      "file": "glyphs/access.portal.cavern.png",
+      "size": 16,
+      "kind": "access",
+      "name": "Cavern Gate"
+    },
+    {
+      "id": "access.portal.ruins",
+      "file": "glyphs/access.portal.ruins.png",
+      "size": 16,
+      "kind": "access",
+      "name": "Ruins Gate"
+    },
+    {
+      "id": "access.portal.peak",
+      "file": "glyphs/access.portal.peak.png",
+      "size": 16,
+      "kind": "access",
+      "name": "Peak Gate"
+    },
+    {
+      "id": "access.portal.raid",
+      "file": "glyphs/access.portal.raid.png",
+      "size": 16,
+      "kind": "access",
+      "name": "Raid Gate"
+    },
+    {
+      "id": "access.key.dungeon",
+      "file": "glyphs/access.key.dungeon.png",
+      "size": 16,
+      "kind": "access",
+      "name": "Dungeon Key"
+    },
+    {
+      "id": "access.key.field",
+      "file": "glyphs/access.key.field.png",
+      "size": 16,
+      "kind": "access",
+      "name": "Field Key"
+    },
+    {
+      "id": "access.key.vault",
+      "file": "glyphs/access.key.vault.png",
+      "size": 16,
+      "kind": "access",
+      "name": "Vault Key"
+    },
+    {
+      "id": "access.trophy.emblem",
+      "file": "glyphs/access.trophy.emblem.png",
+      "size": 16,
+      "kind": "access",
+      "name": "Mounted Emblem"
+    },
+    {
+      "id": "access.trophy.crown",
+      "file": "glyphs/access.trophy.crown.png",
+      "size": 16,
+      "kind": "access",
+      "name": "Cracked Crown"
+    },
+    {
+      "id": "access.quest.letter",
+      "file": "glyphs/access.quest.letter.png",
+      "size": 16,
+      "kind": "access",
+      "name": "Sealed Letter"
+    },
+    {
+      "id": "access.quest.bundle",
+      "file": "glyphs/access.quest.bundle.png",
+      "size": 16,
+      "kind": "access",
+      "name": "Supply Bundle"
+    },
+    {
+      "id": "access.quest.relic",
+      "file": "glyphs/access.quest.relic.png",
+      "size": 16,
+      "kind": "access",
+      "name": "Relic Fragment"
+    },
+    {
+      "id": "access.quest.jar",
+      "file": "glyphs/access.quest.jar.png",
+      "size": 16,
+      "kind": "access",
+      "name": "Specimen Jar"
+    },
+    {
+      "id": "access.quest.flare",
+      "file": "glyphs/access.quest.flare.png",
+      "size": 16,
+      "kind": "access",
+      "name": "Signal Flare"
+    },
+    {
+      "id": "skill.sword.onslaught.heavier_blows",
+      "file": "glyphs/skill.sword.onslaught.heavier_blows.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Heavier Blows"
+    },
+    {
+      "id": "skill.sword.onslaught.bladestorm",
+      "file": "glyphs/skill.sword.onslaught.bladestorm.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Bladestorm"
+    },
+    {
+      "id": "skill.sword.onslaught.followthrough",
+      "file": "glyphs/skill.sword.onslaught.followthrough.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Followthrough"
+    },
+    {
+      "id": "skill.sword.onslaught.quickened_grip",
+      "file": "glyphs/skill.sword.onslaught.quickened_grip.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Quickened Grip"
+    },
+    {
+      "id": "skill.sword.onslaught.drawblood",
+      "file": "glyphs/skill.sword.onslaught.drawblood.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Drawblood"
+    },
+    {
+      "id": "skill.sword.onslaught.momentum",
+      "file": "glyphs/skill.sword.onslaught.momentum.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Momentum"
+    },
+    {
+      "id": "skill.sword.onslaught.first_in",
+      "file": "glyphs/skill.sword.onslaught.first_in.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "First In"
+    },
+    {
+      "id": "skill.sword.onslaught.relentless",
+      "file": "glyphs/skill.sword.onslaught.relentless.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Relentless"
+    },
+    {
+      "id": "skill.sword.onslaught.executioner",
+      "file": "glyphs/skill.sword.onslaught.executioner.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Executioner"
+    },
+    {
+      "id": "skill.sword.onslaught.berserk_pact",
+      "file": "glyphs/skill.sword.onslaught.berserk_pact.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Berserk Pact"
+    },
+    {
+      "id": "skill.sword.stonewall.thick_skin",
+      "file": "glyphs/skill.sword.stonewall.thick_skin.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Thick Skin"
+    },
+    {
+      "id": "skill.sword.stonewall.steady_feet",
+      "file": "glyphs/skill.sword.stonewall.steady_feet.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Steady Feet"
+    },
+    {
+      "id": "skill.sword.stonewall.shrug_it_off",
+      "file": "glyphs/skill.sword.stonewall.shrug_it_off.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Shrug It Off"
+    },
+    {
+      "id": "skill.sword.stonewall.bracing_stance",
+      "file": "glyphs/skill.sword.stonewall.bracing_stance.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Bracing Stance"
+    },
+    {
+      "id": "skill.sword.stonewall.weathered",
+      "file": "glyphs/skill.sword.stonewall.weathered.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Weathered"
+    },
+    {
+      "id": "skill.sword.stonewall.slow_burn",
+      "file": "glyphs/skill.sword.stonewall.slow_burn.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Slow Burn"
+    },
+    {
+      "id": "skill.sword.stonewall.guarded_swing",
+      "file": "glyphs/skill.sword.stonewall.guarded_swing.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Guarded Swing"
+    },
+    {
+      "id": "skill.sword.stonewall.bastion",
+      "file": "glyphs/skill.sword.stonewall.bastion.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Bastion"
+    },
+    {
+      "id": "skill.sword.stonewall.retaliation",
+      "file": "glyphs/skill.sword.stonewall.retaliation.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Retaliation"
+    },
+    {
+      "id": "skill.sword.stonewall.last_stand",
+      "file": "glyphs/skill.sword.stonewall.last_stand.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Last Stand"
+    },
+    {
+      "id": "skill.sword.warcry.loud_arrival",
+      "file": "glyphs/skill.sword.warcry.loud_arrival.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Loud Arrival"
+    },
+    {
+      "id": "skill.sword.warcry.rally",
+      "file": "glyphs/skill.sword.warcry.rally.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Rally"
+    },
+    {
+      "id": "skill.sword.warcry.long_echo",
+      "file": "glyphs/skill.sword.warcry.long_echo.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Long Echo"
+    },
+    {
+      "id": "skill.sword.warcry.menace",
+      "file": "glyphs/skill.sword.warcry.menace.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Menace"
+    },
+    {
+      "id": "skill.sword.warcry.battle_rhythm",
+      "file": "glyphs/skill.sword.warcry.battle_rhythm.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Battle Rhythm"
+    },
+    {
+      "id": "skill.sword.warcry.carrying_voice",
+      "file": "glyphs/skill.sword.warcry.carrying_voice.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Carrying Voice"
+    },
+    {
+      "id": "skill.sword.warcry.war_drum",
+      "file": "glyphs/skill.sword.warcry.war_drum.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "War Drum"
+    },
+    {
+      "id": "skill.sword.warcry.warlords_call",
+      "file": "glyphs/skill.sword.warcry.warlords_call.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Warlord's Call"
+    },
+    {
+      "id": "skill.sword.warcry.shatter_cry",
+      "file": "glyphs/skill.sword.warcry.shatter_cry.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Shatter Cry"
+    },
+    {
+      "id": "skill.sword.warcry.anthem",
+      "file": "glyphs/skill.sword.warcry.anthem.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "sword",
+      "name": "Anthem"
+    },
+    {
+      "id": "skill.bow.deadeye.steady_hand",
+      "file": "glyphs/skill.bow.deadeye.steady_hand.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Steady Hand"
+    },
+    {
+      "id": "skill.bow.deadeye.long_shot",
+      "file": "glyphs/skill.bow.deadeye.long_shot.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Long Shot"
+    },
+    {
+      "id": "skill.bow.deadeye.weak_spot",
+      "file": "glyphs/skill.bow.deadeye.weak_spot.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Weak Spot"
+    },
+    {
+      "id": "skill.bow.deadeye.focused_draw",
+      "file": "glyphs/skill.bow.deadeye.focused_draw.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Focused Draw"
+    },
+    {
+      "id": "skill.bow.deadeye.followup",
+      "file": "glyphs/skill.bow.deadeye.followup.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Followup"
+    },
+    {
+      "id": "skill.bow.deadeye.marked_prey",
+      "file": "glyphs/skill.bow.deadeye.marked_prey.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Marked Prey"
+    },
+    {
+      "id": "skill.bow.deadeye.clean_kill",
+      "file": "glyphs/skill.bow.deadeye.clean_kill.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Clean Kill"
+    },
+    {
+      "id": "skill.bow.deadeye.deathmark",
+      "file": "glyphs/skill.bow.deadeye.deathmark.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Deathmark"
+    },
+    {
+      "id": "skill.bow.deadeye.windhold",
+      "file": "glyphs/skill.bow.deadeye.windhold.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Windhold"
+    },
+    {
+      "id": "skill.bow.deadeye.one_true_shot",
+      "file": "glyphs/skill.bow.deadeye.one_true_shot.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "One True Shot"
+    },
+    {
+      "id": "skill.bow.fieldcraft.tripline",
+      "file": "glyphs/skill.bow.fieldcraft.tripline.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Tripline"
+    },
+    {
+      "id": "skill.bow.fieldcraft.sharper_teeth",
+      "file": "glyphs/skill.bow.fieldcraft.sharper_teeth.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Sharper Teeth"
+    },
+    {
+      "id": "skill.bow.fieldcraft.wide_net",
+      "file": "glyphs/skill.bow.fieldcraft.wide_net.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Wide Net"
+    },
+    {
+      "id": "skill.bow.fieldcraft.quick_rig",
+      "file": "glyphs/skill.bow.fieldcraft.quick_rig.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Quick Rig"
+    },
+    {
+      "id": "skill.bow.fieldcraft.scavenger",
+      "file": "glyphs/skill.bow.fieldcraft.scavenger.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Scavenger"
+    },
+    {
+      "id": "skill.bow.fieldcraft.spare_kit",
+      "file": "glyphs/skill.bow.fieldcraft.spare_kit.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Spare Kit"
+    },
+    {
+      "id": "skill.bow.fieldcraft.poisoned_ground",
+      "file": "glyphs/skill.bow.fieldcraft.poisoned_ground.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Poisoned Ground"
+    },
+    {
+      "id": "skill.bow.fieldcraft.springloaded",
+      "file": "glyphs/skill.bow.fieldcraft.springloaded.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Springloaded"
+    },
+    {
+      "id": "skill.bow.fieldcraft.minefield",
+      "file": "glyphs/skill.bow.fieldcraft.minefield.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Minefield"
+    },
+    {
+      "id": "skill.bow.fieldcraft.the_hunt",
+      "file": "glyphs/skill.bow.fieldcraft.the_hunt.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "The Hunt"
+    },
+    {
+      "id": "skill.bow.windstep.fleet",
+      "file": "glyphs/skill.bow.windstep.fleet.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Fleet"
+    },
+    {
+      "id": "skill.bow.windstep.soft_landing",
+      "file": "glyphs/skill.bow.windstep.soft_landing.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Soft Landing"
+    },
+    {
+      "id": "skill.bow.windstep.slipstream",
+      "file": "glyphs/skill.bow.windstep.slipstream.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Slipstream"
+    },
+    {
+      "id": "skill.bow.windstep.runners_draw",
+      "file": "glyphs/skill.bow.windstep.runners_draw.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Runner's Draw"
+    },
+    {
+      "id": "skill.bow.windstep.tailwind",
+      "file": "glyphs/skill.bow.windstep.tailwind.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Tailwind"
+    },
+    {
+      "id": "skill.bow.windstep.breather",
+      "file": "glyphs/skill.bow.windstep.breather.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Breather"
+    },
+    {
+      "id": "skill.bow.windstep.light_pack",
+      "file": "glyphs/skill.bow.windstep.light_pack.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Light Pack"
+    },
+    {
+      "id": "skill.bow.windstep.phantom_step",
+      "file": "glyphs/skill.bow.windstep.phantom_step.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Phantom Step"
+    },
+    {
+      "id": "skill.bow.windstep.gale_line",
+      "file": "glyphs/skill.bow.windstep.gale_line.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Gale Line"
+    },
+    {
+      "id": "skill.bow.windstep.untouchable",
+      "file": "glyphs/skill.bow.windstep.untouchable.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "bow",
+      "name": "Untouchable"
+    },
+    {
+      "id": "skill.staff.ruin.heavy_bolts",
+      "file": "glyphs/skill.staff.ruin.heavy_bolts.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Heavy Bolts"
+    },
+    {
+      "id": "skill.staff.ruin.long_arc",
+      "file": "glyphs/skill.staff.ruin.long_arc.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Long Arc"
+    },
+    {
+      "id": "skill.staff.ruin.overspill",
+      "file": "glyphs/skill.staff.ruin.overspill.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Overspill"
+    },
+    {
+      "id": "skill.staff.ruin.concussive",
+      "file": "glyphs/skill.staff.ruin.concussive.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Concussive"
+    },
+    {
+      "id": "skill.staff.ruin.focus",
+      "file": "glyphs/skill.staff.ruin.focus.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Focus"
+    },
+    {
+      "id": "skill.staff.ruin.aftershock",
+      "file": "glyphs/skill.staff.ruin.aftershock.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Aftershock"
+    },
+    {
+      "id": "skill.staff.ruin.deep_reserves",
+      "file": "glyphs/skill.staff.ruin.deep_reserves.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Deep Reserves"
+    },
+    {
+      "id": "skill.staff.ruin.cataclysm",
+      "file": "glyphs/skill.staff.ruin.cataclysm.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Cataclysm"
+    },
+    {
+      "id": "skill.staff.ruin.overload",
+      "file": "glyphs/skill.staff.ruin.overload.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Overload"
+    },
+    {
+      "id": "skill.staff.ruin.starfall",
+      "file": "glyphs/skill.staff.ruin.starfall.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Starfall"
+    },
+    {
+      "id": "skill.staff.wardweave.harder_wards",
+      "file": "glyphs/skill.staff.wardweave.harder_wards.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Harder Wards"
+    },
+    {
+      "id": "skill.staff.wardweave.wide_dome",
+      "file": "glyphs/skill.staff.wardweave.wide_dome.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Wide Dome"
+    },
+    {
+      "id": "skill.staff.wardweave.lingering_wards",
+      "file": "glyphs/skill.staff.wardweave.lingering_wards.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Lingering Wards"
+    },
+    {
+      "id": "skill.staff.wardweave.deflection",
+      "file": "glyphs/skill.staff.wardweave.deflection.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Deflection"
+    },
+    {
+      "id": "skill.staff.wardweave.calm_within",
+      "file": "glyphs/skill.staff.wardweave.calm_within.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Calm Within"
+    },
+    {
+      "id": "skill.staff.wardweave.quick_weave",
+      "file": "glyphs/skill.staff.wardweave.quick_weave.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Quick Weave"
+    },
+    {
+      "id": "skill.staff.wardweave.anchored",
+      "file": "glyphs/skill.staff.wardweave.anchored.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Anchored"
+    },
+    {
+      "id": "skill.staff.wardweave.aegis",
+      "file": "glyphs/skill.staff.wardweave.aegis.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Aegis"
+    },
+    {
+      "id": "skill.staff.wardweave.sanctum",
+      "file": "glyphs/skill.staff.wardweave.sanctum.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Sanctum"
+    },
+    {
+      "id": "skill.staff.wardweave.woven_fate",
+      "file": "glyphs/skill.staff.wardweave.woven_fate.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Woven Fate"
+    },
+    {
+      "id": "skill.staff.flow.swift_current",
+      "file": "glyphs/skill.staff.flow.swift_current.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Swift Current"
+    },
+    {
+      "id": "skill.staff.flow.undercurrent",
+      "file": "glyphs/skill.staff.flow.undercurrent.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Undercurrent"
+    },
+    {
+      "id": "skill.staff.flow.eddy",
+      "file": "glyphs/skill.staff.flow.eddy.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Eddy"
+    },
+    {
+      "id": "skill.staff.flow.ebb",
+      "file": "glyphs/skill.staff.flow.ebb.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Ebb"
+    },
+    {
+      "id": "skill.staff.flow.rising_tide",
+      "file": "glyphs/skill.staff.flow.rising_tide.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Rising Tide"
+    },
+    {
+      "id": "skill.staff.flow.steady_flow",
+      "file": "glyphs/skill.staff.flow.steady_flow.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Steady Flow"
+    },
+    {
+      "id": "skill.staff.flow.backwash",
+      "file": "glyphs/skill.staff.flow.backwash.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Backwash"
+    },
+    {
+      "id": "skill.staff.flow.riptide",
+      "file": "glyphs/skill.staff.flow.riptide.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Riptide"
+    },
+    {
+      "id": "skill.staff.flow.confluence",
+      "file": "glyphs/skill.staff.flow.confluence.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Confluence"
+    },
+    {
+      "id": "skill.staff.flow.stillwater",
+      "file": "glyphs/skill.staff.flow.stillwater.png",
+      "size": 16,
+      "kind": "skill",
+      "cls": "staff",
+      "name": "Stillwater"
+    },
+    {
+      "id": "hud.status.guard",
+      "file": "glyphs/hud.status.guard.png",
+      "size": 16,
+      "kind": "hud",
+      "name": "Guard Up"
+    },
+    {
+      "id": "hud.status.burning",
+      "file": "glyphs/hud.status.burning.png",
+      "size": 16,
+      "kind": "hud",
+      "name": "Burning"
+    },
+    {
+      "id": "hud.status.immune",
+      "file": "glyphs/hud.status.immune.png",
+      "size": 16,
+      "kind": "hud",
+      "name": "Immune"
+    },
+    {
+      "id": "hud.status.protected",
+      "file": "glyphs/hud.status.protected.png",
+      "size": 16,
+      "kind": "hud",
+      "name": "Protected"
+    },
+    {
+      "id": "hud.status.hasted",
+      "file": "glyphs/hud.status.hasted.png",
+      "size": 16,
+      "kind": "hud",
+      "name": "Hasted"
+    },
+    {
+      "id": "hud.status.regen",
+      "file": "glyphs/hud.status.regen.png",
+      "size": 16,
+      "kind": "hud",
+      "name": "Regenerating"
+    },
+    {
+      "id": "hud.status.slowed",
+      "file": "glyphs/hud.status.slowed.png",
+      "size": 16,
+      "kind": "hud",
+      "name": "Slowed"
+    },
+    {
+      "id": "hud.status.rooted",
+      "file": "glyphs/hud.status.rooted.png",
+      "size": 16,
+      "kind": "hud",
+      "name": "Rooted"
+    },
+    {
+      "id": "hud.status.stunned",
+      "file": "glyphs/hud.status.stunned.png",
+      "size": 16,
+      "kind": "hud",
+      "name": "Stunned"
+    },
+    {
+      "id": "hud.status.vulnerable",
+      "file": "glyphs/hud.status.vulnerable.png",
+      "size": 16,
+      "kind": "hud",
+      "name": "Vulnerable"
+    },
+    {
+      "id": "hud.status.boss_enrage",
+      "file": "glyphs/hud.status.boss_enrage.png",
+      "size": 16,
+      "kind": "hud",
+      "name": "Enraged"
+    },
+    {
+      "id": "hud.status.boss_phase",
+      "file": "glyphs/hud.status.boss_phase.png",
+      "size": 16,
+      "kind": "hud",
+      "name": "Phase Marker"
+    },
+    {
+      "id": "map.hub",
+      "file": "glyphs/map.hub.png",
+      "size": 16,
+      "kind": "map",
+      "name": "Hub"
+    },
+    {
+      "id": "map.quest",
+      "file": "glyphs/map.quest.png",
+      "size": 16,
+      "kind": "map",
+      "name": "Quest Available"
+    },
+    {
+      "id": "map.player",
+      "file": "glyphs/map.player.png",
+      "size": 16,
+      "kind": "map",
+      "name": "Player Position"
+    },
+    {
+      "id": "map.dungeon",
+      "file": "glyphs/map.dungeon.png",
+      "size": 16,
+      "kind": "map",
+      "name": "Dungeon Entrance"
+    },
+    {
+      "id": "map.raid",
+      "file": "glyphs/map.raid.png",
+      "size": 16,
+      "kind": "map",
+      "name": "Raid Gate"
+    },
+    {
+      "id": "map.world_boss",
+      "file": "glyphs/map.world_boss.png",
+      "size": 16,
+      "kind": "map",
+      "name": "World Boss"
+    },
+    {
+      "id": "map.quest_turnin",
+      "file": "glyphs/map.quest_turnin.png",
+      "size": 16,
+      "kind": "map",
+      "name": "Quest Turn-In"
+    },
+    {
+      "id": "map.landmark",
+      "file": "glyphs/map.landmark.png",
+      "size": 16,
+      "kind": "map",
+      "name": "Landmark"
+    },
+    {
+      "id": "map.fishing",
+      "file": "glyphs/map.fishing.png",
+      "size": 16,
+      "kind": "map",
+      "name": "Fishing Spot"
+    },
+    {
+      "id": "map.foraging",
+      "file": "glyphs/map.foraging.png",
+      "size": 16,
+      "kind": "map",
+      "name": "Foraging Spot"
+    },
+    {
+      "id": "map.travel_open",
+      "file": "glyphs/map.travel_open.png",
+      "size": 16,
+      "kind": "map",
+      "name": "Auto-Travel Node (open)"
+    },
+    {
+      "id": "map.travel_locked",
+      "file": "glyphs/map.travel_locked.png",
+      "size": 16,
+      "kind": "map",
+      "name": "Auto-Travel Node (locked)"
+    },
+    {
+      "id": "map.pin",
+      "file": "glyphs/map.pin.png",
+      "size": 16,
+      "kind": "map",
+      "name": "Custom Pin"
+    },
+    {
+      "id": "map.exit",
+      "file": "glyphs/map.exit.png",
+      "size": 16,
+      "kind": "map",
+      "name": "Zone Exit"
+    },
+    {
+      "id": "map.vendor",
+      "file": "glyphs/map.vendor.png",
+      "size": 16,
+      "kind": "map",
+      "name": "Vendor"
+    },
+    {
+      "id": "map.stash",
+      "file": "glyphs/map.stash.png",
+      "size": 16,
+      "kind": "map",
+      "name": "Stash"
+    },
+    {
+      "id": "quest.available",
+      "file": "glyphs/quest.available.png",
+      "size": 16,
+      "kind": "quest",
+      "name": "Quest Available"
+    },
+    {
+      "id": "quest.in_progress",
+      "file": "glyphs/quest.in_progress.png",
+      "size": 16,
+      "kind": "quest",
+      "name": "In Progress"
+    },
+    {
+      "id": "quest.turn_in",
+      "file": "glyphs/quest.turn_in.png",
+      "size": 16,
+      "kind": "quest",
+      "name": "Ready to Turn In"
+    },
+    {
+      "id": "quest.complete",
+      "file": "glyphs/quest.complete.png",
+      "size": 16,
+      "kind": "quest",
+      "name": "Complete"
+    },
+    {
+      "id": "quest.locked",
+      "file": "glyphs/quest.locked.png",
+      "size": 16,
+      "kind": "quest",
+      "name": "Locked"
+    },
+    {
+      "id": "quest.new",
+      "file": "glyphs/quest.new.png",
+      "size": 16,
+      "kind": "quest",
+      "name": "New Quest"
+    },
+    {
+      "id": "quest.tracked",
+      "file": "glyphs/quest.tracked.png",
+      "size": 16,
+      "kind": "quest",
+      "name": "Tracked"
+    },
+    {
+      "id": "quest.failed",
+      "file": "glyphs/quest.failed.png",
+      "size": 16,
+      "kind": "quest",
+      "name": "Failed"
+    },
+    {
+      "id": "emblem.class.sword",
+      "file": "glyphs/emblem.class.sword.png",
+      "size": 16,
+      "kind": "emblem",
+      "cls": "sword",
+      "name": "Sword Sigil"
+    },
+    {
+      "id": "emblem.class.bow",
+      "file": "glyphs/emblem.class.bow.png",
+      "size": 16,
+      "kind": "emblem",
+      "cls": "bow",
+      "name": "Bow Sigil"
+    },
+    {
+      "id": "emblem.class.staff",
+      "file": "glyphs/emblem.class.staff.png",
+      "size": 16,
+      "kind": "emblem",
+      "cls": "staff",
+      "name": "Staff Sigil"
+    },
+    {
+      "id": "emblem.faction.wardens",
+      "file": "glyphs/emblem.faction.wardens.png",
+      "size": 16,
+      "kind": "emblem",
+      "name": "The Wardens"
+    },
+    {
+      "id": "emblem.faction.prospectors",
+      "file": "glyphs/emblem.faction.prospectors.png",
+      "size": 16,
+      "kind": "emblem",
+      "name": "The Prospectors"
+    },
+    {
+      "id": "emblem.faction.circle",
+      "file": "glyphs/emblem.faction.circle.png",
+      "size": 16,
+      "kind": "emblem",
+      "name": "The Circle"
+    },
+    {
+      "id": "emblem.faction.free_company",
+      "file": "glyphs/emblem.faction.free_company.png",
+      "size": 16,
+      "kind": "emblem",
+      "name": "The Free Company"
+    },
+    {
+      "id": "frame.rarity.common",
+      "file": "glyphs/frame.rarity.common.png",
+      "size": 16,
+      "kind": "frame",
+      "name": "Common (bare)"
+    },
+    {
+      "id": "frame.rarity.uncommon",
+      "file": "glyphs/frame.rarity.uncommon.png",
+      "size": 16,
+      "kind": "frame",
+      "name": "Uncommon Frame"
+    },
+    {
+      "id": "frame.rarity.rare",
+      "file": "glyphs/frame.rarity.rare.png",
+      "size": 16,
+      "kind": "frame",
+      "name": "Rare Frame"
+    },
+    {
+      "id": "frame.rarity.unique",
+      "file": "glyphs/frame.rarity.unique.png",
+      "size": 16,
+      "kind": "frame",
+      "name": "Unique Frame"
+    },
+    {
+      "id": "input.key_blank",
+      "file": "glyphs/input.key_blank.png",
+      "size": 16,
+      "kind": "input",
+      "name": "Key Blank"
+    },
+    {
+      "id": "input.w",
+      "file": "glyphs/input.w.png",
+      "size": 16,
+      "kind": "input",
+      "name": "W"
+    },
+    {
+      "id": "input.a",
+      "file": "glyphs/input.a.png",
+      "size": 16,
+      "kind": "input",
+      "name": "A"
+    },
+    {
+      "id": "input.s",
+      "file": "glyphs/input.s.png",
+      "size": 16,
+      "kind": "input",
+      "name": "S"
+    },
+    {
+      "id": "input.d",
+      "file": "glyphs/input.d.png",
+      "size": 16,
+      "kind": "input",
+      "name": "D"
+    },
+    {
+      "id": "input.wasd",
+      "file": "glyphs/input.wasd.png",
+      "size": 16,
+      "kind": "input",
+      "name": "Movement Cluster"
+    },
+    {
+      "id": "input.space",
+      "file": "glyphs/input.space.png",
+      "size": 16,
+      "kind": "input",
+      "name": "Space"
+    },
+    {
+      "id": "input.shift",
+      "file": "glyphs/input.shift.png",
+      "size": 16,
+      "kind": "input",
+      "name": "Shift"
+    },
+    {
+      "id": "input.ctrl",
+      "file": "glyphs/input.ctrl.png",
+      "size": 16,
+      "kind": "input",
+      "name": "Ctrl"
+    },
+    {
+      "id": "input.tab",
+      "file": "glyphs/input.tab.png",
+      "size": 16,
+      "kind": "input",
+      "name": "Tab"
+    },
+    {
+      "id": "input.esc",
+      "file": "glyphs/input.esc.png",
+      "size": 16,
+      "kind": "input",
+      "name": "Esc"
+    },
+    {
+      "id": "input.e",
+      "file": "glyphs/input.e.png",
+      "size": 16,
+      "kind": "input",
+      "name": "E"
+    },
+    {
+      "id": "input.q",
+      "file": "glyphs/input.q.png",
+      "size": 16,
+      "kind": "input",
+      "name": "Q"
+    },
+    {
+      "id": "input.r",
+      "file": "glyphs/input.r.png",
+      "size": 16,
+      "kind": "input",
+      "name": "R"
+    },
+    {
+      "id": "input.f",
+      "file": "glyphs/input.f.png",
+      "size": 16,
+      "kind": "input",
+      "name": "F"
+    },
+    {
+      "id": "input.mouse_l",
+      "file": "glyphs/input.mouse_l.png",
+      "size": 16,
+      "kind": "input",
+      "name": "Mouse Left"
+    },
+    {
+      "id": "input.mouse_r",
+      "file": "glyphs/input.mouse_r.png",
+      "size": 16,
+      "kind": "input",
+      "name": "Mouse Right"
+    },
+    {
+      "id": "input.mouse_m",
+      "file": "glyphs/input.mouse_m.png",
+      "size": 16,
+      "kind": "input",
+      "name": "Mouse Middle"
+    },
+    {
+      "id": "input.wheel",
+      "file": "glyphs/input.wheel.png",
+      "size": 16,
+      "kind": "input",
+      "name": "Wheel Up/Down"
+    },
+    {
+      "id": "input.mouse_move",
+      "file": "glyphs/input.mouse_move.png",
+      "size": 16,
+      "kind": "input",
+      "name": "Mouse Move"
+    },
+    {
+      "id": "collect.mount.dusk_elk",
+      "file": "glyphs/collect.mount.dusk_elk.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "mount",
+      "name": "Dusk Elk"
+    },
+    {
+      "id": "collect.mount.trail_boar",
+      "file": "glyphs/collect.mount.trail_boar.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "mount",
+      "name": "Trail Boar"
+    },
+    {
+      "id": "collect.mount.marsh_strider",
+      "file": "glyphs/collect.mount.marsh_strider.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "mount",
+      "name": "Marsh Strider"
+    },
+    {
+      "id": "collect.mount.cliff_goat",
+      "file": "glyphs/collect.mount.cliff_goat.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "mount",
+      "name": "Cliff Goat"
+    },
+    {
+      "id": "collect.pet.lantern_wisp",
+      "file": "glyphs/collect.pet.lantern_wisp.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "pet",
+      "name": "Lantern Wisp"
+    },
+    {
+      "id": "collect.pet.pocket_fox",
+      "file": "glyphs/collect.pet.pocket_fox.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "pet",
+      "name": "Pocket Fox"
+    },
+    {
+      "id": "collect.pet.burrow_owl",
+      "file": "glyphs/collect.pet.burrow_owl.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "pet",
+      "name": "Burrow Owl"
+    },
+    {
+      "id": "collect.pet.ember_toad",
+      "file": "glyphs/collect.pet.ember_toad.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "pet",
+      "name": "Ember Toad"
+    },
+    {
+      "id": "collect.trophy.hunt",
+      "file": "glyphs/collect.trophy.hunt.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "trophy",
+      "name": "Hunt Trophy"
+    },
+    {
+      "id": "collect.trophy.angler",
+      "file": "glyphs/collect.trophy.angler.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "trophy",
+      "name": "Angler Trophy"
+    },
+    {
+      "id": "collect.trophy.botanist",
+      "file": "glyphs/collect.trophy.botanist.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "trophy",
+      "name": "Botanist Trophy"
+    },
+    {
+      "id": "collect.trophy.raid_banner",
+      "file": "glyphs/collect.trophy.raid_banner.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "trophy",
+      "name": "Raid Banner"
+    },
+    {
+      "id": "collect.trophy.speedrun",
+      "file": "glyphs/collect.trophy.speedrun.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "trophy",
+      "name": "Speedrun Hourglass"
+    },
+    {
+      "id": "collect.trophy.collector",
+      "file": "glyphs/collect.trophy.collector.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "trophy",
+      "name": "Collector's Chest"
+    },
+    {
+      "id": "collect.title.ribbon",
+      "file": "glyphs/collect.title.ribbon.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "title",
+      "name": "Ribbon Badge"
+    },
+    {
+      "id": "collect.title.laurel",
+      "file": "glyphs/collect.title.laurel.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "title",
+      "name": "Laurel"
+    },
+    {
+      "id": "collect.title.signet",
+      "file": "glyphs/collect.title.signet.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "title",
+      "name": "Signet"
+    },
+    {
+      "id": "collect.title.banner_pin",
+      "file": "glyphs/collect.title.banner_pin.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "title",
+      "name": "Banner Pin"
+    },
+    {
+      "id": "collect.token.skin_sword",
+      "file": "glyphs/collect.token.skin_sword.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "token",
+      "name": "Skin Token (sword)"
+    },
+    {
+      "id": "collect.token.skin_bow",
+      "file": "glyphs/collect.token.skin_bow.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "token",
+      "name": "Skin Token (bow)"
+    },
+    {
+      "id": "collect.token.skin_staff",
+      "file": "glyphs/collect.token.skin_staff.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "token",
+      "name": "Skin Token (staff)"
+    },
+    {
+      "id": "collect.token.finish",
+      "file": "glyphs/collect.token.finish.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "token",
+      "name": "Finish Token"
+    },
+    {
+      "id": "collect.fish.f01",
+      "file": "glyphs/collect.fish.f01.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "sleek/spiny/forked/banded/small",
+      "name": "Fish F01"
+    },
+    {
+      "id": "collect.fish.f02",
+      "file": "glyphs/collect.fish.f02.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "deep/spiny/forked/speckled/medium",
+      "name": "Fish F02"
+    },
+    {
+      "id": "collect.fish.f03",
+      "file": "glyphs/collect.fish.f03.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "blunt/spiny/forked/plain/small",
+      "name": "Fish F03"
+    },
+    {
+      "id": "collect.fish.f04",
+      "file": "glyphs/collect.fish.f04.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "sleek/rounded/forked/speckled/medium",
+      "name": "Fish F04"
+    },
+    {
+      "id": "collect.fish.f05",
+      "file": "glyphs/collect.fish.f05.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "deep/rounded/forked/plain/small",
+      "name": "Fish F05"
+    },
+    {
+      "id": "collect.fish.f06",
+      "file": "glyphs/collect.fish.f06.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "blunt/rounded/forked/banded/medium",
+      "name": "Fish F06"
+    },
+    {
+      "id": "collect.fish.f07",
+      "file": "glyphs/collect.fish.f07.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "sleek/trailing/forked/plain/small",
+      "name": "Fish F07"
+    },
+    {
+      "id": "collect.fish.f08",
+      "file": "glyphs/collect.fish.f08.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "deep/trailing/forked/banded/trophy",
+      "name": "Fish F08"
+    },
+    {
+      "id": "collect.fish.f09",
+      "file": "glyphs/collect.fish.f09.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "blunt/trailing/forked/speckled/small",
+      "name": "Fish F09"
+    },
+    {
+      "id": "collect.fish.f10",
+      "file": "glyphs/collect.fish.f10.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "sleek/spiny/fan/banded/medium",
+      "name": "Fish F10"
+    },
+    {
+      "id": "collect.fish.f11",
+      "file": "glyphs/collect.fish.f11.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "deep/spiny/fan/speckled/small",
+      "name": "Fish F11"
+    },
+    {
+      "id": "collect.fish.f12",
+      "file": "glyphs/collect.fish.f12.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "blunt/spiny/fan/plain/medium",
+      "name": "Fish F12"
+    },
+    {
+      "id": "collect.fish.f13",
+      "file": "glyphs/collect.fish.f13.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "sleek/rounded/fan/speckled/small",
+      "name": "Fish F13"
+    },
+    {
+      "id": "collect.fish.f14",
+      "file": "glyphs/collect.fish.f14.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "deep/rounded/fan/plain/medium",
+      "name": "Fish F14"
+    },
+    {
+      "id": "collect.fish.f15",
+      "file": "glyphs/collect.fish.f15.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "blunt/rounded/fan/banded/small",
+      "name": "Fish F15"
+    },
+    {
+      "id": "collect.fish.f16",
+      "file": "glyphs/collect.fish.f16.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "sleek/trailing/fan/plain/trophy",
+      "name": "Fish F16"
+    },
+    {
+      "id": "collect.fish.f17",
+      "file": "glyphs/collect.fish.f17.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "deep/trailing/fan/banded/small",
+      "name": "Fish F17"
+    },
+    {
+      "id": "collect.fish.f18",
+      "file": "glyphs/collect.fish.f18.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "blunt/trailing/fan/speckled/medium",
+      "name": "Fish F18"
+    },
+    {
+      "id": "collect.fish.f19",
+      "file": "glyphs/collect.fish.f19.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "sleek/spiny/whip/banded/small",
+      "name": "Fish F19"
+    },
+    {
+      "id": "collect.fish.f20",
+      "file": "glyphs/collect.fish.f20.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "deep/spiny/whip/speckled/medium",
+      "name": "Fish F20"
+    },
+    {
+      "id": "collect.fish.f21",
+      "file": "glyphs/collect.fish.f21.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "blunt/spiny/whip/plain/small",
+      "name": "Fish F21"
+    },
+    {
+      "id": "collect.fish.f22",
+      "file": "glyphs/collect.fish.f22.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "sleek/rounded/whip/speckled/medium",
+      "name": "Fish F22"
+    },
+    {
+      "id": "collect.fish.f23",
+      "file": "glyphs/collect.fish.f23.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "deep/rounded/whip/plain/small",
+      "name": "Fish F23"
+    },
+    {
+      "id": "collect.fish.f24",
+      "file": "glyphs/collect.fish.f24.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "fish",
+      "family": "blunt/rounded/whip/banded/trophy",
+      "name": "Fish F24"
+    },
+    {
+      "id": "collect.flower.p01",
+      "file": "glyphs/collect.flower.p01.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "bell/3-petal/single/plain",
+      "name": "Flower P01"
+    },
+    {
+      "id": "collect.flower.p02",
+      "file": "glyphs/collect.flower.p02.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "star/3-petal/single/two-tone",
+      "name": "Flower P02"
+    },
+    {
+      "id": "collect.flower.p03",
+      "file": "glyphs/collect.flower.p03.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "cluster/3-petal/single/tipped",
+      "name": "Flower P03"
+    },
+    {
+      "id": "collect.flower.p04",
+      "file": "glyphs/collect.flower.p04.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "bell/5-petal/single/two-tone",
+      "name": "Flower P04"
+    },
+    {
+      "id": "collect.flower.p05",
+      "file": "glyphs/collect.flower.p05.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "star/5-petal/single/tipped",
+      "name": "Flower P05"
+    },
+    {
+      "id": "collect.flower.p06",
+      "file": "glyphs/collect.flower.p06.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "cluster/5-petal/single/plain",
+      "name": "Flower P06"
+    },
+    {
+      "id": "collect.flower.p07",
+      "file": "glyphs/collect.flower.p07.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "bell/many/single/tipped",
+      "name": "Flower P07"
+    },
+    {
+      "id": "collect.flower.p08",
+      "file": "glyphs/collect.flower.p08.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "star/many/single/plain",
+      "name": "Flower P08"
+    },
+    {
+      "id": "collect.flower.p09",
+      "file": "glyphs/collect.flower.p09.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "cluster/many/single/two-tone",
+      "name": "Flower P09"
+    },
+    {
+      "id": "collect.flower.p10",
+      "file": "glyphs/collect.flower.p10.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "bell/3-petal/paired/plain",
+      "name": "Flower P10"
+    },
+    {
+      "id": "collect.flower.p11",
+      "file": "glyphs/collect.flower.p11.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "star/3-petal/paired/two-tone",
+      "name": "Flower P11"
+    },
+    {
+      "id": "collect.flower.p12",
+      "file": "glyphs/collect.flower.p12.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "cluster/3-petal/paired/tipped",
+      "name": "Flower P12"
+    },
+    {
+      "id": "collect.flower.p13",
+      "file": "glyphs/collect.flower.p13.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "bell/5-petal/paired/two-tone",
+      "name": "Flower P13"
+    },
+    {
+      "id": "collect.flower.p14",
+      "file": "glyphs/collect.flower.p14.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "star/5-petal/paired/tipped",
+      "name": "Flower P14"
+    },
+    {
+      "id": "collect.flower.p15",
+      "file": "glyphs/collect.flower.p15.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "cluster/5-petal/paired/plain",
+      "name": "Flower P15"
+    },
+    {
+      "id": "collect.flower.p16",
+      "file": "glyphs/collect.flower.p16.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "bell/many/paired/tipped",
+      "name": "Flower P16"
+    },
+    {
+      "id": "collect.flower.p17",
+      "file": "glyphs/collect.flower.p17.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "star/many/paired/plain",
+      "name": "Flower P17"
+    },
+    {
+      "id": "collect.flower.p18",
+      "file": "glyphs/collect.flower.p18.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "cluster/many/paired/two-tone",
+      "name": "Flower P18"
+    },
+    {
+      "id": "collect.flower.p19",
+      "file": "glyphs/collect.flower.p19.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "bell/3-petal/thorned/plain",
+      "name": "Flower P19"
+    },
+    {
+      "id": "collect.flower.p20",
+      "file": "glyphs/collect.flower.p20.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "star/3-petal/thorned/two-tone",
+      "name": "Flower P20"
+    },
+    {
+      "id": "collect.flower.p21",
+      "file": "glyphs/collect.flower.p21.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "cluster/3-petal/thorned/tipped",
+      "name": "Flower P21"
+    },
+    {
+      "id": "collect.flower.p22",
+      "file": "glyphs/collect.flower.p22.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "bell/5-petal/thorned/two-tone",
+      "name": "Flower P22"
+    },
+    {
+      "id": "collect.flower.p23",
+      "file": "glyphs/collect.flower.p23.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "star/5-petal/thorned/tipped",
+      "name": "Flower P23"
+    },
+    {
+      "id": "collect.flower.p24",
+      "file": "glyphs/collect.flower.p24.png",
+      "size": 16,
+      "kind": "collect",
+      "cls": "flower",
+      "family": "cluster/5-petal/thorned/plain",
+      "name": "Flower P24"
+    }
+  ]
+}
