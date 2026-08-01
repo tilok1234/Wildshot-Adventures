@@ -1045,3 +1045,44 @@ pairing pin carries unchanged); sync log sl-0067. NO feel verdicts
 acceptance per sl-0066's own terms — the 'getting blocked' complaint
 is the test. sl-0065 (dev map overlay ask) was not in this session's
 paste — open, untouched.**
+DEV MAP OVERLAY LIVE 2026-08-01 (~03:15 local; ask sl-0065 executed
+hands-free; game 87bdc15; sync log sl-0069): game/dev/map_overlay.gd
+— N cycles off -> corner minimap (96 px, dimmed, above the hints
+line; Law 6 even in dev) -> fullscreen map (dark backdrop, integer
+nearest upscale, fractional only if the map outsizes the viewport).
+Texture = the active pack's OWN minimap.png raw (zero new art;
+exports ship pack dirs wholesale — resolve_src fallback covers built
+dev exes). White dot + black ring at the live sim position; facing
+tick = the current free-aim vector, re-normalized after map scale so
+a non-square minimap cannot skew it. PACK-RELATIVE: ratio = actual
+texture / actual grid (b65 + b77 both 256x256 = 1 px/cell; nothing
+assumes it) — every pack-routed picker world gets the map, THE LOOP
+included (b65 ships minimap.png — consumer-test bonus find); arena
+scenarios get NO node (hidden by absence: N inert, hint absent — the
+hints line lists map only when the overlay exists). TWO-PROFILE LAW
+console-style: gated construction + gated toggle in main.gd;
+lockdown_lint pins grown (MapOverlay ctor sites = the one gated main
+block + the two tests/dev_map harnesses, tests/* tester-exclusion
+already pinned; map_toggle input line carries the gate) and
+NEGATIVE-TESTED live (ungating either -> exactly the 2 findings,
+then re-green). Key N (no-F-row law), remappable action map_toggle.
+NEW FIXED GATE tests/dev_map/dev_map_test.gd — 18th fixed step + CI
+Linux row: minimap present/loadable/uniformly grid-proportional for
+every pack scenario, spawn maps in-bounds, mapping-math pins,
+load-refusal contract (main.gd cannot compile under --script — it
+reads the Config autoload — so the test replicates the two-line
+routing; lint + boot pin main's side; lesson recorded). RENDER
+PROVEN (headless sees no render bugs): windowed
+tests/dev_map/map_overlay_probe.gd committed
+reports/dev_map_audit_b77_{corner,full}.png — dot verified at the
+harbor-capital spawn by eyes on the PNGs. RESOLUTION: 256 px reads
+adequate at content scale — NO WF ask opened; the designer's
+on-screen verdict is the rule (if it fails their eyes, THAT becomes
+the WF ask — upscale hacks stay banned). Zero sim change (smoke
+hashes unchanged); boot clean; FULL pretester ALL GREEN 17.1 min (18
+fixed steps + 28-row battery byte-identical + export + lockdown
+probe on REBUILT artifacts). Part II player map stays deferred (doc
+13 §3); the overlay is throwaway-by-design and graduates only
+through that designed round. NO feel verdicts (night engineering);
+the designer's first N-press on the overworld walk is the
+acceptance.**

@@ -73,10 +73,10 @@ at every clean seam.
 ## §1 Where things stand (2026-08-01)
 
 **M0–M8 engineering complete.** The one-command ship gate
-`tools/pretester_check.ps1` runs ALL GREEN (~14–19 min: 17 fixed
+`tools/pretester_check.ps1` runs ALL GREEN (~14–19 min: 18 fixed
 steps, 28-row proof battery byte-identical against committed reports,
 export step building + boot-checking BOTH artifacts, lockdown probe).
-Last full run: 2026-08-01 at the b77 intake, 14.3 min.
+Last full run: 2026-08-01 at the sl-0065 dev-map seam, 17.1 min.
 
 - **THE LOOP (v1, SERIAL 13):** "THE LOOP" picker row — spawn in the
   b65 town, three proven danger rings westward, the BONE RELIQUARY
@@ -115,6 +115,15 @@ Last full run: 2026-08-01 at the b77 intake, 14.3 min.
   channels (Master/Sfx/KeyThreats/Music/AttackSfx) each with off.
   Designer verdicts so far positive (Tier 1, provisional);
   NATURAL-TESTING mode — verdicts accumulate in play, do not nag.
+- **Dev map overlay (sl-0065, 2026-08-01):** `N` cycles corner
+  minimap / fullscreen map on every pack-routed scenario (THE LOOP
+  included — b65 ships a minimap); the pack's own minimap.png raw +
+  player dot + facing tick; dev profile only (lint-pinned like the
+  console, negative-tested); hidden by absence on arena scenarios.
+  Fixed gate tests/dev_map/dev_map_test.gd; render evidence
+  reports/dev_map_audit_b77_*.png. If minimap resolution fails the
+  designer's eyes it becomes a WF ask — upscale hacks banned. The
+  PLAYER map stays Part II (doc 13 §3); this one is throwaway.
 - **Tester pipeline standing:** export.ps1 dev+tester zips, one-flag
   dev_tools lockdown (lint + artifact probe in the gate), onboarding
   screen (copy = placeholder, designer voice pending), feedback
@@ -141,11 +150,9 @@ boss pack intaken raw-by-ruling (wire only on natural need).
 
 ## §3 Open — engineering (when asked)
 
-- **sl-0065: dev-profile world-map overlay + corner minimap** (render
-  each pack's own minimap.png + player dot; PLAYER map stays Part II
-  per doc 13). ROUTED planning→game but NOT yet handed in a session
-  paste — build it when the designer/planning paste arrives, not
-  before.
+- ~~sl-0065 dev-map overlay~~ DONE 2026-08-01 (87bdc15, sync log
+  sl-0069); the designer's first N-press on the overworld walk is
+  the acceptance.
 - Loop-routing onto the b77 harbor capital (scenario + gradient +
   proofs — the natural next content arc; talk-before-build).
 - Intakes as deliveries land (runbook + per-pack pins + paired-TF
@@ -223,7 +230,8 @@ Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- -
 4. gdformat REFLOWS code — re-grep the actual text before Edit.
 5. NO F-row keys. Current: O options, I interp, [ ] speed presets,
    -/= free step (dev-only now), G gif, R replay, T reset, M meter,
-   H hitboxes, ` console (dev-only), Esc pause, Alt+Enter fullscreen.
+   H hitboxes, N map (dev-only, pack scenarios only), ` console
+   (dev-only), Esc pause, Alt+Enter fullscreen.
 6. Sim = pure core: no Nodes/clock/RNG; prev_pos is presentation-only;
    PackedArrays share storage — `.duplicate()` for snapshots.
 7. When a proof fails: read the heatmap in the report JSON first;
