@@ -6,9 +6,11 @@
 > pins (`small-cold-coastal-pack-dusk` b65 = **44**;
 > `wildshot-overworld-pack-dusk` b77 = **60**, flood 46493, spawn
 > 109,182 — the diag takes pack dir + region + allowed as args); the
-> battery matrix lives in notes/HANDOFF.md (28 rows, reactive
-> record); walkable-unreachable cells are LEGAL under WYSIWYG. Step
-> 3's "first_contact still FAIL" is obsolete.
+> battery matrix lives in notes/HANDOFF.md (33 rows since sl-0094,
+> reactive record); walkable-unreachable cells are LEGAL under
+> WYSIWYG. Step 3's "first_contact still FAIL" is obsolete. Non-world
+> packs (icons/NPCs/content) follow the passport + fixed-gate pattern
+> instead — see their validators in tools/.
 >
 > **RELEASE TRANSPORT (doc 18 §5, blessed sl-0016, first exercised
 > 2026-07-30):** packs arrive as GitHub releases from

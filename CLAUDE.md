@@ -126,6 +126,12 @@ line of code in this repo.
   dodgeability, and dependable controls stay binding. The bar's final wording
   is the designer's (deck card staged); docs/08 rows + docs/12 supersession
   banner landed planning-side same day (verified 2026-07-30 late).
+  **AMENDED AGAIN 2026-08-01 (sl-0098, Tier 1): THE SLICE IS THE LOOP** —
+  Slice v0.1 (the four-zone dusk overworld) is the bar's judging vehicle;
+  living in the built world (no run framing, the world persists and
+  refills) is what the three-sentence docs/19 bar judges over the
+  designer's week; the b65 run framing retires with honor as the
+  mechanism proof; register row amended planning-side.
 - **GDD-16 [P/T]** — Co-op insurance, honored architecturally: no global
   assumption that exactly one player exists (`SimWorld.players` is an array;
   zero player singletons or `get_player()` globals anywhere — enemy AI reads
@@ -185,7 +191,15 @@ runners only**; lint may run on Linux.
 - Any runtime edit auto-stamps subsequent feel notes PROVISIONAL; the stamp is
   honored, never overridden by enthusiasm at hour 14.
 
-## Scope tripwire (rewritten 2026-07-30 with Gate 1, sl-0023)
+## Scope tripwire (rewritten 2026-07-30 with Gate 1, sl-0023; SUPERSEDED IN PLACE 2026-08-01, sl-0098)
+
+> **sl-0098 (designer, Tier 1): THE WORLD IS THE TEST.** The forward
+> scope is **Slice v0.1** (planning `docs/23-SLICE_BUILD_PLAN.md`) —
+> the slice IS the loop; the separate Loop-acceptance gate DISSOLVES;
+> the b65 town loop retires with honor as the mechanism proof; the
+> pack-wiring hold LIFTS (icons + NPCs wire into the slice build).
+> The refusal mechanics below stand unchanged, aimed at the slice
+> bill's needs; the pre-rewrite text stays as history.
 
 The forward scope is the **Loop milestone**: loop-assembly work items (run
 flow from the b65 town outward, rising danger, loot that matters, death cost,
@@ -1412,3 +1426,33 @@ GREEN 24.4 min at full strength (23 fixed steps + 33-row battery
 byte-identical incl the five overworld rows' first canonical run +
 export + lockdown probe). The deferred-gate debt from the
 sl-0094/0096 sessions is cleared.**
+THE ACCEPTANCE TRIPLE + THE SLICE PIVOT swept 2026-08-01 (~15:30
+docs sweep; the rulings landed in the designer's ~14:25 play/stat
+session, planning-side): (1) sl-0097 — THE WALK FORMALLY ACCEPTED,
+the designer's words: "yeah this is like playing another game, very
+good" — the sl-0078/0081 fit-rule red-line acceptance DISCHARGES,
+sl-0067's b77 navigation walk RESOLVES, the opposite-failure probe
+(squeezing through visually-solid props) surfaced nothing. (2)
+sl-0098 [Tier 1] — THE WORLD IS THE TEST: Slice v0.1 IS the loop;
+the separate Loop-acceptance gate DISSOLVES; the b65 town loop
+RETIRES WITH HONOR as the mechanism proof (run lifecycle / death
+cost / loot-that-matters proven); THE PACK-WIRING HOLD LIFTS —
+icons (sl-0083) + NPCs (sl-0089) wire INTO the slice build; Slice
+v0.1 = THE ONE milestone, Green Country first; the docs/19 bar
+judges LIVING IN THE BUILT WORLD (leave a settlement, fight, loot,
+level in-bracket, die to the CORE-43 city-fee death and walk back;
+the world persists and refills, NO run framing) over the designer's
+week, then the warm watched first-touches; CORE-55 amendment
+planning-side; scope tripwire superseded in place above. (3)
+sl-0099 — DOCS/20 STEP 2 VERDICT: the designer played ALL FIVE
+sl-0094 scenarios — directed placement PASSES (ramp / boss spot /
+territory texture / border camp all unremarked); ONE finding:
+enemy density too low, self-dispositioned as slice tuning
+(planning connect: low BY CONSTRUCTION — the sl-0094 cold finding's
+no-activation-leash; the docs/23 S0 leash + the density tweak are
+ONE work item); sl-0041 rehearsal arc RESOLVES; docs/20 step 3 =
+docs/23 S0 work. THE BUILD GO = the designer's next word; the
+slice session reads planning docs/23 FIRST. Docs sweep this seam:
+README (slice scope, pack/tool inventory, 23/33 gate), designer
+queue banner, runbook header, this file's tripwire + CORE-55 row,
+HANDOFF rewritten for the slice-era cold start.**

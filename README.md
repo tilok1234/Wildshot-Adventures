@@ -2,12 +2,13 @@
 
 Top-down 2D open-world fantasy action RPG with freely aimed projectile combat —
 single-player-first, in the RotMG + Erenshor lineage. This repo is the game
-implementation; the forward scope is the **Loop milestone** (Gate 1 as
-rewritten 2026-07-30): an unguided complete run — spawn in town, fight out
-through rising danger where loot drops and matters, reach the first boss or
-die trying, death costs something real, retry pulls immediately — that stays
-fun for the designer playing it daily. Loop v1 is built and being played;
-the zero-reward lab law was lifted for loop work by that ruling.
+implementation; the forward scope is **Slice v0.1** (THE WORLD IS THE TEST,
+ruled 2026-08-01 sl-0098): the four-zone dusk overworld as a small scale of
+the full game — living in the built world (leave a settlement, fight, loot,
+level in-bracket, die and walk back; the world persists, no run framing) IS
+what the loop bar judges, over the designer's week. The b65 town loop retired
+with honor as the mechanism proof; the slice build plan is planning
+`docs/23-SLICE_BUILD_PLAN.md`.
 
 ## Engine
 
@@ -42,7 +43,7 @@ by rule.
 
 | Path | Contents |
 |---|---|
-| `assets/` | Raw forge drops (`.gdignore`d — importers consume these): `tileforge/` (theme packages incl. the 9b8b2a2 dusk drop), `assembler-pack/` (full enemy catalog: 57 families / 202 variants + 4 players), `assembler-boss-pack/` (13 bosses 48×48, raw by ruling), `wildshot-projectiles-sphere-v0/` (the SHIPPED projectile set; `projectile-pack/` = the 5-style recorded fallback), `uikit/`, `worldforge-packs/` (two committed worlds: dusk small-cold-coastal b65 + wildshot-overworld b77, per-pack pins) |
+| `assets/` | Raw forge drops (`.gdignore`d — importers consume these): `tileforge/` (theme packages incl. the 9b8b2a2 dusk drop), `assembler-pack/` (full enemy catalog: 57 families / 202 variants + 4 players), `assembler-boss-pack/` (13 bosses 48×48 — THE boss roster by sl-0084), `wildshot-npc-slice-v1/` (32 NPCs, sl-0089), `wildshot-icons-proto_0.1.0/` (470 glyphs, sl-0083), `wildshot-overworld-pack-dusk-content/` (the world_filler content pack, reference-only, sl-0093), `wildshot-projectiles-sphere-v0/` (the SHIPPED projectile set; `projectile-pack/` = the 5-style recorded fallback), `uikit/`, `worldforge-packs/` (two committed worlds: dusk small-cold-coastal b65 + wildshot-overworld b77, per-pack pins). Every vendored pack carries a `.passport.json` byte pin + a fixed validation gate |
 | `tileforge/` | The M1 theme package import (dusk-ae1eecb) as `res://tileforge/` per its GAME-GUIDE; `tileforge.tres` built by `addons/tileforge_importer/run_import.gd` (headless). Later package builds live beside it under `tileforge_packages/<id>/` (same driver, `--package=`); `world_builder` resolves each world pack's pinned identity against the registry |
 | `assembler/` | The imported actor roster (player + mapped enemies) — roster-filtered by `addons/assembler_importer` from `data/actor_sheet_map.tres` |
 | `addons/` | `tileforge_importer` (M1), `assembler_importer` (M4/M5, docs/14), `uikit_importer` (M4), `worldforge_importer` (post-M5, docs/15 — validates + consumes generated world packs) |
@@ -53,7 +54,7 @@ by rule.
 | `game/` | Main scene, render layers, `views/` (presentation only — never mutates sim) |
 | `ui/` | HUD, menus, options |
 | `tests/` | `pixel_match/`, `assembler_pack/`, `projectile_pack/`, `uikit/`, `worldforge_pack/` (validator test + per-drop one-shot probes), `settings/`, `feedback/`, `loop/`, `dev_map/` (minimap consumer + render probe), `crosshair/` (styles contract + preview), `pinch_probe/` (fit-rule + movement diagnosis probes), `determinism/` (the smoke), `replay_fixtures/` (golden replays), `bot_scenarios/` (proof isolates + calibration canaries + the density-audit scenario) |
-| `tools/` | `pretester_check.ps1` (THE one-command ship gate), `export.ps1` (dev+tester zips), `lockdown_lint.py`/`lockdown_probe.ps1`, `diag_walkability_grid.py` (porosity, per-drop pins), `diag_pinch.py` (prop-pinch census baseline), `evidence_report.py` + `decode_summary_code.py`, `hourslog.ps1`/`hours_report.ps1`, `gif.ps1` (F-rowless: G arms the ring buffer), `godot_guard.ps1`, `validate_boss_pack.py`, `import_boss_actor.py`, `gen_cue_wavs.py` |
+| `tools/` | `pretester_check.ps1` (THE one-command ship gate), `export.ps1` (dev+tester zips), `lockdown_lint.py`/`lockdown_probe.ps1`, `balance_calc.py` (the docs/22 stat-frame gates over `data/balance_frame.json`), `validate_icon_pack.py`/`validate_npc_pack.py`/`validate_content_pack.py` (pack byte pins; the content gate also enforces the b77 base pairing), `diag_walkability_grid.py` (porosity, per-drop pins), `diag_pinch.py` (prop-pinch census baseline), `evidence_report.py` + `decode_summary_code.py`, `hourslog.ps1`/`hours_report.ps1`, `gif.ps1` (F-rowless: G arms the ring buffer), `godot_guard.ps1`, `validate_boss_pack.py`, `import_boss_actor.py`, `gen_cue_wavs.py` |
 | `notes/` | `hours.csv`, `TECH_DEBT_LEDGER.md`, `HANDOFF.md` (cold-start briefing for any new session), `PACK_INTAKE_RUNBOOK.md` (world-pack drops), per-area records (nine-row, audio map, CORE-50 checklist) |
 | `reports/` | Committed mechanical evidence: the canonical proof battery (byte-identical gate), stress/density + render audit captures — bot/harness output, never feel evidence |
 
@@ -65,7 +66,10 @@ generated artifacts); determinism-smoke (double-run hash compare + golden
 replays ×10, Windows runner — the determinism scope is
 same-build/same-platform); pixel-match (TileForge §4 acceptance + net16
 masks + uikit/projectile/worldforge/assembler/feedback/dev-map/crosshair
-validations). The full ship gate — 19 fixed steps + the 28-row proof
-battery byte-identical + export both-artifacts-boot + lockdown probe —
+validations). The full ship gate — the fixed steps + the proof
+battery byte-identical + export both-artifacts-boot + lockdown probe
+(23 fixed steps / 33 rows as of sl-0096) —
 runs locally as `tools/pretester_check.ps1` (needs exclusive project
-access; ~15–19 min).
+access; ~20–25 min at 23 fixed steps + the 33-row battery). The lint
+job also runs the three pack validators + the balance calculator on
+every push.

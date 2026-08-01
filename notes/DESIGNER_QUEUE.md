@@ -1,4 +1,19 @@
-# Designer queue — everything waiting on you (updated ~14:20)
+# Designer queue — everything waiting on you (historical; see banner)
+
+> **2026-08-01 EVENING (pre-slice-build sweep): still historical — the
+> LIVE queue is planning-side.** The acceptance triple landed today:
+> THE WALK formally accepted ("like playing another game", sl-0097 —
+> red-line walk + b77 navigation both discharged), THE WORLD IS THE
+> TEST ruled (sl-0098 — the slice IS the loop, the separate
+> loop-acceptance gate dissolved, pack-wiring hold LIFTED), and the
+> overworld step-2 verdict PASSED (sl-0099 — density finding =
+> slice-tuning via the docs/23 S0 leash). Genuinely open designer-side
+> now: **THE SLICE BUILD GO WORD** (the one gate — everything is
+> staged), crosshair styles on screen, dev map first N-press,
+> prop-thicket taste read, b65 city walk (feel menu, no longer a
+> gate), rested ratification stack, CORE-50 render checklist,
+> onboarding voice, weekly GIF, icon tool-source push from the other
+> PC.
 
 > **2026-08-01 LATE (post-fit-rule seam): still historical — the LIVE
 > queue is planning-side** (the Decision Deck + planning
