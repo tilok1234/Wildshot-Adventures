@@ -155,3 +155,5 @@ timestamp,action,note
 2026-08-01T02:16:44,start,"docs staleness sweep + handoff rewrite (post-b77 seam)"
 2026-08-01T02:22:21,note,"docs staleness sweep: README (loop-era blurb, shipped-set/tools/tests/CI truth-up), HANDOFF fully rewritten as cold-start (history stays in CLAUDE.md; gotchas 23 world-vs-pack seam + 24 sync-log id/EOL race added; per-pack pins current), runbook era banner (two lineages, paired-TF doctrine, measurement lessons), designer-queue current banner, audio-map pickup line, CORE50 audio row; ledger/nine-row/export-design verified current, no changes needed"
 2026-08-01T02:22:21,stop,""
+2026-08-01T02:26:57,start,""
+2026-08-01T03:06:44,stop,""
