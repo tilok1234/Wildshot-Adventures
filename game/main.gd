@@ -142,6 +142,15 @@ func _notification(what: int) -> void:
 		if world != null and not world.players.is_empty() and not world.players[0].dead:
 			CharacterProfile.harvest(world, character)
 			CharacterProfile.save_profile(character)
+	if what == NOTIFICATION_EXIT_TREE:
+		# 4.6.2 retains the applied custom cursor in two engine holders
+		# that outlive RenderingServer teardown — every windowed close
+		# then prints ~ImageTexture errors and leaks 2 Texture RIDs
+		# (reproduced in an empty project on this exact binary; clearing
+		# first exits clean). Tree teardown precedes server teardown on
+		# every quit path, so this is the release window. Headless
+		# no-ops.
+		Input.set_custom_mouse_cursor(null)
 
 
 ## bar_frame stylebox from the kit manifest (margins 2,2,2,2).
