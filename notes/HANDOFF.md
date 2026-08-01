@@ -30,7 +30,7 @@ only once the loop bar holds.
   `C:\Users\headc\Documents\Wildshot_adventure_final_planning` — ONE
   branch, `claude/questionnaire-note-taking-9vl2sl` (no main; do not
   create one). Its `tools/sync_log.json` is the cross-repo logbook
-  (doc 18, entries through sl-0081 as of this writing);
+  (doc 18, entries through sl-0085 as of this writing);
   `tools/ecosystem.lock.json` holds the pins.
 - **The ecosystem map** (planning `docs/16-ECOSYSTEM_MAP.md`) names
   all seven repos and the hard cross-repo rules. **LANE RULE: game
@@ -73,13 +73,16 @@ at every clean seam.
   twice mis-routed as placement fixes. The deliberate-act clause
   exists for exactly that moment.
 
-## §1 Where things stand (2026-08-01, post-sl-0078)
+## §1 Where things stand (2026-08-01, post-sl-0085 icon intake)
 
 **M0–M8 engineering complete.** The one-command ship gate
-`tools/pretester_check.ps1` runs ALL GREEN (~15–19 min: 19 fixed
+`tools/pretester_check.ps1` runs ALL GREEN (~15–19 min: 20 fixed
 steps, 28-row proof battery byte-identical against committed reports,
 export step building + boot-checking BOTH artifacts, lockdown probe).
-Last full run: 2026-08-01 at the sl-0078 fit-rule seam, 16.9 min.
+Last full run: 2026-08-01 at the sl-0078 fit-rule seam, 16.9 min; the
+sl-0085 icon seam ran fixed steps + export + probe green in 3.5 min
+(`-SkipBattery`, deliberate — zero sim change, assets are
+`.gdignore`'d).
 
 - **THE FIT RULE (sl-0078, 2026-08-01, SERIAL 14) — the newest big
   thing:** "if the character sprite visibly fits through a gap, the
@@ -147,6 +150,15 @@ Last full run: 2026-08-01 at the sl-0078 fit-rule seam, 16.9 min.
   pack-routed scenario incl THE LOOP — the pack's own minimap.png +
   player dot (sl-0065; throwaway-by-design, the PLAYER map stays
   Part II per doc 13 §3).
+- **Icon pack v0.1 vendored UNWIRED (sl-0083 → sl-0085,
+  2026-08-01):** the designer's icon-forge export — 470 16×16 glyphs,
+  T1–T5 complete, CORE-50 proof sheets in-pack — sits raw at
+  `assets/wildshot-icons-proto_0.1.0/` with a passport beside it
+  (per-file sha256s; the manifest ships none) and a fixed gate
+  (`tools/validate_icon_pack.py`, 20th step + CI row) refusing byte
+  drift. WIRING FIRES ONLY AFTER the Loop acceptance run (sl-0082
+  ruling; sl-0077 Tier-0 sequencing note). Tool-source push owed
+  from the designer's other PC (sl-0083 insurance line).
 - **Tester pipeline standing:** export.ps1 dev+tester zips, one-flag
   dev_tools lockdown (lint + artifact probe in the gate), onboarding
   screen (copy = placeholder, designer voice pending), feedback
@@ -196,6 +208,10 @@ ruling (the designer picked and it shipped).
   the conservative floor).
 - Ledger #16 (replay character block — rides L2) and #17 (fit-rule
   round-1 scope: arena-def props still full-cell).
+- Icon wiring (first surfaces per the deck's Tier-0 talk) — GATED on
+  the Loop acceptance run; when it fires, sl-0083's watch-items ride
+  along (abstract skill-node rows re-judged in the tree UI;
+  ability-charm tiers eyeballed vs the in-pack deutan sheet).
 
 ## §4 Session rituals (the gates)
 

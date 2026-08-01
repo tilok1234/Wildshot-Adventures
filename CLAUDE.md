@@ -1205,3 +1205,36 @@ sheds chasers but not projectiles; the L2 daily-play read on it is
 the designer's. ACCEPTANCE = the designer's walk along their own
 three red-line screenshots; game relaunched for them at close. NO
 feel verdicts (engineering session).**
+ICON PACK V0.1 INTAKEN 2026-08-01 (~11:45 local; delivery sl-0083 —
+raw drop, boss-pack precedent, NO WIRING by ruling until the Loop
+acceptance run sl-0082): Forge_design_component_review.zip sha256 =
+the delivery record verified PRE-DROP (2,348,689 bytes); vendored
+assets/wildshot-icons-proto_0.1.0/ — 479 files re-hashed byte-true
+from disk after staging: 470 glyphs + 6 CORE-50 proof sheets +
+atlas.json/atlas.png + manifest.json (census note: the delivery
+one-liner omitted atlas.png; same verified bytes, recorded for
+exactness). Census reproduces planning's docs/21 assessment
+EXACTLY: 470 unique ids all 16x16, manifest parity perfect both
+directions, palette dusk/15 roles, kinds item 216 / skill 90 /
+collect 70 / input 20 / map 16 / access 15 / hud 12 / stat 9 /
+quest 8 / emblem 7 / frame 4 / currency 3; atlas frames == the id
+set, atlas.png == its declared 10x47 16px layout. PASSPORT beside
+the drop (assets/wildshot-icons-proto_0.1.0.passport.json): tool
+provenance (designer icon forge, other-PC build — tool-source push
+stays owed, the b7eae05f lesson), zipSha256, per-file sha256s for
+all 479 files (the manifest ships none — the passport is the byte
+pin). FIXED GATE tools/validate_icon_pack.py = 20TH FIXED STEP +
+CI lint row (assets/** -text keeps checkouts byte-exact): manifest
+contract (exists/decodes/16x16/unique ids/glyph parity both
+directions/atlas coherence) + passport hash parity; NEGATIVE-TESTED
+(corrupt byte + deleted sheets → exit 1, both findings named). Boot
+clean; pretester ALL GREEN 3.5 min this seam = 20 fixed steps +
+export + lockdown probe with the battery DELIBERATELY SKIPPED (zero
+sim change — assets/ is .gdignore'd; smoke + goldens x10 in the
+fixed steps prove hashes unmoved; full 28-row gate rides the next
+exclusive seam). Lock pin added planning-side (first
+game←icon-forge pin); sync log sl-0085. NOTHING renders the icons
+(the sl-0077 Tier-0 sequencing note stands). Designer-side
+unchanged from sl-0083: tool-source push owed; deutan-sheet eyeball
+rides the wiring round. NO feel verdicts (hands-free mechanical
+intake).**
