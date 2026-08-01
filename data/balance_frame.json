@@ -1,0 +1,104 @@
+{
+  "formatVersion": 1,
+  "authority": "planning docs/22-STAT_SYSTEM.md (nine blocks designer-ruled 2026-08-01; CORE-37/39/40/41 rows). THE GAME OWNS THIS FILE, PLANNING OWNS THE DESIGN - the calculator checks this file against the ruled frame and flags mismatches loudly; docs/22 is never amended game-side.",
+  "status": "paper-first (sl-0095). NO sim consumption - the stat frame enters the sim at slice build. Every concrete number here is a game-side derivation [P] inside the ruled constraints; the frames/rules themselves are the ruling.",
+  "conventions": [
+    "[P] hits-to-kill reference: the ruled 3-5 hits invariant is measured against the tier's BUDGET-EXACT frame (fast-light); the other frames satisfy the TTK band instead (equal-DPS frames cannot all land 3-5 hits of wildly different sizes - flagged for planning's sweep, docs/22 untouched).",
+    "[P] class-weapon mapping: sword=slow-heavy, bow=fast-light, staff=long-reach (block-5 identity leans onto block-3 frames; the icon trio).",
+    "[P] TTD model: sustained single hostile stream fully tanked at one landed hit per 1.2 s - pressure grows across zones via hit SIZE and pattern count (block-2 rider), never landed-rate inflation.",
+    "[P] declared bands: trash TTK 1.0-6.0 s; TTD 12-90 s (long enough to react, short enough that death stays real).",
+    "T5 is the late-Snow capstone chase (block 4): its armor sits above the 0.4-0.6x bracket band BY DESIGN and is exempt from that band check but still below the 0.8x plateau flag."
+  ],
+  "formula": {
+    "taken": "max(attack - armor, ceil(attack * floor_fraction))",
+    "floor_fraction": 0.2,
+    "rounding": "one step: ceil on the floor term, attacker's favor"
+  },
+  "brackets": [
+    { "zone": "green", "levels": [1, 7], "tier": 1 },
+    { "zone": "dry", "levels": [8, 15], "tier": 2 },
+    { "zone": "wet", "levels": [16, 22], "tier": 3 },
+    { "zone": "snow", "levels": [23, 30], "tier": 4 }
+  ],
+  "classes": {
+    "sword": { "base_hp": 120, "hp_per_level": 16, "base_mana": 60, "mana_per_level": 4, "base_speed": 100, "weapon_frame": "slow_heavy" },
+    "staff": { "base_hp": 100, "hp_per_level": 13, "base_mana": 100, "mana_per_level": 8, "base_speed": 105, "weapon_frame": "long_reach" },
+    "bow": { "base_hp": 90, "hp_per_level": 11, "base_mana": 70, "mana_per_level": 5, "base_speed": 110, "weapon_frame": "fast_light" }
+  },
+  "speed_rules": { "bases": [100, 105, 110], "hard_cap": 115, "cap_home": "movement integrator at slice build, never item data", "max_item_speed_bonus": 5 },
+  "levels": { "per_level": "class HP + class mana + 1 skill point, NO automatic damage", "skill_points_per_level": 1 },
+  "weapon_tiers": {
+    "t1_dps_budget": 12.0,
+    "budget_step": 1.4,
+    "frame_band": 0.1,
+    "frames": {
+      "slow_heavy": { "shots_per_sec": 0.6, "damage": [22, 30, 42, 60, 84], "band_note": "short/awkward earns up to +10%" },
+      "fast_light": { "shots_per_sec": 2.0, "damage": [6, 8, 12, 16, 23], "band_note": "the budget-exact reference frame" },
+      "long_reach": { "shots_per_sec": 1.2, "damage": [9, 13, 18, 25, 35], "band_note": "range/comfort pays up to -10%" }
+    }
+  },
+  "armor_slot": {
+    "defense": [5, 8, 13, 20, 26],
+    "hp": [30, 38, 49, 63, 81],
+    "hp_step_band": [1.25, 1.3],
+    "archetypes": {
+      "light": { "pair": "+speed/-HP" },
+      "heavy": { "pair": "+HP/-speed" },
+      "balanced": { "pair": "small trades both ways" }
+    }
+  },
+  "enemy_bands": {
+    "green": { "typical_hit": 10, "trash_hp": 24, "landed_hits_per_sec": 0.833 },
+    "dry": { "typical_hit": 16, "trash_hp": 32, "landed_hits_per_sec": 0.833 },
+    "wet": { "typical_hit": 26, "trash_hp": 48, "landed_hits_per_sec": 0.833 },
+    "snow": { "typical_hit": 40, "trash_hp": 64, "landed_hits_per_sec": 0.833 }
+  },
+  "armor_rules": { "obtainable_band": [0.4, 0.6], "plateau_flag": 0.8 },
+  "hits_to_kill": { "band": [3, 5], "reference_frame": "fast_light" },
+  "digit_rule": { "max_combat_number": 999 },
+  "ttk_band_seconds": [1.0, 6.0],
+  "ttd_band_seconds": [12.0, 90.0],
+  "xp": {
+    "model": "flat per zone, stepping at zone borders (block 5)",
+    "per_level": { "green": 100, "dry": 400, "wet": 800, "snow": 1400 },
+    "per_kill": { "green": 3, "dry": 11, "wet": 22, "snow": 38 }
+  },
+  "pairs": [
+    { "up": "damage", "down": "defense" },
+    { "up": "speed", "down": "hp" },
+    { "up": "range", "down": "attack_speed" },
+    { "up": "hp", "down": "speed" },
+    { "up": "defense", "down": "damage" },
+    { "up": "mana", "down": "hp" }
+  ],
+  "unique_rules": {
+    "breaks_required": 1,
+    "whitelist": ["pattern_replacement", "exception_behaviour", "over_budget_paired_cost", "utility"],
+    "chassis_fraction_band": [0.7, 0.9],
+    "per_rule_max_game_wide": 1
+  },
+  "pattern_matrix": {
+    "scenarios": ["single", "clump", "line", "moving"],
+    "realized_multipliers": {
+      "slow_heavy": { "single": 1.0, "clump": 3.0, "line": 1.5, "moving": 0.5 },
+      "fast_light": { "single": 1.0, "clump": 1.0, "line": 1.0, "moving": 0.9 },
+      "long_reach": { "single": 1.0, "clump": 1.2, "line": 3.0, "moving": 0.6 }
+    },
+    "note": "[P] paper multipliers - arc cleaves clumps, pierce owns lines, fast stream tracks movers; the bot-run realized-DPS matrix replaces these at slice build (block 3's measurement mechanism)"
+  },
+  "items": [
+    { "id": "t1-arming-sword", "slot": "weapon", "tier": 1, "frame": "slow_heavy" },
+    { "id": "t2-recurve-bow", "slot": "weapon", "tier": 2, "frame": "fast_light" },
+    { "id": "t3-ashen-staff", "slot": "weapon", "tier": 3, "frame": "long_reach" },
+    { "id": "t2-heavy-plate", "slot": "armor", "tier": 2, "archetype": "heavy", "trade": { "up": "hp", "up_amount": 10, "down": "speed", "down_amount": 3 } },
+    { "id": "t3-light-leathers", "slot": "armor", "tier": 3, "archetype": "light", "trade": { "up": "speed", "up_amount": 4, "down": "hp", "down_amount": 12 } },
+    { "id": "t2-ring-of-reach", "slot": "ring", "tier": 2, "trade": { "up": "range", "up_amount": 2, "down": "attack_speed", "down_amount": 1 } },
+    { "id": "t3-ring-of-fangs", "slot": "ring", "tier": 3, "trade": { "up": "damage", "up_amount": 4, "down": "defense", "down_amount": 4 } },
+    {
+      "id": "u-reliquary-coil",
+      "slot": "ring",
+      "tier": 4,
+      "unique": { "breaks": ["exception_behaviour"], "chassis_fraction": 0.8, "note": "placeholder for the BRK drop - behaviour authored at slice build" }
+    }
+  ]
+}

@@ -77,6 +77,15 @@ jobs:
           pip install --quiet pillow
           python3 tools/validate_content_pack.py
 
+      # sl-0095 balance calculator (docs/22 block 9, paper-first): the five
+      # ruled gates over the game-owned data file — pure stdlib math,
+      # deterministic. Linux-safe.
+      - name: Balance calculator (docs/22 gates)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/balance_calc.py
+
   # M2 job (tracker line "determinism smoke test"): double-run state-hash
   # compare. Sim execution — §2.4 scope is same-build/same-platform (Windows),
   # so this MUST run on a Windows runner; a Linux runner would false-alarm on

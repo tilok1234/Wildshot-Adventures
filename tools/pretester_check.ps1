@@ -105,6 +105,18 @@ Step "content pack validate (pairing+locks)" {
     return $true
 }
 
+# sl-0095 balance calculator (docs/22 block 9, paper-first): the five
+# ruled gates over data/balance_frame.json — TTK/TTD bands, armor
+# plateau, pattern fairness, chunky hits, the item validator.
+Step "balance calculator (docs/22 gates)" {
+    $bout = python tools/balance_calc.py 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        $bout | Select-Object -Last 8 | ForEach-Object { Write-Host "  $_" }
+        return $false
+    }
+    return $true
+}
+
 $tests = @(
     @("pixel-match", "tests/pixel_match/pixel_match.gd"),
     @("assembler pack + slice", "tests/assembler_pack/assembler_pack_test.gd"),
