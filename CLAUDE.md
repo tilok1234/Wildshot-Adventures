@@ -1256,3 +1256,33 @@ assets/** -text chain + passport hashes + pillow decode proven
 end-to-end; the gate's CI half is genuinely live. Handoff gotcha
 #26 added (check the lint job after every push — it is the fast
 signal; grow the exemption with every generated tree).**
+WINDOWED-CLOSE TEARDOWN CLEANED 2026-08-01 (~12:35 local; hands-free
+engineering, zero sim change): every windowed close (artifact boot
+checks in the export step + lockdown probe, and the designer's own
+play windows) had been printing shutdown noise — ~ImageTexture
+"RenderingServer::get_singleton() is null" + "2 RIDs of type Texture
+were leaked" — invisible to every headless gate (headless
+DisplayServer no-ops the cursor path; all 15 project-mode gate
+commands proven signature-free by solo full-stderr sweep; emitters =
+dev artifact, tester artifact, windowed project boots, all exit 0).
+TYPED BY MINIMAL PROJECT on the pinned binary
+(4.6.2.stable.official.71f334935): ONE Input.set_custom_mouse_cursor
+call leaks exactly 2 Texture RIDs at exit — two engine holders
+outlive RenderingServer (one destructs late = the ERROR, one never
+destructs = the silent second RID); replacement applies add nothing;
+null-clear exits clean. Engine retention, not a game reference leak.
+FIX = LIFECYCLE, NOT SUPPRESSION: main releases the cursor at
+NOTIFICATION_EXIT_TREE (tree teardown precedes server teardown on
+every quit path; T-reset reload re-applies via the style sentinel).
+Every other ImageTexture audited node/scope-held (map_overlay,
+sphere fallback, assembler test) — freed with the tree by
+construction; no static caches, no autoload textures, no workers.
+VERIFIED: gdformat + lockdown lint clean; pretester ALL GREEN 3.3
+min on rebuilt artifacts (20 fixed + export + probe); 15/15
+five-boot matrix (dev/tester/project windowed) exit 0 with ZERO leak
+signatures; reports/ git-clean (proof outputs untouched; bot_runner
+never loads main.gd — battery provably unaffected, SERIAL stays 14).
+Windowed closes are silent now — remaining stderr is the
+RealtimeDriver's designed slew telemetry. Gotcha #27 recorded (sweep
+solo with full stderr, characterize in a minimal project before
+touching code, fix lifecycle — never filter stderr).**

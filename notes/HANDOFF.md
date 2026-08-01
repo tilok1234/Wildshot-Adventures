@@ -399,6 +399,19 @@ Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- -
     Never hand-format a consumed package tree — extend the filter
     instead. After any push, `gh run list` → the lint job concluding
     is the fast signal (the Windows jobs queue for hours behind it).
+27. **Headless gates cannot see windowed-only teardown** — shutdown
+    noise from DisplayServer-dependent paths never appears under
+    --headless; it lives in the WINDOWED closes (artifact boot
+    checks, the designer's play window). The 4.6.2 cursor API leaks
+    2 Texture RIDs per final applied cursor at exit — engine
+    retention, proven in an empty minimal project on the pinned
+    binary — so main releases the cursor at NOTIFICATION_EXIT_TREE;
+    keep that handler. Method for any shutdown ERROR/RID-leak: sweep
+    the gate commands solo with full stderr captured to type the
+    emitter, characterize in a minimal project BEFORE touching code,
+    then fix lifecycle (release engine-held resources pre-teardown)
+    — never filter stderr. Remaining windowed-close stderr is the
+    RealtimeDriver's designed slew telemetry only.
 
 ## Ledger + scope
 
