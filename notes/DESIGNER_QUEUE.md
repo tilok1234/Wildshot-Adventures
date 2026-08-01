@@ -1,5 +1,32 @@
 # Designer queue — everything waiting on you (historical; see banner)
 
+> **2026-08-01 NIGHT (post-S0 sweep): still historical — the LIVE
+> queue is planning-side.** Tonight S0 shipped whole (sl-0100→0101:
+> stat frame in the sim, the living world, overworld death, NPCs +
+> icons; full gate green) and your first walk already produced and
+> RESOLVED the speed re-rule (sl-0102: classes at 3.60/3.78/3.96,
+> cap 4.14 — live since your 23:18 restart). The GIF recorder now
+> captures START TO FINISH (G once to start, G again to stop —
+> however long you want; big files, I shrink them for posting).
+> Genuinely open designer-side now, in plain words:
+> - **THE S1 GO WORD** — Green Country's chapter content (its enemies
+>   tuned at the sites, first drops and levels, the boss made
+>   special, the dungeon stand-in, first quests, fishing/foraging,
+>   all three classes) starts only when you route it.
+> - **Keep living in the slice** — the bar clock is your daily play;
+>   density/pack-size/respawn feel notes are one-liners, I batch
+>   them into single gate runs.
+> - **New on screen, worth a look when you feel like it:** the NPC
+>   crowd at the capital (the old watch-items — do named NPCs read
+>   distinct from villagers? do dark outfits read at dusk?), the
+>   class-choice screen with emblems, the weapon tier glyph top-right.
+> - **Weekly GIF** — you said later tonight; the new recorder makes
+>   the material easy whenever you're ready.
+> - Standing from before: rested ratification stack, CORE-50 render
+>   checklist pass, onboarding copy voice, icon tool-source push from
+>   the other PC, crosshair styles on screen, b65 city walk (feel
+>   menu).
+
 > **2026-08-01 EVENING (pre-slice-build sweep): still historical — the
 > LIVE queue is planning-side.** The acceptance triple landed today:
 > THE WALK formally accepted ("like playing another game", sl-0097 —

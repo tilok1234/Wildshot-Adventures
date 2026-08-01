@@ -190,3 +190,7 @@ timestamp,action,note
 2026-08-01T21:59:39,note,"recorder rework shipped (098a679); designer done for tonight - S0 complete, S1 awaits routing"
 2026-08-01T21:59:39,stop,""
 2026-08-01T22:01:52,start,""
+2026-08-01T23:16:58,note,"sl-0102 executed + pushed both repos; export/probe debt rides the next exclusive seam"
+2026-08-01T23:16:58,stop,""
+2026-08-01T23:23:16,start,""
+2026-08-01T23:23:16,note,"docs staleness sweep + handoff rewrite (designer ask)"

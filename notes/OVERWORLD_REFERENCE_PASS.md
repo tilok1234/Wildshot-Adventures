@@ -1,5 +1,13 @@
 # Overworld reference pass — sl-0093 content pack, hand-authored (docs/20 step 1)
 
+> **DISCHARGED 2026-08-01 (S0 seam 2, sl-0100/0101):** the importer
+> this document specced EXISTS — `game/arena/content_importer.gd`
+> reads the pack's territories + placements directly as leash-gated
+> spawn tables (193 sites; the vocabulary below is its mapping,
+> nightOnly carried unconsumed). The five scenarios below remain
+> battery rows; speeds re-anchored by sl-0102 (proofs now run
+> 3.6/4.14 — the 3.0 figures below are the era-true record).
+
 2026-08-01. The dusk content pack (`assets/wildshot-overworld-pack-dusk-content/`,
 REFERENCE ONLY — no importer, no sim consumption) mined by hand into spawn
 tables + boss-site scenarios on the vendored b77 overworld. **This mapping is
