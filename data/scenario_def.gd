@@ -68,4 +68,9 @@ extends Resource
 ## the pattern-variant def follow from them.
 @export var rift_biome: int = 0
 @export var rift_rare: bool = false
+## sl-0130 THE BANK: the settlement stash station cell (center
+## coords). ZERO = no bank in this world (every pre-bank scenario).
+## Deposit/withdraw ride recorded bag_op codes, legal only within
+## bag_step's BANK_RADIUS of this cell; the panel is walk-up view.
+@export var bank_cell: Vector2 = Vector2.ZERO
 @export var default_seed: int = 1

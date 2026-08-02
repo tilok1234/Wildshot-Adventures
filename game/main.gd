@@ -20,6 +20,7 @@ const CharacterSheet := preload("res://ui/character_sheet.gd")
 const QuestTracker := preload("res://ui/quest_tracker.gd")
 const QuestGiverIcons := preload("res://game/views/quest_giver_icons.gd")
 const LootBagPanel := preload("res://ui/loot_bag_panel.gd")
+const BankPanel := preload("res://ui/bank_panel.gd")
 const GifRecorder := preload("res://game/drivers/gif_recorder.gd")
 const FlashView := preload("res://game/views/flash_view.gd")
 const EffectLibrary := preload("res://game/views/effect_library.gd")
@@ -226,6 +227,8 @@ var char_sheet: PanelContainer = null
 var quest_tracker: Label = null
 ## sl-0129: the walk-over loot-bag panel (bottom-center).
 var loot_panel: PanelContainer = null
+## sl-0130: the walk-up bank panel (settlement stash).
+var bank_panel: PanelContainer = null
 var _console_events := "off"
 ## §2.10 tester-profile gate (M7): tester exports carry the custom
 ## feature tag "tester" (export preset) and lose every sim-mutating dev
@@ -300,6 +303,7 @@ func _process(_delta: float) -> void:
 		var over_pane: bool = (
 			(char_sheet != null and char_sheet.wants_suppress())
 			or (loot_panel != null and loot_panel.wants_suppress())
+			or (bank_panel != null and bank_panel.wants_suppress())
 		)
 		driver.sampler.suppress = typing or over_pane
 	# §2.9 prev/curr render toggle — view-side only, replay-irrelevant.
@@ -696,6 +700,7 @@ func _apply_ui_scale(k: int) -> void:
 		char_sheet,
 		quest_tracker,
 		loot_panel,
+		bank_panel,
 		autofire_icon,
 		weapon_label,
 		rec_label,
@@ -1580,6 +1585,12 @@ func _ready() -> void:
 	if driver != null and driver.sampler != null:
 		loot_panel.bag_op_sink = Callable(driver.sampler, "queue_bag_op")
 	hud.add_child(loot_panel)
+	# sl-0130: the bank panel (walk up to the stash keeper).
+	bank_panel = BankPanel.new()
+	bank_panel.world = world
+	if driver != null and driver.sampler != null:
+		bank_panel.bag_op_sink = Callable(driver.sampler, "queue_bag_op")
+	hud.add_child(bank_panel)
 	hud.add_child(options_menu)
 	recap_panel = RecapPanel.new()
 	hud.add_child(recap_panel)

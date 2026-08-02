@@ -27,10 +27,18 @@ const OP_DEEQUIP_RING := 42
 const OP_LOOT_ALL := 43
 const OP_LOOT_ROW_BASE := 44
 const LOOT_ROW_MAX := 8
+## sl-0130 THE BANK: 52..71 DEPOSIT bag slot / 72..83 WITHDRAW bank
+## slot — legal only within BANK_RADIUS of the scenario's bank cell.
+const OP_DEPOSIT_BASE := 52
+const OP_WITHDRAW_BASE := 72
 ## Capacity [T] (the sl-0116 suggested 20).
 const BAG_CAP := 20
+## Bank capacity [T] — small, distinct from the bag (sl-0130).
+const BANK_CAP := 12
 ## Ground-bag reach [T] (sl-0129: the walk-over panel's radius too).
 const LOOT_RADIUS := 0.9
+## Bank station reach [T] (the giver-radius class).
+const BANK_RADIUS := 1.2
 
 
 static func run(world: RefCounted) -> void:
@@ -63,6 +71,10 @@ static func run(world: RefCounted) -> void:
 			_loot_all(world, p)
 		elif op >= OP_LOOT_ROW_BASE and op < OP_LOOT_ROW_BASE + LOOT_ROW_MAX:
 			_loot_row(world, p, op - OP_LOOT_ROW_BASE)
+		elif op >= OP_DEPOSIT_BASE and op < OP_DEPOSIT_BASE + BAG_CAP:
+			_deposit(world, p, op - OP_DEPOSIT_BASE)
+		elif op >= OP_WITHDRAW_BASE and op < OP_WITHDRAW_BASE + BANK_CAP:
+			_withdraw(world, p, op - OP_WITHDRAW_BASE)
 
 
 ## ---- ground loot bags (sl-0129).
@@ -100,6 +112,50 @@ static func _loot_row(world: RefCounted, p: RefCounted, row: int) -> void:
 	_take_from_bag(world, p, bi, row)
 	if (world.loot_bags[bi].items as PackedInt32Array).is_empty():
 		world.loot_bags.remove_at(bi)
+
+
+## ---- the bank (sl-0130): the settlement stash, two-way with the
+## bag; ops legal only at the scenario's bank cell. Death never
+## touches these arrays (no death-path writes anywhere).
+
+
+static func bank_count(p: RefCounted) -> int:
+	return p.bank.size() / 3
+
+
+static func bank_item(p: RefCounted, slot: int) -> Dictionary:
+	var base := slot * 3
+	return {"kind": p.bank[base], "a": p.bank[base + 1], "b": p.bank[base + 2]}
+
+
+static func at_bank(world: RefCounted, p: RefCounted) -> bool:
+	if world.bank_cell == Vector2.ZERO:
+		return false
+	return p.pos.distance_to(world.bank_cell) <= BANK_RADIUS
+
+
+static func _deposit(world: RefCounted, p: RefCounted, slot: int) -> void:
+	if not at_bank(world, p) or slot >= bag_count(p):
+		return
+	if bank_count(p) >= BANK_CAP:
+		world.events.append({"type": SimEvents.Type.BANK_FULL, "tick": world.tick, "player": p.id})
+		return
+	var it := bag_item(p, slot)
+	bag_remove(p, slot)
+	p.bank.append(int(it.kind))
+	p.bank.append(int(it.a))
+	p.bank.append(int(it.b))
+
+
+static func _withdraw(world: RefCounted, p: RefCounted, slot: int) -> void:
+	if not at_bank(world, p) or slot >= bank_count(p):
+		return
+	var it := bank_item(p, slot)
+	if not bag_add(world, p, int(it.kind), int(it.a), int(it.b)):
+		return
+	var base := slot * 3
+	for k in 3:
+		p.bank.remove_at(base)
 
 
 ## Move one bag row to the player's bag. False = refused (out of

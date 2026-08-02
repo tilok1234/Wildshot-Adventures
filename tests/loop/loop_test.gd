@@ -441,6 +441,61 @@ func _init() -> void:
 	bw.spawn_loot_bag(Vector2(20.0, 12.0), PackedInt32Array([2, 1, 0]))
 	check(bw.state_hash() != bh0, "loot bags are hashed state (SERIAL 24)")
 
+	# 13. sl-0130 THE BANK: two-way with the bag AT THE BANK CELL only;
+	# capacities refuse loudly both ways; death never touches the bank.
+	var kw: RefCounted = _world_with(ring_def, 107)
+	kw.set_stat_frame(StatFrame.load_frame())
+	var kp: RefCounted = kw.players[0]
+	kp.class_id = 2
+	StatFrame.recompute(kw, kp)
+	kw.bank_cell = Vector2(21.0, 12.0)
+	kp.pos = kw.bank_cell
+	BagStep.bag_add(kw, kp, SimWorld.DROP_ARMOR, 2, 0)
+	_bag_op(kw, BagStep.OP_DEPOSIT_BASE)
+	check(BagStep.bank_count(kp) == 1 and BagStep.bag_count(kp) == 0, "deposit moves bag -> bank")
+	_bag_op(kw, BagStep.OP_WITHDRAW_BASE)
+	check(BagStep.bank_count(kp) == 0 and BagStep.bag_count(kp) == 1, "withdraw moves bank -> bag")
+	kp.pos = Vector2(25.0, 12.0)
+	_bag_op(kw, BagStep.OP_DEPOSIT_BASE)
+	check(
+		BagStep.bank_count(kp) == 0 and BagStep.bag_count(kp) == 1,
+		"NEGATIVE: deposit refuses beyond the bank radius"
+	)
+	kp.pos = kw.bank_cell
+	for i in BagStep.BANK_CAP:
+		kp.bank.append_array(PackedInt32Array([2, 1, 0]))
+	_bag_op(kw, BagStep.OP_DEPOSIT_BASE)
+	var saw_bank_full := false
+	for ev: Dictionary in kw.events:
+		if int(ev.type) == SimEvents.Type.BANK_FULL:
+			saw_bank_full = true
+	check(
+		saw_bank_full and BagStep.bag_count(kp) == 1,
+		"NEGATIVE: full bank refuses (BANK_FULL, the item stays bagged)"
+	)
+	while BagStep.bag_count(kp) < BagStep.BAG_CAP:
+		BagStep.bag_add(kw, kp, SimWorld.DROP_ARMOR, 1, 0)
+	_bag_op(kw, BagStep.OP_WITHDRAW_BASE)
+	check(
+		BagStep.bank_count(kp) == BagStep.BANK_CAP,
+		"NEGATIVE: withdraw into a full bag refuses (the item stays banked)"
+	)
+	var bank_before: int = BagStep.bank_count(kp)
+	Damage.apply(kw, kp, 9999, 0)
+	check(kp.dead and BagStep.bank_count(kp) == bank_before, "death never touches the bank")
+	var kh0: int = kw.state_hash()
+	kp.bank.append_array(PackedInt32Array([5, 0, 0]))
+	check(kw.state_hash() != kh0, "the bank is hashed state (SERIAL 25)")
+	var nw: RefCounted = _world_with(ring_def, 109)
+	nw.set_stat_frame(StatFrame.load_frame())
+	nw.players[0].class_id = 2
+	BagStep.bag_add(nw, nw.players[0], SimWorld.DROP_ARMOR, 2, 0)
+	_bag_op(nw, BagStep.OP_DEPOSIT_BASE)
+	check(
+		BagStep.bank_count(nw.players[0]) == 0,
+		"NEGATIVE: a world without a bank cell keeps bank ops inert"
+	)
+
 	if fails.is_empty():
 		print("loop_test: PASS (drops/streams/curve/damage/armor/pickup/rings/text/hash)")
 		quit(0)

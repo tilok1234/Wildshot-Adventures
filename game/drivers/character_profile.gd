@@ -52,6 +52,7 @@ static func create(hardcore: bool, cls := "bow") -> Dictionary:
 		"ring_id": "",
 		"armor_item_id": "",
 		"bag": [],
+		"bank": [],
 		"unique_mask": 0,
 		"quests_done_mask": 0,
 		"quests_taken": [],
@@ -139,6 +140,18 @@ static func apply_to_world(world: RefCounted, d: Dictionary) -> void:
 			p.bag.append(triple[0])
 			p.bag.append(triple[1])
 			p.bag.append(triple[2])
+	# sl-0130: the bank rides the same encoder (by id/kind).
+	p.bank = PackedInt32Array()
+	var bank_rows: Array = d.get("bank", []) if d.get("bank") is Array else []
+	for row_v: Variant in bank_rows:
+		if not row_v is Dictionary:
+			continue
+		var row: Dictionary = row_v
+		var triple := _bag_triple_for(world, row)
+		if triple.size() == 3:
+			p.bank.append(triple[0])
+			p.bank.append(triple[1])
+			p.bank.append(triple[2])
 	# sl-0112: quest state — done mask by index (append-only list, the
 	# unique_mask precedent); TAKEN quests + per-quest progress key BY
 	# ID (multi-active). A pre-interact-era active_quest_id migrates
@@ -191,6 +204,12 @@ static func harvest(world: RefCounted, d: Dictionary) -> void:
 		if not row.is_empty():
 			bag_rows.append(row)
 	d.bag = bag_rows
+	var bank_rows: Array = []
+	for ki in p.bank.size() / 3:
+		var krow := _bag_row_for(world, p.bank[ki * 3], p.bank[ki * 3 + 1], p.bank[ki * 3 + 2])
+		if not krow.is_empty():
+			bank_rows.append(krow)
+	d.bank = bank_rows
 	d.quests_done_mask = p.quests_done_mask
 	var taken_ids: Array = []
 	var prog: Dictionary = {}

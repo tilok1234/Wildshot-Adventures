@@ -90,6 +90,11 @@ var gather_rearm: Vector2 = Vector2(-1000000.0, -1000000.0)
 ## capacity [T 20]). Legacy lane (class_id < 0) never bags — every
 ## proof world byte-identical by construction.
 var bag: PackedInt32Array = PackedInt32Array()
+## THE BANK (sl-0130, SERIAL 25): the settlement stash — same flat
+## triples, capacity in bag_step (BANK_CAP [T 12]). Deposit/withdraw
+## ride recorded ops at the scenario's bank cell; DEATH NEVER TOUCHES
+## THE BANK (no death-path writes — by construction, test-pinned).
+var bank: PackedInt32Array = PackedInt32Array()
 ## STARHOOK v2 (sl-0115, SERIAL 22) — THE LINE. Only read where
 ## SimWorld.rift_line is attached (rift arenas); zero elsewhere by
 ## construction. line_lives = snaps remaining before the dive is lost
@@ -142,3 +147,8 @@ func serialize_into(buf: StreamPeerBuffer) -> void:
 		buf.put_u8(bag[bi * 3])
 		buf.put_16(bag[bi * 3 + 1])
 		buf.put_16(bag[bi * 3 + 2])
+	buf.put_u8(bank.size() / 3)
+	for ki in bank.size() / 3:
+		buf.put_u8(bank[ki * 3])
+		buf.put_16(bank[ki * 3 + 1])
+		buf.put_16(bank[ki * 3 + 2])

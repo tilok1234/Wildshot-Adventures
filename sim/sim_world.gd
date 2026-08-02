@@ -54,7 +54,10 @@ const DT := 1.0 / 60.0
 ## (pickups land in the bag; equip/drop ride the recorded bag_op —
 ## WSR v3 with it). 24 = sl-0129 LOOT BAGS: enemy-kill loot lands in
 ## ONE serialized ground-bag entity (gold stays its own drop).
-const SERIAL_VERSION := 24
+## 25 = sl-0130 THE BANK: settlement stash triples on PlayerState
+## (deposit/withdraw ride recorded ops at the scenario's bank cell;
+## death never touches the bank).
+const SERIAL_VERSION := 25
 
 ## Damage-source pattern id for the scenario-declared test damage
 ## schedule (§2.11 elite transition proofs; planning log 2026-07-28).
@@ -193,6 +196,11 @@ var site_defs: Array = []
 ## flag, away-only respawn timer, and the dormant population (def_index
 ## + hp per member — damaged survivors stay damaged across sleeps).
 var sites: Array[Dictionary] = []
+
+## sl-0130 THE BANK: the settlement stash station cell (setup config
+## from the scenario def, excluded from serialize — a replay
+## reproduces it by naming its scenario). ZERO = no bank here.
+var bank_cell: Vector2 = Vector2.ZERO
 
 ## CORE-43 overworld death (slice S0 seam 3). Setup config like the
 ## defs (unserialized; the scenario + profile determine it): when

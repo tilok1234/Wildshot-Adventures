@@ -79,6 +79,13 @@ static func _phase_hash(x: int, y: int) -> int:
 
 
 ## Deterministic station table — static + pure so the wiring test pins
+## sl-0130: manifest ids pinned to authored station cells (matches
+## the slice scenario's sim-side cells: the bank at 112.5,182.5).
+const PINNED_STATIONS := {
+	"capital-stash-keeper": Vector2(112.5, 182.5),
+}
+
+
 ## it without a scene. Returns [{id, cell: Vector2 (center)}].
 static func compute_stations(
 	npc_manifest: Dictionary, plan: Dictionary, bitgrid: RefCounted, spawn: Vector2
@@ -111,6 +118,12 @@ static func compute_stations(
 		var group := String(a.get("group", ""))
 		var zone := String(a.get("zone", ""))
 		var zkey := String(ZONE_MAP.get(zone, ""))
+		# sl-0130: bodies pinned to station cells (the stash keeper at
+		# the bank cell; vendors join at sl-0131) — the body marks the
+		# ground, the sim owns the interaction (CORE-35 pure view).
+		if PINNED_STATIONS.has(aid):
+			out.append({"id": aid, "cell": _nudge_walkable(bitgrid, PINNED_STATIONS[aid])})
+			continue
 		if group == "zone-quest-giver" and not zkey.is_empty() and zone_cells.has(zkey):
 			var cells: Array = zone_cells[zkey]
 			var next_i := int(used.get(zkey, 0))

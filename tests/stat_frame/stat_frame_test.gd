@@ -331,6 +331,8 @@ func _init() -> void:
 	pwp.ring_index = ring_idx
 	# sl-0116: bag round-trip BY ID — a ring + an armor tier in the bag.
 	pwp.bag = PackedInt32Array([5, ring_idx, 0, 2, 3, 0])
+	# sl-0130: the bank rides the same encoder.
+	pwp.bank = PackedInt32Array([2, 4, 0])
 	CharacterProfile.harvest(pw, harvested)
 	# S1 seam 2: the profile keys the ring BY ID (items[] evolves
 	# chapter by chapter; a raw index would silently re-point saves).
@@ -366,6 +368,11 @@ func _init() -> void:
 			and re_bag[4] == 3
 		),
 		"apply resolves the bag rows back to live triples"
+	)
+	var re_bank: PackedInt32Array = re_applied.players[0].bank
+	check(
+		re_bank.size() == 3 and re_bank[0] == 2 and re_bank[1] == 4,
+		"apply resolves the bank rows back to live triples (sl-0130)"
 	)
 	var v1 := {"version": 1, "hardcore": false, "gold": 999}
 	var v1_path := bad_dir + "/character_v1.json"

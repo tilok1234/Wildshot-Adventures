@@ -124,6 +124,8 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 	# PROFILE is known (normal-mode character in a persistent-world
 	# scenario) — bot and replay builds stay dead-in-place.
 	world.respawn_cell = scenario.player_spawn
+	# sl-0130: the settlement bank station (ZERO = none).
+	world.bank_cell = scenario.bank_cell
 	world.add_player(scenario.player_spawn)
 	for p in scenario.standin_positions:
 		world.add_enemy_standin(p)
