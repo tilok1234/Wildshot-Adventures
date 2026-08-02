@@ -1,14 +1,16 @@
 extends SceneTree
-## QUESTS under THE INTERACT VERB (S1 seam 5 re-pinned by sl-0112):
-## accepting and turning in are DELIBERATE F-presses at giver cells —
-## nothing auto-accepts; MULTI-ACTIVE capacity (cap 5 [T]) with
-## per-quest progress; KILL/COLLECT count for EVERY taken unfinished
-## quest; turn-in pays the pressed giver's first complete quest (one
-## action per press, payoff before pickup); done-mask blocks repeats;
-## legacy/dead players inert; interact on nothing does nothing; every
-## new field hashed (SERIAL 21); the Green five pinned BOTH ways
-## against the content pack's giver slots. NEGATIVE-TESTED. Exit 0 =
-## green.
+## QUESTS under THE MENU PASS (S1 seam 5 → sl-0112 → sl-0144/0154):
+## TURN-IN is the deliberate F-press at the giver (undialogued,
+## turn-in wins); the press never accepts — it OFFERS (QUEST_OFFERED
+## to the view's dialogue) and ACCEPT is the RECORDED OP (radius +
+## capacity gated sim-side); ABANDON is the recorded op that returns
+## an errand to its giver (re-offers, re-accepts fresh; done refuses).
+## MULTI-ACTIVE capacity (cap 5 [T]) with per-quest progress;
+## KILL/COLLECT count for EVERY taken unfinished quest; done-mask
+## blocks repeats; legacy/dead players inert; interact on nothing
+## does nothing; every field hashed (SERIAL 21); the Green five
+## pinned BOTH ways against the content pack's giver slots.
+## NEGATIVE-TESTED. Exit 0 = green.
 
 const SimWorld := preload("res://sim/sim_world.gd")
 const Bitgrid := preload("res://sim/collision/bitgrid.gd")
@@ -77,12 +79,19 @@ func _press(world: RefCounted) -> void:
 	world.step([f])
 
 
+func _accept_op(world: RefCounted, qi: int) -> void:
+	var f: RefCounted = InputFrame.new()
+	f.bag_op = BagStep.OP_ACCEPT_BASE + qi
+	world.step([f])
+
+
 func _init() -> void:
 	var giver := Vector2(12.5, 16.5)
 
-	# 1. NOTHING auto-accepts: standing on the giver does nothing; the
-	# INTERACT press accepts; a second press takes the giver's NEXT
-	# quest (multi-active).
+	# 1. NOTHING auto-accepts and THE PRESS NEVER ACCEPTS (menu pass
+	# sl-0144): standing does nothing; the press OFFERS the giver's
+	# first available quest (event only, no state change); the
+	# RECORDED ACCEPT OP takes it — radius-gated.
 	var w: RefCounted = _world(
 		[_quest(0, giver, "q_kill"), _quest(1, giver, "q_visit"), _quest(2, giver, "q_collect")]
 	)
@@ -91,16 +100,27 @@ func _init() -> void:
 	_step(w, 5)
 	check(p.quests_taken_mask == 0, "NEGATIVE: standing on the giver auto-accepts nothing")
 	_press(w)
-	check(p.quests_taken_mask == 1, "interact accepts the first quest")
+	check(p.quests_taken_mask == 0, "NEGATIVE: the press never accepts (offer only, sl-0144)")
+	var saw_offer := false
+	for ev: Dictionary in w.events:
+		if int(ev.type) == SimEvents.Type.QUEST_OFFERED and int(ev.quest) == 0:
+			saw_offer = true
+	check(saw_offer, "the press OFFERS the first available quest (QUEST_OFFERED)")
+	p.pos = Vector2(40.5, 16.5)
+	_accept_op(w, 0)
+	check(p.quests_taken_mask == 0, "NEGATIVE: the accept op refuses out of the giver radius")
+	p.pos = giver
+	_accept_op(w, 0)
+	check(p.quests_taken_mask == 1, "the recorded accept op takes the errand at the giver")
 	var saw_accept := false
 	for ev: Dictionary in w.events:
 		if int(ev.type) == SimEvents.Type.QUEST_ACCEPTED and int(ev.quest) == 0:
 			saw_accept = true
 	check(saw_accept, "QUEST_ACCEPTED emitted")
-	_press(w)
-	check(p.quests_taken_mask == 3, "second press takes the giver's next quest (multi-active)")
-	_press(w)
-	check(p.quests_taken_mask == 7, "third press: three carried at once")
+	_accept_op(w, 1)
+	check(p.quests_taken_mask == 3, "second op takes the giver's next quest (multi-active)")
+	_accept_op(w, 2)
+	check(p.quests_taken_mask == 7, "third op: three carried at once")
 
 	# 2. Progress counts for EVERY taken unfinished quest: one kill
 	# advances q_kill; a pickup advances q_collect; the visit fills by
@@ -149,7 +169,7 @@ func _init() -> void:
 	var wa: RefCounted = _world([_quest(0, giver, "a_kill")])
 	var pa: RefCounted = wa.players[0]
 	pa.pos = giver
-	_press(wa)
+	_accept_op(wa, 0)
 	check(pa.quests_taken_mask == 1, "abandon setup: carried")
 	var ea: RefCounted = wa.add_enemy(0, Vector2(30.5, 16.5))
 	Damage.apply(wa, ea, 9999, 0)
@@ -166,7 +186,13 @@ func _init() -> void:
 			saw_ab = true
 	check(saw_ab, "QUEST_ABANDONED emitted")
 	_press(wa)
-	check(pa.quests_taken_mask == 1, "abandoned errand re-accepts at the giver")
+	var saw_reoffer := false
+	for ev: Dictionary in wa.events:
+		if int(ev.type) == SimEvents.Type.QUEST_OFFERED and int(ev.quest) == 0:
+			saw_reoffer = true
+	check(saw_reoffer, "the abandoned errand RE-OFFERS through the normal dialogue")
+	_accept_op(wa, 0)
+	check(pa.quests_taken_mask == 1, "abandoned errand re-accepts at the giver (op)")
 	check(pa.quest_progress_arr[0] == 0, "re-accepted errand starts fresh")
 	var ek1: RefCounted = wa.add_enemy(0, Vector2(30.5, 16.5))
 	Damage.apply(wa, ek1, 9999, 0)
@@ -183,8 +209,15 @@ func _init() -> void:
 		(pa.quests_done_mask & 1) == 1 and pa.quests_taken_mask == 1,
 		"NEGATIVE: done quests refuse abandon"
 	)
+	_accept_op(wa, 0)
+	check(
+		(pa.quests_done_mask & 1) == 1 and pa.quests_taken_mask == 1,
+		"NEGATIVE: done quests never re-accept (op refuses)"
+	)
 
-	# 5. The cap: six quests, cap 5 — the sixth accept refuses.
+	# 5. The cap: six quests, cap 5 — the sixth accept OP refuses
+	# sim-side (the view's loud refusal is defense-in-front, this
+	# guard is the law).
 	var six: Array = []
 	for i in 6:
 		six.append(_quest(0, giver, "q%d" % i))
@@ -192,23 +225,26 @@ func _init() -> void:
 	var pc: RefCounted = wc.players[0]
 	pc.pos = giver
 	for i in 6:
-		_press(wc)
+		_accept_op(wc, i)
 	var carried := 0
 	for qi in 6:
 		if (pc.quests_taken_mask & (1 << qi)) != 0:
 			carried += 1
-	check(carried == 5, "capacity caps at 5 [T]")
+	check(carried == 5, "capacity caps at 5 [T] — the sixth op refuses")
 
-	# 6. NEGATIVES: legacy players and dead players never interact.
+	# 6. NEGATIVES: legacy players and dead players never interact —
+	# neither the press (offer) nor the accept op engages.
 	var wl: RefCounted = _world([_quest(0, giver)], false)
 	wl.players[0].pos = giver
 	_press(wl)
+	_accept_op(wl, 0)
 	check(wl.players[0].quests_taken_mask == 0, "negative: legacy player accepts nothing")
 	var wd: RefCounted = _world([_quest(0, giver)])
 	var pd: RefCounted = wd.players[0]
 	Damage.apply(wd, pd, 99999, 0)
 	pd.pos = giver
 	_press(wd)
+	_accept_op(wd, 0)
 	check(pd.quests_taken_mask == 0, "negative: dead player accepts nothing")
 
 	# 7. Hash coverage (SERIAL 21).

@@ -17,6 +17,7 @@ const InputMapDefaults := preload("res://input/input_map_defaults.gd")
 const ReplayRecorder := preload("res://input/replay_recorder.gd")
 const OptionsMenu := preload("res://ui/options_menu.gd")
 const CharacterSheet := preload("res://ui/character_sheet.gd")
+const QuestOffer := preload("res://ui/quest_offer.gd")
 const QuestTracker := preload("res://ui/quest_tracker.gd")
 const QuestGiverIcons := preload("res://game/views/quest_giver_icons.gd")
 const LootBagPanel := preload("res://ui/loot_bag_panel.gd")
@@ -223,6 +224,7 @@ var hud_stack: VBoxContainer
 var bars_stack: VBoxContainer
 ## Seam B (sl-0106): the read-only character sheet + quest log panel.
 var char_sheet: Control = null
+var quest_offer: Control = null
 ## sl-0121: the at-a-glance errand tracker (top-right, under the
 ## bars/minimap stack [T]); the C sheet stays THE one log.
 var quest_tracker: Label = null
@@ -305,6 +307,7 @@ func _process(_delta: float) -> void:
 		# the typing-box precedent).
 		var over_pane: bool = (
 			(char_sheet != null and char_sheet.wants_suppress())
+			or (quest_offer != null and quest_offer.wants_suppress())
 			or (loot_panel != null and loot_panel.wants_suppress())
 			or (bank_panel != null and bank_panel.wants_suppress())
 			or (vendor_panel != null and vendor_panel.wants_suppress())
@@ -324,8 +327,15 @@ func _process(_delta: float) -> void:
 		and not driver.pause_locked
 		and Input.is_action_just_pressed("options_toggle")
 	):
-		driver.paused = not driver.paused
-		driver.pause_changed.emit(driver.paused)
+		# Menu pass: Esc/O close the open offer dialogue FIRST (the
+		# sl-0145 Esc-first law arriving for the one open dialogue;
+		# the full menu-first generalization lands with the station
+		# seam). Later == close — the quest stays with the giver.
+		if quest_offer != null and quest_offer.visible:
+			quest_offer.dismiss()
+		else:
+			driver.paused = not driver.paused
+			driver.pause_changed.emit(driver.paused)
 	# Menu pass (sl-0150/0152): C opens THE menu (two tabs, last-used
 	# tab); the quest_log action (L [T]) deep-links the log tab.
 	# Never pauses.
@@ -333,6 +343,13 @@ func _process(_delta: float) -> void:
 		char_sheet.toggle()
 	if not typing and char_sheet != null and Input.is_action_just_pressed("quest_log"):
 		char_sheet.open_tab(1)
+	# Menu pass (sl-0144, F-as-confirm [T]): while the offer dialogue
+	# is open, the interact press IS the accept decision. The same
+	# press also reaches the sim (recorded) — turn-in none, the
+	# re-offer event lands on an already-open window and no-ops.
+	if not typing and quest_offer != null and quest_offer.visible:
+		if Input.is_action_just_pressed("interact"):
+			quest_offer.confirm_accept()
 	if not typing and density_meter != null and Input.is_action_just_pressed("density_toggle"):
 		density_meter.visible = not density_meter.visible
 	# One-key reseeding reset (§2.10): next seed persisted + logged, full
@@ -582,6 +599,11 @@ func _process(_delta: float) -> void:
 				# sl-0154: the errand went back to its giver — available
 				# again through the normal offer, no cooldown.
 				_show_toast("errand returned to its giver")
+			SimEvents.Type.QUEST_OFFERED:
+				# sl-0144: the press found an available errand — the
+				# dialogue opens; accept is the recorded-op decision.
+				if quest_offer != null:
+					quest_offer.offer(int(lev.quest))
 			SimEvents.Type.GATHERED:
 				_show_toast("foraged +%d gold" % int(lev.gold))
 			SimEvents.Type.CAST_COMPLETE:
@@ -709,6 +731,7 @@ func _apply_ui_scale(k: int) -> void:
 		hud_stack,
 		bars_stack,
 		char_sheet,
+		quest_offer,
 		quest_tracker,
 		loot_panel,
 		bank_panel,
@@ -1585,6 +1608,12 @@ func _ready() -> void:
 	char_sheet.world = world
 	char_sheet.character = character
 	char_sheet.toast_requested.connect(_show_toast)
+	quest_offer = QuestOffer.new()
+	quest_offer.world = world
+	quest_offer.toast_requested.connect(_show_toast)
+	if driver != null and driver.sampler != null:
+		quest_offer.bag_op_sink = Callable(driver.sampler, "queue_bag_op")
+	hud.add_child(quest_offer)
 	# sl-0116/0128: pane clicks queue RECORDED bag ops on the sampler —
 	# the sim mutation rides the input stream, replay-honest.
 	if driver != null and driver.sampler != null:

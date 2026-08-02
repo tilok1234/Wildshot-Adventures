@@ -18,8 +18,18 @@ const MenuPalette := preload("res://ui/menu_palette.gd")
 const IconAtlas := preload("res://ui/icon_atlas.gd")
 
 ## Plaque title (empty = no plaque) + optional atlas glyph id.
-var title := ""
-var title_icon := ""
+## Setters re-apply margins/redraw — owners may retitle live.
+var title := "":
+	set(v):
+		title = v
+		if is_inside_tree():
+			_apply_margins()
+			queue_redraw()
+var title_icon := "":
+	set(v):
+		title_icon = v
+		if is_inside_tree():
+			queue_redraw()
 ## Build the close button (top-right).
 var show_close := true
 ## Owners add their widgets HERE, never to the panel directly.

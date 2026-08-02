@@ -1,15 +1,17 @@
 extends RefCounted
-## Ordered system (S1 seam 5, RE-PINNED by sl-0112 — the interact
-## era): GENERIC QUESTS with DELIBERATE HANDS and MULTI-ACTIVE
-## capacity. Accepting and turning in are INTERACT presses at giver
-## cells (walk-up auto-accept RETIRED — the payoff is a moment, not a
-## footstep); a player carries up to QUEST_CAP errands at once [T],
-## each with its own progress; KILL/COLLECT count for EVERY taken,
-## unfinished quest from this tick's own events, VISIT completes by
-## proximity. Turn-in pays the first COMPLETE quest of the pressed
-## giver; accept takes their first unoffered quest when hands allow.
-## Runs LAST in the step. Rewards land IN-SIM. Class lane only;
-## quest-less worlds return immediately — proofs inert.
+## Ordered system (S1 seam 5, RE-PINNED by sl-0112, RE-PINNED AGAIN by
+## the menu pass sl-0144/0154): GENERIC QUESTS with DELIBERATE HANDS
+## and MULTI-ACTIVE capacity. TURN-IN is an INTERACT press at the
+## giver (the payoff moment, undialogued — turn-in wins); the press
+## never accepts anymore — it OFFERS (QUEST_OFFERED to the view's
+## dialogue) and ACCEPT is a RECORDED OP (a decision: mouse/hotkey in
+## the offer window), radius+capacity gated sim-side. ABANDON is a
+## recorded op too (the errand returns to its giver). A player
+## carries up to QUEST_CAP errands at once [T], each with its own
+## progress; KILL/COLLECT count for EVERY taken, unfinished quest
+## from this tick's own events, VISIT completes by proximity. Runs
+## LAST in the step. Rewards land IN-SIM. Class lane only; quest-less
+## worlds return immediately — proofs inert.
 ##
 ## `world` is duck-typed SimWorld (preload-cycle avoidance).
 
@@ -39,9 +41,10 @@ static func run(world: RefCounted) -> void:
 		var frame: RefCounted = frames[i] if i < frames.size() else null
 		if frame != null and frame.interact_pressed:
 			_interact(world, p, quests)
-		# Menu pass (sl-0154): the recorded ABANDON op — the errand
-		# returns to its giver (available again through the normal
-		# offer, no cooldown); progress zeroes; done quests refuse.
+		# Menu pass (sl-0144/0154): the recorded quest ops — ABANDON
+		# (the errand returns to its giver, progress zeroes, done
+		# refuses) and ACCEPT (the offer dialogue's decision;
+		# radius + capacity gated here regardless of the view).
 		if frame != null:
 			var op := int(frame.bag_op)
 			if (
@@ -49,6 +52,10 @@ static func run(world: RefCounted) -> void:
 				and op < BagStep.OP_ABANDON_BASE + BagStep.QUEST_OP_MAX
 			):
 				_abandon(world, p, op - BagStep.OP_ABANDON_BASE, quests)
+			elif (
+				op >= BagStep.OP_ACCEPT_BASE and op < BagStep.OP_ACCEPT_BASE + BagStep.QUEST_OP_MAX
+			):
+				_accept(world, p, op - BagStep.OP_ACCEPT_BASE, quests)
 
 
 ## Progress every taken, unfinished quest from this tick's events.
@@ -82,14 +89,10 @@ static func _progress(world: RefCounted, p: RefCounted, quests: Array) -> void:
 					p.quest_progress_arr[qi] = int(q.count)
 
 
-## One interact press at a giver: turn in their first COMPLETE quest,
-## else accept their first unoffered one (capacity allowing). One
-## action per press — deliberate hands.
+## One interact press at a giver: turn in their first COMPLETE quest
+## (undialogued — TURN-IN WINS), else OFFER their first available one
+## to the view's dialogue. One action per press — deliberate hands.
 static func _interact(world: RefCounted, p: RefCounted, quests: Array) -> void:
-	var taken_count := 0
-	for qi in quests.size():
-		if (p.quests_taken_mask & (1 << qi)) != 0 and (p.quests_done_mask & (1 << qi)) == 0:
-			taken_count += 1
 	# Turn-in first: the payoff moment.
 	for qi in quests.size():
 		var q: Resource = quests[qi]
@@ -121,15 +124,17 @@ static func _interact(world: RefCounted, p: RefCounted, quests: Array) -> void:
 			)
 		)
 		return
-	# Accept: the pressed giver's first unoffered quest.
-	if taken_count >= QUEST_CAP:
-		return
-	_accept_first_here(world, p, quests)
+	# Offer (sl-0144): the press NEVER accepts — the giver's first
+	# available quest goes to the view's dialogue as an event (no
+	# state change; events are unserialized, replay-safe). Emitted
+	# even at the hands cap: the window reads fine, accepting
+	# refuses loudly.
+	_offer_first_here(world, p, quests)
 
 
-## Accept the first available quest at the player's feet (capacity
-## already checked by the caller).
-static func _accept_first_here(world: RefCounted, p: RefCounted, quests: Array) -> void:
+## Emit QUEST_OFFERED for the first available quest at the player's
+## feet. Pure event — the accept decision rides the recorded op.
+static func _offer_first_here(world: RefCounted, p: RefCounted, quests: Array) -> void:
 	for qi in quests.size():
 		if (p.quests_taken_mask & (1 << qi)) != 0:
 			continue
@@ -139,14 +144,12 @@ static func _accept_first_here(world: RefCounted, p: RefCounted, quests: Array) 
 		var gc: Vector2 = q.giver_cell
 		if p.pos.distance_to(gc) > GIVER_RADIUS:
 			continue
-		p.quests_taken_mask |= 1 << qi
-		p.quest_progress_arr[qi] = 0
 		(
 			world
 			. events
 			. append(
 				{
-					"type": SimEvents.Type.QUEST_ACCEPTED,
+					"type": SimEvents.Type.QUEST_OFFERED,
 					"tick": world.tick,
 					"player": p.id,
 					"quest": qi,
@@ -154,6 +157,43 @@ static func _accept_first_here(world: RefCounted, p: RefCounted, quests: Array) 
 			)
 		)
 		return
+
+
+## The recorded ACCEPT op (sl-0144): the offer dialogue's decision.
+## Legal only within the quest's OWN giver radius, hands allowing;
+## taken/done indexes refuse. The view refuses loudly at capacity —
+## this guard holds regardless of what any view shows.
+static func _accept(world: RefCounted, p: RefCounted, qi: int, quests: Array) -> void:
+	if qi < 0 or qi >= quests.size():
+		return
+	if (p.quests_taken_mask & (1 << qi)) != 0:
+		return
+	if (p.quests_done_mask & (1 << qi)) != 0:
+		return
+	var taken_count := 0
+	for ti in quests.size():
+		if (p.quests_taken_mask & (1 << ti)) != 0 and (p.quests_done_mask & (1 << ti)) == 0:
+			taken_count += 1
+	if taken_count >= QUEST_CAP:
+		return
+	var q: Resource = quests[qi]
+	var gc: Vector2 = q.giver_cell
+	if p.pos.distance_to(gc) > GIVER_RADIUS:
+		return
+	p.quests_taken_mask |= 1 << qi
+	p.quest_progress_arr[qi] = 0
+	(
+		world
+		. events
+		. append(
+			{
+				"type": SimEvents.Type.QUEST_ACCEPTED,
+				"tick": world.tick,
+				"player": p.id,
+				"quest": qi,
+			}
+		)
+	)
 
 
 ## The recorded ABANDON op (sl-0154): a carried, unfinished quest

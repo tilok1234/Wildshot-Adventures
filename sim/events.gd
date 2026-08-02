@@ -37,6 +37,7 @@ enum Type {
 	ITEM_EQUIPPED,
 	BANK_FULL,
 	QUEST_ABANDONED,
+	QUEST_OFFERED,
 }
 
 ## PROJECTILE_DESPAWNED carries one of these (§2.6 typed despawn reasons).
