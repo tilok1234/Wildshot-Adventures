@@ -47,6 +47,11 @@
    "id": "boss:bone-reliquary-king",
    "sheet": "bone-reliquary-king.png",
    "sha256": "02224bb755f5a504bdd890bf0848e2dc923cf1852af1d5552b15f184a110cfe7"
+  },
+  {
+   "id": "boss:goblin-war-crown",
+   "sheet": "goblin-war-crown.png",
+   "sha256": "2baeffd04f4dfdefa579dd765af94dbd031d54014e76182f2d47739016d695fe"
   }
  ]
 }

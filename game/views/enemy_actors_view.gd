@@ -94,5 +94,8 @@ func _frames_for(def_index: int, enemy_id: int) -> Dictionary:
 				% role
 			)
 		)
+	# sl-0122: per-def boss render scale [T] — view-only (the sim
+	# radius/hurtbox never moves); lands in the per-(def,variant) cache.
+	got.scale = float(got.scale) * float(sheet_map.scales.get(role, 1.0))
 	cache[variant] = got
 	return got

@@ -21,7 +21,7 @@ map = {
 "enemy_fanmaw": "carniplant:snapvine",
 "enemy_goblin": "goblin:scout",
 "enemy_husk_archer": "skeleton:archer",
-"enemy_king_grubb": "goblin:chief",
+"enemy_king_grubb": "boss:goblin-war-crown",
 "enemy_leadshot": "bandit:sniper",
 "enemy_moth": "moth:moon",
 "enemy_old_tusk": "boar:blood",
@@ -53,4 +53,7 @@ variants = {
 "enemy_treant": ["treant:oak", "treant:willow", "treant:blighted"],
 "enemy_wasp": ["wasp:yellowjacket", "wasp:hornet", "wasp:royal"],
 "enemy_wolf": ["wolf:gray", "wolf:timber", "wolf:dire"]
+}
+scales = {
+"enemy_old_tusk": 1.25
 }

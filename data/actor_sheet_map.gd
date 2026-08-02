@@ -15,3 +15,10 @@ extends Resource
 ## split assigns identity, never behaviour). Roles absent here render
 ## their single `map` entry exactly as before.
 @export var variants: Dictionary = {}
+
+## sl-0122: per-def boss RENDER scale [T] for bosses that keep small
+## enemy-family sheets ("we just got to scale them up alittle when we
+## render them in game" — the designer). Keyed by role; missing = 1.0.
+## VIEW-ONLY: sim radius/hurtbox untouched (the 24px-hurtbox honesty
+## note stands); folded into the view's per-(def,variant) scale cache.
+@export var scales: Dictionary = {}
