@@ -9,7 +9,8 @@ extends Resource
 ##
 ## Pattern-id namespace: 1..6 player weapons (4..6 = the S0 class
 ## frames), 10..15 ordinary enemy patterns, 16..21 Yard Warden elite
-## (§3.5), 22..24 Old Tusk (S1 seam 3), 100 debug emitter; -1 nova,
+## (§3.5), 22..23 Old Tusk (S1 seam 3), 24..25 King Grubb (S1 seam
+## 4), 100 debug emitter; -1 nova,
 ## -2 hazard, -3 contact, -4 test damage schedule (§2.11
 ## transition-proof hook — never a gameplay source).
 

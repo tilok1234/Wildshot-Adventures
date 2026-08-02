@@ -244,7 +244,9 @@ if (-not $SkipBattery) {
         @("proof_slice_leash","1,2,3",3600,"","","PASS","PASS"),
         @("proof_green_camp","1,2,3",3600,"","","PASS","PASS"),
         @("proof_green_ranged","1,2,3",3600,"","","PASS","PASS"),
-        @("proof_old_tusk","1,2,3",3600,"","","PASS","PASS")
+        @("proof_old_tusk","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_warren","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_king_grubb","1,2,3",3600,"","","PASS","PASS")
     )
     . "$PSScriptRoot\battery_runner.ps1"
     if ($Workers -le 0) { $Workers = Get-PhysicalCoreCount }

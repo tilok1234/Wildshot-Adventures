@@ -1,0 +1,32 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; THE WARREN v2 (S1 seam 4, sl-0104): the Green dungeon interior at
+; its bound entrance (the giant-skeleton mouth — access 194,240 on
+; b77). A COMMITTED INSTANCE: authored spawns, no sites — cleared is
+; cleared for the visit; walking back out and in re-commits it.
+; Rooms fight ONE AT A TIME by distance discipline (iteration 1's
+; entrance killbox taught that aggro crosses walls): each pack sits
+; >12 t from the previous room's fight zone, shafts empty. KING
+; GRUBB and his thinned court hold the wide throne room. Death costs
+; the gold slice and respawns at the warren mouth — the tunnels are
+; the walk back. Door wiring in main.gd; the ladder up is cell 2,2.
+
+[resource]
+script = ExtResource("1")
+id = &"the_warren"
+display_name = "THE WARREN: goblin tunnels (Green dungeon)"
+arena = "res://data/arena_warren.json"
+persistent_world = true
+player_spawn = Vector2(7.5, 5.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"bat": PackedVector2Array(10.5, 7.5, 33.5, 19.5),
+"goblin": PackedVector2Array(32.5, 3.5, 36.5, 2.5, 40.5, 2.5, 44.5, 4.5, 26.5, 20.5, 31.5, 21.5, 36.5, 19.5, 40.5, 20.5, 8.5, 28.5, 14.5, 29.5),
+"king_grubb": PackedVector2Array(10.5, 28.5),
+"porcupine": PackedVector2Array(28.5, 20.5, 38.5, 21.5),
+"shroom": PackedVector2Array(39.5, 3.5),
+"slime": PackedVector2Array(4.5, 6.5, 9.5, 3.5, 34.5, 4.5, 25.5, 20.5)
+}
+default_seed = 7

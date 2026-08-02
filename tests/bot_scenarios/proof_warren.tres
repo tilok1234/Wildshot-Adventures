@@ -1,0 +1,28 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; THE WARREN opening proof (S1 seam 4, v2): the bot drops at the
+; warren player spawn and fights the dungeon's opening — the
+; entrance pack alone, because v2's distance discipline keeps every
+; other room's pack >12 t away (iteration 1's multi-room killbox is
+; the recorded lesson: aggro crosses walls). Deeper rooms are the
+; player's crawl; the king's fight is proof_king_grubb's job.
+; Mirrors the_warren.tres spawns exactly (the green test pins both).
+
+[resource]
+script = ExtResource("1")
+id = &"proof_warren"
+display_name = "PROOF: the Warren opening (distance-disciplined)"
+arena = "res://data/arena_warren.json"
+player_spawn = Vector2(7.5, 5.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"bat": PackedVector2Array(10.5, 7.5, 33.5, 19.5),
+"goblin": PackedVector2Array(32.5, 3.5, 36.5, 2.5, 40.5, 2.5, 44.5, 4.5, 26.5, 20.5, 31.5, 21.5, 36.5, 19.5, 40.5, 20.5, 8.5, 28.5, 14.5, 29.5),
+"king_grubb": PackedVector2Array(10.5, 28.5),
+"porcupine": PackedVector2Array(28.5, 20.5, 38.5, 21.5),
+"shroom": PackedVector2Array(39.5, 3.5),
+"slime": PackedVector2Array(4.5, 6.5, 9.5, 3.5, 34.5, 4.5, 25.5, 20.5)
+}
+default_seed = 7

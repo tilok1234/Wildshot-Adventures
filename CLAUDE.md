@@ -1718,3 +1718,48 @@ zone-aware boss pins in living_world + green_roster; stat_frame
 override checks (equip/unequip exact, −6 real, hash); loop_test
 Hide pickup + exact line. DESIGNER-EYES/ROUNDS pending: the fight
 itself (feel rounds are scheduled work), Hide numbers, [T] rates.**
+S1 SEAM 4 — THE WARREN OPEN 2026-08-02 (~02:50 local; sl-0104 seam
+4; docs/23 dungeon truth — "place them there for now, fix it
+later"): the Green dungeon interior at its bound entrance, a
+COMMITTED INSTANCE. data/arena_warren.json = the stand-in tunnels
+(48x32, three carved bands: entrance room → chamber A → the long
+chamber B → the SE throne room; 2-3-wide shafts; dungeonfloor/wall
+families, solid props honest). DOORS ARE WALK-ON (the loot
+walk-over language): main.gd DUNGEON_DOORS — the mouth is the
+pack's LOCKED green binding's ACCESS CELL 194,240 (the binding cell
+193,239 IS the giant-skeleton POI, solid by WYSIWYG — the first
+door draft learned that from the test); the ladder up (warren 2,2)
+lands one cell east of the mouth (196,240); profile harvests BEFORE
+every transition; arrival spawns sit ≥2 t off doors (no ping-pong);
+one-shot door_spawn consumed BEFORE the recorder snapshot (replays
+carry true initial state); CORE-43 death in the tunnels = the gold
+slice + the warren-mouth respawn — the tunnels are the walk back.
+THE LAYOUT EARNED ITS SECOND ITERATION UNDER NEVER-WEAKEN:
+v1's three thin-walled bands put every pack within aggro of the
+entrance — AGGRO IS EUCLIDEAN AND WALLS DO NOT BLOCK IT, so the
+opening became a 15-body killbox (bot DEAD @t414, 13 hits — a
+human at the floor dies there too; CORE-33 binds in dungeons). v2
+= a LINEAR crawl with DISTANCE DISCIPLINE: every room's pack >12 t
+from the previous room's fight zone (separations 20.1/15.0/14.2,
+script-verified pre-authoring), shafts deliberately EMPTY (pickets
+chained fights), 21 ordinaries goblin-court heavy ("explains the
+zone's goblins"), the throne room widened and the court THINNED TWICE (final: 2
+goblins, NO porcupine — v2's court still shredded the floor lane
+15 hits @t624: the porcupine radial + Grubb's ring = DOUBLE RADIAL
+in a 7-tall room, no orbit space at 3.6; one radial per boss room
+is the recorded lesson). KING GRUBB at the bottom (roster 23; goblin:chief): 420 hp
+[T], P1 THE COURT (keep-range scepter volleys pattern 24: 3x12°
+aimed, lead 24), P2 THE TANTRUM (+ the king's ring pattern 25:
+8x45° slow radial, lead 36 — the gaps ARE the answer indoors), P3
+THE PANIC (chases at 2.9, denser everything). Elite amber; Law-4 =
+17 rows monotone. PROOFS: proof_warren (the opening) +
+proof_king_grubb (schedule: P2 @t960 / P3 @t1800 / kill t2520,
+court alive) — battery 39 rows / 75 runs. Warren pins in the green
+test: binding/access cells vs the pack (the first door draft
+learned the binding cell is the SOLID POI from the test, not on
+screen), the REAL ArenaBuilder collision derivation, EVERY
+authored spawn lands on floor (zero skipped), door cells walk both
+sides. NEW DUNGEON LAW recorded: room packs sit beyond aggro of
+the previous room's fight zone, verified numerically at authoring.
+DESIGNER-EYES pending: the descent, room feel, Grubb's court
+(boss rounds scheduled).**

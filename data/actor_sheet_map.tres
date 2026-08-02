@@ -21,6 +21,7 @@ map = {
 "enemy_fanmaw": "carniplant:snapvine",
 "enemy_goblin": "goblin:scout",
 "enemy_husk_archer": "skeleton:archer",
+"enemy_king_grubb": "goblin:chief",
 "enemy_leadshot": "bandit:sniper",
 "enemy_moth": "moth:moon",
 "enemy_old_tusk": "boar:blood",

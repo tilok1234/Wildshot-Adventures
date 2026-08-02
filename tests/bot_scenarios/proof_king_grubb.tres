@@ -1,0 +1,86 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; KING GRUBB full-fight proof (S1 seam 4; the schedule precedent):
+; 420 hp paced at 20 every 120 ticks -> P2 (tantrum) at t960, P3
+; (panic) at t1800, kill t2520, cleanup to 3600 - fought IN the
+; throne room with his court alive (4 goblins + a porcupine), the
+; tight-room bar the kit was authored against.
+
+[resource]
+script = ExtResource("1")
+id = &"proof_king_grubb"
+display_name = "PROOF: King Grubb full fight (throne room, schedule)"
+arena = "res://data/arena_warren.json"
+player_spawn = Vector2(21.5, 26.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"goblin": PackedVector2Array(8.5, 28.5, 14.5, 29.5),
+"king_grubb": PackedVector2Array(10.5, 28.5)
+}
+damage_schedule = Array[Dictionary]([{
+"amount": 20,
+"tick": 120
+}, {
+"amount": 20,
+"tick": 240
+}, {
+"amount": 20,
+"tick": 360
+}, {
+"amount": 20,
+"tick": 480
+}, {
+"amount": 20,
+"tick": 600
+}, {
+"amount": 20,
+"tick": 720
+}, {
+"amount": 20,
+"tick": 840
+}, {
+"amount": 20,
+"tick": 960
+}, {
+"amount": 20,
+"tick": 1080
+}, {
+"amount": 20,
+"tick": 1200
+}, {
+"amount": 20,
+"tick": 1320
+}, {
+"amount": 20,
+"tick": 1440
+}, {
+"amount": 20,
+"tick": 1560
+}, {
+"amount": 20,
+"tick": 1680
+}, {
+"amount": 20,
+"tick": 1800
+}, {
+"amount": 20,
+"tick": 1920
+}, {
+"amount": 20,
+"tick": 2040
+}, {
+"amount": 20,
+"tick": 2160
+}, {
+"amount": 20,
+"tick": 2280
+}, {
+"amount": 20,
+"tick": 2400
+}, {
+"amount": 20,
+"tick": 2520
+}])
+default_seed = 1

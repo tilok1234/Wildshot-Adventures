@@ -1,0 +1,116 @@
+[gd_resource type="Resource" load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://data/enemy_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/emitter_slot.gd" id="2"]
+[ext_resource type="Script" path="res://data/phase_def.gd" id="3"]
+[ext_resource type="Script" path="res://data/phase_list.gd" id="4"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/scepter_volley.tres" id="5"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/grubb_ring.tres" id="6"]
+
+; KING GRUBB (S1 seam 4, sl-0104; docs/23 naming act): the fat little
+; king every surface goblin answers to, at the bottom of the Warren.
+; Three phases, proven mechanisms only, tuned for a TIGHT room:
+; P1 THE COURT — keep-range scepter volleys behind his guards;
+; P2 THE TANTRUM (≤66%) — the ring joins (45° gaps ARE the answer
+;   indoors) and the scepter quickens;
+; P3 THE PANIC (≤33%) — the king CHASES, everything denser. A
+; dungeon king, not a stat wall: 420 hp [T] < the world boss.
+; All numbers [T]; speeds under the 3.6 floor.
+
+[sub_resource type="Resource" id="p1_scepter"]
+script = ExtResource("2")
+pattern = ExtResource("5")
+trigger_range = 8.0
+telegraph_ticks = 24
+cooldown_ticks = 108
+recover_ticks = 18
+
+[sub_resource type="Resource" id="p2_scepter"]
+script = ExtResource("2")
+pattern = ExtResource("5")
+trigger_range = 8.0
+telegraph_ticks = 24
+cooldown_ticks = 90
+recover_ticks = 15
+
+[sub_resource type="Resource" id="p2_ring"]
+script = ExtResource("2")
+pattern = ExtResource("6")
+trigger_range = 7.0
+telegraph_ticks = 36
+cooldown_ticks = 150
+recover_ticks = 20
+
+[sub_resource type="Resource" id="p3_scepter"]
+script = ExtResource("2")
+pattern = ExtResource("5")
+trigger_range = 8.0
+telegraph_ticks = 24
+cooldown_ticks = 72
+recover_ticks = 12
+
+[sub_resource type="Resource" id="p3_ring"]
+script = ExtResource("2")
+pattern = ExtResource("6")
+trigger_range = 7.0
+telegraph_ticks = 36
+cooldown_ticks = 120
+recover_ticks = 16
+
+[sub_resource type="Resource" id="phase1"]
+script = ExtResource("3")
+id = &"p1_court"
+hp_floor_pct = 66.0
+movement_policy = 1
+move_speed = -1.0
+range_min = 4.0
+range_max = 6.0
+entry_cooldown_ticks = 0
+emitters = Array[Resource]([SubResource("p1_scepter")])
+
+[sub_resource type="Resource" id="phase2"]
+script = ExtResource("3")
+id = &"p2_tantrum"
+hp_floor_pct = 33.0
+movement_policy = 1
+move_speed = -1.0
+range_min = 4.0
+range_max = 6.0
+entry_cooldown_ticks = 30
+emitters = Array[Resource]([SubResource("p2_scepter"), SubResource("p2_ring")])
+
+[sub_resource type="Resource" id="phase3"]
+script = ExtResource("3")
+id = &"p3_panic"
+hp_floor_pct = 0.0
+movement_policy = 0
+move_speed = 2.9
+range_min = 0.0
+range_max = 0.0
+entry_cooldown_ticks = 30
+emitters = Array[Resource]([SubResource("p3_scepter"), SubResource("p3_ring")])
+
+[sub_resource type="Resource" id="phaselist"]
+script = ExtResource("4")
+phases = Array[Resource]([SubResource("phase1"), SubResource("phase2"), SubResource("phase3")])
+
+[resource]
+script = ExtResource("1")
+id = &"king_grubb"
+display_name = "King Grubb"
+hp = 420
+body_radius = 0.5
+move_speed = 2.4
+contact_damage = 0
+contact_cooldown_ticks = 30
+aggro_range = 12.0
+movement_policy = 1
+range_min = 4.0
+range_max = 6.0
+phases = SubResource("phaselist")
+xp_value = 120
+gold_min = 15
+gold_max = 30
+drop_chance = 1.0
+drop_tier_min = 2
+drop_tier_max = 2

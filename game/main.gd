@@ -47,6 +47,38 @@ const BuildInfo := preload("res://build_info.gd")
 const HitboxView := preload("res://game/views/hitbox_view.gd")
 const SimEvents := preload("res://sim/events.gd")
 const ItemText := preload("res://game/views/item_text.gd")
+
+## S1 seam 4 (sl-0104): dungeon doors — a LIVING character in a
+## persistent world walking onto a door cell transitions via the
+## scenario-reset path (profile harvested first; arrival spawns sit
+## off the doors so return trips cannot ping-pong). The Warren's
+## mouth is the ACCESS CELL of the content pack's LOCKED green
+## dungeon binding (194,240 — the binding cell 193,239 is the
+## giant-skeleton POI itself, solid by WYSIWYG); the ladder up is
+## warren cell 2,2, landing back one cell east of the mouth.
+## Player-facing (both profiles) — the dungeon IS content, not a
+## dev tool.
+const DUNGEON_DOORS := {
+	&"slice_overworld":
+	[
+		{
+			"cell": Vector2(194.5, 240.5),
+			"to": "res://data/scenarios/the_warren.tres",
+			"spawn": "",
+			"label": "descending into the Warren...",
+		}
+	],
+	&"the_warren":
+	[
+		{
+			"cell": Vector2(2.5, 2.5),
+			"to": "res://data/scenarios/slice_overworld.tres",
+			"spawn": "196.5,240.5",
+			"label": "climbing back to daylight...",
+		}
+	],
+}
+const DOOR_RADIUS := 0.7
 const RenderLayers := preload("res://game/render_layers.gd")
 const AssemblerLibrary := preload("res://game/views/assembler_library.gd")
 const AnimatedActor := preload("res://game/views/animated_actor.gd")
@@ -111,6 +143,8 @@ var character: Dictionary = {}
 ## world — cached for the creation-screen path, which arms
 ## world.persistent_respawn after the class/mode choice.
 var _scenario_persistent := false
+## Active scenario id (S1 seam 4) — the door table keys on it.
+var _scenario_id: StringName = &""
 var character_panel: PanelContainer = null
 var _char_save_accum := 0.0
 ## EffectLibrary policy object (M6, ledger #9) — cosmetic/friendly
@@ -241,6 +275,21 @@ func _process(_delta: float) -> void:
 				_char_save_accum = 0.0
 				CharacterProfile.harvest(world, character)
 				CharacterProfile.save_profile(character)
+			# S1 seam 4: dungeon doors (walk-on transition; the same
+			# walk-over language as loot). Profile harvests FIRST so
+			# nothing since the last beat is lost on the stairs.
+			if _scenario_persistent:
+				var doors: Array = DUNGEON_DOORS.get(_scenario_id, [])
+				for door: Dictionary in doors:
+					var dc: Vector2 = door.cell
+					if world.players[0].pos.distance_to(dc) <= DOOR_RADIUS:
+						CharacterProfile.harvest(world, character)
+						CharacterProfile.save_profile(character)
+						Config.set_setting("dev", "scenario", String(door.to))
+						Config.set_setting("dev", "door_spawn", String(door.spawn))
+						print(String(door.label))
+						get_tree().reload_current_scene()
+						return
 	if not typing and console != null and Input.is_action_just_pressed("console_toggle"):
 		console.toggle()
 	if not typing and hitboxes != null and Input.is_action_just_pressed("hitbox_toggle"):
@@ -754,12 +803,24 @@ func _ready() -> void:
 	# BEFORE the recorder snapshots initial state, so replay headers are
 	# honest about what actually ran.
 	_scenario_persistent = bool(scenario.persistent_world)
+	_scenario_id = scenario.id
 	if not (audit_mode or verify_mode):
 		character = CharacterProfile.load_profile()
 		if not character.is_empty():
 			CharacterProfile.apply_to_world(world, character)
 			character.runs = int(character.get("runs", 0)) + 1
 			CharacterProfile.save_profile(character)
+			# S1 seam 4: a door transition lands the player at the
+			# door's authored arrival, not the scenario spawn (one-shot;
+			# consumed before the recorder snapshot so replays carry the
+			# true initial state). The CORE-43 respawn cell stays the
+			# scenario's own spawn.
+			var door_spawn := String(Config.get_setting("dev", "door_spawn", ""))
+			if not door_spawn.is_empty():
+				Config.set_setting("dev", "door_spawn", "")
+				var dparts := door_spawn.split(",")
+				if dparts.size() == 2 and not world.players.is_empty():
+					world.players[0].pos = Vector2(float(dparts[0]), float(dparts[1]))
 			# CORE-43 (seam 3): a NORMAL-mode character in a
 			# persistent-world scenario dies the overworld way —
 			# in-sim gold slice + settlement respawn. Hardcore keeps

@@ -25,6 +25,7 @@ const ScenarioLoader := preload("res://game/scenario_loader.gd")
 const ContentImporter := preload("res://game/arena/content_importer.gd")
 const Bitgrid := preload("res://sim/collision/bitgrid.gd")
 const WorldforgePack := preload("res://addons/worldforge_importer/worldforge_pack.gd")
+const ArenaBuilder := preload("res://game/arena/arena_builder.gd")
 
 const PACK := "res://assets/wildshot-overworld-pack-dusk-content/"
 const WF_PACK := "res://assets/worldforge-packs/wildshot-overworld-pack-dusk/"
@@ -314,6 +315,58 @@ func _init() -> void:
 		var bg: RefCounted = wf.bitgrid
 		check(not bg.is_solid(180, 244), "camp proof bot spawn walkable")
 		check(not bg.is_solid(103, 138), "ranged proof bot spawn walkable")
+
+	# 7. S1 seam 4 — THE WARREN: the committed-instance interior at
+	# the pack's LOCKED green dungeon binding. Pins: the binding cell
+	# is where the pack says (193,239, access 194,240), the arena
+	# builds, EVERY authored spawn lands on floor (zero skipped —
+	# scenario_loader skips solid-cell spawns loudly, so a count
+	# mismatch = a layout bug), King Grubb sits at roster 23, and the
+	# door table's cells are walkable on both sides.
+	var plac_json: Dictionary = JSON.parse_string(
+		FileAccess.get_file_as_string(PACK + "placements.json")
+	)
+	var green_binding := Vector2i(-1, -1)
+	var green_access := Vector2i(-1, -1)
+	for pl: Dictionary in plac_json.placements:
+		if String(pl.get("rule", "")) == "dungeon_binding.v1" and bool(pl.get("locked", false)):
+			var cell: Array = pl.cell
+			if String(pl.get("id", "")).contains("grass.54237"):
+				green_binding = Vector2i(int(cell[0]), int(cell[1]))
+				var ac: Array = pl.accessCell
+				green_access = Vector2i(int(ac[0]), int(ac[1]))
+	check(green_binding == Vector2i(193, 239), "green locked binding at 193,239")
+	check(green_access == Vector2i(194, 240), "green binding access at 194,240")
+	check(String(defs[23].id) == "king_grubb", "index 23 = king_grubb")
+	var warren: Resource = load("res://data/scenarios/the_warren.tres")
+	# The REAL collision derivation (walls + solid props + trees) —
+	# the same path the battery's arena rows walk.
+	var tf_manifest: Variant = JSON.parse_string(
+		FileAccess.get_file_as_string("res://tileforge/tileforge-manifest.json")
+	)
+	var wdef := ArenaBuilder.load_def(String(warren.arena))
+	check(not wdef.is_empty(), "warren arena json parses")
+	var wgrid: RefCounted = Bitgrid.new()
+	wgrid.setup(int(wdef.width), int(wdef.height))
+	for c: Vector2i in ArenaBuilder.solid_cells(wdef, tf_manifest):
+		wgrid.set_solid(c.x, c.y)
+	var authored := 0
+	var wspawns: Dictionary = warren.enemy_spawns
+	for eid: String in wspawns:
+		var pv: PackedVector2Array = wspawns[eid]
+		authored += pv.size()
+	var wworld: RefCounted = ScenarioLoader.build_world(warren, 7, wgrid)
+	check(wworld.enemies.size() == authored, "every warren spawn lands on floor (zero skipped)")
+	check(int(warren.persistent_world), "warren death = the CORE-43 shape (mouth respawn)")
+	check(not wgrid.is_solid(2, 2), "the ladder-up cell is floor")
+	check(not wgrid.is_solid(7, 5), "the warren arrival spawn is floor")
+	if bool(wf.ok):
+		var bg2: RefCounted = wf.bitgrid
+		# The DOOR is the binding's ACCESS cell — the binding cell
+		# itself is the giant-skeleton POI, solid by WYSIWYG.
+		check(bg2.is_solid(193, 239), "the binding cell is the POI (solid, as shipped)")
+		check(not bg2.is_solid(194, 240), "the warren mouth (access cell) walks")
+		check(not bg2.is_solid(196, 240), "the return arrival cell walks")
 
 	if fails.is_empty():
 		print("green_roster_test: PASS (roster/lead-law/grammar/variants/re-table/proof-premises)")

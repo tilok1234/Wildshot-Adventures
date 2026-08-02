@@ -62,8 +62,9 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 	# 8=slime, 9=goblin, 10=boar, 11=wolf, 12=bat, 13=shroom, 14=wasp,
 	# 15=beetle, 16=moth, 17=snail, 18=porcupine, 19=scarecrow,
 	# 20=treant, 21=bandit, 22=old_tusk (S1 seam 3 — Green's world
-	# boss). Append-only; never reorder. Scenario extras (bot
-	# canaries) append after, keeping standard indexes stable.
+	# boss), 23=king_grubb (S1 seam 4 — the Warren's bottom).
+	# Append-only; never reorder. Scenario extras (bot canaries)
+	# append after, keeping standard indexes stable.
 	var defs: Array = [
 		load("res://data/enemies/rusher.tres"),
 		load("res://data/enemies/husk_archer.tres"),
@@ -88,6 +89,7 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 		load("res://data/enemies/treant.tres"),
 		load("res://data/enemies/bandit.tres"),
 		load("res://data/enemies/old_tusk.tres"),
+		load("res://data/enemies/king_grubb.tres"),
 	]
 	for extra: Resource in scenario.extra_enemy_defs:
 		defs.append(extra)
