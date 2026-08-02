@@ -226,3 +226,5 @@ timestamp,action,note
 2026-08-02T16:05:14,note,"sl-0123 drag cut (16315e6) + sl-0125 flippable split (3f34a19): both gated green, main pushed e242d00..3f34a19"
 2026-08-02T16:05:14,stop,""
 2026-08-02T16:25:39,start,""
+2026-08-02T16:29:06,note,"docs sweep + handoff rewrite (02920c8); CI lint+smoke green on the starhook push"
+2026-08-02T16:29:06,stop,""
