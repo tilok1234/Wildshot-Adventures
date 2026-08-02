@@ -36,6 +36,13 @@ const OP_WITHDRAW_BASE := 72
 const OP_SELL_BASE := 84
 const OP_BUY_BASE := 104
 const BUY_ROW_MAX := 8
+## Menu pass (sl-0154): 112..127 ABANDON quest index — handled by
+## quest_step (the quest-op range of the ONE recorded byte; legal
+## anywhere, the quest returns to its giver). 128..143 are RESERVED
+## for the seam-C explicit ACCEPT.
+const OP_ABANDON_BASE := 112
+const OP_ACCEPT_BASE := 128
+const QUEST_OP_MAX := 16
 ## Capacity [T] (the sl-0116 suggested 20).
 const BAG_CAP := 20
 ## Bank capacity [T] — small, distinct from the bag (sl-0130).

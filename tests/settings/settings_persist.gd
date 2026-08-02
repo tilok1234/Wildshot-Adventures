@@ -107,6 +107,19 @@ func _init() -> void:
 		quit(1)
 		return
 
+	# Menu pass ([ui] section): the C menu's last-used tab + the log's
+	# tracked-quest choice persist view-side (options-style).
+	config.set_setting("ui", "menu_tab", 1)
+	config.set_setting("ui", "tracked_quest", "green_cull")
+	if int(config.get_setting("ui", "menu_tab", -1)) != 1:
+		printerr("FAIL: ui/menu_tab did not persist")
+		quit(1)
+		return
+	if String(config.get_setting("ui", "tracked_quest", "")) != "green_cull":
+		printerr("FAIL: ui/tracked_quest did not persist")
+		quit(1)
+		return
+
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(TEST_PATH))
 	config.free()
 	print(

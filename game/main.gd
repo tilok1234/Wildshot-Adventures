@@ -222,7 +222,7 @@ var hud_stack: VBoxContainer
 ## Seam B (sl-0109): the short top-right hp/mana stack.
 var bars_stack: VBoxContainer
 ## Seam B (sl-0106): the read-only character sheet + quest log panel.
-var char_sheet: PanelContainer = null
+var char_sheet: Control = null
 ## sl-0121: the at-a-glance errand tracker (top-right, under the
 ## bars/minimap stack [T]); the C sheet stays THE one log.
 var quest_tracker: Label = null
@@ -326,10 +326,13 @@ func _process(_delta: float) -> void:
 	):
 		driver.paused = not driver.paused
 		driver.pause_changed.emit(driver.paused)
-	# Seam B (sl-0106): the character sheet + quest log on C [T] —
-	# read-only, never pauses.
+	# Menu pass (sl-0150/0152): C opens THE menu (two tabs, last-used
+	# tab); the quest_log action (L [T]) deep-links the log tab.
+	# Never pauses.
 	if not typing and char_sheet != null and Input.is_action_just_pressed("char_sheet"):
 		char_sheet.toggle()
+	if not typing and char_sheet != null and Input.is_action_just_pressed("quest_log"):
+		char_sheet.open_tab(1)
 	if not typing and density_meter != null and Input.is_action_just_pressed("density_toggle"):
 		density_meter.visible = not density_meter.visible
 	# One-key reseeding reset (§2.10): next seed persisted + logged, full
@@ -575,6 +578,10 @@ func _process(_delta: float) -> void:
 					_show_toast("[%s] %s" % [String(qd.reason), String(qd.text)])
 			SimEvents.Type.QUEST_DONE:
 				_show_toast("quest done — +%d gold, +%d xp" % [int(lev.gold), int(lev.xp)])
+			SimEvents.Type.QUEST_ABANDONED:
+				# sl-0154: the errand went back to its giver — available
+				# again through the normal offer, no cooldown.
+				_show_toast("errand returned to its giver")
 			SimEvents.Type.GATHERED:
 				_show_toast("foraged +%d gold" % int(lev.gold))
 			SimEvents.Type.CAST_COMPLETE:
@@ -853,6 +860,7 @@ func _refresh_hints() -> void:
 		["interact", "interact"],
 		["loot_all", "loot"],
 		["char_sheet", "sheet"],
+		["quest_log", "log"],
 		["options_toggle", "menu"],
 		["interp_toggle", "interp"],
 		["debug_speed_lowest", "spd 3.0"],
@@ -1576,6 +1584,7 @@ func _ready() -> void:
 	char_sheet = CharacterSheet.new()
 	char_sheet.world = world
 	char_sheet.character = character
+	char_sheet.toast_requested.connect(_show_toast)
 	# sl-0116/0128: pane clicks queue RECORDED bag ops on the sampler —
 	# the sim mutation rides the input stream, replay-honest.
 	if driver != null and driver.sampler != null:

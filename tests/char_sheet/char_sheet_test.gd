@@ -94,6 +94,29 @@ func _init() -> void:
 	var qrows2: Array = CharacterSheet.quest_rows(world)
 	check(String(qrows2[qrows2.size() - 1]) == "hands: 1/5 · done: 1", "done count tracks")
 
+	# 3.6 THE LOG MODELS (menu pass — errands_v2): cards mirror the
+	# masks exactly (done quests leave both lists); the detail pane
+	# model carries the proper info (reason/text/objective/reward);
+	# both stay pure functions of live state.
+	var cards: Dictionary = CharacterSheet.quest_cards(world)
+	check(
+		int(cards.carried_count) == 1 and int(cards.done) == 1,
+		"log cards: carried/done mirror the masks"
+	)
+	check((cards.available as Array).size() == 3, "log cards: the rest read givers-have-work")
+	var card0: Dictionary = (cards.carried as Array)[0]
+	check(int(card0.qi) == 1, "log cards: the carried card is quest 1")
+	check(not String(card0.title).is_empty(), "log cards: slug-derived title present")
+	var det: Dictionary = CharacterSheet.quest_detail(world, 1)
+	check(
+		not String(det.reason).is_empty() and not String(det.text).is_empty(),
+		"log detail: proper info present (reason + reread text)"
+	)
+	check(bool(det.carried) and not bool(det.done), "log detail: flags mirror the masks")
+	check(String(det.objective).contains("/"), "log detail: objective carries n/m")
+	check(int(det.reward_gold) > 0 and int(det.reward_xp) > 0, "log detail: reward exact-positive")
+	check(CharacterSheet.quest_detail(world, 99).is_empty(), "log detail: bad index -> empty")
+
 	# 3.5 THE EQUIPMENT PANE (sl-0116/0128): worn rows + bag rows speak
 	# the one grammar — tooltip parity IS drop-line parity (test-pinned);
 	# op codes match bag_step's contract exactly.

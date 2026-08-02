@@ -9,9 +9,11 @@ extends Label
 var world: RefCounted = null
 
 var _accum := 0.0
+var _cfg: Node = null
 
 
 func _ready() -> void:
+	_cfg = get_node_or_null("/root/Config")
 	horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	modulate = Color(0.92, 0.9, 0.82, 0.92)
 	text = ""
@@ -39,21 +41,41 @@ func _process(delta: float) -> void:
 	if world == null:
 		text = ""
 		return
-	text = "\n".join(rows(world))
+	# Menu pass: the tracker BINDS to the tracked quest (the log's
+	# per-quest toggle, [ui]-persisted view-side). No tracked choice =
+	# every carried errand, the pre-pass behavior [T].
+	var tracked := ""
+	if _cfg != null:
+		tracked = String(_cfg.get_setting("ui", "tracked_quest", ""))
+	text = "\n".join(rows(world, tracked))
 
 
 ## ---- PURE MODEL. One short line per carried errand:
 ## "West Road  3/6" / "Mud Pocket  DONE — return". Short names derive
 ## from the quest id slug (defs carry no short name; the full
-## sentence lives in the C log).
-static func rows(world: RefCounted) -> Array[String]:
+## sentence lives in the C log). A non-empty tracked id that matches a
+## carried, unfinished quest narrows the tracker to THAT errand
+## (menu-pass binding); otherwise every carried errand shows [T].
+static func rows(world: RefCounted, tracked_id := "") -> Array[String]:
 	var out: Array[String] = []
 	if world.players.is_empty() or world.quest_defs.is_empty():
 		return out
 	var p: RefCounted = world.players[0]
 	if p.class_id < 0:
 		return out
+	var only_qi := -1
+	if not tracked_id.is_empty():
+		for qi in world.quest_defs.size():
+			if String(world.quest_defs[qi].id) != tracked_id:
+				continue
+			if (p.quests_taken_mask & (1 << qi)) == 0:
+				continue
+			if (p.quests_done_mask & (1 << qi)) != 0:
+				continue
+			only_qi = qi
 	for qi in world.quest_defs.size():
+		if only_qi >= 0 and qi != only_qi:
+			continue
 		if (p.quests_taken_mask & (1 << qi)) == 0:
 			continue
 		if (p.quests_done_mask & (1 << qi)) != 0:

@@ -18,6 +18,7 @@ const Damage := preload("res://sim/systems/damage.gd")
 const QuestDef := preload("res://data/quest_def.gd")
 const SimEvents := preload("res://sim/events.gd")
 const ScenarioLoader := preload("res://game/scenario_loader.gd")
+const BagStep := preload("res://sim/systems/bag_step.gd")
 
 const PACK := "res://assets/wildshot-overworld-pack-dusk-content/"
 
@@ -141,6 +142,47 @@ func _init() -> void:
 	p.pos = Vector2(40.5, 16.5)
 	_press(w)
 	check(p.quests_taken_mask == mask_before, "NEGATIVE: interact on nothing does nothing")
+
+	# 4.5 ABANDON (sl-0154, menu pass): the recorded op returns a
+	# carried errand to its giver — leaves the hands, progress zeroes,
+	# available again through the normal accept; done quests refuse.
+	var wa: RefCounted = _world([_quest(0, giver, "a_kill")])
+	var pa: RefCounted = wa.players[0]
+	pa.pos = giver
+	_press(wa)
+	check(pa.quests_taken_mask == 1, "abandon setup: carried")
+	var ea: RefCounted = wa.add_enemy(0, Vector2(30.5, 16.5))
+	Damage.apply(wa, ea, 9999, 0)
+	_step(wa)
+	check(pa.quest_progress_arr[0] == 1, "abandon setup: progressed")
+	var fa: RefCounted = InputFrame.new()
+	fa.bag_op = BagStep.OP_ABANDON_BASE
+	wa.step([fa])
+	check(pa.quests_taken_mask == 0, "abandon clears the taken bit")
+	check(pa.quest_progress_arr[0] == 0, "abandon zeroes progress")
+	var saw_ab := false
+	for ev: Dictionary in wa.events:
+		if int(ev.type) == SimEvents.Type.QUEST_ABANDONED:
+			saw_ab = true
+	check(saw_ab, "QUEST_ABANDONED emitted")
+	_press(wa)
+	check(pa.quests_taken_mask == 1, "abandoned errand re-accepts at the giver")
+	check(pa.quest_progress_arr[0] == 0, "re-accepted errand starts fresh")
+	var ek1: RefCounted = wa.add_enemy(0, Vector2(30.5, 16.5))
+	Damage.apply(wa, ek1, 9999, 0)
+	_step(wa)
+	var ek2: RefCounted = wa.add_enemy(0, Vector2(30.5, 16.5))
+	Damage.apply(wa, ek2, 9999, 0)
+	_step(wa)
+	_press(wa)
+	check((pa.quests_done_mask & 1) == 1, "abandon negatives setup: turned in")
+	var fd: RefCounted = InputFrame.new()
+	fd.bag_op = BagStep.OP_ABANDON_BASE
+	wa.step([fd])
+	check(
+		(pa.quests_done_mask & 1) == 1 and pa.quests_taken_mask == 1,
+		"NEGATIVE: done quests refuse abandon"
+	)
 
 	# 5. The cap: six quests, cap 5 — the sixth accept refuses.
 	var six: Array = []

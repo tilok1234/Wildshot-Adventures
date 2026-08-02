@@ -18,6 +18,9 @@ const KEY_ACTIONS := {
 	"ability": KEY_SPACE,
 	"interact": KEY_F,
 	"char_sheet": KEY_C,
+	# Menu pass (sl-0152): the second hotkey deep-links the C menu's
+	# quest-log tab [T — L, remappable; no-F-row law].
+	"quest_log": KEY_L,
 	# sl-0129: loot-all at a ground loot bag [T — B, remappable].
 	"loot_all": KEY_B,
 	"weapon_1": KEY_1,

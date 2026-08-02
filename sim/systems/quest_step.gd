@@ -16,6 +16,7 @@ extends RefCounted
 const SimEvents := preload("res://sim/events.gd")
 const Progress := preload("res://sim/systems/progress.gd")
 const QuestDef := preload("res://data/quest_def.gd")
+const BagStep := preload("res://sim/systems/bag_step.gd")
 
 ## Interact reach at a giver cell [T] — the walk-up class.
 const GIVER_RADIUS := 1.2
@@ -38,6 +39,16 @@ static func run(world: RefCounted) -> void:
 		var frame: RefCounted = frames[i] if i < frames.size() else null
 		if frame != null and frame.interact_pressed:
 			_interact(world, p, quests)
+		# Menu pass (sl-0154): the recorded ABANDON op — the errand
+		# returns to its giver (available again through the normal
+		# offer, no cooldown); progress zeroes; done quests refuse.
+		if frame != null:
+			var op := int(frame.bag_op)
+			if (
+				op >= BagStep.OP_ABANDON_BASE
+				and op < BagStep.OP_ABANDON_BASE + BagStep.QUEST_OP_MAX
+			):
+				_abandon(world, p, op - BagStep.OP_ABANDON_BASE, quests)
 
 
 ## Progress every taken, unfinished quest from this tick's events.
@@ -113,6 +124,12 @@ static func _interact(world: RefCounted, p: RefCounted, quests: Array) -> void:
 	# Accept: the pressed giver's first unoffered quest.
 	if taken_count >= QUEST_CAP:
 		return
+	_accept_first_here(world, p, quests)
+
+
+## Accept the first available quest at the player's feet (capacity
+## already checked by the caller).
+static func _accept_first_here(world: RefCounted, p: RefCounted, quests: Array) -> void:
 	for qi in quests.size():
 		if (p.quests_taken_mask & (1 << qi)) != 0:
 			continue
@@ -137,3 +154,31 @@ static func _interact(world: RefCounted, p: RefCounted, quests: Array) -> void:
 			)
 		)
 		return
+
+
+## The recorded ABANDON op (sl-0154): a carried, unfinished quest
+## leaves the hands and returns to its giver — available again through
+## the normal offer path by construction (available == !taken &&
+## !done). Progress zeroes; done quests and untaken indexes refuse.
+static func _abandon(world: RefCounted, p: RefCounted, qi: int, quests: Array) -> void:
+	if qi < 0 or qi >= quests.size():
+		return
+	if (p.quests_taken_mask & (1 << qi)) == 0:
+		return
+	if (p.quests_done_mask & (1 << qi)) != 0:
+		return
+	p.quests_taken_mask &= ~(1 << qi)
+	if qi < p.quest_progress_arr.size():
+		p.quest_progress_arr[qi] = 0
+	(
+		world
+		. events
+		. append(
+			{
+				"type": SimEvents.Type.QUEST_ABANDONED,
+				"tick": world.tick,
+				"player": p.id,
+				"quest": qi,
+			}
+		)
+	)

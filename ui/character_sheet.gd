@@ -1,63 +1,106 @@
-extends PanelContainer
-## THE CHARACTER SHEET + QUEST LOG + EQUIPMENT PANE (sl-0106 +
-## sl-0112's log; seam B; the sl-0116/0128 bag era). Stats stay
-## READ-ONLY pure-model rows (screen==recompute parity EXACT by
-## construction, test-pinned); the EQUIPMENT PANE is the one
-## interactive region (sl-0128 sanction): worn gear by slot + the
-## bag list, hover tooltips in the one grammar (every number
-## visible — tooltip==drop_line, test-pinned), click to equip/
-## de-equip, right-click to drop. Ops ride the RECORDED bag_op byte
-## (bag_op_sink -> sampler queue -> bag_step) so the sim mutation is
-## replay-honest; this panel never touches sim state directly.
-## Toggled by the char_sheet action (C [T]); never pauses. While the
-## mouse is OVER the open panel, main suppresses gameplay input
-## (wants_suppress — a pane click must not also fire the weapon).
+extends Control
+## THE C MENU (menu pass v2, sl-0150/0152 final shape): ONE menu, TWO
+## TABS on the drawn panel2 chrome — tab CHARACTER (portrait + bigbars
+## + statchips + dollslots + the bag as a SLOT GRID) and tab QUEST LOG
+## (quest cards + parchment detail with proper info + per-quest
+## TRACKED + ABANDON). Stats stay READ-ONLY pure-model rows
+## (screen==recompute parity by construction, test-pinned); slots are
+## the interactive region (the sl-0128 sanction): click equips /
+## de-equips, right-click drops through the CONFIRM + toast flow. Ops
+## ride the RECORDED bag_op byte (bag_op_sink -> sampler queue ->
+## bag_step/quest_step) so every sim mutation is replay-honest; this
+## panel never touches sim state directly. C opens it (last-used tab),
+## the quest_log action (L [T]) deep-links the log tab, tabs click.
+## Never pauses. While the mouse rides the open menu (or a confirm is
+## up) main suppresses gameplay input. Tracked choice + last tab
+## persist VIEW-SIDE ([ui], options-style); autoload access is
+## defensive so probes/tests run without Config. Drag-to-move is
+## DEFERRED (a gesture never grows the recorded format) — the hint
+## line states only what ships.
+
+signal toast_requested(msg: String)
 
 const ItemText := preload("res://game/views/item_text.gd")
 const StatFrame := preload("res://sim/systems/stat_frame.gd")
 const DropKinds := preload("res://sim/drop_kinds.gd")
 const BagStep := preload("res://sim/systems/bag_step.gd")
+const QuestDef := preload("res://data/quest_def.gd")
+const MenuPalette := preload("res://ui/menu_palette.gd")
+const Panel2 := preload("res://ui/panel2.gd")
+const ItemSlot := preload("res://ui/item_slot.gd")
+const IconAtlas := preload("res://ui/icon_atlas.gd")
+const ItemIcons := preload("res://game/views/item_icons.gd")
+const ConfirmDialog := preload("res://ui/confirm_dialog.gd")
+const QuestTracker := preload("res://ui/quest_tracker.gd")
+const StatBar := preload("res://ui/stat_bar.gd")
 
-## Fixed screen placement [T: centered] — sl-0119. The panel sizes
-## from the ui-scale theme and clamps inside the viewport; errand
-## overflow SCROLLS in the label [T] (fit_content grew the panel past
-## the screen — the offscreen bug's second half). Widened for the
-## equipment pane (sl-0128).
+## Fixed screen placement [T: centered] — sl-0119 law carried; the
+## c_menu_v2 spec stage (500x336 of 640x360), ui-scale aware, clamped.
 const BASE_SIZE := Vector2(500.0, 336.0)
 const SCREEN_MARGIN := 4.0
+const TAB_CHARACTER := 0
+const TAB_ERRANDS := 1
 
 var world: RefCounted = null
 ## The persistent profile dict (starhook lane lives there).
 var character: Dictionary = {}
-## Queues one recorded bag op (main injects the sampler's queue).
+## Queues one recorded op (main injects the sampler's queue).
 var bag_op_sink := Callable()
 
-var _label: RichTextLabel = null
-var _pane: VBoxContainer = null
+var _tab := TAB_CHARACTER
+var _sel_qi := -1
+var _tracked_id := ""
+var _panel: Panel2 = null
+var _tab_btns: Array[Button] = []
+var _char_scroll: ScrollContainer = null
+var _errand_scroll: ScrollContainer = null
+var _char_root: HBoxContainer = null
+var _errand_root: HBoxContainer = null
+var _confirm: ConfirmDialog = null
+var _pending_drop_op := -1
 var _accum := 0.0
-var _pane_sig := ""
+var _sig := ""
+var _cfg: Node = null
 
 
 func _ready() -> void:
 	visible = false
-	var split := HBoxContainer.new()
-	split.add_theme_constant_override("separation", 8)
-	add_child(split)
-	_label = RichTextLabel.new()
-	_label.bbcode_enabled = false
-	_label.fit_content = false
-	_label.scroll_active = true
-	_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_label.size_flags_stretch_ratio = 1.15
-	split.add_child(_label)
-	var pane_scroll := ScrollContainer.new()
-	pane_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	pane_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	split.add_child(pane_scroll)
-	_pane = VBoxContainer.new()
-	_pane.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_pane.add_theme_constant_override("separation", 2)
-	pane_scroll.add_child(_pane)
+	_cfg = get_node_or_null("/root/Config")
+	_tracked_id = String(_cfg_get("ui", "tracked_quest", ""))
+	_tab = clampi(int(_cfg_get("ui", "menu_tab", TAB_CHARACTER)), 0, 1)
+	_panel = Panel2.new()
+	_panel.show_close = true
+	_panel.close_requested.connect(func() -> void: visible = false)
+	add_child(_panel)
+	for label: String in ["character", "errands"]:
+		var b := Button.new()
+		b.text = label
+		b.focus_mode = Control.FOCUS_NONE
+		var ti := _tab_btns.size()
+		b.pressed.connect(func() -> void: _set_tab(ti))
+		add_child(b)
+		_tab_btns.append(b)
+	# Overflow SCROLLS (the sl-0119 errand law, generalized): at CORE-50
+	# x2 on the 640x360 base the content minimums exceed the clamped
+	# panel — containers never clip, so each tab rides a scroll.
+	_char_scroll = ScrollContainer.new()
+	_panel.content.add_child(_char_scroll)
+	_char_root = HBoxContainer.new()
+	_char_root.add_theme_constant_override("separation", 10)
+	_char_root.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_char_root.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_char_scroll.add_child(_char_root)
+	_errand_scroll = ScrollContainer.new()
+	_panel.content.add_child(_errand_scroll)
+	_errand_root = HBoxContainer.new()
+	_errand_root.add_theme_constant_override("separation", 8)
+	_errand_root.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_errand_root.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_errand_scroll.add_child(_errand_root)
+	_confirm = ConfirmDialog.new()
+	_confirm.confirmed.connect(_on_drop_confirmed)
+	_confirm.canceled.connect(func() -> void: _pending_drop_op = -1)
+	add_child(_confirm)
 	_fit_to_screen()
 	get_viewport().size_changed.connect(_fit_to_screen)
 
@@ -65,13 +108,22 @@ func _ready() -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_THEME_CHANGED and is_inside_tree():
 		_fit_to_screen()
+		_sig = ""
 
 
-## SCREEN-anchored, never player-anchored (sl-0119): explicit center
-## anchors + offsets from the computed size. The old zero-size
-## PRESET_CENTER call in _ready put the panel's TOP-LEFT at screen
-## center — the camera keeps the player there, so it read as
-## player-anchored and grew past the viewport bottom-right.
+func _cfg_get(section: String, key: String, default: Variant) -> Variant:
+	if _cfg != null:
+		return _cfg.get_setting(section, key, default)
+	return default
+
+
+func _cfg_set(section: String, key: String, value: Variant) -> void:
+	if _cfg != null:
+		_cfg.set_setting(section, key, value)
+
+
+## SCREEN-anchored, never player-anchored (sl-0119). The tab strip
+## rides the panel's top edge; the panel fills the rest.
 func _fit_to_screen() -> void:
 	var k: float = maxf(get_theme_default_base_scale(), 1.0)
 	var vp: Vector2 = get_viewport_rect().size
@@ -85,18 +137,54 @@ func _fit_to_screen() -> void:
 	offset_right = w * 0.5
 	offset_top = -h * 0.5
 	offset_bottom = h * 0.5
+	var tab_h := 14.0 * k
+	if _panel != null:
+		_panel.position = Vector2(0.0, tab_h - 2.0 * k)
+		_panel.size = Vector2(w, h - tab_h + 2.0 * k)
+	var tx := 8.0 * k
+	for b: Button in _tab_btns:
+		b.position = Vector2(tx, 0.0)
+		b.size = Vector2(b.get_combined_minimum_size().x, tab_h)
+		tx += b.size.x + 2.0 * k
 
 
 func toggle() -> void:
 	visible = not visible
 	if visible:
+		_set_tab(clampi(int(_cfg_get("ui", "menu_tab", _tab)), 0, 1))
+		_sig = ""
 		_refresh()
 
 
+## The quest_log deep-link (L [T]): closed -> open on the log tab;
+## open elsewhere -> switch; already open on the log -> close (toggle
+## feel, one key one meaning).
+func open_tab(tab: int) -> void:
+	if visible and _tab == tab:
+		visible = false
+		return
+	visible = true
+	_set_tab(tab)
+	_sig = ""
+	_refresh()
+
+
+func _set_tab(tab: int) -> void:
+	_tab = clampi(tab, 0, 1)
+	_cfg_set("ui", "menu_tab", _tab)
+	_sig = ""
+	_refresh()
+
+
 ## Main polls this: gameplay input suppresses while the mouse rides
-## the open panel (a pane click must never also fire the weapon).
+## the open menu, and ALWAYS while a confirm decision is up (a modal
+## click must never also fire the weapon).
 func wants_suppress() -> bool:
-	return visible and get_global_rect().has_point(get_global_mouse_position())
+	if not visible:
+		return false
+	if _confirm != null and _confirm.visible:
+		return true
+	return get_global_rect().has_point(get_global_mouse_position())
 
 
 func _process(delta: float) -> void:
@@ -109,77 +197,473 @@ func _process(delta: float) -> void:
 
 
 func _refresh() -> void:
-	if world == null or world.players.is_empty():
+	if world == null or world.players.is_empty() or _panel == null:
 		return
-	var lines: Array[String] = []
-	for row: Array in sheet_rows(world, character):
-		lines.append("%s  %s" % [String(row[0]).rpad(10), String(row[1])])
-	lines.append("")
-	lines.append("— errands —")
-	for ql: String in quest_rows(world):
-		lines.append(ql)
-	_label.text = "\n".join(lines)
-	_rebuild_pane()
-
-
-## The pane rebuilds only when its model changes (tooltips survive
-## hover; no per-frame widget churn).
-func _rebuild_pane() -> void:
-	var worn := equipment_rows(world)
-	var bag := bag_rows(world)
-	var sig := str(worn) + "|" + str(bag)
-	if sig == _pane_sig:
+	for i in _tab_btns.size():
+		var sel := i == _tab
+		var box := _tab_box(sel)
+		_tab_btns[i].add_theme_stylebox_override("normal", box)
+		_tab_btns[i].add_theme_stylebox_override("hover", box)
+		_tab_btns[i].add_theme_stylebox_override("pressed", box)
+		_tab_btns[i].add_theme_color_override(
+			"font_color", MenuPalette.TEXT_BRIGHT if sel else MenuPalette.TEXT_DIM
+		)
+		_tab_btns[i].add_theme_color_override("font_hover_color", MenuPalette.TEXT_BRIGHT)
+		_tab_btns[i].add_theme_color_override("font_pressed_color", MenuPalette.TEXT_BRIGHT)
+	_char_scroll.visible = _tab == TAB_CHARACTER
+	_errand_scroll.visible = _tab == TAB_ERRANDS
+	var cards := quest_cards(world)
+	# Selection normalizes BEFORE the signature (a mid-build mutation
+	# would flip the sig every pass and ghost-rebuild forever).
+	if _tab == TAB_ERRANDS:
+		var valid := false
+		for cd: Dictionary in (cards.carried as Array) + (cards.available as Array):
+			if int(cd.qi) == _sel_qi:
+				valid = true
+		if not valid:
+			_sel_qi = -1
+			if not (cards.carried as Array).is_empty():
+				_sel_qi = int(((cards.carried as Array)[0] as Dictionary).qi)
+			elif not (cards.available as Array).is_empty():
+				_sel_qi = int(((cards.available as Array)[0] as Dictionary).qi)
+	var sig := (
+		str(sheet_rows(world, character))
+		+ "|"
+		+ str(equipment_rows(world))
+		+ "|"
+		+ str(bag_rows(world))
+		+ "|"
+		+ str(cards)
+		+ "|%d|%d|%s" % [_tab, _sel_qi, _tracked_id]
+	)
+	if sig == _sig:
 		return
-	_pane_sig = sig
-	for c in _pane.get_children():
-		c.queue_free()
-	var head := Label.new()
-	head.text = "— equipment —"
-	_pane.add_child(head)
-	for row: Dictionary in worn:
-		var b := Button.new()
-		b.text = "%s: %s" % [String(row.label), String(row.line)]
-		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		b.tooltip_text = String(row.tip)
-		b.clip_text = true
-		var op := int(row.op)
-		if op > 0:
-			b.pressed.connect(_queue_op.bind(op))
-		else:
-			b.disabled = true
-		_pane.add_child(b)
-	var p: RefCounted = world.players[0]
-	var bag_head := Label.new()
-	if p.class_id >= 0:
-		bag_head.text = "— bag %d/%d —" % [BagStep.bag_count(p), BagStep.BAG_CAP]
+	_sig = sig
+	if _tab == TAB_CHARACTER:
+		_build_character_tab()
 	else:
-		bag_head.text = "— bag — (—)"
-	_pane.add_child(bag_head)
-	for row: Dictionary in bag:
-		var b := Button.new()
-		b.text = String(row.line)
-		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		b.tooltip_text = String(row.tip)
-		b.clip_text = true
-		b.pressed.connect(_queue_op.bind(int(row.equip_op)))
-		b.gui_input.connect(_bag_gui_input.bind(int(row.drop_op)))
-		_pane.add_child(b)
-	if bag.is_empty():
-		var empty := Label.new()
-		empty.text = "(empty — [F] picks loot into the bag)"
-		_pane.add_child(empty)
+		_build_errands_tab(cards)
 
 
-func _bag_gui_input(event: InputEvent, drop_op: int) -> void:
-	if event is InputEventMouseButton and event.pressed:
-		var mb := event as InputEventMouseButton
-		if mb.button_index == MOUSE_BUTTON_RIGHT:
-			_queue_op(drop_op)
+## ---- tab CHARACTER (c_menu_v2).
+
+
+func _build_character_tab() -> void:
+	for c in _char_root.get_children():
+		(c as CanvasItem).visible = false
+		c.queue_free()
+	var p: RefCounted = world.players[0]
+	var k: float = maxf(get_theme_default_base_scale(), 1.0)
+	var rows := sheet_rows(world, character)
+	var left := VBoxContainer.new()
+	left.custom_minimum_size = Vector2(175.0 * k, 0.0)
+	left.add_theme_constant_override("separation", 3)
+	_char_root.add_child(left)
+	# Portrait row: class emblem in a slot + name / class-lv / xp.
+	var prow := HBoxContainer.new()
+	prow.add_theme_constant_override("separation", 6)
+	left.add_child(prow)
+	var portrait := ItemSlot.new()
+	portrait.cell_px = 36.0
+	if p.class_id >= 0:
+		portrait.icon_tex = IconAtlas.icon(ItemIcons.class_emblem(p.class_id))
+	prow.add_child(portrait)
+	var pcol := VBoxContainer.new()
+	pcol.add_theme_constant_override("separation", 1)
+	prow.add_child(pcol)
+	pcol.add_child(_label(String(character.get("name", "the wildshot")), MenuPalette.TEXT_BRIGHT))
+	pcol.add_child(_label(_row_value(rows, "class"), MenuPalette.TEXT_DIM))
+	var xp_line := _row_value(rows, "xp")
+	if not xp_line.is_empty():
+		pcol.add_child(_label("xp " + xp_line, MenuPalette.TEXT_DIM))
+	# Bigbars: hp + mana with exact values.
+	left.add_child(
+		_bar_row(
+			"hp", float(p.hp) / maxf(float(p.max_hp), 1.0), "%d/%d" % [p.hp, p.max_hp], true, k
+		)
+	)
+	left.add_child(
+		_bar_row(
+			"mana",
+			float(p.mana) / maxf(float(p.max_mana), 1.0),
+			"%d/%d" % [p.mana, p.max_mana],
+			false,
+			k
+		)
+	)
+	left.add_child(_rule("— stats —"))
+	var chips := GridContainer.new()
+	chips.columns = 2
+	chips.add_theme_constant_override("h_separation", 4)
+	chips.add_theme_constant_override("v_separation", 3)
+	left.add_child(chips)
+	var chip_rows: Array = [
+		["speed", _row_value(rows, "speed")],
+		["armor", _row_value(rows, "armor")],
+		["dmg", _row_value(rows, "dmg mod")],
+		["atk", _row_value(rows, "atk spd")],
+		["range", _row_value(rows, "range")],
+		["gold", _row_value(rows, "gold")],
+	]
+	if p.class_id >= 0:
+		chip_rows.append(["bag", "%d/%d" % [BagStep.bag_count(p), BagStep.BAG_CAP]])
+	var sh := _row_value(rows, "starhook")
+	if not sh.is_empty():
+		chip_rows.append(["starhook", sh.get_slice("  ", 0)])
+	for cr: Array in chip_rows:
+		chips.add_child(_chip(String(cr[0]), String(cr[1]), k))
+	# RIGHT: dollslots + the bag grid.
+	var right := VBoxContainer.new()
+	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	right.add_theme_constant_override("separation", 3)
+	_char_root.add_child(right)
+	right.add_child(_rule("— equipped —"))
+	var p_class := int(p.class_id)
+	for row: Dictionary in equipment_rows(world):
+		right.add_child(_dollslot(row, p_class, k))
+	var bag_head := "— bag — (—)"
+	if p.class_id >= 0:
+		bag_head = "— bag %d/%d —" % [BagStep.bag_count(p), BagStep.BAG_CAP]
+	right.add_child(_rule(bag_head))
+	var grid := GridContainer.new()
+	grid.columns = 10
+	grid.add_theme_constant_override("h_separation", 2)
+	grid.add_theme_constant_override("v_separation", 2)
+	right.add_child(grid)
+	var brows := bag_rows(world)
+	for slot in BagStep.BAG_CAP:
+		var cell := ItemSlot.new()
+		if slot < brows.size():
+			var br: Dictionary = brows[slot]
+			var it: Dictionary = BagStep.bag_item(p, slot)
+			cell.icon_tex = IconAtlas.icon(ItemIcons.icon_id(world, it, p_class))
+			cell.tooltip_text = String(br.tip)
+			var equip_op := int(br.equip_op)
+			var drop_op := int(br.drop_op)
+			var line := String(br.line)
+			cell.slot_clicked.connect(_on_bag_slot.bind(equip_op, drop_op, line))
+		grid.add_child(cell)
+	right.add_child(_label("click equips · right-click drops", MenuPalette.TEXT_DIM))
+
+
+func _on_bag_slot(button_index: int, equip_op: int, drop_op: int, line: String) -> void:
+	if button_index == MOUSE_BUTTON_LEFT:
+		_queue_op(equip_op)
+	elif button_index == MOUSE_BUTTON_RIGHT:
+		_pending_drop_op = drop_op
+		_confirm.ask("drop this on the ground?\n%s" % line, "drop it", "keep it")
+
+
+func _on_drop_confirmed() -> void:
+	if _pending_drop_op < 0:
+		return
+	_queue_op(_pending_drop_op)
+	_pending_drop_op = -1
+	toast_requested.emit("dropped — [F] picks it back up")
+
+
+func _dollslot(row: Dictionary, p_class: int, k: float) -> Control:
+	var box := HBoxContainer.new()
+	box.add_theme_constant_override("separation", 6)
+	var slot := ItemSlot.new()
+	slot.cell_px = 28.0
+	var line := String(row.line)
+	var op := int(row.op)
+	if line != "—":
+		var it := _worn_item_for(String(row.label))
+		if not it.is_empty():
+			slot.icon_tex = IconAtlas.icon(ItemIcons.icon_id(world, it, p_class))
+		slot.selected = true
+	slot.tooltip_text = String(row.tip)
+	if op > 0:
+		slot.slot_clicked.connect(
+			func(button_index: int) -> void:
+				if button_index == MOUSE_BUTTON_LEFT:
+					_queue_op(op)
+		)
+	box.add_child(slot)
+	var col := VBoxContainer.new()
+	col.add_theme_constant_override("separation", 1)
+	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	box.add_child(col)
+	col.add_child(_label(String(row.label), MenuPalette.TEXT_DIM))
+	if line == "—":
+		col.add_child(
+			_label(
+				(
+					"equip one from the bag"
+					if String(row.label) == "ring"
+					else "equip some from the bag"
+				),
+				MenuPalette.TEXT_DIM
+			)
+		)
+	else:
+		var name_part := line.get_slice(" — ", 0)
+		col.add_child(_label(name_part, MenuPalette.TEXT_BRIGHT))
+		if line.contains(" — "):
+			col.add_child(_label(line.get_slice(" — ", 1), MenuPalette.TEXT_BASE))
+	return box
+
+
+## The worn item triple for a dollslot label (icon lookup only — the
+## LINE/tip stay the pure-model grammar).
+func _worn_item_for(label: String) -> Dictionary:
+	var p: RefCounted = world.players[0]
+	match label:
+		"weapon":
+			var tier := 1
+			if p.weapon_tiers.size() > 0:
+				tier = int(p.weapon_tiers[p.equipped_weapon])
+			return {"kind": DropKinds.WEAPON, "a": p.equipped_weapon, "b": tier}
+		"armor":
+			if p.armor_item_index >= 0:
+				var ui := _unique_for_items(world, p.armor_item_index)
+				if ui >= 0:
+					return {"kind": DropKinds.UNIQUE, "a": ui, "b": 0}
+			if p.armor_tier > 0:
+				return {"kind": DropKinds.ARMOR, "a": p.armor_tier, "b": 0}
+		"ring":
+			if p.ring_index >= 0:
+				return {"kind": DropKinds.RING, "a": p.ring_index, "b": 0}
+	return {}
+
+
+## ---- tab QUEST LOG (errands_v2: cards + parchment detail).
+
+
+func _build_errands_tab(cards: Dictionary) -> void:
+	for c in _errand_root.get_children():
+		(c as CanvasItem).visible = false
+		c.queue_free()
+	var carried: Array = cards.carried
+	var avail: Array = cards.available
+	var k: float = maxf(get_theme_default_base_scale(), 1.0)
+	var left := VBoxContainer.new()
+	left.custom_minimum_size = Vector2(178.0 * k, 0.0)
+	left.add_theme_constant_override("separation", 3)
+	_errand_root.add_child(left)
+	left.add_child(_rule("— carried %d/%d —" % [int(cards.carried_count), 5]))
+	for cd: Dictionary in carried:
+		left.add_child(_quest_card(cd, false, k))
+	left.add_child(_rule("— givers have work —"))
+	if avail.is_empty():
+		left.add_child(_label("(no work waiting)", MenuPalette.TEXT_DIM))
+	for cd: Dictionary in avail:
+		left.add_child(_quest_card(cd, true, k))
+	var pad := Control.new()
+	pad.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	left.add_child(pad)
+	left.add_child(
+		_label(
+			"hands: %d/5 · done: %d" % [int(cards.carried_count), int(cards.done)],
+			MenuPalette.TEXT_DIM
+		)
+	)
+	# RIGHT: the parchment detail pane.
+	var parch := PanelContainer.new()
+	parch.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = MenuPalette.PARCHMENT
+	sb.border_color = MenuPalette.PARCHMENT_EDGE
+	sb.set_border_width_all(int(1.0 * k))
+	sb.set_content_margin_all(8.0 * k)
+	parch.add_theme_stylebox_override("panel", sb)
+	_errand_root.add_child(parch)
+	var det := VBoxContainer.new()
+	det.add_theme_constant_override("separation", 4)
+	parch.add_child(det)
+	var d := quest_detail(world, _sel_qi)
+	if d.is_empty():
+		det.add_child(_label("select an errand", MenuPalette.PARCHMENT_DIM))
+		return
+	var head := HBoxContainer.new()
+	head.add_theme_constant_override("separation", 4)
+	det.add_child(head)
+	var qicon := TextureRect.new()
+	qicon.texture = IconAtlas.icon("access.quest.letter" if bool(d.carried) else "quest.available")
+	qicon.custom_minimum_size = Vector2(16.0, 16.0) * k
+	qicon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	head.add_child(qicon)
+	head.add_child(_label(String(d.title), MenuPalette.PARCHMENT_INK))
+	var hpad := Control.new()
+	hpad.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	head.add_child(hpad)
+	head.add_child(_label("[%s]" % String(d.reason), MenuPalette.PARCHMENT_DIM))
+	var body := _label(String(d.text), MenuPalette.PARCHMENT_INK)
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	det.add_child(body)
+	var dpad := Control.new()
+	dpad.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	det.add_child(dpad)
+	det.add_child(_label(String(d.objective), MenuPalette.PARCHMENT_DIM))
+	var bar := ColorRect.new()
+	bar.color = MenuPalette.PARCHMENT_EDGE
+	bar.custom_minimum_size = Vector2(0.0, 6.0 * k)
+	det.add_child(bar)
+	var fill := ColorRect.new()
+	fill.color = MenuPalette.GOLD_DIM
+	var frac: float = 0.0
+	if int(d.count) > 0:
+		frac = clampf(float(int(d.prog)) / float(int(d.count)), 0.0, 1.0)
+	fill.anchor_right = frac
+	fill.anchor_bottom = 1.0
+	bar.add_child(fill)
+	det.add_child(
+		_label(
+			"reward  %d gold · %d xp on turn-in" % [int(d.reward_gold), int(d.reward_xp)],
+			MenuPalette.GOLD_DIM
+		)
+	)
+	var btns := HBoxContainer.new()
+	btns.add_theme_constant_override("separation", 6)
+	det.add_child(btns)
+	if bool(d.carried) and not bool(d.done):
+		var tracked := _tracked_id == String(d.id)
+		var tbtn := Button.new()
+		tbtn.text = "★ tracked" if tracked else "☆ track"
+		tbtn.pressed.connect(_on_track.bind(String(d.id)))
+		btns.add_child(tbtn)
+		var abtn := Button.new()
+		abtn.text = "abandon"
+		var qi := int(d.qi)
+		abtn.pressed.connect(_on_abandon.bind(qi, String(d.id)))
+		btns.add_child(abtn)
+	elif not bool(d.carried):
+		det.add_child(_label("speak to the giver to accept — [F]", MenuPalette.PARCHMENT_DIM))
+
+
+func _quest_card(cd: Dictionary, available: bool, k: float) -> Control:
+	var b := Button.new()
+	b.focus_mode = Control.FOCUS_NONE
+	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	b.clip_text = true
+	var qi := int(cd.qi)
+	var star := "★ " if not available and _tracked_id == String(cd.id) else ""
+	if available:
+		b.text = "%s   new" % String(cd.title)
+	else:
+		b.text = "%s%s   %d/%d" % [star, String(cd.title), int(cd.prog), int(cd.count)]
+	if qi == _sel_qi:
+		b.add_theme_color_override("font_color", MenuPalette.GOLD_BRIGHT)
+	b.custom_minimum_size = Vector2(0.0, 18.0 * k)
+	b.pressed.connect(
+		func() -> void:
+			_sel_qi = qi
+			_sig = ""
+			_refresh()
+	)
+	return b
+
+
+func _on_track(id: String) -> void:
+	_tracked_id = "" if _tracked_id == id else id
+	_cfg_set("ui", "tracked_quest", _tracked_id)
+	_sig = ""
+	_refresh()
+
+
+func _on_abandon(qi: int, id: String) -> void:
+	_queue_op(BagStep.OP_ABANDON_BASE + qi)
+	if _tracked_id == id:
+		_tracked_id = ""
+		_cfg_set("ui", "tracked_quest", "")
+	_sig = ""
+
+
+## ---- small builders.
+
+
+func _label(text: String, color: Color) -> Label:
+	var l := Label.new()
+	l.text = text
+	l.add_theme_color_override("font_color", color)
+	return l
+
+
+func _rule(text: String) -> Label:
+	var l := Label.new()
+	l.text = text
+	l.add_theme_color_override("font_color", MenuPalette.TEXT_DIM)
+	return l
+
+
+func _chip(label: String, value: String, k: float) -> Control:
+	var pc := PanelContainer.new()
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = MenuPalette.INSET_BG
+	sb.border_color = MenuPalette.SLOT_EDGE
+	sb.set_border_width_all(int(1.0 * k))
+	sb.content_margin_left = 4.0 * k
+	sb.content_margin_right = 4.0 * k
+	sb.content_margin_top = 2.0 * k
+	sb.content_margin_bottom = 2.0 * k
+	pc.add_theme_stylebox_override("panel", sb)
+	pc.custom_minimum_size = Vector2(84.0 * k, 0.0)
+	var row := HBoxContainer.new()
+	pc.add_child(row)
+	var l := _label(label, MenuPalette.TEXT_DIM)
+	l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(l)
+	row.add_child(_label(value, MenuPalette.TEXT_BRIGHT))
+	return pc
+
+
+func _bar_row(label: String, frac: float, value: String, is_hp: bool, k: float) -> Control:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 4)
+	var l := _label(label, MenuPalette.TEXT_DIM)
+	l.custom_minimum_size = Vector2(28.0 * k, 0.0)
+	row.add_child(l)
+	var bar := StatBar.new()
+	bar.fill_tex = load("res://uikit/bar_fill_hp.png" if is_hp else "res://uikit/bar_fill_mana.png")
+	bar.frame_box = _bar_frame_box()
+	bar.value = frac
+	bar.custom_minimum_size = Vector2(96.0 * k, 8.0 * k)
+	bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(bar)
+	row.add_child(_label(value, MenuPalette.TEXT_BASE))
+	return row
+
+
+static var _bar_box: StyleBoxTexture = null
+
+
+static func _bar_frame_box() -> StyleBoxTexture:
+	if _bar_box == null:
+		_bar_box = StyleBoxTexture.new()
+		_bar_box.texture = load("res://uikit/bar_frame.png")
+		_bar_box.texture_margin_left = 2.0
+		_bar_box.texture_margin_right = 2.0
+		_bar_box.texture_margin_top = 2.0
+		_bar_box.texture_margin_bottom = 2.0
+	return _bar_box
+
+
+static func _row_value(rows: Array, label: String) -> String:
+	for r: Array in rows:
+		if String(r[0]) == label:
+			return String(r[1])
+	return ""
 
 
 func _queue_op(op: int) -> void:
 	if bag_op_sink.is_valid():
 		bag_op_sink.call(op)
+
+
+## Tab-strip styleboxes (workbench look: selected merges into the
+## panel body, unselected sits darker).
+static func _tab_box(sel: bool) -> StyleBoxFlat:
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = MenuPalette.TAB_SEL_TOP if sel else MenuPalette.TAB_BG
+	sb.border_color = MenuPalette.EDGE_DARK
+	sb.set_border_width_all(1)
+	sb.content_margin_left = 6.0
+	sb.content_margin_right = 6.0
+	sb.content_margin_top = 2.0
+	sb.content_margin_bottom = 2.0
+	return sb
 
 
 ## ---- PURE MODELS (the parity test pins these against live state).
@@ -282,6 +766,80 @@ static func quest_rows(world: RefCounted) -> Array:
 		rows.append("no errands — givers have work ([F] to talk)")
 	rows.append("hands: %d/5 · done: %d" % [carried, done])
 	return rows
+
+
+## THE LOG MODEL (errands_v2): carried cards + givers-have-work cards
+## + counts. Direct reads; selection/tracked stay view state.
+static func quest_cards(world: RefCounted) -> Dictionary:
+	var p: RefCounted = world.players[0]
+	var carried: Array = []
+	var available: Array = []
+	var done := 0
+	for qi in world.quest_defs.size():
+		var q: Resource = world.quest_defs[qi]
+		var taken: bool = (p.quests_taken_mask & (1 << qi)) != 0
+		var is_done: bool = (p.quests_done_mask & (1 << qi)) != 0
+		if is_done:
+			done += 1
+			continue
+		var title := QuestTracker.short_name(String(q.id))
+		if taken:
+			var prog: int = p.quest_progress_arr[qi] if qi < p.quest_progress_arr.size() else 0
+			(
+				carried
+				. append(
+					{
+						"qi": qi,
+						"id": String(q.id),
+						"title": title,
+						"prog": prog,
+						"count": int(q.count),
+					}
+				)
+			)
+		else:
+			available.append({"qi": qi, "id": String(q.id), "title": title})
+	return {
+		"carried": carried,
+		"available": available,
+		"carried_count": carried.size(),
+		"done": done,
+	}
+
+
+## THE DETAIL MODEL (proper info, sl-0143/0144): everything the
+## parchment pane shows for one quest. Empty dict = no such quest.
+## Objective wording is generic per kind [T — designer voice pending].
+static func quest_detail(world: RefCounted, qi: int) -> Dictionary:
+	if qi < 0 or qi >= world.quest_defs.size():
+		return {}
+	var p: RefCounted = world.players[0]
+	var q: Resource = world.quest_defs[qi]
+	var taken: bool = (p.quests_taken_mask & (1 << qi)) != 0
+	var is_done: bool = (p.quests_done_mask & (1 << qi)) != 0
+	var prog: int = p.quest_progress_arr[qi] if qi < p.quest_progress_arr.size() else 0
+	var objective := ""
+	match int(q.kind):
+		QuestDef.Kind.KILL:
+			objective = "slay them — %d/%d" % [prog, int(q.count)]
+		QuestDef.Kind.VISIT:
+			objective = "see the place — %d/%d" % [prog, int(q.count)]
+		QuestDef.Kind.COLLECT:
+			objective = "gather anything — %d/%d" % [prog, int(q.count)]
+	return {
+		"qi": qi,
+		"id": String(q.id),
+		"title": QuestTracker.short_name(String(q.id)),
+		"reason": String(q.reason),
+		"text": String(q.text),
+		"carried": taken,
+		"done": is_done,
+		"prog": prog,
+		"count": int(q.count),
+		"objective": objective,
+		"reward_gold": int(q.reward_gold),
+		"reward_xp": int(q.reward_xp),
+	}
 
 
 ## WORN slots (sl-0128 pane): {label, line, tip, op} — op = the
