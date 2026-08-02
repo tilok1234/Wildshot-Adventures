@@ -11,6 +11,7 @@ const SimWorld := preload("res://sim/sim_world.gd")
 const PropColliders := preload("res://game/arena/prop_colliders.gd")
 const StatFrame := preload("res://sim/systems/stat_frame.gd")
 const ContentImporter := preload("res://game/arena/content_importer.gd")
+const GatherGrids := preload("res://game/arena/gather_grids.gd")
 
 
 static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) -> RefCounted:
@@ -40,13 +41,14 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 	# world like the weapon/ability defs — definitions, not state.
 	world.set_progression(load("res://data/progression.tres"))
 	# Unique defs — mask-bit order is append-only (0 = the loop coil,
-	# 1 = Old Tusk's Hide, S1 seam 3).
+	# 1 = Old Tusk's Hide, 2 = the Starlit Cast cosmetic, sl-0105).
 	(
 		world
 		. set_uniques(
 			[
 				load("res://data/uniques/reliquary_coil.tres"),
 				load("res://data/uniques/old_tusks_hide.tres"),
+				load("res://data/uniques/starlit_skin.tres"),
 			]
 		)
 	)
@@ -77,9 +79,10 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 	# 8=slime, 9=goblin, 10=boar, 11=wolf, 12=bat, 13=shroom, 14=wasp,
 	# 15=beetle, 16=moth, 17=snail, 18=porcupine, 19=scarecrow,
 	# 20=treant, 21=bandit, 22=old_tusk (S1 seam 3 — Green's world
-	# boss), 23=king_grubb (S1 seam 4 — the Warren's bottom).
-	# Append-only; never reorder. Scenario extras (bot canaries)
-	# append after, keeping standard indexes stable.
+	# boss), 23=king_grubb (S1 seam 4 — the Warren's bottom),
+	# 24=rift_catch, 25=rift_catch_rare (S1 seam 6 — STARHOOK,
+	# sl-0105). Append-only; never reorder. Scenario extras (bot
+	# canaries) append after, keeping standard indexes stable.
 	var defs: Array = [
 		load("res://data/enemies/rusher.tres"),
 		load("res://data/enemies/husk_archer.tres"),
@@ -105,6 +108,8 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 		load("res://data/enemies/bandit.tres"),
 		load("res://data/enemies/old_tusk.tres"),
 		load("res://data/enemies/king_grubb.tres"),
+		load("res://data/enemies/rift_catch.tres"),
+		load("res://data/enemies/rift_catch_rare.tres"),
 	]
 	for extra: Resource in scenario.extra_enemy_defs:
 		defs.append(extra)
@@ -163,4 +168,13 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 	# soak, and replay verification share, so player and bot walk
 	# byte-identical collision by construction. No-op when packless.
 	PropColliders.attach(world, scenario)
+	# S1 seam 6: the forage mask (pack worlds only — WYSIWYG species
+	# cells) + the scenario's authored rift nodes (sl-0105).
+	if not String(scenario.worldforge_pack).is_empty():
+		var gathered := GatherGrids.derive(
+			ContentImporter.resolve_src(String(scenario.worldforge_pack))
+		)
+		if bool(gathered.ok):
+			world.set_forage_grid(gathered.forage)
+	world.set_rift_nodes(scenario.rift_nodes)
 	return world

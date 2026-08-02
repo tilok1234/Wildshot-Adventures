@@ -29,6 +29,7 @@ const SiteStep := preload("res://sim/systems/site_step.gd")
 const ProjectileStep := preload("res://sim/systems/projectile_step.gd")
 const HazardStep := preload("res://sim/systems/hazard_step.gd")
 const LootStep := preload("res://sim/systems/loot_step.gd")
+const GatherStep := preload("res://sim/systems/gather_step.gd")
 const QuestStep := preload("res://sim/systems/quest_step.gd")
 const Damage := preload("res://sim/systems/damage.gd")
 
@@ -41,7 +42,8 @@ const DT := 1.0 / 60.0
 ## sites (seam 2); 15 = docs/22 stat frame (seam 1). 18 = S1 seam 3:
 ## PlayerState.armor_item_index (unique armor — Old Tusk's Hide).
 ## 19 = S1 seam 5: quest fields (active/progress/done mask).
-const SERIAL_VERSION := 19
+## 20 = S1 seam 6: gather fields + rift-node respawn state (sl-0105).
+const SERIAL_VERSION := 20
 
 ## Damage-source pattern id for the scenario-declared test damage
 ## schedule (§2.11 elite transition proofs; planning log 2026-07-28).
@@ -189,6 +191,13 @@ var unique_defs: Array = []
 ## Quest definitions (S1 seam 5): definitions, excluded from
 ## serialize; append-only order is the mask/profile contract.
 var quest_defs: Array = []
+## S1 seam 6: FORAGE cell mask (definitions; null = the verb is inert
+## — every arena/proof world) and STARHOOK rift nodes (sl-0105):
+## node CELLS are definitions; per-node respawn ticks are SERIALIZED
+## state (a cast consumes the node until its timer lands).
+var forage_grid: RefCounted = null
+var rift_nodes: PackedVector2Array = PackedVector2Array()
+var rift_node_respawn_at: PackedInt64Array = PackedInt64Array()
 
 ## God/invulnerability flag (§2.10): friendly actors take no damage —
 ## every absorbed hit emits DAMAGE_IMMUNE, so god use is always visible
@@ -274,6 +283,19 @@ func set_uniques(defs: Array) -> void:
 ## profile active-id key on stable order).
 func set_quests(defs: Array) -> void:
 	quest_defs = defs
+
+
+## Setup-phase (S1 seam 6): the forage cell mask — definitions.
+func set_forage_grid(grid: RefCounted) -> void:
+	forage_grid = grid
+
+
+## Setup-phase (S1 seam 6, sl-0105): rift node cells — definitions;
+## the respawn-state array initializes armed (0 = active now).
+func set_rift_nodes(cells: PackedVector2Array) -> void:
+	rift_nodes = cells
+	rift_node_respawn_at = PackedInt64Array()
+	rift_node_respawn_at.resize(cells.size())
 
 
 ## In-step ground-drop spawn (the death-sweep drop rolls call this).
@@ -430,6 +452,8 @@ func step(frames: Array) -> void:
 	ProjectileStep.run(self)
 	HazardStep.run(self)
 	LootStep.run(self)
+	# S1 seam 6: the patience verbs (forage yields, rift casts).
+	GatherStep.run(self)
 	# S1 seam 5: quests read the tick's OWN events (kills, pickups) —
 	# last by construction, after every emitter.
 	QuestStep.run(self)
@@ -549,6 +573,11 @@ func serialize() -> PackedByteArray:
 		for m in pop_def.size():
 			buf.put_u16(pop_def[m])
 			buf.put_32(pop_hp[m])
+	# S1 seam 6 (SERIAL 20, sl-0105): rift-node consumption timers —
+	# a cast is world state exactly like a site's respawn clock.
+	buf.put_u16(rift_node_respawn_at.size())
+	for na in rift_node_respawn_at:
+		buf.put_64(na)
 	return buf.data_array
 
 

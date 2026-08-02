@@ -142,6 +142,7 @@ $tests = @(
     @("living world (leash/respawn/importer)", "tests/living_world/living_world_test.gd"),
     @("green roster (S1 re-table/variants)", "tests/green_roster/green_roster_test.gd"),
     @("quests v1 (S1 accept/progress/turn-in)", "tests/quests/quest_test.gd"),
+    @("gather + starhook (S1 cast/forage/rifter)", "tests/gather/gather_test.gd"),
     @("npc + icon wiring (seam 4)", "tests/wiring/npc_icon_wiring_test.gd"),
     @("determinism smoke (all contracts)", "tests/determinism/determinism_smoke.gd"),
     @("golden replays x10", "tests/replay_fixtures/verify_replays.gd")
@@ -208,6 +209,14 @@ if (-not $SkipBattery) {
     # of it, the 16-heading model cannot). The FLOOR row (the CORE-33
     # mandate) PASSES. All pins WATCHED: any verdict move off THIS
     # table = the sim (or policy) changed under us.
+    # S1 seam 6 (sl-0105) — the rift kit needed NO pin in the end:
+    # a draft rare-cap pin (the meet_leadshot class) existed
+    # mid-seam, but the STRUCTURAL fix — P3 KEEP_RANGE in both
+    # rarities (a hooked fish never chases; no chaser phase in a
+    # one-room arena, the Grubb-room lesson's sibling) — cleared
+    # ALL FOUR lanes at 0.120-0.122 after the Law-1 room resize
+    # (22x16 -> 15x12; the render probe caught 7 tiles under the
+    # sliver at the real 640x360 base view).
     $battery = @(
         @("canary_trivial","1,2,3,4,5",3600,"","","PASS","PASS"),
         @("canary_undodgeable","1,2,3",1800,"","","FAIL","FAIL"),
@@ -247,7 +256,9 @@ if (-not $SkipBattery) {
         @("proof_green_ranged","1,2,3",3600,"","","PASS","PASS"),
         @("proof_old_tusk","1,2,3",3600,"","","PASS","PASS"),
         @("proof_warren","1,2,3",3600,"","","PASS","PASS"),
-        @("proof_king_grubb","1,2,3",3600,"","","PASS","PASS")
+        @("proof_king_grubb","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_rift_catch","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_rift_catch_rare","1,2,3",3600,"","","PASS","PASS")
     )
     . "$PSScriptRoot\battery_runner.ps1"
     if ($Workers -le 0) { $Workers = Get-PhysicalCoreCount }

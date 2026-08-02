@@ -11,6 +11,8 @@ shots = {
 4: "friendly-pellet",
 5: "friendly-bolt",
 6: "friendly-wheel-ring",
+7: "friendly-bolt",
+8: "friendly-pellet",
 10: "hostile-orb:d8-red",
 11: "hostile-orb:d10-cyan",
 12: "hostile-orb:d10-violet",
@@ -24,7 +26,10 @@ shots = {
 22: "hostile-orb:d12-amber",
 23: "hostile-orb:d10-amber-deep",
 24: "hostile-orb:d10-amber",
-25: "hostile-orb:d10-amber-dark"
+25: "hostile-orb:d10-amber-dark",
+26: "hostile-orb:d10-amber",
+27: "hostile-orb:d10-amber-dark",
+28: "hostile-orb:d10-amber-deep"
 }
 alts = {
 }

@@ -1,0 +1,72 @@
+[gd_resource type="Resource" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://data/pattern_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; THE CATCH P1+ (S1 seam 6, sl-0105): the star spray — a 4-shot 45°
+; aimed arc, the fish tail-flicking light at you. Elite amber (Law
+; 3: the one elite language — the starfield gets no exemption).
+; Pattern id 26; lead 24 (the yw-triple danger class, tied).
+
+[sub_resource type="Resource" id="shot0"]
+script = ExtResource("2")
+angle_offset_deg = -22.5
+speed = 5.5
+radius = 0.2
+damage = 10
+ttl_ticks = 50
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="shot1"]
+script = ExtResource("2")
+angle_offset_deg = -7.5
+speed = 5.5
+radius = 0.2
+damage = 10
+ttl_ticks = 50
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="shot2"]
+script = ExtResource("2")
+angle_offset_deg = 7.5
+speed = 5.5
+radius = 0.2
+damage = 10
+ttl_ticks = 50
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="shot3"]
+script = ExtResource("2")
+angle_offset_deg = 22.5
+speed = 5.5
+radius = 0.2
+damage = 10
+ttl_ticks = 50
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[resource]
+script = ExtResource("1")
+id = &"star_spray"
+pattern_id = 26
+shots = Array[Resource]([SubResource("shot0"), SubResource("shot1"), SubResource("shot2"), SubResource("shot3")])
+

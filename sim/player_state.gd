@@ -74,6 +74,13 @@ var armor_item_index: int = -1
 var active_quest: int = -1
 var quest_progress: int = 0
 var quests_done_mask: int = 0
+## S1 seam 6 (SERIAL 20): the gather/cast verbs are PATIENCE — still
+## ticks accrue near forage cells (yield at 90) or active rift nodes
+## (cast at 120, sl-0105 STARHOOK). gather_rearm anti-AFK: after a
+## forage yield the verb re-arms only 4 tiles away (ARMED sentinel =
+## far away). Casting needs no rearm — node consumption covers it.
+var gather_still_ticks: int = 0
+var gather_rearm: Vector2 = Vector2(-1000000.0, -1000000.0)
 
 
 func serialize_into(buf: StreamPeerBuffer) -> void:
@@ -103,3 +110,6 @@ func serialize_into(buf: StreamPeerBuffer) -> void:
 	buf.put_8(active_quest)
 	buf.put_16(quest_progress)
 	buf.put_u16(quests_done_mask)
+	buf.put_u16(gather_still_ticks)
+	buf.put_float(gather_rearm.x)
+	buf.put_float(gather_rearm.y)

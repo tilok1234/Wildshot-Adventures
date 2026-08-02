@@ -213,8 +213,8 @@ Before every commit, per touched area:
   (table below), BOTH LANES; commit reports
   (`git add -f reports/...`). Unchanged scenarios must reproduce
   BYTE-IDENTICAL.
-- the one-command gate: `pwsh tools/pretester_check.ps1` = 27 fixed
-  steps + the 75-run two-lane battery (39 floor rows + 36 cap runs;
+- the one-command gate: `pwsh tools/pretester_check.ps1` = 29 fixed
+  steps + the 79-run two-lane battery (41 floor rows + 38 cap runs;
   pinned FAILs are expectations) + export + lockdown — **~12.5 min
   ALL GREEN since the battery went PARALLEL** (S1 tooling ask:
   tools/battery_runner.ps1 worker pool, default = physical cores,
@@ -280,6 +280,8 @@ Before every commit, per touched area:
 | proof_old_tusk (S1 seam 3: 480-hp paced schedule — P2 @t910, P3 @t1820, kill t2600; charger/rage/mire kit through both transitions) | 1,2,3 | 3600 | PASS / PASS |
 | proof_warren (S1 seam 4: the Warren's opening pull — entrance pack + everything whose aggro reaches through the rock, tight corridors) | 1,2,3 | 3600 | PASS / PASS |
 | proof_king_grubb (S1 seam 4: 420-hp schedule in the throne room with the court alive — P2 @t960, P3 @t1800, kill t2520) | 1,2,3 | 3600 | PASS / PASS |
+| proof_rift_catch (S1 seam 6, sl-0105: the STARHOOK catch, 260-hp schedule in the 15×12 rift — P2 ~t600, P3 ~t1080, kill t1560; near 0.121) | 1,2,3 | 3600 | PASS / PASS |
+| proof_rift_catch_rare (S1 seam 6: the denser rarity step, 420 hp at the leveled-rifter pace, kill t1540; near 0.120–0.122 — NO pin: the hooked-fish law (P3 keep-range, no chaser phase in a one-room arena) cleared all four lanes) | 1,2,3 | 3600 | PASS / PASS |
 | proof_slice_leash (S0 seam 2: the isolated camp at seed 98,225 — spawn INSIDE its envelope, exactly one site wakes; RE-BASELINED at S1 seam 1: the re-table made it the ranged Green set at density 1.5, margins 1.975 → ~0.120, honest) | 1,2,3 | 3600 | PASS / PASS |
 | proof_green_camp (S1 seam 1: the most isolated MIXED green territory, seed 185,244 — the full melee+ranged re-table at density, near ~0.90) | 1,2,3 | 3600 | PASS / PASS |
 | proof_green_ranged (S1 seam 1: the most isolated green territory of all, seed 108,138, prowler-only → the PURE ranged set: anchors+flanker+aimed, near ~0.121) | 1,2,3 | 3600 | PASS / PASS |

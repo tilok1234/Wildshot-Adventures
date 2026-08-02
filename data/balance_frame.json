@@ -63,6 +63,15 @@
     "per_level": { "green": 100, "dry": 400, "wet": 800, "snow": 1400 },
     "per_kill": { "green": 3, "dry": 11, "wet": 22, "snow": 38 }
   },
+  "starhook": {
+    "note": "sl-0105 v1 [T]: the RIFTER = a fixed mini-class row on THIS frame (no new progression system - the legacy loop curve levels it); rods = attack-def data rows (the rod IS the rifter's class); one rift kit at two rarity steps; drops feed the MAIN economy; cosmetics via the variants machinery.",
+    "rifter": { "base_hp": 60, "hp_per_level": 8, "speed_tiles": 3.6 },
+    "rods": [
+      { "id": "rod_cane", "name": "Cane Rod", "unlock_level": 1 },
+      { "id": "rod_splitwillow", "name": "Splitwillow", "unlock_level": 3 }
+    ],
+    "catch_gold": { "common": [30, 60], "rare": [80, 150] }
+  },
   "pairs": [
     { "up": "damage", "down": "defense" },
     { "up": "speed", "down": "hp" },

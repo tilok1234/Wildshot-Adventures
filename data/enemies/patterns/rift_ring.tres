@@ -1,0 +1,147 @@
+[gd_resource type="Resource" load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://data/pattern_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; THE CATCH P2+ (S1 seam 6, sl-0105): the rift ring - 10 shots x 36,
+; slow starlight closing in. ONE radial per boss room (the Grubb
+; law); the 36-degree gaps are the answer. Elite amber-deep.
+; Pattern id 27; lead 36 (the radial danger class, tied).
+
+[sub_resource type="Resource" id="s0"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 4.0
+radius = 0.2
+damage = 10
+ttl_ticks = 60
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+[sub_resource type="Resource" id="s1"]
+script = ExtResource("2")
+angle_offset_deg = 36.0
+speed = 4.0
+radius = 0.2
+damage = 10
+ttl_ticks = 60
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+[sub_resource type="Resource" id="s2"]
+script = ExtResource("2")
+angle_offset_deg = 72.0
+speed = 4.0
+radius = 0.2
+damage = 10
+ttl_ticks = 60
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+[sub_resource type="Resource" id="s3"]
+script = ExtResource("2")
+angle_offset_deg = 108.0
+speed = 4.0
+radius = 0.2
+damage = 10
+ttl_ticks = 60
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+[sub_resource type="Resource" id="s4"]
+script = ExtResource("2")
+angle_offset_deg = 144.0
+speed = 4.0
+radius = 0.2
+damage = 10
+ttl_ticks = 60
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+[sub_resource type="Resource" id="s5"]
+script = ExtResource("2")
+angle_offset_deg = 180.0
+speed = 4.0
+radius = 0.2
+damage = 10
+ttl_ticks = 60
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+[sub_resource type="Resource" id="s6"]
+script = ExtResource("2")
+angle_offset_deg = 216.0
+speed = 4.0
+radius = 0.2
+damage = 10
+ttl_ticks = 60
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+[sub_resource type="Resource" id="s7"]
+script = ExtResource("2")
+angle_offset_deg = 252.0
+speed = 4.0
+radius = 0.2
+damage = 10
+ttl_ticks = 60
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+[sub_resource type="Resource" id="s8"]
+script = ExtResource("2")
+angle_offset_deg = 288.0
+speed = 4.0
+radius = 0.2
+damage = 10
+ttl_ticks = 60
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+[sub_resource type="Resource" id="s9"]
+script = ExtResource("2")
+angle_offset_deg = 324.0
+speed = 4.0
+radius = 0.2
+damage = 10
+ttl_ticks = 60
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[resource]
+script = ExtResource("1")
+id = &"rift_ring"
+pattern_id = 27
+shots = Array[Resource]([SubResource("s0"), SubResource("s1"), SubResource("s2"), SubResource("s3"), SubResource("s4"), SubResource("s5"), SubResource("s6"), SubResource("s7"), SubResource("s8"), SubResource("s9")])
+

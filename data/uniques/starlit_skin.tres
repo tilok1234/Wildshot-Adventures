@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/unique_def.gd" id="1_uniq"]
+
+; STARHOOK cosmetic catch (S1 seam 6, sl-0105; the designer's
+; disposition: cosmetic gear for the RIFTER first, via the variants
+; machinery — view-only, zero sim meaning beyond the mask bit). The
+; rare catch sometimes gives up the STARLIT cast: the rifter wears
+; an alternate look in the rift. No frame boost, no items row — the
+; unique_mask bit IS the unlock; profiles carry it as
+; starhook_skins.
+
+[resource]
+script = ExtResource("1_uniq")
+uid = &"starlit_skin"
+display_name = "Starlit Cast"
+frame_slot = -1
+items_id = ""

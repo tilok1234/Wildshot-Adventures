@@ -42,4 +42,12 @@ extends Resource
 ## (tests/bot_scenarios) — no tester-reachable scenario may declare one
 ## (M7 pre-tester-build checklist line).
 @export var damage_schedule: Array[Dictionary] = []
+## S1 seam 6 (sl-0105): STARHOOK rift node cells (center coords) —
+## authored spawn spots [T]; casting (120-tick stillness) at an
+## ACTIVE node starts the rift fight. Empty = no starhook here.
+@export var rift_nodes: PackedVector2Array = PackedVector2Array()
+## True on rift-fight scenarios: the driver applies the RIFTER
+## mini-class shape (sl-0105) instead of the main character, and the
+## split-screen presentation mounts.
+@export var starhook_rift: bool = false
 @export var default_seed: int = 1

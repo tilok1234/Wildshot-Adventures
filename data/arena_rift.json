@@ -1,0 +1,27 @@
+{
+  "comment": "THE RIFT v2 (S1 seam 6, sl-0105): the far-side arena where the RIFTER fights the catch. 15x12 = 480x384 px: at the BASE 640x360 viewport the arena spans EXACTLY the left 3/4 - the world-sliver overlay can never occlude a threat (Law 1 by construction; v1 was 22 wide and the render probe caught 7 tiles under the sliver - the probe's second catch tonight). Quiet dark floor (Law 6 - the starfield gets no exemption); two star-rock stubs; galaxy dressing is a designer art round.",
+  "width": 15,
+  "height": 12,
+  "floor_family": "dungeonfloor",
+  "wall_family": "dungeonwall",
+  "pillar_species": "pillar",
+  "wall_segments": [
+    { "x": 0, "y": 0, "w": 15, "h": 1 },
+    { "x": 0, "y": 11, "w": 15, "h": 1 },
+    { "x": 0, "y": 1, "w": 1, "h": 10 },
+    { "x": 14, "y": 1, "w": 1, "h": 10 },
+    { "x": 5, "y": 3, "w": 1, "h": 1 },
+    { "x": 9, "y": 8, "w": 1, "h": 1 }
+  ],
+  "floor_patches": [],
+  "props": [
+    { "x": 1, "y": 6, "name": "brazier" },
+    { "x": 13, "y": 1, "name": "bonepile" },
+    { "x": 13, "y": 10, "name": "rubblepile" }
+  ],
+  "decals": [
+    { "x": 3, "y": 2, "name": "cracks" },
+    { "x": 11, "y": 9, "name": "cracks" },
+    { "x": 7, "y": 6, "name": "bones" }
+  ]
+}

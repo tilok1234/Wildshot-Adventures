@@ -77,6 +77,26 @@ const DUNGEON_DOORS := {
 			"label": "climbing back to daylight...",
 		}
 	],
+	# STARHOOK (S1 seam 6, sl-0105): the rift's exit portal — the
+	# spawn is dynamic (back to where you cast; rift_return).
+	&"rift_common":
+	[
+		{
+			"cell": Vector2(1.5, 6.5),
+			"to": "res://data/scenarios/slice_overworld.tres",
+			"spawn": "",
+			"label": "reeling back to the shore...",
+		}
+	],
+	&"rift_rare":
+	[
+		{
+			"cell": Vector2(1.5, 6.5),
+			"to": "res://data/scenarios/slice_overworld.tres",
+			"spawn": "",
+			"label": "reeling back to the shore...",
+		}
+	],
 }
 const DOOR_RADIUS := 0.7
 const RenderLayers := preload("res://game/render_layers.gd")
@@ -145,6 +165,12 @@ var character: Dictionary = {}
 var _scenario_persistent := false
 ## Active scenario id (S1 seam 4) — the door table keys on it.
 var _scenario_id: StringName = &""
+## STARHOOK (S1 seam 6, sl-0105): rift-fight scenario flags.
+var _scenario_rift := false
+var _rift_won := false
+## The world frame captured at cast — the split-screen's world
+## sliver (presentation only; survives the scene reload).
+static var _rift_capture: Image = null
 var character_panel: PanelContainer = null
 var _char_save_accum := 0.0
 ## EffectLibrary policy object (M6, ledger #9) — cosmetic/friendly
@@ -278,15 +304,23 @@ func _process(_delta: float) -> void:
 			# S1 seam 4: dungeon doors (walk-on transition; the same
 			# walk-over language as loot). Profile harvests FIRST so
 			# nothing since the last beat is lost on the stairs.
-			if _scenario_persistent:
+			# S1 seam 6: rift exits harvest the STARHOOK lane instead
+			# (gold pot to the main wallet, level/xp/skins to the
+			# starhook fields) and land back where you cast.
+			if _scenario_persistent or _scenario_rift:
 				var doors: Array = DUNGEON_DOORS.get(_scenario_id, [])
 				for door: Dictionary in doors:
 					var dc: Vector2 = door.cell
 					if world.players[0].pos.distance_to(dc) <= DOOR_RADIUS:
-						CharacterProfile.harvest(world, character)
+						var spawn := String(door.spawn)
+						if _scenario_rift:
+							CharacterProfile.harvest_rift(world, character, _rift_won)
+							spawn = String(Config.get_setting("dev", "rift_return", ""))
+						else:
+							CharacterProfile.harvest(world, character)
 						CharacterProfile.save_profile(character)
 						Config.set_setting("dev", "scenario", String(door.to))
-						Config.set_setting("dev", "door_spawn", String(door.spawn))
+						Config.set_setting("dev", "door_spawn", spawn)
 						print(String(door.label))
 						get_tree().reload_current_scene()
 						return
@@ -373,7 +407,24 @@ func _process(_delta: float) -> void:
 	var xp_part := (
 		"lv %d  xp %d/%d" % [p.level, p.xp, xp_next] if xp_next > 0 else "lv %d  MAX" % p.level
 	)
-	if p.class_id >= 0:
+	if _scenario_rift:
+		# STARHOOK (sl-0105): the rifter's readout — the rod is the
+		# class; the pot is what the catch has paid so far.
+		(
+			loot_label
+			. set_text(
+				(
+					"RIFTER lv %d  xp %d\n%s — the line holds · pot %d gold"
+					% [
+						p.level,
+						p.xp,
+						String(world.weapon_frames[p.equipped_weapon].display_name),
+						p.gold,
+					]
+				)
+			)
+		)
+	elif p.class_id >= 0:
 		# S1 seam 5: the active quest rides the HUD readout — reason
 		# tag visible (the villager-reason pillar), progress live.
 		var quest_part := ""
@@ -442,6 +493,39 @@ func _process(_delta: float) -> void:
 					_show_toast("[%s] %s" % [String(qd.reason), String(qd.text)])
 			SimEvents.Type.QUEST_DONE:
 				_show_toast("quest done — +%d gold, +%d xp" % [int(lev.gold), int(lev.xp)])
+			SimEvents.Type.GATHERED:
+				_show_toast("foraged +%d gold" % int(lev.gold))
+			SimEvents.Type.CAST_COMPLETE:
+				# STARHOOK (sl-0105): the line sinks into the rift.
+				# Capture the world frame for the sliver, remember the
+				# shore, harvest the MAIN lane, and descend.
+				if not character.is_empty():
+					_rift_capture = get_viewport().get_texture().get_image()
+					var cpos: Vector2 = lev.pos
+					Config.set_setting("dev", "rift_return", "%.1f,%.1f" % [cpos.x, cpos.y])
+					CharacterProfile.harvest(world, character)
+					CharacterProfile.save_profile(character)
+					var target := (
+						"res://data/scenarios/rift_rare.tres"
+						if bool(lev.rare)
+						else "res://data/scenarios/rift_common.tres"
+					)
+					Config.set_setting("dev", "scenario", target)
+					Config.set_setting("dev", "door_spawn", "")
+					print("the line sinks into the rift...")
+					get_tree().reload_current_scene()
+					return
+			SimEvents.Type.ENTITY_KILLED:
+				# STARHOOK win beat: the catch dies -> collect and
+				# step through the exit portal (west).
+				if _scenario_rift and not _rift_won and int(lev.get("def_index", -1)) in [24, 25]:
+					_rift_won = true
+					_show_toast(
+						(
+							"THE CATCH IS YOURS — catch #%d. The portal home is west."
+							% (int(character.get("starhook_catches", 0)) + 1)
+						)
+					)
 	# F10: dump the always-on session recording. NOTE: the main scene is a
 	# hardcoded dev scenario until M4 — saved replays verify only against
 	# the same build (no scenario id exists for it yet); golden fixtures
@@ -704,6 +788,19 @@ func _maybe_show_character_create(pl: Label) -> void:
 func _on_player_death() -> void:
 	if character.is_empty():
 		return
+	# STARHOOK (sl-0105) — THE LINE SNAPS [T]: death in a rift fight
+	# is never a character death (hardcore stake untouched, no gold
+	# cost): the un-harvested rift world discards whole — you lose
+	# the catch and whatever the fight had paid, nothing else. Back
+	# to the shore you cast from.
+	if _scenario_rift:
+		Config.set_setting("dev", "scenario", "res://data/scenarios/slice_overworld.tres")
+		Config.set_setting(
+			"dev", "door_spawn", String(Config.get_setting("dev", "rift_return", ""))
+		)
+		print("the line snaps...")
+		get_tree().reload_current_scene()
+		return
 	if bool(character.get("hardcore", false)):
 		CharacterProfile.delete_profile()
 		character = {}
@@ -821,9 +918,16 @@ func _ready() -> void:
 	# honest about what actually ran.
 	_scenario_persistent = bool(scenario.persistent_world)
 	_scenario_id = scenario.id
+	_scenario_rift = bool(scenario.starhook_rift)
+	_rift_won = false
 	if not (audit_mode or verify_mode):
 		character = CharacterProfile.load_profile()
-		if not character.is_empty():
+		if not character.is_empty() and _scenario_rift:
+			# STARHOOK (sl-0105): rift worlds get the RIFTER shape —
+			# the mini-class row on the stat frame, riding the legacy
+			# lane; the rod is the class. Never the main apply.
+			CharacterProfile.apply_to_rift(world, character)
+		elif not character.is_empty():
 			CharacterProfile.apply_to_world(world, character)
 			character.runs = int(character.get("runs", 0)) + 1
 			CharacterProfile.save_profile(character)
@@ -857,6 +961,34 @@ func _ready() -> void:
 	var snag_logger := CollisionLogger.new()
 	snag_logger.driver = driver
 	add_child(snag_logger)
+
+	# STARHOOK split-screen (sl-0105, PRESENTATION ONLY): the galaxy
+	# view owns the left ~3/4 [T] (the 22-tile arena pins left of the
+	# sliver line by camera clamp — Law 1 by construction); the world
+	# sliver = the frame captured at cast, dimmed, the anchor home.
+	if _scenario_rift and _rift_capture != null:
+		var sliver_layer := CanvasLayer.new()
+		sliver_layer.layer = 40
+		add_child(sliver_layer)
+		var sliver := TextureRect.new()
+		sliver.texture = ImageTexture.create_from_image(_rift_capture)
+		sliver.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		sliver.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		sliver.anchor_left = 0.75
+		sliver.anchor_right = 1.0
+		sliver.anchor_top = 0.0
+		sliver.anchor_bottom = 1.0
+		sliver.modulate = Color(0.55, 0.55, 0.65, 1.0)
+		sliver_layer.add_child(sliver)
+		var seam_line := ColorRect.new()
+		seam_line.color = Color(0.9, 0.85, 0.6, 0.85)
+		seam_line.anchor_left = 0.75
+		seam_line.anchor_right = 0.75
+		seam_line.anchor_top = 0.0
+		seam_line.anchor_bottom = 1.0
+		seam_line.offset_left = -1.0
+		seam_line.offset_right = 2.0
+		sliver_layer.add_child(seam_line)
 
 	gif_recorder = GifRecorder.new()
 	add_child(gif_recorder)

@@ -220,6 +220,12 @@ jobs:
       - name: Quests v1 contracts
         run: ~/godot/godot --headless --path . --script tests/quests/quest_test.gd
 
+      # S1 seam 6 (sl-0105): the patience verbs — foraging + the
+      # STARHOOK cast, node consumption, the rifter mini-class
+      # round-trip, slice node premises. Linux-safe.
+      - name: Gather + Starhook contracts
+        run: ~/godot/godot --headless --path . --script tests/gather/gather_test.gd
+
       # Slice S0 seam 4: consumed NPC tree (32 looks), deterministic
       # stations on real b77 ground, icon atlas ids. Linux-safe.
       - name: NPC + icon wiring

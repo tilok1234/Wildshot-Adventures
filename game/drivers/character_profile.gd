@@ -54,6 +54,11 @@ static func create(hardcore: bool, cls := "bow") -> Dictionary:
 		"quests_done_mask": 0,
 		"active_quest_id": "",
 		"quest_progress": 0,
+		"starhook_level": 1,
+		"starhook_xp": 0,
+		"starhook_rod": "rod_cane",
+		"starhook_skins": 0,
+		"starhook_catches": 0,
 		"ability_index": 0,
 		"deaths": 0,
 		"runs": 0,
@@ -185,6 +190,71 @@ static func _quest_index_for(world: RefCounted, quest_id: String) -> int:
 		if String(world.quest_defs[i].id) == quest_id:
 			return i
 	return -1
+
+
+## ---- STARHOOK (S1 seam 6, sl-0105). The RIFTER = a fixed
+## mini-class row on the stat frame's starhook block, riding the
+## LEGACY lane in rift worlds (class_id -1: no recompute, direct
+## stats; the loop XP curve levels it — "no new progression
+## system"). Gold starts at ZERO in the rift (the pot IS the catch);
+## harvest_rift adds it to the MAIN wallet. Line-snap death simply
+## never harvests — the rift world discards whole.
+
+const ROD_PATHS := {
+	"rod_cane": "res://data/weapons/rod_cane.tres",
+	"rod_splitwillow": "res://data/weapons/rod_splitwillow.tres",
+}
+
+
+static func apply_to_rift(world: RefCounted, d: Dictionary) -> void:
+	if world.players.is_empty():
+		return
+	var p: RefCounted = world.players[0]
+	var sh: Dictionary = world.stat_frame.get("starhook", {})
+	var rifter: Dictionary = sh.get("rifter", {})
+	var lvl := maxi(1, int(d.get("starhook_level", 1)))
+	p.class_id = -1
+	p.level = lvl
+	p.xp = int(d.get("starhook_xp", 0))
+	p.max_hp = maxi(
+		1, int(rifter.get("base_hp", 60)) + int(rifter.get("hp_per_level", 8)) * (lvl - 1)
+	)
+	p.hp = p.max_hp
+	p.move_speed = float(rifter.get("speed_tiles", 3.6))
+	p.gold = 0
+	# The rod IS the rifter's class: newest unlock auto-equips [T]
+	# (a swap UI is a designer round).
+	var rod_id := String(d.get("starhook_rod", "rod_cane"))
+	for rod: Dictionary in sh.get("rods", []):
+		if lvl >= int(rod.get("unlock_level", 99)):
+			rod_id = String(rod.get("id", rod_id))
+	world.set_weapons([load(String(ROD_PATHS.get(rod_id, ROD_PATHS.rod_cane)))])
+	p.weapon_tiers = PackedInt32Array([1])
+	p.equipped_weapon = 0
+	# The starlit cosmetic mask rides in so the rare catch's unique
+	# pickup can't double-grant.
+	if (int(d.get("starhook_skins", 0)) & 1) != 0:
+		p.unique_mask |= 1 << 2
+
+
+## Rift-exit harvest (the line snap never calls this): gold pot to
+## the MAIN wallet, level/xp back to the starhook lane, the catch
+## counter ONLY on a won fight, and any cosmetic bit.
+static func harvest_rift(world: RefCounted, d: Dictionary, won: bool) -> void:
+	if world.players.is_empty():
+		return
+	var p: RefCounted = world.players[0]
+	d.gold = int(d.get("gold", 0)) + p.gold
+	d.starhook_level = p.level
+	d.starhook_xp = p.xp
+	if won:
+		d.starhook_catches = int(d.get("starhook_catches", 0)) + 1
+	if (p.unique_mask & (1 << 2)) != 0:
+		d.starhook_skins = int(d.get("starhook_skins", 0)) | 1
+	var sh: Dictionary = world.stat_frame.get("starhook", {})
+	for rod: Dictionary in sh.get("rods", []):
+		if p.level >= int(rod.get("unlock_level", 99)):
+			d.starhook_rod = String(rod.get("id", d.get("starhook_rod", "rod_cane")))
 
 
 ## Normal-mode death: percentage of CARRIED gold ([T] rate from

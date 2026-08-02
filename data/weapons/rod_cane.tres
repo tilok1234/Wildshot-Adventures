@@ -1,0 +1,31 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://data/weapon_frame.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; STARHOOK starter rod (S1 seam 6, sl-0105): the Cane Rod — one
+; steady bolt down the line. Rods are attack-def DATA ROWS (the rod
+; IS the rifter's class); no archetype = the legacy damage lane
+; (shot damage is the number, [T]). Pattern id 7 (player namespace).
+
+[sub_resource type="Resource" id="shot0"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 14.0
+radius = 0.125
+damage = 6
+ttl_ticks = 30
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.35
+
+[resource]
+script = ExtResource("1")
+id = &"rod_cane"
+display_name = "Cane Rod"
+pattern_id = 7
+cadence_ticks = 30
+shots = Array[Resource]([SubResource("shot0")])

@@ -17,4 +17,5 @@ persistent_world = true
 player_spawn = Vector2(109.5, 182.5)
 standin_positions = PackedVector2Array()
 enemy_spawns = {}
+rift_nodes = PackedVector2Array(60.5, 40.5, 140.5, 50.5, 200.5, 80.5, 37.5, 90.5, 157.5, 110.5, 230.5, 140.5, 70.5, 149.5, 132.5, 169.5, 180.5, 205.5, 60.5, 210.5, 151.5, 230.5, 220.5, 220.5)
 default_seed = 100

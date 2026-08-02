@@ -1,0 +1,61 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; THE CATCH proof (S1 seam 6, sl-0105): 260 hp paced at 20 every
+; 120 -> P2 (coil) ~t600, P3 (thrash) ~t1080, kill t1560, cleanup
+; to 3600. The rift kit through both transitions in ITS arena - the
+; pattern->lead law and both proof lanes bind in the rift.
+
+[resource]
+script = ExtResource("1")
+id = &"proof_rift_catch"
+display_name = "PROOF: proof_rift_catch (rift schedule fight)"
+arena = "res://data/arena_rift.json"
+player_spawn = Vector2(3.5, 6.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"rift_catch": PackedVector2Array(11.5, 6.5)
+}
+damage_schedule = Array[Dictionary]([{
+"amount": 20,
+"tick": 120
+}, {
+"amount": 20,
+"tick": 240
+}, {
+"amount": 20,
+"tick": 360
+}, {
+"amount": 20,
+"tick": 480
+}, {
+"amount": 20,
+"tick": 600
+}, {
+"amount": 20,
+"tick": 720
+}, {
+"amount": 20,
+"tick": 840
+}, {
+"amount": 20,
+"tick": 960
+}, {
+"amount": 20,
+"tick": 1080
+}, {
+"amount": 20,
+"tick": 1200
+}, {
+"amount": 20,
+"tick": 1320
+}, {
+"amount": 20,
+"tick": 1440
+}, {
+"amount": 20,
+"tick": 1560
+}])
+default_seed = 1
+

@@ -28,6 +28,8 @@ enum Type {
 	PLAYER_RESPAWNED,
 	QUEST_ACCEPTED,
 	QUEST_DONE,
+	GATHERED,
+	CAST_COMPLETE,
 }
 
 ## PROJECTILE_DESPAWNED carries one of these (§2.6 typed despawn reasons).

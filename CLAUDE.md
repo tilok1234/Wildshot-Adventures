@@ -1798,3 +1798,77 @@ reasons match, targets in 8..21); goldens re-recorded + verified
 x10 (SERIAL 19); smoke/stat/loop/living/green all green; boot
 clean. DESIGNER-EYES pending: the quest lines' VOICE (placeholder
 words, theirs to rewrite), rates [T], the walk-up feel.**
+S1 SEAM 6 — STARHOOK v1 + FORAGING v1 LIVE 2026-08-02 (~04:30
+local; sl-0105 REPLACED fishing with the designer's own invention —
+the rift fight; foraging stayed as sl-0104 routed; SERIAL 19→20,
+next 21): FISHING IS A BOSS FIGHT NOW. TWELVE RIFT NODES on the
+slice overworld (authored [T], script-verified walkable + ≥26 from
+the capital + off camps); THE CAST = 120-tick stillness at an
+active node (the patience verb — zero input changes, CORE-48
+honest) → CAST_COMPLETE consumes the node (respawn 10800 [T];
+in-instance timer — round trips refill like camps, THE DOCTRINE)
++ draws rarity in-sim (20% rare [T], rng_loot, replay-honest) →
+main captures the world frame, remembers the shore, and descends
+via the Warren's own door machinery into rift_common/rift_rare.
+ONE SIM LAW HELD: the rift is a normal committed-instance
+scenario; the split screen is PRESENTATION ONLY — the galaxy
+(left ~3/4 [T]) + the captured world SLIVER (right 1/4, dimmed,
+the anchor). THE RENDER PROBE'S SECOND CATCH: the arena was first
+authored 22 wide against an assumed 1152 viewport — the BASE view
+is 640x360, so 7 tiles hid under the sliver on the evidence PNG;
+the rift resized to 15x12 = 480x384 px, EXACTLY the left 3/4 at
+base resolution (Law 1 by construction, all four lanes re-proven
+in the real room; committed evidence
+reports/rift_split_audit.png). THE RIFTER = the mini-class row on
+balance_frame's new starhook block (60 hp +8/lvl, speed 3.6 [T]),
+riding the LEGACY lane in rift worlds (class_id −1, direct stats,
+the loop XP curve levels it — NO new progression system);
+apply_to_rift/harvest_rift route the profile's starhook lane
+(level/xp/rod/skins/catches BY the seam-2 id doctrine); the rift
+gold pot starts at ZERO and lands in the MAIN wallet on exit —
+DROPS FEED THE MAIN ECONOMY (catch gold 30-60 / rare 80-150 [T];
+equipment stays out of the rift, recorded lean). RODS = attack-def
+data rows (the rod IS the rifter's class): Cane Rod (pattern 7,
+single bolt) starter; SPLITWILLOW (pattern 8, 3-bolt fan — the
+prototype's own) unlocks at starhook 3 [T], newest unlock
+auto-equips (swap UI = designer round). THE FIGHT = ONE kit on
+the house recipe at TWO rarity steps: the RIFT CATCH (roster 24,
+260 hp) / RARE (25, 420 hp, ~20% denser) — P1 DRIFT (star spray
+26, lead 24) / P2 COIL (rift ring 27, 10x36° slow radial — ONE
+radial per boss room, the Grubb law) / P3 THRASH (chaser +
+INTERCEPT star darts 28, lead 40); elite amber throughout (Law 3:
+THE STARFIELD GETS NO EXEMPTION); Law-4 = 20 rows monotone; the
+pattern→lead law binds in the rift (the roster-wide test covers
+it free). THE LINE SNAPS [T]: rift death is never a character
+death — no hardcore stake, no gold cost; the un-harvested rift
+discards whole (you lose the catch) and you wake at the shore.
+COSMETIC RARE CATCH: the STARLIT CAST (unique mask bit 2 → profile
+starhook_skins — the variants doctrine, view-only; 0.35 on the
+rare, no pity). FORAGING v1: 90-tick stillness at gather-species
+cells (stump/fallen_log/bush/mushrooms — WYSIWYG derivation from
+the pack's prop chunks, ~1.9k cells) yields 1-2 gold + 2 xp [T];
+ANTI-AFK: one yield per 4-tile walk. Gates:
+tests/gather/gather_test.gd = 29TH FIXED STEP + CI row (forage/
+anti-afk/cast/node consumption/rarity determinism/rifter
+round-trip incl. line-snap-by-absence + win-gated catches/
+negatives legacy+dead+maskless/hash x3/12-node premises/b77
+census); proofs proof_rift_catch + _rare on schedules (P2/P3
+transitions + kill) — battery 41 rows / 79 runs. THE KIT EARNED
+ITS SMALL-ROOM SHAPE across iterations under never-weaken: dart
+pair widened ±4°→±7° @8.0; the rare proof re-paced to the
+leveled-rifter schedule (30x14 — proof pacing is authorable, the
+yw precedent); after the Law-1 resize, ring/spray reaches trimmed
+to the room (ttl 60/50 = 4.0/4.6 t); and the STRUCTURAL fix — P3
+became KEEP_RANGE in both rarities: A HOOKED FISH NEVER CHASES
+(the thrash is denser fire, not pursuit) — which kills the
+small-box corner-trap class outright (the Grubb-room lesson's
+sibling law: no chaser phase in a one-room arena). SWEPT FLAGS with this seam:
+origin PUSHED (the seven S1 commits + these); canary NARRATED —
+the seed-3 repro 515→1312 was the CAP LANE racing the floor lane
+on shared repro filenames in the pool (benign, diagnostic-only
+files; lane-suffixed names = a recorded tooling candidate); fresh
+serial canary re-verified FAIL 10-hits @t23 all seeds (the box
+still proves undodgeable-reactive) and re-records 515b x3.
+DESIGNER-EYES pending (Green days): the CAST FEEL, the split
+ratio [T], rod feel, both rarities, node cadence [T], forage
+rates [T] — the fight IS the designer's own idea come true.**
