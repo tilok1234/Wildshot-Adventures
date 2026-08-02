@@ -213,7 +213,7 @@ Before every commit, per touched area:
   (table below), BOTH LANES; commit reports
   (`git add -f reports/...`). Unchanged scenarios must reproduce
   BYTE-IDENTICAL.
-- the one-command gate: `pwsh tools/pretester_check.ps1` = 29 fixed
+- the one-command gate: `pwsh tools/pretester_check.ps1` = 30 fixed
   steps + the 79-run two-lane battery (41 floor rows + 38 cap runs;
   pinned FAILs are expectations) + export + lockdown — **~12.5 min
   ALL GREEN since the battery went PARALLEL** (S1 tooling ask:

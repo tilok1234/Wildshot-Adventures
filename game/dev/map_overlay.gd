@@ -26,6 +26,9 @@ const FULL_MARGIN := 12.0
 const CORNER_EDGE := 96.0
 ## Inset keeps the corner variant clear of the hints line (bottom).
 const CORNER_INSET := Vector2(4.0, 16.0)
+## Seam B (sl-0109): the corner minimap lives TOP-RIGHT under the
+## bars now; main feeds the top inset (it knows the UI scale) [T].
+var corner_top_inset := 34.0
 
 var world: RefCounted = null  # SimWorld — player position, read-only
 var mouse_tile := Callable()  # viewport mouse in tile space (facing tick)
@@ -92,7 +95,7 @@ func _draw() -> void:
 	else:
 		var s2 := CORNER_EDGE / maxf(ts.x, ts.y)
 		var sz := ts * s2
-		rect = Rect2((vp - sz - CORNER_INSET).floor(), sz)
+		rect = Rect2(Vector2(vp.x - sz.x - CORNER_INSET.x, corner_top_inset).floor(), sz)
 		draw_texture_rect(_tex, rect, false, Color(1.0, 1.0, 1.0, 0.8))
 		draw_rect(rect, Color(0.0, 0.0, 0.0, 0.6), false, 1.0)
 	_draw_player(rect)

@@ -226,6 +226,11 @@ jobs:
       - name: Gather + Starhook contracts
         run: ~/godot/godot --headless --path . --script tests/gather/gather_test.gd
 
+      # Seam B (sl-0106): the character sheet's screen==recompute
+      # parity law + quest-log state mirroring. Linux-safe.
+      - name: Character sheet parity
+        run: ~/godot/godot --headless --path . --script tests/char_sheet/char_sheet_test.gd
+
       # Slice S0 seam 4: consumed NPC tree (32 looks), deterministic
       # stations on real b77 ground, icon atlas ids. Linux-safe.
       - name: NPC + icon wiring

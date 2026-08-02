@@ -1872,3 +1872,51 @@ still proves undodgeable-reactive) and re-records 515b x3.
 DESIGNER-EYES pending (Green days): the CAST FEEL, the split
 ratio [T], rod feel, both rarities, node cadence [T], forage
 rates [T] — the fight IS the designer's own idea come true.**
+THE UI/INTERACTION FAMILY 2026-08-02 (~05:30 local; sl-0113
+routing: sl-0110/0111 HELD for the designer's prototype #2 — the
+built rift untouched by order; sl-0112+0106+0109 proceed as TWO
+sealed seams). SEAM A — THE INTERACT VERB (69cef0c; sl-0112;
+SERIAL 21, WSR VERSION 2): one new recorded input `interact`
+(F [T] — the ask's E is the ratified autofire toggle; remappable),
+a tick-accurate edge through sampler/replay/bot alike; InputFrame
+15→16 bytes; v1 replays refuse loudly; goldens re-recorded x10.
+DELIBERATE HANDS: item walk-over auto-equip RETIRED (gold stays
+auto); interact takes the nearest eligible drop, ONE per press;
+upgrades-only holds for weapon/armor; the worn-ring press SWAPS —
+the old ring drops EXACTLY where the new one lay (position-pinned
+in test). QUESTS: walk-up auto-accept/turn-in RETIRED — givers
+answer the press, TURN-IN WINS over accept (the payoff is a
+moment); MULTI-ACTIVE re-pins the seam-5 one-active law
+deliberately (cap 5 [T]; taken mask + per-quest progress array;
+KILL/COLLECT count for every carried errand at once); profiles
+key taken+progress BY ID with a free migration for the
+pre-interact active_quest_id (the designer's mid-quest save
+carries). Ground labels carry the [F] cue; the interim busy-giver
+hint retired with its era. Tests re-authored as deliberate
+re-baselines (standing-never-accepts/-turns-in/-equips negatives;
+the cap; one-action-per-press; interact-on-nothing). Gate ALL
+GREEN 13.5 min.
+SEAM B — THE UI FAMILY (sl-0106 + sl-0109): THE CHARACTER SHEET +
+QUEST LOG (ui/character_sheet.gd, key C [T], read-only, never
+pauses): rows from PURE MODEL functions over live state — the
+screen==recompute parity is EXACT BY CONSTRUCTION (the sheet
+re-derives nothing) and TEST-PINNED (tests/char_sheet = 30TH FIXED
+STEP + CI row: row-exactness, perturbation tracking incl. the Hide
+override naming itself, quest-log state mirroring with reason
+tags + the hands/done capacity line, legacy negative); item lines
+speak the one grammar; the starhook row rides from the profile.
+THE HUD RELAYOUT (sl-0109, the first Green-walk feedback): hp+mana
+= a SHORT top-right stack (the old full-width look was the bars
+stretching to the longest HUD label — structurally fixed by
+splitting the stacks); the corner minimap moves TOP-RIGHT beneath
+them (main feeds the inset, ui-scale-aware); text readouts stay
+bottom-left; PAUSE + OPTIONS = ONE MENU on BOTH O and Esc (the
+driver keeps the pause bit — CORE-31 pause always legal,
+pause_locked owners keep priority; the menu rides pause_changed;
+closing resumes); the fps/spikes debug readout tucks behind an
+options toggle [T] (default off). WINDOWED EVIDENCE committed:
+reports/hud_relayout_audit.png + character_sheet_audit.png (read
+by eyes; the O/Esc-both-ways negative is designer-hands material —
+main cannot compile under --script, the recorded limit). NO feel
+verdicts: key choices, the sheet layout, capacity, the corner
+placements — all Green days.**

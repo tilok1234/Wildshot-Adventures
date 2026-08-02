@@ -16,6 +16,7 @@ const HumanSampler := preload("res://input/human_sampler.gd")
 const InputMapDefaults := preload("res://input/input_map_defaults.gd")
 const ReplayRecorder := preload("res://input/replay_recorder.gd")
 const OptionsMenu := preload("res://ui/options_menu.gd")
+const CharacterSheet := preload("res://ui/character_sheet.gd")
 const GifRecorder := preload("res://game/drivers/gif_recorder.gd")
 const FlashView := preload("res://game/views/flash_view.gd")
 const EffectLibrary := preload("res://game/views/effect_library.gd")
@@ -197,6 +198,10 @@ var console: PanelContainer
 var map_overlay: Control = null
 var hitboxes: Node2D
 var hud_stack: VBoxContainer
+## Seam B (sl-0109): the short top-right hp/mana stack.
+var bars_stack: VBoxContainer
+## Seam B (sl-0106): the read-only character sheet + quest log panel.
+var char_sheet: PanelContainer = null
 var _console_events := "off"
 ## §2.10 tester-profile gate (M7): tester exports carry the custom
 ## feature tag "tester" (export preset) and lose every sim-mutating dev
@@ -269,9 +274,22 @@ func _process(_delta: float) -> void:
 	if not typing and view_clock != null and Input.is_action_just_pressed("interp_toggle"):
 		view_clock.interp_enabled = not view_clock.interp_enabled
 		print("render interpolation: ", "ON" if view_clock.interp_enabled else "OFF (snap)")
-	if not typing and options_menu != null and Input.is_action_just_pressed("options_toggle"):
-		options_menu.toggle()
-		_refresh_hints()
+	# Seam B (sl-0109): pause + options = ONE menu on BOTH O and Esc.
+	# The driver still owns the pause bit (CORE-31: pause always legal,
+	# pause_locked owners keep priority); the menu rides pause_changed.
+	if (
+		not typing
+		and options_menu != null
+		and driver != null
+		and not driver.pause_locked
+		and Input.is_action_just_pressed("options_toggle")
+	):
+		driver.paused = not driver.paused
+		driver.pause_changed.emit(driver.paused)
+	# Seam B (sl-0106): the character sheet + quest log on C [T] —
+	# read-only, never pauses.
+	if not typing and char_sheet != null and Input.is_action_just_pressed("char_sheet"):
+		char_sheet.toggle()
 	if not typing and density_meter != null and Input.is_action_just_pressed("density_toggle"):
 		density_meter.visible = not density_meter.visible
 	# One-key reseeding reset (§2.10): next seed persisted + logged, full
@@ -364,16 +382,20 @@ func _process(_delta: float) -> void:
 		_set_speed(snappedf(cur - 0.1, 0.1))
 	elif dev_tools and not typing and Input.is_action_just_pressed("debug_speed_up"):
 		_set_speed(snappedf(cur + 0.1, 0.1))
-	speed_label.text = (
-		"%d fps   spikes %d   speed %.1f t/s%s%s"
-		% [
-			Engine.get_frames_per_second(),
-			driver.spike_count,
-			cur,
-			"   REPLAY-DIRTY" if world.replay_dirty else "",
-			"" if dev_tools else "   " + BuildInfo.BUILD_ID,
-		]
-	)
+	# Seam B (sl-0109): the debug readout tucks behind a toggle [T]
+	# (options row; default off — the countryside is not a profiler).
+	speed_label.visible = bool(Config.get_setting("ui", "debug_line", false))
+	if speed_label.visible:
+		speed_label.text = (
+			"%d fps   spikes %d   speed %.1f t/s%s%s"
+			% [
+				Engine.get_frames_per_second(),
+				driver.spike_count,
+				cur,
+				"   REPLAY-DIRTY" if world.replay_dirty else "",
+				"" if dev_tools else "   " + BuildInfo.BUILD_ID,
+			]
+		)
 	var p: RefCounted = world.players[0]
 	autofire_icon.texture = _af_on_tex if p.autofire_on else _af_off_tex
 	# Bars read the player's real maxes (class curves move them —
@@ -606,6 +628,8 @@ func _apply_ui_scale(k: int) -> void:
 	th.default_font_size = 10 * k
 	for c: Control in [
 		hud_stack,
+		bars_stack,
+		char_sheet,
 		autofire_icon,
 		weapon_label,
 		rec_label,
@@ -620,6 +644,9 @@ func _apply_ui_scale(k: int) -> void:
 	hp_bar.custom_minimum_size = Vector2(64.0 * k, 8.0 * k)
 	mana_bar.custom_minimum_size = Vector2(64.0 * k, 8.0 * k)
 	autofire_icon.scale = Vector2(float(k), float(k))
+	# Seam B: the corner minimap sits UNDER the top-right bars [T].
+	if map_overlay != null:
+		map_overlay.corner_top_inset = 4.0 + (8.0 * 2.0 + 4.0) * k + 4.0
 
 
 func _apply_crosshair_scale() -> void:
@@ -740,7 +767,8 @@ func _refresh_hints() -> void:
 	var parts: Array[String] = []
 	for entry: Array in [
 		["interact", "interact"],
-		["options_toggle", "options"],
+		["char_sheet", "sheet"],
+		["options_toggle", "menu"],
 		["interp_toggle", "interp"],
 		["debug_speed_lowest", "spd 3.0"],
 		["debug_speed_baseline", "spd 4.0"],
@@ -1263,11 +1291,20 @@ func _ready() -> void:
 	mana_bar.custom_minimum_size = Vector2(64.0, 8.0)
 	ability_label = Label.new()
 	loot_label = Label.new()
+	# Seam B (sl-0109, the first Green-walk feedback): hp+mana are a
+	# SHORT top-right stack (Law 1: the corner is FOR this — never
+	# over threat near the player); the text readouts stay bottom-left.
+	bars_stack = VBoxContainer.new()
+	bars_stack.add_theme_constant_override("separation", 2)
+	bars_stack.add_child(hp_bar)
+	bars_stack.add_child(mana_bar)
+	bars_stack.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	bars_stack.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	bars_stack.offset_right = -4.0
+	bars_stack.offset_top = 4.0
 	hud_stack = VBoxContainer.new()
 	hud_stack.add_theme_constant_override("separation", 2)
 	hud_stack.add_child(ability_label)
-	hud_stack.add_child(hp_bar)
-	hud_stack.add_child(mana_bar)
 	hud_stack.add_child(loot_label)
 	hud_stack.add_child(speed_label)
 	hud_stack.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
@@ -1296,6 +1333,7 @@ func _ready() -> void:
 	var hud := CanvasLayer.new()
 	hud.add_child(pause_label)
 	hud.add_child(hud_stack)
+	hud.add_child(bars_stack)
 	hud.add_child(autofire_icon)
 	hud.add_child(weapon_row)
 	hud.add_child(rec_label)
@@ -1318,6 +1356,12 @@ func _ready() -> void:
 		else:
 			map_overlay.free()
 			map_overlay = null
+	# Seam B (sl-0106): the character sheet + quest log — read-only,
+	# both profiles, under the options/recap layers.
+	char_sheet = CharacterSheet.new()
+	char_sheet.world = world
+	char_sheet.character = character
+	hud.add_child(char_sheet)
 	hud.add_child(options_menu)
 	recap_panel = RecapPanel.new()
 	hud.add_child(recap_panel)
@@ -1328,7 +1372,15 @@ func _ready() -> void:
 	add_child(hud)
 	_apply_crosshair_scale()
 	get_window().size_changed.connect(_apply_crosshair_scale)
-	driver.pause_changed.connect(func(p: bool) -> void: pause_label.visible = p)
+	# Seam B (sl-0109): the menu RIDES pause — Esc (the driver's own
+	# pause key) and O land in the same place; closing resumes.
+	driver.pause_changed.connect(
+		func(p: bool) -> void:
+			pause_label.visible = p
+			if options_menu.visible != p:
+				options_menu.toggle()
+			_refresh_hints()
+	)
 	options_menu.add_button_row(
 		"ability",
 		["Nova", "Quickdraw", "Rune"],
@@ -1427,6 +1479,13 @@ func _ready() -> void:
 		func(i: int) -> void:
 			Config.set_setting("dev", "scenario", scenario_paths[i])
 			print("scenario persisted: %s; applies on reset (T)" % scenario_names[i])
+	)
+	# Seam B (sl-0109): the fps/spikes readout behind a toggle [T].
+	options_menu.add_cycle_row(
+		"debug readout",
+		["off", "on"],
+		1 if bool(Config.get_setting("ui", "debug_line", false)) else 0,
+		func(i: int) -> void: Config.set_setting("ui", "debug_line", i == 1)
 	)
 	var ui_scale := clampi(int(Config.get_setting("ui", "scale", 1)), 1, 2)
 	options_menu.add_cycle_row(
