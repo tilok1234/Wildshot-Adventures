@@ -140,9 +140,15 @@ func _run() -> void:
 			Rect2i(Vector2i.ZERO, Vector2i(screen.get_width(), screen.get_height()))
 		)
 		var crop := screen.get_region(rect)
-		var s := float(crop.get_width()) / 640.0
-		var got_panel := crop.get_pixel(int(170.0 * s) + 1, int(340.0 * s) + 1)
-		var got_bg := crop.get_pixel(int(20.0 * s) + 1, int(20.0 * s) + 1)
+		# The viewport-stretch content centers inside the client area
+		# with letterbox bars at non-16:9 — map base px through the
+		# integer scale PLUS the centering offset.
+		var s := floorf(minf(crop.get_width() / 640.0, crop.get_height() / 360.0))
+		var off := Vector2i(
+			int((crop.get_width() - 640.0 * s) * 0.5), int((crop.get_height() - 360.0 * s) * 0.5)
+		)
+		var got_panel := crop.get_pixel(off.x + int(170.0 * s) + 1, off.y + int(340.0 * s) + 1)
+		var got_bg := crop.get_pixel(off.x + int(20.0 * s) + 1, off.y + int(20.0 * s) + 1)
 		if _off(got_panel, sig_panel) or _off(got_bg, sig_bg):
 			printerr("ui_family_probe: desktop crop signature mismatch — NOT written")
 		else:

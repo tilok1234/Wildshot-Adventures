@@ -69,9 +69,10 @@ if ctor_lines:
         fail("DebugConsole.new() is not directly inside an `if dev_tools:` block")
 
 # 2b. Dev map overlay (sl-0065): console-class construction contract.
-#     Exactly three sites: main's gated block + the two dev_map test
-#     harnesses (tests/* is excluded from the tester artifact — the
-#     exclusion filter itself is pinned in section 9 below).
+#     Exactly four sites: main's gated block + the two dev_map test
+#     harnesses + the sl-0121 quest-marker probe (tests/* is excluded
+#     from the tester artifact — the exclusion filter itself is pinned
+#     in section 9 below).
 mo_all = sorted(
     (p.relative_to(REPO), text.count("MapOverlay.new()"))
     for p, text in repo_gd.items()
@@ -81,6 +82,7 @@ if mo_all != [
     (Path("game/main.gd"), 1),
     (Path("tests/dev_map/dev_map_test.gd"), 1),
     (Path("tests/dev_map/map_overlay_probe.gd"), 1),
+    (Path("tests/quest_pull/quest_pull_probe.gd"), 1),
 ]:
     fail(f"MapOverlay construction sites drifted: {mo_all}")
 mo_lines = [i for i, l in enumerate(main_lines) if "MapOverlay.new()" in l]

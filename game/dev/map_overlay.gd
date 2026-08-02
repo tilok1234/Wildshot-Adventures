@@ -98,7 +98,68 @@ func _draw() -> void:
 		rect = Rect2(Vector2(vp.x - sz.x - CORNER_INSET.x, corner_top_inset).floor(), sz)
 		draw_texture_rect(_tex, rect, false, Color(1.0, 1.0, 1.0, 0.8))
 		draw_rect(rect, Color(0.0, 0.0, 0.0, 0.6), false, 1.0)
+	_draw_markers(rect)
 	_draw_player(rect)
+
+
+## sl-0121 quest markers: the active VISIT objective (amber diamond)
+## and every complete errand's turn-in giver (green ring), drawn with
+## the player-dot mapping chain so markers can never drift off the
+## dot's math. Shape-first (CORE-50): diamond vs ring, never color
+## alone. KILL/COLLECT quests carry no objective cell in data — no
+## marker is the honest answer (recorded gap, planning-side).
+static func quest_markers(world: RefCounted) -> Array:
+	var out: Array = []
+	if world == null or world.players.is_empty():
+		return out
+	var p: RefCounted = world.players[0]
+	if p.class_id < 0:
+		return out
+	for qi in world.quest_defs.size():
+		if (p.quests_taken_mask & (1 << qi)) == 0:
+			continue
+		if (p.quests_done_mask & (1 << qi)) != 0:
+			continue
+		var q: Resource = world.quest_defs[qi]
+		var prog: int = p.quest_progress_arr[qi] if qi < p.quest_progress_arr.size() else 0
+		if prog >= int(q.count):
+			out.append({"cell": Vector2(q.giver_cell), "turn_in": true})
+		elif int(q.kind) == 1:
+			out.append({"cell": Vector2(q.target_cell), "turn_in": false})
+	return out
+
+
+func _draw_markers(rect: Rect2) -> void:
+	if world == null or _tex == null:
+		return
+	var tex_size := Vector2i(_tex.get_width(), _tex.get_height())
+	var disp_scale := rect.size / Vector2(tex_size)
+	var r := 5.0 if mode == Mode.FULL else 3.0
+	for m: Dictionary in quest_markers(world):
+		var cell: Vector2 = m.cell
+		var px := rect.position + tile_to_map_px(cell, grid_size, tex_size) * disp_scale
+		if bool(m.turn_in):
+			draw_arc(px, r, 0.0, TAU, 16, Color(0.0, 0.0, 0.0, 0.9), 3.5)
+			draw_arc(px, r, 0.0, TAU, 16, Color(0.55, 1.0, 0.62), 1.5)
+		else:
+			var halo := PackedVector2Array(
+				[
+					px + Vector2(0, -r - 1.5),
+					px + Vector2(r + 1.5, 0),
+					px + Vector2(0, r + 1.5),
+					px + Vector2(-r - 1.5, 0),
+				]
+			)
+			draw_colored_polygon(halo, Color(0.0, 0.0, 0.0, 0.9))
+			var pts := PackedVector2Array(
+				[
+					px + Vector2(0, -r),
+					px + Vector2(r, 0),
+					px + Vector2(0, r),
+					px + Vector2(-r, 0),
+				]
+			)
+			draw_colored_polygon(pts, Color(1.0, 0.78, 0.25))
 
 
 func _draw_player(rect: Rect2) -> void:

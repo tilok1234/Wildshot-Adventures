@@ -17,6 +17,8 @@ const InputMapDefaults := preload("res://input/input_map_defaults.gd")
 const ReplayRecorder := preload("res://input/replay_recorder.gd")
 const OptionsMenu := preload("res://ui/options_menu.gd")
 const CharacterSheet := preload("res://ui/character_sheet.gd")
+const QuestTracker := preload("res://ui/quest_tracker.gd")
+const QuestGiverIcons := preload("res://game/views/quest_giver_icons.gd")
 const GifRecorder := preload("res://game/drivers/gif_recorder.gd")
 const FlashView := preload("res://game/views/flash_view.gd")
 const EffectLibrary := preload("res://game/views/effect_library.gd")
@@ -218,6 +220,9 @@ var hud_stack: VBoxContainer
 var bars_stack: VBoxContainer
 ## Seam B (sl-0106): the read-only character sheet + quest log panel.
 var char_sheet: PanelContainer = null
+## sl-0121: the at-a-glance errand tracker (top-right, under the
+## bars/minimap stack [T]); the C sheet stays THE one log.
+var quest_tracker: Label = null
 var _console_events := "off"
 ## §2.10 tester-profile gate (M7): tester exports carry the custom
 ## feature tag "tester" (export preset) and lose every sim-mutating dev
@@ -479,30 +484,19 @@ func _process(_delta: float) -> void:
 			)
 		)
 	elif p.class_id >= 0:
-		# sl-0112: the HUD shows the errand COUNT + the first
-		# unfinished one; the full list is the quest log (seam B).
+		# sl-0121: the top-right TRACKER carries the at-a-glance
+		# errand lines now [T]; this readout keeps the bare count.
+		# The full log stays the C sheet.
 		var quest_part := ""
 		var carried := 0
-		var first_line := ""
 		for qi in world.quest_defs.size():
 			if (p.quests_taken_mask & (1 << qi)) == 0:
 				continue
 			if (p.quests_done_mask & (1 << qi)) != 0:
 				continue
 			carried += 1
-			if first_line.is_empty() and qi < p.quest_progress_arr.size():
-				var aq: Resource = world.quest_defs[qi]
-				first_line = (
-					"[%s] %s (%d/%d)"
-					% [
-						String(aq.reason),
-						String(aq.text),
-						p.quest_progress_arr[qi],
-						int(aq.count),
-					]
-				)
 		if carried > 0:
-			quest_part = "\nerrands %d — %s" % [carried, first_line]
+			quest_part = "\nerrands %d" % carried
 		(
 			loot_label
 			. set_text(
@@ -689,6 +683,7 @@ func _apply_ui_scale(k: int) -> void:
 		hud_stack,
 		bars_stack,
 		char_sheet,
+		quest_tracker,
 		autofire_icon,
 		weapon_label,
 		rec_label,
@@ -704,8 +699,13 @@ func _apply_ui_scale(k: int) -> void:
 	mana_bar.custom_minimum_size = Vector2(64.0 * k, 8.0 * k)
 	autofire_icon.scale = Vector2(float(k), float(k))
 	# Seam B: the corner minimap sits UNDER the top-right bars [T].
+	var stack_top := 4.0 + (8.0 * 2.0 + 4.0) * k + 4.0
 	if map_overlay != null:
-		map_overlay.corner_top_inset = 4.0 + (8.0 * 2.0 + 4.0) * k + 4.0
+		map_overlay.corner_top_inset = stack_top
+	# sl-0121: the errand tracker rides beneath the minimap slot when
+	# the overlay exists (dev), else directly under the bars [T].
+	if quest_tracker != null:
+		quest_tracker.set_top(stack_top + (96.0 + 4.0 if map_overlay != null else 0.0))
 
 
 func _apply_crosshair_scale() -> void:
@@ -1346,6 +1346,14 @@ func _ready() -> void:
 	hp_bars.clock = view_clock
 	add_child(hp_bars)
 
+	# sl-0121: overhead giver icons — two states over the authored
+	# giver cells (pure view; rift arenas carry no givers; the model
+	# is inert for legacy-lane players, so labs/proofs draw nothing).
+	if not _scenario_rift:
+		var giver_icons := QuestGiverIcons.new()
+		giver_icons.world = world
+		add_child(giver_icons)
+
 	var pv := ProjectileView.new()
 	pv.world = world
 	pv.clock = view_clock
@@ -1546,6 +1554,9 @@ func _ready() -> void:
 	char_sheet.world = world
 	char_sheet.character = character
 	hud.add_child(char_sheet)
+	quest_tracker = QuestTracker.new()
+	quest_tracker.world = world
+	hud.add_child(quest_tracker)
 	hud.add_child(options_menu)
 	recap_panel = RecapPanel.new()
 	hud.add_child(recap_panel)
