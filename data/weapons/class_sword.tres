@@ -3,21 +3,21 @@
 [ext_resource type="Script" path="res://data/weapon_frame.gd" id="1"]
 [ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
 
-; docs/22 slow_heavy frame (slice S0): 0.6 volleys/s (cadence 100), a
-; short 3-blade arc — arc owns clumps (block-3 pattern matrix: one
-; target eats one blade at the full tier value; a clump eats three).
-; Per-shot damage 22 documents T1; the CLASS LANE reads the
-; balance_frame.json tier table (22/30/42/60/84), not this field —
-; the stat-frame test pins the two equal at T1. Speed/reach/radius
-; are handling flavor [P]: reach ~2.9 tiles = the short/awkward that
-; earns the +10% budget.
+; docs/22 slow_heavy frame (slice S0; sl-0120 x1.25 cadence pass):
+; 0.75 volleys/s (cadence 80), a short 3-blade arc — arc owns clumps
+; (block-3 pattern matrix: one target eats one blade at the full tier
+; value; a clump eats three). Per-shot damage 17 documents T1; the
+; CLASS LANE reads the balance_frame.json tier table
+; (17/24/34/48/67), not this field — the stat-frame test pins the two
+; equal at T1. Speed/reach/radius are handling flavor [P]: reach ~2.9
+; tiles = the short/awkward that earns the +10%-ish budget.
 
 [sub_resource type="Resource" id="shot_l"]
 script = ExtResource("2")
 angle_offset_deg = -25.0
 speed = 10.0
 radius = 0.15
-damage = 22
+damage = 17
 ttl_ticks = 15
 program = 0
 prog_a = 0.0
@@ -31,7 +31,7 @@ script = ExtResource("2")
 angle_offset_deg = 0.0
 speed = 10.0
 radius = 0.15
-damage = 22
+damage = 17
 ttl_ticks = 15
 program = 0
 prog_a = 0.0
@@ -45,7 +45,7 @@ script = ExtResource("2")
 angle_offset_deg = 25.0
 speed = 10.0
 radius = 0.15
-damage = 22
+damage = 17
 ttl_ticks = 15
 program = 0
 prog_a = 0.0
@@ -59,6 +59,6 @@ script = ExtResource("1")
 id = &"class_sword"
 display_name = "Sword"
 pattern_id = 4
-cadence_ticks = 100
+cadence_ticks = 80
 shots = Array[Resource]([SubResource("shot_l"), SubResource("shot_c"), SubResource("shot_r")])
 archetype = &"slow_heavy"

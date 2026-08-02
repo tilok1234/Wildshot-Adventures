@@ -32,9 +32,9 @@
     "budget_step": 1.4,
     "frame_band": 0.1,
     "frames": {
-      "slow_heavy": { "shots_per_sec": 0.6, "damage": [22, 30, 42, 60, 84], "band_note": "short/awkward earns up to +10%" },
-      "fast_light": { "shots_per_sec": 2.0, "damage": [6, 8, 12, 16, 23], "band_note": "the budget-exact reference frame" },
-      "long_reach": { "shots_per_sec": 1.2, "damage": [9, 13, 18, 25, 35], "band_note": "range/comfort pays up to -10%" }
+      "slow_heavy": { "shots_per_sec": 0.75, "damage": [17, 24, 34, 48, 67], "band_note": "short/awkward earns up to +10% (sl-0120 x1.25 cadence pass)" },
+      "fast_light": { "shots_per_sec": 2.5, "damage": [5, 7, 10, 13, 18], "band_note": "the budget-exact reference frame (sl-0120 x1.25 cadence pass)" },
+      "long_reach": { "shots_per_sec": 1.5, "damage": [8, 11, 15, 20, 28], "band_note": "range/comfort pays up to -10%; T1-T3 sit nearer 1.0 by integer granularity (sl-0120)" }
     }
   },
   "armor_slot": {

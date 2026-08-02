@@ -154,23 +154,24 @@ func _init() -> void:
 	check(bp2.level == 30 and bp2.xp == 0, "cap 30 holds; xp stops accruing")
 	bp2.level = 2
 
-	# 5. Tier-table weapon damage (blocks 3/4) + the T1 drift pin.
-	check(Progress.shot_damage(bow, bp2, 6) == 6, "bow T1 = 6 (table, not multiplier)")
+	# 5. Tier-table weapon damage (blocks 3/4) + the T1 drift pin
+	# (sl-0120 x1.25 cadence pass tables).
+	check(Progress.shot_damage(bow, bp2, 5) == 5, "bow T1 = 5 (table, not multiplier)")
 	bp2.weapon_tiers[0] = 3
-	check(Progress.shot_damage(bow, bp2, 6) == 12, "bow T3 = 12")
+	check(Progress.shot_damage(bow, bp2, 5) == 10, "bow T3 = 10")
 	bp2.weapon_tiers[0] = 5
-	check(Progress.shot_damage(bow, bp2, 6) == 23, "bow T5 = 23")
+	check(Progress.shot_damage(bow, bp2, 5) == 18, "bow T5 = 18")
 	bp2.weapon_tiers[0] = 6
-	check(Progress.shot_damage(bow, bp2, 6) == 23, "tier 6 clamps to the T5 table")
+	check(Progress.shot_damage(bow, bp2, 5) == 18, "tier 6 clamps to the T5 table")
 	bp2.weapon_tiers[0] = 1
 	bp2.damage_mod = 4
-	check(Progress.shot_damage(bow, bp2, 6) == 10, "gear damage mod adds flat")
+	check(Progress.shot_damage(bow, bp2, 5) == 9, "gear damage mod adds flat")
 	bp2.damage_mod = 0
-	check(Progress.shot_damage(sword, sp, 22) == 22, "sword T1 = 22")
+	check(Progress.shot_damage(sword, sp, 17) == 17, "sword T1 = 17")
 	sp.weapon_tiers[0] = 5
-	check(Progress.shot_damage(sword, sp, 22) == 84, "sword T5 = 84")
+	check(Progress.shot_damage(sword, sp, 17) == 67, "sword T5 = 67")
 	sp.weapon_tiers[0] = 1
-	check(Progress.shot_damage(staff, tp, 9) == 9, "staff T1 = 9")
+	check(Progress.shot_damage(staff, tp, 8) == 8, "staff T1 = 8")
 	var wt_frames: Dictionary = f.weapon_tiers.frames
 	for pair: Array in [
 		["res://data/weapons/class_sword.tres", "slow_heavy"],
@@ -199,18 +200,18 @@ func _init() -> void:
 	var fire_world: RefCounted = _class_world("bow", 9)
 	var fp: RefCounted = fire_world.players[0]
 	fire_world.step([_fire_frame()])
-	check(fp.next_fire_tick == 30, "cadence identity at attack_speed 100")
+	check(fp.next_fire_tick == 24, "cadence identity at attack_speed 100")
 	var slot := _first_active_slot(fire_world)
 	check(slot >= 0, "identity fire spawned a shot")
 	var ttl_identity: int = fire_world.projectiles.ttl[slot]
-	check(fire_world.projectiles.damage[slot] == 6, "spawned shot carries table damage")
+	check(fire_world.projectiles.damage[slot] == 5, "spawned shot carries table damage")
 	check(fire_world.projectiles.pattern_id[slot] == 5, "bow pattern id 5")
 	var fire2: RefCounted = _class_world("bow", 9)
 	var fp2: RefCounted = fire2.players[0]
 	fp2.attack_speed_stat = 150
 	fp2.range_stat = 150
 	fire2.step([_fire_frame()])
-	check(fp2.next_fire_tick == 20, "attack_speed 150 -> cadence 20")
+	check(fp2.next_fire_tick == 16, "attack_speed 150 -> cadence 16")
 	var slot2 := _first_active_slot(fire2)
 	check(slot2 >= 0, "scaled fire spawned a shot")
 	var ttl_scaled: int = fire2.projectiles.ttl[slot2]

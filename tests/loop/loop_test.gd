@@ -265,9 +265,9 @@ func _init() -> void:
 	check(
 		(
 			ItemText.drop_line(cw, {"kind": SimWorld.DROP_WEAPON, "a": 0, "b": 1})
-			== "T1 Bow — 6 dmg @ 2.0/s"
+			== "T1 Bow — 5 dmg @ 2.5/s"
 		),
-		"class weapon line exact (tier table + cadence)"
+		"class weapon line exact (tier table + cadence, sl-0120 tables)"
 	)
 	check(
 		ItemText.drop_line(u, {"kind": SimWorld.DROP_WEAPON, "a": 0, "b": 2}) == "T2 Longbolt",
