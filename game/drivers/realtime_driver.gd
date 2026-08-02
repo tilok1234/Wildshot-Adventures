@@ -35,6 +35,12 @@ var paused: bool = false
 ## pause until the tester presses start (M8). Single-player pause law
 ## (CORE-31) is untouched: the sim stays fully frozen either way.
 var pause_locked: bool = false
+## Menu pass (sl-0145): ESC-CLOSES-MENU-FIRST. When set and it
+## returns true, a menu consumed the press (something closed) and the
+## pause bit stays. Pause remains always legal on the next press —
+## CORE-31 untouched (this gates one keypress's MEANING, never the
+## ability to pause).
+var esc_intercept: Callable = Callable()
 ## Slow motion = driver divisor (§2.1): wall time is divided before the
 ## accumulator, dt never changes, so slow-mo runs stay replay-valid.
 var time_divisor: float = 1.0
@@ -55,8 +61,11 @@ var _accumulator: float = 0.0
 
 func _process(delta: float) -> void:
 	if not pause_locked and Input.is_action_just_pressed("pause_toggle"):
-		paused = not paused
-		pause_changed.emit(paused)
+		if esc_intercept.is_valid() and bool(esc_intercept.call()):
+			pass  # a menu closed — the press is spent (sl-0145)
+		else:
+			paused = not paused
+			pause_changed.emit(paused)
 	if paused or world == null:
 		return
 	if delta * 1000.0 > SPIKE_MS:

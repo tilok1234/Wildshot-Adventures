@@ -66,9 +66,12 @@ func _run() -> void:
 	root.add_child(cam)
 	var hud := CanvasLayer.new()
 	get_root().add_child(hud)
-	var panel: PanelContainer = VendorPanel.new()
+	var panel: Control = VendorPanel.new()
 	panel.world = world
 	panel.theme = load("res://ui/theme.tres")
+	# Menu pass (sl-0145): stations open on F now — the probe stands
+	# in for the press.
+	panel.station_open()
 	hud.add_child(panel)
 
 	await process_frame

@@ -176,6 +176,19 @@ func _set_tab(tab: int) -> void:
 	_refresh()
 
 
+## Esc-first support (sl-0145): the drop confirm closes before the
+## menu itself; false = nothing was open here.
+func close_topmost() -> bool:
+	if not visible:
+		return false
+	if _confirm != null and _confirm.visible:
+		_confirm.visible = false
+		_pending_drop_op = -1
+		return true
+	visible = false
+	return true
+
+
 ## Main polls this: gameplay input suppresses while the mouse rides
 ## the open menu, and ALWAYS while a confirm decision is up (a modal
 ## click must never also fire the weapon).

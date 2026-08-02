@@ -64,7 +64,7 @@ func _run() -> void:
 	root.add_child(cam)
 	var hud := CanvasLayer.new()
 	get_root().add_child(hud)
-	var panel: PanelContainer = LootBagPanel.new()
+	var panel: Control = LootBagPanel.new()
 	panel.world = world
 	panel.theme = load("res://ui/theme.tres")
 	hud.add_child(panel)

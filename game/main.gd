@@ -54,6 +54,7 @@ const BuildInfo := preload("res://build_info.gd")
 const HitboxView := preload("res://game/views/hitbox_view.gd")
 const SimEvents := preload("res://sim/events.gd")
 const ItemText := preload("res://game/views/item_text.gd")
+const BagStep := preload("res://sim/systems/bag_step.gd")
 
 ## S1 seam 4 (sl-0104): dungeon doors — a LIVING character in a
 ## persistent world walking onto a door cell transitions via the
@@ -229,11 +230,11 @@ var quest_offer: Control = null
 ## bars/minimap stack [T]); the C sheet stays THE one log.
 var quest_tracker: Label = null
 ## sl-0129: the walk-over loot-bag panel (bottom-center).
-var loot_panel: PanelContainer = null
+var loot_panel: Control = null
 ## sl-0130: the walk-up bank panel (settlement stash).
-var bank_panel: PanelContainer = null
+var bank_panel: Control = null
 ## sl-0131: the walk-up vendor panel.
-var vendor_panel: PanelContainer = null
+var vendor_panel: Control = null
 var _console_events := "off"
 ## §2.10 tester-profile gate (M7): tester exports carry the custom
 ## feature tag "tester" (export preset) and lose every sim-mutating dev
@@ -327,29 +328,43 @@ func _process(_delta: float) -> void:
 		and not driver.pause_locked
 		and Input.is_action_just_pressed("options_toggle")
 	):
-		# Menu pass: Esc/O close the open offer dialogue FIRST (the
-		# sl-0145 Esc-first law arriving for the one open dialogue;
-		# the full menu-first generalization lands with the station
-		# seam). Later == close — the quest stays with the giver.
-		if quest_offer != null and quest_offer.visible:
-			quest_offer.dismiss()
-		else:
+		# Menu pass (sl-0145): O closes the topmost open menu FIRST —
+		# same law as Esc (the driver's esc_intercept covers the
+		# pause key; this covers O). Nothing open = the pause menu.
+		if not _close_topmost_menu():
 			driver.paused = not driver.paused
 			driver.pause_changed.emit(driver.paused)
 	# Menu pass (sl-0150/0152): C opens THE menu (two tabs, last-used
 	# tab); the quest_log action (L [T]) deep-links the log tab.
-	# Never pauses.
+	# Never pauses. Opening any menu closes the others (one surface).
 	if not typing and char_sheet != null and Input.is_action_just_pressed("char_sheet"):
 		char_sheet.toggle()
+		if char_sheet.visible:
+			_menus_exclusive(char_sheet)
 	if not typing and char_sheet != null and Input.is_action_just_pressed("quest_log"):
 		char_sheet.open_tab(1)
-	# Menu pass (sl-0144, F-as-confirm [T]): while the offer dialogue
-	# is open, the interact press IS the accept decision. The same
-	# press also reaches the sim (recorded) — turn-in none, the
-	# re-offer event lands on an already-open window and no-ops.
-	if not typing and quest_offer != null and quest_offer.visible:
-		if Input.is_action_just_pressed("interact"):
+		if char_sheet.visible:
+			_menus_exclusive(char_sheet)
+	# Menu pass F router (sl-0144/0145/0147): while the offer dialogue
+	# is open the press IS the accept decision; otherwise STATIONS
+	# answer it — bank/vendor menus open on F, never walk-over (loot
+	# bags stay walk-over by the designer's own word). The same press
+	# still reaches the sim (recorded): pickups, turn-ins, offers and
+	# rift casts resolve there; seam H walks the whole surface.
+	if not typing and Input.is_action_just_pressed("interact"):
+		if quest_offer != null and quest_offer.visible:
 			quest_offer.confirm_accept()
+		elif world != null and not world.players.is_empty():
+			var p0: RefCounted = world.players[0]
+			if p0.class_id >= 0 and not p0.dead:
+				if bank_panel != null and BagStep.at_bank(world, p0):
+					bank_panel.station_toggle()
+					if bank_panel.is_open():
+						_menus_exclusive(bank_panel)
+				elif vendor_panel != null and BagStep.nearest_vendor(world, p0) >= 0:
+					vendor_panel.station_toggle()
+					if vendor_panel.is_open():
+						_menus_exclusive(vendor_panel)
 	if not typing and density_meter != null and Input.is_action_just_pressed("density_toggle"):
 		density_meter.visible = not density_meter.visible
 	# One-key reseeding reset (§2.10): next seed persisted + logged, full
@@ -604,6 +619,7 @@ func _process(_delta: float) -> void:
 				# dialogue opens; accept is the recorded-op decision.
 				if quest_offer != null:
 					quest_offer.offer(int(lev.quest))
+					_menus_exclusive(quest_offer)
 			SimEvents.Type.GATHERED:
 				_show_toast("foraged +%d gold" % int(lev.gold))
 			SimEvents.Type.CAST_COMPLETE:
@@ -872,6 +888,40 @@ func _console_verdict(tokens: PackedStringArray) -> void:
 			% [" [PROVISIONAL: runtime edits this run]" if provisional else "", vtype, source, text]
 		)
 	)
+
+
+## ESC-CLOSES-MENU-FIRST (sl-0145): one close per press, topmost
+## first — the sheet's drop confirm, then the offer dialogue, then
+## the menu itself, then open stations. False = nothing was open
+## (the press means pause). The walk-over loot readout is exempt
+## (not a menu). Fed to the driver as esc_intercept; the O handler
+## calls it too.
+func _close_topmost_menu() -> bool:
+	if char_sheet != null and char_sheet.close_topmost():
+		return true
+	if quest_offer != null and quest_offer.visible:
+		quest_offer.dismiss()
+		return true
+	if bank_panel != null and bank_panel.is_open():
+		bank_panel.station_close()
+		return true
+	if vendor_panel != null and vendor_panel.is_open():
+		vendor_panel.station_close()
+		return true
+	return false
+
+
+## ONE SURFACE AT A TIME (menu pass standing rule): opening any menu
+## closes the others; pass the one to keep.
+func _menus_exclusive(keep: Control) -> void:
+	if char_sheet != null and char_sheet != keep and char_sheet.visible:
+		char_sheet.visible = false
+	if quest_offer != null and quest_offer != keep and quest_offer.visible:
+		quest_offer.dismiss()
+	if bank_panel != null and bank_panel != keep and bank_panel.is_open():
+		bank_panel.station_close()
+	if vendor_panel != null and vendor_panel != keep and vendor_panel.is_open():
+		vendor_panel.station_close()
 
 
 func _refresh_hints() -> void:
@@ -1614,6 +1664,11 @@ func _ready() -> void:
 	if driver != null and driver.sampler != null:
 		quest_offer.bag_op_sink = Callable(driver.sampler, "queue_bag_op")
 	hud.add_child(quest_offer)
+	# sl-0145: the pause key runs menu-first through the driver (the
+	# driver keeps the CORE-31 pause bit; this gates one press's
+	# MEANING, never the ability to pause).
+	if driver != null:
+		driver.esc_intercept = Callable(self, "_close_topmost_menu")
 	# sl-0116/0128: pane clicks queue RECORDED bag ops on the sampler —
 	# the sim mutation rides the input stream, replay-honest.
 	if driver != null and driver.sampler != null:
