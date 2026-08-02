@@ -64,4 +64,3 @@ func _run() -> void:
 	shot.save_png(ProjectSettings.globalize_path("res://reports/rift_split_audit.png"))
 	print("rift_split_probe: wrote reports/rift_split_audit.png")
 	quit(0)
-

@@ -214,3 +214,6 @@ timestamp,action,note
 2026-08-02T12:11:20,start,""
 2026-08-02T12:11:20,note,"docs staleness sweep + handoff rewrite (designer ask)"
 2026-08-02T12:22:10,note,"docs sweep done: HANDOFF rewritten (post-S1 + interact/UI era, +gotchas 33/34), README/ledger#16/queue banner/CORE50 era note/runbook/reference-pass all truthed"
+2026-08-02T12:22:40,stop,""
+2026-08-02T12:23:40,start,""
+2026-08-02T12:23:40,note,"CI lint red (gotcha 26): rift_split_probe.gd unformatted since sl-0105 - trailing blank line; formatted + pushed"
