@@ -149,7 +149,10 @@ func _ready() -> void:
 	_backdrop_node = Sprite2D.new()
 	_backdrop_node.texture = _backdrop
 	_backdrop_node.centered = false
-	_backdrop_node.position = Vector2(0.75, 0.75) * TILE
+	# sl-0125: 1-tile skirt beyond the walls — at the two-thirds
+	# ratio the fitted camera sees past the interior sides, and the
+	# galaxy must reach the pane edge, never void.
+	_backdrop_node.position = Vector2(-1.0, -1.0) * TILE
 	_backdrop_node.z_index = 2
 	add_child(_backdrop_node)
 	_dress = Node2D.new()
@@ -175,8 +178,8 @@ func _process(_delta: float) -> void:
 ## The interior + letterbox backdrop: vertical gradient, soft wisps,
 ## point stars (seeded per run — deterministic per world, view-only).
 func _make_backdrop(b: Dictionary) -> ImageTexture:
-	var w := int((float(arena_w) - 1.5) * TILE)
-	var h := int((float(arena_h) - 1.5) * TILE)
+	var w := int((float(arena_w) + 2.0) * TILE)
+	var h := int((float(arena_h) + 2.0) * TILE)
 	var img := Image.create(w, h, false, Image.FORMAT_RGBA8)
 	var mid: Color = b.mid
 	var deep: Color = b.deep

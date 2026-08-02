@@ -99,6 +99,14 @@ func _init() -> void:
 		quit(1)
 		return
 
+	# sl-0125 starhook split ratio ([ui] section): the options row's
+	# round-trip.
+	config.set_setting("ui", "rift_split", 1)
+	if int(config.get_setting("ui", "rift_split", -1)) != 1:
+		printerr("FAIL: ui/rift_split did not persist")
+		quit(1)
+		return
+
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(TEST_PATH))
 	config.free()
 	print(

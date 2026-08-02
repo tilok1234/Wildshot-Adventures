@@ -13,6 +13,10 @@ const LINE_SLACK := Color("dceaff")
 const LINE_STRAIN := Color("ff8c7a")
 
 var world: RefCounted = null
+## Live pane width, base-res px (sl-0125: the split ratio is
+## flippable — the body centers in whatever width the world pane
+## has, and the portal clamp keeps the line readable at 1/3).
+var pane_w := 320.0
 ## Portal offset from the caster's screen position, base-res px.
 var portal_offset := Vector2.ZERO
 var biome_rim := Color("b56cff")
@@ -40,10 +44,10 @@ func _tension() -> float:
 
 func _draw() -> void:
 	var t := int(world.tick) if world != null else 0
-	var body := Vector2(160.0, 180.0)
+	var body := Vector2(pane_w * 0.5, 180.0)
 	var rod_tip := body + Vector2(6.0 * signf(portal_offset.x + 0.01), -12.0)
 	var portal := body + portal_offset
-	portal.x = clampf(portal.x, 12.0, 308.0)
+	portal.x = clampf(portal.x, 12.0, pane_w - 12.0)
 	portal.y = clampf(portal.y, 16.0, 344.0)
 	# Portal pulse: the rift breathes while the fight is on.
 	var pulse := 0.5 + 0.5 * sin(float(t) * 0.1)

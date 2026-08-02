@@ -174,6 +174,17 @@ var _rift_won := false
 var _rift_won_tick := 0
 const RIFT_WIN_LINGER_TICKS := 150
 const RIFT_BIOME_KEYS: Array[String] = ["nebula", "void", "comet"]
+## sl-0125: the world/galaxy split ratio is [T] and LIVE-FLIPPABLE —
+## an options cycle row (both profiles, [ui] rift_split persisted).
+## THE ARENA CELLS STAY IDENTICAL: only the pane anchors + the rift
+## camera's fit change; the interior always fills its pane (Law 1 by
+## construction at either ratio). The designer flips it in play and
+## rules; the INDEX amends when they pick.
+const RIFT_SPLIT_RATIOS: Array[float] = [0.5, 2.0 / 3.0]
+const RIFT_SPLIT_NAMES: Array = ["half & half", "two-thirds galaxy"]
+## Live refs for the re-anchor (empty outside rift scenarios).
+var _rift_panes := {}
+var _rift_cam: CameraRig = null
 ## The world frame captured at cast — the split-screen's world pane
 ## (presentation only; survives the scene reload).
 static var _rift_capture: Image = null
@@ -876,6 +887,46 @@ func _maybe_show_character_create(pl: Label) -> void:
 	)
 
 
+## sl-0125: apply the LIVE split ratio — pane anchors + the rift
+## camera's fit. THE ARENA CELLS STAY IDENTICAL; only the render
+## changes. Interior = 10x11 t (320x352 px) centered at (192, 208)
+## world-px in the 12x13 arena; zoom = min(pane_w/320, 360/352) so
+## the whole interior is ALWAYS inside the galaxy pane (Law 1 at
+## either ratio); the world pane keeps the line + body + portal
+## readable at 1/3 width (the overlay reads its live pane width).
+func _apply_rift_split() -> void:
+	if _rift_cam == null:
+		return
+	var idx := clampi(
+		int(Config.get_setting("ui", "rift_split", 0)), 0, RIFT_SPLIT_RATIOS.size() - 1
+	)
+	var r: float = RIFT_SPLIT_RATIOS[idx]
+	var world_frac := 1.0 - r
+	var pane_w := 640.0 * r
+	var zoom_v := minf(pane_w / 320.0, 360.0 / 352.0)
+	var pane_center_x := 640.0 - 320.0 * r
+	var cam_x := 192.0 - (pane_center_x - 320.0) / zoom_v
+	_rift_cam.setup_fixed(Vector2(cam_x, 208.0), zoom_v)
+	if _rift_panes.is_empty():
+		return
+	var wpane: TextureRect = _rift_panes.wpane
+	wpane.anchor_left = 0.0
+	wpane.anchor_right = world_frac
+	var overlay: Control = _rift_panes.overlay
+	overlay.anchor_left = 0.0
+	overlay.anchor_right = world_frac
+	overlay.pane_w = 640.0 * world_frac
+	var hold: Label = _rift_panes.hold
+	hold.anchor_left = 0.0
+	hold.anchor_right = world_frac
+	var title: Label = _rift_panes.title
+	title.anchor_left = world_frac
+	title.anchor_right = 1.0
+	var seam: ColorRect = _rift_panes.seam
+	seam.anchor_left = world_frac
+	seam.anchor_right = world_frac
+
+
 ## Fish display name from the balance frame's biome tables (sl-0115).
 func _rift_fish_name(biome: int, fish: int, rare: bool) -> String:
 	var biomes: Array = world.stat_frame.get("starhook", {}).get("biomes", [])
@@ -1074,13 +1125,15 @@ func _ready() -> void:
 	snag_logger.driver = driver
 	add_child(snag_logger)
 
-	# STARHOOK 50/50 split (sl-0115, prototype #2 — PRESENTATION ONLY):
-	# LEFT = the world at the moment of the cast (captured frame,
-	# dimmed; your body at the rift, the line sinking INTO it — the
-	# living overlay draws that half of the two-portal topology).
-	# RIGHT = the galaxy view (the live scene; the fixed rift camera
-	# frames the whole arena there — Law 1 by construction). The
-	# divider is a glowing seam with a travelling spark.
+	# STARHOOK split (sl-0115; ratio [T] + live-flippable by sl-0125 —
+	# PRESENTATION ONLY): LEFT = the world at the moment of the cast
+	# (captured frame, dimmed; your body at the rift, the line sinking
+	# INTO it — the living overlay draws that half of the two-portal
+	# topology). RIGHT = the galaxy view (the live scene; the fixed
+	# rift camera FITS the whole interior in the pane at either ratio
+	# — Law 1 by construction). The divider is a glowing seam.
+	# Anchors/camera land in _apply_rift_split (after the camera
+	# mounts below).
 	if _scenario_rift and _rift_capture != null:
 		var pane_layer := CanvasLayer.new()
 		pane_layer.layer = 40
@@ -1089,8 +1142,6 @@ func _ready() -> void:
 		wpane.texture = ImageTexture.create_from_image(_rift_capture)
 		wpane.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		wpane.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-		wpane.anchor_left = 0.0
-		wpane.anchor_right = 0.5
 		wpane.anchor_top = 0.0
 		wpane.anchor_bottom = 1.0
 		wpane.modulate = Color(0.62, 0.62, 0.72, 1.0)
@@ -1106,8 +1157,6 @@ func _ready() -> void:
 			overlay.portal_offset = (
 				Vector2(float(rn[0]) - float(rr[0]), float(rn[1]) - float(rr[1])) * TILE
 			)
-		overlay.anchor_left = 0.0
-		overlay.anchor_right = 0.5
 		overlay.anchor_top = 0.0
 		overlay.anchor_bottom = 1.0
 		pane_layer.add_child(overlay)
@@ -1115,8 +1164,6 @@ func _ready() -> void:
 		hold_label.text = "THE LINE HOLDS"
 		hold_label.modulate = Color(0.66, 0.71, 0.85, 0.8)
 		hold_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		hold_label.anchor_left = 0.0
-		hold_label.anchor_right = 0.5
 		hold_label.offset_top = 4.0
 		pane_layer.add_child(hold_label)
 		var title := Label.new()
@@ -1131,19 +1178,22 @@ func _ready() -> void:
 			Color(1.0, 0.82, 0.31) if bool(scenario.rift_rare) else Color(0.96, 0.92, 0.85)
 		)
 		title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		title.anchor_left = 0.5
-		title.anchor_right = 1.0
 		title.offset_top = 4.0
 		pane_layer.add_child(title)
 		var seam_line := ColorRect.new()
 		seam_line.color = Color(0.9, 0.85, 0.6, 0.85)
-		seam_line.anchor_left = 0.5
-		seam_line.anchor_right = 0.5
 		seam_line.anchor_top = 0.0
 		seam_line.anchor_bottom = 1.0
 		seam_line.offset_left = -1.0
 		seam_line.offset_right = 1.0
 		pane_layer.add_child(seam_line)
+		_rift_panes = {
+			"wpane": wpane,
+			"overlay": overlay,
+			"hold": hold_label,
+			"title": title,
+			"seam": seam_line
+		}
 
 	gif_recorder = GifRecorder.new()
 	add_child(gif_recorder)
@@ -1379,12 +1429,11 @@ func _ready() -> void:
 	camera.clock = view_clock
 	add_child(camera)
 	if _scenario_rift:
-		# sl-0115: fixed framing — the arena interior fills the RIGHT
-		# pane exactly at base scale (interior center lands at screen
-		# x 3/4 W): no follow, no off-screen bullets, ever (Law 1).
-		var icx := float(def.width) * 0.5 * TILE
-		var icy := float(def.height) * 0.5 * TILE
-		camera.setup_fixed(Vector2(icx - 160.0, icy))
+		# sl-0115/sl-0125: fixed framing at the LIVE split ratio — the
+		# interior FITS its pane at either ratio (no follow, no
+		# off-screen bullets, ever — Law 1 by construction).
+		_rift_cam = camera
+		_apply_rift_split()
 	else:
 		camera.setup(int(def.width), int(def.height))
 
@@ -1658,6 +1707,17 @@ func _ready() -> void:
 		func(i: int) -> void:
 			Config.set_setting("ui", "crosshair_size", CrosshairStyles.SIZES[i])
 			_apply_crosshair_scale()
+	)
+	# sl-0125: the starhook split ratio [T] — live-flippable in play
+	# (both profiles; applies instantly inside a rift, remembered for
+	# the next dive everywhere else). The designer flips it and rules.
+	options_menu.add_cycle_row(
+		"rift split",
+		RIFT_SPLIT_NAMES,
+		clampi(int(Config.get_setting("ui", "rift_split", 0)), 0, RIFT_SPLIT_RATIOS.size() - 1),
+		func(i: int) -> void:
+			Config.set_setting("ui", "rift_split", i)
+			_apply_rift_split()
 	)
 	_apply_ui_scale(ui_scale)
 	# M8 comments box (designer GO 2026-07-30): SUPPLEMENTARY side-notes

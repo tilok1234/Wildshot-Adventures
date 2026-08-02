@@ -260,11 +260,14 @@ starhook now; the refinement rounds are theirs.
   pack sizes / respawn pace / quest cap / key choices F+C / HUD
   layout / anything) — BATCH tuning numbers into single gate runs.
   Every S1 rate/key/layout is [T].
-- **STARHOOK REFINEMENT ROUNDS** (sl-0115 + the sl-0123 drag cut —
-  every number [T]): the instant cast feel, drain rates, the three
-  lives, rod cadences + unlock levels, ambient cadence, biome
-  twists, the bait fighter's size, the split ratio (sl-0125 makes
-  it flippable in play), fish names on the toasts.
+- **STARHOOK REFINEMENT ROUNDS** (sl-0115 + the sl-0123 drag cut +
+  the sl-0125 flippable split — every number [T]): the instant
+  cast feel, drain rates, the three lives, rod cadences + unlock
+  levels, ambient cadence, biome twists, the bait fighter's size,
+  THE SPLIT RATIO (the "rift split" options row flips half ↔
+  two-thirds-galaxy LIVE in play — flip it and rule; the INDEX
+  amends on the pick; four-capture evidence committed), fish names
+  on the toasts.
 - **THE GEAR SEAM GO WORD** (next-after-soul by correction #5):
   rods + very simple equipment dropping from starhook bosses,
   level-gated.

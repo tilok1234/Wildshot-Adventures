@@ -313,6 +313,26 @@ regardless — clean-stamped zips are what make warm testing frictionless.
 > desktop-scale evidence capture (screen crop, not the base-res
 > viewport texture) replaced the byte-identical twins.**
 
+> **THE SPLIT RATIO GOES [T] (sl-0125; view-only, ZERO sim bytes —
+> smoke hashes byte-identical to the sl-0123 record):** the
+> world/galaxy split is a LIVE-FLIPPABLE options cycle row ("rift
+> split": half & half / two-thirds galaxy; both profiles, [ui]
+> rift_split persisted, settings round-trip in the gate). THE ARENA
+> CELLS STAY IDENTICAL — main._apply_rift_split() re-anchors the
+> panes and re-fits the fixed camera (zoom = min(pane_w/320,
+> 360/352): half = 1.0 exactly as built; two-thirds = 1.0227
+> height-fit, interior centered with backdrop-skirted margins — Law
+> 1 by construction at either ratio); the world pane keeps the
+> line/body/portal readable at 1/3 width (the overlay reads its
+> live pane width). The galaxy backdrop grew a 1-tile skirt so the
+> fitted camera never shows void. EVIDENCE: FOUR real distinct
+> captures (two scales PER ratio; base = viewport render, desktop =
+> topmost-forced SCREEN crop with the galaxy-color honesty guard) —
+> reports/rift_galaxy_audit_{half,twothirds}_{base,desktop}.png —
+> discharging the evidence-twins debt; the sl-0115 pair retired.
+> The designer flips it in play and rules; the INDEX amends when
+> they pick.**
+
 ## Hours-log rule (PROD-01)
 
 - `tools/hourslog.ps1 start` before ANY project work — code, art, design,

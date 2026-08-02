@@ -25,9 +25,11 @@ func setup(arena_width_tiles: int, arena_height_tiles: int) -> void:
 	make_current()
 
 
-## Fixed framing at a world-pixel position (rift arenas).
-func setup_fixed(pos_px: Vector2) -> void:
-	zoom = Vector2.ONE
+## Fixed framing at a world-pixel position (rift arenas). zoom_v
+## (sl-0125): the fit factor for the live split ratio — 1.0 at the
+## half split, height-fit at two-thirds.
+func setup_fixed(pos_px: Vector2, zoom_v := 1.0) -> void:
+	zoom = Vector2(zoom_v, zoom_v)
 	position_smoothing_enabled = false
 	fixed_mode = true
 	limit_left = -10000000
