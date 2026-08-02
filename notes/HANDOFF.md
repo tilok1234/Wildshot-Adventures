@@ -1,4 +1,4 @@
-# Session Handoff — rewritten 2026-08-02 (~16:30, post-starhook: the sl-0115 merge + the sl-0123/0125 refinement pass, all pushed)
+# Session Handoff — updated 2026-08-02 late (post-GREEN-DAYS: all nine routed seams sl-0119..0132 landed + pushed, 42d8260..912049f)
 
 **COLD START — this handoff assumes NO prior context.** Read the game
 repo's `CLAUDE.md` first (auto-loads; BINDING contract + the
@@ -9,9 +9,34 @@ contract doesn't. The account-switch note from the previous handoff
 stands: nothing repo-side gates on the Claude account; git identity
 and gh auth are machine-local; this file + `CLAUDE.md` + planning
 `docs/23` are the complete context carrier. (Serialization is
-SERIAL 22 since sl-0115 — the line's lives/drain/grace + ambient
-rifts + landed catches; WSR stays VERSION 2, rod swap rides the
-recorded weapon_select byte. NEXT BUMP IS 23.)
+**SERIAL 25** — 23 the bag, 24 loot bags, 25 the bank; **WSR VERSION
+3** since the bag op joined the recorded frame (InputFrame 17 bytes;
+v2 replays refuse loudly). NEXT BUMP IS 26. Smoke record pair since
+SERIAL 25: 61503273bc2519da / 3f3aff864ed9e48f.)
+
+**THE GREEN-DAYS PASS (2026-08-02 evening, nine sealed seams, all
+pushed 42d8260..912049f; session record: planning
+notes/sessions/2026-08-02-green-days-batches.md; sync log
+sl-0134..0142):** C-sheet screen-anchored+clamped (sl-0119, +
+onboarding rider) · quest pull kit (sl-0121: giver glyphs
+quest.available/turn_in, map markers, HUD tracker; C stays THE log)
+· boss sprites (sl-0122: Grubb = boss:goblin-war-crown; per-def view
+scale, Old Tusk 1.25 [T]) · NPC desync (sl-0132: per-cell hash
+phases + wobble, regression-guarded) · firing rate ×1.25 EXACT
+(sl-0120: the ruled hits-band CAPS the raise at ~1.3× — 1.5× is
+impossible under docs/22 as ruled; damage recalculated, five gates
+PASS; the designer's lever = trash_hp or the band, PLANNING-SIDE) ·
+THE BAG (sl-0116+0128: pick up INTO the bag cap 20 [T], equip is a
+DECISION via the recorded bag_op byte, equipment pane in C with
+tooltip==grammar test-pinned, mouse suppress-over-pane, death keeps
+the bag, legacy lane never bags) · LOOT BAGS (sl-0129: one corpse
+bag, walk-over panel, click-to-loot-one, **B = loot-all [T]**;
+class-lane worlds only — legacy keeps loose drops) · THE BANK
+(sl-0130: walk-up stash at the pinned keeper 112.5,182.5, ops
+52/72+, cap 12 [T], death NEVER touches it) · VENDORS v1 (sl-0131:
+sell 50%/buy 200% [T], fixed catalogs, bodies at 106.5,182.5 +
+106.5,180.5, ops 84/104+, no serial bump). Every number [T]; NO
+feel verdicts — the designer's Green days own all of it.
 
 **STARHOOK IS THE BUILT GAME NOW (2026-08-02, three seams, all
 sealed + gated + PUSHED to origin/main at `a6f2369`):**
@@ -303,6 +328,13 @@ cut; the flippable split); the refinement rounds are theirs.
   (sl-0089 watch-items: named-vs-villager blur, dark-outfit dusk
   contrast), class creation screen + emblems, weapon tier glyph,
   character sheet, quest log lines, the new galaxy view.
+- **GREEN-DAYS PASS surfaces (all [T], all theirs):** the fixed C
+  sheet + equipment pane (click equip/de-equip, tooltips), giver
+  icons + map markers + HUD tracker, Grubb's war-crown + big Old
+  Tusk, the desynced crowd, the ×1.25 firing feel (the 1.5× lever
+  is planning's if it still drags), bag flow (F picks in, nothing
+  auto-equips), loot bags + [B] loot-all, the stash keeper's bank,
+  the two vendors' prices/stock.
 - Weekly GIF (fresh material everywhere — Green packs, Old Tusk,
   the Warren, the rift).
 - Standing: rested ratification stack (M2 formal close, six
@@ -313,11 +345,18 @@ cut; the flippable split); the refinement rounds are theirs.
 
 ## §3 Open — engineering
 
-- **NOTHING ROUTED.** S1 stopped at its stop line; sl-0115 (the
-  starhook soul) is MERGED; sl-0111 (water fishing) is PARKED by
-  the designer's word; the GEAR SEAM waits for its routing; S2
-  needs its own word. Until then: intakes, feel one-liners, tuning
-  batches, whatever the designer asks.
+- **NOTHING ROUTED.** The nine-seam Green-days pass (sl-0119..0132)
+  is FULLY LANDED (sl-0134..0142 resolutions); the routing's own
+  "NOT this pass" list stands: the GEAR SEAM routes right after this
+  family (planning's next paste), class trees later, water fishing
+  PARKED. S2 needs its own word. Until then: intakes, feel
+  one-liners, tuning batches, whatever the designer asks.
+- Recorded honest gaps from the pass (planning owns the calls):
+  KILL/COLLECT quests have no objective cell (QuestDef data call if
+  markers are wanted); the capital zone-hub giver has no NPC body
+  (slot == spawn cell); the tester-facing map = the doc-13 Part II
+  round; the ×1.5 firing-rate feel needs trash_hp or the hits band
+  moved planning-side (ceiling ~1.3× as ruled).
 - **World interactables** (signs / POI plaques / villager
   one-liners) hang off the interact verb INCREMENTALLY [T] as
   content wants them — each is a small routed-or-asked addition,
@@ -345,11 +384,12 @@ Before every commit, per touched area:
   re-grep before editing formatted files).
 - smoke: `godot_console --headless --path . --script tests/determinism/determinism_smoke.gd`.
 - goldens: any sim/serialization change ⇒ bump SERIAL_VERSION
-  (next bump is **22**), regenerate + verify ×10, say so in the
+  (next bump is **26**), regenerate + verify ×10, say so in the
   commit. InputFrame layout changes additionally bump
-  `input/replay_format.gd` VERSION (now **2** — the interact byte;
+  `input/replay_format.gd` VERSION (now **3** — the bag-op byte;
   old .wsr refuse loudly; committed repro/golden replays get
-  re-recorded deliberately WITH the bump).
+  re-recorded deliberately WITH the bump — the nine pinned-FAIL
+  repros ride each bump too).
 - boot: `godot_console --headless --path . --quit-after 90` grep
   "arena ready|ERROR" (use "ERROR", not "SCRIPT ERROR").
 - proofs: re-run canaries + every touched proof with CANONICAL SEEDS
@@ -457,13 +497,16 @@ names; cap runs use --speed=4.14 + an explicit --out=..._cap115.json).
    (lockdown lint pins) — keep pinned lines short (sl-0065 lesson).
 5. NO F-row keys. Current: **O AND Esc = the ONE pause+options
    menu** (sl-0109; the driver keeps the CORE-31 pause bit),
-   **F interact** (pickups/givers/casts), **C character sheet**,
-   I interp, [ ] speed presets, -/= free step (dev-only), G gif
-   (start/stop, start-to-finish), R replay, T reset, M meter,
-   H hitboxes, N map (dev-only, pack scenarios only), ` console
-   (dev-only), Alt+Enter fullscreen, Space = ability AND
-   respawn-now while dead (persistent worlds). E stays RATIFIED
-   autofire — never rebind it casually.
+   **F interact** (pickups-into-bag/givers/casts), **B loot-all**
+   (sl-0129, at a ground loot bag), **C character sheet + equipment
+   pane** (mouse sanctioned there: click equip/de-equip, right-click
+   drop; gameplay input suppresses under the cursor over any open
+   pane/panel), I interp, [ ] speed presets, -/= free step
+   (dev-only), G gif (start/stop, start-to-finish), R rod swap
+   (rifts), J replay, T reset, M meter, H hitboxes, N map (dev-only,
+   pack scenarios only), ` console (dev-only), Alt+Enter fullscreen,
+   Space = ability AND respawn-now while dead (persistent worlds).
+   E stays RATIFIED autofire — never rebind it casually.
 6. Sim = pure core: no Nodes/clock/RNG; prev_pos is presentation-only;
    PackedArrays share storage — `.duplicate()` for snapshots.
 7. When a proof fails: read the heatmap in the report JSON first
@@ -652,6 +695,23 @@ names; cap runs use --speed=4.14 + an explicit --out=..._cap115.json).
     sweeps (`cmd && echo pass || echo FAIL($?)`) or the pretester
     itself. Diagnose a surprising all-red by re-running ONE test
     with output visible before touching any code.
+36. **Desktop-capture probes: the content letterboxes inside the
+    client area** (16:10 screen, 1920x1198 crops) — map base pixels
+    through the integer scale PLUS the centering offset, and put
+    signature points on STATIC pixels (a point on an idle-animating
+    body is a false mismatch — both caught live by the honesty
+    guard at the green-days seams; every probe now carries the
+    letterbox-aware two-point pattern).
+37. **SceneTree-script probes defer _ready to the first frame** — a
+    property fed right after add_child gets overwritten by _ready's
+    defaults. Feed AFTER the first `await process_frame` (main is
+    immune: _apply_ui_scale runs post-ready).
+38. **THE BAG ERA IS THE CLASS LANE'S** (sl-0116/0129 doctrine): the
+    legacy lane (class_id < 0) keeps pre-bag behavior VERBATIM —
+    press-equip, per-item ground drops on kills, no bag/bank/vendor
+    ops (bag_step's lane guard). That is what keeps the whole proof
+    battery byte-identical; a test premise that assumes kills drop
+    loose items must ask WHICH LANE first.
 
 ## Ledger + scope
 

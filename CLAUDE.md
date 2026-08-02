@@ -333,6 +333,59 @@ regardless — clean-stamped zips are what make warm testing frictionless.
 > The designer flips it in play and rules; the INDEX amends when
 > they pick.**
 
+> **THE GREEN-DAYS PASS (2026-08-02 evening; nine routed seams
+> sl-0119..0132 ALL LANDED as sealed gated seams, game
+> 42d8260..912049f; resolutions sl-0134..0142; SERIAL 22→25, WSR
+> v2→v3, next bump 26):** C SHEET ON SCREEN (screen-anchored +
+> viewport-clamped + errand scroll [T]; the zero-size PRESET_CENTER
+> artifact typed — top-left pinned at the camera-held player; the
+> onboarding screen carried the same bug, rider-fixed; three-scale
+> evidence w/ letterbox-aware honesty guards). QUEST PULL (giver
+> glyphs quest.available/turn_in at AUTHORED cells; corner+full map
+> markers — VISIT diamond / turn-in ring, shape-first; HUD tracker
+> top-right, id-slug names, cap 5; C stays THE log; honest gaps
+> flagged: KILL/COLLECT carry no objective cell, the zone-hub giver
+> has no body, the only minimap is dev-only). BOSS SPRITES (Grubb →
+> boss:goblin-war-crown, importer run with BOTH ids; actor_sheet_map
+> `scales` dict — Old Tusk ×1.25 [T] pixel-even; sim/hurtbox
+> untouched, control-boar evidence). NPC DESYNC (per-cell
+> variant-hash phases + 0.9–1.1 wobble [T]; 32 sprites / 15 phases /
+> 28 speeds; lockstep = probe exit 1). FIRING RATE ×1.25 EXACT
+> (sl-0120: the routed ~1.5× is IMPOSSIBLE under the ruled
+> hits-band [3,5] — ceiling ~1.304×; cadences 80/24/40, rates
+> 0.75/2.5/1.5 exact, damage recalculated [17,24,34,48,67]/
+> [5,7,10,13,18]/[8,11,15,20,28], five calculator gates PASS, TTK
+> held sword 2.67 / staff 2.00–2.67 / bow 2.00; TTD untouched; THE
+> LEVER for more = trash_hp or the band, PLANNING-SIDE; feel flag
+> stands). THE BAG (sl-0116+0128, SERIAL 23 + WSR v3: triples cap
+> 20 [T] hashed; F picks INTO the bag — auto-equip + upgrades-only
+> RETIRED class-lane; equip = a DECISION on the recorded bag_op
+> byte; replaced items return TO the bag; armor/ring de-equip;
+> weapon replace-only [T]; equipment pane in C, tooltip==drop_line
+> TEST-PINNED, mouse sanctioned w/ suppress-over-pane; death keeps
+> the bag; profile by-id; legacy lane NEVER bags — battery
+> byte-identical by construction; ledger #16 amended). LOOT BAGS
+> (sl-0129, SERIAL 24: a kill's non-gold roll = ONE corpse bag,
+> same rng_loot sequence; gold stays walk-over; walk-over panel,
+> click-to-loot-one, B loot-all [T — G is the GIF key]; bag TTL 2×
+> [T]; leftovers stay on full; LOOT_PICKED per item — COLLECT
+> counts; CLASS-LANE WORLDS ONLY, legacy keeps loose drops).
+> THE BANK (sl-0130, SERIAL 25: walk-up stash at the PINNED keeper
+> 112.5,182.5 — the pack's banker slot sits ON the spawn cell,
+> collision recorded; ops 52/72+, radius 1.2 sim-side, cap 12 [T];
+> BANK_FULL loud; DEATH NEVER TOUCHES THE BANK test-pinned;
+> profile by-id). VENDORS v1 (sl-0131, NO bump: balance_frame
+> `vendors` block — sell 50% / buy 200% [T], tier value tables;
+> fixed catalogs general+trader on pinned bodies 106.5,182.5 +
+> 106.5,180.5; ops 84/104+; buy refuses poor/full-bag with gold
+> untouched; fish-currency FUTURE). Gates: -SkipBattery per
+> view-only seam (icon-intake precedent), FULL gate before every
+> sim commit (gotcha-32) — final state 30 fixed + 83/83
+> byte-identical + export + probe ALL GREEN. NOT this pass (by
+> routing): the gear seam (planning's next paste), class trees,
+> water fishing. NO feel verdicts — every number [T], the
+> designer's Green days own all of it.**
+
 ## Hours-log rule (PROD-01)
 
 - `tools/hourslog.ps1 start` before ANY project work — code, art, design,
