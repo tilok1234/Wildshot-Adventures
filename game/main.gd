@@ -766,12 +766,16 @@ func _apply_ui_scale(k: int) -> void:
 	hp_bar.custom_minimum_size = Vector2(64.0 * k, 8.0 * k)
 	mana_bar.custom_minimum_size = Vector2(64.0 * k, 8.0 * k)
 	autofire_icon.scale = Vector2(float(k), float(k))
-	# Seam B: the corner minimap sits UNDER the top-right bars [T].
-	var stack_top := 4.0 + (8.0 * 2.0 + 4.0) * k + 4.0
+	# sl-0149: bars sit top-LEFT; the autofire indicator rides beside
+	# them (ui-scale-aware inset).
+	autofire_icon.position = Vector2(4.0 + 64.0 * k + 6.0, 4.0)
+	# The right corner is the world-info cluster now: minimap under
+	# the weapon row, tracker beneath the minimap slot [T].
+	var stack_top := 4.0 + 16.0 * k + 4.0
 	if map_overlay != null:
 		map_overlay.corner_top_inset = stack_top
 	# sl-0121: the errand tracker rides beneath the minimap slot when
-	# the overlay exists (dev), else directly under the bars [T].
+	# the overlay exists (dev), else directly under the weapon row.
 	if quest_tracker != null:
 		quest_tracker.set_top(stack_top + (96.0 + 4.0 if map_overlay != null else 0.0))
 
@@ -1559,7 +1563,9 @@ func _ready() -> void:
 	autofire_icon = TextureRect.new()
 	autofire_icon.texture = load("res://uikit/icon_autofire_off.png")
 	autofire_icon.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
-	autofire_icon.position = Vector2(4.0, 4.0)
+	# sl-0149: beside the left-corner bars (re-fed ui-scale-aware in
+	# _apply_ui_scale).
+	autofire_icon.position = Vector2(74.0, 4.0)
 	weapon_label = Label.new()
 	# Icon pack (seam 4): the equipped weapon's tier glyph rides beside
 	# the name — class lane only (lab frames keep text-only).
@@ -1587,16 +1593,18 @@ func _ready() -> void:
 	mana_bar.custom_minimum_size = Vector2(64.0, 8.0)
 	ability_label = Label.new()
 	loot_label = Label.new()
-	# Seam B (sl-0109, the first Green-walk feedback): hp+mana are a
-	# SHORT top-right stack (Law 1: the corner is FOR this — never
-	# over threat near the player); the text readouts stay bottom-left.
+	# Menu pass (sl-0149, the designer's word): the hp+mana stack
+	# lives in the LEFT corner now [T exact placement — 4,4 inset,
+	# Law 6 + the ui-scale inset discipline]; the autofire indicator
+	# shifts to ride beside it (position fed ui-scale-aware). The
+	# right corner keeps the world-info cluster (weapon, minimap,
+	# tracker) — the tracker STAYS right by this session's call [T].
 	bars_stack = VBoxContainer.new()
 	bars_stack.add_theme_constant_override("separation", 2)
 	bars_stack.add_child(hp_bar)
 	bars_stack.add_child(mana_bar)
-	bars_stack.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-	bars_stack.grow_horizontal = Control.GROW_DIRECTION_BEGIN
-	bars_stack.offset_right = -4.0
+	bars_stack.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	bars_stack.offset_left = 4.0
 	bars_stack.offset_top = 4.0
 	hud_stack = VBoxContainer.new()
 	hud_stack.add_theme_constant_override("separation", 2)

@@ -53,8 +53,9 @@ func _run() -> void:
 	var hud := CanvasLayer.new()
 	get_root().add_child(hud)
 
-	# The relayout geometry, replicated from main (seam B): bars
-	# top-right, minimap slot beneath, text bottom-left.
+	# The relayout geometry, replicated from main (sl-0149): bars in
+	# the LEFT corner, the right corner = world-info (minimap slot +
+	# tracker), text bottom-left.
 	var theme: Theme = load("res://ui/theme.tres")
 	var bars := VBoxContainer.new()
 	bars.add_theme_constant_override("separation", 2)
@@ -68,9 +69,8 @@ func _run() -> void:
 	mana_bar.value = 0.4
 	bars.add_child(hp_bar)
 	bars.add_child(mana_bar)
-	bars.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-	bars.grow_horizontal = Control.GROW_DIRECTION_BEGIN
-	bars.offset_right = -4.0
+	bars.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	bars.offset_left = 4.0
 	bars.offset_top = 4.0
 	hud.add_child(bars)
 	var mini := ColorRect.new()
@@ -79,9 +79,9 @@ func _run() -> void:
 	mini.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 	mini.grow_horizontal = Control.GROW_DIRECTION_BEGIN
 	mini.offset_right = -4.0
-	mini.offset_top = 28.0
+	mini.offset_top = 24.0
 	mini.offset_left = -100.0
-	mini.offset_bottom = 124.0
+	mini.offset_bottom = 120.0
 	hud.add_child(mini)
 	var text := Label.new()
 	text.theme = theme
