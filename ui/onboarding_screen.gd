@@ -36,6 +36,11 @@ var build_id := ""
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	# Center-anchored panels must grow in BOTH directions to stay
+	# centered (sl-0119 rider: the C-sheet bug's sibling — without
+	# these, growth pins the top-left at screen center).
+	grow_horizontal = Control.GROW_DIRECTION_BOTH
+	grow_vertical = Control.GROW_DIRECTION_BOTH
 	var margin := MarginContainer.new()
 	for side: String in ["left", "right", "top", "bottom"]:
 		margin.add_theme_constant_override("margin_" + side, 18)

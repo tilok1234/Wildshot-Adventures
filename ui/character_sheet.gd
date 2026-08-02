@@ -12,6 +12,13 @@ const ItemText := preload("res://game/views/item_text.gd")
 const StatFrame := preload("res://sim/systems/stat_frame.gd")
 const DropKinds := preload("res://sim/drop_kinds.gd")
 
+## Fixed screen placement [T: centered] — sl-0119. The panel sizes
+## from the ui-scale theme and clamps inside the viewport; errand
+## overflow SCROLLS in the label [T] (fit_content grew the panel past
+## the screen — the offscreen bug's second half).
+const BASE_SIZE := Vector2(320.0, 330.0)
+const SCREEN_MARGIN := 4.0
+
 var world: RefCounted = null
 ## The persistent profile dict (starhook lane lives there).
 var character: Dictionary = {}
@@ -22,13 +29,38 @@ var _accum := 0.0
 
 func _ready() -> void:
 	visible = false
-	custom_minimum_size = Vector2(320.0, 330.0)
-	set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	_label = RichTextLabel.new()
 	_label.bbcode_enabled = false
-	_label.fit_content = true
-	_label.custom_minimum_size = Vector2(304.0, 0.0)
+	_label.fit_content = false
+	_label.scroll_active = true
 	add_child(_label)
+	_fit_to_screen()
+	get_viewport().size_changed.connect(_fit_to_screen)
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_THEME_CHANGED and is_inside_tree():
+		_fit_to_screen()
+
+
+## SCREEN-anchored, never player-anchored (sl-0119): explicit center
+## anchors + offsets from the computed size. The old zero-size
+## PRESET_CENTER call in _ready put the panel's TOP-LEFT at screen
+## center — the camera keeps the player there, so it read as
+## player-anchored and grew past the viewport bottom-right.
+func _fit_to_screen() -> void:
+	var k: float = maxf(get_theme_default_base_scale(), 1.0)
+	var vp: Vector2 = get_viewport_rect().size
+	var w: float = minf(BASE_SIZE.x * k, vp.x - SCREEN_MARGIN * 2.0)
+	var h: float = minf(BASE_SIZE.y * k, vp.y - SCREEN_MARGIN * 2.0)
+	anchor_left = 0.5
+	anchor_right = 0.5
+	anchor_top = 0.5
+	anchor_bottom = 0.5
+	offset_left = -w * 0.5
+	offset_right = w * 0.5
+	offset_top = -h * 0.5
+	offset_bottom = h * 0.5
 
 
 func toggle() -> void:

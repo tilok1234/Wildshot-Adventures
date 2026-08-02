@@ -115,5 +115,68 @@ func _run() -> void:
 	await RenderingServer.frame_post_draw
 	var shot2 := get_root().get_texture().get_image()
 	shot2.save_png(ProjectSettings.globalize_path("res://reports/character_sheet_audit.png"))
-	print("ui_family_probe: wrote hud_relayout_audit.png + character_sheet_audit.png")
+
+	# sl-0119 two-scale evidence: the sheet must be FULLY on-screen at
+	# desktop scale — the base viewport texture cannot show that (the
+	# integer stretch presents it 3x), so the desktop leg is a SCREEN
+	# crop of the presented window (the rift_split_probe pattern:
+	# topmost-forced + an honesty guard against bystander-window
+	# crops). The guard compares two flat-color signature points
+	# against the base capture: inside the panel and the arena bg.
+	var sig_panel := shot2.get_pixel(170, 340)
+	var sig_bg := shot2.get_pixel(20, 20)
+	DisplayServer.window_set_position(Vector2i(0, 0))
+	DisplayServer.window_set_size(Vector2i(1920, 1080))
+	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_ALWAYS_ON_TOP, true)
+	DisplayServer.window_move_to_foreground()
+	for i in 30:
+		await process_frame
+	await RenderingServer.frame_post_draw
+	var screen := DisplayServer.screen_get_image(DisplayServer.window_get_current_screen())
+	if screen != null:
+		var wpos := DisplayServer.window_get_position()
+		var wsize := DisplayServer.window_get_size()
+		var rect := Rect2i(wpos, wsize).intersection(
+			Rect2i(Vector2i.ZERO, Vector2i(screen.get_width(), screen.get_height()))
+		)
+		var crop := screen.get_region(rect)
+		var s := float(crop.get_width()) / 640.0
+		var got_panel := crop.get_pixel(int(170.0 * s) + 1, int(340.0 * s) + 1)
+		var got_bg := crop.get_pixel(int(20.0 * s) + 1, int(20.0 * s) + 1)
+		if _off(got_panel, sig_panel) or _off(got_bg, sig_bg):
+			printerr("ui_family_probe: desktop crop signature mismatch — NOT written")
+		else:
+			crop.save_png(
+				ProjectSettings.globalize_path("res://reports/character_sheet_audit_desktop.png")
+			)
+			print(
+				(
+					"ui_family_probe: wrote character_sheet_audit_desktop.png (%dx%d)"
+					% [crop.get_width(), crop.get_height()]
+				)
+			)
+	else:
+		printerr("ui_family_probe: screen_get_image unavailable — desktop NOT captured")
+
+	# UI scale x2 (CORE-50): the viewport clamp + errand scroll under
+	# the doubled theme — main's _apply_ui_scale shape (base_scale 2,
+	# font 20). The panel must stay fully inside 640x360.
+	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_ALWAYS_ON_TOP, false)
+	DisplayServer.window_set_size(Vector2i(640, 360))
+	var th2: Theme = theme.duplicate()
+	th2.default_base_scale = 2.0
+	th2.default_font_size = 20
+	sheet.theme = th2
+	for i in 12:
+		await process_frame
+	await RenderingServer.frame_post_draw
+	var shot3 := get_root().get_texture().get_image()
+	shot3.save_png(ProjectSettings.globalize_path("res://reports/character_sheet_audit_scale2.png"))
+	print(
+		"ui_family_probe: wrote hud_relayout_audit.png + character_sheet_audit.png (+desktop +scale2)"
+	)
 	quit(0)
+
+
+static func _off(a: Color, b: Color) -> bool:
+	return absf(a.r - b.r) > 0.12 or absf(a.g - b.g) > 0.12 or absf(a.b - b.b) > 0.12
