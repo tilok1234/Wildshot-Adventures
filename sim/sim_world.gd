@@ -202,6 +202,13 @@ var sites: Array[Dictionary] = []
 ## reproduces it by naming its scenario). ZERO = no bank here.
 var bank_cell: Vector2 = Vector2.ZERO
 
+## sl-0131 VENDORS v1: station cells + resolved stock triples per
+## vendor (setup config, excluded from serialize; a static catalog
+## with infinite quantity v1 — trades mutate gold + the bag, which
+## are already serialized state).
+var vendor_cells: PackedVector2Array = PackedVector2Array()
+var vendor_stock: Array = []
+
 ## CORE-43 overworld death (slice S0 seam 3). Setup config like the
 ## defs (unserialized; the scenario + profile determine it): when
 ## true, a class-backed player's death costs carried gold IN-SIM and

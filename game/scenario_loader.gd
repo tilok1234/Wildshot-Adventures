@@ -126,6 +126,59 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 	world.respawn_cell = scenario.player_spawn
 	# sl-0130: the settlement bank station (ZERO = none).
 	world.bank_cell = scenario.bank_cell
+	# sl-0131: vendors — stock-set names resolve to item triples at
+	# build time (unknown sets/ids refuse loudly; static catalog v1).
+	world.vendor_cells = scenario.vendor_cells
+	world.vendor_stock = []
+	if not scenario.vendor_cells.is_empty():
+		var vend: Dictionary = world.stat_frame.get("vendors", {})
+		var stocks: Dictionary = vend.get("stocks", {})
+		for vi in scenario.vendor_cells.size():
+			var sname := (
+				String(scenario.vendor_stocks[vi]) if vi < scenario.vendor_stocks.size() else ""
+			)
+			if not stocks.has(sname):
+				push_error("scenario_loader: unknown vendor stock set '%s'" % sname)
+				world.vendor_stock.append(PackedInt32Array())
+				continue
+			var triples := PackedInt32Array()
+			for row_v: Variant in stocks[sname] as Array:
+				var row: Dictionary = row_v
+				match String(row.get("kind", "")):
+					"weapon":
+						(
+							triples
+							. append_array(
+								PackedInt32Array(
+									[
+										world.DROP_WEAPON,
+										int(row.get("frame", 0)),
+										int(row.get("tier", 1)),
+									]
+								)
+							)
+						)
+					"armor":
+						triples.append_array(
+							PackedInt32Array([world.DROP_ARMOR, int(row.get("tier", 1)), 0])
+						)
+					"ring":
+						var rid := String(row.get("id", ""))
+						var found := -1
+						var items: Array = world.stat_frame.get("items", [])
+						for ii in items.size():
+							if (
+								String(items[ii].get("slot", "")) == "ring"
+								and String(items[ii].get("id", "")) == rid
+							):
+								found = ii
+						if found >= 0:
+							triples.append_array(PackedInt32Array([world.DROP_RING, found, 0]))
+						else:
+							push_error("scenario_loader: unknown vendor ring id '%s'" % rid)
+					_:
+						push_error("scenario_loader: unknown vendor stock kind")
+			world.vendor_stock.append(triples)
 	world.add_player(scenario.player_spawn)
 	for p in scenario.standin_positions:
 		world.add_enemy_standin(p)

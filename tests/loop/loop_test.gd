@@ -496,6 +496,69 @@ func _init() -> void:
 		"NEGATIVE: a world without a bank cell keeps bank ops inert"
 	)
 
+	# 14. sl-0131 VENDORS v1: sell anything at value*fraction, buy from
+	# the static catalog at value*multiplier — gold integer-exact
+	# through the one serialized field; nothing half-happens.
+	var vw2: RefCounted = _world_with(ring_def, 113)
+	vw2.set_stat_frame(StatFrame.load_frame())
+	var vp2: RefCounted = vw2.players[0]
+	vp2.class_id = 2
+	StatFrame.recompute(vw2, vp2)
+	vw2.vendor_cells = PackedVector2Array([Vector2(21.0, 12.0)])
+	vw2.vendor_stock = [PackedInt32Array([2, 1, 0, 1, 0, 2])]
+	vp2.pos = Vector2(21.0, 12.0)
+	vp2.gold = 100
+	# SELL: a T2 armor (value 16) at 50% = +8 gold, item gone.
+	BagStep.bag_add(vw2, vp2, SimWorld.DROP_ARMOR, 2, 0)
+	_bag_op(vw2, BagStep.OP_SELL_BASE)
+	check(vp2.gold == 108 and BagStep.bag_count(vp2) == 0, "sell pays value*fraction exact")
+	# BUY: stock row 0 = T1 armor (value 10) at 200% = 20 gold.
+	_bag_op(vw2, BagStep.OP_BUY_BASE)
+	check(
+		vp2.gold == 88 and BagStep.bag_count(vp2) == 1,
+		"buy charges value*multiplier exact + bags the item"
+	)
+	check(int(BagStep.bag_item(vp2, 0).kind) == SimWorld.DROP_ARMOR, "bought item is the stock row")
+	# POOR refuses: row 1 = T2 weapon (value 16) at 200% = 32 gold.
+	vp2.gold = 10
+	_bag_op(vw2, BagStep.OP_BUY_BASE + 1)
+	check(
+		vp2.gold == 10 and BagStep.bag_count(vp2) == 1, "NEGATIVE: too poor refuses — nothing moves"
+	)
+	# FULL BAG refuses with the gold UNCHANGED.
+	vp2.gold = 100
+	while BagStep.bag_count(vp2) < BagStep.BAG_CAP:
+		BagStep.bag_add(vw2, vp2, SimWorld.DROP_ARMOR, 1, 0)
+	_bag_op(vw2, BagStep.OP_BUY_BASE)
+	check(
+		vp2.gold == 100 and BagStep.bag_count(vp2) == BagStep.BAG_CAP,
+		"NEGATIVE: full bag refuses the buy — gold never moves"
+	)
+	# RADIUS: away from the vendor both ops refuse.
+	vp2.pos = Vector2(26.0, 12.0)
+	var gold_far: int = vp2.gold
+	_bag_op(vw2, BagStep.OP_SELL_BASE)
+	check(
+		vp2.gold == gold_far and BagStep.bag_count(vp2) == BagStep.BAG_CAP,
+		"NEGATIVE: sell refuses beyond the vendor radius"
+	)
+	# Ring pricing keys the items[] tier (T1 ring value 12 -> sell 6).
+	check(
+		BagStep.sell_price(vw2, SimWorld.DROP_RING, haste_idx, 0) == 6,
+		"ring sell price keys the items tier table"
+	)
+	# Vendor-less worlds keep the ops inert.
+	var vn: RefCounted = _world_with(ring_def, 115)
+	vn.set_stat_frame(StatFrame.load_frame())
+	vn.players[0].class_id = 2
+	vn.players[0].gold = 50
+	BagStep.bag_add(vn, vn.players[0], SimWorld.DROP_ARMOR, 2, 0)
+	_bag_op(vn, BagStep.OP_SELL_BASE)
+	check(
+		vn.players[0].gold == 50 and BagStep.bag_count(vn.players[0]) == 1,
+		"NEGATIVE: a world without vendors keeps trade ops inert"
+	)
+
 	if fails.is_empty():
 		print("loop_test: PASS (drops/streams/curve/damage/armor/pickup/rings/text/hash)")
 		quit(0)

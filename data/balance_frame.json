@@ -63,6 +63,29 @@
     "per_level": { "green": 100, "dry": 400, "wet": 800, "snow": 1400 },
     "per_kill": { "green": 3, "dry": 11, "wet": 22, "snow": 38 }
   },
+  "vendors": {
+    "_comment": "sl-0131 v1 [T everywhere]: sell = value*pct/100 integer; buy = value*pct/100; fixed CATALOG, infinite quantity v1; fish-currency explicitly FUTURE",
+    "sell_fraction_pct": 50,
+    "buy_multiplier_pct": 200,
+    "values": {
+      "weapon": [10, 16, 26, 40, 64],
+      "armor": [10, 16, 26, 40, 64],
+      "ring_tier": [12, 20, 32, 50, 80],
+      "ability": 20,
+      "unique": 100
+    },
+    "stocks": {
+      "general": [
+        { "kind": "armor", "tier": 1 },
+        { "kind": "ring", "id": "t1-ring-of-haste" },
+        { "kind": "weapon", "frame": 0, "tier": 2 }
+      ],
+      "trader": [
+        { "kind": "armor", "tier": 2 },
+        { "kind": "ring", "id": "t2-ring-of-reach" }
+      ]
+    }
+  },
   "starhook": {
     "note": "sl-0105 v1; REBUILT sl-0115 (prototype #2 rules the shape, every number [T]): the RIFTER = the bait fighter, a fixed mini-class row on THIS frame (the legacy loop curve levels it); FOUR rods = attack-def data rows, starhook level gates use, R swaps; three biomes with named fish tables (fish persist PER-SPECIES - species-currency); ambient rifts spawn on land anywhere; the pull/line physics live in data/rift_pull.tres; drops feed the MAIN economy; cosmetics via the variants machinery.",
     "rifter": { "base_hp": 60, "hp_per_level": 8, "speed_tiles": 3.6 },

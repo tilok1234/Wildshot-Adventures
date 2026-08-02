@@ -79,10 +79,14 @@ static func _phase_hash(x: int, y: int) -> int:
 
 
 ## Deterministic station table — static + pure so the wiring test pins
-## sl-0130: manifest ids pinned to authored station cells (matches
-## the slice scenario's sim-side cells: the bank at 112.5,182.5).
+## sl-0130/0131: manifest ids pinned to authored station cells
+## (matching the slice scenario's sim-side cells: bank 112.5,182.5;
+## vendors 106.5,182.5 + 106.5,180.5). The body marks the ground;
+## the sim owns the interaction.
 const PINNED_STATIONS := {
 	"capital-stash-keeper": Vector2(112.5, 182.5),
+	"capital-general-merchant": Vector2(106.5, 182.5),
+	"settlement-trader": Vector2(106.5, 180.5),
 }
 
 

@@ -31,6 +31,11 @@ const LOOT_ROW_MAX := 8
 ## slot — legal only within BANK_RADIUS of the scenario's bank cell.
 const OP_DEPOSIT_BASE := 52
 const OP_WITHDRAW_BASE := 72
+## sl-0131 VENDORS: 84..103 SELL bag slot / 104..111 BUY stock row —
+## legal only within VENDOR_RADIUS of the NEAREST vendor cell.
+const OP_SELL_BASE := 84
+const OP_BUY_BASE := 104
+const BUY_ROW_MAX := 8
 ## Capacity [T] (the sl-0116 suggested 20).
 const BAG_CAP := 20
 ## Bank capacity [T] — small, distinct from the bag (sl-0130).
@@ -39,6 +44,8 @@ const BANK_CAP := 12
 const LOOT_RADIUS := 0.9
 ## Bank station reach [T] (the giver-radius class).
 const BANK_RADIUS := 1.2
+## Vendor station reach [T] (same class).
+const VENDOR_RADIUS := 1.2
 
 
 static func run(world: RefCounted) -> void:
@@ -75,6 +82,10 @@ static func run(world: RefCounted) -> void:
 			_deposit(world, p, op - OP_DEPOSIT_BASE)
 		elif op >= OP_WITHDRAW_BASE and op < OP_WITHDRAW_BASE + BANK_CAP:
 			_withdraw(world, p, op - OP_WITHDRAW_BASE)
+		elif op >= OP_SELL_BASE and op < OP_SELL_BASE + BAG_CAP:
+			_sell(world, p, op - OP_SELL_BASE)
+		elif op >= OP_BUY_BASE and op < OP_BUY_BASE + BUY_ROW_MAX:
+			_buy(world, p, op - OP_BUY_BASE)
 
 
 ## ---- ground loot bags (sl-0129).
@@ -156,6 +167,95 @@ static func _withdraw(world: RefCounted, p: RefCounted, slot: int) -> void:
 	var base := slot * 3
 	for k in 3:
 		p.bank.remove_at(base)
+
+
+## ---- vendors (sl-0131): sell anything for gold; buy from a static
+## catalog. Prices integer-exact from the vendors block [T]; gold
+## flows through the one serialized field; ops legal only at the
+## NEAREST vendor within reach.
+
+
+static func nearest_vendor(world: RefCounted, p: RefCounted) -> int:
+	var best := -1
+	var best_d := VENDOR_RADIUS * VENDOR_RADIUS
+	for vi in world.vendor_cells.size():
+		var dd: float = p.pos.distance_squared_to(world.vendor_cells[vi])
+		if dd <= best_d:
+			best_d = dd
+			best = vi
+	return best
+
+
+## Item value from the vendors table (0 = unpriced, trades refuse).
+static func item_value(world: RefCounted, kind: int, a: int, b: int) -> int:
+	var vend: Dictionary = world.stat_frame.get("vendors", {})
+	var vals: Dictionary = vend.get("values", {})
+	match kind:
+		DropKinds.WEAPON:
+			var tw: Array = vals.get("weapon", [])
+			if tw.is_empty():
+				return 0
+			return int(tw[clampi(b, 1, tw.size()) - 1])
+		DropKinds.ARMOR:
+			var ta: Array = vals.get("armor", [])
+			if ta.is_empty():
+				return 0
+			return int(ta[clampi(a, 1, ta.size()) - 1])
+		DropKinds.RING:
+			var items: Array = world.stat_frame.get("items", [])
+			if a < 0 or a >= items.size():
+				return 0
+			var rt: Array = vals.get("ring_tier", [])
+			if rt.is_empty():
+				return 0
+			var it: Dictionary = items[a]
+			return int(rt[clampi(int(it.get("tier", 1)), 1, rt.size()) - 1])
+		DropKinds.ABILITY:
+			return int(vals.get("ability", 0))
+		DropKinds.UNIQUE:
+			return int(vals.get("unique", 0))
+	return 0
+
+
+static func sell_price(world: RefCounted, kind: int, a: int, b: int) -> int:
+	var vend: Dictionary = world.stat_frame.get("vendors", {})
+	return item_value(world, kind, a, b) * int(vend.get("sell_fraction_pct", 50)) / 100
+
+
+static func buy_price(world: RefCounted, kind: int, a: int, b: int) -> int:
+	var vend: Dictionary = world.stat_frame.get("vendors", {})
+	return item_value(world, kind, a, b) * int(vend.get("buy_multiplier_pct", 200)) / 100
+
+
+static func _sell(world: RefCounted, p: RefCounted, slot: int) -> void:
+	if nearest_vendor(world, p) < 0 or slot >= bag_count(p):
+		return
+	var it := bag_item(p, slot)
+	var price := sell_price(world, int(it.kind), int(it.a), int(it.b))
+	if price <= 0:
+		return
+	bag_remove(p, slot)
+	p.gold += price
+
+
+static func _buy(world: RefCounted, p: RefCounted, row: int) -> void:
+	var vi := nearest_vendor(world, p)
+	if vi < 0 or vi >= world.vendor_stock.size():
+		return
+	var stock: PackedInt32Array = world.vendor_stock[vi]
+	if row * 3 + 2 >= stock.size():
+		return
+	var kind := stock[row * 3]
+	var a := stock[row * 3 + 1]
+	var b := stock[row * 3 + 2]
+	var price := buy_price(world, kind, a, b)
+	if price <= 0 or p.gold < price:
+		return
+	# bag_add FIRST (a full bag refuses with BAG_FULL and the gold
+	# never moves — nothing half-happens).
+	if not bag_add(world, p, kind, a, b):
+		return
+	p.gold -= price
 
 
 ## Move one bag row to the player's bag. False = refused (out of

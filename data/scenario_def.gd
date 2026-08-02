@@ -73,4 +73,8 @@ extends Resource
 ## Deposit/withdraw ride recorded bag_op codes, legal only within
 ## bag_step's BANK_RADIUS of this cell; the panel is walk-up view.
 @export var bank_cell: Vector2 = Vector2.ZERO
+## sl-0131 VENDORS v1: station cells + parallel stock-set names
+## (balance_frame vendors.stocks keys). Empty = no vendors here.
+@export var vendor_cells: PackedVector2Array = PackedVector2Array()
+@export var vendor_stocks: PackedStringArray = PackedStringArray()
 @export var default_seed: int = 1

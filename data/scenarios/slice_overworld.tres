@@ -24,4 +24,6 @@ rift_nodes = PackedVector2Array(60.5, 40.5, 140.5, 50.5, 200.5, 80.5, 37.5, 90.5
 rift_node_biomes = PackedInt32Array(0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2)
 rift_ambient = true
 bank_cell = Vector2(112.5, 182.5)
+vendor_cells = PackedVector2Array(106.5, 182.5, 106.5, 180.5)
+vendor_stocks = PackedStringArray("general", "trader")
 default_seed = 100
