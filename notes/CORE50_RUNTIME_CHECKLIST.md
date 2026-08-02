@@ -36,6 +36,7 @@
 | Crosshair style + size (sl-0077) | main._crosshair_style/_crosshair_size applied state (+ tests/settings round-trip) |
 | Remapping (persisted path -> live InputMap) | injected move_up=J is live (+ tests/settings round-trip) |
 | Hold/toggle fire | sim-side autofire latch, smoke-mechanized since M3 (CORE-32 proofs) |
+| Rift split ratio (sl-0125) | [ui] rift_split settings round-trip in the gate; NOT core50-verified (deliberate: the row only applies inside rift scenarios, which core50's default-scenario boot never enters) — the render truth is the four-capture evidence + the designer-eyes row below |
 
 ## Designer eyes — one pass in the TESTER build (render gate)
 
@@ -51,6 +52,10 @@ Launch the tester exe, flip each in options (O), confirm the LOOK:
       options row agree).
 - [ ] UI scale x2: every HUD surface doubles (bars, meter, options,
       recap, hints) — nothing clips off-screen at 1280x720.
+- [ ] Rift split ratio (sl-0125): cast into any rift, flip "rift
+      split" in options mid-dive — the panes and the galaxy camera
+      re-fit live at both ratios; nothing hostile ever leaves the
+      galaxy pane (Law 1 both ways).
 - [ ] Crosshair styles (sl-0077): all four silhouettes readable on
       every floor; size steps visibly 9/11/13/15; "classic" at 11 is
       the exact ratified look (preview: reports/crosshair_styles_preview.png).

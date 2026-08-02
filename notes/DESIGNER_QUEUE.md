@@ -1,5 +1,31 @@
 # Designer queue — everything waiting on you (historical; see banner)
 
+> **2026-08-02 EVENING (post-starhook-merge sweep): still historical —
+> the LIVE queue is planning-side (notes/HANDOFF.md §2 has the
+> current open list).** Your prototype #2 IS the built game now
+> (sl-0115), your two after-cast rulings landed same-day (sl-0123:
+> the drag is cut, combat in the galaxy is fully normal; sl-0125:
+> the split ratio is yours to flip — the "rift split" options row
+> switches half ↔ two-thirds-galaxy LIVE in play), and main is
+> pushed. Genuinely open your side, in plain words:
+> - **Flip the split ratio in play and pick one** — the INDEX amends
+>   on your word; four evidence captures are committed if you want
+>   stills.
+> - **Starhook refinement one-liners as you fish**: drain rates, the
+>   three lives, rod cadences + unlock levels (5/8 for
+>   Heavyline/Twinreed are my [T]), ambient rift cadence, biome
+>   twists, the little fighter's size, fish names in the toasts.
+>   R swaps rods (replay-dump moved to J to make room).
+> - **The gear seam** (rods + simple equipment dropping from
+>   starhook bosses, level-gated) starts on your routing.
+> - **Two asks from your paper batch** (sl-0121 quest icons/markers,
+>   sl-0122 boss sprite rebinds) are routed and waiting their turn.
+> - Weekly GIF — the dive at either ratio is fresh material; G
+>   starts, G stops.
+> - Standing from before: rested ratification stack, CORE-50 render
+>   checklist pass, onboarding copy voice, icon tool-source push
+>   from the other PC, crosshair styles on screen, b65 city walk.
+
 > **2026-08-02 (post-S1 sweep): still historical — the LIVE queue is
 > planning-side (notes/HANDOFF.md §2 has the current open list).**
 > Green Country's build is DONE and gated: all its enemies live at

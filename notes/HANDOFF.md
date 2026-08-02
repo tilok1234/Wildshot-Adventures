@@ -1,4 +1,4 @@
-# Session Handoff — rewritten 2026-08-02 (~12:15, post-S1 + the UI/interaction family; STARHOOK v2 merged ~15:30, sl-0115)
+# Session Handoff — rewritten 2026-08-02 (~16:30, post-starhook: the sl-0115 merge + the sl-0123/0125 refinement pass, all pushed)
 
 **COLD START — this handoff assumes NO prior context.** Read the game
 repo's `CLAUDE.md` first (auto-loads; BINDING contract + the
@@ -11,30 +11,51 @@ and gh auth are machine-local; this file + `CLAUDE.md` + planning
 `docs/23` are the complete context carrier. (Serialization is
 SERIAL 22 since sl-0115 — the line's lives/drain/grace + ambient
 rifts + landed catches; WSR stays VERSION 2, rod swap rides the
-recorded weapon_select byte.)
+recorded weapon_select byte. NEXT BUMP IS 23.)
 
-**THE HOLDS RESOLVED (sl-0115, 2026-08-02): the designer's prototype
-#2 landed and the STARHOOK SOUL seam is MERGED — read planning
-`notes/reference/starhook-proto2/INDEX.md` FIRST if touching
-starhook (its corrections block is law: no coined name for the
-arena part, the bait fighter is the star, the reel is CUT, rifts
-have nothing to do with water). sl-0111 (water fishing) is PARKED
-by the designer's word — revive only on their say. NEXT-AFTER-SOUL
-by ruling: the GEAR SEAM (rods + very simple equipment DROPPING
-from starhook bosses, level-gated) — routed when the designer says
-go. Every starhook number is [T]; the designer's refinement rounds
-own the feel.** New work starts only on its own routing; until
-then: intakes, feel one-liners, tuning batches, whatever the
-designer asks.
+**STARHOOK IS THE BUILT GAME NOW (2026-08-02, three seams, all
+sealed + gated + PUSHED to origin/main at `a6f2369`):**
+- **sl-0115 (the prototype merge, `0a71a6b`..`f4bd7d2`)** — read
+  planning `notes/reference/starhook-proto2/INDEX.md` FIRST if
+  touching starhook (its corrections block is law: NO coined name
+  for the arena part, the bait fighter is the star, the reel is
+  CUT, rifts have nothing to do with water).
+- **sl-0123 (the drag is cut, `16315e6`)** — combat in the galaxy
+  is NORMAL combat; the rift's pull lives in THE LINE ONLY
+  (data/rift_line.tres: strain clock / deep edge / three lives /
+  graces). NO entity-drag code exists anywhere; gather_test PINS
+  the absence. If a routing ever reintroduces drag, that is a NEW
+  designed system, not a revert.
+- **sl-0125 (the split ratio is [T], `3f34a19`)** — the "rift
+  split" options row flips half ↔ two-thirds-galaxy LIVE
+  (main._apply_rift_split; camera fit = min(pane_w/320, 360/352);
+  Law 1 both ways). The designer flips in play and rules; the
+  INDEX amends on the pick.
+sl-0111 (water fishing) is PARKED by the designer's word — revive
+only on their say. NEXT-AFTER-SOUL by ruling: the GEAR SEAM (rods
++ very simple equipment DROPPING from starhook bosses,
+level-gated) — routed when the designer says go. Also ROUTED AND
+WAITING (from the designer's Green-days paper batch, opened
+planning-side mid-day): **sl-0121** (quest giver icons + map
+objective markers + HUD tracker, view-only) and **sl-0122** (King
+Grubb → boss:goblin-war-crown rebind + per-def boss render scale)
+— neither absorbed into the starhook seams; they run on their own
+routing order. Every starhook number is [T]; the designer's
+refinement rounds own the feel. **WATCH ITEM: CI run 30751294779
+was queued on the push (the Windows queue runs hours behind; the
+ubuntu lint job is the fast signal — gotcha #26: check it landed
+green).** New work starts only on its own routing; until then:
+intakes, feel one-liners, tuning batches, whatever the designer
+asks.
 
 ## §0 What this project is (60 seconds)
 
 Wildshot Adventures: a solo-developed RotMG-inspired top-down realtime
 bullet-hell ARPG in **Godot 4.6.2 (pinned), typed GDScript, custom
 deterministic sim, no Godot physics in gameplay**. Serialization
-SERIAL 21 (next bump 22); replay format **WSR VERSION 2** (the
-interact era — v1 replays refuse loudly); goldens current; all CI
-green.
+SERIAL 22 (next bump 23); replay format **WSR VERSION 2** (the
+interact era — v1 replays refuse loudly); goldens current; local
+gates green (the pushed CI run is the standing watch item above).
 
 Current phase: **THE SLICE ERA** (sl-0098: the world is the test).
 **Slice v0.1 is the ONE milestone**: the four-zone dusk overworld
@@ -125,11 +146,13 @@ planning `notes/sessions/2026-08-02-slice-s1.md`):**
 6. **STARHOOK v2** (seam 6 sl-0105, REBUILT by sl-0115 — the
    designer's prototype #2 rules the shape; INDEX corrections =
    law): CAST IS INSTANT (interact at a land portal — the cast IS
-   the aggro); 50/50 split (world capture LEFT with the line INTO
-   the world rift; the galaxy RIGHT under a FIXED camera — the
-   12×13 arena's 10×11 interior fills the pane 1:1, Law 1 by
-   construction); THE LINE (data/rift_line.tres — sl-0123 CUT THE
-   DRAG: arena combat is NORMAL combat, nothing moves the fighter,
+   the aggro); THE SPLIT (world capture LEFT with the line INTO
+   the world rift; the galaxy RIGHT under a FIXED fitted camera —
+   the 12×13 arena's 10×11 interior always fills its pane, Law 1
+   by construction; the RATIO is [T] and live-flippable since
+   sl-0125: the "rift split" options row switches half ↔
+   two-thirds-galaxy in play); THE LINE (data/rift_line.tres —
+   sl-0123 CUT THE DRAG: arena combat is NORMAL combat, nothing moves the fighter,
    the catch, or any shot; the rift's pull lives in the LINE only:
    strain clock, deep-edge strip, bullet strain, visual tension);
    LINE STABILITY = HP with THREE hard
@@ -240,17 +263,21 @@ clean seam.
 
 ## §1 Where things stand (2026-08-02 ~15:30)
 
-**M0–M8 + S0 + S1 engineering complete; STARHOOK v2 merged
-(sl-0115).** The one-command ship gate `tools/pretester_check.ps1`
-runs ALL GREEN (**30 fixed steps + the two-lane battery — 43 rows /
-83 runs since sl-0115 — byte-identical + export both artifacts +
-lockdown probe**); the sl-0115 close is the latest full run. No
-deferred-gate debt stands. Artifacts on disk are current-era:
-balance_frame.json + the content pack ride the export.
+**M0–M8 + S0 + S1 engineering complete; STARHOOK v2 merged AND
+refined same-day (sl-0115 + sl-0123 + sl-0125), all pushed.** The
+one-command ship gate `tools/pretester_check.ps1` runs ALL GREEN
+(**30 fixed steps + the two-lane battery — 43 rows / 83 runs since
+sl-0115 — byte-identical + export both artifacts + lockdown
+probe**); the latest full runs: sl-0115 close 15.0 min, sl-0123
+pre-commit (green except the byte-gate listing exactly its own ten
+re-baselined files, per gotcha-32 order), sl-0125 pre-commit ALL
+GREEN 14.9 min. No deferred-gate debt stands. Artifacts on disk are
+current-era: balance_frame.json + the content pack ride the export.
 
 The designer is LIVING IN GREEN — that IS the chapter gate (and the
 docs/19 bar clock). Their prototype #2 landed and IS the built
-starhook now; the refinement rounds are theirs.
+starhook now — refined twice same-day by their own casts (the drag
+cut; the flippable split); the refinement rounds are theirs.
 
 ## §2 Open — designer-side (do not nag; the deck + planning carry these)
 
@@ -397,10 +424,10 @@ Before every commit, per touched area:
 | proof_old_tusk (S1 seam 3: 480-hp paced schedule — P2 @t910, P3 @t1820, kill t2600; charger/rage/mire kit through both transitions) | 1,2,3 | 3600 | PASS / PASS |
 | proof_warren (S1 seam 4: the Warren's opening pull — entrance pack + everything whose aggro reaches through the rock, tight corridors) | 1,2,3 | 3600 | PASS / PASS |
 | proof_king_grubb (S1 seam 4: 420-hp schedule in the throne room with the court alive — P2 @t960, P3 @t1800, kill t2520) | 1,2,3 | 3600 | PASS / PASS |
-| proof_rift_catch (sl-0115 re-baseline: the nebula catch, 260-hp schedule in the NEW 12×13 arena with THE PULL + drains + lives aboard — P2 ~t600, P3 ~t1080, kill t1560; near 0.120–0.122; drain damage NEVER counts as hits) | 1,2,3 | 3600 | PASS / PASS |
-| proof_rift_catch_rare (sl-0115 re-baseline: the denser rarity step, 420 hp at the leveled-rifter pace; near 0.120 both lanes) | 1,2,3 | 3600 | PASS / PASS |
-| proof_rift_void (sl-0115 NEW: the void ring twist 12×30 @3.4 — a biome twist changes dodge geometry, so it earns a row; near 0.120–0.121) | 1,2,3 | 3600 | PASS / PASS |
-| proof_rift_comet (sl-0115 NEW: comet spray 6.3 t/s + dart cd ×0.8; floor near 0.079 — the tightest rift margin, honest tier-3-watch class; cap 0.120) | 1,2,3 | 3600 | PASS / PASS |
+| proof_rift_catch (sl-0115; re-baselined at the sl-0123 drag cut: the nebula catch, 260-hp schedule in the 12×13 arena with the LINE's rules aboard — drains/lives/graces, NO drag — P2 ~t600, P3 ~t1080, kill t1560; near 0.120; drain damage NEVER counts as hits) | 1,2,3 | 3600 | PASS / PASS |
+| proof_rift_catch_rare (the denser rarity step, 420 hp at the leveled-rifter pace; near 0.121–0.123 post-drag-cut) | 1,2,3 | 3600 | PASS / PASS |
+| proof_rift_void (the void ring twist 12×30 @3.4 — a biome twist changes dodge geometry, so it earns a row; near 0.120–0.121) | 1,2,3 | 3600 | PASS / PASS |
+| proof_rift_comet (comet spray 6.3 t/s + dart cd ×0.8; near 0.121 both lanes since the drag cut — the pull-era 0.079 floor pinch WAS the current pressing the bot deep; its relaxation to 0.121 is the drag cut's own evidence) | 1,2,3 | 3600 | PASS / PASS |
 | proof_slice_leash (S0 seam 2: the isolated camp at seed 98,225 — spawn INSIDE its envelope, exactly one site wakes; RE-BASELINED at S1 seam 1: the re-table made it the ranged Green set at density 1.5, margins 1.975 → ~0.120, honest) | 1,2,3 | 3600 | PASS / PASS |
 | proof_green_camp (S1 seam 1: the most isolated MIXED green territory, seed 185,244 — the full melee+ranged re-table at density, near ~0.90) | 1,2,3 | 3600 | PASS / PASS |
 | proof_green_ranged (S1 seam 1: the most isolated green territory of all, seed 108,138, prowler-only → the PURE ranged set: anchors+flanker+aimed, near ~0.121) | 1,2,3 | 3600 | PASS / PASS |
