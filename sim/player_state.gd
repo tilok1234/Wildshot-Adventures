@@ -66,14 +66,15 @@ var respawn_at_tick: int = -1
 ## tier table (block-8 break (c): over-budget defense with a real
 ## paired speed cost).
 var armor_item_index: int = -1
-## S1 seam 5 (SERIAL 19): GENERIC QUESTS v1 — one active quest per
-## player (index into SimWorld.quest_defs, -1 = none), its progress
-## count, and the append-only done bitmask (the unique_mask
-## precedent). Walk-up accept/turn-in at giver cells; class lane
-## only (quest_step ignores legacy players — proof worlds inert).
-var active_quest: int = -1
-var quest_progress: int = 0
+## Quests (SERIAL 21, sl-0112 re-pin of the seam-5 one-active law):
+## MULTI-ACTIVE — taken quests are a bitmask (cap [T] in quest_step),
+## per-quest progress rides a parallel array sized to the quest list
+## at setup, and the append-only done bitmask stays (the unique_mask
+## precedent). Accept/turn-in are INTERACT presses at giver cells;
+## class lane only (legacy players inert — proof worlds untouched).
+var quests_taken_mask: int = 0
 var quests_done_mask: int = 0
+var quest_progress_arr: PackedInt32Array = PackedInt32Array()
 ## S1 seam 6 (SERIAL 20): the gather/cast verbs are PATIENCE — still
 ## ticks accrue near forage cells (yield at 90) or active rift nodes
 ## (cast at 120, sl-0105 STARHOOK). gather_rearm anti-AFK: after a
@@ -107,9 +108,11 @@ func serialize_into(buf: StreamPeerBuffer) -> void:
 	buf.put_32(damage_mod)
 	buf.put_64(respawn_at_tick)
 	buf.put_16(armor_item_index)
-	buf.put_8(active_quest)
-	buf.put_16(quest_progress)
+	buf.put_u16(quests_taken_mask)
 	buf.put_u16(quests_done_mask)
+	buf.put_u16(quest_progress_arr.size())
+	for qp in quest_progress_arr:
+		buf.put_16(qp)
 	buf.put_u16(gather_still_ticks)
 	buf.put_float(gather_rearm.x)
 	buf.put_float(gather_rearm.y)

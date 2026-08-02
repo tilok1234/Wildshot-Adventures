@@ -168,8 +168,6 @@ var _scenario_id: StringName = &""
 ## STARHOOK (S1 seam 6, sl-0105): rift-fight scenario flags.
 var _scenario_rift := false
 var _rift_won := false
-## One busy-giver hint per giver visit (S1 quests UX).
-var _giver_hint_shown := false
 ## The world frame captured at cast — the split-screen's world
 ## sliver (presentation only; survives the scene reload).
 static var _rift_capture: Image = null
@@ -303,32 +301,9 @@ func _process(_delta: float) -> void:
 				_char_save_accum = 0.0
 				CharacterProfile.harvest(world, character)
 				CharacterProfile.save_profile(character)
-			# S1 quests UX (the designer's first-minutes finding): a
-			# giver you walk up to while ALREADY carrying a quest says
-			# so — the one-active law was silent and read as broken.
-			# Throttled to one hint per giver visit (leave the radius
-			# to re-arm). View-only.
-			var pq: RefCounted = world.players[0]
-			if pq.class_id >= 0 and pq.active_quest >= 0:
-				var near_giver := -1
-				for qi in world.quest_defs.size():
-					if qi == pq.active_quest or (pq.quests_done_mask & (1 << qi)) != 0:
-						continue
-					var qgc: Vector2 = world.quest_defs[qi].giver_cell
-					if pq.pos.distance_to(qgc) <= 1.2:
-						near_giver = qi
-						break
-				if near_giver >= 0 and not _giver_hint_shown:
-					_giver_hint_shown = true
-					var aq: Resource = world.quest_defs[pq.active_quest]
-					_show_toast(
-						(
-							"one errand at a time — finish [%s] %s first"
-							% [String(aq.reason), String(aq.text)]
-						)
-					)
-				elif near_giver < 0:
-					_giver_hint_shown = false
+			# sl-0112: the busy-giver hint retired WITH the walk-up era
+			# — givers answer the interact press now. A gentle [F]
+			# prompt near interactables is seam-B polish.
 			# S1 seam 4: dungeon doors (walk-on transition; the same
 			# walk-over language as loot). Profile harvests FIRST so
 			# nothing since the last beat is lost on the stairs.
@@ -453,15 +428,30 @@ func _process(_delta: float) -> void:
 			)
 		)
 	elif p.class_id >= 0:
-		# S1 seam 5: the active quest rides the HUD readout — reason
-		# tag visible (the villager-reason pillar), progress live.
+		# sl-0112: the HUD shows the errand COUNT + the first
+		# unfinished one; the full list is the quest log (seam B).
 		var quest_part := ""
-		if p.active_quest >= 0 and p.active_quest < world.quest_defs.size():
-			var aq: Resource = world.quest_defs[p.active_quest]
-			quest_part = (
-				"\n[%s] %s (%d/%d)"
-				% [String(aq.reason), String(aq.text), p.quest_progress, int(aq.count)]
-			)
+		var carried := 0
+		var first_line := ""
+		for qi in world.quest_defs.size():
+			if (p.quests_taken_mask & (1 << qi)) == 0:
+				continue
+			if (p.quests_done_mask & (1 << qi)) != 0:
+				continue
+			carried += 1
+			if first_line.is_empty() and qi < p.quest_progress_arr.size():
+				var aq: Resource = world.quest_defs[qi]
+				first_line = (
+					"[%s] %s (%d/%d)"
+					% [
+						String(aq.reason),
+						String(aq.text),
+						p.quest_progress_arr[qi],
+						int(aq.count),
+					]
+				)
+		if carried > 0:
+			quest_part = "\nerrands %d — %s" % [carried, first_line]
 		(
 			loot_label
 			. set_text(
@@ -749,6 +739,7 @@ func _console_verdict(tokens: PackedStringArray) -> void:
 func _refresh_hints() -> void:
 	var parts: Array[String] = []
 	for entry: Array in [
+		["interact", "interact"],
 		["options_toggle", "options"],
 		["interp_toggle", "interp"],
 		["debug_speed_lowest", "spd 3.0"],

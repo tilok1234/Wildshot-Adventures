@@ -8,7 +8,10 @@ extends RefCounted
 ## instead of silently re-recording history.
 
 const MAGIC := 0x31525357  # "WSR1"
-const VERSION := 1
+## 2 since sl-0112: the interact verb joined the recorded frame
+## (SERIALIZED_SIZE 15 -> 16). Version-1 replays refuse loudly —
+## history is never silently reinterpreted.
+const VERSION := 2
 ## Checkpoint cadence in ticks (§2.4).
 const HASH_EVERY := 30
 

@@ -16,6 +16,7 @@ const KEY_ACTIONS := {
 	"move_right": KEY_D,
 	"autofire_toggle": KEY_E,
 	"ability": KEY_SPACE,
+	"interact": KEY_F,
 	"weapon_1": KEY_1,
 	"weapon_2": KEY_2,
 	"weapon_3": KEY_3,

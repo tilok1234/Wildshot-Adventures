@@ -13,6 +13,7 @@ const Damage := preload("res://sim/systems/damage.gd")
 const LootStep := preload("res://sim/systems/loot_step.gd")
 const StatFrame := preload("res://sim/systems/stat_frame.gd")
 const ItemText := preload("res://game/views/item_text.gd")
+const InputFrame := preload("res://sim/input_frame.gd")
 
 var fails: Array[String] = []
 
@@ -71,6 +72,13 @@ func _kill_n(world: RefCounted, n: int) -> void:
 		Damage.sweep_dead_enemies(world)
 
 
+## One INTERACT press through the real step (sl-0112).
+func _press(world: RefCounted) -> void:
+	var f: RefCounted = InputFrame.new()
+	f.interact_pressed = true
+	world.step([f])
+
+
 func _init() -> void:
 	# 1. Same seed -> byte-identical drop sequence; different seed differs.
 	var a: RefCounted = _world_with(_drop_def(), 77)
@@ -127,18 +135,27 @@ func _init() -> void:
 	Damage.apply(w, wp, 10, SimWorld.PATTERN_TEST_SCHEDULE)
 	check(wp.hp == 90, "test schedule bypasses armor")
 
-	# 6. Pickup rules: gold adds; equal-tier weapon stays; upgrade equips.
+	# 6. Pickup rules (sl-0112 DELIBERATE HANDS): gold is walk-over
+	# auto; items require the INTERACT press — one drop per press,
+	# nothing auto-equips; upgrades-only still governs weapon/armor.
 	var u: RefCounted = _world_with(_drop_def(), 9)
 	var up: RefCounted = u.players[0]
 	u.spawn_drop(up.pos, SimWorld.DROP_GOLD, 25)
 	u.spawn_drop(up.pos, SimWorld.DROP_WEAPON, 0, 1)
 	u.spawn_drop(up.pos, SimWorld.DROP_WEAPON, 1, 4)
 	u.spawn_drop(up.pos, SimWorld.DROP_ARMOR, 2)
-	LootStep.run(u)
-	check(up.gold == 25, "gold picked up")
-	check(up.weapon_tiers[0] == 1 and u.drops.size() == 1, "equal-tier weapon stays on ground")
-	check(up.weapon_tiers[1] == 4, "higher-tier weapon equips")
-	check(up.armor_tier == 2, "armor upgrade equips")
+	u.step([InputFrame.new()])
+	check(up.gold == 25, "gold picks up walk-over (stays auto)")
+	check(
+		up.weapon_tiers[1] == 1 and up.armor_tier == 0 and u.drops.size() == 3,
+		"NEGATIVE: nothing auto-equips without the press"
+	)
+	_press(u)
+	_press(u)
+	_press(u)
+	check(up.weapon_tiers[1] == 4, "pressed pickup equips the upgrade")
+	check(up.armor_tier == 2, "pressed pickup equips the armor")
+	check(up.weapon_tiers[0] == 1 and u.drops.size() == 1, "equal-tier weapon refuses (stays)")
 
 	# 7. Serialization: drops + progression fields round through the hash.
 	var h1: int = u.state_hash()
@@ -189,22 +206,32 @@ func _init() -> void:
 	var rit: Dictionary = ritems[int(rd.a)]
 	check(String(rit.slot) == "ring" and int(rit.tier) == 1, "ring branch picks a T1 ring item")
 	rp.pos = rd.pos
-	LootStep.run(rw)
-	check(rp.ring_index == int(rd.a) and rw.drops.is_empty(), "empty slot equips the ring")
+	rw.step([InputFrame.new()])
+	check(rp.ring_index == -1 and rw.drops.size() == 1, "NEGATIVE: rings never walk-over equip")
+	var first_ring := int(rd.a)
+	_press(rw)
+	check(rp.ring_index == first_ring and rw.drops.is_empty(), "pressed pickup equips the ring")
 	check(rp.move_speed != base_speed or rp.max_hp != base_hp, "ring trade wires through recompute")
-	# Occupied slot: the next ring stays on the ground (a choice, not
-	# a ladder — swap semantics are a designer call later).
+	# sl-0112 THE SWAP: interact on a ground ring while worn — the new
+	# equips, the OLD drops exactly where the new one lay.
 	_kill_n(rw, 1)
-	var held: int = rp.ring_index
-	rp.pos = rw.drops[0].pos
-	LootStep.run(rw)
-	check(rw.drops.size() == 1 and rp.ring_index == held, "occupied slot leaves rings grounded")
-	# Legacy lane: class -1 never equips rings.
+	var second_pos: Vector2 = rw.drops[0].pos
+	var second_ring := int(rw.drops[0].a)
+	rp.pos = second_pos
+	_press(rw)
+	check(rp.ring_index == second_ring, "worn-ring press swaps to the new ring")
+	check(
+		rw.drops.size() == 1 and int(rw.drops[0].a) == first_ring,
+		"the old ring drops where the new one lay"
+	)
+	var old_pos: Vector2 = rw.drops[0].pos
+	check(old_pos == second_pos, "swap position exact")
+	# Legacy lane: class -1 never equips rings (pressed or not).
 	var lw: RefCounted = _world_with(ring_def, 93)
 	lw.set_stat_frame(StatFrame.load_frame())
 	_kill_n(lw, 1)
 	lw.players[0].pos = lw.drops[0].pos
-	LootStep.run(lw)
+	_press(lw)
 	check(lw.players[0].ring_index == -1 and lw.drops.size() == 1, "legacy player refuses rings")
 
 	# 10. THE ONE ITEM-TEXT GRAMMAR (docs/22: every number visible; one
@@ -265,7 +292,7 @@ func _init() -> void:
 	hp2.class_id = 0
 	StatFrame.recompute(hw2, hp2)
 	hw2.spawn_drop(hp2.pos, SimWorld.DROP_UNIQUE, 1)
-	LootStep.run(hw2)
+	_press(hw2)
 	var hitems: Array = hw2.stat_frame.items
 	check(hp2.unique_mask == 2, "hide pickup sets mask bit 1")
 	check(

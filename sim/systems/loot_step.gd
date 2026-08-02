@@ -1,10 +1,13 @@
 extends RefCounted
-## Ordered system (Loop v1, docs/19): ground-drop lifetime + walk-over
-## pickup. Runs last in the step so this tick's deaths drop first and
-## pickups read final positions. Pickup is GAMEPLAY, fully deterministic,
-## never replay-dirtying. Auto-equip takes UPGRADES ONLY — a drop that
-## would not improve the slot stays on the ground (no inventory in v1;
-## the minimal equip surface is the HUD's slot readout).
+## Ordered system (Loop v1 docs/19; RE-PINNED by sl-0112 — DELIBERATE
+## HANDS): ground-drop lifetime + pickup. GOLD stays walk-over auto
+## (the silent counter is its readout); EVERY OTHER KIND requires an
+## INTERACT press — the nearest eligible drop within reach is the one
+## taken, one drop per press. Upgrades-only holds for weapon/armor;
+## abilities swap deliberately; a worn ring SWAPS with the pressed
+## ground ring (the old ring drops where the new one lay). Runs last
+## in the step. Pickup is GAMEPLAY, fully deterministic, never
+## replay-dirtying.
 ##
 ## `world` is duck-typed SimWorld (preload-cycle avoidance).
 
@@ -19,36 +22,79 @@ static func run(world: RefCounted) -> void:
 	var t: int = world.tick
 	var prog: Resource = world.progression
 	var radius: float = float(prog.pickup_radius) if prog != null else 0.5
+	var frames: Array = world.current_frames
+	# Interact pickups first: each pressing player takes their nearest
+	# eligible non-gold drop within reach (player order = §2.4 stable).
+	for i in world.players.size():
+		var p: RefCounted = world.players[i]
+		if p.dead:
+			continue
+		var frame: RefCounted = frames[i] if i < frames.size() else null
+		if frame == null or not frame.interact_pressed:
+			continue
+		var best := -1
+		var best_d := radius * radius
+		for di in world.drops.size():
+			var d: Dictionary = world.drops[di]
+			if int(d.kind) == DropKinds.GOLD or t >= int(d.expires_at_tick):
+				continue
+			var dd: float = p.pos.distance_squared_to(d.pos)
+			if dd <= best_d:
+				best_d = dd
+				best = di
+		if best < 0:
+			continue
+		var chosen: Dictionary = world.drops[best]
+		if _apply(world, p, chosen):
+			(
+				world
+				. events
+				. append(
+					{
+						"type": SimEvents.Type.LOOT_PICKED,
+						"tick": t,
+						"id": int(chosen.id),
+						"kind": int(chosen.kind),
+						"player": p.id,
+						"a": int(chosen.a),
+						"b": int(chosen.b),
+						"pos": chosen.pos,
+					}
+				)
+			)
+			world.drops.remove_at(best)
+	# Walk-over lane: gold only, plus TTL expiry.
 	var kept: Array[Dictionary] = []
 	for d: Dictionary in world.drops:
 		if t >= int(d.expires_at_tick):
 			continue
 		var taken := false
-		for p: RefCounted in world.players:
-			if p.dead:
-				continue
-			var dpos: Vector2 = d.pos
-			if p.pos.distance_squared_to(dpos) > radius * radius:
-				continue
-			if _apply(world, p, d):
-				(
-					world
-					. events
-					. append(
-						{
-							"type": SimEvents.Type.LOOT_PICKED,
-							"tick": t,
-							"id": int(d.id),
-							"kind": int(d.kind),
-							"player": p.id,
-							"a": int(d.a),
-							"b": int(d.b),
-							"pos": dpos,
-						}
+		if int(d.kind) == DropKinds.GOLD:
+			for p: RefCounted in world.players:
+				if p.dead:
+					continue
+				var dpos: Vector2 = d.pos
+				if p.pos.distance_squared_to(dpos) > radius * radius:
+					continue
+				if _apply(world, p, d):
+					(
+						world
+						. events
+						. append(
+							{
+								"type": SimEvents.Type.LOOT_PICKED,
+								"tick": t,
+								"id": int(d.id),
+								"kind": int(d.kind),
+								"player": p.id,
+								"a": int(d.a),
+								"b": int(d.b),
+								"pos": dpos,
+							}
+						)
 					)
-				)
-				taken = true
-				break
+					taken = true
+					break
 		if not taken:
 			kept.append(d)
 	world.drops = kept
@@ -87,17 +133,19 @@ static func _apply(world: RefCounted, p: RefCounted, d: Dictionary) -> bool:
 			world.ability_def = world.ability_defs[idx]
 			return true
 		DropKinds.RING:
-			# S1 seam 2 [T]: rings are a CHOICE, not a ladder (block 7) —
-			# walk-over equips only an EMPTY slot; an occupied slot
-			# leaves the ring on the ground (no inventory in v1; swap
-			# semantics are a designer call later). Class lane only —
+			# sl-0112: rings are a CHOICE made with deliberate hands —
+			# interact equips an empty slot, or SWAPS with the worn
+			# ring (the old ring drops exactly where the new one lay,
+			# same TTL clock as any fresh drop). Class lane only —
 			# ring_index feeds StatFrame.recompute's trade sheet.
 			var ri := int(d.a)
-			if p.class_id < 0 or p.ring_index >= 0:
+			if p.class_id < 0:
 				return false
 			var ritems: Array = world.stat_frame.get("items", [])
 			if ri < 0 or ri >= ritems.size():
 				return false
+			if p.ring_index >= 0:
+				world.spawn_drop(d.pos, DropKinds.RING, p.ring_index)
 			p.ring_index = ri
 			StatFrame.recompute(world, p)
 			return true

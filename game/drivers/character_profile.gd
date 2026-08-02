@@ -52,8 +52,8 @@ static func create(hardcore: bool, cls := "bow") -> Dictionary:
 		"armor_item_id": "",
 		"unique_mask": 0,
 		"quests_done_mask": 0,
-		"active_quest_id": "",
-		"quest_progress": 0,
+		"quests_taken": [],
+		"quest_progress": {},
 		"starhook_level": 1,
 		"starhook_xp": 0,
 		"starhook_rod": "rod_cane",
@@ -122,11 +122,26 @@ static func apply_to_world(world: RefCounted, d: Dictionary) -> void:
 	p.ring_index = _items_index_for(world, "ring", String(d.get("ring_id", "")))
 	p.armor_item_index = _items_index_for(world, "armor", String(d.get("armor_item_id", "")))
 	p.unique_mask = int(d.get("unique_mask", 0))
-	# S1 seam 5: quest state — done mask by index (append-only list,
-	# the unique_mask precedent); the ACTIVE quest keys by id.
+	# sl-0112: quest state — done mask by index (append-only list, the
+	# unique_mask precedent); TAKEN quests + per-quest progress key BY
+	# ID (multi-active). A pre-interact-era active_quest_id migrates
+	# into the taken set for free via the same lookup.
 	p.quests_done_mask = int(d.get("quests_done_mask", 0))
-	p.active_quest = _quest_index_for(world, String(d.get("active_quest_id", "")))
-	p.quest_progress = int(d.get("quest_progress", 0)) if p.active_quest >= 0 else 0
+	p.quests_taken_mask = 0
+	p.quest_progress_arr = PackedInt32Array()
+	p.quest_progress_arr.resize(world.quest_defs.size())
+	var taken_ids: Array = d.get("quests_taken", [])
+	var legacy_active := String(d.get("active_quest_id", ""))
+	if not legacy_active.is_empty() and not taken_ids.has(legacy_active):
+		taken_ids = taken_ids + [legacy_active]
+	var prog: Dictionary = (
+		d.get("quest_progress", {}) if d.get("quest_progress") is Dictionary else {}
+	)
+	for tid in taken_ids:
+		var qi := _quest_index_for(world, String(tid))
+		if qi >= 0:
+			p.quests_taken_mask |= 1 << qi
+			p.quest_progress_arr[qi] = int(prog.get(String(tid), 0))
 	StatFrame.recompute(world, p)
 	p.hp = p.max_hp
 	p.mana = p.max_mana
@@ -154,12 +169,18 @@ static func harvest(world: RefCounted, d: Dictionary) -> void:
 	d.armor_item_id = _items_id_for(world, p.armor_item_index)
 	d.unique_mask = p.unique_mask
 	d.quests_done_mask = p.quests_done_mask
-	d.active_quest_id = (
-		String(world.quest_defs[p.active_quest].id)
-		if p.active_quest >= 0 and p.active_quest < world.quest_defs.size()
-		else ""
-	)
-	d.quest_progress = p.quest_progress
+	var taken_ids: Array = []
+	var prog: Dictionary = {}
+	for qi in world.quest_defs.size():
+		if (p.quests_taken_mask & (1 << qi)) == 0:
+			continue
+		var qid := String(world.quest_defs[qi].id)
+		taken_ids.append(qid)
+		if qi < p.quest_progress_arr.size():
+			prog[qid] = p.quest_progress_arr[qi]
+	d.quests_taken = taken_ids
+	d.quest_progress = prog
+	d.erase("active_quest_id")
 	d.ability_index = maxi(0, world.ability_defs.find(world.ability_def))
 
 

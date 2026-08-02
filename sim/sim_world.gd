@@ -43,7 +43,9 @@ const DT := 1.0 / 60.0
 ## PlayerState.armor_item_index (unique armor — Old Tusk's Hide).
 ## 19 = S1 seam 5: quest fields (active/progress/done mask).
 ## 20 = S1 seam 6: gather fields + rift-node respawn state (sl-0105).
-const SERIAL_VERSION := 20
+## 21 = sl-0112: multi-active quest state (taken mask + per-quest
+## progress array replace active/progress; the interact era).
+const SERIAL_VERSION := 21
 
 ## Damage-source pattern id for the scenario-declared test damage
 ## schedule (§2.11 elite transition proofs; planning log 2026-07-28).

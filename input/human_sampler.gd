@@ -18,6 +18,7 @@ var suppress := false
 
 var _prev_autofire := false
 var _prev_ability := false
+var _prev_interact := false
 var _last_aim := Vector2.RIGHT
 
 
@@ -32,6 +33,7 @@ func sample(mouse_tile: Vector2, player_pos: Vector2) -> InputFrame:
 		nf.aim_y = qs.y
 		_prev_autofire = Input.is_action_pressed("autofire_toggle")
 		_prev_ability = Input.is_action_pressed("ability")
+		_prev_interact = Input.is_action_pressed("interact")
 		return nf
 	var f := InputFrame.new()
 	f.move_x = (
@@ -57,6 +59,9 @@ func sample(mouse_tile: Vector2, player_pos: Vector2) -> InputFrame:
 	var ab := Input.is_action_pressed("ability")
 	f.ability_pressed = ab and not _prev_ability
 	_prev_ability = ab
+	var ia := Input.is_action_pressed("interact")
+	f.interact_pressed = ia and not _prev_interact
+	_prev_interact = ia
 	for i in 3:
 		if Input.is_action_pressed("weapon_%d" % (i + 1)):
 			f.weapon_select = i + 1

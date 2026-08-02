@@ -1,13 +1,14 @@
 extends SceneTree
-## GENERIC QUESTS v1 contracts (S1 seam 5, sl-0104; docs/23
-## disposition 5): walk-up accept at giver cells (one active per
-## player, class lane only — legacy players NEVER interact, the
-## battery's byte-identity by construction), KILL/VISIT/COLLECT
-## progress from the sim's own events, walk-up turn-in at the SAME
-## giver with in-sim rewards (gold + XP), done-mask blocks repeats,
-## every new field hashed (SERIAL 19), reason tags present, giver
-## cells match the content pack's giver slots. NEGATIVE-TESTED.
-## Exit 0 = green.
+## QUESTS under THE INTERACT VERB (S1 seam 5 re-pinned by sl-0112):
+## accepting and turning in are DELIBERATE F-presses at giver cells —
+## nothing auto-accepts; MULTI-ACTIVE capacity (cap 5 [T]) with
+## per-quest progress; KILL/COLLECT count for EVERY taken unfinished
+## quest; turn-in pays the pressed giver's first complete quest (one
+## action per press, payoff before pickup); done-mask blocks repeats;
+## legacy/dead players inert; interact on nothing does nothing; every
+## new field hashed (SERIAL 21); the Green five pinned BOTH ways
+## against the content pack's giver slots. NEGATIVE-TESTED. Exit 0 =
+## green.
 
 const SimWorld := preload("res://sim/sim_world.gd")
 const Bitgrid := preload("res://sim/collision/bitgrid.gd")
@@ -34,9 +35,9 @@ func _grid() -> RefCounted:
 	return g
 
 
-func _quest(kind: int, giver: Vector2) -> Resource:
+func _quest(kind: int, giver: Vector2, id := "t_quest") -> Resource:
 	var q: Resource = QuestDef.new()
-	q.id = &"t_quest"
+	q.id = StringName(id)
 	q.reason = "waystation"
 	q.giver_cell = giver
 	q.kind = kind
@@ -69,96 +70,116 @@ func _step(world: RefCounted, n := 1) -> void:
 		world.step([InputFrame.new()])
 
 
+func _press(world: RefCounted) -> void:
+	var f: RefCounted = InputFrame.new()
+	f.interact_pressed = true
+	world.step([f])
+
+
 func _init() -> void:
 	var giver := Vector2(12.5, 16.5)
 
-	# 1. Walk-up accept: class player near the giver takes the first
-	# unfinished quest; ONE active at a time; events emitted.
-	var w: RefCounted = _world([_quest(0, giver), _quest(1, giver)])
+	# 1. NOTHING auto-accepts: standing on the giver does nothing; the
+	# INTERACT press accepts; a second press takes the giver's NEXT
+	# quest (multi-active).
+	var w: RefCounted = _world(
+		[_quest(0, giver, "q_kill"), _quest(1, giver, "q_visit"), _quest(2, giver, "q_collect")]
+	)
 	var p: RefCounted = w.players[0]
-	_step(w)
-	check(p.active_quest == -1, "far from the giver: nothing accepted")
 	p.pos = giver
-	_step(w)
-	check(p.active_quest == 0, "walk-up accepts the giver's first quest")
+	_step(w, 5)
+	check(p.quests_taken_mask == 0, "NEGATIVE: standing on the giver auto-accepts nothing")
+	_press(w)
+	check(p.quests_taken_mask == 1, "interact accepts the first quest")
 	var saw_accept := false
 	for ev: Dictionary in w.events:
 		if int(ev.type) == SimEvents.Type.QUEST_ACCEPTED and int(ev.quest) == 0:
 			saw_accept = true
 	check(saw_accept, "QUEST_ACCEPTED emitted")
-	_step(w)
-	check(p.active_quest == 0 and p.quest_progress == 0, "second quest NOT stacked")
+	_press(w)
+	check(p.quests_taken_mask == 3, "second press takes the giver's next quest (multi-active)")
+	_press(w)
+	check(p.quests_taken_mask == 7, "third press: three carried at once")
 
-	# 2. KILL progress counts only target defs, capped at count; then
-	# walk-up turn-in pays gold + xp, sets the done bit, frees the slot.
+	# 2. Progress counts for EVERY taken unfinished quest: one kill
+	# advances q_kill; a pickup advances q_collect; the visit fills by
+	# proximity — all while carried together.
 	var e1: RefCounted = w.add_enemy(0, Vector2(30.5, 16.5))
 	Damage.apply(w, e1, 9999, 0)
-	_step(w)  # sweep + quest read the kill in the same step
-	check(p.quest_progress == 1, "target kill counts")
-	var gold0: int = p.gold
-	var xp0: int = p.xp
-	var e2: RefCounted = w.add_enemy(0, Vector2(30.5, 16.5))
-	var e3: RefCounted = w.add_enemy(0, Vector2(31.5, 16.5))
-	Damage.apply(w, e2, 9999, 0)
-	Damage.apply(w, e3, 9999, 0)
-	p.pos = giver
 	_step(w)
-	check(p.quest_progress == 0 and p.active_quest == 1, "turn-in at the giver, next quest offered")
-	check((p.quests_done_mask & 1) == 1, "done bit set")
+	check(p.quest_progress_arr[0] == 1, "kill counts for the taken kill quest")
+	w.spawn_drop(p.pos, SimWorld.DROP_GOLD, 5)
+	_step(w)
+	check(p.quest_progress_arr[2] == 1, "gold pickup counts for the collect quest")
+	p.pos = Vector2(40.5, 16.5)
+	_step(w)
+	check(p.quest_progress_arr[1] == 2, "visit fills by proximity while multi-carried")
+
+	# 3. Turn-in is a deliberate press: the complete visit quest pays
+	# at the giver (payoff-first: turn-in wins over accepting more).
+	var gold0: int = p.gold
+	p.pos = giver
+	_step(w, 3)
+	check((p.quests_done_mask & 2) == 0, "NEGATIVE: standing never turns in")
+	_press(w)
+	check((p.quests_done_mask & 2) == 2, "interact turns in the complete quest")
 	check(p.gold == gold0 + 25, "reward gold in-sim")
-	check(p.xp != xp0 or p.level > 1, "reward xp in-sim")
 	var saw_done := false
 	for ev: Dictionary in w.events:
-		if int(ev.type) == SimEvents.Type.QUEST_DONE and int(ev.quest) == 0:
+		if int(ev.type) == SimEvents.Type.QUEST_DONE and int(ev.quest) == 1:
 			saw_done = true
 	check(saw_done, "QUEST_DONE emitted")
 
-	# 3. VISIT completes by proximity, then turns in at the giver.
-	check(p.active_quest == 1, "visit quest active")
+	# 4. Finish the kill quest and re-press: done quests never
+	# re-offer; interact away from any giver does nothing.
+	var e2: RefCounted = w.add_enemy(0, Vector2(30.5, 16.5))
+	Damage.apply(w, e2, 9999, 0)
+	_step(w)
+	_press(w)
+	check((p.quests_done_mask & 1) == 1, "kill quest turned in")
+	var mask_before: int = p.quests_taken_mask
 	p.pos = Vector2(40.5, 16.5)
-	_step(w)
-	check(p.quest_progress == 2, "visit fills progress to count")
-	p.pos = giver
-	_step(w)
-	check(p.active_quest == -1 and (p.quests_done_mask & 2) == 2, "visit turned in")
-	_step(w)
-	check(p.active_quest == -1, "all quests done: giver offers nothing (no repeats)")
+	_press(w)
+	check(p.quests_taken_mask == mask_before, "NEGATIVE: interact on nothing does nothing")
 
-	# 4. COLLECT counts THIS player's pickups (any kind).
-	var wc: RefCounted = _world([_quest(2, giver)])
+	# 5. The cap: six quests, cap 5 — the sixth accept refuses.
+	var six: Array = []
+	for i in 6:
+		six.append(_quest(0, giver, "q%d" % i))
+	var wc: RefCounted = _world(six)
 	var pc: RefCounted = wc.players[0]
 	pc.pos = giver
-	_step(wc)
-	check(pc.active_quest == 0, "collect quest accepted")
-	wc.spawn_drop(pc.pos, wc.DROP_GOLD, 5)
-	_step(wc)
-	check(pc.quest_progress == 1, "pickup counts toward collect")
+	for i in 6:
+		_press(wc)
+	var carried := 0
+	for qi in 6:
+		if (pc.quests_taken_mask & (1 << qi)) != 0:
+			carried += 1
+	check(carried == 5, "capacity caps at 5 [T]")
 
-	# 5. NEGATIVE: legacy (class -1) players never interact.
+	# 6. NEGATIVES: legacy players and dead players never interact.
 	var wl: RefCounted = _world([_quest(0, giver)], false)
-	var pl: RefCounted = wl.players[0]
-	pl.pos = giver
-	_step(wl, 3)
-	check(pl.active_quest == -1, "negative: legacy player accepts nothing")
-
-	# 6. NEGATIVE: a dead player interacts with nothing.
+	wl.players[0].pos = giver
+	_press(wl)
+	check(wl.players[0].quests_taken_mask == 0, "negative: legacy player accepts nothing")
 	var wd: RefCounted = _world([_quest(0, giver)])
 	var pd: RefCounted = wd.players[0]
 	Damage.apply(wd, pd, 99999, 0)
 	pd.pos = giver
-	_step(wd)
-	check(pd.active_quest == -1, "negative: dead player accepts nothing")
+	_press(wd)
+	check(pd.quests_taken_mask == 0, "negative: dead player accepts nothing")
 
-	# 7. Hash coverage: all three quest fields are serialized state.
+	# 7. Hash coverage (SERIAL 21).
 	var wh: RefCounted = _world([_quest(0, giver)])
+	_step(wh)  # sizes the progress array
 	var h0: int = wh.state_hash()
-	wh.players[0].active_quest = 0
-	check(wh.state_hash() != h0, "active_quest hashed")
-	wh.players[0].active_quest = -1
+	wh.players[0].quests_taken_mask = 1
+	check(wh.state_hash() != h0, "quests_taken_mask hashed")
+	wh.players[0].quests_taken_mask = 0
 	var h1: int = wh.state_hash()
-	wh.players[0].quest_progress = 3
-	check(wh.state_hash() != h1, "quest_progress hashed")
-	wh.players[0].quest_progress = 0
+	wh.players[0].quest_progress_arr[0] = 3
+	check(wh.state_hash() != h1, "quest progress hashed")
+	wh.players[0].quest_progress_arr[0] = 0
 	var h2: int = wh.state_hash()
 	wh.players[0].quests_done_mask = 5
 	check(wh.state_hash() != h2, "quests_done_mask hashed")
@@ -190,7 +211,7 @@ func _init() -> void:
 				check(di >= 8 and di <= 21, String(q.id) + ": kill targets are Green ordinaries")
 
 	if fails.is_empty():
-		print("quest_test: PASS (accept/kill/visit/collect/turn-in/negatives/hash/green-five)")
+		print("quest_test: PASS (interact/multi-active/cap/turn-in/negatives/hash/green-five)")
 		quit(0)
 	else:
 		for m: String in fails:

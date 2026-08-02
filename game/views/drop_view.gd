@@ -90,6 +90,10 @@ func _draw_nearest_label() -> void:
 	var line := ItemText.drop_line(world, best)
 	if line.is_empty():
 		return
+	# sl-0112 deliberate hands: non-gold drops take an interact press —
+	# the label says so (the binding is remappable; F default).
+	if int(best.kind) != DropKinds.GOLD:
+		line = "[F] " + line
 	var bpos: Vector2 = best.pos
 	var at := (bpos * TILE).round() + Vector2(0.0, -14.0)
 	var w := _font.get_string_size(line, HORIZONTAL_ALIGNMENT_CENTER, -1.0, 10).x
