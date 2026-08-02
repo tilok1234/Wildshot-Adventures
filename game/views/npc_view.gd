@@ -56,8 +56,26 @@ func setup(lib: RefCounted, content_pack: String, bitgrid: RefCounted, spawn: Ve
 		var cell: Vector2 = st.cell
 		spr.position = cell * TILE
 		spr.play("idle-down")
+		# sl-0132: deterministic per-NPC phase offset + a tiny rate
+		# wobble [T ±10%] — the crowd stops breathing in lockstep.
+		# Stable station-cell hash (the arena_builder variant_hash
+		# discipline: not RNG, same look every boot, replay-free);
+		# future vendor/banker bodies inherit this loop for free.
+		var h := _phase_hash(int(cell.x), int(cell.y))
+		var idle_n := frames.get_frame_count("idle-down")
+		if idle_n > 0:
+			spr.set_frame_and_progress(h % idle_n, float((h / 7) % 97) / 97.0)
+		spr.speed_scale = 0.9 + 0.2 * (float((h / 13) % 89) / 89.0)
 		add_child(spr)
 	return true
+
+
+## Deterministic position hash (the arena_builder.gd variant_hash fold
+## — any stable per-cell choice is seam-safe; NOT RNG, no stream).
+static func _phase_hash(x: int, y: int) -> int:
+	var h := x * 374761393 + y * 668265263
+	h = (h ^ (h >> 13)) * 1274126177
+	return (h ^ (h >> 16)) & 0x7FFFFFFF
 
 
 ## Deterministic station table — static + pure so the wiring test pins
