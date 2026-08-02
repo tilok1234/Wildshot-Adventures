@@ -57,8 +57,8 @@ static func apply(
 	# (prototype i-frames, 60 t/s converted; drains never arm it — the
 	# clock is the clock). The snap branch below assigns its own longer
 	# grace over this.
-	if world.rift_pull != null and a.faction == ActorState.FACTION_FRIENDLY and hit_slot >= 0:
-		a.line_iframe_until = maxi(a.line_iframe_until, t + int(world.rift_pull.hit_iframe_ticks))
+	if world.rift_line != null and a.faction == ActorState.FACTION_FRIENDLY and hit_slot >= 0:
+		a.line_iframe_until = maxi(a.line_iframe_until, t + int(world.rift_line.hit_iframe_ticks))
 	# THE LINE SNAPS (sl-0115): in a rift arena, a depleted stability
 	# pool burns one of the three lives instead of killing — the line
 	# re-spools full, a snap-grace window arms (bullets only; the
@@ -68,13 +68,13 @@ static func apply(
 		a.hp <= 0
 		and a.faction == ActorState.FACTION_FRIENDLY
 		and not a.dead
-		and world.rift_pull != null
+		and world.rift_line != null
 		and a.line_lives > 1
 	):
 		a.line_lives -= 1
 		a.hp = a.max_hp
 		a.line_drain_acc = 0
-		a.line_iframe_until = t + int(world.rift_pull.snap_grace_ticks)
+		a.line_iframe_until = t + int(world.rift_line.snap_grace_ticks)
 		(
 			events
 			. append(
@@ -231,7 +231,7 @@ static func _award_kill(world: RefCounted, e: RefCounted) -> void:
 	# from the biome's table (weighted commons; the rare rarity always
 	# lands the biome's rare species). Species persist per-species at
 	# harvest — fish are species-currency (deck tap shk2ctch).
-	if world.rift_pull != null:
+	if world.rift_line != null:
 		if int(def.gold_max) > 0:
 			var pot: int = (
 				int(def.gold_min) + rng.next_bounded(int(def.gold_max) - int(def.gold_min) + 1)

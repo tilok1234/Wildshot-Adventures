@@ -21,8 +21,9 @@ UI/interaction family + the sl-0115 STARHOOK v2 merge,
 tooltips, OLD TUSK + the HIDE unique, THE WARREN + KING GRUBB
 (first dungeon), quests v1, STARHOOK v2 (the designer's prototype
 #2 built for real: instant cast at land portals, 50/50 split with
-the living line, THE PULL + three-lives line stability, three
-biomes with named fish persisted per-species, four level-gated
+the living line, three-lives line stability — the drag cut by
+sl-0123, the pull lives in the line only — three biomes with named
+fish persisted per-species, four level-gated
 rods on R, ambient rift spawns) + foraging — and the interact era's
 deliberate hands throughout: F-key pickups/givers/casts,
 multi-active quest log, read-only character sheet (C), HUD relayout
@@ -69,7 +70,7 @@ by rule.
 | `assembler/` | The imported actor roster (player + mapped enemies) — roster-filtered by `addons/assembler_importer` from `data/actor_sheet_map.tres` |
 | `addons/` | `tileforge_importer` (M1), `assembler_importer` (M4/M5, docs/14), `uikit_importer` (M4), `worldforge_importer` (post-M5, docs/15 — validates + consumes generated world packs) |
 | `autoload/` | Config, Telemetry, DebugHub, BootArgs — exactly four, none holding gameplay state |
-| `data/` | Weapons (lab trio + the three class frames + the FOUR starhook rods), enemies (incl. the 14 Green families, Old Tusk, King Grubb, the six rift catches across three biomes), patterns (incl. the biome twist variants), abilities, quests, uniques, scenarios (incl. `slice_overworld` — THE SLICE — plus `the_warren` and the six `rift_<biome>_<rarity>` arenas), arenas (`arena_warren.json`, `arena_rift.json`), `rift_pull.tres` (sl-0115: the pull + the line's drains/lives), actor sheet map, budgets — `.tres`, hot-reloadable; plus `balance_frame.json` (THE docs/22 stat-frame tuning source incl. the starhook block: rods, biome fish tables, ambient spawns — the sim loads it, the calculator gates it) |
+| `data/` | Weapons (lab trio + the three class frames + the FOUR starhook rods), enemies (incl. the 14 Green families, Old Tusk, King Grubb, the six rift catches across three biomes), patterns (incl. the biome twist variants), abilities, quests, uniques, scenarios (incl. `slice_overworld` — THE SLICE — plus `the_warren` and the six `rift_<biome>_<rarity>` arenas), arenas (`arena_warren.json`, `arena_rift.json`), `rift_line.tres` (sl-0115, amended sl-0123 — the drag is cut: the line's drains/deep-edge/lives/graces; nothing in a rift drags any body or shot), actor sheet map, budgets — `.tres`, hot-reloadable; plus `balance_frame.json` (THE docs/22 stat-frame tuning source incl. the starhook block: rods, biome fish tables, ambient spawns — the sim loads it, the calculator gates it) |
 | `npcs/`, `icons/` | Consumed pack trees (S0 seam 4): 32 NPC sheets + translated manifest (`tools/import_npcs.py`), the 470-glyph icon atlas pair (`tools/import_icons.py`) — regenerate from `assets/`, never hand-edit |
 | `sim/` | The engine-decoupled deterministic sim core (`systems/`, `collision/`) — global RNG banned here |
 | `input/` | HumanSampler, ReplaySource, `bot/` — three equal InputSources |

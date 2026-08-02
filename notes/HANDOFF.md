@@ -128,9 +128,11 @@ planning `notes/sessions/2026-08-02-slice-s1.md`):**
    the aggro); 50/50 split (world capture LEFT with the line INTO
    the world rift; the galaxy RIGHT under a FIXED camera — the
    12×13 arena's 10×11 interior fills the pane 1:1, Law 1 by
-   construction); THE PULL (data/rift_pull.tres: 1.35 t/s ±25°
-   ~26 s osc; player ×1.0 / catch ×0.3 / hostile shots ×0.15 —
-   friendly bolts fly true); LINE STABILITY = HP with THREE hard
+   construction); THE LINE (data/rift_line.tres — sl-0123 CUT THE
+   DRAG: arena combat is NORMAL combat, nothing moves the fighter,
+   the catch, or any shot; the rift's pull lives in the LINE only:
+   strain clock, deep-edge strip, bullet strain, visual tension);
+   LINE STABILITY = HP with THREE hard
    LIVES (drains through THE damage path pattern -5: passive
    0.4/s + deep-edge 2.2/s in the 0.8 t strip; snap = life + full
    re-spool + grace; third snap = dive lost; 30 t hit grace blocks
@@ -258,11 +260,11 @@ starhook now; the refinement rounds are theirs.
   pack sizes / respawn pace / quest cap / key choices F+C / HUD
   layout / anything) — BATCH tuning numbers into single gate runs.
   Every S1 rate/key/layout is [T].
-- **STARHOOK REFINEMENT ROUNDS** (sl-0115 — every number [T]): the
-  instant cast feel, the pull strength/oscillation, drain rates,
-  the three lives, rod cadences + unlock levels, ambient cadence,
-  biome twists, the bait fighter's size, the split look at both
-  scales (evidence PNGs committed), fish names on the toasts.
+- **STARHOOK REFINEMENT ROUNDS** (sl-0115 + the sl-0123 drag cut —
+  every number [T]): the instant cast feel, drain rates, the three
+  lives, rod cadences + unlock levels, ambient cadence, biome
+  twists, the bait fighter's size, the split ratio (sl-0125 makes
+  it flippable in play), fish names on the toasts.
 - **THE GEAR SEAM GO WORD** (next-after-soul by correction #5):
   rods + very simple equipment dropping from starhook bosses,
   level-gated.

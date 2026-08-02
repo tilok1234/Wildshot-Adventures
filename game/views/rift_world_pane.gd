@@ -13,8 +13,6 @@ const LINE_SLACK := Color("dceaff")
 const LINE_STRAIN := Color("ff8c7a")
 
 var world: RefCounted = null
-## Pull def (strain shape) — read-only.
-var pull_def: Resource = null
 ## Portal offset from the caster's screen position, base-res px.
 var portal_offset := Vector2.ZERO
 var biome_rim := Color("b56cff")

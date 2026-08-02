@@ -58,10 +58,11 @@ extends Resource
 ## mini-class shape (sl-0105) instead of the main character, and the
 ## split-screen presentation mounts.
 @export var starhook_rift: bool = false
-## sl-0115: the rift arena's pull/line physics resource (the pull, the
-## drains, the three lives — data/rift_pull_def.gd). Required when
-## starhook_rift; ignored elsewhere.
-@export var rift_pull: String = ""
+## sl-0115 (amended sl-0123 — the drag is cut): the rift arena's LINE
+## rules resource (drains, deep edge, three lives, graces —
+## data/rift_line_def.gd). Required when starhook_rift; ignored
+## elsewhere.
+@export var rift_line: String = ""
 ## sl-0115: the arena's biome (indexes balance_frame starhook.biomes)
 ## and rarity step — set by the six rift scenarios; the fish table and
 ## the pattern-variant def follow from them.

@@ -11,15 +11,16 @@ extends SceneTree
 ## - AMBIENT RIFTS: interval + chance from the starhook.ambient block
 ##   (rng_misc — its first consumer): walkable land, node-clearance,
 ##   live cap, deterministic per seed;
-## - THE LINE (rift arenas): the pull moves a STILL player (and never
-##   anyone outside rift worlds); passive drain 1 hp per exactly 150
-##   ticks through THE damage path (deep edge: 1 per 24); hostile
-##   shots drift with the pull, FRIENDLY BOLTS FLY TRUE; hit grace
-##   blocks bullets only (drains never pause); a depleted pool SNAPS
-##   (life burned, refill, grace, LINE_SNAPPED) and the third snap is
-##   the normal death; the win clears live hostile shots (CLEARED);
-##   the kill banks gold directly + draws the biome fish
-##   (CATCH_LANDED + rift_catches, per-species at harvest);
+## - THE LINE (rift arenas; sl-0123 — THE DRAG IS CUT): arena combat
+##   is NORMAL combat — a still fighter never moves and NO shot
+##   drifts (pinned as this amendment's negatives); passive drain 1
+##   hp per exactly 150 ticks through THE damage path (deep edge: 1
+##   per 24); hit grace blocks bullets only (drains never pause); a
+##   depleted pool SNAPS (life burned, refill, grace, LINE_SNAPPED)
+##   and the third snap is the normal death; the win clears live
+##   hostile shots (CLEARED); the kill banks gold directly + draws
+##   the biome fish (CATCH_LANDED + rift_catches, per-species at
+##   harvest);
 ## - RODS: four data rows, level-gated selects refused sim-side;
 ## - loader refusals: broken pull def / malformed biome table;
 ## - hash coverage (SERIAL 22: lives/acc/grace + ambient + catches);
@@ -103,7 +104,7 @@ func _rift_world(rare := false, biome := 0, seed_v := 3) -> RefCounted:
 	p.hp = 60
 	p.move_speed = 3.6
 	world.set_rift_config(
-		load("res://data/rift_pull.tres"), biome, rare, PackedInt32Array([1, 3, 5, 8])
+		load("res://data/rift_line.tres"), biome, rare, PackedInt32Array([1, 3, 5, 8])
 	)
 	return world
 
@@ -225,19 +226,22 @@ func _init() -> void:
 	check(int(amb_cast[0].node) <= -2, "ambient cast carries the ambient encoding")
 	check(wa2.rift_ambient_pos.is_empty(), "a cast ambient node is consumed away")
 
-	# 5. THE PULL (rift arenas only): a still player drifts; the same
-	# still player outside a rift world does not move at all.
+	# 5. THE DRAG IS CUT (sl-0123): arena combat is NORMAL combat — a
+	# still fighter does not move, and NO shot of either faction
+	# drifts. These are the amendment's own negatives: any future
+	# smuggled entity-drag fails here loudly.
 	var wr: RefCounted = _rift_world()
+	wr.add_enemy_standin(Vector2(9.5, 2.0))
 	var pr: RefCounted = wr.players[0]
-	var x0: float = pr.pos.x
+	var rpos: Vector2 = pr.pos
+	wr.spawn_projectile(Vector2(6.0, 3.0), Vector2(0, 1), 0.2, 100, ActorState.FACTION_HOSTILE)
+	wr.spawn_projectile(Vector2(6.0, 9.0), Vector2(0, 1), 0.2, 100, ActorState.FACTION_FRIENDLY)
+	var hx0: float = wr.projectiles.pos_x[0]
+	var fx0: float = wr.projectiles.pos_x[1]
 	_still(wr, 60)
-	var drift: float = pr.pos.x - x0
-	check(drift > 1.2 and drift < 1.5, "the pull drifts a still fighter ~1.35 t/s")
-	var wo: RefCounted = _world(false, false)
-	var po: RefCounted = wo.players[0]
-	var opos: Vector2 = po.pos
-	_still(wo, 60)
-	check(po.pos == opos, "no pull outside rift arenas")
+	check(pr.pos == rpos, "no drag: a still fighter does not move")
+	check(absf(wr.projectiles.pos_x[0] - hx0) < 0.0001, "no drag: hostile shots fly true")
+	check(absf(wr.projectiles.pos_x[1] - fx0) < 0.0001, "no drag: friendly bolts fly true")
 
 	# 6. THE DRAINS: passive = exactly 1 hp per 150 ticks through THE
 	# damage path; the deep edge accelerates to 1 per 24 (13/300 per
@@ -246,39 +250,23 @@ func _init() -> void:
 	var pd: RefCounted = wd.players[0]
 	pd.pos = Vector2(2.0, 6.5)
 	var hp0: int = pd.hp
-	for i in 149:
-		wd.step([_hold_west()])
-		pd.pos = Vector2(2.0, 6.5)
+	_still(wd, 149)
 	check(pd.hp == hp0, "no passive chunk before tick 150")
-	wd.step([_hold_west()])
+	_still(wd, 1)
 	check(pd.hp == hp0 - 1, "passive drain: exactly 1 hp at tick 150")
 	var wdd: RefCounted = _rift_world()
 	var pdd: RefCounted = wdd.players[0]
 	var deep_x := RiftStep.deep_edge_x(wdd)
+	pdd.pos = Vector2(deep_x + 0.4, 6.5)
 	var dhp0: int = pdd.hp
-	for i in 24:
-		wdd.step([_hold_east()])
-		pdd.pos = Vector2(deep_x + 0.4, 6.5)
+	_still(wdd, 24)
 	check(pdd.hp <= dhp0 - 1, "deep-edge strain drains fast (1 per ~24)")
 	var wg: RefCounted = _rift_world()
 	var pg: RefCounted = wg.players[0]
 	pg.line_iframe_until = 1000
 	pg.line_drain_acc = 596
-	wg.step([_hold_west()])
+	_still(wg, 1)
 	check(pg.hp == 59, "the drains never pause during grace")
-
-	# 7. BULLET DRIFT: hostile shots bend with the pull; FRIENDLY
-	# bolts fly true (CORE-32 — the aim is never perturbed). A live
-	# standin keeps the post-win clear out of the frame.
-	var wb: RefCounted = _rift_world()
-	wb.add_enemy_standin(Vector2(9.5, 2.0))
-	wb.spawn_projectile(Vector2(6.0, 3.0), Vector2(0, 1), 0.2, 100, ActorState.FACTION_HOSTILE)
-	wb.spawn_projectile(Vector2(6.0, 9.0), Vector2(0, 1), 0.2, 100, ActorState.FACTION_FRIENDLY)
-	var hx0: float = wb.projectiles.pos_x[0]
-	var fx0: float = wb.projectiles.pos_x[1]
-	_still(wb, 30)
-	check(wb.projectiles.pos_x[0] - hx0 > 0.05, "hostile shots drift with the pull")
-	check(absf(wb.projectiles.pos_x[1] - fx0) < 0.0001, "friendly bolts fly true")
 
 	# 8. HIT GRACE + THE SNAP + THE THIRD SNAP: bullets blocked during
 	# grace; a depleted pool burns a life (refill + grace + event),
@@ -379,11 +367,11 @@ func _init() -> void:
 	var bad := ScenarioDef.new()
 	bad.id = &"bad_rift"
 	bad.starhook_rift = true
-	bad.rift_pull = "res://data/does_not_exist.tres"
+	bad.rift_line = "res://data/does_not_exist.tres"
 	var bg2: RefCounted = Bitgrid.new()
 	bg2.setup(12, 13)
 	var bw: RefCounted = ScenarioLoader.build_world(bad, 1, bg2)
-	check(bw.rift_pull == null, "negative: broken pull path refused")
+	check(bw.rift_line == null, "negative: broken line-def path refused")
 	check(
 		not ScenarioLoader._biomes_valid([{"fish": [], "rare": {}}]),
 		"negative: malformed biome table refused"
@@ -503,13 +491,13 @@ func _init() -> void:
 	]:
 		var sc: Resource = load("res://data/scenarios/%s.tres" % sc_name)
 		check(sc != null and bool(sc.starhook_rift), "%s is a rift scenario" % sc_name)
-		check(not String(sc.rift_pull).is_empty(), "%s carries the pull" % sc_name)
+		check(not String(sc.rift_line).is_empty(), "%s carries the line rules" % sc_name)
 		combos["%d_%s" % [int(sc.rift_biome), str(sc.rift_rare)]] = true
 	check(combos.size() == 6, "six distinct biome x rarity arenas")
 
 	if fails.is_empty():
 		print(
-			"gather_test: PASS (forage/instant-cast/ambient/pull/drains/grace/snap/clear/",
+			"gather_test: PASS (forage/instant-cast/ambient/no-drag/drains/grace/snap/clear/",
 			"fish/rods/refusals/negatives/hash/rifter/slice)"
 		)
 		quit(0)
@@ -517,15 +505,3 @@ func _init() -> void:
 		for m: String in fails:
 			printerr("gather_test FAIL: " + m)
 		quit(1)
-
-
-func _hold_west() -> RefCounted:
-	var f := InputFrame.new()
-	f.move_x = -1
-	return f
-
-
-func _hold_east() -> RefCounted:
-	var f := InputFrame.new()
-	f.move_x = 1
-	return f

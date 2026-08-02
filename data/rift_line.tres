@@ -1,0 +1,17 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/rift_line_def.gd" id="1"]
+
+; THE LINE (sl-0115, amended sl-0123 — the drag is cut; this file
+; supersedes rift_pull.tres): the strain clock, the deep edge, the
+; three lives, the graces. Every value [T] — the designer's
+; refinement rounds edit data, never code.
+
+[resource]
+script = ExtResource("1")
+passive_drain_per_sec = 0.4
+deep_drain_per_sec = 2.2
+deep_edge_tiles = 0.8
+lives = 3
+hit_iframe_ticks = 30
+snap_grace_ticks = 90

@@ -119,10 +119,39 @@ func _init() -> void:
 	check(not bad_lib.load_manifest(), "corrupt npc manifest refused")
 	check(IconAtlas.icon("no.such.icon") == null, "unknown icon id returns null, loudly")
 
+	# NEVER-BIND PIN (sl-0123 sweep item; correction #8 — the arena
+	# part of starhooking has NO coined name, and the glyph's is one):
+	# the icon pack's 'item.unique.undertow' glyph stays pack data and
+	# is NEVER bound — no game/ui/data source may reference its id.
+	# The glyph itself remaining in the atlas is fine (vendored packs
+	# are immutable); BINDING it is the violation.
+	var banned := "item.unique." + "undertow"
+	for scan_dir: String in ["res://game", "res://ui", "res://input", "res://sim", "res://data"]:
+		_scan_for_banned(scan_dir, banned)
+
 	if fails.is_empty():
-		print("npc_icon_wiring_test: PASS (npcs/stations/icons/negatives)")
+		print("npc_icon_wiring_test: PASS (npcs/stations/icons/never-bind/negatives)")
 		quit(0)
 	else:
 		for m: String in fails:
 			printerr("npc_icon_wiring_test FAIL: " + m)
 		quit(1)
+
+
+## Recursive source scan for a banned glyph id (never-bind pin).
+func _scan_for_banned(dir_path: String, banned: String) -> void:
+	var dir := DirAccess.open(dir_path)
+	if dir == null:
+		return
+	dir.list_dir_begin()
+	var entry := dir.get_next()
+	while not entry.is_empty():
+		var full := dir_path.path_join(entry)
+		if dir.current_is_dir():
+			if not entry.begins_with("."):
+				_scan_for_banned(full, banned)
+		elif entry.ends_with(".gd") or entry.ends_with(".tres") or entry.ends_with(".json"):
+			if FileAccess.get_file_as_string(full).contains(banned):
+				fails.append("never-bind violated: %s references '%s'" % [full, banned])
+		entry = dir.get_next()
+	dir.list_dir_end()

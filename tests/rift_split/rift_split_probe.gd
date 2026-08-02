@@ -37,8 +37,8 @@ func _run() -> void:
 	var scenario: Resource = load("res://data/scenarios/rift_nebula_common.tres")
 	var grid: RefCounted = DodgeProof._build_bitgrid(String(scenario.arena))
 	var world: RefCounted = ScenarioLoader.build_world(scenario, 1, grid)
-	if world.rift_pull == null:
-		printerr("FAIL: rift world built without the pull")
+	if world.rift_line == null:
+		printerr("FAIL: rift world built without the line rules")
 		quit(1)
 		return
 	# Step a live fight to mid-volley (record policy) — hostile shots
@@ -97,7 +97,6 @@ func _run() -> void:
 	pane_layer.add_child(wpane)
 	var overlay := RiftWorldPane.new()
 	overlay.world = world
-	overlay.pull_def = world.rift_pull
 	overlay.deep_x = RiftStep.deep_edge_x(world)
 	overlay.biome_rim = RiftNodesView.BIOME_RIMS[0]
 	overlay.portal_offset = Vector2(38.0, -20.0)
@@ -142,13 +141,49 @@ func _run() -> void:
 	var shot := get_root().get_texture().get_image()
 	shot.save_png(ProjectSettings.globalize_path("res://reports/rift_galaxy_audit_base.png"))
 	print("rift_split_probe: wrote reports/rift_galaxy_audit_base.png")
+	# Desktop scale: the REAL presented pixels (sl-0123 owed item —
+	# the viewport texture is base-res under the integer stretch, so
+	# the first capture pair was byte-identical; this one reads the
+	# SCREEN, cropped to the window, and is the honest 1920x1080
+	# evidence).
+	DisplayServer.window_set_position(Vector2i(0, 0))
 	DisplayServer.window_set_size(Vector2i(1920, 1080))
-	for i in 12:
+	# The screen capture reads the COMPOSITED desktop — the game window
+	# must actually be frontmost or the crop shows whatever else is
+	# there (learned live: the first attempt shipped a bystander
+	# window). Force it on top and wait for the compositor.
+	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_ALWAYS_ON_TOP, true)
+	DisplayServer.window_move_to_foreground()
+	for i in 30:
 		await process_frame
 	await RenderingServer.frame_post_draw
-	var shot2 := get_root().get_texture().get_image()
-	shot2.save_png(ProjectSettings.globalize_path("res://reports/rift_galaxy_audit_desktop.png"))
-	print("rift_split_probe: wrote reports/rift_galaxy_audit_desktop.png")
+	var screen := DisplayServer.screen_get_image(DisplayServer.window_get_current_screen())
+	if screen != null:
+		var wpos := DisplayServer.window_get_position()
+		var wsize := DisplayServer.window_get_size()
+		var rect := Rect2i(wpos, wsize).intersection(
+			Rect2i(Vector2i.ZERO, Vector2i(screen.get_width(), screen.get_height()))
+		)
+		var shot2 := screen.get_region(rect)
+		# Honesty guard: the right-pane center must be galaxy-dark. If a
+		# bystander window won the compositor, refuse to write evidence.
+		var probe_px := shot2.get_pixel(shot2.get_width() * 3 / 4, shot2.get_height() / 2)
+		if probe_px.v > 0.6 or probe_px.b < probe_px.r * 0.8:
+			printerr(
+				"rift_split_probe: screen crop does not look like the galaxy pane — NOT written"
+			)
+		else:
+			shot2.save_png(
+				ProjectSettings.globalize_path("res://reports/rift_galaxy_audit_desktop.png")
+			)
+			print(
+				(
+					"rift_split_probe: wrote reports/rift_galaxy_audit_desktop.png (%dx%d screen crop)"
+					% [shot2.get_width(), shot2.get_height()]
+				)
+			)
+	else:
+		printerr("rift_split_probe: screen_get_image unavailable — desktop evidence NOT captured")
 	# Sanity: hostile shots must be visible in the RIGHT pane only
 	# (Law 1: the fight lives entirely in the galaxy pane).
 	var live := 0

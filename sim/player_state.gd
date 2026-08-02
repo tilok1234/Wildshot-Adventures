@@ -83,7 +83,7 @@ var quest_progress_arr: PackedInt32Array = PackedInt32Array()
 var gather_still_ticks: int = 0
 var gather_rearm: Vector2 = Vector2(-1000000.0, -1000000.0)
 ## STARHOOK v2 (sl-0115, SERIAL 22) — THE LINE. Only read where
-## SimWorld.rift_pull is attached (rift arenas); zero elsewhere by
+## SimWorld.rift_line is attached (rift arenas); zero elsewhere by
 ## construction. line_lives = snaps remaining before the dive is lost
 ## (set from the pull def at scenario build); line_drain_acc = the
 ## integer drain accumulator (1/600 hp units — rift_step.gd);

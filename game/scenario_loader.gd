@@ -183,21 +183,21 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 			world.set_forage_grid(gathered.forage)
 	world.set_rift_nodes(scenario.rift_nodes, scenario.rift_node_biomes)
 	world.rift_ambient = bool(scenario.rift_ambient)
-	# STARHOOK v2 (sl-0115): rift-fight scenarios attach the pull/line
-	# physics + the FULL ROD LADDER (level-gated in player_fire) here,
-	# in the ONE construction path — bot, replay, and profile-free
-	# runs fight the same fight by construction. Loud refusals: a rift
-	# scenario with a broken pull def or a malformed biome table must
-	# never build a quietly wrong arena.
+	# STARHOOK v2 (sl-0115; drag cut by sl-0123): rift-fight scenarios
+	# attach the LINE rules + the FULL ROD LADDER (level-gated in
+	# player_fire) here, in the ONE construction path — bot, replay,
+	# and profile-free runs fight the same fight by construction. Loud
+	# refusals: a rift scenario with a broken line def or a malformed
+	# biome table must never build a quietly wrong arena.
 	if bool(scenario.starhook_rift):
-		var pull: Resource = null
-		if not String(scenario.rift_pull).is_empty():
-			pull = load(String(scenario.rift_pull))
-		if pull == null or int(pull.lives) < 1 or float(pull.pull_tiles_per_sec) < 0.0:
+		var line: Resource = null
+		if not String(scenario.rift_line).is_empty():
+			line = load(String(scenario.rift_line))
+		if line == null or int(line.lives) < 1 or float(line.passive_drain_per_sec) < 0.0:
 			push_error(
 				(
-					"scenario '%s': rift_pull missing or malformed (%s) — REFUSED"
-					% [String(scenario.id), String(scenario.rift_pull)]
+					"scenario '%s': rift_line missing or malformed (%s) — REFUSED"
+					% [String(scenario.id), String(scenario.rift_line)]
 				)
 			)
 			return world
@@ -227,7 +227,7 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 			p.weapon_tiers = PackedInt32Array()
 			p.weapon_tiers.resize(rod_frames.size())
 			p.weapon_tiers.fill(1)
-		world.set_rift_config(pull, int(scenario.rift_biome), bool(scenario.rift_rare), unlocks)
+		world.set_rift_config(line, int(scenario.rift_biome), bool(scenario.rift_rare), unlocks)
 	return world
 
 

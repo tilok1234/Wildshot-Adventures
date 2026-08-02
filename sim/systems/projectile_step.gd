@@ -20,7 +20,6 @@ const ActorState := preload("res://sim/actor_state.gd")
 const SimEvents := preload("res://sim/events.gd")
 const ProjectilePool := preload("res://sim/projectile_pool.gd")
 const Damage := preload("res://sim/systems/damage.gd")
-const RiftStep := preload("res://sim/systems/rift_step.gd")
 
 const REG_SLOTS := ProjectilePool.REG_SLOTS
 
@@ -64,15 +63,10 @@ static func run(world: RefCounted) -> void:
 	var enemies: Array = world.enemies
 	var events: Array[Dictionary] = world.events
 	var capacity: int = pool.CAPACITY
-	# sl-0115: in a rift arena HOSTILE shots bend slightly with the
-	# current (×0.15) — a per-tick displacement on top of the pure
-	# motion program (velocity stays program-owned; DodgeBot's
-	# projection integrates the same closed form). Friendly bolts fly
-	# true: the player's aim is never perturbed (CORE-32).
-	var rift_pull_step := Vector2.ZERO
-	var rift_world: bool = world.rift_pull != null
-	if rift_world:
-		rift_pull_step = (RiftStep.pull_vec(world, t) * float(world.rift_pull.bullet_mult) * dt)
+	# sl-0123: THE DRAG IS CUT — shots fly their pure motion programs
+	# everywhere (the rift's pull lives in the LINE only). rift_world
+	# gates the hit-grace skip below.
+	var rift_world: bool = world.rift_line != null
 
 	for s in capacity:
 		if act[s] == 0:
@@ -118,9 +112,6 @@ static func run(world: RefCounted) -> void:
 
 		var x := px[s] + vx[s] * dt
 		var y := py[s] + vy[s] * dt
-		if rift_world and fac[s] == ActorState.FACTION_HOSTILE:
-			x += rift_pull_step.x
-			y += rift_pull_step.y
 		px[s] = x
 		py[s] = y
 		var r := rad[s]
@@ -223,7 +214,7 @@ static func _step_pierce(
 		# sl-0115 hit grace (rift arenas, friendly targets) — the same
 		# skip as the non-pierce path, one rule everywhere.
 		if (
-			world.rift_pull != null
+			world.rift_line != null
 			and a.faction == ActorState.FACTION_FRIENDLY
 			and t < a.line_iframe_until
 		):

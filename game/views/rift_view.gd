@@ -5,9 +5,10 @@ extends Node2D
 ## - z 2: the biome backdrop over the dark floor (gradient + wisps +
 ##   stars, seeded per run — quiet, Law 6) covering the interior plus
 ##   the letterbox slivers.
-## - z 3: arena rim line, deep-edge shimmer, pull-direction arrows,
-##   the galaxy-side portal (the line comes OUT of it — correction
-##   #4), and the two star-rock stubs in biome dress.
+## - z 3: arena rim line, deep-edge shimmer, the galaxy-side portal
+##   (the line comes OUT of it — correction #4), and the two
+##   star-rock stubs in biome dress. (The flow arrows retired with
+##   the sl-0123 drag cut.)
 ## - z ACTORS: THE BAIT FIGHTER (the star of the feature — a small
 ##   simple sprite, correction #1/#2) and the star-fish catch (the
 ##   prototype's pixel map, tinted per biome, gold when rare).
@@ -284,20 +285,9 @@ func _draw_dress(cv: Node2D) -> void:
 	for sc in stub_cells:
 		var base := Vector2(float(sc.x), float(sc.y)) * TILE
 		_draw_stub(cv, base, b)
-	# Pull-direction flow arrows along the bottom (the current is
-	# readable at a glance — the prototype's edge arrows).
-	var ang := (
-		sin(float(t) * float(world.rift_pull.osc_rate_per_tick))
-		* float(world.rift_pull.osc_amplitude_rad)
-	)
-	var dirv := Vector2(cos(ang), sin(ang))
-	for i in 3:
-		var px := x0 + fposmod(float(t) * 0.64 + float(i) * 90.0, x1 - x0 - 20.0) + 10.0
-		var py := y1 - 12.0
-		var tip := Vector2(px, py) + dirv * 5.0
-		var l := Vector2(px, py) + dirv.rotated(2.5) * 3.0
-		var r := Vector2(px, py) + dirv.rotated(-2.5) * 3.0
-		cv.draw_colored_polygon(PackedVector2Array([tip, l, r]), Color(rim, 0.5))
+	# sl-0123: the flow arrows retired WITH the drag [T call] — they
+	# advertised a current that no longer moves anything. The line's
+	# tension + the deep shimmer are the strain story now.
 
 
 func _draw_stub(cv: Node2D, base: Vector2, b: Dictionary) -> void:

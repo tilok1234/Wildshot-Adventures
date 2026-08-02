@@ -1,7 +1,10 @@
 extends RefCounted
-## Ordered system (sl-0115, STARHOOK v2): the rift arena's line rules.
-## Runs only where SimWorld.rift_pull is attached — a null config makes
-## this a straight no-op and every non-rift world byte-identical.
+## Ordered system (sl-0115, STARHOOK v2; AMENDED by sl-0123 — THE DRAG
+## IS CUT): the rift arena's LINE rules, and only those. Arena combat
+## is NORMAL combat — nothing here (or anywhere) moves the bait
+## fighter, the catch, or any shot. Runs only where SimWorld.rift_line
+## is attached — a null config makes this a straight no-op and every
+## non-rift world byte-identical.
 ##
 ## - THE DRAINS: passive stability drain (the session clock) + the
 ##   deep-edge strain while inside the deep strip. Integer-exact: an
@@ -11,10 +14,6 @@ extends RefCounted
 ##   drains never pause: hit-grace protects against bullets only.
 ## - POST-WIN CLEAR: the tick the catch is dead, live hostile shots
 ##   vanish (reason CLEARED) — a won dive can never end in a snap.
-##
-## The pull VECTOR itself is a pure function of the tick (pull_vec) —
-## the movement/projectile integrators and DodgeBot all read it here,
-## one closed form for the sim and the model.
 ##
 ## `world` is duck-typed SimWorld (preload-cycle avoidance).
 
@@ -31,26 +30,16 @@ const PATTERN_LINE_STRAIN := -5
 const ACC_DEN := 600
 
 
-## The pull, tiles/second, at `tick` (multiply by DT to integrate).
-## Base direction +X (toward the deep edge), oscillating ±amplitude
-## on a slow sine — the prototype's exact shape at 60 t/s.
-static func pull_vec(world: RefCounted, at_tick: int) -> Vector2:
-	var def: Resource = world.rift_pull
-	var ang: float = sin(float(at_tick) * float(def.osc_rate_per_tick))
-	ang *= float(def.osc_amplitude_rad)
-	return Vector2(cos(ang), sin(ang)) * float(def.pull_tiles_per_sec)
-
-
 ## X past which the deep-edge strain applies (from the arena's right
 ## interior edge; bitgrid width counts the wall ring).
 static func deep_edge_x(world: RefCounted) -> float:
-	return float(world.bitgrid.width - 1) - float(world.rift_pull.deep_edge_tiles)
+	return float(world.bitgrid.width - 1) - float(world.rift_line.deep_edge_tiles)
 
 
 static func run(world: RefCounted) -> void:
-	if world.rift_pull == null:
+	if world.rift_line == null:
 		return
-	var def: Resource = world.rift_pull
+	var def: Resource = world.rift_line
 	var passive_units := roundi(float(def.passive_drain_per_sec) * 10.0)
 	var deep_units := roundi(float(def.deep_drain_per_sec) * 10.0)
 	var deep_x := deep_edge_x(world)

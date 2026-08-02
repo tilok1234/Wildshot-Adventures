@@ -5,8 +5,9 @@
 ; THE CATCH proof (S1 seam 6, sl-0105; RE-AUTHORED sl-0115 for the
 ; v3 arena + THE PULL): 260 hp paced at 20 every 120 -> P2 (coil)
 ; ~t600, P3 (thrash) ~t1080, kill t1560, cleanup to 3600. The rift
-; kit through both transitions in ITS arena with the REAL physics
-; aboard — the pull, the drains, the three lives, the hit grace —
+; kit through both transitions in ITS arena with the line's rules
+; aboard — the drains, the three lives, the hit grace (the drag is
+; cut per sl-0123) —
 ; so CORE-33 is proven against the fight the player actually gets.
 ; PASS is still ZERO bullet hits; the drains are not hits and
 ; cannot cost a life inside 3600 ticks off the deep edge.
@@ -17,7 +18,7 @@ id = &"proof_rift_catch"
 display_name = "PROOF: proof_rift_catch (rift schedule fight)"
 arena = "res://data/arena_rift.json"
 starhook_rift = true
-rift_pull = "res://data/rift_pull.tres"
+rift_line = "res://data/rift_line.tres"
 rift_biome = 0
 rift_rare = false
 player_spawn = Vector2(2.9, 6.5)

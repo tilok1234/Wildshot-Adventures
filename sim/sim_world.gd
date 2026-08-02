@@ -204,17 +204,19 @@ var quest_defs: Array = []
 var forage_grid: RefCounted = null
 var rift_nodes: PackedVector2Array = PackedVector2Array()
 var rift_node_respawn_at: PackedInt64Array = PackedInt64Array()
-## STARHOOK v2 (sl-0115). Setup configs (definitions, unserialized —
-## the scenario reproduces them): rift_pull = the pull/line physics
-## resource (data/rift_pull_def.gd; null = not a rift arena, every
-## other world byte-identical by construction); rift_biome 0/1/2 =
-## nebula/void/comet (indexes balance_frame starhook.biomes);
-## rift_rare = the rarity step; rift_rod_unlocks = per-rod unlock
-## levels in loadout order (player_fire refuses locked selects);
-## rift_node_biomes = authored node biomes parallel to rift_nodes;
-## rift_ambient = this world rolls ambient rift spawns (gather_step,
-## rng_misc — its first consumer).
-var rift_pull: Resource = null
+## STARHOOK v2 (sl-0115; drag cut by sl-0123 — the pull lives in THE
+## LINE only). Setup configs (definitions, unserialized — the
+## scenario reproduces them): rift_line = the line's rules resource
+## (data/rift_line_def.gd: drains, deep edge, lives, graces; null =
+## not a rift arena, every other world byte-identical by
+## construction); rift_biome 0/1/2 = nebula/void/comet (indexes
+## balance_frame starhook.biomes); rift_rare = the rarity step;
+## rift_rod_unlocks = per-rod unlock levels in loadout order
+## (player_fire refuses locked selects); rift_node_biomes = authored
+## node biomes parallel to rift_nodes; rift_ambient = this world
+## rolls ambient rift spawns (gather_step, rng_misc — its first
+## consumer).
+var rift_line: Resource = null
 var rift_biome: int = 0
 var rift_rare: bool = false
 var rift_rod_unlocks: PackedInt32Array = PackedInt32Array()
@@ -333,18 +335,18 @@ func set_rift_nodes(cells: PackedVector2Array, biomes := PackedInt32Array()) -> 
 		rift_node_biomes[i] = biomes[i]
 
 
-## Setup-phase (sl-0115): attach the rift arena's pull/line physics +
+## Setup-phase (sl-0115): attach the rift arena's line rules +
 ## identity. Arms every player's line (lives from the def) — the
 ## scenario build runs this BEFORE the recorder snapshot, so replays
 ## carry the true initial state.
-func set_rift_config(pull: Resource, biome: int, rare: bool, rod_unlocks: PackedInt32Array) -> void:
-	rift_pull = pull
+func set_rift_config(line: Resource, biome: int, rare: bool, rod_unlocks: PackedInt32Array) -> void:
+	rift_line = line
 	rift_biome = biome
 	rift_rare = rare
 	rift_rod_unlocks = rod_unlocks
-	if pull != null:
+	if line != null:
 		for p in players:
-			p.line_lives = int(pull.lives)
+			p.line_lives = int(line.lives)
 
 
 ## In-step ground-drop spawn (the death-sweep drop rolls call this).
@@ -501,7 +503,7 @@ func step(frames: Array) -> void:
 	ProjectileStep.run(self)
 	HazardStep.run(self)
 	# sl-0115: the line's drains + post-win shot clear (rift arenas
-	# only — rift_pull null means this is a straight no-op).
+	# only — rift_line null means this is a straight no-op).
 	RiftStep.run(self)
 	LootStep.run(self)
 	# S1 seam 6: the patience verbs (forage yields, rift casts).

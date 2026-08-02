@@ -1098,7 +1098,6 @@ func _ready() -> void:
 		# The living overlay: line into the portal + portal pulse.
 		var overlay := RiftWorldPane.new()
 		overlay.world = world
-		overlay.pull_def = world.rift_pull
 		overlay.deep_x = RiftStep.deep_edge_x(world)
 		overlay.biome_rim = RiftNodesView.BIOME_RIMS[clampi(int(scenario.rift_biome), 0, 2)]
 		var rr := String(Config.get_setting("dev", "rift_return", "")).split(",")

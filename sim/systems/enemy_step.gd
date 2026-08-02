@@ -20,7 +20,6 @@ const SimEvents := preload("res://sim/events.gd")
 const Kinematics := preload("res://sim/systems/kinematics.gd")
 const Damage := preload("res://sim/systems/damage.gd")
 const SiteStep := preload("res://sim/systems/site_step.gd")
-const RiftStep := preload("res://sim/systems/rift_step.gd")
 
 ## Damage-source pattern id for body contact (namespace: pattern_def.gd).
 const PATTERN_CONTACT := -3
@@ -35,13 +34,6 @@ static func run(world: RefCounted) -> void:
 	var dt: float = world.DT
 	var grid: RefCounted = world.bitgrid
 	var players: Array = world.players
-	# sl-0115: in a rift arena the current drifts the catch too (×0.3),
-	# whenever it is in a moving state. WINDUP/FIRE/RECOVER keep their
-	# stillness — Law 4 outranks the prototype here: a telegraph stays
-	# where it started (documented deviation, seam record).
-	var pull_step := Vector2.ZERO
-	if world.rift_pull != null:
-		pull_step = RiftStep.pull_vec(world, t) * float(world.rift_pull.boss_mult) * dt
 	for e: RefCounted in world.enemies:
 		# Unconditional: the view interpolates every enemy every tick (§2.9).
 		e.prev_pos = e.pos
@@ -127,7 +119,7 @@ static func run(world: RefCounted) -> void:
 				if dist <= float(def.aggro_range):
 					e.ai_state = EnemyState.AIState.REPOSITION
 			EnemyState.AIState.REPOSITION:
-				_move(grid, e, policy, rmin, rmax, tpos, dist, dt, pull_step)
+				_move(grid, e, policy, rmin, rmax, tpos, dist, dt)
 				var slot := _ready_slot(e, emitters, t, dist)
 				if slot >= 0:
 					var es: Resource = emitters[slot]
@@ -214,8 +206,7 @@ static func _move(
 	rmax: float,
 	tpos: Vector2,
 	dist: float,
-	dt: float,
-	pull_step := Vector2.ZERO
+	dt: float
 ) -> void:
 	if dist < 0.0001:
 		return
@@ -247,10 +238,10 @@ static func _move(
 			# ANCHOR holds ground; ORBIT lands with a roster row that
 			# needs it and anchors until then (enemy_def.gd note).
 			dir = Vector2.ZERO
-	if dir == Vector2.ZERO and pull_step == Vector2.ZERO:
+	if dir == Vector2.ZERO:
 		return
 	var before: Vector2 = e.pos
-	var step: Vector2 = dir * float(e.move_speed) * dt + pull_step
+	var step: Vector2 = dir * float(e.move_speed) * dt
 	e.pos = Kinematics.move_circle(grid, e.pos, e.radius, step)
 	e.vel = (e.pos - before) / dt
 

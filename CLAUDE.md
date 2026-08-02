@@ -279,7 +279,39 @@ regardless — clean-stamped zips are what make warm testing frictionless.
 > Length-roll catch-card flavor + divider spark = refinement-round
 > material. NO feel verdicts — the designer's refinement rounds +
 > Green days own the cast feel, split ratio, drains, lives, rod
-> gates, ambient cadence, and every [T] above.**
+> gates, ambient cadence, and every [T] above. SEAM CLOSE: full
+> pretester ALL GREEN 15.0 min (30 fixed + 43-row/83-run battery
+> byte-identical + export + lockdown probe); one mid-gate catch
+> fixed loudly (the projectile importer's pid<10 friendly-namespace
+> range rule died at rod pattern 29 — the map now DECLARES
+> player_patterns; undeclared = hostile under the covers_hitbox
+> guard, fail-safe proven live).**
+
+> **THE DRAG IS CUT (sl-0123, the designer's word after casting;
+> 2026-08-02 ~15:45 local):** arena combat in the galaxy view is
+> NORMAL combat — no movement drag on the bait fighter, the catch,
+> or any shot; full responsiveness. The rift's pull lives in THE
+> LINE ONLY: the strain clock (passive drain), the deep-edge strip,
+> bullet hits straining the line, and the line's visual tension.
+> The rift_pull entity-drag system RETIRED CLEAN: data/rift_pull.*
+> superseded by data/rift_line.* (drains/deep-edge/lives/graces
+> only — no zeroed multipliers left behind), SimWorld.rift_line,
+> ScenarioDef.rift_line; the movement/enemy/projectile integrators
+> and DodgeBot's projection carry zero pull code; the sl-0115
+> hostile-only-drift and Law-4-drift deviations are MOOT. Deep edge
+> stays [T] (drain + bot keep-out + shimmer); the backdrop flow
+> arrows DROPPED [T call] — they advertised a current that no
+> longer moves anything; the line's tension + the deep shimmer are
+> the strain story. gather_test pins the absence (a still fighter
+> never moves; NO shot of either faction drifts — any smuggled
+> future drag fails loudly). NEVER-BIND PIN mechanized (sweep item;
+> correction #8): the icon pack's item.unique.undertow glyph is a
+> retired word — the wiring test scans game/ui/input/sim/data
+> sources and REDS on any reference (the glyph purges at the next
+> icons release upstream). Dodge proofs + goldens re-recorded
+> deliberately; full gate per gotcha-32 order. The real
+> desktop-scale evidence capture (screen crop, not the base-res
+> viewport texture) replaced the byte-identical twins.**
 
 ## Hours-log rule (PROD-01)
 
