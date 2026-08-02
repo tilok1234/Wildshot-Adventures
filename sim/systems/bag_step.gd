@@ -16,18 +16,32 @@ const StatFrame := preload("res://sim/systems/stat_frame.gd")
 
 ## The op byte (input_frame.gd bag_op; 0 = none):
 ## 1..20 EQUIP bag slot / 21..40 DROP bag slot /
-## 41 DE-EQUIP worn armor / 42 DE-EQUIP worn ring.
+## 41 DE-EQUIP worn armor / 42 DE-EQUIP worn ring /
+## 43 LOOT-ALL the nearest ground bag / 44..51 LOOT row 0..7.
 ## Weapon de-equip does not exist [T: bare hands aren't a build] —
 ## weapons only REPLACE (the worn one returns to the bag).
 const OP_EQUIP_BASE := 1
 const OP_DROP_BASE := 21
 const OP_DEEQUIP_ARMOR := 41
 const OP_DEEQUIP_RING := 42
+const OP_LOOT_ALL := 43
+const OP_LOOT_ROW_BASE := 44
+const LOOT_ROW_MAX := 8
 ## Capacity [T] (the sl-0116 suggested 20).
 const BAG_CAP := 20
+## Ground-bag reach [T] (sl-0129: the walk-over panel's radius too).
+const LOOT_RADIUS := 0.9
 
 
 static func run(world: RefCounted) -> void:
+	# sl-0129: expired ground bags sweep every tick (no-op while none
+	# exist — proof worlds untouched by construction).
+	if not world.loot_bags.is_empty():
+		var kept: Array[Dictionary] = []
+		for lb: Dictionary in world.loot_bags:
+			if world.tick < int(lb.expires_at_tick):
+				kept.append(lb)
+		world.loot_bags = kept
 	var frames: Array = world.current_frames
 	for i in world.players.size():
 		var p: RefCounted = world.players[i]
@@ -45,6 +59,90 @@ static func run(world: RefCounted) -> void:
 			_deequip_armor(world, p)
 		elif op == OP_DEEQUIP_RING:
 			_deequip_ring(world, p)
+		elif op == OP_LOOT_ALL:
+			_loot_all(world, p)
+		elif op >= OP_LOOT_ROW_BASE and op < OP_LOOT_ROW_BASE + LOOT_ROW_MAX:
+			_loot_row(world, p, op - OP_LOOT_ROW_BASE)
+
+
+## ---- ground loot bags (sl-0129).
+
+
+## Nearest ground bag within reach, else -1.
+static func nearest_bag(world: RefCounted, p: RefCounted) -> int:
+	var best := -1
+	var best_d := LOOT_RADIUS * LOOT_RADIUS
+	for bi in world.loot_bags.size():
+		var lb: Dictionary = world.loot_bags[bi]
+		var dd: float = p.pos.distance_squared_to(lb.pos)
+		if dd <= best_d:
+			best_d = dd
+			best = bi
+	return best
+
+
+static func _loot_all(world: RefCounted, p: RefCounted) -> void:
+	var bi := nearest_bag(world, p)
+	if bi < 0:
+		return
+	var row := 0
+	while row * 3 < (world.loot_bags[bi].items as PackedInt32Array).size():
+		if not _take_from_bag(world, p, bi, row):
+			row += 1
+	if (world.loot_bags[bi].items as PackedInt32Array).is_empty():
+		world.loot_bags.remove_at(bi)
+
+
+static func _loot_row(world: RefCounted, p: RefCounted, row: int) -> void:
+	var bi := nearest_bag(world, p)
+	if bi < 0:
+		return
+	_take_from_bag(world, p, bi, row)
+	if (world.loot_bags[bi].items as PackedInt32Array).is_empty():
+		world.loot_bags.remove_at(bi)
+
+
+## Move one bag row to the player's bag. False = refused (out of
+## range row, duplicate unique, or the player's bag is full — the
+## item STAYS in the ground bag; nothing is destroyed silently).
+static func _take_from_bag(world: RefCounted, p: RefCounted, bag_i: int, row: int) -> bool:
+	var lb: Dictionary = world.loot_bags[bag_i]
+	var items: PackedInt32Array = lb.items
+	var base := row * 3
+	if base + 2 >= items.size():
+		return false
+	var kind := items[base]
+	var a := items[base + 1]
+	var b := items[base + 2]
+	if kind == DropKinds.UNIQUE:
+		# The collection mask stays a pickup truth (the loot_step rule);
+		# a duplicate unique stays in the ground bag and expires.
+		if a < 0 or a >= world.unique_defs.size() or (p.unique_mask & (1 << a)) != 0:
+			return false
+	if not bag_add(world, p, kind, a, b):
+		return false
+	if kind == DropKinds.UNIQUE:
+		p.unique_mask |= 1 << a
+	for k in 3:
+		items.remove_at(base)
+	lb.items = items
+	(
+		world
+		. events
+		. append(
+			{
+				"type": SimEvents.Type.LOOT_PICKED,
+				"tick": world.tick,
+				"id": int(lb.id),
+				"kind": kind,
+				"player": p.id,
+				"a": a,
+				"b": b,
+				"pos": lb.pos,
+			}
+		)
+	)
+	return true
 
 
 ## ---- bag primitives (flat (kind,a,b) triples on PlayerState.bag).

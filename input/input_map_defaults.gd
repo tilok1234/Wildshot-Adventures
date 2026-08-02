@@ -18,6 +18,8 @@ const KEY_ACTIONS := {
 	"ability": KEY_SPACE,
 	"interact": KEY_F,
 	"char_sheet": KEY_C,
+	# sl-0129: loot-all at a ground loot bag [T — B, remappable].
+	"loot_all": KEY_B,
 	"weapon_1": KEY_1,
 	"weapon_2": KEY_2,
 	"weapon_3": KEY_3,

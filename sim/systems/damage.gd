@@ -281,6 +281,18 @@ static func _award_kill(world: RefCounted, e: RefCounted) -> void:
 		)
 		if amt > 0:
 			world.spawn_drop(e.pos, world.DROP_GOLD, amt)
+	# sl-0129 LOOT BAGS: the kill's whole non-gold roll lands in ONE
+	# ground bag at the corpse — CLASS-LANE WORLDS ONLY (a class player
+	# exists). Legacy worlds keep per-item ground drops verbatim (the
+	# seam-6 doctrine: the bag era never touches the legacy lane). The
+	# DRAW SEQUENCE below is byte-untouched (same rng_loot calls, same
+	# order) — only the landing differs.
+	var bag_landing := false
+	for pl: RefCounted in world.players:
+		if pl.class_id >= 0:
+			bag_landing = true
+			break
+	var bag_items := PackedInt32Array()
 	if float(def.drop_chance) > 0.0 and rng.next_unit() < float(def.drop_chance):
 		var ww := int(def.drop_w_weapon)
 		var wa := int(def.drop_w_armor)
@@ -297,14 +309,18 @@ static func _award_kill(world: RefCounted, e: RefCounted) -> void:
 				+ rng.next_bounded(int(def.drop_tier_max) - int(def.drop_tier_min) + 1)
 			)
 			if roll < ww:
-				world.spawn_drop(
-					e.pos, world.DROP_WEAPON, rng.next_bounded(world.weapon_frames.size()), tier
+				bag_items.append_array(
+					PackedInt32Array(
+						[world.DROP_WEAPON, rng.next_bounded(world.weapon_frames.size()), tier]
+					)
 				)
 			elif roll < ww + wa:
-				world.spawn_drop(e.pos, world.DROP_ARMOR, tier)
+				bag_items.append_array(PackedInt32Array([world.DROP_ARMOR, tier, 0]))
 			elif roll < ww + wa + wb:
-				world.spawn_drop(
-					e.pos, world.DROP_ABILITY, rng.next_bounded(world.ability_defs.size())
+				bag_items.append_array(
+					PackedInt32Array(
+						[world.DROP_ABILITY, rng.next_bounded(world.ability_defs.size()), 0]
+					)
 				)
 			else:
 				# Ring: pick among the stat frame's ring items AT the
@@ -318,12 +334,19 @@ static func _award_kill(world: RefCounted, e: RefCounted) -> void:
 					if String(it.get("slot", "")) == "ring" and int(it.get("tier", -1)) == tier:
 						candidates.append(ii)
 				if not candidates.is_empty():
-					world.spawn_drop(
-						e.pos, world.DROP_RING, candidates[rng.next_bounded(candidates.size())]
+					bag_items.append_array(
+						PackedInt32Array(
+							[world.DROP_RING, candidates[rng.next_bounded(candidates.size())], 0]
+						)
 					)
 	var uniques: Array = def.unique_drops
 	for ui in uniques.size():
 		if rng.next_unit() < float(def.unique_chances[ui]):
 			var idx: int = world.unique_defs.find(uniques[ui])
 			if idx >= 0:
-				world.spawn_drop(e.pos, world.DROP_UNIQUE, idx)
+				bag_items.append_array(PackedInt32Array([world.DROP_UNIQUE, idx, 0]))
+	if bag_landing:
+		world.spawn_loot_bag(e.pos, bag_items)
+	else:
+		for bi in bag_items.size() / 3:
+			world.spawn_drop(e.pos, bag_items[bi * 3], bag_items[bi * 3 + 1], bag_items[bi * 3 + 2])

@@ -99,6 +99,10 @@ func _init() -> void:
 	check(JSON.stringify(a.drops) == JSON.stringify(b.drops), "same-seed drops identical")
 	check(JSON.stringify(a.drops) != JSON.stringify(c.drops), "different-seed drops differ")
 	check(not a.drops.is_empty(), "12 kills produced drops (gold guaranteed)")
+	check(
+		JSON.stringify(a.loot_bags) == JSON.stringify(b.loot_bags),
+		"same-seed loot bags identical (sl-0129)"
+	)
 
 	# 2. Loot draws never touch the enemy stream: a def with NO drop data
 	# leaves rng_loot untouched, and rng_enemy equals the drop-rich run's
@@ -208,12 +212,21 @@ func _init() -> void:
 	var base_speed: float = rp.move_speed
 	var base_hp: int = rp.max_hp
 	_kill_n(rw, 1)
-	check(rw.drops.size() == 1, "ring def drops exactly one ring")
-	var rd: Dictionary = rw.drops[0]
-	check(int(rd.kind) == SimWorld.DROP_RING, "drop kind is RING")
+	# sl-0129: the roll lands BAGGED at the corpse — verify the branch
+	# there, then stage a GROUND ring for the loose-drop flow (world
+	# spawns + drop-from-bag still ground items).
+	check(rw.loot_bags.size() == 1 and rw.drops.is_empty(), "ring def rolls into ONE corpse bag")
+	var lb_items: PackedInt32Array = rw.loot_bags[0].items
+	check(
+		lb_items.size() == 3 and lb_items[0] == SimWorld.DROP_RING,
+		"the bagged roll is exactly one RING"
+	)
 	var ritems: Array = rw.stat_frame.items
-	var rit: Dictionary = ritems[int(rd.a)]
+	var rit: Dictionary = ritems[lb_items[1]]
 	check(String(rit.slot) == "ring" and int(rit.tier) == 1, "ring branch picks a T1 ring item")
+	rw.loot_bags.clear()
+	rw.spawn_drop(Vector2(20.0, 12.0), SimWorld.DROP_RING, lb_items[1])
+	var rd: Dictionary = rw.drops[0]
 	rp.pos = rd.pos
 	rw.step([InputFrame.new()])
 	check(rp.ring_index == -1 and rw.drops.size() == 1, "NEGATIVE: rings never walk-over equip")
@@ -233,12 +246,13 @@ func _init() -> void:
 	)
 	check(rp.move_speed != base_speed or rp.max_hp != base_hp, "ring trade wires through recompute")
 	# The REPLACED item returns TO THE BAG (sl-0116: the bag
-	# supersedes the sl-0112 ground-swap language).
+	# supersedes the sl-0112 ground-swap language). Second ring comes
+	# the sl-0129 way: looted from a corpse bag.
 	_kill_n(rw, 1)
-	var second_ring := int(rw.drops[0].a)
-	rp.pos = rw.drops[0].pos
-	_press(rw)
-	check(BagStep.bag_count(rp) == 1, "second ring bagged while worn")
+	rp.pos = rw.loot_bags[0].pos
+	_bag_op(rw, BagStep.OP_LOOT_ALL)
+	check(BagStep.bag_count(rp) == 1, "second ring looted to the bag while worn")
+	var second_ring := int(BagStep.bag_item(rp, 0).a)
 	_bag_op(rw, BagStep.OP_EQUIP_BASE)
 	check(rp.ring_index == second_ring, "equip op swaps to the new ring")
 	check(
@@ -367,6 +381,65 @@ func _init() -> void:
 		),
 		"hide line exact"
 	)
+
+	# 12. sl-0129 LOOT BAGS: a kill's non-gold roll lands in ONE ground
+	# bag at the corpse (same rng_loot sequence — only the landing
+	# moved); gold stays its own walk-over drop; looting rides the
+	# recorded ops; LOOT_PICKED emits per looted item (COLLECT quests
+	# keep counting); nothing is ever destroyed silently.
+	var bw: RefCounted = _world_with(ring_def, 101)
+	bw.set_stat_frame(StatFrame.load_frame())
+	var bp: RefCounted = bw.players[0]
+	bp.class_id = 2
+	StatFrame.recompute(bw, bp)
+	_kill_n(bw, 1)
+	check(
+		bw.loot_bags.size() == 1 and bw.drops.is_empty(),
+		"kill loot lands in ONE ground bag (no loose items)"
+	)
+	var lb0: Dictionary = bw.loot_bags[0]
+	check((lb0.items as PackedInt32Array).size() == 3, "the bag holds the one rolled item")
+	bp.pos = lb0.pos
+	bw.step([InputFrame.new()])
+	check(
+		bw.loot_bags.size() == 1 and BagStep.bag_count(bp) == 0,
+		"NEGATIVE: walk-over never auto-loots the bag"
+	)
+	_bag_op(bw, BagStep.OP_LOOT_ALL)
+	var picked := 0
+	for ev: Dictionary in bw.events:
+		if int(ev.type) == SimEvents.Type.LOOT_PICKED:
+			picked += 1
+	check(picked == 1, "LOOT_PICKED per looted item (COLLECT quests count)")
+	check(
+		BagStep.bag_count(bp) == 1 and bw.loot_bags.is_empty(),
+		"loot-all empties + despawns the ground bag"
+	)
+	_kill_n(bw, 2)
+	check(bw.loot_bags.size() == 2, "two kills = two bags")
+	bp.pos = bw.loot_bags[0].pos
+	_bag_op(bw, BagStep.OP_LOOT_ROW_BASE)
+	check(
+		BagStep.bag_count(bp) == 2 and bw.loot_bags.size() == 1,
+		"row-loot takes one + despawns the emptied bag"
+	)
+	while BagStep.bag_count(bp) < BagStep.BAG_CAP:
+		BagStep.bag_add(bw, bp, SimWorld.DROP_ARMOR, 1, 0)
+	bp.pos = bw.loot_bags[0].pos
+	_bag_op(bw, BagStep.OP_LOOT_ALL)
+	check(bw.loot_bags.size() == 1, "a full player bag leaves leftovers in the ground bag")
+	bw.loot_bags[0].expires_at_tick = bw.tick
+	bw.step([InputFrame.new()])
+	check(bw.loot_bags.is_empty(), "expired ground bag sweeps")
+	var gw2: RefCounted = _world_with(_drop_def(), 103)
+	_kill_n(gw2, 1)
+	check(
+		not gw2.drops.is_empty() and int(gw2.drops[0].kind) == SimWorld.DROP_GOLD,
+		"gold stays its own walk-over drop (never bagged)"
+	)
+	var bh0: int = bw.state_hash()
+	bw.spawn_loot_bag(Vector2(20.0, 12.0), PackedInt32Array([2, 1, 0]))
+	check(bw.state_hash() != bh0, "loot bags are hashed state (SERIAL 24)")
 
 	if fails.is_empty():
 		print("loop_test: PASS (drops/streams/curve/damage/armor/pickup/rings/text/hash)")

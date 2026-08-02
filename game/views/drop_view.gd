@@ -20,6 +20,8 @@ const ARMOR_COLOR := Color(0.55, 0.6, 0.8, 0.95)
 const ABILITY_COLOR := Color(0.75, 0.5, 0.9, 0.95)
 const UNIQUE_COLOR := Color(1.0, 0.92, 0.6, 1.0)
 const RING_COLOR := Color(0.95, 0.65, 0.35, 0.95)
+## sl-0129 ground loot bag (kill loot lands bagged).
+const BAG_COLOR := Color(0.62, 0.46, 0.3, 0.95)
 ## Label read range in tiles [T] — outside the 0.5 pickup radius so
 ## refused drops (occupied slot / not an upgrade) stay readable.
 const LABEL_RANGE := 1.8
@@ -66,6 +68,15 @@ func _draw() -> void:
 			DropKinds.UNIQUE:
 				_diamond(pos, 9.0, UNIQUE_COLOR)
 				draw_arc(pos, 11.0, 0.0, TAU, 20, UNIQUE_COLOR, 1.5)
+	# sl-0129: ground loot bags — a quiet sack silhouette (body + tie),
+	# same LOOT band (Law 1: never over threat). The walk-over panel
+	# lists the contents; no ground label competes with it.
+	for lb: Dictionary in world.loot_bags:
+		var lpos: Vector2 = lb.pos
+		var bpos := lpos * TILE
+		draw_circle(bpos + Vector2(0.0, 1.5), 6.0, BAG_COLOR)
+		draw_rect(Rect2(bpos + Vector2(-2.5, -7.0), Vector2(5.0, 4.0)), BAG_COLOR.darkened(0.25))
+		draw_arc(bpos + Vector2(0.0, 1.5), 7.0, 0.0, TAU, 16, BAG_COLOR.darkened(0.4), 1.0)
 	_draw_nearest_label()
 
 

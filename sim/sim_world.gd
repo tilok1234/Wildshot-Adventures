@@ -52,8 +52,9 @@ const DT := 1.0 / 60.0
 ## (pos + biome) and the dive's landed catches on the world.
 ## 23 = sl-0116/0128 THE BAG: carried-item triples on PlayerState
 ## (pickups land in the bag; equip/drop ride the recorded bag_op —
-## WSR v3 with it).
-const SERIAL_VERSION := 23
+## WSR v3 with it). 24 = sl-0129 LOOT BAGS: enemy-kill loot lands in
+## ONE serialized ground-bag entity (gold stays its own drop).
+const SERIAL_VERSION := 24
 
 ## Damage-source pattern id for the scenario-declared test damage
 ## schedule (§2.11 elite transition proofs; planning log 2026-07-28).
@@ -163,6 +164,13 @@ var hazards: Array[Dictionary] = []
 ## Live ground drops (Loop v1 docs/19): stable order, serialized —
 ## {id, pos, kind, a, b, expires_at_tick}.
 var drops: Array[Dictionary] = []
+
+## LOOT BAGS (sl-0129, SERIAL 24): an enemy kill that rolls loot lands
+## it all in ONE ground bag at the corpse — {id, pos, items: flat
+## (kind,a,b) triples, expires_at_tick}. Gold stays its own walk-over
+## drop. Serialized, stable order; looting rides the recorded bag_op
+## codes (bag_step.gd).
+var loot_bags: Array[Dictionary] = []
 
 ## Progression tables (Loop v1): definition resource like weapon_frames —
 ## excluded from serialize(); the replay header's data hash covers it.
@@ -384,6 +392,27 @@ func spawn_drop(pos: Vector2, kind: int, a: int, b := 0) -> void:
 				"pos": pos,
 				"a": a,
 				"b": b,
+			}
+		)
+	)
+
+
+## sl-0129: ONE loot bag at a corpse — the kill's whole non-gold roll.
+## TTL = 2x the loose-drop TTL [T] (a body's worth waits longer).
+func spawn_loot_bag(pos: Vector2, items: PackedInt32Array) -> void:
+	if items.is_empty():
+		return
+	var ttl := 3600
+	if progression != null:
+		ttl = int(progression.drop_ttl_ticks)
+	(
+		loot_bags
+		. append(
+			{
+				"id": _alloc_id(),
+				"pos": pos,
+				"items": items,
+				"expires_at_tick": tick + ttl * 2,
 			}
 		)
 	)
@@ -622,6 +651,20 @@ func serialize() -> PackedByteArray:
 		buf.put_32(int(d.a))
 		buf.put_32(int(d.b))
 		buf.put_64(int(d.expires_at_tick))
+	# sl-0129 loot bags (SERIAL 24).
+	buf.put_u32(loot_bags.size())
+	for lb: Dictionary in loot_bags:
+		buf.put_64(int(lb.id))
+		var lpos: Vector2 = lb.pos
+		buf.put_double(lpos.x)
+		buf.put_double(lpos.y)
+		var litems: PackedInt32Array = lb.items
+		buf.put_u8(litems.size() / 3)
+		for li in litems.size() / 3:
+			buf.put_u8(litems[li * 3])
+			buf.put_16(litems[li * 3 + 1])
+			buf.put_16(litems[li * 3 + 2])
+		buf.put_64(int(lb.expires_at_tick))
 	buf.put_u8(0 if ability_def == null else ability_defs.find(ability_def) + 1)
 	buf.put_u8(1 if god_mode else 0)
 	buf.put_u32(sites.size())

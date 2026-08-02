@@ -10,6 +10,7 @@ extends RefCounted
 ## in one render frame and just_pressed is per-frame.
 
 const InputFrame := preload("res://sim/input_frame.gd")
+const BagStep := preload("res://sim/systems/bag_step.gd")
 
 ## GUI text entry (the M8 comments box) suppresses gameplay input:
 ## neutral frames go to the sim while device state keeps being tracked,
@@ -20,6 +21,7 @@ var _prev_autofire := false
 var _prev_ability := false
 var _prev_interact := false
 var _prev_rod_swap := false
+var _prev_loot_all := false
 var _last_aim := Vector2.RIGHT
 ## sl-0116: the C-pane queues ONE bag op; the next sampled frame
 ## carries it (exactly once — an edge by construction). Rides even
@@ -51,6 +53,7 @@ func sample(mouse_tile: Vector2, player_pos: Vector2, equipped := 0, rod_count :
 		_prev_ability = Input.is_action_pressed("ability")
 		_prev_interact = Input.is_action_pressed("interact")
 		_prev_rod_swap = Input.is_action_pressed("rod_swap")
+		_prev_loot_all = Input.is_action_pressed("loot_all")
 		return nf
 	var f := InputFrame.new()
 	f.move_x = (
@@ -86,6 +89,12 @@ func sample(mouse_tile: Vector2, player_pos: Vector2, equipped := 0, rod_count :
 	if rs and not _prev_rod_swap and rod_count > 0:
 		f.weapon_select = (equipped + 1) % rod_count + 1
 	_prev_rod_swap = rs
+	# sl-0129: the loot-all edge rides the bag_op byte; a queued pane
+	# op wins the tick (both are deliberate hands — first come holds).
+	var la := Input.is_action_pressed("loot_all")
+	if la and not _prev_loot_all and _queued_bag_op == 0:
+		_queued_bag_op = BagStep.OP_LOOT_ALL
+	_prev_loot_all = la
 	f.bag_op = _queued_bag_op
 	_queued_bag_op = 0
 	return f
