@@ -59,6 +59,12 @@ const ItemText := preload("res://game/views/item_text.gd")
 ## warren cell 2,2, landing back one cell east of the mouth.
 ## Player-facing (both profiles) — the dungeon IS content, not a
 ## dev tool.
+const RIFT_EXIT_DOOR := {
+	"cell": Vector2(1.5, 6.5),
+	"to": "res://data/scenarios/slice_overworld.tres",
+	"spawn": "",
+	"label": "back through the rift to the shore...",
+}
 const DUNGEON_DOORS := {
 	&"slice_overworld":
 	[
@@ -78,26 +84,16 @@ const DUNGEON_DOORS := {
 			"label": "climbing back to daylight...",
 		}
 	],
-	# STARHOOK (S1 seam 6, sl-0105): the rift's exit portal — the
-	# spawn is dynamic (back to where you cast; rift_return).
-	&"rift_common":
-	[
-		{
-			"cell": Vector2(1.5, 6.5),
-			"to": "res://data/scenarios/slice_overworld.tres",
-			"spawn": "",
-			"label": "reeling back to the shore...",
-		}
-	],
-	&"rift_rare":
-	[
-		{
-			"cell": Vector2(1.5, 6.5),
-			"to": "res://data/scenarios/slice_overworld.tres",
-			"spawn": "",
-			"label": "reeling back to the shore...",
-		}
-	],
+	# STARHOOK (sl-0105; v2 by sl-0115): the rift's exit — the mouth
+	# at (1,6) is the FLEE path (a won dive ends on the kill and
+	# auto-returns); the spawn is dynamic (back where you cast;
+	# rift_return). Six biome x rarity arenas share the one shape.
+	&"rift_nebula_common": [RIFT_EXIT_DOOR],
+	&"rift_nebula_rare": [RIFT_EXIT_DOOR],
+	&"rift_void_common": [RIFT_EXIT_DOOR],
+	&"rift_void_rare": [RIFT_EXIT_DOOR],
+	&"rift_comet_common": [RIFT_EXIT_DOOR],
+	&"rift_comet_rare": [RIFT_EXIT_DOOR],
 }
 const DOOR_RADIUS := 0.7
 const RenderLayers := preload("res://game/render_layers.gd")
@@ -107,6 +103,10 @@ const ProjectileSprites := preload("res://game/views/projectile_sprites.gd")
 
 const ViewClock := preload("res://game/views/view_clock.gd")
 const CameraRig := preload("res://game/views/camera_rig.gd")
+const RiftView := preload("res://game/views/rift_view.gd")
+const RiftNodesView := preload("res://game/views/rift_nodes_view.gd")
+const RiftWorldPane := preload("res://game/views/rift_world_pane.gd")
+const RiftStep := preload("res://sim/systems/rift_step.gd")
 const ProjectileView := preload("res://game/views/projectile_view.gd")
 const StandinView := preload("res://game/views/standin_view.gd")
 const EnemyActorsView := preload("res://game/views/enemy_actors_view.gd")
@@ -166,11 +166,16 @@ var character: Dictionary = {}
 var _scenario_persistent := false
 ## Active scenario id (S1 seam 4) — the door table keys on it.
 var _scenario_id: StringName = &""
-## STARHOOK (S1 seam 6, sl-0105): rift-fight scenario flags.
+## STARHOOK (S1 seam 6, sl-0105; v2 by sl-0115): rift-fight flags.
 var _scenario_rift := false
 var _rift_won := false
-## The world frame captured at cast — the split-screen's world
-## sliver (presentation only; survives the scene reload).
+## Tick the catch landed — the dive auto-ends after the linger
+## (correction #7: the win is the kill; no walk to the door).
+var _rift_won_tick := 0
+const RIFT_WIN_LINGER_TICKS := 150
+const RIFT_BIOME_KEYS: Array[String] = ["nebula", "void", "comet"]
+## The world frame captured at cast — the split-screen's world pane
+## (presentation only; survives the scene reload).
 static var _rift_capture: Image = null
 var character_panel: PanelContainer = null
 var _char_save_accum := 0.0
@@ -332,7 +337,15 @@ func _process(_delta: float) -> void:
 				var doors: Array = DUNGEON_DOORS.get(_scenario_id, [])
 				for door: Dictionary in doors:
 					var dc: Vector2 = door.cell
-					if world.players[0].pos.distance_to(dc) <= DOOR_RADIUS:
+					var at_door: bool = world.players[0].pos.distance_to(dc) <= DOOR_RADIUS
+					# sl-0115: a WON dive ends on its own after the
+					# linger — the loot is banked, the rift closes.
+					var won_out: bool = (
+						_scenario_rift
+						and _rift_won
+						and world.tick - _rift_won_tick >= RIFT_WIN_LINGER_TICKS
+					)
+					if at_door or won_out:
 						var spawn := String(door.spawn)
 						if _scenario_rift:
 							CharacterProfile.harvest_rift(world, character, _rift_won)
@@ -433,16 +446,21 @@ func _process(_delta: float) -> void:
 		"lv %d  xp %d/%d" % [p.level, p.xp, xp_next] if xp_next > 0 else "lv %d  MAX" % p.level
 	)
 	if _scenario_rift:
-		# STARHOOK (sl-0105): the rifter's readout — the rod is the
-		# class; the pot is what the catch has paid so far.
+		# STARHOOK v2 (sl-0115): the bait fighter's readout — the hp
+		# bar IS line stability; lives are the three lines; the rod is
+		# the class ([R] swaps among unlocked).
+		var pips := ""
+		for li in 3:
+			pips += "●" if li < p.line_lives else "○"
 		(
 			loot_label
 			. set_text(
 				(
-					"RIFTER lv %d  xp %d\n%s — the line holds · pot %d gold"
+					"BAIT FIGHTER lv %d  xp %d\nlines %s · %s [R] · pot %d gold"
 					% [
 						p.level,
 						p.xp,
+						pips,
 						String(world.weapon_frames[p.equipped_weapon].display_name),
 						p.gold,
 					]
@@ -536,34 +554,64 @@ func _process(_delta: float) -> void:
 			SimEvents.Type.GATHERED:
 				_show_toast("foraged +%d gold" % int(lev.gold))
 			SimEvents.Type.CAST_COMPLETE:
-				# STARHOOK (sl-0105): the line sinks into the rift.
-				# Capture the world frame for the sliver, remember the
-				# shore, harvest the MAIN lane, and descend.
+				# STARHOOK v2 (sl-0115): the cast is INSTANT — the line
+				# sinks into the rift the moment you press. Capture the
+				# world frame for the left pane, remember the shore AND
+				# the portal cell (the line draws INTO it), harvest the
+				# MAIN lane, and descend into the biome's arena.
 				if not character.is_empty():
 					_rift_capture = get_viewport().get_texture().get_image()
-					var cpos: Vector2 = lev.pos
+					var cpos: Vector2 = world.players[0].pos
+					var npos: Vector2 = lev.pos
 					Config.set_setting("dev", "rift_return", "%.1f,%.1f" % [cpos.x, cpos.y])
+					Config.set_setting("dev", "rift_node", "%.2f,%.2f" % [npos.x, npos.y])
 					CharacterProfile.harvest(world, character)
 					CharacterProfile.save_profile(character)
+					var biome := clampi(int(lev.get("biome", 0)), 0, 2)
 					var target := (
-						"res://data/scenarios/rift_rare.tres"
-						if bool(lev.rare)
-						else "res://data/scenarios/rift_common.tres"
+						"res://data/scenarios/rift_%s_%s.tres"
+						% [RIFT_BIOME_KEYS[biome], "rare" if bool(lev.rare) else "common"]
 					)
 					Config.set_setting("dev", "scenario", target)
 					Config.set_setting("dev", "door_spawn", "")
 					print("the line sinks into the rift...")
 					get_tree().reload_current_scene()
 					return
-			SimEvents.Type.ENTITY_KILLED:
-				# STARHOOK win beat: the catch dies -> collect and
-				# step through the exit portal (west).
-				if _scenario_rift and not _rift_won and int(lev.get("def_index", -1)) in [24, 25]:
+			SimEvents.Type.PHASE_CHANGED:
+				# Rift phase titles (prototype flavor; the telegraphs
+				# stay the real warning — Law 4).
+				if _scenario_rift:
+					var ph := int(lev.get("phase", 0))
+					if ph == 1:
+						_show_toast("THE COIL")
+					elif ph == 2:
+						_show_toast("THE THRASH")
+			SimEvents.Type.LINE_SNAPPED:
+				# One of the three lives burned — the line re-spools.
+				var left := int(lev.get("lives_left", 0))
+				_show_toast(
+					(
+						"THE LINE SNAPPED — %s left"
+						% ("two lines" if left == 2 else "ONE LINE" if left == 1 else "%d" % left)
+					)
+				)
+			SimEvents.Type.CATCH_LANDED:
+				# STARHOOK v2 win beat (correction #7): the win IS the
+				# kill — the loot lands, the dive ends on its own.
+				if _scenario_rift and not _rift_won:
 					_rift_won = true
+					_rift_won_tick = world.tick
 					_show_toast(
 						(
-							"THE CATCH IS YOURS — catch #%d. The portal home is west."
-							% (int(character.get("starhook_catches", 0)) + 1)
+							"THE CATCH IS YOURS — %s%s"
+							% [
+								_rift_fish_name(
+									int(lev.get("biome", 0)),
+									int(lev.get("fish", 0)),
+									bool(lev.get("rare", false))
+								),
+								" ★" if bool(lev.get("rare", false)) else "",
+							]
 						)
 					)
 	# F10: dump the always-on session recording. NOTE: the main scene is a
@@ -765,6 +813,9 @@ func _console_verdict(tokens: PackedStringArray) -> void:
 
 func _refresh_hints() -> void:
 	var parts: Array[String] = []
+	# sl-0115: the rod hint only where rods exist (rift arenas).
+	if _scenario_rift:
+		parts.append("%s rod" % Config.binding_text("rod_swap"))
 	for entry: Array in [
 		["interact", "interact"],
 		["char_sheet", "sheet"],
@@ -825,6 +876,20 @@ func _maybe_show_character_create(pl: Label) -> void:
 	)
 
 
+## Fish display name from the balance frame's biome tables (sl-0115).
+func _rift_fish_name(biome: int, fish: int, rare: bool) -> String:
+	var biomes: Array = world.stat_frame.get("starhook", {}).get("biomes", [])
+	if biome < 0 or biome >= biomes.size():
+		return "the catch"
+	var b: Dictionary = biomes[biome]
+	if rare:
+		return String(b.get("rare", {}).get("name", "the rare catch"))
+	var table: Array = b.get("fish", [])
+	if fish >= 0 and fish < table.size():
+		return String(table[fish].get("name", "the catch"))
+	return "the catch"
+
+
 ## Death bookkeeping — once per death, on the recap. Hardcore: the
 ## character file dies with the character and the reset key lands on
 ## the new-character screen. PERSISTENT WORLD (CORE-43, seam 3): the
@@ -845,7 +910,7 @@ func _on_player_death() -> void:
 		Config.set_setting(
 			"dev", "door_spawn", String(Config.get_setting("dev", "rift_return", ""))
 		)
-		print("the line snaps...")
+		print("the third snap — the dive is lost...")
 		get_tree().reload_current_scene()
 		return
 	if bool(character.get("hardcore", false)):
@@ -1009,33 +1074,77 @@ func _ready() -> void:
 	snag_logger.driver = driver
 	add_child(snag_logger)
 
-	# STARHOOK split-screen (sl-0105, PRESENTATION ONLY): the galaxy
-	# view owns the left ~3/4 [T] (the 22-tile arena pins left of the
-	# sliver line by camera clamp — Law 1 by construction); the world
-	# sliver = the frame captured at cast, dimmed, the anchor home.
+	# STARHOOK 50/50 split (sl-0115, prototype #2 — PRESENTATION ONLY):
+	# LEFT = the world at the moment of the cast (captured frame,
+	# dimmed; your body at the rift, the line sinking INTO it — the
+	# living overlay draws that half of the two-portal topology).
+	# RIGHT = the galaxy view (the live scene; the fixed rift camera
+	# frames the whole arena there — Law 1 by construction). The
+	# divider is a glowing seam with a travelling spark.
 	if _scenario_rift and _rift_capture != null:
-		var sliver_layer := CanvasLayer.new()
-		sliver_layer.layer = 40
-		add_child(sliver_layer)
-		var sliver := TextureRect.new()
-		sliver.texture = ImageTexture.create_from_image(_rift_capture)
-		sliver.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		sliver.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-		sliver.anchor_left = 0.75
-		sliver.anchor_right = 1.0
-		sliver.anchor_top = 0.0
-		sliver.anchor_bottom = 1.0
-		sliver.modulate = Color(0.55, 0.55, 0.65, 1.0)
-		sliver_layer.add_child(sliver)
+		var pane_layer := CanvasLayer.new()
+		pane_layer.layer = 40
+		add_child(pane_layer)
+		var wpane := TextureRect.new()
+		wpane.texture = ImageTexture.create_from_image(_rift_capture)
+		wpane.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		wpane.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		wpane.anchor_left = 0.0
+		wpane.anchor_right = 0.5
+		wpane.anchor_top = 0.0
+		wpane.anchor_bottom = 1.0
+		wpane.modulate = Color(0.62, 0.62, 0.72, 1.0)
+		pane_layer.add_child(wpane)
+		# The living overlay: line into the portal + portal pulse.
+		var overlay := RiftWorldPane.new()
+		overlay.world = world
+		overlay.pull_def = world.rift_pull
+		overlay.deep_x = RiftStep.deep_edge_x(world)
+		overlay.biome_rim = RiftNodesView.BIOME_RIMS[clampi(int(scenario.rift_biome), 0, 2)]
+		var rr := String(Config.get_setting("dev", "rift_return", "")).split(",")
+		var rn := String(Config.get_setting("dev", "rift_node", "")).split(",")
+		if rr.size() == 2 and rn.size() == 2:
+			overlay.portal_offset = (
+				Vector2(float(rn[0]) - float(rr[0]), float(rn[1]) - float(rr[1])) * TILE
+			)
+		overlay.anchor_left = 0.0
+		overlay.anchor_right = 0.5
+		overlay.anchor_top = 0.0
+		overlay.anchor_bottom = 1.0
+		pane_layer.add_child(overlay)
+		var hold_label := Label.new()
+		hold_label.text = "THE LINE HOLDS"
+		hold_label.modulate = Color(0.66, 0.71, 0.85, 0.8)
+		hold_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		hold_label.anchor_left = 0.0
+		hold_label.anchor_right = 0.5
+		hold_label.offset_top = 4.0
+		pane_layer.add_child(hold_label)
+		var title := Label.new()
+		title.text = (
+			"%sRIFT CATCH — %s"
+			% [
+				"★ RARE " if bool(scenario.rift_rare) else "",
+				RiftNodesView.BIOME_NAMES[clampi(int(scenario.rift_biome), 0, 2)],
+			]
+		)
+		title.modulate = (
+			Color(1.0, 0.82, 0.31) if bool(scenario.rift_rare) else Color(0.96, 0.92, 0.85)
+		)
+		title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		title.anchor_left = 0.5
+		title.anchor_right = 1.0
+		title.offset_top = 4.0
+		pane_layer.add_child(title)
 		var seam_line := ColorRect.new()
 		seam_line.color = Color(0.9, 0.85, 0.6, 0.85)
-		seam_line.anchor_left = 0.75
-		seam_line.anchor_right = 0.75
+		seam_line.anchor_left = 0.5
+		seam_line.anchor_right = 0.5
 		seam_line.anchor_top = 0.0
 		seam_line.anchor_bottom = 1.0
 		seam_line.offset_left = -1.0
-		seam_line.offset_right = 2.0
-		sliver_layer.add_child(seam_line)
+		seam_line.offset_right = 1.0
+		pane_layer.add_child(seam_line)
 
 	gif_recorder = GifRecorder.new()
 	add_child(gif_recorder)
@@ -1113,10 +1222,23 @@ func _ready() -> void:
 		sl.reparent(actor_space)
 
 	# Actor source: the assembler pack (§2.14 Amendment v2, docs/14).
+	# sl-0115: rift arenas render their own actors — THE BAIT FIGHTER
+	# (a small simple sprite; corrections #1/#2) and the star-fish
+	# catch — via the rift view below; the ranger and the assembler
+	# enemy view stay out of the galaxy.
 	var lib := AssemblerLibrary.new()
 	var lib_ok := lib.load_manifest()
 	var sheet_map: Resource = load("res://data/actor_sheet_map.tres")
-	if lib_ok and sheet_map != null and lib.has_actor(String(sheet_map.map.player)):
+	if _scenario_rift:
+		var rift_view := RiftView.new()
+		rift_view.world = world
+		rift_view.clock = view_clock
+		rift_view.biome = clampi(int(scenario.rift_biome), 0, 2)
+		rift_view.rare = bool(scenario.rift_rare)
+		rift_view.arena_w = int(def.width)
+		rift_view.arena_h = int(def.height)
+		add_child(rift_view)
+	elif lib_ok and sheet_map != null and lib.has_actor(String(sheet_map.map.player)):
 		var av := AnimatedActor.new()
 		av.sprite_frames = lib.build_sprite_frames(String(sheet_map.map.player))
 		av.actor = world.players[0]
@@ -1126,10 +1248,16 @@ func _ready() -> void:
 		actor_space.add_child(av)
 	else:
 		push_error("main: player sheet unavailable — run the assembler importer")
+	# World-side rift portals (sl-0115): wherever nodes or ambient
+	# spawns exist, the portals draw with their biomes + the cast cue.
+	if not scenario.rift_nodes.is_empty() or bool(scenario.rift_ambient):
+		var nodes_view := RiftNodesView.new()
+		nodes_view.world = world
+		add_child(nodes_view)
 
 	# Real enemies: assembler sheets + overhead HP bars (M5; CORE-35 —
 	# general presentation, no targeting anything).
-	if lib_ok:
+	if lib_ok and not _scenario_rift:
 		var enemy_actors := EnemyActorsView.new()
 		enemy_actors.world = world
 		enemy_actors.clock = view_clock
@@ -1251,7 +1379,15 @@ func _ready() -> void:
 	camera.world = world
 	camera.clock = view_clock
 	add_child(camera)
-	camera.setup(int(def.width), int(def.height))
+	if _scenario_rift:
+		# sl-0115: fixed framing — the arena interior fills the RIGHT
+		# pane exactly at base scale (interior center lands at screen
+		# x 3/4 W): no follow, no off-screen bullets, ever (Law 1).
+		var icx := float(def.width) * 0.5 * TILE
+		var icy := float(def.height) * 0.5 * TILE
+		camera.setup_fixed(Vector2(icx - 160.0, icy))
+	else:
+		camera.setup(int(def.width), int(def.height))
 
 	var pause_label := Label.new()
 	pause_label.text = "PAUSED"

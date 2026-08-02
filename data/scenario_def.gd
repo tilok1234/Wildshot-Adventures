@@ -43,11 +43,28 @@ extends Resource
 ## (M7 pre-tester-build checklist line).
 @export var damage_schedule: Array[Dictionary] = []
 ## S1 seam 6 (sl-0105): STARHOOK rift node cells (center coords) —
-## authored spawn spots [T]; casting (120-tick stillness) at an
-## ACTIVE node starts the rift fight. Empty = no starhook here.
+## authored spawn spots [T]; an INTERACT press at an ACTIVE node casts
+## instantly (sl-0115 — the cast IS the aggro). Empty = none here.
 @export var rift_nodes: PackedVector2Array = PackedVector2Array()
+## sl-0115: authored node biomes, parallel to rift_nodes (0 nebula /
+## 1 void / 2 comet; short or absent entries read nebula). The portal
+## shows its biome before the cast.
+@export var rift_node_biomes: PackedInt32Array = PackedInt32Array()
+## sl-0115 (deck tap shk3spwn): this world rolls AMBIENT rift spawns —
+## anywhere on walkable land, anytime (gather_step, rng_misc; tuning
+## in balance_frame starhook.ambient [T]). Proof worlds stay false.
+@export var rift_ambient: bool = false
 ## True on rift-fight scenarios: the driver applies the RIFTER
 ## mini-class shape (sl-0105) instead of the main character, and the
 ## split-screen presentation mounts.
 @export var starhook_rift: bool = false
+## sl-0115: the rift arena's pull/line physics resource (the pull, the
+## drains, the three lives — data/rift_pull_def.gd). Required when
+## starhook_rift; ignored elsewhere.
+@export var rift_pull: String = ""
+## sl-0115: the arena's biome (indexes balance_frame starhook.biomes)
+## and rarity step — set by the six rift scenarios; the fish table and
+## the pattern-variant def follow from them.
+@export var rift_biome: int = 0
+@export var rift_rare: bool = false
 @export var default_seed: int = 1

@@ -11,6 +11,7 @@ extends RefCounted
 
 const Kinematics := preload("res://sim/systems/kinematics.gd")
 const StatFrame := preload("res://sim/systems/stat_frame.gd")
+const RiftStep := preload("res://sim/systems/rift_step.gd")
 
 ## Locomotion radius vs terrain (2026-07-28 walk-close feel; RETUNED
 ## 2026-08-01 by THE FIT RULE, sl-0078 designer-directed: "if there is
@@ -35,7 +36,16 @@ static func run(world: RefCounted) -> void:
 		var before: Vector2 = p.pos
 		if not p.dead and i < frames.size() and frames[i] != null:
 			var mv: Vector2 = frames[i].move_vector()
-			if mv != Vector2.ZERO:
+			# sl-0115: in a rift arena the pull ALWAYS pushes — a still
+			# player drifts toward the deep edge (the prototype's shape:
+			# WASD fights the current). Everywhere else the mv==ZERO
+			# early-out stands byte-identical.
+			var pull := Vector2.ZERO
+			if world.rift_pull != null:
+				pull = (
+					RiftStep.pull_vec(world, world.tick) * float(world.rift_pull.player_mult) * dt
+				)
+			if mv != Vector2.ZERO or pull != Vector2.ZERO:
 				# docs/22 block 6: the +15% HARD CAP (115; t/s value
 				# derives from the sl-0102 anchor — 4.14 today) lives
 				# HERE, in the movement integrator, applied after every
@@ -45,7 +55,7 @@ static func run(world: RefCounted) -> void:
 				var spd: float = p.move_speed
 				if p.class_id >= 0:
 					spd = minf(spd, StatFrame.CAP_TILES_PER_S)
-				var step: Vector2 = mv * spd * dt
+				var step: Vector2 = mv * spd * dt + pull
 				# sl-0078: players walk the fit-rule truth (walk_grid +
 				# art-matched prop discs); enemies stay on the full grid.
 				p.pos = Kinematics.move_circle(

@@ -131,4 +131,13 @@ func _sample_frame() -> RefCounted:
 	var mouse_tile: Vector2 = (
 		mouse_tile_provider.call() if mouse_tile_provider.is_valid() else Vector2.ZERO
 	)
-	return sampler.sample(mouse_tile, world.players[0].pos)
+	# sl-0115: rod-swap context — how many rods the rifter's level has
+	# unlocked (0 outside rift worlds; R stays inert there). The edge's
+	# RESULT is what gets recorded, so replays carry the actual select.
+	var p: RefCounted = world.players[0]
+	var rod_count := 0
+	var unlocks: PackedInt32Array = world.rift_rod_unlocks
+	for lv in unlocks:
+		if p.level >= lv:
+			rod_count += 1
+	return sampler.sample(mouse_tile, p.pos, p.equipped_weapon, rod_count)

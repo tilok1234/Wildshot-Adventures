@@ -1,0 +1,46 @@
+[gd_resource type="Resource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://data/weapon_frame.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; STARHOOK rod #4 (sl-0115, prototype extrapolation [proto->T]):
+; TWINREED - paired needles, tight and quick. Prototype 30 t/s values
+; converted to 60 (HANDOFF §7): cadence 14->28, ttl 26->52; dmg 3 /
+; speed 15 t/s / ±3° ride verbatim. Unlocks at starhook 8 [T].
+; Pattern id 29 (player namespace).
+
+[sub_resource type="Resource" id="shot0"]
+script = ExtResource("2")
+angle_offset_deg = -3.0
+speed = 15.0
+radius = 0.125
+damage = 3
+ttl_ticks = 52
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.35
+
+[sub_resource type="Resource" id="shot1"]
+script = ExtResource("2")
+angle_offset_deg = 3.0
+speed = 15.0
+radius = 0.125
+damage = 3
+ttl_ticks = 52
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.35
+
+[resource]
+script = ExtResource("1")
+id = &"rod_twinreed"
+display_name = "Twinreed"
+pattern_id = 29
+cadence_ticks = 28
+shots = Array[Resource]([SubResource("shot0"), SubResource("shot1")])

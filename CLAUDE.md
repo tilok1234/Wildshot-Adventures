@@ -214,6 +214,73 @@ daily for a week) before the warm watched first-touches are scheduled. The
 tester-build export pipeline + lockdown profile stay a STANDING GATE
 regardless — clean-stamped zips are what make warm testing frictionless.
 
+> **STARHOOK v2 — THE PROTOTYPE MERGE (sl-0115) 2026-08-02 (~15:30
+> local; hands-free; SERIAL 21→22, next bump 23):** the designer's
+> overnight prototype #2 rules the SHAPE (INDEX corrections = law;
+> every number [T]; refinement rounds follow). BUILT: 50/50 split
+> (world capture LEFT w/ the line INTO the world rift + portal pulse;
+> galaxy RIGHT under a FIXED camera — interior 10x11 of the new 12x13
+> arena fills the pane 1:1, walls off-pane, Law 1 by construction);
+> THE PULL as a real .tres (data/rift_pull.tres: 1.35 t/s, ±0.45 rad
+> osc @0.004/tick ~26 s, player ×1.0 / catch ×0.3 / HOSTILE shots
+> ×0.15 — friendly bolts fly true, CORE-32; enemies drift only in
+> moving states — Law 4 outranks the prototype's drift-while-
+> telegraphing, recorded deviation); LINE STABILITY = HP with THREE
+> HARD LIVES (integer-exact drains through THE damage path, pattern
+> -5: passive 0.4/s = 1 hp per exactly 150 ticks, deep-edge +2.2/s,
+> 0.8 t strip; snap = life burned + full re-spool + 90 t grace +
+> LINE_SNAPPED; third snap = the normal dive-lost death; hit grace
+> 30 t blocks bullets only — drains never pause; the drains NEVER
+> count as proof hits, CORE-33 is about attacks); CAST IS INSTANT
+> (interact at a portal — the cast IS the aggro; stillness cast
+> retired; forage stillness stands); AMBIENT RIFTS (rng_misc's first
+> consumer — interval/chance/cap/ring in balance_frame
+> starhook.ambient [T]; ambient nodes = serialized state, consumed
+> away; authored nodes carry biomes, slice 12 = 0,1,2 cycled);
+> THREE BIOMES as pattern-variant .tres (void ring 12x30 @3.4, comet
+> spray 6.3 + dart cd ×0.8 — SAME pattern ids, SAME leads: one
+> hostile language) on 4 new defs at roster 26-29 (append-only) + 6
+> scenarios (rift_<biome>_<rarity>) superseding rift_common/rare;
+> THE WIN IS PURELY THE KILL (reel cut, correction #7): kill banks
+> gold directly (no ground drops in rifts) + draws the biome FISH
+> (rng_loot weighted 45/35/20; rare rarity = the rare species;
+> CATCH_LANDED + world.rift_catches serialized) + auto-exit after
+> 150 t linger (the mouth door stays as the flee path); FISH PERSIST
+> PER-SPECIES (profile starhook_fish{} — species-currency, deck tap
+> shk2ctch); FOUR RODS (Heavyline 88 t/16 dmg/9 t/s + Twinreed 28 t/
+> 2x±3°/3 dmg/15 t/s — 30→60 tps converted; patterns 9/29;
+> Heavyline's hitstop+shake REFUSED, CORE-32; unlocks 1/3/5/8 [T]),
+> R SWAPS (rod_swap=R by the designer's word — replay_save moved
+> R→J; the swap rides the recorded weapon_select byte: ZERO replay-
+> format change, WSR stays v2; locked selects refused sim-side; the
+> equipped rod persists by id); THE BAIT FIGHTER is the star
+> (corrections #1/#2): an 11x12 code-drawn micro sprite + glow pad,
+> the prototype's 20x12 star-fish pixel map tinted per biome/gold-
+> rare replaces assembler actors in rifts; galaxy backdrop/rim/deep
+> shimmer/flow arrows/portals per biome; the line sags↔tauts, red
+> under strain, travelling spark, drawn INTO the world rift and OUT
+> of the galaxy rift (correction #4), world-canvas z 40 so hostile
+> bands stay above (Law 1); overworld portals + [F]-cast prompt live
+> (rift_nodes_view — nodes finally RENDER). DodgeBot models the pull
+> (self incl. the stay candidate, hostile shots in projection) +
+> deep-edge keep-out as positioning penalty; dodge_proof counts
+> bullet hits only. PROOFS: all four rift rows (nebula/rare/void/
+> comet) PASS floor+cap seeds 1,2,3 x 3600 FIRST RUN in the new room
+> with the pull aboard — margins 0.120-0.122, comet floor 0.079
+> (honest tier-3-watch); battery 41→43 rows. Goldens re-recorded +
+> verified x10 (SERIAL 22). gather_test REBUILT (instant cast/
+> ambient/pull/drains/grace/snap/clear/fish/rods/refusals/hash/
+> rifter/slice premises, negatives incl. loader biome-table + pull
+> refusals). Evidence committed + read:
+> reports/rift_galaxy_audit_{base,desktop}.png (integer stretch =
+> desktop is pixel-exact 3x base by construction). NOT this seam (by
+> routing): gear drops (NEXT), skill tree (post-class-trees), node
+> drift/despawn, vendors; water fishing PARKED (correction #3).
+> Length-roll catch-card flavor + divider spark = refinement-round
+> material. NO feel verdicts — the designer's refinement rounds +
+> Green days own the cast feel, split ratio, drains, lives, rod
+> gates, ambient cadence, and every [T] above.**
+
 ## Hours-log rule (PROD-01)
 
 - `tools/hourslog.ps1 start` before ANY project work — code, art, design,

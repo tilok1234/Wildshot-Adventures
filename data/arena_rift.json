@@ -1,27 +1,19 @@
 {
-  "comment": "THE RIFT v2 (S1 seam 6, sl-0105): the far-side arena where the RIFTER fights the catch. 15x12 = 480x384 px: at the BASE 640x360 viewport the arena spans EXACTLY the left 3/4 - the world-sliver overlay can never occlude a threat (Law 1 by construction; v1 was 22 wide and the render probe caught 7 tiles under the sliver - the probe's second catch tonight). Quiet dark floor (Law 6 - the starfield gets no exemption); two star-rock stubs; galaxy dressing is a designer art round.",
-  "width": 15,
-  "height": 12,
+  "comment": "THE RIFT v3 (sl-0115, prototype #2): the arena where the bait fighter fights the catch, resized to the 50/50 split. 12x13 grid; INTERIOR 10x11 tiles = 320x352 px = the right pane at 1:1 base scale (Law 1 by construction: the fixed rift camera frames the interior, the wall ring sits exactly off-pane, bullets die at the pane edge like the prototype's cull). Prototype fighting space was 300x340 px - this is its tile-snapped match. Two 1x1 star-rock stubs (solid, shot-blocking, prototype-placed class); the wall ring renders off-camera so the galaxy backdrop is the only dressing that shows (view-side, per-biome). Quiet dark floor under the backdrop (Law 6).",
+  "width": 12,
+  "height": 13,
   "floor_family": "dungeonfloor",
   "wall_family": "dungeonwall",
   "pillar_species": "pillar",
   "wall_segments": [
-    { "x": 0, "y": 0, "w": 15, "h": 1 },
-    { "x": 0, "y": 11, "w": 15, "h": 1 },
-    { "x": 0, "y": 1, "w": 1, "h": 10 },
-    { "x": 14, "y": 1, "w": 1, "h": 10 },
-    { "x": 5, "y": 3, "w": 1, "h": 1 },
-    { "x": 9, "y": 8, "w": 1, "h": 1 }
+    { "x": 0, "y": 0, "w": 12, "h": 1 },
+    { "x": 0, "y": 12, "w": 12, "h": 1 },
+    { "x": 0, "y": 1, "w": 1, "h": 11 },
+    { "x": 11, "y": 1, "w": 1, "h": 11 },
+    { "x": 4, "y": 4, "w": 1, "h": 1 },
+    { "x": 7, "y": 9, "w": 1, "h": 1 }
   ],
   "floor_patches": [],
-  "props": [
-    { "x": 1, "y": 6, "name": "brazier" },
-    { "x": 13, "y": 1, "name": "bonepile" },
-    { "x": 13, "y": 10, "name": "rubblepile" }
-  ],
-  "decals": [
-    { "x": 3, "y": 2, "name": "cracks" },
-    { "x": 11, "y": 9, "name": "cracks" },
-    { "x": 7, "y": 6, "name": "bones" }
-  ]
+  "props": [],
+  "decals": []
 }

@@ -31,6 +31,7 @@ const HazardStep := preload("res://sim/systems/hazard_step.gd")
 const LootStep := preload("res://sim/systems/loot_step.gd")
 const GatherStep := preload("res://sim/systems/gather_step.gd")
 const QuestStep := preload("res://sim/systems/quest_step.gd")
+const RiftStep := preload("res://sim/systems/rift_step.gd")
 const Damage := preload("res://sim/systems/damage.gd")
 
 const TICKS_PER_SECOND := 60
@@ -45,7 +46,10 @@ const DT := 1.0 / 60.0
 ## 20 = S1 seam 6: gather fields + rift-node respawn state (sl-0105).
 ## 21 = sl-0112: multi-active quest state (taken mask + per-quest
 ## progress array replace active/progress; the interact era).
-const SERIAL_VERSION := 21
+## 22 = sl-0115 STARHOOK v2 (prototype #2): the line's three lives +
+## drain accumulator + grace on PlayerState; ambient rift nodes
+## (pos + biome) and the dive's landed catches on the world.
+const SERIAL_VERSION := 22
 
 ## Damage-source pattern id for the scenario-declared test damage
 ## schedule (§2.11 elite transition proofs; planning log 2026-07-28).
@@ -200,6 +204,30 @@ var quest_defs: Array = []
 var forage_grid: RefCounted = null
 var rift_nodes: PackedVector2Array = PackedVector2Array()
 var rift_node_respawn_at: PackedInt64Array = PackedInt64Array()
+## STARHOOK v2 (sl-0115). Setup configs (definitions, unserialized —
+## the scenario reproduces them): rift_pull = the pull/line physics
+## resource (data/rift_pull_def.gd; null = not a rift arena, every
+## other world byte-identical by construction); rift_biome 0/1/2 =
+## nebula/void/comet (indexes balance_frame starhook.biomes);
+## rift_rare = the rarity step; rift_rod_unlocks = per-rod unlock
+## levels in loadout order (player_fire refuses locked selects);
+## rift_node_biomes = authored node biomes parallel to rift_nodes;
+## rift_ambient = this world rolls ambient rift spawns (gather_step,
+## rng_misc — its first consumer).
+var rift_pull: Resource = null
+var rift_biome: int = 0
+var rift_rare: bool = false
+var rift_rod_unlocks: PackedInt32Array = PackedInt32Array()
+var rift_node_biomes: PackedInt32Array = PackedInt32Array()
+var rift_ambient: bool = false
+## STARHOOK v2 SERIALIZED STATE (SERIAL 22): ambient nodes are world
+## state (they appear at runtime, consumed = removed, no respawn);
+## rift_catches = the dive's landed catches ({biome, fish, rare} int
+## rows; fish 0-2 = the biome's commons, 3 = its rare) — harvest
+## banks them per-species on a won exit.
+var rift_ambient_pos: PackedVector2Array = PackedVector2Array()
+var rift_ambient_biome: PackedInt32Array = PackedInt32Array()
+var rift_catches: Array[Dictionary] = []
 
 ## God/invulnerability flag (§2.10): friendly actors take no damage —
 ## every absorbed hit emits DAMAGE_IMMUNE, so god use is always visible
@@ -294,10 +322,29 @@ func set_forage_grid(grid: RefCounted) -> void:
 
 ## Setup-phase (S1 seam 6, sl-0105): rift node cells — definitions;
 ## the respawn-state array initializes armed (0 = active now).
-func set_rift_nodes(cells: PackedVector2Array) -> void:
+## sl-0115: biomes ride parallel (short/absent entries read nebula 0).
+func set_rift_nodes(cells: PackedVector2Array, biomes := PackedInt32Array()) -> void:
 	rift_nodes = cells
 	rift_node_respawn_at = PackedInt64Array()
 	rift_node_respawn_at.resize(cells.size())
+	rift_node_biomes = PackedInt32Array()
+	rift_node_biomes.resize(cells.size())
+	for i in mini(cells.size(), biomes.size()):
+		rift_node_biomes[i] = biomes[i]
+
+
+## Setup-phase (sl-0115): attach the rift arena's pull/line physics +
+## identity. Arms every player's line (lives from the def) — the
+## scenario build runs this BEFORE the recorder snapshot, so replays
+## carry the true initial state.
+func set_rift_config(pull: Resource, biome: int, rare: bool, rod_unlocks: PackedInt32Array) -> void:
+	rift_pull = pull
+	rift_biome = biome
+	rift_rare = rare
+	rift_rod_unlocks = rod_unlocks
+	if pull != null:
+		for p in players:
+			p.line_lives = int(pull.lives)
 
 
 ## In-step ground-drop spawn (the death-sweep drop rolls call this).
@@ -453,6 +500,9 @@ func step(frames: Array) -> void:
 	EnemyStep.run(self)
 	ProjectileStep.run(self)
 	HazardStep.run(self)
+	# sl-0115: the line's drains + post-win shot clear (rift arenas
+	# only — rift_pull null means this is a straight no-op).
+	RiftStep.run(self)
 	LootStep.run(self)
 	# S1 seam 6: the patience verbs (forage yields, rift casts).
 	GatherStep.run(self)
@@ -580,6 +630,18 @@ func serialize() -> PackedByteArray:
 	buf.put_u16(rift_node_respawn_at.size())
 	for na in rift_node_respawn_at:
 		buf.put_64(na)
+	# sl-0115 (SERIAL 22): ambient rift nodes (runtime world state —
+	# spawned by gather_step, removed on cast) + the dive's catches.
+	buf.put_u16(rift_ambient_pos.size())
+	for ai in rift_ambient_pos.size():
+		buf.put_double(rift_ambient_pos[ai].x)
+		buf.put_double(rift_ambient_pos[ai].y)
+		buf.put_u8(rift_ambient_biome[ai])
+	buf.put_u16(rift_catches.size())
+	for cd: Dictionary in rift_catches:
+		buf.put_u8(int(cd.biome))
+		buf.put_u8(int(cd.fish))
+		buf.put_u8(1 if bool(cd.rare) else 0)
 	return buf.data_array
 
 

@@ -259,7 +259,13 @@ if (-not $SkipBattery) {
         @("proof_warren","1,2,3",3600,"","","PASS","PASS"),
         @("proof_king_grubb","1,2,3",3600,"","","PASS","PASS"),
         @("proof_rift_catch","1,2,3",3600,"","","PASS","PASS"),
-        @("proof_rift_catch_rare","1,2,3",3600,"","","PASS","PASS")
+        @("proof_rift_catch_rare","1,2,3",3600,"","","PASS","PASS"),
+        # sl-0115: the biome twists change dodge geometry (void ring
+        # 12x30 @3.4; comet spray 6.3 + dart cd x0.8) — each earns its
+        # own row. All four rift rows run the REAL arena physics (the
+        # pull, the drains, the lives; drain is never a counted hit).
+        @("proof_rift_void","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_rift_comet","1,2,3",3600,"","","PASS","PASS")
     )
     . "$PSScriptRoot\battery_runner.ps1"
     if ($Workers -le 0) { $Workers = Get-PhysicalCoreCount }

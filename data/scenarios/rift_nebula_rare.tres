@@ -1,0 +1,22 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; STARHOOK rift fight (sl-0115): NEBULA DRIFT, RARE (420 hp, ~20%
+; denser, gold skin; the Starlit Cast cosmetic roll rides).
+
+[resource]
+script = ExtResource("1")
+id = &"rift_nebula_rare"
+display_name = "STARHOOK: nebula drift (RARE)"
+arena = "res://data/arena_rift.json"
+starhook_rift = true
+rift_pull = "res://data/rift_pull.tres"
+rift_biome = 0
+rift_rare = true
+player_spawn = Vector2(2.9, 6.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"rift_catch_rare": PackedVector2Array(7.9, 6.5)
+}
+default_seed = 11

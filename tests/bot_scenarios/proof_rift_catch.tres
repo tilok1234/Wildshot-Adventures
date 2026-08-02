@@ -2,20 +2,28 @@
 
 [ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
 
-; THE CATCH proof (S1 seam 6, sl-0105): 260 hp paced at 20 every
-; 120 -> P2 (coil) ~t600, P3 (thrash) ~t1080, kill t1560, cleanup
-; to 3600. The rift kit through both transitions in ITS arena - the
-; pattern->lead law and both proof lanes bind in the rift.
+; THE CATCH proof (S1 seam 6, sl-0105; RE-AUTHORED sl-0115 for the
+; v3 arena + THE PULL): 260 hp paced at 20 every 120 -> P2 (coil)
+; ~t600, P3 (thrash) ~t1080, kill t1560, cleanup to 3600. The rift
+; kit through both transitions in ITS arena with the REAL physics
+; aboard — the pull, the drains, the three lives, the hit grace —
+; so CORE-33 is proven against the fight the player actually gets.
+; PASS is still ZERO bullet hits; the drains are not hits and
+; cannot cost a life inside 3600 ticks off the deep edge.
 
 [resource]
 script = ExtResource("1")
 id = &"proof_rift_catch"
 display_name = "PROOF: proof_rift_catch (rift schedule fight)"
 arena = "res://data/arena_rift.json"
-player_spawn = Vector2(3.5, 6.5)
+starhook_rift = true
+rift_pull = "res://data/rift_pull.tres"
+rift_biome = 0
+rift_rare = false
+player_spawn = Vector2(2.9, 6.5)
 standin_positions = PackedVector2Array()
 enemy_spawns = {
-"rift_catch": PackedVector2Array(11.5, 6.5)
+"rift_catch": PackedVector2Array(7.9, 6.5)
 }
 damage_schedule = Array[Dictionary]([{
 "amount": 20,

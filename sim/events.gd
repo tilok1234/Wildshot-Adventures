@@ -30,13 +30,19 @@ enum Type {
 	QUEST_DONE,
 	GATHERED,
 	CAST_COMPLETE,
+	LINE_SNAPPED,
+	RIFT_NODE_SPAWNED,
+	CATCH_LANDED,
 }
 
 ## PROJECTILE_DESPAWNED carries one of these (§2.6 typed despawn reasons).
+## CLEARED: rift worlds only (sl-0115) — the catch is dead, live hostile
+## shots vanish with it (the win is never followed by a posthumous snap).
 enum DespawnReason {
 	TTL,
 	HIT,
 	TERRAIN,
+	CLEARED,
 }
 
 ## DAMAGE_BLOCKED reasons. REGISTRY_FULL is the §2.6 deterministic overflow

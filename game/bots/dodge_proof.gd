@@ -13,6 +13,7 @@ const ReplayRecorder := preload("res://input/replay_recorder.gd")
 const SimEvents := preload("res://sim/events.gd")
 const DodgePolicy := preload("res://game/bots/dodge_policy.gd")
 const ActorState := preload("res://sim/actor_state.gd")
+const RiftStep := preload("res://sim/systems/rift_step.gd")
 
 const HEAT_W := 12
 const HEAT_H := 8
@@ -179,7 +180,15 @@ static func _run_one(
 		world.step([frame])
 		recorder.after_step()
 		for ev: Dictionary in world.events:
-			if int(ev.type) == SimEvents.Type.DAMAGE_APPLIED and int(ev.target) == player.id:
+			# sl-0115: the rift's line drain is the session CLOCK, not
+			# an attack — it never counts against dodgeability (CORE-33
+			# is about honest dodging of ATTACKS). Bullet/contact/hazard
+			# damage keeps counting exactly as before.
+			if (
+				int(ev.type) == SimEvents.Type.DAMAGE_APPLIED
+				and int(ev.target) == player.id
+				and int(ev.get("pattern", 0)) != RiftStep.PATTERN_LINE_STRAIN
+			):
 				hits += 1
 				if first_hit < 0:
 					first_hit = int(ev.tick)

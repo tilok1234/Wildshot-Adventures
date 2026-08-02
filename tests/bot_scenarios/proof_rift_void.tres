@@ -1,0 +1,65 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; HOLLOW VOID catch proof (sl-0115): the void ring twist (12 x 30 at
+; 3.4 t/s) through both transitions — a biome twist changes dodge
+; geometry, so it earns its own battery row (CORE-33 per variant).
+; Same 260-hp pacing as the nebula proof: P2 ~t600, P3 ~t1080, kill
+; t1560, cleanup to 3600. Real physics aboard (pull/drains/lives).
+
+[resource]
+script = ExtResource("1")
+id = &"proof_rift_void"
+display_name = "PROOF: proof_rift_void (void twist schedule fight)"
+arena = "res://data/arena_rift.json"
+starhook_rift = true
+rift_pull = "res://data/rift_pull.tres"
+rift_biome = 1
+rift_rare = false
+player_spawn = Vector2(2.9, 6.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"rift_catch_void": PackedVector2Array(7.9, 6.5)
+}
+damage_schedule = Array[Dictionary]([{
+"amount": 20,
+"tick": 120
+}, {
+"amount": 20,
+"tick": 240
+}, {
+"amount": 20,
+"tick": 360
+}, {
+"amount": 20,
+"tick": 480
+}, {
+"amount": 20,
+"tick": 600
+}, {
+"amount": 20,
+"tick": 720
+}, {
+"amount": 20,
+"tick": 840
+}, {
+"amount": 20,
+"tick": 960
+}, {
+"amount": 20,
+"tick": 1080
+}, {
+"amount": 20,
+"tick": 1200
+}, {
+"amount": 20,
+"tick": 1320
+}, {
+"amount": 20,
+"tick": 1440
+}, {
+"amount": 20,
+"tick": 1560
+}])
+default_seed = 1

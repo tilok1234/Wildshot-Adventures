@@ -1,0 +1,22 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; STARHOOK rift fight (sl-0115): HOLLOW VOID, COMMON — the ring
+; twist (12 x 30, slower).
+
+[resource]
+script = ExtResource("1")
+id = &"rift_void_common"
+display_name = "STARHOOK: hollow void (common)"
+arena = "res://data/arena_rift.json"
+starhook_rift = true
+rift_pull = "res://data/rift_pull.tres"
+rift_biome = 1
+rift_rare = false
+player_spawn = Vector2(2.9, 6.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"rift_catch_void": PackedVector2Array(7.9, 6.5)
+}
+default_seed = 11

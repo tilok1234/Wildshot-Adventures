@@ -64,13 +64,55 @@
     "per_kill": { "green": 3, "dry": 11, "wet": 22, "snow": 38 }
   },
   "starhook": {
-    "note": "sl-0105 v1 [T]: the RIFTER = a fixed mini-class row on THIS frame (no new progression system - the legacy loop curve levels it); rods = attack-def data rows (the rod IS the rifter's class); one rift kit at two rarity steps; drops feed the MAIN economy; cosmetics via the variants machinery.",
+    "note": "sl-0105 v1; REBUILT sl-0115 (prototype #2 rules the shape, every number [T]): the RIFTER = the bait fighter, a fixed mini-class row on THIS frame (the legacy loop curve levels it); FOUR rods = attack-def data rows, starhook level gates use, R swaps; three biomes with named fish tables (fish persist PER-SPECIES - species-currency); ambient rifts spawn on land anywhere; the pull/line physics live in data/rift_pull.tres; drops feed the MAIN economy; cosmetics via the variants machinery.",
     "rifter": { "base_hp": 60, "hp_per_level": 8, "speed_tiles": 3.6 },
     "rods": [
       { "id": "rod_cane", "name": "Cane Rod", "unlock_level": 1 },
-      { "id": "rod_splitwillow", "name": "Splitwillow", "unlock_level": 3 }
+      { "id": "rod_splitwillow", "name": "Splitwillow", "unlock_level": 3 },
+      { "id": "rod_heavyline", "name": "Heavyline", "unlock_level": 5 },
+      { "id": "rod_twinreed", "name": "Twinreed", "unlock_level": 8 }
     ],
-    "catch_gold": { "common": [30, 60], "rare": [80, 150] }
+    "catch_gold": { "common": [30, 60], "rare": [80, 150] },
+    "biomes": [
+      {
+        "id": "nebula",
+        "name": "Nebula Drift",
+        "fish": [
+          { "id": "emberwisp_koi", "name": "Emberwisp Koi", "w": 45 },
+          { "id": "dustfin_drifter", "name": "Dustfin Drifter", "w": 35 },
+          { "id": "pulsar_gulper", "name": "Pulsar Gulper", "w": 20 }
+        ],
+        "rare": { "id": "novaback_leviathan", "name": "Novaback Leviathan" }
+      },
+      {
+        "id": "void",
+        "name": "Hollow Void",
+        "fish": [
+          { "id": "hollow_angler", "name": "Hollow Angler", "w": 45 },
+          { "id": "umbral_eel", "name": "Umbral Eel", "w": 35 },
+          { "id": "silence_carp", "name": "Silence Carp", "w": 20 }
+        ],
+        "rare": { "id": "event_horizon_maw", "name": "Event Horizon Maw" }
+      },
+      {
+        "id": "comet",
+        "name": "Comet Field",
+        "fish": [
+          { "id": "icetail_darter", "name": "Icetail Darter", "w": 45 },
+          { "id": "streakfin_herring", "name": "Streakfin Herring", "w": 35 },
+          { "id": "cinder_sprat", "name": "Cinder Sprat", "w": 20 }
+        ],
+        "rare": { "id": "harbinger_pike", "name": "Harbinger Pike" }
+      }
+    ],
+    "ambient": {
+      "interval_ticks": 900,
+      "chance_permille": 220,
+      "max_live": 3,
+      "min_node_dist": 8.0,
+      "ring_min": 10.0,
+      "ring_max": 22.0
+    }
   },
   "pairs": [
     { "up": "damage", "down": "defense" },

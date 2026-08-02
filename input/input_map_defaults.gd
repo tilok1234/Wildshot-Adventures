@@ -21,6 +21,11 @@ const KEY_ACTIONS := {
 	"weapon_1": KEY_1,
 	"weapon_2": KEY_2,
 	"weapon_3": KEY_3,
+	"weapon_4": KEY_4,
+	# sl-0115: R swaps rods in rift arenas (designer-ruled [T]) — the
+	# M3 replay dump moved to J to make room (no-F-row law holds; the
+	# hints line shows live bindings).
+	"rod_swap": KEY_R,
 	"pause_toggle": KEY_ESCAPE,
 	# Dev/utility defaults deliberately avoid the F-row — the dev
 	# machine's keyboard has no F1–F12 (designer constraint, recorded
@@ -33,7 +38,8 @@ const KEY_ACTIONS := {
 	"debug_speed_down": KEY_MINUS,
 	"debug_speed_up": KEY_EQUAL,
 	# M3 replay capture: dump the session recording to user://replays/.
-	"replay_save": KEY_R,
+	# (R -> J at sl-0115: R is the rod swap now, the designer's word.)
+	"replay_save": KEY_J,
 	# M3 options panel (remap UI).
 	"options_toggle": KEY_O,
 	# M3 GIF ring buffer dump.

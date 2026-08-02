@@ -17,6 +17,7 @@ const InputFrame := preload("res://sim/input_frame.gd")
 const Kinematics := preload("res://sim/systems/kinematics.gd")
 const PlayerMove := preload("res://sim/systems/player_move.gd")
 const ProjectileStep := preload("res://sim/systems/projectile_step.gd")
+const RiftStep := preload("res://sim/systems/rift_step.gd")
 const ActorState := preload("res://sim/actor_state.gd")
 const EnemyState := preload("res://sim/enemy_state.gd")
 const ProjectilePool := preload("res://sim/projectile_pool.gd")
@@ -65,6 +66,11 @@ const MARGIN := 0.12
 ## Threat-relevance filter radius (tiles): fastest shot in the game is
 ## 14 t/s (§3.3) + player 5.5 ceiling over the horizon, padded.
 const RELEVANT_R := 12.0
+## sl-0115: keep-out weight per tile of deep-edge penetration (rift
+## arenas). The deep strip drains the line, not the body — a
+## POSITIONING penalty like the anchor discs, never a survival threat
+## (CORE-33 dodge honesty stays about bullets).
+const DEEP_EDGE_W := 3.0
 
 ## The 8 legal frame directions, angle-ordered (index i = i * 45 deg).
 const DIR_X: Array[int] = [1, 1, 0, -1, -1, -1, 0, 1]
@@ -94,6 +100,15 @@ static func compute_frame(
 	# disc lives in a bitgrid-solid cell by construction, so this one
 	# check also arms exact slides wherever discs are reachable.
 	var reach: float = p.move_speed * HORIZON * world.DT + PlayerMove.TERRAIN_RADIUS + 0.1
+	# sl-0115: the pull carries the body further than legs alone —
+	# the wall-reach check must include it or slides arm too late.
+	if world.rift_pull != null:
+		reach += (
+			float(world.rift_pull.pull_tiles_per_sec)
+			* float(world.rift_pull.player_mult)
+			* HORIZON
+			* world.DT
+		)
 	var use_slide := not _clear_of_walls(world.bitgrid, p.pos, reach)
 	# Stationkeeping anchor: the CENTROID of nearby live enemies — packs
 	# are orbited as one cluster (a nearest-enemy anchor dragged the bot
@@ -145,6 +160,10 @@ static func compute_frame(
 		for z: Dictionary in zones:
 			var zpen := maxf(0.0, float(z.reach) - end_pos.distance_to(Vector2(z.pos)))
 			ring_score -= zpen * ANCHOR_W
+		# sl-0115: the deep strip strains the line — positioning stays
+		# out of it the way it stays out of anchor envelopes.
+		if world.rift_pull != null:
+			ring_score -= maxf(0.0, end_pos.x - RiftStep.deep_edge_x(world)) * DEEP_EDGE_W
 		var better := false
 		if survival > best_survival:
 			better = true
@@ -211,20 +230,28 @@ static func _score(
 		body_r.append(float(b.radius))
 	var survival := HORIZON + 1
 	var clearance := 1.0e18
+	# sl-0115: in a rift arena EVERY candidate drifts with the pull —
+	# including "stay" (a still body is not still; the prototype's
+	# shape). The same closed form the sim integrates (player_move).
+	var rift: bool = world.rift_pull != null
+	var pull_mult: float = float(world.rift_pull.player_mult) if rift else 0.0
 	for h in range(1, HORIZON + 1):
+		var step := Vector2.ZERO
 		if c > 0:
 			var d := _candidate_dir(c, t + h - 1)
 			var mv := Vector2(float(DIR_X[d]), float(DIR_Y[d]))
 			if mv.length_squared() > 1.0:
 				mv = mv.normalized()
+			step = mv * speed * dt
+		if rift:
+			step += RiftStep.pull_vec(world, t + h - 1) * pull_mult * dt
+		if step != Vector2.ZERO:
 			if use_slide:
 				# Walk with the locomotion radius (player_move parity);
 				# pr below stays the combat hurtbox for threat overlap.
-				pos = Kinematics.move_circle(
-					grid, pos, PlayerMove.TERRAIN_RADIUS, mv * speed * dt, discs
-				)
+				pos = Kinematics.move_circle(grid, pos, PlayerMove.TERRAIN_RADIUS, step, discs)
 			else:
-				pos += mv * speed * dt
+				pos += step
 		var step_positions: Array = proj_pos[h - 1]
 		for i in step_positions.size():
 			if proj_gone[i] < h:
@@ -383,10 +410,18 @@ static func _project_threats(world: RefCounted, p: RefCounted, reactive: bool) -
 	# dodges — loop_ring2's t436 clip found it).
 	var wgrid: RefCounted = world.walk_grid
 	var wdiscs: Dictionary = world.prop_discs
+	# sl-0115: hostile shots drift with the pull (×bullet_mult) — the
+	# projection integrates the same per-tick displacement the sim
+	# applies, or margins lie exactly at fit-rule scale.
+	var rift: bool = world.rift_pull != null
+	var bullet_mult: float = float(world.rift_pull.bullet_mult) if rift else 0.0
 	var proj_pos: Array = []
 	for h in range(1, HORIZON + 1):
 		var step: Array = []
 		step.resize(n)
+		var pull_step := Vector2.ZERO
+		if rift:
+			pull_step = RiftStep.pull_vec(world, t + h - 1) * bullet_mult * dt
 		for i in n:
 			var s := idx[i]
 			var age := float(t + h - st[s])
@@ -403,7 +438,7 @@ static func _project_threats(world: RefCounted, p: RefCounted, reactive: bool) -
 						v = Vector2(dx_[s], dy_[s]) * pb[s]
 					else:
 						v = Vector2(-dx_[s], -dy_[s]) * pc[s]
-			cur[i] = Vector2(cur[i]) + v * dt
+			cur[i] = Vector2(cur[i]) + v * dt + pull_step
 			step[i] = cur[i]
 			if proj_gone[i] >= h:
 				var q: Vector2 = cur[i]

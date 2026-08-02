@@ -37,7 +37,14 @@ static func run(world: RefCounted) -> void:
 		if frame.autofire_toggle_edge:
 			p.autofire_on = not p.autofire_on
 		if frame.weapon_select > 0 and frame.weapon_select <= weapons.size():
-			p.equipped_weapon = frame.weapon_select - 1
+			# sl-0115 rod gating: in a rift arena the loadout is the
+			# full rod ladder and starhook LEVEL gates use — a select
+			# of a locked rod is refused (kept current), so bot and
+			# replay streams stay deterministic whatever they emit.
+			var unlocks: PackedInt32Array = world.rift_rod_unlocks
+			var wi: int = frame.weapon_select - 1
+			if wi >= unlocks.size() or p.level >= unlocks[wi]:
+				p.equipped_weapon = wi
 		if weapons.is_empty():
 			continue
 		if frame.fire_held:

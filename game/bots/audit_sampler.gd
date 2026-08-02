@@ -11,7 +11,9 @@ const MOVE_Y: Array[int] = [0, 1, 1, 1, 0, -1, -1, -1]
 var _tick := 0
 
 
-func sample(_mouse_tile: Vector2, _player_pos: Vector2) -> InputFrame:
+func sample(
+	_mouse_tile: Vector2, _player_pos: Vector2, _equipped := 0, _rod_count := 0
+) -> InputFrame:
 	var f := InputFrame.new()
 	var leg := (_tick / 40) % 8
 	f.move_x = MOVE_X[leg]

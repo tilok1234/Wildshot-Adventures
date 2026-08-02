@@ -53,6 +53,71 @@ static func apply(
 			amount = StatFrame.taken(amount, a.armor)
 	a.hp -= amount
 	a.last_damaged_tick = t
+	# sl-0115 hit grace: a rift BULLET hit arms the short grace window
+	# (prototype i-frames, 60 t/s converted; drains never arm it — the
+	# clock is the clock). The snap branch below assigns its own longer
+	# grace over this.
+	if world.rift_pull != null and a.faction == ActorState.FACTION_FRIENDLY and hit_slot >= 0:
+		a.line_iframe_until = maxi(a.line_iframe_until, t + int(world.rift_pull.hit_iframe_ticks))
+	# THE LINE SNAPS (sl-0115): in a rift arena, a depleted stability
+	# pool burns one of the three lives instead of killing — the line
+	# re-spools full, a snap-grace window arms (bullets only; the
+	# drains never pause), and the fight continues. The THIRD snap
+	# falls through to the normal death path: the dive is lost.
+	if (
+		a.hp <= 0
+		and a.faction == ActorState.FACTION_FRIENDLY
+		and not a.dead
+		and world.rift_pull != null
+		and a.line_lives > 1
+	):
+		a.line_lives -= 1
+		a.hp = a.max_hp
+		a.line_drain_acc = 0
+		a.line_iframe_until = t + int(world.rift_pull.snap_grace_ticks)
+		(
+			events
+			. append(
+				{
+					"type": SimEvents.Type.LINE_SNAPPED,
+					"tick": t,
+					"player": a.id,
+					"lives_left": a.line_lives,
+					"pattern": pattern,
+					"pos": a.pos,
+				}
+			)
+		)
+		if hit_slot >= 0:
+			(
+				events
+				. append(
+					{
+						"type": SimEvents.Type.HIT_LANDED,
+						"tick": t,
+						"slot": hit_slot,
+						"target": a.id,
+						"damage": amount,
+						"pattern": pattern,
+						"pos": a.pos,
+					}
+				)
+			)
+		(
+			events
+			. append(
+				{
+					"type": SimEvents.Type.DAMAGE_APPLIED,
+					"tick": t,
+					"target": a.id,
+					"amount": amount,
+					"hp": a.hp,
+					"pattern": pattern,
+					"pos": a.pos,
+				}
+			)
+		)
+		return
 	# Player death. Persistent worlds (CORE-43, slice seam 3): the
 	# gold cost lands IN-SIM at the death tick ([T] percentage of
 	# CARRIED gold, progression data) and the settlement respawn
@@ -159,6 +224,57 @@ static func _award_kill(world: RefCounted, e: RefCounted) -> void:
 		for p: RefCounted in world.players:
 			Progress.award_xp(world, p, xp)
 	var rng: RefCounted = world.rng_loot
+	# STARHOOK v2 (sl-0115) — THE WIN IS PURELY THE KILL: in a rift
+	# arena the catch's pay BANKS directly (no ground drops — the dive
+	# ends on the kill; correction #7, the reel is cut). Draw order is
+	# fixed: gold, uniques (both the def's own rolls), then the FISH
+	# from the biome's table (weighted commons; the rare rarity always
+	# lands the biome's rare species). Species persist per-species at
+	# harvest — fish are species-currency (deck tap shk2ctch).
+	if world.rift_pull != null:
+		if int(def.gold_max) > 0:
+			var pot: int = (
+				int(def.gold_min) + rng.next_bounded(int(def.gold_max) - int(def.gold_min) + 1)
+			)
+			for p: RefCounted in world.players:
+				p.gold += pot
+		var runiques: Array = def.unique_drops
+		for rui in runiques.size():
+			if rng.next_unit() < float(def.unique_chances[rui]):
+				var ridx: int = world.unique_defs.find(runiques[rui])
+				if ridx >= 0:
+					for p: RefCounted in world.players:
+						p.unique_mask |= 1 << ridx
+		var fish := 3
+		if not world.rift_rare:
+			var biomes: Array = world.stat_frame.get("starhook", {}).get("biomes", [])
+			fish = 0
+			if world.rift_biome < biomes.size():
+				var table: Array = biomes[world.rift_biome].get("fish", [])
+				var roll: int = rng.next_bounded(100)
+				var acc := 0
+				for fi in table.size():
+					acc += int(table[fi].get("w", 0))
+					if roll < acc:
+						fish = fi
+						break
+		var catch := {"biome": world.rift_biome, "fish": fish, "rare": world.rift_rare}
+		world.rift_catches.append(catch)
+		(
+			world
+			. events
+			. append(
+				{
+					"type": SimEvents.Type.CATCH_LANDED,
+					"tick": world.tick,
+					"biome": world.rift_biome,
+					"fish": fish,
+					"rare": world.rift_rare,
+					"pos": e.pos,
+				}
+			)
+		)
+		return
 	if int(def.gold_max) > 0:
 		var amt: int = (
 			int(def.gold_min) + rng.next_bounded(int(def.gold_max) - int(def.gold_min) + 1)

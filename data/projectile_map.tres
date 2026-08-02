@@ -13,6 +13,8 @@ shots = {
 6: "friendly-wheel-ring",
 7: "friendly-bolt",
 8: "friendly-pellet",
+9: "friendly-bolt",
+29: "friendly-pellet",
 10: "hostile-orb:d8-red",
 11: "hostile-orb:d10-cyan",
 12: "hostile-orb:d10-violet",

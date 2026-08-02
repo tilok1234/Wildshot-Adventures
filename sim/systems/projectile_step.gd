@@ -20,6 +20,7 @@ const ActorState := preload("res://sim/actor_state.gd")
 const SimEvents := preload("res://sim/events.gd")
 const ProjectilePool := preload("res://sim/projectile_pool.gd")
 const Damage := preload("res://sim/systems/damage.gd")
+const RiftStep := preload("res://sim/systems/rift_step.gd")
 
 const REG_SLOTS := ProjectilePool.REG_SLOTS
 
@@ -63,6 +64,15 @@ static func run(world: RefCounted) -> void:
 	var enemies: Array = world.enemies
 	var events: Array[Dictionary] = world.events
 	var capacity: int = pool.CAPACITY
+	# sl-0115: in a rift arena HOSTILE shots bend slightly with the
+	# current (×0.15) — a per-tick displacement on top of the pure
+	# motion program (velocity stays program-owned; DodgeBot's
+	# projection integrates the same closed form). Friendly bolts fly
+	# true: the player's aim is never perturbed (CORE-32).
+	var rift_pull_step := Vector2.ZERO
+	var rift_world: bool = world.rift_pull != null
+	if rift_world:
+		rift_pull_step = (RiftStep.pull_vec(world, t) * float(world.rift_pull.bullet_mult) * dt)
 
 	for s in capacity:
 		if act[s] == 0:
@@ -108,6 +118,9 @@ static func run(world: RefCounted) -> void:
 
 		var x := px[s] + vx[s] * dt
 		var y := py[s] + vy[s] * dt
+		if rift_world and fac[s] == ActorState.FACTION_HOSTILE:
+			x += rift_pull_step.x
+			y += rift_pull_step.y
 		px[s] = x
 		py[s] = y
 		var r := rad[s]
@@ -141,6 +154,16 @@ static func run(world: RefCounted) -> void:
 			# Non-pierce: first overlap damages and despawns.
 			for a: RefCounted in targets:
 				if a.dead:
+					continue
+				# sl-0115 hit grace: in a rift arena a just-hit (or
+				# just-snapped) line ignores bullets for the grace
+				# window — the shot passes through, prototype-exact.
+				# Friendly targets only; the drains never pause.
+				if (
+					rift_world
+					and a.faction == ActorState.FACTION_FRIENDLY
+					and t < a.line_iframe_until
+				):
 					continue
 				var apos: Vector2 = a.pos
 				var ddx := x - apos.x
@@ -196,6 +219,14 @@ static func _step_pierce(
 	var overlapped: Array[int] = []
 	for a: RefCounted in targets:
 		if a.dead:
+			continue
+		# sl-0115 hit grace (rift arenas, friendly targets) — the same
+		# skip as the non-pierce path, one rule everywhere.
+		if (
+			world.rift_pull != null
+			and a.faction == ActorState.FACTION_FRIENDLY
+			and t < a.line_iframe_until
+		):
 			continue
 		var apos: Vector2 = a.pos
 		var ddx := x - apos.x

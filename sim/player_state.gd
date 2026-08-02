@@ -82,6 +82,16 @@ var quest_progress_arr: PackedInt32Array = PackedInt32Array()
 ## far away). Casting needs no rearm — node consumption covers it.
 var gather_still_ticks: int = 0
 var gather_rearm: Vector2 = Vector2(-1000000.0, -1000000.0)
+## STARHOOK v2 (sl-0115, SERIAL 22) — THE LINE. Only read where
+## SimWorld.rift_pull is attached (rift arenas); zero elsewhere by
+## construction. line_lives = snaps remaining before the dive is lost
+## (set from the pull def at scenario build); line_drain_acc = the
+## integer drain accumulator (1/600 hp units — rift_step.gd);
+## line_iframe_until = post-hit/post-snap grace (bullets only, the
+## drains never pause).
+var line_lives: int = 0
+var line_drain_acc: int = 0
+var line_iframe_until: int = -1000000
 
 
 func serialize_into(buf: StreamPeerBuffer) -> void:
@@ -116,3 +126,6 @@ func serialize_into(buf: StreamPeerBuffer) -> void:
 	buf.put_u16(gather_still_ticks)
 	buf.put_float(gather_rearm.x)
 	buf.put_float(gather_rearm.y)
+	buf.put_u8(line_lives)
+	buf.put_u16(line_drain_acc)
+	buf.put_64(line_iframe_until)

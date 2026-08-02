@@ -1,0 +1,25 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; STARHOOK rift fight (sl-0115): NEBULA DRIFT, COMMON. Entered by an
+; instant cast (interact at a rift on land); the world-side portal
+; shows the biome. The exit door at the mouth (1,6) is the FLEE path;
+; the WIN ends the dive on the kill (no reel — correction #7). Three
+; snaps = dive lost, wake at the shore (never a character death).
+
+[resource]
+script = ExtResource("1")
+id = &"rift_nebula_common"
+display_name = "STARHOOK: nebula drift (common)"
+arena = "res://data/arena_rift.json"
+starhook_rift = true
+rift_pull = "res://data/rift_pull.tres"
+rift_biome = 0
+rift_rare = false
+player_spawn = Vector2(2.9, 6.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"rift_catch": PackedVector2Array(7.9, 6.5)
+}
+default_seed = 11

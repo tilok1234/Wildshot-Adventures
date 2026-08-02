@@ -110,6 +110,10 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 		load("res://data/enemies/king_grubb.tres"),
 		load("res://data/enemies/rift_catch.tres"),
 		load("res://data/enemies/rift_catch_rare.tres"),
+		load("res://data/enemies/rift_catch_void.tres"),
+		load("res://data/enemies/rift_catch_void_rare.tres"),
+		load("res://data/enemies/rift_catch_comet.tres"),
+		load("res://data/enemies/rift_catch_comet_rare.tres"),
 	]
 	for extra: Resource in scenario.extra_enemy_defs:
 		defs.append(extra)
@@ -169,12 +173,84 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 	# byte-identical collision by construction. No-op when packless.
 	PropColliders.attach(world, scenario)
 	# S1 seam 6: the forage mask (pack worlds only — WYSIWYG species
-	# cells) + the scenario's authored rift nodes (sl-0105).
+	# cells) + the scenario's authored rift nodes (sl-0105; biomes
+	# ride parallel since sl-0115).
 	if not String(scenario.worldforge_pack).is_empty():
 		var gathered := GatherGrids.derive(
 			ContentImporter.resolve_src(String(scenario.worldforge_pack))
 		)
 		if bool(gathered.ok):
 			world.set_forage_grid(gathered.forage)
-	world.set_rift_nodes(scenario.rift_nodes)
+	world.set_rift_nodes(scenario.rift_nodes, scenario.rift_node_biomes)
+	world.rift_ambient = bool(scenario.rift_ambient)
+	# STARHOOK v2 (sl-0115): rift-fight scenarios attach the pull/line
+	# physics + the FULL ROD LADDER (level-gated in player_fire) here,
+	# in the ONE construction path — bot, replay, and profile-free
+	# runs fight the same fight by construction. Loud refusals: a rift
+	# scenario with a broken pull def or a malformed biome table must
+	# never build a quietly wrong arena.
+	if bool(scenario.starhook_rift):
+		var pull: Resource = null
+		if not String(scenario.rift_pull).is_empty():
+			pull = load(String(scenario.rift_pull))
+		if pull == null or int(pull.lives) < 1 or float(pull.pull_tiles_per_sec) < 0.0:
+			push_error(
+				(
+					"scenario '%s': rift_pull missing or malformed (%s) — REFUSED"
+					% [String(scenario.id), String(scenario.rift_pull)]
+				)
+			)
+			return world
+		var sh: Dictionary = world.stat_frame.get("starhook", {})
+		var rods: Array = sh.get("rods", [])
+		var biomes: Array = sh.get("biomes", [])
+		if rods.is_empty() or not _biomes_valid(biomes):
+			push_error(
+				(
+					"scenario '%s': starhook rods/biomes table malformed — REFUSED"
+					% String(scenario.id)
+				)
+			)
+			return world
+		var rod_frames: Array = []
+		var unlocks := PackedInt32Array()
+		for rod: Dictionary in rods:
+			var rod_path := "res://data/weapons/%s.tres" % String(rod.get("id", ""))
+			var rf: Resource = load(rod_path)
+			if rf == null:
+				push_error("scenario '%s': rod frame missing: %s" % [String(scenario.id), rod_path])
+				return world
+			rod_frames.append(rf)
+			unlocks.append(int(rod.get("unlock_level", 99)))
+		world.set_weapons(rod_frames)
+		for p: RefCounted in world.players:
+			p.weapon_tiers = PackedInt32Array()
+			p.weapon_tiers.resize(rod_frames.size())
+			p.weapon_tiers.fill(1)
+		world.set_rift_config(pull, int(scenario.rift_biome), bool(scenario.rift_rare), unlocks)
 	return world
+
+
+## The biome-table shape the sim trusts (damage.gd fish draw): three
+## biomes, each with exactly three weighted commons summing 100 and a
+## named rare. Anything else is a refusal at build time.
+static func _biomes_valid(biomes: Array) -> bool:
+	if biomes.size() != 3:
+		return false
+	for b: Variant in biomes:
+		if not b is Dictionary:
+			return false
+		var fish: Array = (b as Dictionary).get("fish", [])
+		if fish.size() != 3:
+			return false
+		var total := 0
+		for f: Variant in fish:
+			if not f is Dictionary or String((f as Dictionary).get("id", "")).is_empty():
+				return false
+			total += int((f as Dictionary).get("w", 0))
+		if total != 100:
+			return false
+		var rare: Dictionary = (b as Dictionary).get("rare", {})
+		if String(rare.get("id", "")).is_empty():
+			return false
+	return true

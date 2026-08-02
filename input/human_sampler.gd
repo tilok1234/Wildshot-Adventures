@@ -19,12 +19,18 @@ var suppress := false
 var _prev_autofire := false
 var _prev_ability := false
 var _prev_interact := false
+var _prev_rod_swap := false
 var _last_aim := Vector2.RIGHT
 
 
 ## mouse_tile: mouse position in world TILE coordinates (view converts);
 ## player_pos: the sampled player's sim position, tiles.
-func sample(mouse_tile: Vector2, player_pos: Vector2) -> InputFrame:
+## equipped/rod_count (sl-0115): the live rod slot + how many rods the
+## rifter's LEVEL has unlocked — the R edge emits weapon_select as the
+## next unlocked slot, riding the byte the stream always carried (zero
+## format change; the sim gate in player_fire stays the authority).
+## rod_count 0 = not a rift world; R is inert.
+func sample(mouse_tile: Vector2, player_pos: Vector2, equipped := 0, rod_count := 0) -> InputFrame:
 	if suppress:
 		var nf := InputFrame.new()
 		nf.normalized = true
@@ -34,6 +40,7 @@ func sample(mouse_tile: Vector2, player_pos: Vector2) -> InputFrame:
 		_prev_autofire = Input.is_action_pressed("autofire_toggle")
 		_prev_ability = Input.is_action_pressed("ability")
 		_prev_interact = Input.is_action_pressed("interact")
+		_prev_rod_swap = Input.is_action_pressed("rod_swap")
 		return nf
 	var f := InputFrame.new()
 	f.move_x = (
@@ -62,7 +69,11 @@ func sample(mouse_tile: Vector2, player_pos: Vector2) -> InputFrame:
 	var ia := Input.is_action_pressed("interact")
 	f.interact_pressed = ia and not _prev_interact
 	_prev_interact = ia
-	for i in 3:
+	for i in 4:
 		if Input.is_action_pressed("weapon_%d" % (i + 1)):
 			f.weapon_select = i + 1
+	var rs := Input.is_action_pressed("rod_swap")
+	if rs and not _prev_rod_swap and rod_count > 0:
+		f.weapon_select = (equipped + 1) % rod_count + 1
+	_prev_rod_swap = rs
 	return f

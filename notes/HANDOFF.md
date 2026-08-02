@@ -1,4 +1,4 @@
-# Session Handoff — rewritten 2026-08-02 (~12:15, post-S1 + the UI/interaction family)
+# Session Handoff — rewritten 2026-08-02 (~12:15, post-S1 + the UI/interaction family; STARHOOK v2 merged ~15:30, sl-0115)
 
 **COLD START — this handoff assumes NO prior context.** Read the game
 repo's `CLAUDE.md` first (auto-loads; BINDING contract + the
@@ -8,17 +8,23 @@ carries the current session state and the hard-won lessons the
 contract doesn't. The account-switch note from the previous handoff
 stands: nothing repo-side gates on the Claude account; git identity
 and gh auth are machine-local; this file + `CLAUDE.md` + planning
-`docs/23` are the complete context carrier.
+`docs/23` are the complete context carrier. (Serialization is
+SERIAL 22 since sl-0115 — the line's lives/drain/grace + ambient
+rifts + landed catches; WSR stays VERSION 2, rod swap rides the
+recorded weapon_select byte.)
 
-**STANDING HOLDS (sl-0113, the designer's word): sl-0110 (the
-STARHOOK SOUL seam — undertow/reel/dual-win/galaxy identity) and
-sl-0111 (water fishing base) are ON HOLD until the designer's
-prototype #2 lands ("so we get it correct"). The canonical spec in
-planning `notes/2026-08-02-starhook-idea.md` is LAW meanwhile; spend
-ZERO time on the built rift v1. When the prototype sings, its clip +
-the canonical paragraph route into the revived sl-0110 as law
-(reference-media-is-law).** New work starts only on its own routing;
-until then: intakes, feel one-liners, tuning batches, whatever the
+**THE HOLDS RESOLVED (sl-0115, 2026-08-02): the designer's prototype
+#2 landed and the STARHOOK SOUL seam is MERGED — read planning
+`notes/reference/starhook-proto2/INDEX.md` FIRST if touching
+starhook (its corrections block is law: no coined name for the
+arena part, the bait fighter is the star, the reel is CUT, rifts
+have nothing to do with water). sl-0111 (water fishing) is PARKED
+by the designer's word — revive only on their say. NEXT-AFTER-SOUL
+by ruling: the GEAR SEAM (rods + very simple equipment DROPPING
+from starhook bosses, level-gated) — routed when the designer says
+go. Every starhook number is [T]; the designer's refinement rounds
+own the feel.** New work starts only on its own routing; until
+then: intakes, feel one-liners, tuning batches, whatever the
 designer asks.
 
 ## §0 What this project is (60 seconds)
@@ -116,20 +122,35 @@ planning `notes/sessions/2026-08-02-slice-s1.md`):**
 5. **Quests v1** (seam 5) — then RE-PINNED by the interact era (see
    below): five Green quests with reason tags (`data/quests/*.tres`),
    giver turn-in, kill/collect/visit counting.
-6. **STARHOOK v1** (seam 6, sl-0105 — replaced fishing; the
-   designer's invention): rift-fight fishing. Cast = 120-tick
-   stillness at an active rift node (12 on the slice) →
-   world-vignette into the committed rift instance (ONE SIM — the
-   world pauses; split-screen is presentation: 15×12 arena = exactly
-   the left 3/4 of the 640×360 base viewport, world sliver static
-   capture right); RIFTER = fixed mini-class on the stat frame
-   (legacy lane, balance_frame.starhook block, own loop XP); two
-   RODS as attack-def rows (cane; splitwillow unlocks at rifter 3);
-   ONE rift kit at TWO rarity steps (common 260 hp / rare 420 on
-   the boss recipe — hooked-fish law: P3 KEEP_RANGE, no chaser in a
-   one-room arena); drops feed the MAIN economy + the starlit skin
-   variant. Foraging v1 rode the seam (90-tick gather, b77 census).
-   **Line-snap = never harvest; no hardcore stake in the rift.**
+6. **STARHOOK v2** (seam 6 sl-0105, REBUILT by sl-0115 — the
+   designer's prototype #2 rules the shape; INDEX corrections =
+   law): CAST IS INSTANT (interact at a land portal — the cast IS
+   the aggro); 50/50 split (world capture LEFT with the line INTO
+   the world rift; the galaxy RIGHT under a FIXED camera — the
+   12×13 arena's 10×11 interior fills the pane 1:1, Law 1 by
+   construction); THE PULL (data/rift_pull.tres: 1.35 t/s ±25°
+   ~26 s osc; player ×1.0 / catch ×0.3 / hostile shots ×0.15 —
+   friendly bolts fly true); LINE STABILITY = HP with THREE hard
+   LIVES (drains through THE damage path pattern -5: passive
+   0.4/s + deep-edge 2.2/s in the 0.8 t strip; snap = life + full
+   re-spool + grace; third snap = dive lost; 30 t hit grace blocks
+   bullets only; drains never count as proof hits); WIN = THE KILL
+   (reel cut): gold banks directly, the biome FISH draws
+   (rng_loot), auto-exit after 150 t (mouth door = flee); fish
+   persist PER-SPECIES (starhook_fish{}); THREE BIOMES as
+   pattern-variant .tres (void ring 12×30 @3.4 / comet spray 6.3 +
+   dart cd ×0.8; same ids, same leads) → defs 26-29 + six
+   rift_<biome>_<rarity> scenarios; FOUR RODS (unlocks 1/3/5/8
+   [T]; patterns 9/29; Heavyline hitstop/shake REFUSED per
+   CORE-32), R swaps via the recorded weapon_select byte
+   (replay_save moved R→J); AMBIENT RIFTS on the slice (rng_misc's
+   first consumer, starhook.ambient [T]); the BAIT FIGHTER micro
+   sprite + the star-fish pixel map render the arena
+   (rift_view/rift_nodes_view/rift_world_pane); overworld portals
+   finally RENDER with biomes + the [F] prompt. RIFTER = fixed
+   mini-class on the stat frame (legacy lane, own loop XP).
+   Foraging v1 rode seam 6 unchanged (90-tick gather, b77 census).
+   **Three snaps = never harvest; no hardcore stake in the rift.**
 7. **THE UI/INTERACTION FAMILY (sl-0113 = sl-0112 + sl-0106 +
    sl-0109; seams A/B — DELIBERATE RE-PINS of two ruled
    languages):** the INTERACT verb (**F**; WSR **VERSION 2**,
@@ -149,9 +170,9 @@ planning `notes/sessions/2026-08-02-slice-s1.md`):**
    behind an options toggle; windowed evidence committed
    (hud_relayout/character_sheet/rift_split/loot_label audit PNGs).
 
-**STANDING HOLDS: sl-0110 (starhook soul) + sl-0111 (water fishing)
-— the designer is building prototype #2; the canonical spec is LAW;
-zero time on the built rift until the clip lands.**
+**HOLDS RESOLVED at sl-0115 (the soul merged; water fishing PARKED
+by correction #3). The GEAR SEAM is next-after-soul, on its own
+routing.**
 
 - **Game repo (you are here):** `C:\Users\headc\Documents\Wildshot-Adventures`,
   branch `main`. Implements; never reinterprets design.
@@ -215,19 +236,19 @@ clean seam.
   recordings are BIG (~80 MB/30 s) — cut posting-size versions with
   ffmpeg fps/scale filters on request.
 
-## §1 Where things stand (2026-08-02 ~12:15)
+## §1 Where things stand (2026-08-02 ~15:30)
 
-**M0–M8 + S0 + S1 engineering complete.** The one-command ship gate
-`tools/pretester_check.ps1` runs ALL GREEN in **~13 min** since the
-battery went parallel (**30 fixed steps + the 79-run two-lane
-battery byte-identical + export both artifacts + lockdown probe**);
-it last ran ALL GREEN at the UI/interaction-family seam close
-(2026-08-02). No deferred-gate debt stands. Artifacts on disk are
-current-era: balance_frame.json + the content pack ride the export.
+**M0–M8 + S0 + S1 engineering complete; STARHOOK v2 merged
+(sl-0115).** The one-command ship gate `tools/pretester_check.ps1`
+runs ALL GREEN (**30 fixed steps + the two-lane battery — 43 rows /
+83 runs since sl-0115 — byte-identical + export both artifacts +
+lockdown probe**); the sl-0115 close is the latest full run. No
+deferred-gate debt stands. Artifacts on disk are current-era:
+balance_frame.json + the content pack ride the export.
 
 The designer is LIVING IN GREEN — that IS the chapter gate (and the
-docs/19 bar clock). Their prototype #2 (starhook soul) is being
-built on their side; sl-0110/0111 are HELD for it.
+docs/19 bar clock). Their prototype #2 landed and IS the built
+starhook now; the refinement rounds are theirs.
 
 ## §2 Open — designer-side (do not nag; the deck + planning carry these)
 
@@ -237,13 +258,19 @@ built on their side; sl-0110/0111 are HELD for it.
   pack sizes / respawn pace / quest cap / key choices F+C / HUD
   layout / anything) — BATCH tuning numbers into single gate runs.
   Every S1 rate/key/layout is [T].
-- **PROTOTYPE #2** (starhook soul) — when it sings, the clip + the
-  canonical paragraph route into the revived sl-0110 as law.
+- **STARHOOK REFINEMENT ROUNDS** (sl-0115 — every number [T]): the
+  instant cast feel, the pull strength/oscillation, drain rates,
+  the three lives, rod cadences + unlock levels, ambient cadence,
+  biome twists, the bait fighter's size, the split look at both
+  scales (evidence PNGs committed), fish names on the toasts.
+- **THE GEAR SEAM GO WORD** (next-after-soul by correction #5):
+  rods + very simple equipment dropping from starhook bosses,
+  level-gated.
 - **THE S2 GO WORD** — next chapter starts only on its own routing.
 - New surfaces to judge when they feel like it: the NPC crowd
   (sl-0089 watch-items: named-vs-villager blur, dark-outfit dusk
   contrast), class creation screen + emblems, weapon tier glyph,
-  character sheet, quest log lines, the rift split-screen.
+  character sheet, quest log lines, the new galaxy view.
 - Weekly GIF (fresh material everywhere — Green packs, Old Tusk,
   the Warren, the rift).
 - Standing: rested ratification stack (M2 formal close, six
@@ -254,10 +281,11 @@ built on their side; sl-0110/0111 are HELD for it.
 
 ## §3 Open — engineering
 
-- **NOTHING ROUTED.** S1 stopped at its stop line; sl-0110/0111 are
-  HELD (zero time on the built rift until the prototype clip
-  lands); S2 needs its own word. Until then: intakes, feel
-  one-liners, tuning batches, whatever the designer asks.
+- **NOTHING ROUTED.** S1 stopped at its stop line; sl-0115 (the
+  starhook soul) is MERGED; sl-0111 (water fishing) is PARKED by
+  the designer's word; the GEAR SEAM waits for its routing; S2
+  needs its own word. Until then: intakes, feel one-liners, tuning
+  batches, whatever the designer asks.
 - **World interactables** (signs / POI plaques / villager
   one-liners) hang off the interact verb INCREMENTALLY [T] as
   content wants them — each is a small routed-or-asked addition,
@@ -364,8 +392,10 @@ Before every commit, per touched area:
 | proof_old_tusk (S1 seam 3: 480-hp paced schedule — P2 @t910, P3 @t1820, kill t2600; charger/rage/mire kit through both transitions) | 1,2,3 | 3600 | PASS / PASS |
 | proof_warren (S1 seam 4: the Warren's opening pull — entrance pack + everything whose aggro reaches through the rock, tight corridors) | 1,2,3 | 3600 | PASS / PASS |
 | proof_king_grubb (S1 seam 4: 420-hp schedule in the throne room with the court alive — P2 @t960, P3 @t1800, kill t2520) | 1,2,3 | 3600 | PASS / PASS |
-| proof_rift_catch (S1 seam 6, sl-0105: the STARHOOK catch, 260-hp schedule in the 15×12 rift — P2 ~t600, P3 ~t1080, kill t1560; near 0.121) | 1,2,3 | 3600 | PASS / PASS |
-| proof_rift_catch_rare (S1 seam 6: the denser rarity step, 420 hp at the leveled-rifter pace, kill t1540; near 0.120–0.122 — NO pin: the hooked-fish law (P3 keep-range, no chaser phase in a one-room arena) cleared all four lanes) | 1,2,3 | 3600 | PASS / PASS |
+| proof_rift_catch (sl-0115 re-baseline: the nebula catch, 260-hp schedule in the NEW 12×13 arena with THE PULL + drains + lives aboard — P2 ~t600, P3 ~t1080, kill t1560; near 0.120–0.122; drain damage NEVER counts as hits) | 1,2,3 | 3600 | PASS / PASS |
+| proof_rift_catch_rare (sl-0115 re-baseline: the denser rarity step, 420 hp at the leveled-rifter pace; near 0.120 both lanes) | 1,2,3 | 3600 | PASS / PASS |
+| proof_rift_void (sl-0115 NEW: the void ring twist 12×30 @3.4 — a biome twist changes dodge geometry, so it earns a row; near 0.120–0.121) | 1,2,3 | 3600 | PASS / PASS |
+| proof_rift_comet (sl-0115 NEW: comet spray 6.3 t/s + dart cd ×0.8; floor near 0.079 — the tightest rift margin, honest tier-3-watch class; cap 0.120) | 1,2,3 | 3600 | PASS / PASS |
 | proof_slice_leash (S0 seam 2: the isolated camp at seed 98,225 — spawn INSIDE its envelope, exactly one site wakes; RE-BASELINED at S1 seam 1: the re-table made it the ranged Green set at density 1.5, margins 1.975 → ~0.120, honest) | 1,2,3 | 3600 | PASS / PASS |
 | proof_green_camp (S1 seam 1: the most isolated MIXED green territory, seed 185,244 — the full melee+ranged re-table at density, near ~0.90) | 1,2,3 | 3600 | PASS / PASS |
 | proof_green_ranged (S1 seam 1: the most isolated green territory of all, seed 108,138, prowler-only → the PURE ranged set: anchors+flanker+aimed, near ~0.121) | 1,2,3 | 3600 | PASS / PASS |
@@ -581,6 +611,15 @@ names; cap runs use --speed=4.14 + an explicit --out=..._cap115.json).
     edits, which had to be redone. Name kill filters tightly
     (`--script <exact path>` + not-my-PID), and after ANY kill,
     verify your just-made edits actually landed before proceeding.
+35. **`$LASTEXITCODE` LIES in ad-hoc PowerShell gate loops** (the
+    sl-0115 scare): a `foreach` over godot test runs with `*> $null`
+    reported ALL NINE green gates as FAIL — and in a fresh wrapper
+    shell `$LASTEXITCODE` after `&` came back EMPTY. The pretester's
+    own carefully-built steps are unaffected, but never trust an
+    improvised ps1 loop's exit codes: use Git Bash for quick gate
+    sweeps (`cmd && echo pass || echo FAIL($?)`) or the pretester
+    itself. Diagnose a surprising all-red by re-running ONE test
+    with output visible before touching any code.
 
 ## Ledger + scope
 
@@ -594,10 +633,11 @@ exits. The scope tripwire is **SLICE V0.1** (sl-0098 — the world is
 the test): slice work flows from designer direction under
 talk-before-build via planning docs/23; anything outside the slice
 bill's needs is refused and ledgered or flagged to planning. **S1
-IS COMPLETE (sl-0104 + sl-0105 + the sl-0113 UI/interaction family,
-all sealed seams, 2026-08-02)** — the chapter gate is the designer
-LIVING in Green; **S2 does not start without its own routing**;
-sl-0110/0111 are HELD for the designer's prototype #2 (canonical
-spec is law meanwhile; zero time on the built rift). The
-tester-build export pipeline + lockdown stay a STANDING GATE (green
-at the 2026-08-02 full gates; no standing debt).
+IS COMPLETE (sl-0104 + sl-0105 + the sl-0113 UI/interaction family
++ the sl-0115 STARHOOK v2 merge, all sealed seams, 2026-08-02)** —
+the chapter gate is the designer LIVING in Green; **S2 does not
+start without its own routing**; sl-0111 (water fishing) is PARKED
+by the designer's word; the GEAR SEAM (correction #5) waits for
+its routing. The tester-build export pipeline + lockdown stay a
+STANDING GATE (green at the 2026-08-02 full gates; no standing
+debt).

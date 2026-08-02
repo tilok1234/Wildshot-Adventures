@@ -1,0 +1,110 @@
+[gd_resource type="Resource" load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://data/enemy_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/emitter_slot.gd" id="2"]
+[ext_resource type="Script" path="res://data/phase_def.gd" id="3"]
+[ext_resource type="Script" path="res://data/phase_list.gd" id="4"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/star_spray.tres" id="5"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/rift_ring_void.tres" id="6"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/star_dart.tres" id="7"]
+
+; HOLLOW VOID catch, COMMON (sl-0115): the ONE rift kit with the
+; void's ring twist — 12 shots x 30 at 3.4 t/s (rift_ring_void, same
+; pattern id 27, same lead 36). Everything else byte-matches
+; rift_catch.tres: the kit STANDS; biomes are pattern-parameter
+; twists only (HANDOFF §5).
+
+[sub_resource type="Resource" id="p1_spray"]
+script = ExtResource("2")
+pattern = ExtResource("5")
+trigger_range = 9.0
+telegraph_ticks = 24
+cooldown_ticks = 96
+recover_ticks = 16
+
+[sub_resource type="Resource" id="p2_spray"]
+script = ExtResource("2")
+pattern = ExtResource("5")
+trigger_range = 9.0
+telegraph_ticks = 24
+cooldown_ticks = 84
+recover_ticks = 14
+
+[sub_resource type="Resource" id="p2_ring"]
+script = ExtResource("2")
+pattern = ExtResource("6")
+trigger_range = 8.0
+telegraph_ticks = 36
+cooldown_ticks = 168
+recover_ticks = 20
+
+[sub_resource type="Resource" id="p3_spray"]
+script = ExtResource("2")
+pattern = ExtResource("5")
+trigger_range = 9.0
+telegraph_ticks = 24
+cooldown_ticks = 72
+recover_ticks = 12
+
+[sub_resource type="Resource" id="p3_dart"]
+script = ExtResource("2")
+pattern = ExtResource("7")
+trigger_range = 11.0
+telegraph_ticks = 40
+cooldown_ticks = 150
+recover_ticks = 18
+
+[sub_resource type="Resource" id="phase1"]
+script = ExtResource("3")
+id = &"p1_drift"
+hp_floor_pct = 66.0
+movement_policy = 1
+move_speed = -1.0
+range_min = 4.0
+range_max = 6.0
+entry_cooldown_ticks = 0
+emitters = Array[Resource]([SubResource("p1_spray")])
+
+[sub_resource type="Resource" id="phase2"]
+script = ExtResource("3")
+id = &"p2_coil"
+hp_floor_pct = 33.0
+movement_policy = 1
+move_speed = -1.0
+range_min = 4.0
+range_max = 6.0
+entry_cooldown_ticks = 30
+emitters = Array[Resource]([SubResource("p2_spray"), SubResource("p2_ring")])
+
+[sub_resource type="Resource" id="phase3"]
+script = ExtResource("3")
+id = &"p3_thrash"
+hp_floor_pct = 0.0
+movement_policy = 1
+move_speed = -1.0
+range_min = 4.0
+range_max = 6.0
+entry_cooldown_ticks = 30
+emitters = Array[Resource]([SubResource("p3_spray"), SubResource("p3_dart")])
+
+[sub_resource type="Resource" id="phaselist"]
+script = ExtResource("4")
+phases = Array[Resource]([SubResource("phase1"), SubResource("phase2"), SubResource("phase3")])
+
+[resource]
+script = ExtResource("1")
+id = &"rift_catch_void"
+display_name = "Rift Catch"
+hp = 260
+body_radius = 0.5
+move_speed = 2.2
+contact_damage = 0
+contact_cooldown_ticks = 30
+aggro_range = 14.0
+movement_policy = 1
+range_min = 4.0
+range_max = 6.0
+phases = SubResource("phaselist")
+xp_value = 60
+gold_min = 30
+gold_max = 60

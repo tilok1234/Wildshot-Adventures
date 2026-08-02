@@ -59,6 +59,7 @@ static func create(hardcore: bool, cls := "bow") -> Dictionary:
 		"starhook_rod": "rod_cane",
 		"starhook_skins": 0,
 		"starhook_catches": 0,
+		"starhook_fish": {},
 		"ability_index": 0,
 		"deaths": 0,
 		"runs": 0,
@@ -213,18 +214,16 @@ static func _quest_index_for(world: RefCounted, quest_id: String) -> int:
 	return -1
 
 
-## ---- STARHOOK (S1 seam 6, sl-0105). The RIFTER = a fixed
-## mini-class row on the stat frame's starhook block, riding the
-## LEGACY lane in rift worlds (class_id -1: no recompute, direct
-## stats; the loop XP curve levels it — "no new progression
-## system"). Gold starts at ZERO in the rift (the pot IS the catch);
-## harvest_rift adds it to the MAIN wallet. Line-snap death simply
-## never harvests — the rift world discards whole.
-
-const ROD_PATHS := {
-	"rod_cane": "res://data/weapons/rod_cane.tres",
-	"rod_splitwillow": "res://data/weapons/rod_splitwillow.tres",
-}
+## ---- STARHOOK (S1 seam 6, sl-0105; v2 by sl-0115). The RIFTER —
+## the designer's BAIT FIGHTER — is a fixed mini-class row on the
+## stat frame's starhook block, riding the LEGACY lane in rift
+## worlds (class_id -1: no recompute, direct stats; the loop XP
+## curve levels it — "no new progression system"). Gold starts at
+## ZERO in the rift (the pot IS the catch); harvest_rift adds it to
+## the MAIN wallet. A lost dive (three snaps) simply never harvests
+## — the rift world discards whole. The rod LADDER is installed by
+## scenario_loader (the one construction path); this only equips
+## the profile's choice, level-gated.
 
 
 static func apply_to_rift(world: RefCounted, d: Dictionary) -> void:
@@ -243,24 +242,32 @@ static func apply_to_rift(world: RefCounted, d: Dictionary) -> void:
 	p.hp = p.max_hp
 	p.move_speed = float(rifter.get("speed_tiles", 3.6))
 	p.gold = 0
-	# The rod IS the rifter's class: newest unlock auto-equips [T]
-	# (a swap UI is a designer round).
+	# The rod IS the rifter's class; R swaps among unlocked rods
+	# (sl-0115). Entry equips the profile's rod when its level gate
+	# holds, else the highest unlocked (never a locked rod).
 	var rod_id := String(d.get("starhook_rod", "rod_cane"))
-	for rod: Dictionary in sh.get("rods", []):
-		if lvl >= int(rod.get("unlock_level", 99)):
-			rod_id = String(rod.get("id", rod_id))
-	world.set_weapons([load(String(ROD_PATHS.get(rod_id, ROD_PATHS.rod_cane)))])
-	p.weapon_tiers = PackedInt32Array([1])
-	p.equipped_weapon = 0
+	var rods: Array = sh.get("rods", [])
+	var equip := 0
+	for ri in rods.size():
+		var rod: Dictionary = rods[ri]
+		if lvl < int(rod.get("unlock_level", 99)):
+			continue
+		if String(rod.get("id", "")) == rod_id:
+			equip = ri
+			break
+		equip = ri
+	p.equipped_weapon = equip
 	# The starlit cosmetic mask rides in so the rare catch's unique
 	# pickup can't double-grant.
 	if (int(d.get("starhook_skins", 0)) & 1) != 0:
 		p.unique_mask |= 1 << 2
 
 
-## Rift-exit harvest (the line snap never calls this): gold pot to
-## the MAIN wallet, level/xp back to the starhook lane, the catch
-## counter ONLY on a won fight, and any cosmetic bit.
+## Rift-exit harvest (a LOST dive never calls this): gold pot to the
+## MAIN wallet, level/xp back to the starhook lane, the equipped rod
+## persists BY ID (the R choice carries), the catch counter on a won
+## fight, landed FISH banked PER-SPECIES (species-currency, deck tap
+## shk2ctch — vendors price in fish someday), and any cosmetic bit.
 static func harvest_rift(world: RefCounted, d: Dictionary, won: bool) -> void:
 	if world.players.is_empty():
 		return
@@ -270,12 +277,33 @@ static func harvest_rift(world: RefCounted, d: Dictionary, won: bool) -> void:
 	d.starhook_xp = p.xp
 	if won:
 		d.starhook_catches = int(d.get("starhook_catches", 0)) + 1
+	var sh: Dictionary = world.stat_frame.get("starhook", {})
+	var rods: Array = sh.get("rods", [])
+	if p.equipped_weapon >= 0 and p.equipped_weapon < rods.size():
+		d.starhook_rod = String(rods[p.equipped_weapon].get("id", "rod_cane"))
+	var fish_bank: Dictionary = (
+		d.get("starhook_fish", {}) if d.get("starhook_fish") is Dictionary else {}
+	)
+	var biomes: Array = sh.get("biomes", [])
+	for catch: Dictionary in world.rift_catches:
+		var bi := int(catch.biome)
+		if bi >= biomes.size():
+			continue
+		var b: Dictionary = biomes[bi]
+		var species := ""
+		if bool(catch.rare):
+			species = String(b.get("rare", {}).get("id", ""))
+		else:
+			var table: Array = b.get("fish", [])
+			var fi := int(catch.fish)
+			if fi < table.size():
+				species = String(table[fi].get("id", ""))
+		if species.is_empty():
+			continue
+		fish_bank[species] = int(fish_bank.get(species, 0)) + 1
+	d.starhook_fish = fish_bank
 	if (p.unique_mask & (1 << 2)) != 0:
 		d.starhook_skins = int(d.get("starhook_skins", 0)) | 1
-	var sh: Dictionary = world.stat_frame.get("starhook", {})
-	for rod: Dictionary in sh.get("rods", []):
-		if p.level >= int(rod.get("unlock_level", 99)):
-			d.starhook_rod = String(rod.get("id", d.get("starhook_rod", "rod_cane")))
 
 
 ## Normal-mode death: percentage of CARRIED gold ([T] rate from

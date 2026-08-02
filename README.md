@@ -16,15 +16,20 @@ straight from the content pack), CORE-43 overworld death is live
 (in-sim gold cost + settlement respawn), and the 32 NPCs + icon pack are
 wired. THE SLICE picker row (`slice_overworld`) is the play surface.
 **S1 GREEN COUNTRY IS COMPLETE (sl-0104/0105 + the sl-0113
-UI/interaction family, 2026-08-02)**: all 14 Green families in play at
-density, T1 loot + tooltips, OLD TUSK + the HIDE unique, THE WARREN +
-KING GRUBB (first dungeon), quests v1, STARHOOK v1 (rift-fight
-fishing) + foraging — then the interact era re-pinned the hands:
-deliberate F-key pickups/givers/casts, multi-active quest log,
-read-only character sheet (C), HUD relayout with ONE menu on O and
-Esc (replay format v2). **The chapter gate is the designer living in
-Green; S2 starts only on its own routing. sl-0110/0111 (starhook
-soul + water fishing) are HELD for the designer's prototype #2.**
+UI/interaction family + the sl-0115 STARHOOK v2 merge,
+2026-08-02)**: all 14 Green families in play at density, T1 loot +
+tooltips, OLD TUSK + the HIDE unique, THE WARREN + KING GRUBB
+(first dungeon), quests v1, STARHOOK v2 (the designer's prototype
+#2 built for real: instant cast at land portals, 50/50 split with
+the living line, THE PULL + three-lives line stability, three
+biomes with named fish persisted per-species, four level-gated
+rods on R, ambient rift spawns) + foraging — and the interact era's
+deliberate hands throughout: F-key pickups/givers/casts,
+multi-active quest log, read-only character sheet (C), HUD relayout
+with ONE menu on O and Esc (replay format v2). **The chapter gate
+is the designer living in Green; S2 starts only on its own routing;
+water fishing is PARKED; the starhook GEAR SEAM waits for its
+routing.**
 
 ## Engine
 
@@ -64,7 +69,7 @@ by rule.
 | `assembler/` | The imported actor roster (player + mapped enemies) — roster-filtered by `addons/assembler_importer` from `data/actor_sheet_map.tres` |
 | `addons/` | `tileforge_importer` (M1), `assembler_importer` (M4/M5, docs/14), `uikit_importer` (M4), `worldforge_importer` (post-M5, docs/15 — validates + consumes generated world packs) |
 | `autoload/` | Config, Telemetry, DebugHub, BootArgs — exactly four, none holding gameplay state |
-| `data/` | Weapons (lab trio + the three class frames + the two starhook rods), enemies (incl. the 14 Green families, Old Tusk, King Grubb, the rift catches), patterns, abilities, quests, uniques, scenarios (incl. `slice_overworld` — THE SLICE — plus `the_warren` and the rift instances), arenas (`arena_warren.json`, `arena_rift.json`), actor sheet map, budgets — `.tres`, hot-reloadable; plus `balance_frame.json` (THE docs/22 stat-frame tuning source incl. the starhook block + items — the sim loads it, the calculator gates it) |
+| `data/` | Weapons (lab trio + the three class frames + the FOUR starhook rods), enemies (incl. the 14 Green families, Old Tusk, King Grubb, the six rift catches across three biomes), patterns (incl. the biome twist variants), abilities, quests, uniques, scenarios (incl. `slice_overworld` — THE SLICE — plus `the_warren` and the six `rift_<biome>_<rarity>` arenas), arenas (`arena_warren.json`, `arena_rift.json`), `rift_pull.tres` (sl-0115: the pull + the line's drains/lives), actor sheet map, budgets — `.tres`, hot-reloadable; plus `balance_frame.json` (THE docs/22 stat-frame tuning source incl. the starhook block: rods, biome fish tables, ambient spawns — the sim loads it, the calculator gates it) |
 | `npcs/`, `icons/` | Consumed pack trees (S0 seam 4): 32 NPC sheets + translated manifest (`tools/import_npcs.py`), the 470-glyph icon atlas pair (`tools/import_icons.py`) — regenerate from `assets/`, never hand-edit |
 | `sim/` | The engine-decoupled deterministic sim core (`systems/`, `collision/`) — global RNG banned here |
 | `input/` | HumanSampler, ReplaySource, `bot/` — three equal InputSources |
@@ -88,8 +93,8 @@ npc+icon wiring, and the S1 rows: green roster, loot grammar, quests,
 gather, character sheet). The full ship gate — the fixed steps + the
 TWO-LANE proof battery byte-identical (every reactive row at the
 CORE-53 floor AND the 115 cap; sl-0102 speeds 3.6/4.14) + export
-both-artifacts-boot + lockdown probe (30 fixed steps / 41 rows / 79
-battery runs as of S1) — runs locally as `tools/pretester_check.ps1`
+both-artifacts-boot + lockdown probe (30 fixed steps / 43 rows / 83
+battery runs as of sl-0115) — runs locally as `tools/pretester_check.ps1`
 (needs exclusive project access; **~13 min since the battery went
 parallel** — `battery_runner.ps1` worker pool, byte-identical to
 serial, every verdict exit-code-gated). The lint job also runs the
