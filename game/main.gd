@@ -168,6 +168,8 @@ var _scenario_id: StringName = &""
 ## STARHOOK (S1 seam 6, sl-0105): rift-fight scenario flags.
 var _scenario_rift := false
 var _rift_won := false
+## One busy-giver hint per giver visit (S1 quests UX).
+var _giver_hint_shown := false
 ## The world frame captured at cast — the split-screen's world
 ## sliver (presentation only; survives the scene reload).
 static var _rift_capture: Image = null
@@ -301,6 +303,32 @@ func _process(_delta: float) -> void:
 				_char_save_accum = 0.0
 				CharacterProfile.harvest(world, character)
 				CharacterProfile.save_profile(character)
+			# S1 quests UX (the designer's first-minutes finding): a
+			# giver you walk up to while ALREADY carrying a quest says
+			# so — the one-active law was silent and read as broken.
+			# Throttled to one hint per giver visit (leave the radius
+			# to re-arm). View-only.
+			var pq: RefCounted = world.players[0]
+			if pq.class_id >= 0 and pq.active_quest >= 0:
+				var near_giver := -1
+				for qi in world.quest_defs.size():
+					if qi == pq.active_quest or (pq.quests_done_mask & (1 << qi)) != 0:
+						continue
+					var qgc: Vector2 = world.quest_defs[qi].giver_cell
+					if pq.pos.distance_to(qgc) <= 1.2:
+						near_giver = qi
+						break
+				if near_giver >= 0 and not _giver_hint_shown:
+					_giver_hint_shown = true
+					var aq: Resource = world.quest_defs[pq.active_quest]
+					_show_toast(
+						(
+							"one errand at a time — finish [%s] %s first"
+							% [String(aq.reason), String(aq.text)]
+						)
+					)
+				elif near_giver < 0:
+					_giver_hint_shown = false
 			# S1 seam 4: dungeon doors (walk-on transition; the same
 			# walk-over language as loot). Profile harvests FIRST so
 			# nothing since the last beat is lost on the stairs.
