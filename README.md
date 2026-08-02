@@ -26,11 +26,21 @@ sl-0123, the pull lives in the line only — three biomes with named
 fish persisted per-species, four level-gated
 rods on R, ambient rift spawns) + foraging — and the interact era's
 deliberate hands throughout: F-key pickups/givers/casts,
-multi-active quest log, read-only character sheet (C), HUD relayout
-with ONE menu on O and Esc (replay format v2). **The chapter gate
+multi-active quest log, character sheet (C), HUD relayout with ONE
+menu on O and Esc. **THE GREEN-DAYS PASS (sl-0119..0132, 2026-08-02
+evening, nine sealed seams)**: the C sheet screen-anchored with an
+interactive EQUIPMENT PANE (tooltips = the one grammar), quest-pull
+kit (giver glyphs + map markers + HUD tracker), Grubb on his
+war-crown boss sheet + Old Tusk render-scaled, the NPC crowd
+desynced, firing rate ×1.25 exact (damage recalculated through the
+balance calculator; the ruled hits-band caps the raise at ~1.3×),
+THE BAG (pick up into it, equip is a decision on a recorded input
+byte — replay format v3), LOOT BAGS on kills ([B] loot-all), THE
+BANK at the capital stash keeper, and VENDORS v1 (sell 50%/buy
+200%, fixed catalogs). Serialization SERIAL 25. **The chapter gate
 is the designer living in Green; S2 starts only on its own routing;
-water fishing is PARKED; the starhook GEAR SEAM waits for its
-routing.**
+water fishing is PARKED; the starhook GEAR SEAM routes next
+(planning's paste).**
 
 ## Engine
 
@@ -95,7 +105,7 @@ gather, character sheet). The full ship gate — the fixed steps + the
 TWO-LANE proof battery byte-identical (every reactive row at the
 CORE-53 floor AND the 115 cap; sl-0102 speeds 3.6/4.14) + export
 both-artifacts-boot + lockdown probe (30 fixed steps / 43 rows / 83
-battery runs as of sl-0115) — runs locally as `tools/pretester_check.ps1`
+battery runs as of sl-0131) — runs locally as `tools/pretester_check.ps1`
 (needs exclusive project access; **~13 min since the battery went
 parallel** — `battery_runner.ps1` worker pool, byte-identical to
 serial, every verdict exit-code-gated). The lint job also runs the

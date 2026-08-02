@@ -59,28 +59,24 @@ sealed + gated + PUSHED to origin/main at `a6f2369`):**
 sl-0111 (water fishing) is PARKED by the designer's word — revive
 only on their say. NEXT-AFTER-SOUL by ruling: the GEAR SEAM (rods
 + very simple equipment DROPPING from starhook bosses,
-level-gated) — routed when the designer says go. Also ROUTED AND
-WAITING (from the designer's Green-days paper batch, opened
-planning-side mid-day): **sl-0121** (quest giver icons + map
-objective markers + HUD tracker, view-only) and **sl-0122** (King
-Grubb → boss:goblin-war-crown rebind + per-def boss render scale)
-— neither absorbed into the starhook seams; they run on their own
-routing order. Every starhook number is [T]; the designer's
-refinement rounds own the feel. **WATCH ITEM: CI run 30751294779
-was queued on the push (the Windows queue runs hours behind; the
-ubuntu lint job is the fast signal — gotcha #26: check it landed
-green).** New work starts only on its own routing; until then:
-intakes, feel one-liners, tuning batches, whatever the designer
-asks.
+level-gated) — planning's next paste routes it. The Green-days
+paper-batch seams (sl-0119..0132) that were ROUTED AND WAITING here
+are ALL LANDED — see the pass block above. Every starhook number is
+[T]; the designer's refinement rounds own the feel. (The former
+CI watch item cleared: run 30751294779's lint landed green, verified
+2026-08-02 evening; per gotcha #26 the lint job stays the fast
+signal after every push.) New work starts only on its own routing;
+until then: intakes, feel one-liners, tuning batches, whatever the
+designer asks.
 
 ## §0 What this project is (60 seconds)
 
 Wildshot Adventures: a solo-developed RotMG-inspired top-down realtime
 bullet-hell ARPG in **Godot 4.6.2 (pinned), typed GDScript, custom
 deterministic sim, no Godot physics in gameplay**. Serialization
-SERIAL 22 (next bump 23); replay format **WSR VERSION 2** (the
-interact era — v1 replays refuse loudly); goldens current; local
-gates green (the pushed CI run is the standing watch item above).
+**SERIAL 25** (next bump 26); replay format **WSR VERSION 3** (the
+bag-op era — older replays refuse loudly); goldens current at 25;
+local gates green; no standing watch items.
 
 Current phase: **THE SLICE ERA** (sl-0098: the world is the test).
 **Slice v0.1 is the ONE milestone**: the four-zone dusk overworld
@@ -219,10 +215,15 @@ planning `notes/sessions/2026-08-02-slice-s1.md`):**
    the CORE-31 pause bit; menu rides pause_changed), debug readout
    behind an options toggle; windowed evidence committed
    (hud_relayout/character_sheet/rift_split/loot_label audit PNGs).
+   **SUPERSEDED IN PART by the Green-days pass (see the block at the
+   top): WSR is v3 now (17-byte frames), the one-per-press pickup +
+   ring ground-swap languages retired into THE BAG, and the C sheet
+   grew the interactive equipment pane — the history above is how it
+   stood at sl-0113.**
 
 **HOLDS RESOLVED at sl-0115 (the soul merged; water fishing PARKED
 by correction #3). The GEAR SEAM is next-after-soul, on its own
-routing.**
+routing — planning's next paste.**
 
 - **Game repo (you are here):** `C:\Users\headc\Documents\Wildshot-Adventures`,
   branch `main`. Implements; never reinterprets design.
@@ -286,18 +287,20 @@ clean seam.
   recordings are BIG (~80 MB/30 s) — cut posting-size versions with
   ffmpeg fps/scale filters on request.
 
-## §1 Where things stand (2026-08-02 ~15:30)
+## §1 Where things stand (2026-08-02 late, post-GREEN-DAYS)
 
 **M0–M8 + S0 + S1 engineering complete; STARHOOK v2 merged AND
-refined same-day (sl-0115 + sl-0123 + sl-0125), all pushed.** The
-one-command ship gate `tools/pretester_check.ps1` runs ALL GREEN
-(**30 fixed steps + the two-lane battery — 43 rows / 83 runs since
-sl-0115 — byte-identical + export both artifacts + lockdown
-probe**); the latest full runs: sl-0115 close 15.0 min, sl-0123
-pre-commit (green except the byte-gate listing exactly its own ten
-re-baselined files, per gotcha-32 order), sl-0125 pre-commit ALL
-GREEN 14.9 min. No deferred-gate debt stands. Artifacts on disk are
-current-era: balance_frame.json + the content pack ride the export.
+refined (sl-0115/0123/0125); THE NINE-SEAM GREEN-DAYS PASS LANDED
+(sl-0119..0132 → resolutions sl-0134..0142), all pushed
+(42d8260..912049f + docs).** The one-command ship gate
+`tools/pretester_check.ps1` runs ALL GREEN (**30 fixed steps + the
+two-lane battery — 43 rows / 83 runs — byte-identical + export both
+artifacts + lockdown probe**); the latest full runs: sl-0120 (green
+modulo its own re-baselined evidence, the sl-0123 shape), sl-0116
+(same shape), sl-0129 ALL GREEN 13.2 min, sl-0130 ALL GREEN 13.1
+min, sl-0131 ALL GREEN 14.5 min. No deferred-gate debt stands.
+Artifacts on disk are current-era: balance_frame.json (×1.25 tables
++ the vendors block) + the content pack ride the export.
 
 The designer is LIVING IN GREEN — that IS the chapter gate (and the
 docs/19 bar clock). Their prototype #2 landed and IS the built
@@ -397,8 +400,8 @@ Before every commit, per touched area:
   (`git add -f reports/...`). Unchanged scenarios must reproduce
   BYTE-IDENTICAL.
 - the one-command gate: `pwsh tools/pretester_check.ps1` = 30 fixed
-  steps + the 79-run two-lane battery (41 floor rows + 38 cap runs;
-  pinned FAILs are expectations) + export + lockdown — **~12.5 min
+  steps + the 83-run two-lane battery (43 rows since sl-0115;
+  pinned FAILs are expectations) + export + lockdown — **~13–15 min
   ALL GREEN since the battery went PARALLEL** (S1 tooling ask:
   tools/battery_runner.ps1 worker pool, default = physical cores,
   hard cap 10, longest-first from reports/battery_timings.json;
@@ -419,9 +422,9 @@ Before every commit, per touched area:
 - Cross-repo events ⇒ sync-log entry planning-side (doc 18; no
   event, no entry). Gotcha #25 before appending.
 
-### Canonical proof battery (state 2026-08-02 post-S1 — POLICY
-### OF RECORD = REACTIVE; SERIAL 21; WSR v2; Warden 575; b65 flood
-### 34641).
+### Canonical proof battery (state 2026-08-02 post-GREEN-DAYS —
+### POLICY OF RECORD = REACTIVE; SERIAL 25; WSR v3; Warden 575;
+### b65 flood 34641).
 ### TWO LANES (docs/22 block 6: proofs at floor AND cap FOREVER),
 ### SPEEDS PER THE sl-0102 RE-ANCHOR (stat 100 == 3.6 t/s [T]):
 ### floor lane --speed=3.6 (the CORE-53 floor = sword), cap lane
