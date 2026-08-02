@@ -6,8 +6,9 @@
 > pins (`small-cold-coastal-pack-dusk` b65 = **44**;
 > `wildshot-overworld-pack-dusk` b77 = **60**, flood 46493, spawn
 > 109,182 — the diag takes pack dir + region + allowed as args); the
-> battery matrix lives in notes/HANDOFF.md (34 rows × TWO LANES since
-> S0/sl-0102 — floor 3.6 + cap 4.14, reactive record; the content
+> battery matrix lives in notes/HANDOFF.md (41 rows / 79 runs × TWO LANES since
+> S1 — floor 3.6 + cap 4.14, reactive record, parallel pool
+> `tools/battery_runner.ps1` (byte-identical to serial); the content
 > pack now rides scenarios as living-world spawn tables, and
 > `proof_slice_leash` guards the leash); walkable-unreachable cells
 > are LEGAL under WYSIWYG. Step 3's "first_contact still FAIL" is

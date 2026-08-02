@@ -7,6 +7,15 @@
 > nightOnly carried unconsumed). The five scenarios below remain
 > battery rows; speeds re-anchored by sl-0102 (proofs now run
 > 3.6/4.14 — the 3.0 figures below are the era-true record).
+>
+> **AMENDED 2026-08-02 (S1, sl-0104):** the Green vocabulary below is
+> SUPERSEDED by the full 14-family archetype roster (seam 1 — every
+> content-pack family is its own data row; territories re-tabled at
+> density through the importer's mapping), and the GREEN boss site
+> (249,244) now hosts **OLD TUSK** — the Warden-kit stand-in is
+> retired there (`overworld_green_boss` re-baselined). The dry/wet/
+> cold world-boss sites still ride the Warden kit stand-in until
+> their own chapters. Everything below stays as the era-true record.
 
 2026-08-01. The dusk content pack (`assets/wildshot-overworld-pack-dusk-content/`,
 REFERENCE ONLY — no importer, no sim consumption) mined by hand into spawn

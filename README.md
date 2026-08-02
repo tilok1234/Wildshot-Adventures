@@ -14,8 +14,17 @@ damage formula, the 115 speed cap in the integrator; anchor re-ruled 3.6
 t/s by sl-0102), the living world is plumbed (193 leash-gated sites read
 straight from the content pack), CORE-43 overworld death is live
 (in-sim gold cost + settlement respawn), and the 32 NPCs + icon pack are
-wired. THE SLICE picker row (`slice_overworld`) is the play surface;
-**S1 (Green chapter content) starts only on its own designer routing.**
+wired. THE SLICE picker row (`slice_overworld`) is the play surface.
+**S1 GREEN COUNTRY IS COMPLETE (sl-0104/0105 + the sl-0113
+UI/interaction family, 2026-08-02)**: all 14 Green families in play at
+density, T1 loot + tooltips, OLD TUSK + the HIDE unique, THE WARREN +
+KING GRUBB (first dungeon), quests v1, STARHOOK v1 (rift-fight
+fishing) + foraging — then the interact era re-pinned the hands:
+deliberate F-key pickups/givers/casts, multi-active quest log,
+read-only character sheet (C), HUD relayout with ONE menu on O and
+Esc (replay format v2). **The chapter gate is the designer living in
+Green; S2 starts only on its own routing. sl-0110/0111 (starhook
+soul + water fishing) are HELD for the designer's prototype #2.**
 
 ## Engine
 
@@ -55,14 +64,14 @@ by rule.
 | `assembler/` | The imported actor roster (player + mapped enemies) — roster-filtered by `addons/assembler_importer` from `data/actor_sheet_map.tres` |
 | `addons/` | `tileforge_importer` (M1), `assembler_importer` (M4/M5, docs/14), `uikit_importer` (M4), `worldforge_importer` (post-M5, docs/15 — validates + consumes generated world packs) |
 | `autoload/` | Config, Telemetry, DebugHub, BootArgs — exactly four, none holding gameplay state |
-| `data/` | Weapons (lab trio + the three class frames), enemies, patterns, abilities, scenarios (incl. `slice_overworld` — THE SLICE), actor sheet map, budgets — `.tres`, hot-reloadable; plus `balance_frame.json` (THE docs/22 stat-frame tuning source — the sim loads it, the calculator gates it) |
+| `data/` | Weapons (lab trio + the three class frames + the two starhook rods), enemies (incl. the 14 Green families, Old Tusk, King Grubb, the rift catches), patterns, abilities, quests, uniques, scenarios (incl. `slice_overworld` — THE SLICE — plus `the_warren` and the rift instances), arenas (`arena_warren.json`, `arena_rift.json`), actor sheet map, budgets — `.tres`, hot-reloadable; plus `balance_frame.json` (THE docs/22 stat-frame tuning source incl. the starhook block + items — the sim loads it, the calculator gates it) |
 | `npcs/`, `icons/` | Consumed pack trees (S0 seam 4): 32 NPC sheets + translated manifest (`tools/import_npcs.py`), the 470-glyph icon atlas pair (`tools/import_icons.py`) — regenerate from `assets/`, never hand-edit |
 | `sim/` | The engine-decoupled deterministic sim core (`systems/`, `collision/`) — global RNG banned here |
 | `input/` | HumanSampler, ReplaySource, `bot/` — three equal InputSources |
 | `game/` | Main scene, render layers, `views/` (presentation only — never mutates sim) |
 | `ui/` | HUD, menus, options |
-| `tests/` | `pixel_match/`, `assembler_pack/`, `projectile_pack/`, `uikit/`, `worldforge_pack/` (validator test + per-drop one-shot probes), `settings/`, `feedback/`, `loop/`, `stat_frame/` (docs/22 contracts), `living_world/` (leash/respawn/importer contracts), `wiring/` (npc+icon contracts + render probe), `dev_map/` (minimap consumer + render probe), `crosshair/` (styles contract + preview), `pinch_probe/` (fit-rule + movement diagnosis probes), `determinism/` (the smoke), `replay_fixtures/` (golden replays), `bot_scenarios/` (proof isolates + calibration canaries + the density-audit scenario + `proof_slice_leash`) |
-| `tools/` | `pretester_check.ps1` (THE one-command ship gate), `export.ps1` (dev+tester zips), `lockdown_lint.py`/`lockdown_probe.ps1`, `balance_calc.py` (the docs/22 stat-frame gates over `data/balance_frame.json`), `validate_icon_pack.py`/`validate_npc_pack.py`/`validate_content_pack.py` (pack byte pins; the content gate also enforces the b77 base pairing), `diag_walkability_grid.py` (porosity, per-drop pins), `diag_pinch.py` (prop-pinch census baseline), `evidence_report.py` + `decode_summary_code.py`, `hourslog.ps1`/`hours_report.ps1`, `gif.ps1` (G starts, G stops — start-to-finish frames stream to disk since 098a679), `godot_guard.ps1`, `validate_boss_pack.py`, `import_boss_actor.py`, `import_npcs.py`/`import_icons.py` (consumed-tree builders), `gen_cue_wavs.py` |
+| `tests/` | `pixel_match/`, `assembler_pack/`, `projectile_pack/`, `uikit/`, `worldforge_pack/` (validator test + per-drop one-shot probes), `settings/`, `feedback/`, `loop/`, `stat_frame/` (docs/22 contracts), `living_world/` (leash/respawn/importer contracts), `wiring/` (npc+icon contracts + render probe), `dev_map/` (minimap consumer + render probe), `crosshair/` (styles contract + preview), `pinch_probe/` (fit-rule + movement diagnosis probes), `green_roster/` (S1: 14-family contracts + pattern→lead law), `loot_label/` (drop grammar + render probe), `quests/` (multi-active interact-era contracts), `gather/` (forage/starhook cast + rifter round-trip), `rift_split/` (rift arena + split render probe), `char_sheet/` (screen==recompute parity), `ui_family/` (HUD relayout render probe), `motion_probe/`, `determinism/` (the smoke), `replay_fixtures/` (golden replays, WSR v2), `bot_scenarios/` (proof isolates + calibration canaries + the density-audit scenario + slice/Green/dungeon/rift proofs) |
+| `tools/` | `pretester_check.ps1` (THE one-command ship gate) + `battery_runner.ps1` (the parallel proof-battery pool — workers = physical cores, cap 10, longest-first; `-Workers 1` = serial), `export.ps1` (dev+tester zips), `lockdown_lint.py`/`lockdown_probe.ps1`, `balance_calc.py` (the docs/22 stat-frame gates over `data/balance_frame.json`), `validate_icon_pack.py`/`validate_npc_pack.py`/`validate_content_pack.py` (pack byte pins; the content gate also enforces the b77 base pairing), `diag_walkability_grid.py` (porosity, per-drop pins), `diag_pinch.py` (prop-pinch census baseline), `evidence_report.py` + `decode_summary_code.py`, `hourslog.ps1`/`hours_report.ps1`, `gif.ps1` (G starts, G stops — start-to-finish frames stream to disk since 098a679), `godot_guard.ps1`, `validate_boss_pack.py`, `import_boss_actor.py`, `import_npcs.py`/`import_icons.py` (consumed-tree builders), `gen_cue_wavs.py` |
 | `notes/` | `hours.csv`, `TECH_DEBT_LEDGER.md`, `HANDOFF.md` (cold-start briefing for any new session), `PACK_INTAKE_RUNBOOK.md` (world-pack drops), per-area records (nine-row, audio map, CORE-50 checklist) |
 | `reports/` | Committed mechanical evidence: the canonical proof battery (byte-identical gate), stress/density + render audit captures — bot/harness output, never feel evidence |
 
@@ -75,10 +84,13 @@ replays ×10, Windows runner — the determinism scope is
 same-build/same-platform); pixel-match (TileForge §4 acceptance + net16
 masks + uikit/projectile/worldforge/assembler/feedback/dev-map/crosshair
 validations, plus the slice-era rows: stat frame, living world,
-npc+icon wiring). The full ship gate — the fixed steps + the TWO-LANE
-proof battery byte-identical (every reactive row at the CORE-53 floor
-AND the 115 cap; sl-0102 speeds 3.6/4.14) + export both-artifacts-boot
-+ lockdown probe (26 fixed steps / 34 rows / 65 battery runs as of
-sl-0102) — runs locally as `tools/pretester_check.ps1` (needs
-exclusive project access; ~40–45 min). The lint job also runs the
-three pack validators + the balance calculator on every push.
+npc+icon wiring, and the S1 rows: green roster, loot grammar, quests,
+gather, character sheet). The full ship gate — the fixed steps + the
+TWO-LANE proof battery byte-identical (every reactive row at the
+CORE-53 floor AND the 115 cap; sl-0102 speeds 3.6/4.14) + export
+both-artifacts-boot + lockdown probe (30 fixed steps / 41 rows / 79
+battery runs as of S1) — runs locally as `tools/pretester_check.ps1`
+(needs exclusive project access; **~13 min since the battery went
+parallel** — `battery_runner.ps1` worker pool, byte-identical to
+serial, every verdict exit-code-gated). The lint job also runs the
+pack validators + the balance calculator on every push.

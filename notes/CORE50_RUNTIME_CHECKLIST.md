@@ -8,6 +8,18 @@
 > pair proves options CHANGE behavior). The RENDER half — what it looks
 > like on screen — is designer eyes, one pass in the TESTER build,
 > checkboxes below. Date + build id the pass when done.
+>
+> **ERA NOTE (2026-08-02, post-S1 interact/UI seams):** options open on
+> **O OR Esc — one merged pause+options menu** (sl-0109); read "(O)"
+> below as either key. New since this list was written: the "debug
+> readout" options row (hides the bottom-left dev text line;
+> settings-persisted, NOT part of the mechanized core50 pair — it is
+> not a CORE-50 baseline option), and the remappable `interact` (F) +
+> `char_sheet` (C) actions ride the SAME persisted-remap machinery the
+> remap row already asserts. The onboarding row's 3.0/4.0 speed wording
+> is the LAB-preset era record — class speeds since sl-0100/0102 come
+> from creation (3.60/3.78/3.96, cap 4.14); re-word at that row's own
+> pass.
 
 ## Mechanized (green in pretester on every run — no eyes needed)
 

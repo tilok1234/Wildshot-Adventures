@@ -1,5 +1,27 @@
 # Designer queue — everything waiting on you (historical; see banner)
 
+> **2026-08-02 (post-S1 sweep): still historical — the LIVE queue is
+> planning-side (notes/HANDOFF.md §2 has the current open list).**
+> Green Country's build is DONE and gated: all its enemies live at
+> the sites, first drops with readable tooltips, Old Tusk and his
+> Hide, the Warren dungeon with King Grubb, errands, starhook +
+> foraging — and the new hands: F to pick up / talk / cast, C for
+> your character sheet, one menu on both O and Esc. Genuinely open
+> your side, in plain words:
+> - **Live in Green** — that IS the chapter gate. Feel notes are
+>   one-liners (density, drop rates, quest cap, the F/C keys, the
+>   new HUD corners, anything); I batch them into single gate runs.
+>   Every new number is provisional until you've played it.
+> - **Your prototype #2** (the starhook soul) — when it feels right,
+>   the clip + your written spec become the law I build from.
+>   I'm touching nothing rift-side until then.
+> - **The next chapter** starts only on your word.
+> - Weekly GIF — fresh material everywhere (Green packs, Old Tusk,
+>   the Warren, the rift).
+> - Standing from before: rested ratification stack, CORE-50 render
+>   checklist pass, onboarding copy voice, icon tool-source push
+>   from the other PC, crosshair styles on screen, b65 city walk.
+
 > **2026-08-01 NIGHT (post-S0 sweep): still historical — the LIVE
 > queue is planning-side.** Tonight S0 shipped whole (sl-0100→0101:
 > stat frame in the sim, the living world, overworld death, NPCs +

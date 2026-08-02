@@ -1,4 +1,4 @@
-# Session Handoff — rewritten 2026-08-01 (~23:40, post-S0 + sl-0102 seam)
+# Session Handoff — rewritten 2026-08-02 (~12:15, post-S1 + the UI/interaction family)
 
 **COLD START — this handoff assumes NO prior context.** Read the game
 repo's `CLAUDE.md` first (auto-loads; BINDING contract + the
@@ -10,18 +10,25 @@ stands: nothing repo-side gates on the Claude account; git identity
 and gh auth are machine-local; this file + `CLAUDE.md` + planning
 `docs/23` are the complete context carrier.
 
-**If you are the S1 session: DO NOT START S1 WITHOUT ITS OWN
-ROUTING.** S0 is complete and stopped exactly at the routed stop line
-(sl-0100/0101). S1 (Green Country chapter content) begins only when
-planning routes it on the designer's word. Until then: intakes, feel
-one-liners, tuning batches, and whatever the designer asks.
+**STANDING HOLDS (sl-0113, the designer's word): sl-0110 (the
+STARHOOK SOUL seam — undertow/reel/dual-win/galaxy identity) and
+sl-0111 (water fishing base) are ON HOLD until the designer's
+prototype #2 lands ("so we get it correct"). The canonical spec in
+planning `notes/2026-08-02-starhook-idea.md` is LAW meanwhile; spend
+ZERO time on the built rift v1. When the prototype sings, its clip +
+the canonical paragraph route into the revived sl-0110 as law
+(reference-media-is-law).** New work starts only on its own routing;
+until then: intakes, feel one-liners, tuning batches, whatever the
+designer asks.
 
 ## §0 What this project is (60 seconds)
 
 Wildshot Adventures: a solo-developed RotMG-inspired top-down realtime
 bullet-hell ARPG in **Godot 4.6.2 (pinned), typed GDScript, custom
 deterministic sim, no Godot physics in gameplay**. Serialization
-SERIAL 17 (next bump 18); goldens current; all CI green.
+SERIAL 21 (next bump 22); replay format **WSR VERSION 2** (the
+interact era — v1 replays refuse loudly); goldens current; all CI
+green.
 
 Current phase: **THE SLICE ERA** (sl-0098: the world is the test).
 **Slice v0.1 is the ONE milestone**: the four-zone dusk overworld
@@ -31,7 +38,10 @@ CORE-43 city-fee death and walk back; the world persists and refills,
 NO run framing) is what the docs/19 three-sentence bar judges, over
 the designer's week, then 2–3 warm watched first-touches. Build
 order: chapter by chapter, **Green Country first** (planning
-docs/23).
+docs/23). **S1 GREEN COUNTRY ENGINEERING IS COMPLETE (sl-0104 +
+sl-0105 + the sl-0113 UI/interaction family; 2026-08-02) — THE
+CHAPTER GATE IS THE DESIGNER LIVING IN GREEN; S2 does not start
+without their word.**
 
 **S0 FOUNDATIONS ARE COMPLETE (2026-08-01, sl-0100 executed as four
 sealed seams — game 695f898→4acca00→8c0ce7a→5ad9dbb; gate ALL GREEN
@@ -80,13 +90,76 @@ reservation fired after the designer's first S0 walk):** stat 100 ==
 starts, G stops, frames stream to disk, any length — the last-10-s
 ring is retired.
 
+**S1 GREEN COUNTRY IS COMPLETE (2026-08-02, sl-0104 six seams +
+sl-0105's seam-6 replacement + the sl-0113 UI/interaction family —
+each a sealed seam behind a full gate; the seam-by-seam record is
+planning `notes/sessions/2026-08-02-slice-s1.md`):**
+1. **Green roster** (seam 1): all 14 content-pack families are
+   archetype data rows wearing enemy-pack sprites — every variant in
+   play; territories re-tabled through the importer's mapping;
+   density risen per the sl-0099 finding; pattern→lead law
+   mechanized roster-wide (`tests/green_roster/green_roster_test.gd`).
+2. **T1 loot** (seam 2): drops per balance_frame budgets + slot
+   jobs; tooltips in the one grammar (`game/views/item_text.gd`);
+   loot-label render evidence committed.
+3. **OLD TUSK** (seam 3): kit pass (charger/rage/mire, 480-hp paced
+   schedule) + the first unique **OLD TUSK'S HIDE** (over-budget
+   defense with the paired speed cost, balance_frame `items[]`);
+   the overworld green-boss site re-baselined onto him (Warden
+   stand-in retired).
+4. **THE WARREN + KING GRUBB** (seam 4): first dungeon
+   (`data/arena_warren.json`, walk-on door at the bound site cell
+   194,240; DUNGEON_DOORS in main.gd) + the 420-hp court boss. Two
+   dungeon laws recorded: pack separations beyond aggro
+   (euclidean — walls do NOT block aggro) verified numerically; ONE
+   radial per boss room.
+5. **Quests v1** (seam 5) — then RE-PINNED by the interact era (see
+   below): five Green quests with reason tags (`data/quests/*.tres`),
+   giver turn-in, kill/collect/visit counting.
+6. **STARHOOK v1** (seam 6, sl-0105 — replaced fishing; the
+   designer's invention): rift-fight fishing. Cast = 120-tick
+   stillness at an active rift node (12 on the slice) →
+   world-vignette into the committed rift instance (ONE SIM — the
+   world pauses; split-screen is presentation: 15×12 arena = exactly
+   the left 3/4 of the 640×360 base viewport, world sliver static
+   capture right); RIFTER = fixed mini-class on the stat frame
+   (legacy lane, balance_frame.starhook block, own loop XP); two
+   RODS as attack-def rows (cane; splitwillow unlocks at rifter 3);
+   ONE rift kit at TWO rarity steps (common 260 hp / rare 420 on
+   the boss recipe — hooked-fish law: P3 KEEP_RANGE, no chaser in a
+   one-room arena); drops feed the MAIN economy + the starlit skin
+   variant. Foraging v1 rode the seam (90-tick gather, b77 census).
+   **Line-snap = never harvest; no hardcore stake in the rift.**
+7. **THE UI/INTERACTION FAMILY (sl-0113 = sl-0112 + sl-0106 +
+   sl-0109; seams A/B — DELIBERATE RE-PINS of two ruled
+   languages):** the INTERACT verb (**F**; WSR **VERSION 2**,
+   InputFrame 16 bytes — v1 replays refuse loudly): auto-pickup +
+   auto-quests RETIRED — items one-per-press nearest, gold stays
+   walk-over, worn-ring swap drops the old ring at its exact
+   position; givers are interactable (turn-in wins over accept;
+   accept shows the reason tag); QUEST LOG multi-active (cap 5 [T],
+   SERIAL 21: taken/done masks + progress array; profile carries
+   quests BY ID, legacy active_quest_id migrates); CHARACTER SHEET
+   (**C**, read-only, one grammar, screen==recompute parity EXACT
+   by pure-model construction — `ui/character_sheet.gd` sheet_rows/
+   quest_rows, test-pinned); HUD RELAYOUT: short hp/mana bars
+   top-right, corner minimap beneath them (map_overlay
+   corner_top_inset), **ONE menu on BOTH O and Esc** (driver keeps
+   the CORE-31 pause bit; menu rides pause_changed), debug readout
+   behind an options toggle; windowed evidence committed
+   (hud_relayout/character_sheet/rift_split/loot_label audit PNGs).
+
+**STANDING HOLDS: sl-0110 (starhook soul) + sl-0111 (water fishing)
+— the designer is building prototype #2; the canonical spec is LAW;
+zero time on the built rift until the clip lands.**
+
 - **Game repo (you are here):** `C:\Users\headc\Documents\Wildshot-Adventures`,
   branch `main`. Implements; never reinterprets design.
 - **Planning repo (design authority):**
   `C:\Users\headc\Documents\Wildshot_adventure_final_planning` — ONE
   branch, `claude/questionnaire-note-taking-9vl2sl` (no main; do not
   create one). Its `tools/sync_log.json` is the cross-repo logbook
-  (entries through sl-0103 as of this writing);
+  (entries through sl-0114 as of this writing);
   `tools/ecosystem.lock.json` holds the pins. A planning-side sweep
   agent commits between game sessions — always `git pull --ff-only`
   before planning writes.
@@ -142,37 +215,37 @@ clean seam.
   recordings are BIG (~80 MB/30 s) — cut posting-size versions with
   ffmpeg fps/scale filters on request.
 
-## §1 Where things stand (2026-08-01 ~23:40)
+## §1 Where things stand (2026-08-02 ~12:15)
 
-**M0–M8 + S0 engineering complete.** The one-command ship gate
-`tools/pretester_check.ps1` last ran ALL GREEN 2026-08-01 ~22:40
-(**42.4 min: 26 fixed steps + the 67-run two-lane battery
-byte-identical + export both artifacts + lockdown probe**) — that was
-at the RETIRED 3.0/3.45 speeds. The sl-0102 re-anchor then
-re-baselined the battery lanes at 3.6/4.14 (65 runs + solo confirms,
-all on-matrix vs the updated table) with fixed steps + lint + boot
-green individually; **the export step + lockdown probe were NOT
-re-run after the re-anchor (the designer's play window held the
-machine) — that deferred-gate debt rides the NEXT exclusive seam**
-(the recorded fallback; artifacts on disk are from the 22:40 gate =
-old speeds).
+**M0–M8 + S0 + S1 engineering complete.** The one-command ship gate
+`tools/pretester_check.ps1` runs ALL GREEN in **~13 min** since the
+battery went parallel (**30 fixed steps + the 79-run two-lane
+battery byte-identical + export both artifacts + lockdown probe**);
+it last ran ALL GREEN at the UI/interaction-family seam close
+(2026-08-02). No deferred-gate debt stands. Artifacts on disk are
+current-era: balance_frame.json + the content pack ride the export.
 
-The designer is LIVING IN THE SLICE (restarted 23:18 on the new
-speeds + new recorder; the bar clock is their daily play). Artifact
-verification from the S0 gate: balance_frame.json rides the export;
-the content pack ships loose beside the exe.
+The designer is LIVING IN GREEN — that IS the chapter gate (and the
+docs/19 bar clock). Their prototype #2 (starhook soul) is being
+built on their side; sl-0110/0111 are HELD for it.
 
 ## §2 Open — designer-side (do not nag; the deck + planning carry these)
 
-- **THE S1 GO WORD** — Green Country chapter content (docs/23 recipe)
-  starts only on its own routing.
-- Slice feel one-liners as they play (density / pack sizes / respawn
-  pace / anything) — BATCH tuning numbers into single gate runs.
+- **LIVING IN GREEN** — the chapter gate: fight the re-tabled
+  territories, run errands on the interact verb, Old Tusk, the
+  Warren, starhook casts. Feel one-liners as they play (density /
+  pack sizes / respawn pace / quest cap / key choices F+C / HUD
+  layout / anything) — BATCH tuning numbers into single gate runs.
+  Every S1 rate/key/layout is [T].
+- **PROTOTYPE #2** (starhook soul) — when it sings, the clip + the
+  canonical paragraph route into the revived sl-0110 as law.
+- **THE S2 GO WORD** — next chapter starts only on its own routing.
 - New surfaces to judge when they feel like it: the NPC crowd
   (sl-0089 watch-items: named-vs-villager blur, dark-outfit dusk
-  contrast), class creation screen + emblems, weapon tier glyph.
-- Weekly GIF (deferred by their word tonight; fresh material
-  everywhere — the living world, the crowd, class kits).
+  contrast), class creation screen + emblems, weapon tier glyph,
+  character sheet, quest log lines, the rift split-screen.
+- Weekly GIF (fresh material everywhere — Green packs, Old Tusk,
+  the Warren, the rift).
 - Standing: rested ratification stack (M2 formal close, six
   ordinaries, marathon-provisional verdicts), CORE-50 render
   checklist pass, onboarding copy voice, icon tool-source push from
@@ -181,22 +254,29 @@ the content pack ships loose beside the exe.
 
 ## §3 Open — engineering
 
-- **S1 awaits routing** (never start it unrouted). S0 left the
-  ground ready: sites live, stat frame under everything, death
-  honest, NPCs standing where quests will hang.
-- **Deferred-gate debt:** export.ps1 + lockdown probe at the next
-  exclusive seam (post-sl-0102 artifacts; one pretester
-  -SkipBattery run covers it, or the full gate if a sim change
-  lands first).
-- Density tuning is DATA now (authored pack sizes × the leash [T]
-  radii in site_step.gd) — expect it inside S1's feel rounds.
+- **NOTHING ROUTED.** S1 stopped at its stop line; sl-0110/0111 are
+  HELD (zero time on the built rift until the prototype clip
+  lands); S2 needs its own word. Until then: intakes, feel
+  one-liners, tuning batches, whatever the designer asks.
+- **World interactables** (signs / POI plaques / villager
+  one-liners) hang off the interact verb INCREMENTALLY [T] as
+  content wants them — each is a small routed-or-asked addition,
+  not a standing seam.
+- Density and every S1 rate are DATA ([T] everywhere: leash radii,
+  respawn bases, quest cap 5, gather timings, rift-node count/
+  respawn, rod stats) — expect batched tuning from Green days.
 - Intakes as deliveries land (runbook + per-pack pins + paired-TF
   doctrine; passport + fixed-gate pattern for non-world packs; NPC/
   icon re-drops re-run their import_*.py + the wiring test).
-- Ledger: OPEN = #16 (replay character block — class/ring joined the
-  gap at S0) and #17 (fit-rule round-1 scope: arena-def props
-  full-cell). #7 amended (recorder reworked; async readback stays
-  the improvement path).
+- Ledger: OPEN = #16 (replay character block — class/ring at S0,
+  then armor-item/quests/gather/starhook fields at S1: profile
+  replays refuse verification honestly) and #17 (fit-rule round-1
+  scope: arena-def props full-cell). #7 amended (recorder reworked;
+  async readback stays the improvement path).
+- Tooling candidate (recorded, unrouted): lane-suffixed repro
+  filenames in the pool (floor/cap lanes race on shared
+  repro_*.wsr names — benign, diagnostic-only; a fresh serial run
+  is the arbiter).
 
 ## §4 Session rituals (the gates)
 
@@ -205,8 +285,11 @@ Before every commit, per touched area:
   re-grep before editing formatted files).
 - smoke: `godot_console --headless --path . --script tests/determinism/determinism_smoke.gd`.
 - goldens: any sim/serialization change ⇒ bump SERIAL_VERSION
-  (next bump is **18**), regenerate + verify ×10, say so in the
-  commit.
+  (next bump is **22**), regenerate + verify ×10, say so in the
+  commit. InputFrame layout changes additionally bump
+  `input/replay_format.gd` VERSION (now **2** — the interact byte;
+  old .wsr refuse loudly; committed repro/golden replays get
+  re-recorded deliberately WITH the bump).
 - boot: `godot_console --headless --path . --quit-after 90` grep
   "arena ready|ERROR" (use "ERROR", not "SCRIPT ERROR").
 - proofs: re-run canaries + every touched proof with CANONICAL SEEDS
@@ -236,8 +319,9 @@ Before every commit, per touched area:
 - Cross-repo events ⇒ sync-log entry planning-side (doc 18; no
   event, no entry). Gotcha #25 before appending.
 
-### Canonical proof battery (state 2026-08-01 post-sl-0102 — POLICY
-### OF RECORD = REACTIVE; SERIAL 17; Warden 575; b65 flood 34641).
+### Canonical proof battery (state 2026-08-02 post-S1 — POLICY
+### OF RECORD = REACTIVE; SERIAL 21; WSR v2; Warden 575; b65 flood
+### 34641).
 ### TWO LANES (docs/22 block 6: proofs at floor AND cap FOREVER),
 ### SPEEDS PER THE sl-0102 RE-ANCHOR (stat 100 == 3.6 t/s [T]):
 ### floor lane --speed=3.6 (the CORE-53 floor = sword), cap lane
@@ -309,12 +393,15 @@ names; cap runs use --speed=4.14 + an explicit --out=..._cap115.json).
 4. gdformat REFLOWS code — re-grep the actual text before Edit. It
    also WRAPS long lines, which can break single-line lint anchors
    (lockdown lint pins) — keep pinned lines short (sl-0065 lesson).
-5. NO F-row keys. Current: O options, I interp, [ ] speed presets,
-   -/= free step (dev-only), G gif (start/stop, start-to-finish),
-   R replay, T reset, M meter, H hitboxes, N map (dev-only, pack
-   scenarios only), ` console (dev-only), Esc pause, Alt+Enter
-   fullscreen, Space = ability AND respawn-now while dead
-   (persistent worlds).
+5. NO F-row keys. Current: **O AND Esc = the ONE pause+options
+   menu** (sl-0109; the driver keeps the CORE-31 pause bit),
+   **F interact** (pickups/givers/casts), **C character sheet**,
+   I interp, [ ] speed presets, -/= free step (dev-only), G gif
+   (start/stop, start-to-finish), R replay, T reset, M meter,
+   H hitboxes, N map (dev-only, pack scenarios only), ` console
+   (dev-only), Alt+Enter fullscreen, Space = ability AND
+   respawn-now while dead (persistent worlds). E stays RATIFIED
+   autofire — never rebind it casually.
 6. Sim = pure core: no Nodes/clock/RNG; prev_pos is presentation-only;
    PackedArrays share storage — `.duplicate()` for snapshots.
 7. When a proof fails: read the heatmap in the report JSON first
@@ -363,7 +450,10 @@ names; cap runs use --speed=4.14 + an explicit --out=..._cap115.json).
     gif_frames/ (G dumps; tools/gif.ps1 converts; -Fps changes
     PLAYBACK not sampling — use ffmpeg `fps=` filters to shrink),
     replays/, character.json (v2: class-backed; v1 reads as
-    no-character).
+    no-character; carries ring_id/armor_item_id, quests BY ID
+    (quests_taken[] + quest_progress{} — legacy active_quest_id
+    migrates on load), and the starhook block
+    (level/xp/rod/skins/catches)).
 17. The designer's screen recordings land in
     `%LOCALAPPDATA%\Packages\Microsoft.ScreenSketch_*\TempState\Recordings\`
     — extract frames with ffmpeg and READ them; their footage
@@ -474,20 +564,40 @@ names; cap runs use --speed=4.14 + an explicit --out=..._cap115.json).
     (fixed f40decf: husk off the pinch corridor, mirrored in
     loop.tres, 0 hits both lanes). The fast gate makes the rule
     cheap: regenerate → full gate → commit, always in that order.
+33. **Pool lanes race on shared repro filenames.** Floor and cap
+    lanes of the same scenario both write `repro_<scenario>_s<seed>.wsr`
+    — in the parallel battery whichever lane finishes last wins the
+    file, so a committed repro's SIZE can change without any sim
+    change (the sl-0105 canary question: seed 3's repro 515→1312
+    bytes = the cap lane's longer run landing second). Repros are
+    diagnostic-only; the arbiter for "did the sim move" is a fresh
+    SERIAL re-run of the lane in question (the canary re-verified
+    FAIL 10 hits @t23, all seeds, both lanes). Lane-suffixed repro
+    names are the recorded tooling candidate.
+34. **PowerShell kill filters can match YOUR OWN runs.**
+    `Where-Object CommandLine -like "*<test name>*"` matched the
+    live `--check-only` verification of that same test and killed
+    it mid-pipeline — the abort also swallowed queued Set-Content
+    edits, which had to be redone. Name kill filters tightly
+    (`--script <exact path>` + not-my-PID), and after ANY kill,
+    verify your just-made edits actually landed before proceeding.
 
 ## Ledger + scope
 
 Ledger (`notes/TECH_DEBT_LEDGER.md`): OPEN = #16 (replay character
-block — class/ring joined the gap at S0) and #17 (fit-rule round-1
-scope: arena-def props still full-cell); #7 amended (recorder
-reworked start-to-finish; async readback stays the improvement
-path); #1–#15 closed or deferred with recorded exits. The scope
-tripwire is **SLICE V0.1** (sl-0098 — the world is the test): slice
-work flows from designer direction under talk-before-build via
-planning docs/23; anything outside the slice bill's needs is refused
-and ledgered or flagged to planning. **S1 IS ROUTED (sl-0104) and
-running as sealed seams** — seam 1 (Green roster) landed 91b1037;
-the suggested order continues loot → Old Tusk → the Warren → quests
-→ fishing/foraging; the chapter gate is the designer LIVING in
-Green. The tester-build export pipeline + lockdown stay a STANDING
-GATE (green at the 2026-08-02 full gates; no standing debt).
+block — class/ring at S0, then armor-item/quest/gather/starhook
+fields at S1; profile replays refuse verification honestly) and #17
+(fit-rule round-1 scope: arena-def props still full-cell); #7
+amended (recorder reworked start-to-finish; async readback stays
+the improvement path); #1–#15 closed or deferred with recorded
+exits. The scope tripwire is **SLICE V0.1** (sl-0098 — the world is
+the test): slice work flows from designer direction under
+talk-before-build via planning docs/23; anything outside the slice
+bill's needs is refused and ledgered or flagged to planning. **S1
+IS COMPLETE (sl-0104 + sl-0105 + the sl-0113 UI/interaction family,
+all sealed seams, 2026-08-02)** — the chapter gate is the designer
+LIVING in Green; **S2 does not start without its own routing**;
+sl-0110/0111 are HELD for the designer's prototype #2 (canonical
+spec is law meanwhile; zero time on the built rift). The
+tester-build export pipeline + lockdown stay a STANDING GATE (green
+at the 2026-08-02 full gates; no standing debt).
