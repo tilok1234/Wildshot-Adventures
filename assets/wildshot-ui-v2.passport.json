@@ -109,5 +109,8 @@
     "surfaces/confirm.png": "707b1b8974f114a694375c0af30c4f65f8d8cea39d9ec7e3760c36681983da7e",
     "surfaces/hud.png": "fc70238673155ff2a2cfd4b043efe5e7826fca4c1613b43488865ce2c943ddd2",
     "surfaces/tooltip.png": "1ee716c86bc056731d200fb987a9fdc682e29a91d3ddb1284db096dc971ecd8d"
+  },
+  "consumption": {
+    "seamA": "RESOLVED AS A FINDING 2026-08-03: all 20 shipped chrome pieces AND wildshot_pixel.ttf are BYTE-IDENTICAL to the wired v1 kit (assets/uikit == res://uikit == this pack) - the routed pixel swap is a proven no-op, zero bytes moved, working tree clean after the copy. The v2 look is NOT in the kit pieces: it is the workbench-DRAWN panel2 chrome (carved warm frame / gold studs / centered title plaque) over the manifest palette tokens (a CSS token model: bgPanel gradients, lip, rad, plqGrad). In-engine consequence: panel2 is BUILT as drawn chrome from the dusk tokens in the menu seams; kit-piece surfaces keep the coherent v1 gilded chrome everywhere - the routed partial-re-skin / mixed-look acceptance dissolves (there is no mix). The font was ALREADY the theme default_font since the v1 intake; uikit/font/LICENSE is the standing PROD-03 self-produced record (CC0, drawn from scratch 2026-07-27)."
   }
 }
