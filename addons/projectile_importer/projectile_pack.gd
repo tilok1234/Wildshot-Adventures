@@ -85,11 +85,16 @@ static func import(
 static func needed_from_map(pmap: Resource) -> Dictionary:
 	var needed: Array[String] = []
 	var hostile_shots: Array[String] = []
+	# sl-0115: the friendly namespace is DECLARED on the map
+	# (player_patterns) — the historic `pid < 10` range rule died when
+	# rod patterns landed at 9 and 29. Everything undeclared is
+	# hostile and the covers_hitbox guard binds it.
+	var player_ids: PackedInt32Array = pmap.player_patterns
 	for pid in pmap.shots:
 		var sid := String(pmap.shots[pid])
 		if not needed.has(sid):
 			needed.append(sid)
-		if int(pid) >= 10 and not hostile_shots.has(sid):
+		if not player_ids.has(int(pid)) and not hostile_shots.has(sid):
 			hostile_shots.append(sid)
 	for pid in pmap.alts:
 		var sid := String(pmap.alts[pid])
