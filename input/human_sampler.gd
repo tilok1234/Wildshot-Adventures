@@ -21,6 +21,14 @@ var _prev_ability := false
 var _prev_interact := false
 var _prev_rod_swap := false
 var _last_aim := Vector2.RIGHT
+## sl-0116: the C-pane queues ONE bag op; the next sampled frame
+## carries it (exactly once — an edge by construction). Rides even
+## suppressed frames: the pane click IS the suppressor.
+var _queued_bag_op := 0
+
+
+func queue_bag_op(code: int) -> void:
+	_queued_bag_op = code
 
 
 ## mouse_tile: mouse position in world TILE coordinates (view converts);
@@ -37,6 +45,8 @@ func sample(mouse_tile: Vector2, player_pos: Vector2, equipped := 0, rod_count :
 		var qs := InputFrame.quantize_aim(_last_aim)
 		nf.aim_x = qs.x
 		nf.aim_y = qs.y
+		nf.bag_op = _queued_bag_op
+		_queued_bag_op = 0
 		_prev_autofire = Input.is_action_pressed("autofire_toggle")
 		_prev_ability = Input.is_action_pressed("ability")
 		_prev_interact = Input.is_action_pressed("interact")
@@ -76,4 +86,6 @@ func sample(mouse_tile: Vector2, player_pos: Vector2, equipped := 0, rod_count :
 	if rs and not _prev_rod_swap and rod_count > 0:
 		f.weapon_select = (equipped + 1) % rod_count + 1
 	_prev_rod_swap = rs
+	f.bag_op = _queued_bag_op
+	_queued_bag_op = 0
 	return f

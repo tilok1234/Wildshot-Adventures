@@ -19,6 +19,7 @@ extends RefCounted
 ## join that recorded gap).
 
 const StatFrame := preload("res://sim/systems/stat_frame.gd")
+const DropKinds := preload("res://sim/drop_kinds.gd")
 
 const PATH := "user://character.json"
 const VERSION := 2
@@ -50,6 +51,7 @@ static func create(hardcore: bool, cls := "bow") -> Dictionary:
 		"armor_tier": 0,
 		"ring_id": "",
 		"armor_item_id": "",
+		"bag": [],
 		"unique_mask": 0,
 		"quests_done_mask": 0,
 		"quests_taken": [],
@@ -123,6 +125,20 @@ static func apply_to_world(world: RefCounted, d: Dictionary) -> void:
 	p.ring_index = _items_index_for(world, "ring", String(d.get("ring_id", "")))
 	p.armor_item_index = _items_index_for(world, "armor", String(d.get("armor_item_id", "")))
 	p.unique_mask = int(d.get("unique_mask", 0))
+	# sl-0116: THE BAG — carried items BY ID/kind (absent key reads as
+	# empty, the active_quest_id-migration read-tolerance precedent);
+	# unresolvable rows skip honestly as items[] evolves.
+	p.bag = PackedInt32Array()
+	var bag_rows: Array = d.get("bag", []) if d.get("bag") is Array else []
+	for row_v: Variant in bag_rows:
+		if not row_v is Dictionary:
+			continue
+		var row: Dictionary = row_v
+		var triple := _bag_triple_for(world, row)
+		if triple.size() == 3:
+			p.bag.append(triple[0])
+			p.bag.append(triple[1])
+			p.bag.append(triple[2])
 	# sl-0112: quest state — done mask by index (append-only list, the
 	# unique_mask precedent); TAKEN quests + per-quest progress key BY
 	# ID (multi-active). A pre-interact-era active_quest_id migrates
@@ -169,6 +185,12 @@ static func harvest(world: RefCounted, d: Dictionary) -> void:
 	d.ring_id = _items_id_for(world, p.ring_index)
 	d.armor_item_id = _items_id_for(world, p.armor_item_index)
 	d.unique_mask = p.unique_mask
+	var bag_rows: Array = []
+	for bi in p.bag.size() / 3:
+		var row := _bag_row_for(world, p.bag[bi * 3], p.bag[bi * 3 + 1], p.bag[bi * 3 + 2])
+		if not row.is_empty():
+			bag_rows.append(row)
+	d.bag = bag_rows
 	d.quests_done_mask = p.quests_done_mask
 	var taken_ids: Array = []
 	var prog: Dictionary = {}
@@ -203,6 +225,51 @@ static func _items_id_for(world: RefCounted, index: int) -> String:
 	if index < 0 or index >= items.size():
 		return ""
 	return String(items[index].get("id", ""))
+
+
+## Bag row (profile json) <-> sim triple (kind, a, b). Weapons/armor
+## persist by frame+tier (the class loadout), rings by items[] id,
+## uniques by def uid, abilities by index (recorded lean).
+static func _bag_row_for(world: RefCounted, kind: int, a: int, b: int) -> Dictionary:
+	match kind:
+		DropKinds.WEAPON:
+			return {"kind": "weapon", "frame": a, "tier": b}
+		DropKinds.ARMOR:
+			return {"kind": "armor", "tier": a}
+		DropKinds.ABILITY:
+			return {"kind": "ability", "index": a}
+		DropKinds.UNIQUE:
+			if a >= 0 and a < world.unique_defs.size():
+				return {"kind": "unique", "uid": String(world.unique_defs[a].uid)}
+			return {}
+		DropKinds.RING:
+			var iid := _items_id_for(world, a)
+			return {"kind": "ring", "id": iid} if not iid.is_empty() else {}
+	return {}
+
+
+static func _bag_triple_for(world: RefCounted, row: Dictionary) -> PackedInt32Array:
+	match String(row.get("kind", "")):
+		"weapon":
+			return PackedInt32Array(
+				[DropKinds.WEAPON, int(row.get("frame", 0)), int(row.get("tier", 1))]
+			)
+		"armor":
+			return PackedInt32Array([DropKinds.ARMOR, int(row.get("tier", 1)), 0])
+		"ability":
+			return PackedInt32Array([DropKinds.ABILITY, int(row.get("index", 0)), 0])
+		"unique":
+			var uid := String(row.get("uid", ""))
+			for ui in world.unique_defs.size():
+				if String(world.unique_defs[ui].uid) == uid:
+					return PackedInt32Array([DropKinds.UNIQUE, ui, 0])
+			return PackedInt32Array()
+		"ring":
+			var ri := _items_index_for(world, "ring", String(row.get("id", "")))
+			if ri >= 0:
+				return PackedInt32Array([DropKinds.RING, ri, 0])
+			return PackedInt32Array()
+	return PackedInt32Array()
 
 
 static func _quest_index_for(world: RefCounted, quest_id: String) -> int:

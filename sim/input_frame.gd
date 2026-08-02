@@ -19,6 +19,12 @@ var weapon_select: int = 0
 ## item pickup/equip, giver accept/turn-in, world interactables. Edge,
 ## not held (the sampler tracks it like ability).
 var interact_pressed: bool = false
+## THE BAG OP (sl-0116/0128, WSR v3): one recorded byte per tick — the
+## C-pane's equip/drop/de-equip intents ride the input stream so
+## replays and profiles agree byte-for-byte. 0 = none; the code layout
+## is bag_step.gd's contract (equip/drop by bag slot, de-equip worn).
+## UI queues it on the sampler; bots never emit it.
+var bag_op: int = 0
 
 
 static func quantize_aim(v: Vector2) -> Vector2i:
@@ -37,9 +43,9 @@ func move_vector() -> Vector2:
 
 
 ## Serialized size in bytes — the replay stream is tick_count x players x
-## this (input/replay_format.gd). 16 since WSR VERSION 2 (sl-0112:
-## interact joined the recorded stream).
-const SERIALIZED_SIZE := 16
+## this (input/replay_format.gd). 17 since WSR VERSION 3 (sl-0116: the
+## bag op joined the recorded stream; 16 was v2's interact era).
+const SERIALIZED_SIZE := 17
 
 
 func serialize_into(buf: StreamPeerBuffer) -> void:
@@ -53,6 +59,7 @@ func serialize_into(buf: StreamPeerBuffer) -> void:
 	buf.put_8(1 if ability_pressed else 0)
 	buf.put_8(weapon_select)
 	buf.put_8(1 if interact_pressed else 0)
+	buf.put_u8(bag_op)
 
 
 static func deserialize_from(buf: StreamPeerBuffer) -> RefCounted:
@@ -67,4 +74,5 @@ static func deserialize_from(buf: StreamPeerBuffer) -> RefCounted:
 	f.ability_pressed = buf.get_8() == 1
 	f.weapon_select = buf.get_8()
 	f.interact_pressed = buf.get_8() == 1
+	f.bag_op = buf.get_u8()
 	return f

@@ -14,6 +14,7 @@ extends RefCounted
 const SimEvents := preload("res://sim/events.gd")
 const DropKinds := preload("res://sim/drop_kinds.gd")
 const StatFrame := preload("res://sim/systems/stat_frame.gd")
+const BagStep := preload("res://sim/systems/bag_step.gd")
 
 
 static func run(world: RefCounted) -> void:
@@ -100,9 +101,31 @@ static func run(world: RefCounted) -> void:
 	world.drops = kept
 
 
-## Apply a drop to a player. Returns false when the drop is NOT an
-## upgrade (it stays on the ground).
+## Apply a drop to a player. Returns false when the drop stays on the
+## ground. CLASS LANE (sl-0116): every non-gold pickup lands IN THE
+## BAG — nothing auto-equips, the upgrades-only filter is retired,
+## downgrades are collected happily; a full bag refuses (BAG_FULL) and
+## the drop stays. Equip is a DECISION (bag_step ops from the C pane).
+## LEGACY LANE keeps the pre-bag press-equip behavior verbatim — every
+## proof world byte-identical by construction.
 static func _apply(world: RefCounted, p: RefCounted, d: Dictionary) -> bool:
+	if int(d.kind) != DropKinds.GOLD and p.class_id >= 0:
+		var udef_gate := true
+		if int(d.kind) == DropKinds.UNIQUE:
+			# The collection mask stays a PICKUP truth (skins/profile
+			# records key on it) and still refuses double-pickup.
+			var ui := int(d.a)
+			if ui < 0 or ui >= world.unique_defs.size():
+				udef_gate = false
+			elif (p.unique_mask & (1 << ui)) != 0:
+				udef_gate = false
+		if not udef_gate:
+			return false
+		if not BagStep.bag_add(world, p, int(d.kind), int(d.a), int(d.b)):
+			return false
+		if int(d.kind) == DropKinds.UNIQUE:
+			p.unique_mask |= 1 << int(d.a)
+		return true
 	match int(d.kind):
 		DropKinds.GOLD:
 			p.gold += int(d.a)

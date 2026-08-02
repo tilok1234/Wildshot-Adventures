@@ -329,6 +329,8 @@ func _init() -> void:
 	var harvested := prof.duplicate(true)
 	pwp.gold = 55
 	pwp.ring_index = ring_idx
+	# sl-0116: bag round-trip BY ID — a ring + an armor tier in the bag.
+	pwp.bag = PackedInt32Array([5, ring_idx, 0, 2, 3, 0])
 	CharacterProfile.harvest(pw, harvested)
 	# S1 seam 2: the profile keys the ring BY ID (items[] evolves
 	# chapter by chapter; a raw index would silently re-point saves).
@@ -337,11 +339,33 @@ func _init() -> void:
 		"harvest carries (ring by id)"
 	)
 	check(String(harvested["class"]) == "staff", "harvest keeps the class")
+	var bag_rows_h: Array = harvested.get("bag", [])
+	check(
+		(
+			bag_rows_h.size() == 2
+			and String(bag_rows_h[0].get("kind", "")) == "ring"
+			and String(bag_rows_h[0].get("id", "")) == "t2-ring-of-reach"
+			and String(bag_rows_h[1].get("kind", "")) == "armor"
+			and int(bag_rows_h[1].get("tier", 0)) == 3
+		),
+		"harvest carries the bag BY ID/kind"
+	)
 	var re_applied: RefCounted = _world(19)
 	CharacterProfile.apply_to_world(re_applied, harvested)
 	check(
 		re_applied.players[0].ring_index == ring_idx,
 		"apply resolves ring_id back to the live items index"
+	)
+	var re_bag: PackedInt32Array = re_applied.players[0].bag
+	check(
+		(
+			re_bag.size() == 6
+			and re_bag[0] == 5
+			and re_bag[1] == ring_idx
+			and re_bag[3] == 2
+			and re_bag[4] == 3
+		),
+		"apply resolves the bag rows back to live triples"
 	)
 	var v1 := {"version": 1, "hardcore": false, "gold": 999}
 	var v1_path := bad_dir + "/character_v1.json"
@@ -393,6 +417,10 @@ func _init() -> void:
 	var h5: int = hw.state_hash()
 	hw.players[0].damage_mod = 1
 	check(hw.state_hash() != h5, "damage_mod is hashed state")
+	hw.players[0].damage_mod = 0
+	var h6: int = hw.state_hash()
+	hw.players[0].bag = PackedInt32Array([2, 1, 0])
+	check(hw.state_hash() != h6, "the bag is hashed state (SERIAL 23)")
 
 	if fails.is_empty():
 		print("stat_frame_test: PASS (formula/curves/xp/tiers/trades/cap/profile/hash)")

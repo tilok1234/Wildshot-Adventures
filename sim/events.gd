@@ -33,6 +33,8 @@ enum Type {
 	LINE_SNAPPED,
 	RIFT_NODE_SPAWNED,
 	CATCH_LANDED,
+	BAG_FULL,
+	ITEM_EQUIPPED,
 }
 
 ## PROJECTILE_DESPAWNED carries one of these (§2.6 typed despawn reasons).

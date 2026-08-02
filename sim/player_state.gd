@@ -82,6 +82,14 @@ var quest_progress_arr: PackedInt32Array = PackedInt32Array()
 ## far away). Casting needs no rearm — node consumption covers it.
 var gather_still_ticks: int = 0
 var gather_rearm: Vector2 = Vector2(-1000000.0, -1000000.0)
+## THE BAG (sl-0116/0128, SERIAL 23): carried items as flat
+## (kind, a, b) triples in acquisition order — the same {kind,a,b}
+## vocabulary drops speak (drop_kinds.gd). Class lane only: pickups
+## land HERE (nothing auto-equips since the bag era); equip/drop ops
+## ride the recorded bag_op byte (bag_step.gd owns the codes + the
+## capacity [T 20]). Legacy lane (class_id < 0) never bags — every
+## proof world byte-identical by construction.
+var bag: PackedInt32Array = PackedInt32Array()
 ## STARHOOK v2 (sl-0115, SERIAL 22) — THE LINE. Only read where
 ## SimWorld.rift_line is attached (rift arenas); zero elsewhere by
 ## construction. line_lives = snaps remaining before the dive is lost
@@ -129,3 +137,8 @@ func serialize_into(buf: StreamPeerBuffer) -> void:
 	buf.put_u8(line_lives)
 	buf.put_u16(line_drain_acc)
 	buf.put_64(line_iframe_until)
+	buf.put_u8(bag.size() / 3)
+	for bi in bag.size() / 3:
+		buf.put_u8(bag[bi * 3])
+		buf.put_16(bag[bi * 3 + 1])
+		buf.put_16(bag[bi * 3 + 2])

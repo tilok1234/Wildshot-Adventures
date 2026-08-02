@@ -290,7 +290,11 @@ func _process(_delta: float) -> void:
 	# design: leaving the box and resuming are the same key.
 	var typing := comments_box != null and comments_box.has_focus()
 	if driver != null and driver.sampler != null:
-		driver.sampler.suppress = typing
+		# sl-0128: the C pane sanctions mouse — while the cursor rides
+		# the OPEN sheet, gameplay input suppresses (a pane click must
+		# never also fire the weapon; the typing-box precedent).
+		var over_pane: bool = char_sheet != null and char_sheet.wants_suppress()
+		driver.sampler.suppress = typing or over_pane
 	# §2.9 prev/curr render toggle — view-side only, replay-irrelevant.
 	if not typing and view_clock != null and Input.is_action_just_pressed("interp_toggle"):
 		view_clock.interp_enabled = not view_clock.interp_enabled
@@ -1553,6 +1557,10 @@ func _ready() -> void:
 	char_sheet = CharacterSheet.new()
 	char_sheet.world = world
 	char_sheet.character = character
+	# sl-0116/0128: pane clicks queue RECORDED bag ops on the sampler —
+	# the sim mutation rides the input stream, replay-honest.
+	if driver != null and driver.sampler != null:
+		char_sheet.bag_op_sink = Callable(driver.sampler, "queue_bag_op")
 	hud.add_child(char_sheet)
 	quest_tracker = QuestTracker.new()
 	quest_tracker.world = world

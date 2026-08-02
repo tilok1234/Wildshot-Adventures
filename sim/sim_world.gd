@@ -29,6 +29,7 @@ const SiteStep := preload("res://sim/systems/site_step.gd")
 const ProjectileStep := preload("res://sim/systems/projectile_step.gd")
 const HazardStep := preload("res://sim/systems/hazard_step.gd")
 const LootStep := preload("res://sim/systems/loot_step.gd")
+const BagStep := preload("res://sim/systems/bag_step.gd")
 const GatherStep := preload("res://sim/systems/gather_step.gd")
 const QuestStep := preload("res://sim/systems/quest_step.gd")
 const RiftStep := preload("res://sim/systems/rift_step.gd")
@@ -49,7 +50,10 @@ const DT := 1.0 / 60.0
 ## 22 = sl-0115 STARHOOK v2 (prototype #2): the line's three lives +
 ## drain accumulator + grace on PlayerState; ambient rift nodes
 ## (pos + biome) and the dive's landed catches on the world.
-const SERIAL_VERSION := 22
+## 23 = sl-0116/0128 THE BAG: carried-item triples on PlayerState
+## (pickups land in the bag; equip/drop ride the recorded bag_op —
+## WSR v3 with it).
+const SERIAL_VERSION := 23
 
 ## Damage-source pattern id for the scenario-declared test damage
 ## schedule (§2.11 elite transition proofs; planning log 2026-07-28).
@@ -506,6 +510,9 @@ func step(frames: Array) -> void:
 	# only — rift_line null means this is a straight no-op).
 	RiftStep.run(self)
 	LootStep.run(self)
+	# sl-0116: the bag's recorded ops (equip/drop/de-equip) — after
+	# LootStep so a same-tick pickup is already in the bag.
+	BagStep.run(self)
 	# S1 seam 6: the patience verbs (forage yields, rift casts).
 	GatherStep.run(self)
 	# S1 seam 5: quests read the tick's OWN events (kills, pickups) —

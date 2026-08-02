@@ -94,6 +94,43 @@ func _init() -> void:
 	var qrows2: Array = CharacterSheet.quest_rows(world)
 	check(String(qrows2[qrows2.size() - 1]) == "hands: 1/5 · done: 1", "done count tracks")
 
+	# 3.5 THE EQUIPMENT PANE (sl-0116/0128): worn rows + bag rows speak
+	# the one grammar — tooltip parity IS drop-line parity (test-pinned);
+	# op codes match bag_step's contract exactly.
+	var ItemText: GDScript = load("res://game/views/item_text.gd")
+	var BagStep: GDScript = load("res://sim/systems/bag_step.gd")
+	var erows: Array = CharacterSheet.equipment_rows(world)
+	check(erows.size() == 3, "pane: weapon/armor/ring rows present")
+	var wrow: Dictionary = erows[0]
+	check(int(wrow.op) == 0, "pane: the weapon row is replace-only (no op)")
+	var arow: Dictionary = erows[1]
+	check(
+		int(arow.op) == BagStep.OP_DEEQUIP_ARMOR and String(arow.line) == "Old Tusk's Hide",
+		"pane: worn unique armor row carries the de-equip op"
+	)
+	p.bag = PackedInt32Array([5, 0, 0, 2, 2, 0])
+	var brows: Array = CharacterSheet.bag_rows(world)
+	check(brows.size() == 2, "pane: bag rows mirror the bag")
+	var b0: Dictionary = brows[0]
+	check(
+		String(b0.line) == ItemText.drop_line(world, {"kind": 5, "a": 0, "b": 0}),
+		"pane: bag line IS the grammar line (tooltip parity)"
+	)
+	check(String(b0.tip).begins_with(String(b0.line)), "pane: tooltip leads with the grammar line")
+	check(
+		int(b0.equip_op) == BagStep.OP_EQUIP_BASE and int(b0.drop_op) == BagStep.OP_DROP_BASE,
+		"pane: slot-0 op codes exact"
+	)
+	var b1: Dictionary = brows[1]
+	check(
+		(
+			int(b1.equip_op) == BagStep.OP_EQUIP_BASE + 1
+			and int(b1.drop_op) == BagStep.OP_DROP_BASE + 1
+		),
+		"pane: slot-1 op codes exact"
+	)
+	p.bag = PackedInt32Array()
+
 	# 4. NEGATIVE: a legacy (bot-shaped) world renders without a class
 	# row crash and shows the legacy shape.
 	var lw: RefCounted = SimWorld.new()
@@ -113,9 +150,13 @@ func _init() -> void:
 	lw.add_player(Vector2(10.5, 10.5))
 	var lrows: Array = CharacterSheet.sheet_rows(lw, {})
 	check(_row(lrows, "class").begins_with("—"), "legacy world renders the — class row")
+	check(
+		CharacterSheet.equipment_rows(lw).is_empty() and CharacterSheet.bag_rows(lw).is_empty(),
+		"NEGATIVE: legacy world gets no pane rows (bag never engages)"
+	)
 
 	if fails.is_empty():
-		print("char_sheet_test: PASS (parity-exact/perturbation/quest-log/legacy)")
+		print("char_sheet_test: PASS (parity-exact/perturbation/quest-log/legacy/pane)")
 		quit(0)
 	else:
 		for m: String in fails:

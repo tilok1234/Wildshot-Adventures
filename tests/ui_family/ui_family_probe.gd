@@ -41,6 +41,10 @@ func _run() -> void:
 	p.quest_progress_arr[0] = 3
 	p.hp = int(p.max_hp * 0.7)
 	p.mana = int(p.max_mana * 0.4)
+	# sl-0116/0128: worn armor + a stocked bag so the equipment pane
+	# renders real rows (ring / armor / weapon triples).
+	p.armor_tier = 2
+	p.bag = PackedInt32Array([5, 0, 0, 2, 3, 0, 1, 0, 2])
 
 	var bg := ColorRect.new()
 	bg.color = Color(0.13, 0.15, 0.12)

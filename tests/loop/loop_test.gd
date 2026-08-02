@@ -11,6 +11,8 @@ const EnemyDefScript := preload("res://data/enemy_def.gd")
 const Progress := preload("res://sim/systems/progress.gd")
 const Damage := preload("res://sim/systems/damage.gd")
 const LootStep := preload("res://sim/systems/loot_step.gd")
+const BagStep := preload("res://sim/systems/bag_step.gd")
+const SimEvents := preload("res://sim/events.gd")
 const StatFrame := preload("res://sim/systems/stat_frame.gd")
 const ItemText := preload("res://game/views/item_text.gd")
 const InputFrame := preload("res://sim/input_frame.gd")
@@ -76,6 +78,13 @@ func _kill_n(world: RefCounted, n: int) -> void:
 func _press(world: RefCounted) -> void:
 	var f: RefCounted = InputFrame.new()
 	f.interact_pressed = true
+	world.step([f])
+
+
+## One recorded BAG OP through the real step (sl-0116).
+func _bag_op(world: RefCounted, code: int) -> void:
+	var f: RefCounted = InputFrame.new()
+	f.bag_op = code
 	world.step([f])
 
 
@@ -209,30 +218,71 @@ func _init() -> void:
 	rw.step([InputFrame.new()])
 	check(rp.ring_index == -1 and rw.drops.size() == 1, "NEGATIVE: rings never walk-over equip")
 	var first_ring := int(rd.a)
+	# sl-0116 THE BAG ERA (deliberate re-baseline of the sl-0112
+	# hands): the press BAGS the ring — nothing auto-equips anywhere
+	# on the class lane; equip is a DECISION (a recorded bag op).
 	_press(rw)
-	check(rp.ring_index == first_ring and rw.drops.is_empty(), "pressed pickup equips the ring")
-	check(rp.move_speed != base_speed or rp.max_hp != base_hp, "ring trade wires through recompute")
-	# sl-0112 THE SWAP: interact on a ground ring while worn — the new
-	# equips, the OLD drops exactly where the new one lay.
-	_kill_n(rw, 1)
-	var second_pos: Vector2 = rw.drops[0].pos
-	var second_ring := int(rw.drops[0].a)
-	rp.pos = second_pos
-	_press(rw)
-	check(rp.ring_index == second_ring, "worn-ring press swaps to the new ring")
 	check(
-		rw.drops.size() == 1 and int(rw.drops[0].a) == first_ring,
-		"the old ring drops where the new one lay"
+		rp.ring_index == -1 and rw.drops.is_empty() and BagStep.bag_count(rp) == 1,
+		"pressed pickup bags the ring (nothing auto-equips — the bag era)"
 	)
-	var old_pos: Vector2 = rw.drops[0].pos
-	check(old_pos == second_pos, "swap position exact")
-	# Legacy lane: class -1 never equips rings (pressed or not).
+	check(int(BagStep.bag_item(rp, 0).kind) == SimWorld.DROP_RING, "bagged item is the ring")
+	_bag_op(rw, BagStep.OP_EQUIP_BASE)
+	check(
+		rp.ring_index == first_ring and BagStep.bag_count(rp) == 0, "equip op wears the bagged ring"
+	)
+	check(rp.move_speed != base_speed or rp.max_hp != base_hp, "ring trade wires through recompute")
+	# The REPLACED item returns TO THE BAG (sl-0116: the bag
+	# supersedes the sl-0112 ground-swap language).
+	_kill_n(rw, 1)
+	var second_ring := int(rw.drops[0].a)
+	rp.pos = rw.drops[0].pos
+	_press(rw)
+	check(BagStep.bag_count(rp) == 1, "second ring bagged while worn")
+	_bag_op(rw, BagStep.OP_EQUIP_BASE)
+	check(rp.ring_index == second_ring, "equip op swaps to the new ring")
+	check(
+		BagStep.bag_count(rp) == 1 and int(BagStep.bag_item(rp, 0).a) == first_ring,
+		"the replaced ring returns to the bag"
+	)
+	# DE-EQUIP: worn ring -> bag; the slot empties.
+	_bag_op(rw, BagStep.OP_DEEQUIP_RING)
+	check(rp.ring_index == -1 and BagStep.bag_count(rp) == 2, "de-equip returns the worn ring")
+	# DROP from the bag: the item lands at the feet as a real drop.
+	_bag_op(rw, BagStep.OP_DROP_BASE)
+	check(
+		rw.drops.size() == 1 and BagStep.bag_count(rp) == 1,
+		"drop op grounds the bag item at the feet"
+	)
+	check(rw.drops[0].pos == rp.pos, "dropped item lands at the feet")
+	# BAG FULL: a stuffed bag refuses the pickup — the drop stays.
+	while BagStep.bag_count(rp) < BagStep.BAG_CAP:
+		BagStep.bag_add(rw, rp, SimWorld.DROP_ARMOR, 1, 0)
+	_press(rw)
+	check(rw.drops.size() == 1, "NEGATIVE: full bag refuses — the drop stays grounded")
+	var saw_full := false
+	for ev: Dictionary in rw.events:
+		if int(ev.type) == SimEvents.Type.BAG_FULL:
+			saw_full = true
+	check(saw_full, "BAG_FULL event emitted")
+	# DEATH KEEPS THE BAG (the gold slice stays the one death cost).
+	var bag_before: int = BagStep.bag_count(rp)
+	Damage.apply(rw, rp, 9999, 0)
+	check(rp.dead and BagStep.bag_count(rp) == bag_before, "death keeps the bag")
+	# Legacy lane: class -1 never bags and never equips rings.
 	var lw: RefCounted = _world_with(ring_def, 93)
 	lw.set_stat_frame(StatFrame.load_frame())
 	_kill_n(lw, 1)
 	lw.players[0].pos = lw.drops[0].pos
 	_press(lw)
-	check(lw.players[0].ring_index == -1 and lw.drops.size() == 1, "legacy player refuses rings")
+	check(
+		(
+			lw.players[0].ring_index == -1
+			and lw.drops.size() == 1
+			and BagStep.bag_count(lw.players[0]) == 0
+		),
+		"legacy player refuses rings AND never bags"
+	)
 
 	# 10. THE ONE ITEM-TEXT GRAMMAR (docs/22: every number visible; one
 	# grammar everywhere) — exact lines, pinned.
@@ -294,12 +344,22 @@ func _init() -> void:
 	hw2.spawn_drop(hp2.pos, SimWorld.DROP_UNIQUE, 1)
 	_press(hw2)
 	var hitems: Array = hw2.stat_frame.items
-	check(hp2.unique_mask == 2, "hide pickup sets mask bit 1")
+	check(hp2.unique_mask == 2, "hide pickup sets mask bit 1 (collection truth at pickup)")
+	check(
+		hp2.armor_item_index == -1 and BagStep.bag_count(hp2) == 1,
+		"the hide BAGS on pickup (sl-0116: equip is a decision)"
+	)
+	_bag_op(hw2, BagStep.OP_EQUIP_BASE)
 	check(
 		hp2.armor_item_index >= 0 and String(hitems[hp2.armor_item_index].id) == "u-old-tusks-hide",
-		"hide equips the unique armor row"
+		"equip op wears the unique armor row"
 	)
 	check(hp2.armor == 12, "worn hide armors 12 through recompute")
+	# De-equip returns the unique to the bag by def uid; re-equip works.
+	_bag_op(hw2, BagStep.OP_DEEQUIP_ARMOR)
+	check(hp2.armor_item_index == -1 and BagStep.bag_count(hp2) == 1, "hide de-equips into the bag")
+	_bag_op(hw2, BagStep.OP_EQUIP_BASE)
+	check(hp2.armor == 12, "hide re-equips from the bag")
 	check(
 		(
 			ItemText.drop_line(hw2, {"kind": SimWorld.DROP_UNIQUE, "a": 1, "b": 0})
