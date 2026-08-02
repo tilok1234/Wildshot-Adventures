@@ -213,6 +213,13 @@ jobs:
       - name: Green roster contracts
         run: ~/godot/godot --headless --path . --script tests/green_roster/green_roster_test.gd
 
+      # S1 seam 5: generic quests v1 — walk-up accept/turn-in, KILL/
+      # VISIT/COLLECT progress from sim events, in-sim rewards, done
+      # mask, giver-slot parity vs the content pack. Linux-safe
+      # (within-run sim checks only).
+      - name: Quests v1 contracts
+        run: ~/godot/godot --headless --path . --script tests/quests/quest_test.gd
+
       # Slice S0 seam 4: consumed NPC tree (32 looks), deterministic
       # stations on real b77 ground, icon atlas ids. Linux-safe.
       - name: NPC + icon wiring

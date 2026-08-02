@@ -1,0 +1,20 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/quest_def.gd" id="1"]
+
+; S1 seam 5 quest 1 — the hub's second errand (reason: zone_hub): eyes
+; on the SE mud pocket. The breadcrumb that walks a fresh character
+; toward OLD TUSK's ground — every farmer tells the story.
+
+[resource]
+script = ExtResource("1")
+id = &"green_mud_pocket"
+text = "Farmers say the mud pocket southeast is torn up again. Go look. Do not linger."
+reason = "zone_hub"
+giver_cell = Vector2(109.5, 182.5)
+kind = 1
+target_cell = Vector2(249.5, 244.5)
+visit_radius = 6.0
+count = 1
+reward_gold = 20
+reward_xp = 25

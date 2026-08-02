@@ -54,6 +54,21 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 	# world as definitions. Inert for class_id -1 players — bot and
 	# legacy worlds stay byte-identical with it aboard.
 	world.set_stat_frame(StatFrame.load_frame())
+	# GENERIC QUESTS v1 (S1 seam 5) — the Green five, APPEND-ONLY
+	# (mask bits + profile ids key on this order). Inert for legacy
+	# players; giver cells sit far from every battery spawn.
+	(
+		world
+		. set_quests(
+			[
+				load("res://data/quests/green_cull.tres"),
+				load("res://data/quests/green_mud_pocket.tres"),
+				load("res://data/quests/green_west_road.tres"),
+				load("res://data/quests/green_provisions.tres"),
+				load("res://data/quests/green_far_field.tres"),
+			]
+		)
+	)
 	# EnemyDef roster — INDEX ORDER IS CONTRACT (def_index serializes):
 	# 0=rusher, 1=husk_archer, 2=fanmaw, 3=ringer, 4=leadshot,
 	# 5=blightcaster, 6=yard_warden (§3.5 elite), 7=bone_reliquary_king

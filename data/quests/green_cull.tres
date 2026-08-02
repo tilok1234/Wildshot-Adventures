@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/quest_def.gd" id="1"]
+
+; S1 seam 5 quest 0 — the zone hub's cull (reason: zone_hub). The
+; capital giver slot sits ON the settlement spawn: you leave town
+; with the Wardens' errand in hand, and coming home IS the turn-in.
+
+[resource]
+script = ExtResource("1")
+id = &"green_cull"
+text = "The roads out there belong to the packs after dusk. Thin them for us."
+reason = "zone_hub"
+giver_cell = Vector2(109.5, 182.5)
+kind = 0
+target_defs = PackedInt32Array(9, 11, 21)
+count = 8
+reward_gold = 25
+reward_xp = 30

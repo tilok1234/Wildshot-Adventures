@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/quest_def.gd" id="1"]
+
+; S1 seam 5 quest 3 — the west waystation's stores (reason:
+; waystation): COLLECT — anything the countryside drops keeps the
+; station stocked. Pickups of any kind count.
+
+[resource]
+script = ExtResource("1")
+id = &"green_provisions"
+text = "Shelves are thin. Whatever the wilds drop, we can use — bring back six finds."
+reason = "waystation"
+giver_cell = Vector2(91.5, 110.5)
+kind = 2
+count = 6
+reward_gold = 20
+reward_xp = 25

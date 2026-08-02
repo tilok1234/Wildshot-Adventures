@@ -141,6 +141,7 @@ $tests = @(
     @("stat frame (docs/22 in the sim)", "tests/stat_frame/stat_frame_test.gd"),
     @("living world (leash/respawn/importer)", "tests/living_world/living_world_test.gd"),
     @("green roster (S1 re-table/variants)", "tests/green_roster/green_roster_test.gd"),
+    @("quests v1 (S1 accept/progress/turn-in)", "tests/quests/quest_test.gd"),
     @("npc + icon wiring (seam 4)", "tests/wiring/npc_icon_wiring_test.gd"),
     @("determinism smoke (all contracts)", "tests/determinism/determinism_smoke.gd"),
     @("golden replays x10", "tests/replay_fixtures/verify_replays.gd")

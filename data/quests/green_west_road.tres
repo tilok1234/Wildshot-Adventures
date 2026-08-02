@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/quest_def.gd" id="1"]
+
+; S1 seam 5 quest 2 — the west waystation (reason: waystation): a
+; waystation lives and dies by its road, and the road has bandits.
+
+[resource]
+script = ExtResource("1")
+id = &"green_west_road"
+text = "This station holds because the road holds. Bandits think otherwise. Correct them."
+reason = "waystation"
+giver_cell = Vector2(91.5, 110.5)
+kind = 0
+target_defs = PackedInt32Array(21)
+count = 6
+reward_gold = 25
+reward_xp = 30

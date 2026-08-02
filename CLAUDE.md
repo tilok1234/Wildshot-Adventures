@@ -1763,3 +1763,38 @@ sides. NEW DUNGEON LAW recorded: room packs sit beyond aggro of
 the previous room's fight zone, verified numerically at authoring.
 DESIGNER-EYES pending: the descent, room feel, Grubb's court
 (boss rounds scheduled).**
+S1 SEAM 5 — QUESTS v1 LIVE 2026-08-02 (~03:30 local; sl-0104 seam
+5; docs/23 disposition 5 GENERIC FIRST; SERIAL 18→19, next 20):
+five generic quests off the three Green giver slots, EACH CARRYING
+ITS SLOT'S REASON TAG visibly (the villager-reason pillar): the
+zone_hub pair at the capital slot — "Cull the roads" (KILL 8 of
+goblin/wolf/bandit) + "See the mud pocket" (VISIT — the breadcrumb
+that walks a fresh character toward OLD TUSK) — and the waystation
+three — "The west road is loud" (KILL 6 bandits, 91,110),
+"Provisions" (COLLECT 6 pickups of any kind), "Lights in the far
+field" (VISIT the most isolated meadow camp, from 18,13).
+MECHANISM (sim-side, replay-honest, ZERO input-format changes):
+walk-up auto-accept and turn-in at giver cells (the loot walk-over
+language; radius 1.2), ONE active quest per player,
+KILL/VISIT/COLLECT progress counted from the tick's OWN events in
+quest_step (ordered LAST after every emitter), rewards IN-SIM
+(gold + Progress XP); QUEST_ACCEPTED/QUEST_DONE events
+(unserialized appends, replay-safe). The capital giver slot sits
+ON the settlement spawn: you leave town with the Wardens' errand
+in hand and coming home IS the turn-in (the CORE-43 walk-back
+loop reinforced). PlayerState active_quest/quest_progress/
+quests_done_mask (SERIAL 19, hashed); quest list APPEND-ONLY
+(mask + profile contract); profiles persist the done mask by
+index (the unique_mask precedent) + the ACTIVE quest BY ID with
+its progress. CLASS LANE ONLY — legacy players never interact and
+giver cells sit far from every battery spawn: the whole proof
+battery is inert by construction. HUD: the active quest line
+rides the class readout ("[waystation] text (3/6)"); accept/done
+toasts. Gates: tests/quests/quest_test.gd = 28TH FIXED STEP + CI
+row (accept/kill/visit/collect/turn-in exact rewards, one-active
+law, no-repeat mask, legacy+dead negatives, hash coverage x3, the
+Green five vs the pack's giver slots BOTH ways — cells real,
+reasons match, targets in 8..21); goldens re-recorded + verified
+x10 (SERIAL 19); smoke/stat/loop/living/green all green; boot
+clean. DESIGNER-EYES pending: the quest lines' VOICE (placeholder
+words, theirs to rewrite), rates [T], the walk-up feel.**

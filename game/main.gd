@@ -374,17 +374,27 @@ func _process(_delta: float) -> void:
 		"lv %d  xp %d/%d" % [p.level, p.xp, xp_next] if xp_next > 0 else "lv %d  MAX" % p.level
 	)
 	if p.class_id >= 0:
+		# S1 seam 5: the active quest rides the HUD readout — reason
+		# tag visible (the villager-reason pillar), progress live.
+		var quest_part := ""
+		if p.active_quest >= 0 and p.active_quest < world.quest_defs.size():
+			var aq: Resource = world.quest_defs[p.active_quest]
+			quest_part = (
+				"\n[%s] %s (%d/%d)"
+				% [String(aq.reason), String(aq.text), p.quest_progress, int(aq.count)]
+			)
 		(
 			loot_label
 			. set_text(
 				(
-					"%s  gold %d\n%s T%d · armor T%d"
+					"%s  gold %d\n%s T%d · armor T%d%s"
 					% [
 						xp_part,
 						p.gold,
 						String(world.weapon_frames[p.equipped_weapon].display_name),
 						p.weapon_tiers[p.equipped_weapon],
 						p.armor_tier,
+						quest_part,
 					]
 				)
 			)
@@ -425,6 +435,13 @@ func _process(_delta: float) -> void:
 				if recap_panel != null:
 					recap_panel.visible = false
 				_show_toast("back at the settlement — the walk out is yours")
+			SimEvents.Type.QUEST_ACCEPTED:
+				var qa := int(lev.quest)
+				if qa >= 0 and qa < world.quest_defs.size():
+					var qd: Resource = world.quest_defs[qa]
+					_show_toast("[%s] %s" % [String(qd.reason), String(qd.text)])
+			SimEvents.Type.QUEST_DONE:
+				_show_toast("quest done — +%d gold, +%d xp" % [int(lev.gold), int(lev.xp)])
 	# F10: dump the always-on session recording. NOTE: the main scene is a
 	# hardcoded dev scenario until M4 — saved replays verify only against
 	# the same build (no scenario id exists for it yet); golden fixtures

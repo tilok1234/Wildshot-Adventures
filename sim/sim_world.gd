@@ -29,6 +29,7 @@ const SiteStep := preload("res://sim/systems/site_step.gd")
 const ProjectileStep := preload("res://sim/systems/projectile_step.gd")
 const HazardStep := preload("res://sim/systems/hazard_step.gd")
 const LootStep := preload("res://sim/systems/loot_step.gd")
+const QuestStep := preload("res://sim/systems/quest_step.gd")
 const Damage := preload("res://sim/systems/damage.gd")
 
 const TICKS_PER_SECOND := 60
@@ -39,7 +40,8 @@ const DT := 1.0 / 60.0
 ## persistent_respawn is off — every proof world. 16 = living-world
 ## sites (seam 2); 15 = docs/22 stat frame (seam 1). 18 = S1 seam 3:
 ## PlayerState.armor_item_index (unique armor — Old Tusk's Hide).
-const SERIAL_VERSION := 18
+## 19 = S1 seam 5: quest fields (active/progress/done mask).
+const SERIAL_VERSION := 19
 
 ## Damage-source pattern id for the scenario-declared test damage
 ## schedule (§2.11 elite transition proofs; planning log 2026-07-28).
@@ -184,6 +186,9 @@ var respawn_cell: Vector2 = Vector2.ZERO
 ## Unique item definitions (boss-tied, docs/19): definitions, excluded;
 ## drops reference them by index.
 var unique_defs: Array = []
+## Quest definitions (S1 seam 5): definitions, excluded from
+## serialize; append-only order is the mask/profile contract.
+var quest_defs: Array = []
 
 ## God/invulnerability flag (§2.10): friendly actors take no damage —
 ## every absorbed hit emits DAMAGE_IMMUNE, so god use is always visible
@@ -262,6 +267,13 @@ func set_site_defs(defs: Array) -> void:
 ## Setup-phase: unique item defs (boss-tied; drops reference by index).
 func set_uniques(defs: Array) -> void:
 	unique_defs = defs
+
+
+## Setup-phase: quest defs (S1 seam 5) — definitions like the unique
+## list, excluded from serialize; APPEND-ONLY (the done bitmask and
+## profile active-id key on stable order).
+func set_quests(defs: Array) -> void:
+	quest_defs = defs
 
 
 ## In-step ground-drop spawn (the death-sweep drop rolls call this).
@@ -418,6 +430,9 @@ func step(frames: Array) -> void:
 	ProjectileStep.run(self)
 	HazardStep.run(self)
 	LootStep.run(self)
+	# S1 seam 5: quests read the tick's OWN events (kills, pickups) —
+	# last by construction, after every emitter.
+	QuestStep.run(self)
 	tick += 1
 
 

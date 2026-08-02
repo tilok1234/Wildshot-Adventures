@@ -26,6 +26,8 @@ enum Type {
 	LOOT_PICKED,
 	LEVEL_UP,
 	PLAYER_RESPAWNED,
+	QUEST_ACCEPTED,
+	QUEST_DONE,
 }
 
 ## PROJECTILE_DESPAWNED carries one of these (§2.6 typed despawn reasons).

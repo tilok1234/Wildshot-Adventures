@@ -1,0 +1,20 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/quest_def.gd" id="1"]
+
+; S1 seam 5 quest 4 — the north waystation (reason: waystation): the
+; far-field walk — someone has to know what stands in the meadow camp
+; (the most isolated camp in the zone; the ranged-proof ground).
+
+[resource]
+script = ExtResource("1")
+id = &"green_far_field"
+text = "Nobody walks the far field anymore. Walk it. Come back and tell me what stands there."
+reason = "waystation"
+giver_cell = Vector2(18.5, 13.5)
+kind = 1
+target_cell = Vector2(108.5, 138.5)
+visit_radius = 6.0
+count = 1
+reward_gold = 25
+reward_xp = 30

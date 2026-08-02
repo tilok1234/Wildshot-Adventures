@@ -51,6 +51,9 @@ static func create(hardcore: bool, cls := "bow") -> Dictionary:
 		"ring_id": "",
 		"armor_item_id": "",
 		"unique_mask": 0,
+		"quests_done_mask": 0,
+		"active_quest_id": "",
+		"quest_progress": 0,
 		"ability_index": 0,
 		"deaths": 0,
 		"runs": 0,
@@ -114,6 +117,11 @@ static func apply_to_world(world: RefCounted, d: Dictionary) -> void:
 	p.ring_index = _items_index_for(world, "ring", String(d.get("ring_id", "")))
 	p.armor_item_index = _items_index_for(world, "armor", String(d.get("armor_item_id", "")))
 	p.unique_mask = int(d.get("unique_mask", 0))
+	# S1 seam 5: quest state — done mask by index (append-only list,
+	# the unique_mask precedent); the ACTIVE quest keys by id.
+	p.quests_done_mask = int(d.get("quests_done_mask", 0))
+	p.active_quest = _quest_index_for(world, String(d.get("active_quest_id", "")))
+	p.quest_progress = int(d.get("quest_progress", 0)) if p.active_quest >= 0 else 0
 	StatFrame.recompute(world, p)
 	p.hp = p.max_hp
 	p.mana = p.max_mana
@@ -140,6 +148,13 @@ static func harvest(world: RefCounted, d: Dictionary) -> void:
 	d.ring_id = _items_id_for(world, p.ring_index)
 	d.armor_item_id = _items_id_for(world, p.armor_item_index)
 	d.unique_mask = p.unique_mask
+	d.quests_done_mask = p.quests_done_mask
+	d.active_quest_id = (
+		String(world.quest_defs[p.active_quest].id)
+		if p.active_quest >= 0 and p.active_quest < world.quest_defs.size()
+		else ""
+	)
+	d.quest_progress = p.quest_progress
 	d.ability_index = maxi(0, world.ability_defs.find(world.ability_def))
 
 
@@ -161,6 +176,15 @@ static func _items_id_for(world: RefCounted, index: int) -> String:
 	if index < 0 or index >= items.size():
 		return ""
 	return String(items[index].get("id", ""))
+
+
+static func _quest_index_for(world: RefCounted, quest_id: String) -> int:
+	if quest_id.is_empty():
+		return -1
+	for i in world.quest_defs.size():
+		if String(world.quest_defs[i].id) == quest_id:
+			return i
+	return -1
 
 
 ## Normal-mode death: percentage of CARRIED gold ([T] rate from

@@ -66,6 +66,14 @@ var respawn_at_tick: int = -1
 ## tier table (block-8 break (c): over-budget defense with a real
 ## paired speed cost).
 var armor_item_index: int = -1
+## S1 seam 5 (SERIAL 19): GENERIC QUESTS v1 — one active quest per
+## player (index into SimWorld.quest_defs, -1 = none), its progress
+## count, and the append-only done bitmask (the unique_mask
+## precedent). Walk-up accept/turn-in at giver cells; class lane
+## only (quest_step ignores legacy players — proof worlds inert).
+var active_quest: int = -1
+var quest_progress: int = 0
+var quests_done_mask: int = 0
 
 
 func serialize_into(buf: StreamPeerBuffer) -> void:
@@ -92,3 +100,6 @@ func serialize_into(buf: StreamPeerBuffer) -> void:
 	buf.put_32(damage_mod)
 	buf.put_64(respawn_at_tick)
 	buf.put_16(armor_item_index)
+	buf.put_8(active_quest)
+	buf.put_16(quest_progress)
+	buf.put_u16(quests_done_mask)
