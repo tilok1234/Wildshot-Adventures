@@ -115,6 +115,18 @@ Step "content pack validate (pairing+locks)" {
     return $true
 }
 
+# sl-0155 menu-system v2 raw drop (THE MENU PASS spec source): passport
+# byte pin + manifest/spec contracts + the 20 chrome dims + the live
+# icon-parity re-check vs the wired proto pack.
+Step "menu pack validate (passport+specs+chrome)" {
+    $mout = python tools/validate_menu_pack.py 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        $mout | Select-Object -Last 8 | ForEach-Object { Write-Host "  $_" }
+        return $false
+    }
+    return $true
+}
+
 # sl-0095 balance calculator (docs/22 block 9, paper-first): the five
 # ruled gates over data/balance_frame.json — TTK/TTD bands, armor
 # plateau, pattern fairness, chunky hits, the item validator.

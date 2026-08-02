@@ -1,0 +1,957 @@
+{
+  "_readme": "Wildshot UI menu spec library. Each entry is one menu the workbench renderer can draw. Paste a new spec into the workbench editor and hit APPLY to see it; SAVE adds it to your library (browser storage). See the 'spec guide' entry in-app for the schema.",
+  "specs": [
+    {
+      "id": "c_menu",
+      "name": "character (C)",
+      "hotkey": "C",
+      "tabgroup": "sheet",
+      "tab_label": "character",
+      "chrome": "panel",
+      "w": 500,
+      "h": 336,
+      "close": true,
+      "blocks": [
+        {
+          "kind": "columns",
+          "cols": [
+            {
+              "w": 52,
+              "blocks": [
+                {
+                  "kind": "stats",
+                  "source": "stats"
+                }
+              ]
+            },
+            {
+              "w": 48,
+              "blocks": [
+                {
+                  "kind": "rule",
+                  "label": "— equipment —"
+                },
+                {
+                  "kind": "grid",
+                  "source": "equipment"
+                },
+                {
+                  "kind": "rule",
+                  "source": "bag_head"
+                },
+                {
+                  "kind": "grid",
+                  "source": "bag"
+                },
+                {
+                  "kind": "text",
+                  "text": "hover for numbers · click equips · right-click drops · drag to move or re-slot",
+                  "color": "dim"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "errands",
+      "name": "errands (L)",
+      "hotkey": "L",
+      "tabgroup": "sheet",
+      "tab_label": "errands",
+      "chrome": "panel",
+      "w": 500,
+      "h": 336,
+      "close": true,
+      "blocks": [
+        {
+          "kind": "questlog"
+        },
+        {
+          "kind": "gap",
+          "h": 2
+        },
+        {
+          "kind": "text",
+          "source": "quest_caps",
+          "color": "dim"
+        }
+      ]
+    },
+    {
+      "id": "quest_offer",
+      "name": "quest dialogue",
+      "chrome": "popup",
+      "w": 280,
+      "title": "errand — the wardens",
+      "title_icon": "quest.available",
+      "close": true,
+      "blocks": [
+        {
+          "kind": "text",
+          "text": "This station holds because the road holds. Bandits think otherwise. Correct them.",
+          "color": "bright"
+        },
+        {
+          "kind": "gap",
+          "h": 4
+        },
+        {
+          "kind": "text",
+          "text": "slay bandits — 0/6",
+          "color": "dim"
+        },
+        {
+          "kind": "reward",
+          "gold": 25,
+          "xp": 30
+        },
+        {
+          "kind": "gap",
+          "h": 2
+        },
+        {
+          "kind": "buttons",
+          "items": [
+            {
+              "label": "Accept",
+              "action": "accept:green_west_road",
+              "primary": true
+            },
+            {
+              "label": "Decline",
+              "action": "decline"
+            },
+            {
+              "label": "Later",
+              "action": "close"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bank",
+      "name": "bank panel",
+      "chrome": "panel",
+      "w": 400,
+      "close": true,
+      "blocks": [
+        {
+          "kind": "columns",
+          "cols": [
+            {
+              "w": 50,
+              "blocks": [
+                {
+                  "kind": "rule",
+                  "source": "bank_head"
+                },
+                {
+                  "kind": "grid",
+                  "source": "bank"
+                }
+              ]
+            },
+            {
+              "w": 50,
+              "blocks": [
+                {
+                  "kind": "rule",
+                  "source": "bank_bag_head"
+                },
+                {
+                  "kind": "grid",
+                  "source": "bank_bag"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "drag between stash and bag — or click · death never touches the bank",
+          "color": "dim",
+          "align": "center"
+        }
+      ]
+    },
+    {
+      "id": "vendor",
+      "name": "vendor panel",
+      "chrome": "panel",
+      "w": 430,
+      "close": true,
+      "blocks": [
+        {
+          "kind": "rule",
+          "source": "vendor_head"
+        },
+        {
+          "kind": "columns",
+          "cols": [
+            {
+              "w": 50,
+              "blocks": [
+                {
+                  "kind": "rule",
+                  "label": "for sale  (click to buy)"
+                },
+                {
+                  "kind": "grid",
+                  "source": "buy"
+                }
+              ]
+            },
+            {
+              "w": 50,
+              "blocks": [
+                {
+                  "kind": "rule",
+                  "label": "your bag  (click to sell)"
+                },
+                {
+                  "kind": "grid",
+                  "source": "sell"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "drag your items onto the stall to sell · drag stock into the bag to buy · sell 50% / buy 200%",
+          "color": "dim",
+          "align": "center"
+        }
+      ]
+    },
+    {
+      "id": "options",
+      "name": "options / remaps (O)",
+      "hotkey": "O",
+      "chrome": "panel",
+      "w": 330,
+      "h": 312,
+      "title": "options",
+      "close": true,
+      "scroll": true,
+      "blocks": [
+        {
+          "kind": "rule",
+          "label": "ability"
+        },
+        {
+          "kind": "buttons",
+          "items": [
+            {
+              "label": "Nova",
+              "action": "ability:0"
+            },
+            {
+              "label": "Quickdraw",
+              "action": "ability:1"
+            },
+            {
+              "label": "Rune",
+              "action": "ability:2"
+            }
+          ]
+        },
+        {
+          "kind": "toggles",
+          "source": "options_toggles"
+        },
+        {
+          "kind": "pairs",
+          "source": "options_cycles"
+        },
+        {
+          "kind": "rule",
+          "label": "INPUT REMAPS — click, then press a key"
+        },
+        {
+          "kind": "pairs",
+          "source": "remaps"
+        },
+        {
+          "kind": "rule",
+          "label": "comments (lands in the feedback bundle)"
+        },
+        {
+          "kind": "input",
+          "placeholder": "what felt wrong? what felt great?"
+        }
+      ]
+    },
+    {
+      "id": "loot_bag",
+      "name": "loot bag (walk-over)",
+      "chrome": "panel",
+      "w": 240,
+      "dy": 70,
+      "blocks": [
+        {
+          "kind": "rule",
+          "source": "loot_head"
+        },
+        {
+          "kind": "grid",
+          "source": "loot",
+          "empty": "(picked clean)"
+        },
+        {
+          "kind": "buttons",
+          "items": [
+            {
+              "label": "[B] loot all",
+              "action": "loot_all",
+              "primary": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "confirm_demo",
+      "name": "confirm dialog",
+      "chrome": "popup",
+      "w": 250,
+      "demo": "confirm:drop this on the ground?|toast:dropped — [F] picks it back up|item.armor.staff.bulwark.t1|T1 Armor — +5 def, +30 hp|(dropped — [F] picks it back up)"
+    },
+    {
+      "id": "c_menu_v2",
+      "name": "character v2 (V)",
+      "hotkey": "V",
+      "tabgroup": "sheet2",
+      "tab_label": "character",
+      "chrome": "panel2",
+      "w": 500,
+      "h": 336,
+      "close": true,
+      "blocks": [
+        {
+          "kind": "columns",
+          "cols": [
+            {
+              "w": 40,
+              "blocks": [
+                {
+                  "kind": "portrait"
+                },
+                {
+                  "kind": "gap",
+                  "h": 3
+                },
+                {
+                  "kind": "bigbars"
+                },
+                {
+                  "kind": "gap",
+                  "h": 3
+                },
+                {
+                  "kind": "rule",
+                  "label": "— stats —"
+                },
+                {
+                  "kind": "statchips"
+                }
+              ]
+            },
+            {
+              "w": 60,
+              "blocks": [
+                {
+                  "kind": "rule",
+                  "label": "— equipped —"
+                },
+                {
+                  "kind": "dollslots"
+                },
+                {
+                  "kind": "rule",
+                  "source": "bag_head"
+                },
+                {
+                  "kind": "grid",
+                  "source": "bag"
+                },
+                {
+                  "kind": "text",
+                  "text": "drag to move · click equips · right-click drops",
+                  "color": "dim"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "errands_v2",
+      "name": "errands v2",
+      "tabgroup": "sheet2",
+      "tab_label": "errands",
+      "chrome": "panel2",
+      "w": 500,
+      "h": 336,
+      "close": true,
+      "blocks": [
+        {
+          "kind": "questlog2"
+        },
+        {
+          "kind": "gap",
+          "h": 2
+        },
+        {
+          "kind": "text",
+          "source": "quest_caps",
+          "color": "dim"
+        }
+      ]
+    },
+    {
+      "id": "quest_offer_v2",
+      "name": "quest dialogue v2",
+      "chrome": "panel2",
+      "w": 300,
+      "title": "ERRAND — THE WARDENS",
+      "title_icon": "quest.available",
+      "close": true,
+      "blocks": [
+        {
+          "kind": "text",
+          "text": "This station holds because the road holds. Bandits think otherwise. Correct them.",
+          "color": "bright"
+        },
+        {
+          "kind": "gap",
+          "h": 3
+        },
+        {
+          "kind": "text",
+          "text": "slay bandits — 0/6",
+          "color": "dim"
+        },
+        {
+          "kind": "reward",
+          "gold": 25,
+          "xp": 30
+        },
+        {
+          "kind": "gap",
+          "h": 2
+        },
+        {
+          "kind": "buttons",
+          "items": [
+            {
+              "label": "Accept",
+              "action": "accept:green_west_road",
+              "primary": true
+            },
+            {
+              "label": "Decline",
+              "action": "decline"
+            },
+            {
+              "label": "Later",
+              "action": "close"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bank_v2",
+      "name": "bank v2",
+      "chrome": "panel2",
+      "w": 430,
+      "title": "BANK VAULT",
+      "title_icon": "currency.gold",
+      "close": true,
+      "blocks": [
+        {
+          "kind": "columns",
+          "cols": [
+            {
+              "w": 46,
+              "blocks": [
+                {
+                  "kind": "rule",
+                  "source": "bank_head"
+                },
+                {
+                  "kind": "grid",
+                  "source": "bank"
+                }
+              ]
+            },
+            {
+              "w": 8,
+              "blocks": [
+                {
+                  "kind": "gap",
+                  "h": 44
+                },
+                {
+                  "kind": "text",
+                  "text": "⇄",
+                  "color": "gold",
+                  "align": "center"
+                },
+                {
+                  "kind": "text",
+                  "text": "drag",
+                  "color": "dim",
+                  "align": "center"
+                }
+              ]
+            },
+            {
+              "w": 46,
+              "blocks": [
+                {
+                  "kind": "rule",
+                  "source": "bank_bag_head"
+                },
+                {
+                  "kind": "grid",
+                  "source": "bank_bag"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "gap",
+          "h": 3
+        },
+        {
+          "kind": "text",
+          "text": "death never touches the bank",
+          "color": "dim",
+          "align": "center"
+        }
+      ]
+    },
+    {
+      "id": "vendor_v2",
+      "name": "vendor v2",
+      "chrome": "panel2",
+      "w": 450,
+      "title": "TRADER",
+      "title_icon": "currency.gold",
+      "close": true,
+      "blocks": [
+        {
+          "kind": "rule",
+          "source": "vendor_head"
+        },
+        {
+          "kind": "columns",
+          "cols": [
+            {
+              "w": 50,
+              "blocks": [
+                {
+                  "kind": "rule",
+                  "label": "for sale  (click to buy)"
+                },
+                {
+                  "kind": "shelf",
+                  "source": "buy"
+                }
+              ]
+            },
+            {
+              "w": 50,
+              "blocks": [
+                {
+                  "kind": "rule",
+                  "label": "your bag  (click to sell)"
+                },
+                {
+                  "kind": "shelf",
+                  "source": "sell"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "gap",
+          "h": 3
+        },
+        {
+          "kind": "text",
+          "text": "sell 50% · buy 200% · the catalog is fixed",
+          "color": "dim",
+          "align": "center"
+        }
+      ]
+    },
+    {
+      "id": "loot_v2",
+      "name": "loot bag v2",
+      "chrome": "panel2",
+      "w": 240,
+      "dy": 70,
+      "title": "LOOT",
+      "title_icon": "quest.turn_in",
+      "blocks": [
+        {
+          "kind": "list",
+          "source": "loot",
+          "empty": "(picked clean)"
+        },
+        {
+          "kind": "buttons",
+          "items": [
+            {
+              "label": "[B] loot all",
+              "action": "loot_all",
+              "primary": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "options_v2",
+      "name": "options v2",
+      "chrome": "panel2",
+      "w": 340,
+      "h": 324,
+      "title": "OPTIONS",
+      "title_icon": "emblem.class.staff",
+      "close": true,
+      "scroll": true,
+      "blocks": [
+        {
+          "kind": "rule",
+          "label": "ability"
+        },
+        {
+          "kind": "buttons",
+          "items": [
+            {
+              "label": "Nova",
+              "action": "ability:0"
+            },
+            {
+              "label": "Quickdraw",
+              "action": "ability:1"
+            },
+            {
+              "label": "Rune",
+              "action": "ability:2"
+            }
+          ]
+        },
+        {
+          "kind": "toggles",
+          "source": "options_toggles"
+        },
+        {
+          "kind": "pairs",
+          "source": "options_cycles"
+        },
+        {
+          "kind": "rule",
+          "label": "INPUT REMAPS — click, then press a key"
+        },
+        {
+          "kind": "pairs",
+          "source": "remaps"
+        },
+        {
+          "kind": "rule",
+          "label": "comments (lands in the feedback bundle)"
+        },
+        {
+          "kind": "input",
+          "placeholder": "what felt wrong? what felt great?"
+        }
+      ]
+    },
+    {
+      "id": "legendary_demo",
+      "name": "legendary banner",
+      "chrome": "none",
+      "demo": "legendary:item.weapon.staff.longstaff.t3|T3 Staff of the Wilds|11 dmg @ 1.5/s — a wilds-touched relic"
+    },
+    {
+      "id": "legendary_zoom_demo",
+      "name": "legendary cutscene (zoom)",
+      "chrome": "none",
+      "demo": "legendary2:item.weapon.staff.longstaff.t3|T3 Staff of the Wilds|11 dmg @ 1.5/s — a wilds-touched relic"
+    },
+    {
+      "id": "legendary_stampede_demo",
+      "name": "legendary stampede (v3)",
+      "chrome": "none",
+      "demo": "legendary3:item.weapon.staff.longstaff.t3|T3 Staff of the Wilds|11 dmg @ 1.5/s — a wilds-touched relic"
+    },
+    {
+      "id": "toast_demo",
+      "name": "toast / notice line",
+      "chrome": "none",
+      "demo": "toast:provisions turned in — +20 gold · +25 xp"
+    },
+    {
+      "id": "tooltip_demo",
+      "name": "tooltip (item grammar)",
+      "chrome": "tooltip",
+      "w": 200,
+      "dy": -20,
+      "blocks": [
+        {
+          "kind": "text",
+          "text": "T2 Staff — 11 dmg @ 1.5/s",
+          "color": "bright"
+        },
+        {
+          "kind": "text",
+          "text": "(click to equip · right-click to drop)",
+          "color": "dim"
+        },
+        {
+          "kind": "gap",
+          "h": 6
+        },
+        {
+          "kind": "text",
+          "text": "every row in every menu speaks this one grammar — hover any item to see the live version",
+          "color": "base"
+        }
+      ]
+    },
+    {
+      "id": "hud",
+      "name": "HUD (bars + readouts)",
+      "special": "hud"
+    },
+    {
+      "id": "parts",
+      "name": "parts / chrome sheet",
+      "chrome": "panel",
+      "w": 560,
+      "h": 330,
+      "title": "shared chrome",
+      "close": true,
+      "scroll": true,
+      "blocks": [
+        {
+          "kind": "rule",
+          "label": "buttons — normal · hover · pressed live; disabled below"
+        },
+        {
+          "kind": "buttons",
+          "items": [
+            {
+              "label": "button",
+              "action": "toast:that one works"
+            },
+            {
+              "label": "primary",
+              "action": "toast:gold-framed = the default choice",
+              "primary": true
+            },
+            {
+              "label": "disabled",
+              "action": "close",
+              "disabled": true
+            }
+          ]
+        },
+        {
+          "kind": "rule",
+          "label": "stat bars — fills differ by pattern, not hue alone"
+        },
+        {
+          "kind": "bars",
+          "hp": 0.78,
+          "mana": 0.55
+        },
+        {
+          "kind": "rule",
+          "label": "checks + cycle"
+        },
+        {
+          "kind": "toggles",
+          "rows": [
+            {
+              "label": "a checkbox",
+              "key": "_demo_a"
+            },
+            {
+              "label": "another",
+              "key": "_demo_b"
+            }
+          ]
+        },
+        {
+          "kind": "rule",
+          "label": "text field"
+        },
+        {
+          "kind": "input",
+          "placeholder": "lineedit_normal, focus swaps the frame"
+        },
+        {
+          "kind": "rule",
+          "label": "text colors"
+        },
+        {
+          "kind": "swatches",
+          "items": [
+            {
+              "hex": "#f2ead8",
+              "name": "bright"
+            },
+            {
+              "hex": "#cfc4ec",
+              "name": "base"
+            },
+            {
+              "hex": "#8f7cce",
+              "name": "dim"
+            },
+            {
+              "hex": "#f2c14e",
+              "name": "gold"
+            },
+            {
+              "hex": "#3f7de8",
+              "name": "blue"
+            }
+          ]
+        },
+        {
+          "kind": "rule",
+          "label": "icon atlas — any of the 470 glyphs by name"
+        },
+        {
+          "kind": "icons",
+          "names": [
+            "currency.gold",
+            "quest.available",
+            "quest.turn_in",
+            "item.weapon.staff.longstaff.t1",
+            "item.weapon.staff.wand.t2",
+            "item.armor.staff.bulwark.t1",
+            "item.ring.close_call.t1",
+            "emblem.class.staff",
+            "access.quest.letter"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "spec_guide",
+      "name": "📖 spec guide",
+      "chrome": "panel",
+      "w": 480,
+      "h": 330,
+      "title": "menu spec — the schema",
+      "close": true,
+      "scroll": true,
+      "blocks": [
+        {
+          "kind": "text",
+          "text": "a menu is one JSON object. paste one in the editor, APPLY draws it, SAVE keeps it in your library.",
+          "color": "bright"
+        },
+        {
+          "kind": "gap",
+          "h": 6
+        },
+        {
+          "kind": "rule",
+          "label": "panel fields"
+        },
+        {
+          "kind": "text",
+          "text": "id · name · chrome: panel | popup | inset | tooltip | none · w, h (game px; omit h to auto-size) · dx, dy (offset from screen center) · title · title_icon (atlas glyph name) · close: true · scroll: true · hotkey (any single key — opens/toggles the menu) · tabgroup + tab_label (menus sharing a tabgroup render as tabs of ONE window, like character/errands) · tabs: [{label, blocks}] (inline tabs inside one spec) · blocks: [...]"
+        },
+        {
+          "kind": "gap",
+          "h": 6
+        },
+        {
+          "kind": "rule",
+          "label": "block kinds"
+        },
+        {
+          "kind": "text",
+          "text": "text {text|source, color: bright|base|dim|gold, align} · rule {label|source} · gap {h} · stats {source|rows} · grid {source|cells:[{icon, line, tip, action, badge}]} — square item slots, tooltip on hover, drag to move · questlog {} — master list + detail pane over the demo quest state · list {source|rows, empty} — literal list rows take {line, tip, action, icon} where icon is an atlas glyph name · pairs {source|rows} · toggles {source|rows} · buttons {items:[{label, action, primary, disabled}]} · columns {cols:[{w, blocks}]} · reward {gold, xp} · bars {hp, mana} · input {placeholder} · swatches {items} · icons {names}"
+        },
+        {
+          "kind": "gap",
+          "h": 6
+        },
+        {
+          "kind": "rule",
+          "label": "live sources (wired to the demo state)"
+        },
+        {
+          "kind": "text",
+          "text": "stats · equipment · bag · bank · bank_bag · buy · sell · loot (grid or list sources) · quest_log · remaps · options_toggles · options_cycles — plus header sources: bag_head, bank_head, bank_bag_head, vendor_head, loot_head, quest_caps"
+        },
+        {
+          "kind": "gap",
+          "h": 6
+        },
+        {
+          "kind": "rule",
+          "label": "actions (buttons + list rows)"
+        },
+        {
+          "kind": "text",
+          "text": "close · open:<id> · toast:<msg> · confirm:<msg>|<action>|<icon>|<tip line 1>|<tip line 2> (icon + tip lines optional — the icon shows in a slot, hover it for the tip) · accept:<quest_id> · decline · equip:<slot> · dequip:<slot> · drop:<slot> · deposit:<slot> · withdraw:<slot> · buy:<row> · sell:<slot> · loot:<i> · loot_all · ability:<i> · toggle:<key> · cycle:<key> · capture:<action>"
+        },
+        {
+          "kind": "gap",
+          "h": 6
+        },
+        {
+          "kind": "text",
+          "text": "hand this schema + one example spec to an AI and ask for a new menu — the renderer draws whatever comes back.",
+          "color": "gold"
+        },
+        {
+          "kind": "rule",
+          "label": "V2 SET — new-look kinds"
+        },
+        {
+          "kind": "text",
+          "text": "chrome: 'panel2' — carved warm frame, gold studs, centered title plaque (title + title_icon) · portrait {} · bigbars {} · statchips {} · dollslots {} · shelf {source: buy|sell} · questlog2 {} (quest cards + parchment detail). Same live sources and actions — copy any v2 spec and remix."
+        },
+        {
+          "kind": "text",
+          "text": "legendary:<icon>|<title>|<line> — rare-loot banner: ray burst, pop-in, shine sweep, auto-dismiss ~4.5s. Fire it from any button action.",
+          "color": "gold"
+        },
+        {
+          "kind": "text",
+          "text": "legendary2:<icon>|<title>|<line> — the long cutscene variant: wolf howl → zoom into the mouth → dragon fire → flame wash → plaque (~8.8s). legendary: is the short heraldic one (~5s).",
+          "color": "gold"
+        },
+        {
+          "kind": "text",
+          "text": "legendary3:<icon>|<title>|<line> — the stampede: a mob pack rings the screen, the wolf howls beneath them, then the dragon spawns and its flamebreath blasts every mob off-screen before the plaque lands (~7s).",
+          "color": "gold"
+        },
+        {
+          "kind": "text",
+          "text": "all legendary actions take an optional 4th part: legendary:<icon>|<title>|<line>|<rarity> — the rarity word (default UNIQUE) slams in as a big word-mark above the ribbon.",
+          "color": "gold"
+        }
+      ]
+    }
+  ]
+}

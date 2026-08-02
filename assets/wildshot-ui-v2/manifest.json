@@ -1,0 +1,378 @@
+{
+  "name": "Wildshot v2 UI pack",
+  "generated": "2026-08-02",
+  "rev": 2,
+  "stage": "640x360 @1x",
+  "hues": [
+    "dusk",
+    "teal",
+    "slate",
+    "moss"
+  ],
+  "images": [
+    {
+      "file": "menus/dusk/character.png",
+      "spec_id": "c_menu_v2",
+      "hue": "dusk"
+    },
+    {
+      "file": "menus/dusk/errands.png",
+      "spec_id": "errands_v2",
+      "hue": "dusk"
+    },
+    {
+      "file": "menus/dusk/quest-offer.png",
+      "spec_id": "quest_offer_v2",
+      "hue": "dusk"
+    },
+    {
+      "file": "menus/dusk/bank.png",
+      "spec_id": "bank_v2",
+      "hue": "dusk"
+    },
+    {
+      "file": "menus/dusk/vendor.png",
+      "spec_id": "vendor_v2",
+      "hue": "dusk"
+    },
+    {
+      "file": "menus/dusk/loot-bag.png",
+      "spec_id": "loot_v2",
+      "hue": "dusk"
+    },
+    {
+      "file": "menus/dusk/options.png",
+      "spec_id": "options_v2",
+      "hue": "dusk"
+    },
+    {
+      "file": "menus/teal/character.png",
+      "spec_id": "c_menu_v2",
+      "hue": "teal"
+    },
+    {
+      "file": "menus/teal/errands.png",
+      "spec_id": "errands_v2",
+      "hue": "teal"
+    },
+    {
+      "file": "menus/teal/quest-offer.png",
+      "spec_id": "quest_offer_v2",
+      "hue": "teal"
+    },
+    {
+      "file": "menus/teal/bank.png",
+      "spec_id": "bank_v2",
+      "hue": "teal"
+    },
+    {
+      "file": "menus/teal/vendor.png",
+      "spec_id": "vendor_v2",
+      "hue": "teal"
+    },
+    {
+      "file": "menus/teal/loot-bag.png",
+      "spec_id": "loot_v2",
+      "hue": "teal"
+    },
+    {
+      "file": "menus/teal/options.png",
+      "spec_id": "options_v2",
+      "hue": "teal"
+    },
+    {
+      "file": "menus/slate/character.png",
+      "spec_id": "c_menu_v2",
+      "hue": "slate"
+    },
+    {
+      "file": "menus/slate/errands.png",
+      "spec_id": "errands_v2",
+      "hue": "slate"
+    },
+    {
+      "file": "menus/slate/quest-offer.png",
+      "spec_id": "quest_offer_v2",
+      "hue": "slate"
+    },
+    {
+      "file": "menus/slate/bank.png",
+      "spec_id": "bank_v2",
+      "hue": "slate"
+    },
+    {
+      "file": "menus/slate/vendor.png",
+      "spec_id": "vendor_v2",
+      "hue": "slate"
+    },
+    {
+      "file": "menus/slate/loot-bag.png",
+      "spec_id": "loot_v2",
+      "hue": "slate"
+    },
+    {
+      "file": "menus/slate/options.png",
+      "spec_id": "options_v2",
+      "hue": "slate"
+    },
+    {
+      "file": "menus/moss/character.png",
+      "spec_id": "c_menu_v2",
+      "hue": "moss"
+    },
+    {
+      "file": "menus/moss/errands.png",
+      "spec_id": "errands_v2",
+      "hue": "moss"
+    },
+    {
+      "file": "menus/moss/quest-offer.png",
+      "spec_id": "quest_offer_v2",
+      "hue": "moss"
+    },
+    {
+      "file": "menus/moss/bank.png",
+      "spec_id": "bank_v2",
+      "hue": "moss"
+    },
+    {
+      "file": "menus/moss/vendor.png",
+      "spec_id": "vendor_v2",
+      "hue": "moss"
+    },
+    {
+      "file": "menus/moss/loot-bag.png",
+      "spec_id": "loot_v2",
+      "hue": "moss"
+    },
+    {
+      "file": "menus/moss/options.png",
+      "spec_id": "options_v2",
+      "hue": "moss"
+    },
+    {
+      "file": "surfaces/hud.png",
+      "spec_id": "hud",
+      "hue": null
+    },
+    {
+      "file": "surfaces/confirm.png",
+      "spec_id": "confirm_demo",
+      "hue": null
+    },
+    {
+      "file": "surfaces/tooltip.png",
+      "spec_id": "tooltip_demo",
+      "hue": null
+    },
+    {
+      "file": "cinematics/stampede-1-ring-howl.png",
+      "spec_id": "legendary_stampede_demo",
+      "hue": null
+    }
+  ],
+  "cinematics": {
+    "stampede": "legendary3:<icon>|<title>|<line>|<rarity> — 1 key frame captured (mob ring + wolf howl). Mid-blast + UNIQUE-banner frames and the toast surface failed capture this rev; see the live workbench for the full sequence.",
+    "rarity_wordmark": "assets/uikit-style cin_unique.png slams in at reveal; rarity part defaults UNIQUE"
+  },
+  "palettes": {
+    "dusk": {
+      "w0": "#1c1424",
+      "w1": "#201828",
+      "w2": "#3a2c48",
+      "w3": "#f2c14e",
+      "w4": "#a06f22",
+      "w5": "#443354",
+      "w6": "#c98a2e",
+      "w7": "#2a2136",
+      "w8": "#5c4a74",
+      "w9": "#181120",
+      "wA": "#998899",
+      "wB": "#776688",
+      "wC": "#443354",
+      "wD": "#332844",
+      "wE": "#6e5a88",
+      "wF": "#aa98bb",
+      "wG": "#887799",
+      "wH": "#4a3a5e",
+      "wI": "#3a2c4a",
+      "wJ": "#261c34",
+      "wK": "#3d3852",
+      "wL": "#343048",
+      "wM": "#241f38",
+      "wN": "#ffd968",
+      "wO": "#221a30",
+      "wP": "#f2ead8",
+      "wQ": "#cfc4ec",
+      "wR": "#5c4a74",
+      "wS": "#453558",
+      "wT": "#71618e",
+      "wU": "#6ab8f2",
+      "wV": "#302640",
+      "bgPanel": "linear-gradient(180deg,#443354 0%,#302640 100%)",
+      "bgPopup": "linear-gradient(180deg,#443354 0%,#302640 100%)",
+      "bgBtn": "linear-gradient(180deg,#6e5a88 0%,#554466 100%)",
+      "bgBtnHov": "linear-gradient(180deg,#7d6a99 0%,#5f4d73 100%)",
+      "bgBtnPress": "#443354",
+      "bgSlot": "#2a2136",
+      "bgSlotHov": "#453558",
+      "bgTt": "#181120",
+      "bgTabSel": "linear-gradient(180deg,#6e5a88 0%,#554466 100%)",
+      "plqGrad": "linear-gradient(180deg,#554466 0%,#3a2c48 100%)",
+      "rad": "2px",
+      "lip": "2px",
+      "lipC": "#161020",
+      "barTicks": "repeating-linear-gradient(90deg,transparent 0 7px,rgba(14,10,20,0.5) 7px 8px)"
+    },
+    "teal": {
+      "w0": "#142423",
+      "w1": "#182827",
+      "w2": "#2c4846",
+      "w3": "#f2c14e",
+      "w4": "#a06f22",
+      "w5": "#335452",
+      "w6": "#c98a2e",
+      "w7": "#213633",
+      "w8": "#4a746e",
+      "w9": "#11201e",
+      "wA": "#889299",
+      "wB": "#668885",
+      "wC": "#335452",
+      "wD": "#28443f",
+      "wE": "#5a8881",
+      "wF": "#98bbb9",
+      "wG": "#779996",
+      "wH": "#3a5e59",
+      "wI": "#2c4a46",
+      "wJ": "#1c3430",
+      "wK": "#385248",
+      "wL": "#30483e",
+      "wM": "#1f382e",
+      "wN": "#ffd968",
+      "wO": "#1a302b",
+      "wP": "#f2d8ef",
+      "wQ": "#c4ece0",
+      "wR": "#4a746e",
+      "wS": "#355854",
+      "wT": "#618e84",
+      "wU": "#6ab8f2",
+      "wV": "#26403b",
+      "bgPanel": "linear-gradient(180deg,#335452 0%,#26403b 100%)",
+      "bgPopup": "linear-gradient(180deg,#335452 0%,#26403b 100%)",
+      "bgBtn": "linear-gradient(180deg,#5a8881 0%,#446663 100%)",
+      "bgBtnHov": "linear-gradient(180deg,#6a9991 0%,#4d736f 100%)",
+      "bgBtnPress": "#335452",
+      "bgSlot": "#213633",
+      "bgSlotHov": "#355854",
+      "bgTt": "#11201e",
+      "bgTabSel": "linear-gradient(180deg,#5a8881 0%,#446663 100%)",
+      "plqGrad": "linear-gradient(180deg,#446663 0%,#2c4846 100%)",
+      "rad": "2px",
+      "lip": "2px",
+      "lipC": "#10201d",
+      "barTicks": "repeating-linear-gradient(90deg,transparent 0 7px,rgba(14,10,20,0.5) 7px 8px)"
+    },
+    "slate": {
+      "w0": "#141724",
+      "w1": "#181b28",
+      "w2": "#2c3148",
+      "w3": "#f2c14e",
+      "w4": "#a06f22",
+      "w5": "#333854",
+      "w6": "#c98a2e",
+      "w7": "#212636",
+      "w8": "#4a5474",
+      "w9": "#111420",
+      "wA": "#8e8899",
+      "wB": "#666c88",
+      "wC": "#333854",
+      "wD": "#283044",
+      "wE": "#5a6588",
+      "wF": "#989dbb",
+      "wG": "#777d99",
+      "wH": "#3a425e",
+      "wI": "#2c324a",
+      "wJ": "#1c2234",
+      "wK": "#384452",
+      "wL": "#303c48",
+      "wM": "#1f2b38",
+      "wN": "#ffd968",
+      "wO": "#1a2130",
+      "wP": "#f2d9d8",
+      "wQ": "#c4d4ec",
+      "wR": "#4a5474",
+      "wS": "#353c58",
+      "wT": "#616f8e",
+      "wU": "#6ab8f2",
+      "wV": "#262d40",
+      "bgPanel": "linear-gradient(180deg,#333854 0%,#262d40 100%)",
+      "bgPopup": "linear-gradient(180deg,#333854 0%,#262d40 100%)",
+      "bgBtn": "linear-gradient(180deg,#5a6588 0%,#444a66 100%)",
+      "bgBtnHov": "linear-gradient(180deg,#6a7699 0%,#4d5473 100%)",
+      "bgBtnPress": "#333854",
+      "bgSlot": "#212636",
+      "bgSlotHov": "#353c58",
+      "bgTt": "#111420",
+      "bgTabSel": "linear-gradient(180deg,#5a6588 0%,#444a66 100%)",
+      "plqGrad": "linear-gradient(180deg,#444a66 0%,#2c3148 100%)",
+      "rad": "2px",
+      "lip": "2px",
+      "lipC": "#101520",
+      "barTicks": "repeating-linear-gradient(90deg,transparent 0 7px,rgba(14,10,20,0.5) 7px 8px)"
+    },
+    "moss": {
+      "w0": "#242414",
+      "w1": "#282818",
+      "w2": "#48482c",
+      "w3": "#f2c14e",
+      "w4": "#a06f22",
+      "w5": "#535433",
+      "w6": "#c98a2e",
+      "w7": "#363521",
+      "w8": "#74714a",
+      "w9": "#202011",
+      "wA": "#919988",
+      "wB": "#888866",
+      "wC": "#535433",
+      "wD": "#444128",
+      "wE": "#88855a",
+      "wF": "#babb98",
+      "wG": "#999977",
+      "wH": "#5e5c3a",
+      "wI": "#4a492c",
+      "wJ": "#34321c",
+      "wK": "#524a38",
+      "wL": "#484030",
+      "wM": "#38311f",
+      "wN": "#ffd968",
+      "wO": "#302d1a",
+      "wP": "#d8edf2",
+      "wQ": "#ece3c4",
+      "wR": "#74714a",
+      "wS": "#585735",
+      "wT": "#8e8761",
+      "wU": "#6ab8f2",
+      "wV": "#403d26",
+      "bgPanel": "linear-gradient(180deg,#535433 0%,#403d26 100%)",
+      "bgPopup": "linear-gradient(180deg,#535433 0%,#403d26 100%)",
+      "bgBtn": "linear-gradient(180deg,#88855a 0%,#666644 100%)",
+      "bgBtnHov": "linear-gradient(180deg,#99956a 0%,#73724d 100%)",
+      "bgBtnPress": "#535433",
+      "bgSlot": "#363521",
+      "bgSlotHov": "#585735",
+      "bgTt": "#202011",
+      "bgTabSel": "linear-gradient(180deg,#88855a 0%,#666644 100%)",
+      "plqGrad": "linear-gradient(180deg,#666644 0%,#48482c 100%)",
+      "rad": "2px",
+      "lip": "2px",
+      "lipC": "#201e10",
+      "barTicks": "repeating-linear-gradient(90deg,transparent 0 7px,rgba(14,10,20,0.5) 7px 8px)"
+    }
+  },
+  "specs_file": "menu-specs.json",
+  "assets": {
+    "icons": "assets/icons/atlas.png + atlas.json (470 named 16px glyphs)",
+    "font": "assets/uikit/wildshot_pixel.ttf",
+    "chrome": "assets/uikit/*.png"
+  }
+}
