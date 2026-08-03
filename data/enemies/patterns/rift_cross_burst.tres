@@ -1,0 +1,131 @@
+[gd_resource type="Resource" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://data/pattern_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; RIFT BOSS POOL (sl-0180): CROSS BURST — a four-spoke star cross
+; (two staggered speeds per spoke), ROTOR world-frame base advancing
+; 0.8°/tick: the cross precesses slowly across volleys, the four
+; 90° quadrant gaps walk with it. Pattern id 36; lead 36 (the
+; radial danger class — no second radial rides any of its phases).
+; Elite amber.
+
+[sub_resource type="Resource" id="s0"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 3.6
+radius = 0.2
+damage = 10
+ttl_ticks = 68
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s1"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 4.4
+radius = 0.2
+damage = 10
+ttl_ticks = 58
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.7
+
+[sub_resource type="Resource" id="s2"]
+script = ExtResource("2")
+angle_offset_deg = 90.0
+speed = 3.6
+radius = 0.2
+damage = 10
+ttl_ticks = 68
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s3"]
+script = ExtResource("2")
+angle_offset_deg = 90.0
+speed = 4.4
+radius = 0.2
+damage = 10
+ttl_ticks = 58
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.7
+
+[sub_resource type="Resource" id="s4"]
+script = ExtResource("2")
+angle_offset_deg = 180.0
+speed = 3.6
+radius = 0.2
+damage = 10
+ttl_ticks = 68
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s5"]
+script = ExtResource("2")
+angle_offset_deg = 180.0
+speed = 4.4
+radius = 0.2
+damage = 10
+ttl_ticks = 58
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.7
+
+[sub_resource type="Resource" id="s6"]
+script = ExtResource("2")
+angle_offset_deg = 270.0
+speed = 3.6
+radius = 0.2
+damage = 10
+ttl_ticks = 68
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s7"]
+script = ExtResource("2")
+angle_offset_deg = 270.0
+speed = 4.4
+radius = 0.2
+damage = 10
+ttl_ticks = 58
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.7
+
+[resource]
+script = ExtResource("1")
+id = &"rift_cross_burst"
+pattern_id = 36
+aim_mode = 2
+rotor_deg_per_tick = 0.8
+shots = Array[Resource]([SubResource("s0"), SubResource("s1"), SubResource("s2"), SubResource("s3"), SubResource("s4"), SubResource("s5"), SubResource("s6"), SubResource("s7")])

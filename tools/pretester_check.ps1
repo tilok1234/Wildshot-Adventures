@@ -277,7 +277,18 @@ if (-not $SkipBattery) {
         # own row. All four rift rows run the REAL arena physics (the
         # pull, the drains, the lives; drain is never a counted hit).
         @("proof_rift_void","1,2,3",3600,"","","PASS","PASS"),
-        @("proof_rift_comet","1,2,3",3600,"","","PASS","PASS")
+        @("proof_rift_comet","1,2,3",3600,"","","PASS","PASS"),
+        # sl-0180 wave 1A: the rift boss pool — eight kits, each a
+        # schedule-paced full fight in the real arena (line rules
+        # aboard; every phase flip mid-flight; CORE-33 at floor+cap).
+        @("proof_boss_twin_helix","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_boss_ring_nest","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_boss_sine_shoal","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_boss_boomerang_veil","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_boss_decel_wall","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_boss_zone_constellation","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_boss_cross_burst","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_boss_pulse_lattice","1,2,3",3600,"","","PASS","PASS")
     )
     . "$PSScriptRoot\battery_runner.ps1"
     if ($Workers -le 0) { $Workers = Get-PhysicalCoreCount }

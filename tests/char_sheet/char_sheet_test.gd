@@ -178,8 +178,62 @@ func _init() -> void:
 		"NEGATIVE: legacy world gets no pane rows (bag never engages)"
 	)
 
+	# 5. THE CREEL (sl-0181): pure-model rows over the in-sim fish
+	# wallet — nonzero species only, count + name + glyph id, and ZERO
+	# interaction with the bag capacity by construction.
+	check(CharacterSheet.creel_rows(world).is_empty(), "empty wallet -> empty creel")
+	p.fish = PackedInt32Array()
+	p.fish.resize(12)
+	p.fish[0] = 3
+	p.fish[5] = 1
+	var crows: Array = CharacterSheet.creel_rows(world)
+	check(crows.size() == 2, "creel renders exactly the nonzero species")
+	var c0: Dictionary = crows[0]
+	check(
+		int(c0.count) == 3 and String(c0.name) == "Emberwisp Koi",
+		"creel row: count + species name exact"
+	)
+	check(String(c0.icon_id) == "collect.fish.f01", "creel glyph keys by species index")
+	var bag_before := CharacterSheet.bag_rows(world).size()
+	check(bag_before == 0, "fish occupy ZERO bag slots (one truth, no dual)")
+	check(CharacterSheet.creel_rows(lw).is_empty(), "NEGATIVE: legacy world gets no creel")
+
+	# 6. THE RIFTER PANEL (sl-0181): rod row informational; chest/helm
+	# rows read live sim equips and the click op wears the NEXT owned
+	# piece via the recorded tackle-equip range.
+	var rrows: Array = CharacterSheet.rifter_rows(world, prof)
+	check(rrows.size() == 3, "rifter panel: rod + chest + helm rows")
+	var rr0: Dictionary = rrows[0]
+	check(
+		String(rr0.label) == "rod" and String(rr0.line).contains("Cane Rod") and int(rr0.op) == 0,
+		"rod row informational (the profile's choice, no op)"
+	)
+	var rr1: Dictionary = rrows[1]
+	check(String(rr1.line) == "—" and int(rr1.op) == 0, "bare chest slot: no op")
+	p.tackle_owned_mask = 0b0101  # chest_t1 (0) + chest_t2 (2) owned
+	p.tackle_chest = 0
+	var rrows2: Array = CharacterSheet.rifter_rows(world, prof)
+	var rc: Dictionary = rrows2[1]
+	check(String(rc.line).begins_with("T1 Rift Chest"), "worn chest speaks the grammar")
+	check(
+		int(rc.op) == BagStep.OP_TACKLE_EQUIP_BASE + 2,
+		"chest click wears the NEXT owned piece (the recorded op)"
+	)
+	p.tackle_chest = 2
+	var rrows3: Array = CharacterSheet.rifter_rows(world, prof)
+	check(
+		int((rrows3[1] as Dictionary).op) == BagStep.OP_TACKLE_EQUIP_BASE + 0,
+		"the cycle wraps back to the first owned piece"
+	)
+	p.tackle_owned_mask = 0
+	p.tackle_chest = -1
+	p.fish = PackedInt32Array()
+
 	if fails.is_empty():
-		print("char_sheet_test: PASS (parity-exact/perturbation/quest-log/legacy/pane)")
+		print(
+			"char_sheet_test: PASS (parity-exact/perturbation/quest-log/legacy/pane/",
+			"creel/rifter-panel)"
+		)
 		quit(0)
 	else:
 		for m: String in fails:

@@ -96,8 +96,12 @@ static func run(world: RefCounted) -> void:
 		)
 
 
-## Consume the node, draw rarity, emit CAST_COMPLETE with the node's
-## biome. Authored nodes (index >= 0) re-arm on a timer; ambient nodes
+## Consume the node, draw rarity, then THE FIGHT (sl-0180: the boss
+## pool — a weighted per-biome draw appended to the cast's fixed
+## rng_loot sequence; "catch" = the standard fish fight; unknown or
+## absent pools fall back to catch FAIL-SAFE, and balance_calc GATE 7
+## validates the tables). Emit CAST_COMPLETE with biome + fight.
+## Authored nodes (index >= 0) re-arm on a timer; ambient nodes
 ## (encoded < -1) are removed — new ones keep surfacing.
 static func _cast(world: RefCounted, p: RefCounted, node: int) -> void:
 	var biome := 0
@@ -113,6 +117,7 @@ static func _cast(world: RefCounted, p: RefCounted, node: int) -> void:
 		world.rift_ambient_pos.remove_at(j)
 		world.rift_ambient_biome.remove_at(j)
 	var rare: bool = world.rng_loot.next_bounded(1000) < RARE_PERMILLE
+	var fight := _draw_fight(world, biome, rare)
 	(
 		world
 		. events
@@ -124,10 +129,39 @@ static func _cast(world: RefCounted, p: RefCounted, node: int) -> void:
 				"node": node,
 				"rare": rare,
 				"biome": biome,
+				"fight": fight,
 				"pos": pos,
 			}
 		)
 	)
+
+
+## The weighted fight draw (ONE rng_loot draw whenever a non-empty
+## pool exists — the sequence stays fixed per cast). BIOME_KEYS order
+## is the starhook.biomes contract (0 nebula / 1 void / 2 comet).
+const BIOME_KEYS: Array[String] = ["nebula", "void", "comet"]
+
+
+static func _draw_fight(world: RefCounted, biome: int, rare: bool) -> String:
+	var pools: Dictionary = world.stat_frame.get("starhook", {}).get("fight_pool", {})
+	var bkey := BIOME_KEYS[biome] if biome >= 0 and biome < BIOME_KEYS.size() else ""
+	var pool_v: Variant = (pools.get(bkey, {}) as Dictionary).get("rare" if rare else "common", [])
+	if not pool_v is Array or (pool_v as Array).is_empty():
+		return "catch"
+	var pool: Array = pool_v
+	var total := 0
+	for row_v: Variant in pool:
+		total += maxi(0, int((row_v as Dictionary).get("w", 0)))
+	if total <= 0:
+		return "catch"
+	var roll: int = world.rng_loot.next_bounded(total)
+	var acc := 0
+	for row_v: Variant in pool:
+		var row: Dictionary = row_v
+		acc += maxi(0, int(row.get("w", 0)))
+		if roll < acc:
+			return String(row.get("fight", "catch"))
+	return "catch"
 
 
 ## Periodic ambient spawn roll (rng_misc, fixed draw order): under the

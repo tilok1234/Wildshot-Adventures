@@ -340,8 +340,10 @@ static func _tackle_buy(world: RefCounted, p: RefCounted, row_i: int) -> void:
 
 
 static func _tackle_equip(world: RefCounted, p: RefCounted, items_i: int) -> void:
-	if not at_tackle(world, p):
-		return
+	# sl-0181 re-pin (the C-menu rifter panel): EQUIP among OWNED
+	# pieces is legal ANYWHERE — wearing your own gear is a menu act,
+	# not a shop act. BUY keeps the station gate above. (The sl-0177
+	# at-station equip pin flips deliberately, one session old.)
 	var ilist: Array = TackleCatalog.items(world.stat_frame)
 	if items_i >= ilist.size() or items_i > 62:
 		return

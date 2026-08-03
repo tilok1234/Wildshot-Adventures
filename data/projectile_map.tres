@@ -31,7 +31,14 @@ shots = {
 25: "hostile-orb:d10-amber-dark",
 26: "hostile-orb:d10-amber",
 27: "hostile-orb:d10-amber-dark",
-28: "hostile-orb:d10-amber-deep"
+28: "hostile-orb:d10-amber-deep",
+30: "hostile-orb:d10-amber",
+31: "hostile-orb:d10-amber-dark",
+32: "hostile-orb:d10-amber",
+33: "hostile-orb:d10-amber-deep",
+34: "hostile-orb:d10-amber-dark",
+36: "hostile-orb:d10-amber",
+37: "hostile-orb:d10-amber-deep"
 }
 alts = {
 }
@@ -39,6 +46,7 @@ player_patterns = PackedInt32Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 29)
 zones = {
 15: "hostile-hazard-zone",
 18: "hostile-hazard-zone",
+35: "hostile-hazard-zone",
 -2: "friendly-blast-rune"
 }
 arm_strip = "hostile-hazard-arm"

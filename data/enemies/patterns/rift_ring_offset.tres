@@ -1,0 +1,157 @@
+[gd_resource type="Resource" load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://data/pattern_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; RIFT BOSS POOL (sl-0180): RING OFFSET — the rift ring's half-gap
+; twin (10 x 36° at +18°). Alternating with the base ring via the
+; one-state-machine slot serialization, the gaps WALK between rings;
+; each ring alone keeps full 36° gaps (the Grubb law honored
+; sequentially — never two radials in the air by authored cadence).
+; Pattern id 31; lead 36. Elite amber-deep.
+
+[sub_resource type="Resource" id="s0"]
+script = ExtResource("2")
+angle_offset_deg = 18.0
+speed = 4.0
+radius = 0.2
+damage = 10
+ttl_ticks = 60
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s1"]
+script = ExtResource("2")
+angle_offset_deg = 54.0
+speed = 4.0
+radius = 0.2
+damage = 10
+ttl_ticks = 60
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s2"]
+script = ExtResource("2")
+angle_offset_deg = 90.0
+speed = 4.0
+radius = 0.2
+damage = 10
+ttl_ticks = 60
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s3"]
+script = ExtResource("2")
+angle_offset_deg = 126.0
+speed = 4.0
+radius = 0.2
+damage = 10
+ttl_ticks = 60
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s4"]
+script = ExtResource("2")
+angle_offset_deg = 162.0
+speed = 4.0
+radius = 0.2
+damage = 10
+ttl_ticks = 60
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s5"]
+script = ExtResource("2")
+angle_offset_deg = 198.0
+speed = 4.0
+radius = 0.2
+damage = 10
+ttl_ticks = 60
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s6"]
+script = ExtResource("2")
+angle_offset_deg = 234.0
+speed = 4.0
+radius = 0.2
+damage = 10
+ttl_ticks = 60
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s7"]
+script = ExtResource("2")
+angle_offset_deg = 270.0
+speed = 4.0
+radius = 0.2
+damage = 10
+ttl_ticks = 60
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s8"]
+script = ExtResource("2")
+angle_offset_deg = 306.0
+speed = 4.0
+radius = 0.2
+damage = 10
+ttl_ticks = 60
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s9"]
+script = ExtResource("2")
+angle_offset_deg = 342.0
+speed = 4.0
+radius = 0.2
+damage = 10
+ttl_ticks = 60
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[resource]
+script = ExtResource("1")
+id = &"rift_ring_offset"
+pattern_id = 31
+shots = Array[Resource]([SubResource("s0"), SubResource("s1"), SubResource("s2"), SubResource("s3"), SubResource("s4"), SubResource("s5"), SubResource("s6"), SubResource("s7"), SubResource("s8"), SubResource("s9")])

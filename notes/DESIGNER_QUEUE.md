@@ -1,5 +1,29 @@
 # Designer queue — everything waiting on you (historical; see banner)
 
+> **2026-08-03 NIGHT (post-BOSS-EXPANSION sweep): still historical —
+> the LIVE queue is planning-side (notes/HANDOFF.md §2 has the
+> current open list).** Rifts have a boss pool now: casting can hook
+> something much bigger than a fish — eight new fights (spirals,
+> weaving shoals, boomerang curtains, hanging star-walls, a
+> zone-caster, rotating crosses) spread across the three biomes,
+> each 2-4 minutes against your rod, all provably dodgeable at the
+> floor speed. Your fish sit IN your inventory now (the creel under
+> the bag — stacks with counts), and the C menu grew a rifter
+> section (rod/chest/helm; click swaps owned gear anywhere — buying
+> stays at the tackle keeper). Genuinely open your side, in plain
+> words:
+> - **Cast until you hook a boss** — every weight, hp, fight length,
+>   and pattern number is provisional; one-liners flip any of them.
+>   The fight names on screen are placeholders for your fish designs.
+> - **The dungeon test** (a walkable path with mobs and a boss at
+>   the end) lands right behind this — the console `dungeon` command
+>   jumps straight in when it does.
+> - The quest-icon findings paste STILL hasn't ridden a session —
+>   drop it any time.
+> - Standing: the gear-seam play (shop/prices/rods), the menu-pass
+>   play, foraging builds next, weekly GIF (a boss hook is prime
+>   material).
+
 > **2026-08-03 EVENING (post-GEAR-SEAM sweep): still historical — the
 > LIVE queue is planning-side (notes/HANDOFF.md §2 has the current
 > open list).** Your starhook gear is real now: the tackle keeper

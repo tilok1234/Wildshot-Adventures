@@ -1,4 +1,29 @@
-# Session Handoff — updated 2026-08-03 (post-GEAR-SEAM: sl-0177/0178 landed at SERIAL 26; the menu pass v2 stands beneath)
+# Session Handoff — updated 2026-08-03 (post-BOSS-EXPANSION waves 1A+1B: sl-0180/0181; the gear seam + menu pass stand beneath)
+
+> **THE STARHOOK BOSS EXPANSION waves 1A+1B ARE LANDED (2026-08-03
+> night; sl-0180 + sl-0181; SERIAL 26 / WSR v3 UNCHANGED — zero
+> state growth, the pool rides rng_loot draws + definitions; full
+> record = the CLAUDE.md milestone tail + notes/RIFT_BOSS_POOL.md):**
+> casts DRAW A FIGHT (per-biome weighted pools [T], catch-heavy,
+> fail-safe fallback); EIGHT boss kits at roster 30-37 (descriptive
+> placeholder ids; 2-3 phases; keep-range only — the one-room law
+> is MECHANIZED now; hp graded 1400-2800); EIGHT new patterns (ids
+> 30-37) including the FIRST hostile SINE/BOOMERANG/DECELERATE uses
+> (bot-projected closed-form, proofs exercise it live) + two
+> precessing rotors + the alternating half-gap ring + a galaxy-skin
+> zone; fight lengths gated by balance_calc GATE 7 vs the free-spine
+> rod DPS (all 117-148 s; strain clock reported, never gated);
+> NO-STROBE extended to every new pattern (probe committed, zero
+> flips); 8 schedule proofs PASS floor+cap first authoring (battery
+> 83→99). PHASED-ONLY catch landing pre-builds the dungeon premise.
+> Wave 1B: THE CREEL (fish stacks with badges under the bag — the
+> wallet stays THE truth, zero cap impact) + THE RIFTER PANEL (C
+> tab: rod/chest/helm slots, click-cycles owned gear via the
+> recorded op; EQUIP-ANYWHERE re-pin — buy stays at the station).
+> WAVE 2 (the dungeon-rift path test) staged in-session, lands as
+> its own gated commit. The QUEST-PULL FINDINGS ×2 paste did NOT
+> ride AGAIN — sl-0175/0176 stay open. NO feel verdicts; every
+> number [T].
 
 > **THE GEAR SEAM IS LANDED (2026-08-03 evening; sl-0177 as amended
 > by sl-0178; SERIAL 26, WSR v3 unchanged, next bump 27; full record

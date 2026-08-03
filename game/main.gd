@@ -105,6 +105,15 @@ const DUNGEON_DOORS := {
 	&"rift_void_rare": [RIFT_EXIT_DOOR],
 	&"rift_comet_common": [RIFT_EXIT_DOOR],
 	&"rift_comet_rare": [RIFT_EXIT_DOOR],
+	# sl-0180: the boss pool shares the one arena + the one flee door.
+	&"rift_boss_twin_helix": [RIFT_EXIT_DOOR],
+	&"rift_boss_ring_nest": [RIFT_EXIT_DOOR],
+	&"rift_boss_sine_shoal": [RIFT_EXIT_DOOR],
+	&"rift_boss_boomerang_veil": [RIFT_EXIT_DOOR],
+	&"rift_boss_decel_wall": [RIFT_EXIT_DOOR],
+	&"rift_boss_zone_constellation": [RIFT_EXIT_DOOR],
+	&"rift_boss_cross_burst": [RIFT_EXIT_DOOR],
+	&"rift_boss_pulse_lattice": [RIFT_EXIT_DOOR],
 }
 const DOOR_RADIUS := 0.7
 const RenderLayers := preload("res://game/render_layers.gd")
@@ -667,10 +676,22 @@ func _process(_delta: float) -> void:
 					CharacterProfile.harvest(world, character)
 					CharacterProfile.save_profile(character)
 					var biome := clampi(int(lev.get("biome", 0)), 0, 2)
+					# sl-0180: the cast's fight draw routes the dive — the
+					# standard catch keeps the biome x rarity arenas; a
+					# drawn BOSS descends into its own scenario (unknown
+					# ids fall back to the catch, matching the sim's own
+					# fail-safe).
+					var fight := String(lev.get("fight", "catch"))
 					var target := (
 						"res://data/scenarios/rift_%s_%s.tres"
 						% [RIFT_BIOME_KEYS[biome], "rare" if bool(lev.rare) else "common"]
 					)
+					if fight != "catch":
+						var boss_path := "res://data/scenarios/rift_boss_%s.tres" % fight
+						if ResourceLoader.exists(boss_path):
+							target = boss_path
+						else:
+							push_error("cast drew unknown fight '%s' — catch fallback" % fight)
 					Config.set_setting("dev", "scenario", target)
 					Config.set_setting("dev", "door_spawn", "")
 					print("the line sinks into the rift...")
@@ -678,13 +699,16 @@ func _process(_delta: float) -> void:
 					return
 			SimEvents.Type.PHASE_CHANGED:
 				# Rift phase titles (prototype flavor; the telegraphs
-				# stay the real warning — Law 4).
+				# stay the real warning — Law 4). sl-0180: the title is
+				# the def's OWN phase id (strip the p<n>_ prefix) — the
+				# catch keeps COIL/THRASH and every pool boss reads its
+				# authored beat names; descriptive ids, no lore names.
 				if _scenario_rift:
-					var ph := int(lev.get("phase", 0))
-					if ph == 1:
-						_show_toast("THE COIL")
-					elif ph == 2:
-						_show_toast("THE THRASH")
+					var pname := _rift_phase_name(
+						int(lev.get("def_index", -1)), int(lev.get("phase", 0))
+					)
+					if not pname.is_empty():
+						_show_toast("THE %s" % pname)
 			SimEvents.Type.LINE_SNAPPED:
 				# One of the three lives burned — the line re-spools.
 				var left := int(lev.get("lives_left", 0))
@@ -1102,6 +1126,26 @@ func _rift_fish_name(biome: int, fish: int, rare: bool) -> String:
 	if fish >= 0 and fish < table.size():
 		return String(table[fish].get("name", "the catch"))
 	return "the catch"
+
+
+## sl-0180: a rift phase's toast name = the def's own phase id with
+## the p<n>_ prefix stripped, uppercased ("p2_coil" -> "COIL") — one
+## rule for the catch and every pool boss; phase 0 entries stay
+## silent (the fight opening is not a beat).
+func _rift_phase_name(def_index: int, phase: int) -> String:
+	if phase <= 0 or def_index < 0 or def_index >= world.enemy_defs.size():
+		return ""
+	var def: Resource = world.enemy_defs[def_index]
+	if def.phases == null:
+		return ""
+	var plist: Array = def.phases.phases
+	if phase >= plist.size():
+		return ""
+	var pid := String(plist[phase].id)
+	var us := pid.find("_")
+	if us >= 0 and pid.begins_with("p"):
+		pid = pid.substr(us + 1)
+	return pid.to_upper().replace("_", " ")
 
 
 ## THE GEAR SEAM: one grammar line for a tackle catalog row (toasts).

@@ -1,0 +1,128 @@
+[gd_resource type="Resource" load_steps=19 format=3]
+
+[ext_resource type="Script" path="res://data/enemy_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/emitter_slot.gd" id="2"]
+[ext_resource type="Script" path="res://data/phase_def.gd" id="3"]
+[ext_resource type="Script" path="res://data/phase_list.gd" id="4"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/star_spray.tres" id="5"]
+[ext_resource type="Resource" path="res://data/enemies/hazards/constellation_zone.tres" id="6"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/rift_ring.tres" id="7"]
+
+; RIFT BOSS POOL (sl-0180 wave 1A): Zone Constellation — grade 3, void pool.
+; PLACEHOLDER descriptive id (no lore names — the designer's fish
+; designs re-skin later; identity is data-keyed). Keep-range only
+; (the hooked-fish law: no chaser phases in the one-room arena);
+; every emitter telegraph == its pattern's ONE lead (mechanized
+; law); elite amber; every number [T]. Fight length gated by
+; balance_calc GATE 7 vs the grade's free-spine rod DPS.
+
+[sub_resource type="Resource" id="e0"]
+script = ExtResource("2")
+pattern = ExtResource("5")
+trigger_range = 11.0
+telegraph_ticks = 24
+cooldown_ticks = 100
+recover_ticks = 14
+
+[sub_resource type="Resource" id="e1"]
+script = ExtResource("2")
+hazard = ExtResource("6")
+trigger_range = 11.0
+telegraph_ticks = 45
+cooldown_ticks = 210
+recover_ticks = 24
+
+[sub_resource type="Resource" id="phase1"]
+script = ExtResource("3")
+id = &"p1_open"
+hp_floor_pct = 60.0
+movement_policy = 1
+move_speed = -1.0
+range_min = 3.5
+range_max = 6.0
+entry_cooldown_ticks = 0
+emitters = Array[Resource]([SubResource("e0"), SubResource("e1")])
+
+[sub_resource type="Resource" id="e2"]
+script = ExtResource("2")
+pattern = ExtResource("5")
+trigger_range = 11.0
+telegraph_ticks = 24
+cooldown_ticks = 92
+recover_ticks = 12
+
+[sub_resource type="Resource" id="e3"]
+script = ExtResource("2")
+hazard = ExtResource("6")
+trigger_range = 11.0
+telegraph_ticks = 45
+cooldown_ticks = 170
+recover_ticks = 20
+
+[sub_resource type="Resource" id="phase2"]
+script = ExtResource("3")
+id = &"p2_surge"
+hp_floor_pct = 25.0
+movement_policy = 1
+move_speed = -1.0
+range_min = 3.5
+range_max = 6.0
+entry_cooldown_ticks = 30
+emitters = Array[Resource]([SubResource("e2"), SubResource("e3")])
+
+[sub_resource type="Resource" id="e4"]
+script = ExtResource("2")
+pattern = ExtResource("5")
+trigger_range = 11.0
+telegraph_ticks = 24
+cooldown_ticks = 92
+recover_ticks = 12
+
+[sub_resource type="Resource" id="e5"]
+script = ExtResource("2")
+hazard = ExtResource("6")
+trigger_range = 11.0
+telegraph_ticks = 45
+cooldown_ticks = 170
+recover_ticks = 20
+
+[sub_resource type="Resource" id="e6"]
+script = ExtResource("2")
+pattern = ExtResource("7")
+trigger_range = 11.0
+telegraph_ticks = 36
+cooldown_ticks = 190
+recover_ticks = 20
+
+[sub_resource type="Resource" id="phase3"]
+script = ExtResource("3")
+id = &"p3_finale"
+hp_floor_pct = 0.0
+movement_policy = 1
+move_speed = -1.0
+range_min = 3.5
+range_max = 6.0
+entry_cooldown_ticks = 30
+emitters = Array[Resource]([SubResource("e4"), SubResource("e5"), SubResource("e6")])
+
+[sub_resource type="Resource" id="phaselist"]
+script = ExtResource("4")
+phases = Array[Resource]([SubResource("phase1"), SubResource("phase2"), SubResource("phase3")])
+
+[resource]
+script = ExtResource("1")
+id = &"rift_boss_zone_constellation"
+display_name = "Rift Boss — Zone Constellation"
+hp = 1600
+body_radius = 0.6
+move_speed = 2.2
+contact_damage = 0
+contact_cooldown_ticks = 30
+aggro_range = 14.0
+movement_policy = 1
+range_min = 3.5
+range_max = 6.0
+phases = SubResource("phaselist")
+xp_value = 320
+gold_min = 200
+gold_max = 300

@@ -1,0 +1,73 @@
+[gd_resource type="Resource" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://data/pattern_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; RIFT BOSS POOL (sl-0180): BOOMERANG VEIL — four bolts fan out for
+; 36 ticks at 5.5 t/s then come BACK along their own axes at 4.5
+; (the BOOMERANG program's first hostile use; CORE-32: the return is
+; axis-bound, never homing). The safe ground flips sides mid-volley —
+; playful, deterministic, bot-projected. Pattern id 33; lead 30 (the
+; fan danger class — the return pays the generous lead). Elite amber.
+
+[sub_resource type="Resource" id="s0"]
+script = ExtResource("2")
+angle_offset_deg = -45.0
+speed = 5.5
+radius = 0.2
+damage = 10
+ttl_ticks = 80
+program = 3
+prog_a = 36.0
+prog_b = 5.5
+prog_c = 4.5
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s1"]
+script = ExtResource("2")
+angle_offset_deg = -15.0
+speed = 5.5
+radius = 0.2
+damage = 10
+ttl_ticks = 80
+program = 3
+prog_a = 36.0
+prog_b = 5.5
+prog_c = 4.5
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s2"]
+script = ExtResource("2")
+angle_offset_deg = 15.0
+speed = 5.5
+radius = 0.2
+damage = 10
+ttl_ticks = 80
+program = 3
+prog_a = 36.0
+prog_b = 5.5
+prog_c = 4.5
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s3"]
+script = ExtResource("2")
+angle_offset_deg = 45.0
+speed = 5.5
+radius = 0.2
+damage = 10
+ttl_ticks = 80
+program = 3
+prog_a = 36.0
+prog_b = 5.5
+prog_c = 4.5
+max_passes = 0
+spawn_offset = 0.4
+
+[resource]
+script = ExtResource("1")
+id = &"rift_boomerang_veil"
+pattern_id = 33
+shots = Array[Resource]([SubResource("s0"), SubResource("s1"), SubResource("s2"), SubResource("s3")])

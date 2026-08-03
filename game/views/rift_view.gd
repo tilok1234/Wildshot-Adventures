@@ -345,7 +345,10 @@ func _draw_actors(cv: Node2D) -> void:
 		var face := -1.0 if e.vel.x < -0.01 else (1.0 if e.vel.x > 0.01 else -1.0)
 		var flash: bool = world.tick - e.last_damaged_tick < 4
 		var wig := sin(float(t) * 0.22)
-		var scale := 2.4 if rare else 2.0
+		# sl-0180 placeholder bosses: the star-fish scales with the
+		# enemy's OWN body radius (catch 0.5 -> 2.0 exactly as built;
+		# pool bosses 0.6-0.7 read bigger; rare keeps its +0.4).
+		var scale := clampf(2.0 * (e.radius / 0.5), 1.6, 3.4) + (0.4 if rare else 0.0)
 		for r in FISH_MAP.size():
 			var row := FISH_MAP[r]
 			for i in row.length():

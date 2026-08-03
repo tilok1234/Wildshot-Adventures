@@ -420,6 +420,93 @@ for n in [v for r in titems for v in (int(r.get("hp", 0)), int(r.get("defense", 
     if n > MAX_NUMBER:
         fail(f"tackle number {n} exceeds 3 digits")
 
+# ---- gate 7: THE RIFT BOSS POOL (sl-0180 - fight length + pool coverage) ----
+# Fight length [T]: each boss's hp against the GRADE's free-spine rod
+# DPS (the guaranteed-available identity, derived from the parsed rod
+# frames above - retuning a rod moves this gate with it) must land in
+# the designer's 1-5 minute band. Pools: per-biome common/rare lists,
+# catch present everywhere, every id resolving, every boss pooled,
+# scenario + proof files on disk. The strain clock is REPORTED per
+# fight (info - the designer's lever), never gated.
+FIGHT_LEN_BAND = (60.0, 300.0)
+spine_dps: dict[int, float] = {}
+for rod in rods:
+    if rod.get("price") is None and int(rod.get("tier", 0)) in TIER_LEVELS:
+        parsed = parse_rod_tres(rod["id"])
+        if parsed is not None:
+            _, cad, shots = parsed
+            if cad > 0:
+                spine_dps[int(rod["tier"])] = sum(int(s["damage"]) for s in shots) * 60.0 / cad
+
+bosses = sh.get("bosses", [])
+boss_ids = set()
+boss_report = []
+drain_rate = 0.4
+line_path = os.path.join(data_dir, "rift_line.tres")
+if os.path.isfile(line_path):
+    m = re.search(r"^passive_drain_per_sec = ([\d.]+)", open(line_path, encoding="utf-8").read(), re.M)
+    if m:
+        drain_rate = float(m.group(1))
+for boss in bosses:
+    bid = str(boss.get("id", ""))
+    grade = int(boss.get("grade", 0))
+    boss_ids.add(bid)
+    if grade not in TIER_LEVELS:
+        fail(f"rift boss {bid}: grade {grade} outside the tier ladder")
+        continue
+    def_path = os.path.join(data_dir, "enemies", f"rift_boss_{bid}.tres")
+    if not os.path.isfile(def_path):
+        fail(f"rift boss {bid}: def missing at data/enemies/rift_boss_{bid}.tres")
+        continue
+    mhp = re.search(r"^hp = (\d+)", open(def_path, encoding="utf-8").read(), re.M)
+    if mhp is None:
+        fail(f"rift boss {bid}: def carries no hp row")
+        continue
+    hp_v = int(mhp.group(1))
+    dps = spine_dps.get(grade, 0.0)
+    if dps <= 0:
+        fail(f"rift boss {bid}: no spine rod DPS at grade {grade}")
+        continue
+    flen = hp_v / dps
+    if not (FIGHT_LEN_BAND[0] <= flen <= FIGHT_LEN_BAND[1]):
+        fail(f"rift boss {bid}: fight length {flen:.0f}s at grade-{grade} spine DPS {dps:.1f} outside [60, 300]")
+    # Scenario/proof presence anchors to the REPO tree (the script's
+    # own parent), not the data dir — scratch-copied frames validate
+    # against the real scenario files.
+    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    for fpath, kind in ((os.path.join(repo_root, "data", "scenarios", f"rift_boss_{bid}.tres"), "scenario"),
+                       (os.path.join(repo_root, "tests", "bot_scenarios", f"proof_boss_{bid}.tres"), "proof")):
+        if not os.path.isfile(fpath):
+            fail(f"rift boss {bid}: {kind} file missing")
+    boss_report.append(f"  g{grade} rift_boss_{bid:20s} {hp_v:5d} hp / {dps:4.1f} dps = {flen:5.0f}s  (clock eats ~{flen * drain_rate:3.0f} stability)")
+
+pools = sh.get("fight_pool", {})
+pooled_ids: set[str] = set()
+for bkey in ("nebula", "void", "comet"):
+    bp = pools.get(bkey)
+    if not isinstance(bp, dict):
+        fail(f"fight_pool: biome '{bkey}' missing")
+        continue
+    for rk in ("common", "rare"):
+        pool = bp.get(rk, [])
+        if not pool:
+            fail(f"fight_pool {bkey}.{rk}: empty")
+            continue
+        fids = [str(r.get("fight", "")) for r in pool]
+        if "catch" not in fids:
+            fail(f"fight_pool {bkey}.{rk}: the standard catch is missing")
+        for r in pool:
+            fid = str(r.get("fight", ""))
+            if int(r.get("w", 0)) < 1:
+                fail(f"fight_pool {bkey}.{rk}: '{fid}' weight {r.get('w')} < 1")
+            if fid != "catch":
+                if fid not in boss_ids:
+                    fail(f"fight_pool {bkey}.{rk}: unknown fight id '{fid}'")
+                pooled_ids.add(fid)
+unpooled = boss_ids - pooled_ids
+if bosses and unpooled:
+    fail(f"rift bosses never pooled: {sorted(unpooled)}")
+
 # ---- info report (never gated) ----
 xp = d["xp"]
 zone_levels = {z: BRACKETS[z][1] - BRACKETS[z][0] + (0 if z == "green" else 1) for z in BRACKETS}
@@ -436,10 +523,13 @@ for row in sorted(rod_report):
 print("  rift chest hp: " + ", ".join(f"T{t} +{chest_hp[t]}" for t in sorted(chest_hp))
       + "; helm def: " + ", ".join(f"T{t} +{helm_def[t]}" for t in sorted(helm_def))
       + f" (vs the {spray_dmg} rift hit)")
+print("  the rift boss pool (gate 7; strain clock %.1f/s reported, never gated):" % drain_rate)
+for row in boss_report:
+    print(row)
 
 if findings:
     print(f"\nFAIL — {len(findings)} findings:")
     for f in findings:
         print(" -", f)
     sys.exit(1)
-print("PASS — all six gates hold: the numbers exist before the code does")
+print("PASS — all seven gates hold: the numbers exist before the code does")

@@ -33,6 +33,13 @@ func _run() -> void:
 	prof.gold = 142
 	prof.starhook_level = 3
 	prof.starhook_catches = 4
+	# sl-0181: fund the creel + wear rift gear so the new sheet
+	# sections capture populated (fish stacks with badges; a worn
+	# chest + an owned-not-worn second piece = the cycle op visible).
+	prof.starhook_fish = {"emberwisp_koi": 4, "umbral_eel": 2, "icetail_darter": 1}
+	prof.starhook_tackle = ["chest_t1", "helm_t1"]
+	prof.starhook_chest = "chest_t1"
+	prof.starhook_helm = "helm_t1"
 	CharacterProfile.apply_to_world(world, prof)
 	var p: RefCounted = world.players[0]
 	p.quests_taken_mask = 0b00011
@@ -105,6 +112,11 @@ func _run() -> void:
 	sheet.character = prof
 	sheet.theme = theme
 	hud.add_child(sheet)
+	# Gotcha #41: the Config autoload EXISTS under windowed --script —
+	# null the sheet's handle so the probe never reads the designer's
+	# real last-tab NOR writes their settings.cfg; the capture then
+	# opens deterministically on the CHARACTER tab.
+	sheet._cfg = null
 
 	await process_frame
 	for i in 8:
@@ -113,7 +125,7 @@ func _run() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://reports"))
 	var shot := get_root().get_texture().get_image()
 	shot.save_png(ProjectSettings.globalize_path("res://reports/hud_relayout_audit.png"))
-	sheet.toggle()
+	sheet.open_tab(0)
 	for i in 8:
 		await process_frame
 	await RenderingServer.frame_post_draw

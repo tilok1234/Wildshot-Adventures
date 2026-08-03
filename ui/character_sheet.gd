@@ -24,6 +24,7 @@ const ItemText := preload("res://game/views/item_text.gd")
 const StatFrame := preload("res://sim/systems/stat_frame.gd")
 const DropKinds := preload("res://sim/drop_kinds.gd")
 const BagStep := preload("res://sim/systems/bag_step.gd")
+const TackleCatalog := preload("res://sim/tackle_catalog.gd")
 const QuestDef := preload("res://data/quest_def.gd")
 const MenuPalette := preload("res://ui/menu_palette.gd")
 const Panel2 := preload("res://ui/panel2.gd")
@@ -357,6 +358,63 @@ func _build_character_tab() -> void:
 			cell.slot_clicked.connect(_on_bag_slot.bind(equip_op, drop_op, line))
 		grid.add_child(cell)
 	right.add_child(_label("click equips · right-click drops", MenuPalette.TEXT_DIM))
+	if p.class_id >= 0:
+		# THE CREEL rides directly under the bag (sl-0181: "fish should
+		# be added to inventory" — the catch is VISIBLE where the
+		# inventory lives) while the species counts stay THE one
+		# pricing truth; fish occupy zero bag capacity by construction.
+		var crows := creel_rows(world)
+		right.add_child(_rule("— creel — (fish · priced at the tackle keeper)"))
+		if crows.is_empty():
+			right.add_child(_label("(cast a rift line)", MenuPalette.TEXT_DIM))
+		else:
+			var cgrid := GridContainer.new()
+			cgrid.columns = 10
+			cgrid.add_theme_constant_override("h_separation", 2)
+			cgrid.add_theme_constant_override("v_separation", 2)
+			right.add_child(cgrid)
+			for crow: Dictionary in crows:
+				var ccell := ItemSlot.new()
+				ccell.icon_tex = IconAtlas.icon(String(crow.icon_id))
+				ccell.badge = "x%d" % int(crow.count)
+				ccell.tooltip_text = String(crow.tip)
+				cgrid.add_child(ccell)
+	# THE RIFTER PANEL (sl-0181): rod/chest/helm doll slots over the
+	# LIVE sim gear (SERIAL 26 fields); a click wears the NEXT owned
+	# piece via the recorded equip op (legal anywhere since the
+	# sl-0181 re-pin — the tackle keeper stays the buy surface). The
+	# rod row is informational: R swaps rods IN the rift.
+	if p.class_id >= 0:
+		right.add_child(_rule("— rifter —"))
+		for rrow: Dictionary in rifter_rows(world, character):
+			var rbox := HBoxContainer.new()
+			rbox.add_theme_constant_override("separation", 6)
+			var rslot := ItemSlot.new()
+			rslot.cell_px = 28.0
+			rslot.icon_tex = IconAtlas.icon(String(rrow.icon_id))
+			rslot.tooltip_text = String(rrow.tip)
+			rslot.selected = String(rrow.line) != "—"
+			var rop := int(rrow.op)
+			if rop > 0:
+				rslot.slot_clicked.connect(
+					func(button_index: int) -> void:
+						if button_index == MOUSE_BUTTON_LEFT:
+							_queue_op(rop)
+				)
+			rbox.add_child(rslot)
+			var rcol := VBoxContainer.new()
+			rcol.add_theme_constant_override("separation", 1)
+			rcol.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			rbox.add_child(rcol)
+			rcol.add_child(_label(String(rrow.label), MenuPalette.TEXT_DIM))
+			var rline := String(rrow.line)
+			if rline == "—":
+				rcol.add_child(_label(String(rrow.empty_note), MenuPalette.TEXT_DIM))
+			else:
+				rcol.add_child(_label(rline.get_slice(" — ", 0), MenuPalette.TEXT_BRIGHT))
+				if rline.contains(" — "):
+					rcol.add_child(_label(rline.get_slice(" — ", 1), MenuPalette.TEXT_BASE))
+			right.add_child(rbox)
 
 
 func _on_bag_slot(button_index: int, equip_op: int, drop_op: int, line: String) -> void:
@@ -987,6 +1045,114 @@ static func bag_rows(world: RefCounted) -> Array:
 					"tip": line + "\n(click to equip · right-click to drop)",
 					"equip_op": BagStep.OP_EQUIP_BASE + slot,
 					"drop_op": BagStep.OP_DROP_BASE + slot,
+				}
+			)
+		)
+	return rows
+
+
+## THE CREEL (sl-0181): per-species fish stacks composed from the
+## IN-SIM wallet (p.fish, SERIAL 26) — the ONE truth that prices the
+## tackle shop; zero bag-capacity interaction by construction. Only
+## nonzero species render; glyphs = the icon pack's fish set by
+## species index (placeholder-sanctioned).
+static func creel_rows(world_ref: RefCounted) -> Array:
+	var p: RefCounted = world_ref.players[0]
+	var rows: Array = []
+	if p.class_id < 0:
+		return rows
+	var frame: Dictionary = world_ref.stat_frame
+	for si in p.fish.size():
+		if p.fish[si] <= 0:
+			continue
+		var nm := TackleCatalog.species_name(frame, si)
+		(
+			rows
+			. append(
+				{
+					"species_index": si,
+					"count": p.fish[si],
+					"name": nm,
+					"icon_id": "collect.fish.f%02d" % mini(si + 1, 18),
+					"tip":
+					"%d %s\n(species-currency — spend it at the tackle keeper)" % [p.fish[si], nm],
+				}
+			)
+		)
+	return rows
+
+
+## THE RIFTER PANEL rows (sl-0181): rod (informational — R swaps in
+## the rift; the profile's choice shows) + chest/helm (live sim
+## equips; op = wear the NEXT owned piece of the slot via the
+## recorded tackle-equip op, 0 when nothing else is owned).
+static func rifter_rows(world_ref: RefCounted, character_d: Dictionary) -> Array:
+	var p: RefCounted = world_ref.players[0]
+	var rows: Array = []
+	if p.class_id < 0:
+		return rows
+	var frame: Dictionary = world_ref.stat_frame
+	var rod_id := String(character_d.get("starhook_rod", "rod_cane"))
+	var rod_line := "—"
+	for rod: Dictionary in TackleCatalog.rods(frame):
+		if String(rod.get("id", "")) == rod_id:
+			var res: Resource = load("res://data/weapons/%s.tres" % rod_id)
+			rod_line = ItemText.rod_line(rod, res)
+	(
+		rows
+		. append(
+			{
+				"label": "rod",
+				"line": rod_line,
+				"empty_note": "the cane rod waits at the shore",
+				"icon_id": "map.fishing",
+				"op": 0,
+				"tip": rod_line + "\n(R swaps rods IN the rift; the shop sells more)",
+			}
+		)
+	)
+	var ilist := TackleCatalog.items(frame)
+	for slot_def: Array in [["chest", p.tackle_chest], ["helm", p.tackle_helm]]:
+		var slot_name := String(slot_def[0])
+		var worn := int(slot_def[1])
+		var owned: Array[int] = []
+		for ii in ilist.size():
+			if (
+				(p.tackle_owned_mask & (1 << ii)) != 0
+				and String((ilist[ii] as Dictionary).get("slot", "")) == slot_name
+			):
+				owned.append(ii)
+		var line := "—"
+		var tier := 1
+		if worn >= 0 and worn < ilist.size():
+			line = ItemText.tackle_item_line(ilist[worn])
+			tier = int((ilist[worn] as Dictionary).get("tier", 1))
+		var op := 0
+		if owned.size() >= 1:
+			var pos := owned.find(worn)
+			var next_i: int = owned[(pos + 1) % owned.size()]
+			if next_i != worn:
+				op = BagStep.OP_TACKLE_EQUIP_BASE + next_i
+		var glyph := (
+			"item.armor.sword.bulwark.t%d" % clampi(tier, 1, 5)
+			if slot_name == "chest"
+			else "item.armor.sword.skirmish.t%d" % clampi(tier, 1, 5)
+		)
+		var tip := line
+		if op > 0:
+			tip += "\n(click wears the next owned piece)"
+		elif line == "—":
+			tip = "nothing owned — the tackle keeper sells %s pieces" % slot_name
+		(
+			rows
+			. append(
+				{
+					"label": "rift %s" % slot_name,
+					"line": line,
+					"empty_note": "buy one at the tackle keeper",
+					"icon_id": glyph,
+					"op": op,
+					"tip": tip,
 				}
 			)
 		)

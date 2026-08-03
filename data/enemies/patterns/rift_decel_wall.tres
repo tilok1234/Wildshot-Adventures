@@ -1,0 +1,115 @@
+[gd_resource type="Resource" load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://data/pattern_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; RIFT BOSS POOL (sl-0180): DECEL WALL — a seven-bolt 90° arc that
+; launches quick (6.5 t/s) and bleeds speed (−4.5 t/s²), hanging
+; near-still before it fades (ttl 80). The room slowly fills with
+; drifting stars; the 15° spacing keeps walkable lanes at every
+; range. DECELERATE's first hostile use; bot-projected closed-form.
+; Pattern id 34; lead 30 (the fan danger class). Elite amber.
+
+[sub_resource type="Resource" id="s0"]
+script = ExtResource("2")
+angle_offset_deg = -45.0
+speed = 6.5
+radius = 0.18
+damage = 10
+ttl_ticks = 80
+program = 1
+prog_a = 6.5
+prog_b = 4.5
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s1"]
+script = ExtResource("2")
+angle_offset_deg = -30.0
+speed = 6.5
+radius = 0.18
+damage = 10
+ttl_ticks = 80
+program = 1
+prog_a = 6.5
+prog_b = 4.5
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s2"]
+script = ExtResource("2")
+angle_offset_deg = -15.0
+speed = 6.5
+radius = 0.18
+damage = 10
+ttl_ticks = 80
+program = 1
+prog_a = 6.5
+prog_b = 4.5
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s3"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 6.5
+radius = 0.18
+damage = 10
+ttl_ticks = 80
+program = 1
+prog_a = 6.5
+prog_b = 4.5
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s4"]
+script = ExtResource("2")
+angle_offset_deg = 15.0
+speed = 6.5
+radius = 0.18
+damage = 10
+ttl_ticks = 80
+program = 1
+prog_a = 6.5
+prog_b = 4.5
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s5"]
+script = ExtResource("2")
+angle_offset_deg = 30.0
+speed = 6.5
+radius = 0.18
+damage = 10
+ttl_ticks = 80
+program = 1
+prog_a = 6.5
+prog_b = 4.5
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s6"]
+script = ExtResource("2")
+angle_offset_deg = 45.0
+speed = 6.5
+radius = 0.18
+damage = 10
+ttl_ticks = 80
+program = 1
+prog_a = 6.5
+prog_b = 4.5
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[resource]
+script = ExtResource("1")
+id = &"rift_decel_wall"
+pattern_id = 34
+shots = Array[Resource]([SubResource("s0"), SubResource("s1"), SubResource("s2"), SubResource("s3"), SubResource("s4"), SubResource("s5"), SubResource("s6")])

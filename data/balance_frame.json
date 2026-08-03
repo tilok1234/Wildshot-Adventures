@@ -158,6 +158,59 @@
       "min_node_dist": 8.0,
       "ring_min": 10.0,
       "ring_max": 22.0
+    },
+    "bosses": [
+      { "id": "twin_helix", "grade": 1 },
+      { "id": "ring_nest", "grade": 1 },
+      { "id": "sine_shoal", "grade": 2 },
+      { "id": "boomerang_veil", "grade": 2 },
+      { "id": "decel_wall", "grade": 3 },
+      { "id": "zone_constellation", "grade": 3 },
+      { "id": "cross_burst", "grade": 1 },
+      { "id": "pulse_lattice", "grade": 4 }
+    ],
+    "fight_pool": {
+      "_comment": "sl-0180 [T everywhere]: the cast's fight draw, PER BIOME (the tear's biome carries whole). 'catch' = the standard fish fight (the existing per-biome routing); boss ids route to rift_boss_<id>.tres. Weights are integer parts; rifts stay mostly fish - a boss sighting is an event. Unknown/absent pools fall back to catch fail-safe; balance_calc GATE 7 validates ids/weights/coverage.",
+      "nebula": {
+        "common": [
+          { "fight": "catch", "w": 70 },
+          { "fight": "twin_helix", "w": 10 },
+          { "fight": "ring_nest", "w": 10 },
+          { "fight": "sine_shoal", "w": 10 }
+        ],
+        "rare": [
+          { "fight": "catch", "w": 80 },
+          { "fight": "twin_helix", "w": 7 },
+          { "fight": "ring_nest", "w": 7 },
+          { "fight": "sine_shoal", "w": 6 }
+        ]
+      },
+      "void": {
+        "common": [
+          { "fight": "catch", "w": 70 },
+          { "fight": "boomerang_veil", "w": 10 },
+          { "fight": "decel_wall", "w": 10 },
+          { "fight": "zone_constellation", "w": 10 }
+        ],
+        "rare": [
+          { "fight": "catch", "w": 80 },
+          { "fight": "boomerang_veil", "w": 7 },
+          { "fight": "decel_wall", "w": 7 },
+          { "fight": "zone_constellation", "w": 6 }
+        ]
+      },
+      "comet": {
+        "common": [
+          { "fight": "catch", "w": 70 },
+          { "fight": "cross_burst", "w": 15 },
+          { "fight": "pulse_lattice", "w": 15 }
+        ],
+        "rare": [
+          { "fight": "catch", "w": 80 },
+          { "fight": "cross_burst", "w": 10 },
+          { "fight": "pulse_lattice", "w": 10 }
+        ]
+      }
     }
   },
   "pairs": [

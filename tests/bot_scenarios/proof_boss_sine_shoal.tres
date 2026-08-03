@@ -1,0 +1,64 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; RIFT BOSS proof (sl-0180): Sine Shoal paced 200 every 120 -> every phase
+; flip (floors 60/25%) lives mid-flight, kill t1560, cleanup to 3600.
+; PASS = ZERO bullet hits at the floor and the cap (CORE-33 proven
+; against the fight the player actually gets, line rules aboard).
+
+[resource]
+script = ExtResource("1")
+id = &"proof_boss_sine_shoal"
+display_name = "PROOF: rift boss sine_shoal (schedule fight)"
+arena = "res://data/arena_rift.json"
+starhook_rift = true
+rift_line = "res://data/rift_line.tres"
+rift_biome = 0
+rift_rare = false
+player_spawn = Vector2(2.9, 6.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"rift_boss_sine_shoal": PackedVector2Array(7.9, 6.5)
+}
+damage_schedule = Array[Dictionary]([{
+"amount": 200,
+"tick": 120
+}, {
+"amount": 200,
+"tick": 240
+}, {
+"amount": 200,
+"tick": 360
+}, {
+"amount": 200,
+"tick": 480
+}, {
+"amount": 200,
+"tick": 600
+}, {
+"amount": 200,
+"tick": 720
+}, {
+"amount": 200,
+"tick": 840
+}, {
+"amount": 200,
+"tick": 960
+}, {
+"amount": 200,
+"tick": 1080
+}, {
+"amount": 200,
+"tick": 1200
+}, {
+"amount": 200,
+"tick": 1320
+}, {
+"amount": 200,
+"tick": 1440
+}, {
+"amount": 200,
+"tick": 1560
+}])
+default_seed = 1

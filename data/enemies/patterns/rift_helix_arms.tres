@@ -1,0 +1,103 @@
+[gd_resource type="Resource" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://data/pattern_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; RIFT BOSS POOL (sl-0180): HELIX ARMS — a two-arm star spiral. ROTOR
+; world-frame base advances 1.3°/tick, so each chunky volley (three
+; staggered speeds per arm) precesses across the fight; the gaps
+; between arms are the answer and they WALK. Playful-space shape,
+; fairness floor intact: deterministic, bot-projected, one lead.
+; Pattern id 30; lead 36 (the radial danger class). Elite amber.
+
+[sub_resource type="Resource" id="a0"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 3.8
+radius = 0.2
+damage = 10
+ttl_ticks = 70
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="a1"]
+script = ExtResource("2")
+angle_offset_deg = 8.0
+speed = 4.6
+radius = 0.2
+damage = 10
+ttl_ticks = 62
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="a2"]
+script = ExtResource("2")
+angle_offset_deg = 16.0
+speed = 5.4
+radius = 0.2
+damage = 10
+ttl_ticks = 54
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="b0"]
+script = ExtResource("2")
+angle_offset_deg = 180.0
+speed = 3.8
+radius = 0.2
+damage = 10
+ttl_ticks = 70
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="b1"]
+script = ExtResource("2")
+angle_offset_deg = 188.0
+speed = 4.6
+radius = 0.2
+damage = 10
+ttl_ticks = 62
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="b2"]
+script = ExtResource("2")
+angle_offset_deg = 196.0
+speed = 5.4
+radius = 0.2
+damage = 10
+ttl_ticks = 54
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[resource]
+script = ExtResource("1")
+id = &"rift_helix_arms"
+pattern_id = 30
+aim_mode = 2
+rotor_deg_per_tick = 1.3
+shots = Array[Resource]([SubResource("a0"), SubResource("a1"), SubResource("a2"), SubResource("b0"), SubResource("b1"), SubResource("b2")])

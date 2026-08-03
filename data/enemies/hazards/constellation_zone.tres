@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/hazard_def.gd" id="1"]
+
+; RIFT BOSS POOL (sl-0180): CONSTELLATION ZONE — a small star-pool
+; cast at the fighter's feet (the Blightcaster machinery in galaxy
+; skin): arm 45 (the zone lead class — the law's 45 row), short
+; linger, pulsing. Small radius keeps the 12x13 room honest; zones
+; are crossable between pulses (the ledger-13 legality).
+; Pattern id 35.
+
+[resource]
+script = ExtResource("1")
+pattern_id = 35
+radius = 0.9
+damage = 12
+arm_ticks = 45
+linger_ticks = 90
+hit_interval_ticks = 30

@@ -806,6 +806,105 @@ func _init() -> void:
 			"tackle cell clear of station %s" % str(st_cell)
 		)
 
+	# 24. THE BOSS POOL (sl-0180): the cast's fight draw — weighted,
+	# per-biome, deterministic (same seed same fight), appended to the
+	# cast's fixed rng_loot sequence; absent pools fall back to catch;
+	# CAST_COMPLETE carries the fight id.
+	var wp: RefCounted = _world(false, true)
+	wp.players[0].pos = Vector2(10.5, 10.5)
+	_press(wp)
+	var pevs: Array = _events_of(wp, SimEvents.Type.CAST_COMPLETE)
+	check(pevs.size() == 1 and pevs[0].has("fight"), "the cast carries a fight id")
+	var wp2: RefCounted = _world(false, true)
+	wp2.players[0].pos = Vector2(10.5, 10.5)
+	_press(wp2)
+	var pevs2: Array = _events_of(wp2, SimEvents.Type.CAST_COMPLETE)
+	check(
+		pevs2.size() == 1 and String(pevs2[0].fight) == String(pevs[0].fight),
+		"same seed -> the same fight draw"
+	)
+	var wnp: RefCounted = _world(false, true)
+	wnp.stat_frame = wnp.stat_frame.duplicate(true)
+	(wnp.stat_frame.starhook as Dictionary).erase("fight_pool")
+	wnp.players[0].pos = Vector2(10.5, 10.5)
+	_press(wnp)
+	var nevs: Array = _events_of(wnp, SimEvents.Type.CAST_COMPLETE)
+	check(
+		nevs.size() == 1 and String(nevs[0].fight) == "catch",
+		"an absent pool falls back to the catch"
+	)
+	var pool_frame := StatFrame.load_frame()
+	var pools24: Dictionary = pool_frame.get("starhook", {}).get("fight_pool", {})
+	for bk: String in ["nebula", "void", "comet"]:
+		for rk: String in ["common", "rare"]:
+			for row_v: Variant in (pools24.get(bk, {}) as Dictionary).get(rk, []) as Array:
+				var fid := String((row_v as Dictionary).get("fight", ""))
+				if fid == "catch":
+					continue
+				var sc24: Resource = load("res://data/scenarios/rift_boss_%s.tres" % fid)
+				check(
+					sc24 != null and bool(sc24.starhook_rift),
+					"pool fight '%s' resolves to a rift scenario" % fid
+				)
+				check(
+					sc24 != null and (sc24.damage_schedule as Array).is_empty(),
+					"pool scenario '%s' carries NO damage schedule (tester-safe)" % fid
+				)
+
+	# 25. PHASED-ONLY CATCH LANDING (sl-0180, the dungeon premise): a
+	# PHASELESS rift kill banks its gold and stops — no CATCH_LANDED,
+	# no fish, the dive never ends on a mob.
+	var wm: RefCounted = _rift_world(false, 0)
+	wm.set_enemy_defs([load("res://data/enemies/slime.tres")])
+	var mob: RefCounted = wm.add_enemy(0, Vector2(8.0, 6.5))
+	mob.hp = 1
+	var mgold0: int = wm.players[0].gold
+	wm.spawn_projectile(Vector2(8.0, 6.5), Vector2(0, 0), 0.3, 20, ActorState.FACTION_FRIENDLY, 5)
+	wm.step([InputFrame.new()])
+	check(
+		_events_of(wm, SimEvents.Type.CATCH_LANDED).is_empty(),
+		"a phaseless rift kill lands NO catch"
+	)
+	check(wm.players[0].gold > mgold0, "the mob's gold still banks (no ground drops)")
+	check(wm.rift_catches.is_empty(), "no fish drawn for a mob")
+
+	# 26. BOSS ROSTER + KIT PREMISES (sl-0180): the eight pool defs sit
+	# at roster 30-37, phased, and NO rift kit phase ever chases (the
+	# hooked-fish law, mechanized across catches AND bosses).
+	var loader_scenario := ScenarioDef.new()
+	loader_scenario.id = &"premise_probe"
+	var g26: RefCounted = Bitgrid.new()
+	g26.setup(12, 13)
+	var wl26: RefCounted = ScenarioLoader.build_world(loader_scenario, 1, g26)
+	check(wl26.enemy_defs.size() == 38, "roster carries 38 defs (30-37 = the boss pool)")
+	var boss_ids26: Array[String] = [
+		"twin_helix",
+		"ring_nest",
+		"sine_shoal",
+		"boomerang_veil",
+		"decel_wall",
+		"zone_constellation",
+		"cross_burst",
+		"pulse_lattice",
+	]
+	for bi26 in boss_ids26.size():
+		var bdef: Resource = wl26.enemy_defs[30 + bi26]
+		check(
+			String(bdef.id) == "rift_boss_" + boss_ids26[bi26],
+			"roster %d is rift_boss_%s" % [30 + bi26, boss_ids26[bi26]]
+		)
+		check(bdef.phases != null, "boss %s is phased" % boss_ids26[bi26])
+	for di26 in range(24, 38):
+		var rdef: Resource = wl26.enemy_defs[di26]
+		if rdef.phases == null:
+			continue
+		check(int(rdef.movement_policy) != 0, "%s base policy never chases" % String(rdef.id))
+		for ph26: Resource in rdef.phases.phases:
+			check(
+				int(ph26.movement_policy) != 0,
+				"%s phase %s never chases (one-room law)" % [String(rdef.id), String(ph26.id)]
+			)
+
 	# 23. HASH COVERAGE (SERIAL 26): the gear state hashes.
 	var wh26: RefCounted = _rift_world12()
 	var ph26: RefCounted = wh26.players[0]
@@ -829,7 +928,7 @@ func _init() -> void:
 		print(
 			"gather_test: PASS (forage/instant-cast/ambient/no-drag/drains/grace/snap/clear/",
 			"fish/rods/refusals/negatives/hash/rifter/slice/tackle-catalog/shop-ops/rift-gear/",
-			"rare-drop/fish-roundtrip/gear-hash)"
+			"rare-drop/fish-roundtrip/gear-hash/boss-pool/phased-only-catch/kit-premises)"
 		)
 		quit(0)
 	else:

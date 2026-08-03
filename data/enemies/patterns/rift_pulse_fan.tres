@@ -1,0 +1,85 @@
+[gd_resource type="Resource" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://data/pattern_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; RIFT BOSS POOL (sl-0180): PULSE FAN — five bolts across 88° that
+; launch hard (7.0 t/s) and bleed to a slow drift (−5.0 t/s²): a
+; pulse that lunges then hangs. DECELERATE, bot-projected. Pattern
+; id 37; lead 30 (the fan danger class). Elite amber.
+
+[sub_resource type="Resource" id="s0"]
+script = ExtResource("2")
+angle_offset_deg = -44.0
+speed = 7.0
+radius = 0.2
+damage = 11
+ttl_ticks = 70
+program = 1
+prog_a = 7.0
+prog_b = 5.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s1"]
+script = ExtResource("2")
+angle_offset_deg = -22.0
+speed = 7.0
+radius = 0.2
+damage = 11
+ttl_ticks = 70
+program = 1
+prog_a = 7.0
+prog_b = 5.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s2"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 7.0
+radius = 0.2
+damage = 11
+ttl_ticks = 70
+program = 1
+prog_a = 7.0
+prog_b = 5.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s3"]
+script = ExtResource("2")
+angle_offset_deg = 22.0
+speed = 7.0
+radius = 0.2
+damage = 11
+ttl_ticks = 70
+program = 1
+prog_a = 7.0
+prog_b = 5.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s4"]
+script = ExtResource("2")
+angle_offset_deg = 44.0
+speed = 7.0
+radius = 0.2
+damage = 11
+ttl_ticks = 70
+program = 1
+prog_a = 7.0
+prog_b = 5.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[resource]
+script = ExtResource("1")
+id = &"rift_pulse_fan"
+pattern_id = 37
+shots = Array[Resource]([SubResource("s0"), SubResource("s1"), SubResource("s2"), SubResource("s3"), SubResource("s4")])

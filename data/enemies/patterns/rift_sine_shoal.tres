@@ -1,0 +1,58 @@
+[gd_resource type="Resource" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://data/pattern_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; RIFT BOSS POOL (sl-0180): SINE SHOAL — three weaving bolts (the
+; SINE program's first hostile use; forward 5.0 t/s, sway 2.2 t/s at
+; 6 rad/s). The weave is a pure function of age — bot-projected
+; closed-form, deterministic, honestly dodgeable between sways.
+; Pattern id 32; lead 24 (the spray danger class). Elite amber.
+
+[sub_resource type="Resource" id="s0"]
+script = ExtResource("2")
+angle_offset_deg = -14.0
+speed = 5.0
+radius = 0.2
+damage = 10
+ttl_ticks = 55
+program = 2
+prog_a = 5.0
+prog_b = 2.2
+prog_c = 6.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s1"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 5.0
+radius = 0.2
+damage = 10
+ttl_ticks = 55
+program = 2
+prog_a = 5.0
+prog_b = 2.2
+prog_c = 6.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s2"]
+script = ExtResource("2")
+angle_offset_deg = 14.0
+speed = 5.0
+radius = 0.2
+damage = 10
+ttl_ticks = 55
+program = 2
+prog_a = 5.0
+prog_b = 2.2
+prog_c = 6.0
+max_passes = 0
+spawn_offset = 0.4
+
+[resource]
+script = ExtResource("1")
+id = &"rift_sine_shoal"
+pattern_id = 32
+shots = Array[Resource]([SubResource("s0"), SubResource("s1"), SubResource("s2")])

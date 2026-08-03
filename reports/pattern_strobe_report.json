@@ -1,0 +1,46 @@
+{
+	"kind": "pattern_strobe",
+	"kits": {
+		"boomerang_veil": {
+			"flips": 0,
+			"luma_max": 0.0581185336431359,
+			"luma_min": 0.055360838538879
+		},
+		"cross_burst": {
+			"flips": 0,
+			"luma_max": 0.100970898796168,
+			"luma_min": 0.0969431907209506
+		},
+		"decel_wall": {
+			"flips": 0,
+			"luma_max": 0.0584514993467579,
+			"luma_min": 0.0551077016235948
+		},
+		"pulse_lattice": {
+			"flips": 0,
+			"luma_max": 0.102012245512342,
+			"luma_min": 0.0977866547786815
+		},
+		"ring_nest": {
+			"flips": 0,
+			"luma_max": 0.0970573258194139,
+			"luma_min": 0.0916205865212225
+		},
+		"sine_shoal": {
+			"flips": 0,
+			"luma_max": 0.0942109035101931,
+			"luma_min": 0.0920238289776242
+		},
+		"twin_helix": {
+			"flips": 0,
+			"luma_max": 0.094519863205217,
+			"luma_min": 0.0917840260657919
+		},
+		"zone_constellation": {
+			"flips": 0,
+			"luma_max": 0.0574583620853127,
+			"luma_min": 0.0548398179606229
+		}
+	},
+	"law": "flips among |delta luma| > 0.02 across 300 ticks (every 8) <= 10"
+}

@@ -82,8 +82,12 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 	# 20=treant, 21=bandit, 22=old_tusk (S1 seam 3 — Green's world
 	# boss), 23=king_grubb (S1 seam 4 — the Warren's bottom),
 	# 24=rift_catch, 25=rift_catch_rare (S1 seam 6 — STARHOOK,
-	# sl-0105). Append-only; never reorder. Scenario extras (bot
-	# canaries) append after, keeping standard indexes stable.
+	# sl-0105), 26-29=the void/comet catch variants (sl-0115),
+	# 30-37=the rift boss pool (sl-0180 wave 1A: twin_helix/ring_nest/
+	# sine_shoal/boomerang_veil/decel_wall/zone_constellation/
+	# cross_burst/pulse_lattice). Append-only; never reorder. Scenario
+	# extras (bot canaries) append after, keeping standard indexes
+	# stable.
 	var defs: Array = [
 		load("res://data/enemies/rusher.tres"),
 		load("res://data/enemies/husk_archer.tres"),
@@ -115,6 +119,14 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 		load("res://data/enemies/rift_catch_void_rare.tres"),
 		load("res://data/enemies/rift_catch_comet.tres"),
 		load("res://data/enemies/rift_catch_comet_rare.tres"),
+		load("res://data/enemies/rift_boss_twin_helix.tres"),
+		load("res://data/enemies/rift_boss_ring_nest.tres"),
+		load("res://data/enemies/rift_boss_sine_shoal.tres"),
+		load("res://data/enemies/rift_boss_boomerang_veil.tres"),
+		load("res://data/enemies/rift_boss_decel_wall.tres"),
+		load("res://data/enemies/rift_boss_zone_constellation.tres"),
+		load("res://data/enemies/rift_boss_cross_burst.tres"),
+		load("res://data/enemies/rift_boss_pulse_lattice.tres"),
 	]
 	for extra: Resource in scenario.extra_enemy_defs:
 		defs.append(extra)

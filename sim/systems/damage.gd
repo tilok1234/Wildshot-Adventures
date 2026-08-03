@@ -247,6 +247,13 @@ static func _award_kill(world: RefCounted, e: RefCounted) -> void:
 				if ridx >= 0:
 					for p: RefCounted in world.players:
 						p.unique_mask |= 1 << ridx
+		# sl-0180: only PHASED rift kills LAND A CATCH (the boss/catch
+		# class — every pre-pool rift enemy is phased, so this gate is
+		# byte-identical today). Phaseless rift mobs (the dungeon
+		# class) bank their gold above and stop here: a mob's death
+		# must never end the dive or draw a fish.
+		if def.phases == null:
+			return
 		var fish := 3
 		if not world.rift_rare:
 			var biomes: Array = world.stat_frame.get("starhook", {}).get("biomes", [])

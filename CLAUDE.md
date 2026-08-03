@@ -2305,3 +2305,76 @@ deviants), drain/grace/lives gear stats (named future family),
 water fishing (parked), rod-swap UI beyond R. NO feel verdicts —
 every number/rate/price [T]; the designer plays before refinement
 pastes drop (the rails' own words).
+
+THE STARHOOK BOSS EXPANSION waves 1A+1B 2026-08-03 (sl-0180 +
+sl-0181; the playful-space charter's first content batch; the
+SIZE-FIRST split invoked as sanctioned — wave 2 = the dungeon test,
+its own gated commit; SERIAL 26 UNCHANGED / WSR v3 UNCHANGED, next
+bump 27 — zero serialized state grew: the pool ride rng_loot draws +
+definitions only; the routed QUEST-PULL FINDINGS ×2 warm-up paste
+did NOT land again — sl-0175/0176 stay open): THE FIGHT POOL —
+casts draw a FIGHT after rarity (one weighted rng_loot draw,
+PER-BIOME common/rare pools in balance_frame starhook.fight_pool
+[T]: catch 70 / bosses ~10-15 — a boss sighting is an event;
+absent/unknown pools fall back to catch fail-safe sim-side AND
+main-side; CAST_COMPLETE grows the fight field, events
+unserialized). EIGHT BOSS KITS at roster 30-37 (append-only;
+PLACEHOLDER DESCRIPTIVE IDS, no lore names — identity data-keyed
+for the designer's fish-design re-skin): twin_helix / ring_nest /
+sine_shoal / boomerang_veil / decel_wall / zone_constellation /
+cross_burst / pulse_lattice — 2-3 phases each on the Warden floor
+recipe (entry beats, keep-range ONLY: the hooked-fish/one-room law
+now MECHANIZED across every phased rift def in gather_test), hp
+1400-2800 by grade, gold/xp graded [T]. EIGHT NEW PATTERNS (ids
+30-37, the playful-space license inside the fairness floor):
+helix_arms + cross_burst = chunky precessing ROTORs; sine_shoal =
+SINE's FIRST HOSTILE USE (weaving bolts); boomerang_veil =
+BOOMERANG's first (out-and-back curtains, axis-bound, never
+homing); decel_wall + pulse_fan = DECELERATE walls that hang;
+ring_offset = the half-gap twin ring alternating with the base
+ring via the one-state-machine slot serialization;
+constellation_zone = the Blightcaster machinery in galaxy skin
+(arm 45). The dodge bot's closed-form projection ALREADY modeled
+all four programs — these proofs exercise it live for the first
+time. ONE LEAD PER PATTERN holds roster-wide (the mechanized law
+passed untouched); Law-4 ordering grew 20→28 rows monotone;
+existing amber orb sprites mapped (Law 3 one elite language;
+placeholder art by the designer's word). FIGHT-LENGTH GATE =
+balance_calc GATE 8th sense (gate 7): each boss's parsed hp vs its
+grade's free-spine rod DPS within [60,300] s (all land 117-148 s);
+the strain clock REPORTED per fight (47-59 stability — a real
+second pressure, the designer's lever), never gated; pool
+ids/weights/coverage/catch-presence validated; negative-tested x3.
+NO-STROBE EXTENDED to every new pattern:
+tests/patterns/pattern_strobe_probe.gd samples full-field
+luminance across each kit live (the reveal-probe flip math, rate
+bound 10/5s vs the ~3 Hz photosensitivity band) — all 8 kits ZERO
+flips (report committed). PROOFS: 8 schedule-paced full fights
+(every flip mid-flight, kill, cleanup) PASS floor+cap FIRST
+AUTHORING, margins 0.120-0.123, zero hits — battery 83→99 runs,
+first canonical run byte-identical in the same gate. PHASED-ONLY
+CATCH LANDING (the wave-2 premise pre-built): phaseless rift kills
+bank gold and stop — no fish, no dive-end (byte-identical today,
+test-pinned). Rift phase toasts generalized to the def's own
+phase-id beats (COIL/THRASH carry; every kit reads its authored
+names). Boss flee doors ride the one RIFT_EXIT_DOOR. WAVE 1B —
+THE VISIBLE STARHOOK (view-only): THE CREEL under the bag grid
+(sl-0181 "fish should be added to inventory": per-species stacked
+tiles with count badges + fish glyphs composed from the IN-SIM
+wallet — ONE truth, the species counts keep pricing the shop; fish
+occupy ZERO bag capacity BY CONSTRUCTION, sized and test-pinned;
+a physical-fish-items flip would be its own sim seam) + THE RIFTER
+PANEL in the C character tab (rod informational — R swaps in the
+rift; chest/helm doll slots over live SERIAL-26 sim equips; click
+wears the NEXT owned piece via the recorded 176..191 op — the
+EQUIP-ANYWHERE RE-PIN: wearing your own gear is a menu act, BUY
+stays station-gated; the sl-0177 at-station equip pin flipped
+deliberately, one session old); char_sheet_test +2 sections
+(creel truth/zero-cap/legacy-negative; rifter rows exact incl. the
+cycle-wrap op); ui_family evidence re-captured (both scales) with
+a funded creel + worn gear — AND the probe grew the gotcha-41 null
+(it had been reading the DESIGNER'S last-tab setting; deterministic
+character-tab capture now). Fish-fighter placeholder bodies scale
+by radius (catch 2.0 exact-preserved, bosses read bigger, rare
++0.4). NO feel verdicts — pool weights, kit numbers, fight
+lengths, the creel look: all [T], the designer's hands rule.
