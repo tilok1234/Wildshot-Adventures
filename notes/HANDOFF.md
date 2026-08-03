@@ -1,4 +1,28 @@
-# Session Handoff — updated 2026-08-02 late (post-GREEN-DAYS: all nine routed seams sl-0119..0132 landed + pushed, 42d8260..912049f)
+# Session Handoff — updated 2026-08-03 (post-MENU-PASS v2: sl-0143..0157 landed + pushed, 0a5edd2..3838f60; seam I split out with its question shape)
+
+> **THE MENU PASS v2 IS LANDED (2026-08-03 marathon, nine seams
+> A–I; full record = the CLAUDE.md milestone tail's last block +
+> planning's live per-seam sweeps sl-0158+):** the pack intaken +
+> byte-pinned (31st fixed gate); seam A resolved as a FINDING (the
+> zip's chrome is byte-identical v1 — the v2 look is DRAWN panel2
+> over palette tokens; ui/menu_palette.gd is THE doc-13 swap
+> point); THE C MENU = one window two tabs (character w/ slot-grid
+> bag + dollslots; quest log w/ parchment detail + TRACKED +
+> ABANDON); the OFFER dialogue (press offers, ACCEPT is a recorded
+> op, Later-only — NO Decline); stations F-OPEN (bank/vendor;
+> loot bags stay walk-over); ESC-CLOSES-MENU-FIRST via
+> driver.esc_intercept + one-surface-at-a-time; bars LEFT; options
+> restyled carrying every row; THE UNIQUE REVEAL (boss-unique
+> pickup, no-strobe mechanized, silent pause + any-input skip);
+> the interactability sweep recorded (notes/INTERACT_SWEEP.md);
+> SEAM I (minimal foraging) SIZED AND SPLIT OUT
+> (notes/FORAGE_SEAM_SIZING.md — three one-line designer questions
+> route it; the premise was off: stillness-foraging v1 exists and
+> half the "24 spots" are parked water-fishing markers). sl-0146
+> (hitbox) NOT built, as ordered. SERIAL 25 / WSR v3 UNCHANGED
+> (quest ops ride the existing byte; two full battery gates
+> byte-identical). A LIVE planning seat swept every seam — game
+> wrote zero planning entries (two-writers discipline).
 
 **COLD START — this handoff assumes NO prior context.** Read the game
 repo's `CLAUDE.md` first (auto-loads; BINDING contract + the
@@ -293,7 +317,7 @@ clean seam.
 refined (sl-0115/0123/0125); THE NINE-SEAM GREEN-DAYS PASS LANDED
 (sl-0119..0132 → resolutions sl-0134..0142), all pushed
 (42d8260..912049f + docs).** The one-command ship gate
-`tools/pretester_check.ps1` runs ALL GREEN (**30 fixed steps + the
+`tools/pretester_check.ps1` runs ALL GREEN (**31 fixed steps + the
 two-lane battery — 43 rows / 83 runs — byte-identical + export both
 artifacts + lockdown probe**); the latest full runs: sl-0120 (green
 modulo its own re-baselined evidence, the sl-0123 shape), sl-0116
@@ -309,6 +333,20 @@ cut; the flippable split); the refinement rounds are theirs.
 
 ## §2 Open — designer-side (do not nag; the deck + planning carry these)
 
+- **THE MENU PASS ON SCREEN (all [T], all theirs):** the two-tab C
+  menu (slot-grid bag finally READS as an inventory — the
+  first-touch datum's answer), L deep-link, the offer dialogue +
+  F-as-confirm, abandon + tracked (the HUD tracker binds to it),
+  bank/vendor on F (never walk-over), Esc-first + one-surface,
+  bars LEFT (tracker stayed right — one word flips it), options
+  restyle, the toast chip, THE UNIQUE REVEAL (kill a boss, pick
+  the unique — ~4 s; the dragon stage is refinement material
+  pending a sheet). Every key/timing/placement is theirs to move.
+- **THE THREE FORAGE QUESTIONS** (notes/FORAGE_SEAM_SIZING.md —
+  one word each routes the split-out seam I): F-or-stillness at
+  forage spots · items-or-gold yields · 12 rich depleting spots
+  on-top-or-instead of everywhere-forage. (The 12 water-fishing
+  markers stay parked with sl-0111.)
 - **LIVING IN GREEN** — the chapter gate: fight the re-tabled
   territories, run errands on the interact verb, Old Tusk, the
   Warren, starhook casts. Feel one-liners as they play (density /
@@ -399,7 +437,7 @@ Before every commit, per touched area:
   (table below), BOTH LANES; commit reports
   (`git add -f reports/...`). Unchanged scenarios must reproduce
   BYTE-IDENTICAL.
-- the one-command gate: `pwsh tools/pretester_check.ps1` = 30 fixed
+- the one-command gate: `pwsh tools/pretester_check.ps1` = 31 fixed
   steps + the 83-run two-lane battery (43 rows since sl-0115;
   pinned FAILs are expectations) + export + lockdown — **~13–15 min
   ALL GREEN since the battery went PARALLEL** (S1 tooling ask:
@@ -498,18 +536,27 @@ names; cap runs use --speed=4.14 + an explicit --out=..._cap115.json).
 4. gdformat REFLOWS code — re-grep the actual text before Edit. It
    also WRAPS long lines, which can break single-line lint anchors
    (lockdown lint pins) — keep pinned lines short (sl-0065 lesson).
-5. NO F-row keys. Current: **O AND Esc = the ONE pause+options
-   menu** (sl-0109; the driver keeps the CORE-31 pause bit),
-   **F interact** (pickups-into-bag/givers/casts), **B loot-all**
-   (sl-0129, at a ground loot bag), **C character sheet + equipment
-   pane** (mouse sanctioned there: click equip/de-equip, right-click
-   drop; gameplay input suppresses under the cursor over any open
-   pane/panel), I interp, [ ] speed presets, -/= free step
-   (dev-only), G gif (start/stop, start-to-finish), R rod swap
-   (rifts), J replay, T reset, M meter, H hitboxes, N map (dev-only,
-   pack scenarios only), ` console (dev-only), Alt+Enter fullscreen,
-   Space = ability AND respawn-now while dead (persistent worlds).
-   E stays RATIFIED autofire — never rebind it casually.
+5. NO F-row keys. Current (MENU-PASS ERA): **Esc/O run MENU-FIRST**
+   (sl-0145: one press closes the topmost open menu — drop-confirm,
+   offer, the C menu, open stations — via driver.esc_intercept;
+   NOTHING open = the one pause+options menu, the sl-0109 law
+   beneath; the CORE-31 pause bit stays the driver's), **F interact**
+   (pickups-into-bag / givers offer+turn-in / rift casts /
+   BANK+VENDOR MENUS — stations never walk-over now, sl-0145/0147;
+   F-as-confirm accepts in the open offer window), **C = THE MENU**
+   (ONE window, two tabs: character + quest log; opens on the
+   last-used tab; mouse sanctioned in it), **L = quest-log
+   deep-link** (the new quest_log action, remappable, auto-listed in
+   the remap UI), **B loot-all** (sl-0129, at a ground loot bag —
+   loot bags STAY walk-over by the designer's own word),
+   right-click drop = CONFIRM dialog then the toast, I interp,
+   [ ] speed presets, -/= free step (dev-only), G gif (start/stop,
+   start-to-finish), R rod swap (rifts), J replay, T reset, M meter,
+   H hitboxes, N map (dev-only, pack scenarios only), ` console
+   (dev-only), Alt+Enter fullscreen, Space = ability AND respawn-now
+   while dead (persistent worlds). E stays RATIFIED autofire — never
+   rebind it casually. Any-input SKIPS the unique reveal while it
+   plays (the sim is paused under it).
 6. Sim = pure core: no Nodes/clock/RNG; prev_pos is presentation-only;
    PackedArrays share storage — `.duplicate()` for snapshots.
 7. When a proof fails: read the heatmap in the report JSON first
@@ -715,6 +762,23 @@ names; cap runs use --speed=4.14 + an explicit --out=..._cap115.json).
     ops (bag_step's lane guard). That is what keeps the whole proof
     battery byte-identical; a test premise that assumes kills drop
     loose items must ask WHICH LANE first.
+39. **A MarginContainer force-layouts EVERY child** — a "floating"
+    child (close button, badge) gets stretched to the content rect
+    (the menu-pass bisect probe found icon_close drawn as a
+    panel-sized X). Layout-free chrome needs an OUTER plain Control
+    with an inner content MarginContainer (the ui/panel2.gd shape).
+40. **add_theme_*_override fires THEME_CHANGED synchronously** — a
+    _notification(THEME_CHANGED) handler that re-applies overrides
+    recurses to stack overflow. Reentry-guard it (panel2's
+    _applying flag).
+41. **The Config autoload NODE exists under --script runs even
+    though the global NAME never compiles there** (the sl-0065
+    limit, re-earned twice this pass: the options probe hung on the
+    global; an early menu probe run WROTE the designer's real
+    settings.cfg through the live node — undone). UI that probes
+    must exercise reaches Config via get_node_or_null("/root/Config")
+    AND probes NULL the _cfg field before feeding state (the
+    menu_probe pattern).
 
 ## Ledger + scope
 

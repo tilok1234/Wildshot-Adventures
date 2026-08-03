@@ -2092,3 +2092,144 @@ by eyes; the O/Esc-both-ways negative is designer-hands material —
 main cannot compile under --script, the recorded limit). NO feel
 verdicts: key choices, the sheet layout, capacity, the corner
 placements — all Green days.**
+
+THE MENU PASS v2 COMPLETE 2026-08-03 (~00:10–06:40 local, hands-free
+marathon; routed as sl-0143..0157 via the v2 paste + the "Bullet
+Hell RPG Menu System.zip" PACKAGE-AS-SPEC; game 0a5edd2..3838f60
+all pushed; SERIAL 25 UNCHANGED / WSR v3 UNCHANGED, next bump 26 —
+the new quest ops ride the existing recorded byte, zero format
+growth): LEFTOVERS ABSORBED first (0a5edd2 — nine repro re-records
++ two .uid strays, flagged four sessions running). INTAKE (3240c00):
+zip sha F20F9076..15A1 verified vs the sl-0155 record BEFORE
+extraction; 56 files vendored at assets/wildshot-ui-v2/ + passport;
+ICON PARITY BYTE-IDENTICAL (470/470 ids + atlas bytes == the wired
+proto pack — NOT re-vendored, the game keeps consuming
+res://icons/); the FONT was ALREADY the theme default since the v1
+kit (byte-identical; uikit/font/LICENSE = the standing PROD-03 CC0
+record); tools/validate_menu_pack.py = 31ST FIXED STEP + CI row
+(passport parity both directions + manifest/spec contracts + the 20
+chrome dims w/ binary alpha + a LIVE icon-parity re-check),
+NEGATIVE-TESTED. SEAM A RESOLVED AS A FINDING (c0e9264): all 20
+shipped chrome pieces AND the font are byte-identical to the v1
+kit — the v2 look is the workbench-DRAWN panel2 chrome over the
+manifest's CSS palette tokens; the routed partial-re-skin/
+mixed-look acceptance DISSOLVES; panel2 got BUILT in-engine:
+ui/panel2.gd (carved frame / gold studs / title plaque /
+layout-free close) + ui/menu_palette.gd (dusk tokens = THE ONE
+doc-13 theme swap point) + ui/item_slot.gd +
+game/views/item_icons.gd (item→glyph, canonical styles [T];
+the sl-0123 never-bind pin CAUGHT the file's own header naming the
+retired glyph in a comment — the scan is textual by design).
+SEAM B — THE C MENU (cf9826b; FULL GATE 15.8 min, 83-run battery
+BYTE-IDENTICAL): ONE MENU TWO TABS (sl-0150/0152 final shape) —
+tab CHARACTER (portrait + bigbars + statchips + dollslots + THE
+BAG AS A SLOT GRID with 16px atlas icons — the first-touch
+"didnt recognize the inventry" datum answered; right-click drop =
+confirm → recorded drop op → "dropped — [F] picks it back up") and
+tab QUEST LOG (carried cards + givers-have-work cards + parchment
+detail with reason tag / full reread / objective + progress bar /
+reward-on-turn-in; per-quest TRACKED toggle [ui]-persisted — THE
+HUD TRACKER BINDS to it, none-tracked = all carried [T]; ABANDON =
+recorded op 112..127 in quest_step — back to its giver, progress
+zeroed, done refuses, QUEST_ABANDONED event; 128..143 reserved).
+C opens on the last-used tab [T]; NEW quest_log action (L [T],
+remappable, auto-listed in the remap UI); tabs mouse-click; drag
+DEFERRED (a gesture never grows the recorded format) — hint lines
+state only what ships. Smoke pair byte-identical
+61503273bc2519da/3f3aff864ed9e48f; goldens VERIFY unchanged (no
+re-record). SEAM C — QUEST DIALOGUE (f1757a3; FULL GATE 13.6 min
+byte-identical): THE PRESS NEVER ACCEPTS — turn-in resolves first
+(undialogued, TURN-IN WINS), else QUEST_OFFERED (a pure event)
+opens the offer window (panel2 w=300, plaque "ERRAND — THE
+WAYSTATION" [T voice], reread/objective/reward rows, gold-framed
+Accept + Later — NO DECLINE this pass, sl-0154); ACCEPT = the
+recorded op (radius to the quest's OWN giver + capacity + masks
+guarded sim-side); F-as-confirm [T]; the hands-cap refusal is
+LOUD view-side; walk-away/X/O/Later all close, the errand stays
+with the giver; quest_test RE-PINNED deliberately (press→offer
+with mask unchanged, op negatives, cap via ops, abandoned errands
+re-offer + re-accept fresh). SEAM D — STATIONS + MENU CHROME
+(713085a): bank AND vendor menus open on F INTERACT, NEVER
+walk-over (sl-0145/0147; walking out still closes; sim op radius
+guards untouched); LOOT BAGS STAY WALK-OVER by the designer's own
+sl-0129 word; bank_v2 (BANK VAULT plaque, two capacity slot
+grids, exchange divider, "death never touches the bank") +
+vendor_v2 (TRADER plaque, gold head rule, shelf rows with price
+chips, scroll) + loot_v2 restyle ([B] loot-all primary with the
+live binding); ESC-CLOSES-MENU-FIRST lands WHOLE:
+driver.esc_intercept (the pause key runs menu-first; CORE-31
+untouched — one press's MEANING, never the ability to pause), O
+runs the same law, ONE SURFACE AT A TIME (_menus_exclusive; the
+walk-over loot readout exempt); every menu a close button; the
+three station probes re-baselined (station_open stands in for the
+press). SEAM E — HUD (1a74a01): the hp+mana stack to the LEFT
+corner (sl-0149, 4,4 inset [T]); autofire indicator beside it
+(ui-scale-aware); the right corner = the world-info cluster
+(weapon row / corner minimap / errand tracker — THE TRACKER STAYS
+RIGHT, session call [T], one word flips it); ui_family evidence
+re-recorded (also discharging the seam-B note — the sheet
+captures now show the two-tab menu). SEAM F — SURFACES (49cdbf4):
+OPTIONS restyled onto panel2 CARRYING EVERY ROW — the spec's
+ability:0/1/2 row IS the live M4 hot-swap (carried, no skip
+needed); the remap section builds DEFERRED so option rows sit
+above it (spec order; main wires synchronously after add_child);
+the close button = unpausing; THE TOAST = a gold-on-dark chip
+built from its spec (the capture is absent by the accepted
+workbench limitation); confirm already panel2 since seam B;
+tooltips stay kit v1 per the pack README's own line; options_menu
+Config access went DEFENSIVE (get_node_or_null — the sl-0065
+lesson re-earned live: the probe hung exactly as documented).
+SEAM G — THE UNIQUE REVEAL (2b70588): trigger EXACTLY sl-0156 —
+a UNIQUE picked up, boss-sourced STRUCTURALLY (unique drop tables
+ride PHASED BOSS defs only: BRK king / Old Tusk / the rare rift
+catches — PINNED in green_roster_test; a future non-boss source
+goes red there FIRST and buys real source plumbing); the play
+~3.8 s BY HONESTY (no dragon sheet exists — the reel is
+refinement-round material): the wolf ring on the dimmed screen
+(real wolf:gray frames; the stampede-1-ring-howl stage-1 target)
+→ ONE soft golden wash (the flamebreath stand-in, a single
+luminance excursion) → THE PLAQUE (UNIQUE gold word-mark +
+parchment ribbon: icon + name + stat line in the one grammar);
+RAILS HELD: one-shot, never looping/ambient, NO-STROBE MECHANIZED
+(the probe samples mean luminance across the whole play — 3
+direction flips / 38 samples PASS, >3 fails); the sim PAUSES
+SILENTLY for the play (pause_locked; no pause_changed emit so the
+menu never opens over it), ANY INPUT SKIPS [T]; CORE-19 note
+carried (the boss-unique gate + one-shot + dim staging is the
+defense). SEAM H — THE INTERACTABILITY SWEEP (73aaced;
+notes/INTERACT_SWEEP.md): every class audited with mechanized
+proof pointers; DISAMBIGUATION MEASURED (every cross-class
+station pair disjoint, min 3.00 vs the 2.4 overlap threshold;
+merchant↔trader 2.00 = same class, nearest-vendor resolves
+sim-side); HONEST FINDINGS recorded: crowd NPCs have no interact
+response BY DESIGN (CORE-35 pure view; villager one-liners stay
+the incremental [T] item; the capital giver still has no body),
+a drop underfoot at a station answers on BOTH layers in one press
+(rare by geometry, designer-walk watch item [T]). SEAM I SIZED
+AND SPLIT OUT (3838f60; notes/FORAGE_SEAM_SIZING.md — the
+routing's own escape hatch): the premise corrected twice —
+foraging EXISTS (sl-0105 stillness v1, gather_test-pinned) and
+the "24 gather spots" decode as 12 PARKED water-fishing markers
+(sl-0111) + 12 foraging POIs; the routed build would flip THREE
+designer-ruled models (verb stillness→F / yield gold→bag items /
+pacing anti-AFK→depletion+respawn) and needs SERIAL 26 + full
+re-baseline — three one-line questions routed back
+(talk-before-build), the pass never stalled. sl-0146 (player
+hitbox) NOT BUILT, exactly as ordered (sl-0148 — the pass stayed
+view-only except the two byte-inert quest ops). GATES LEDGER:
+two FULL gates with the battery BYTE-IDENTICAL (15.8 / 13.6 min)
++ five -SkipBattery view gates (3.1 min each) + the intake gate;
+16 committed evidence PNGs new or re-recorded, all read by eyes.
+A LIVE PLANNING SEAT swept EVERY seam into the sync log
+(sl-0158+) minutes behind the pushes — the game side wrote ZERO
+planning entries (two-writers discipline; the doc-03 "planning
+sweeps per seam" arrangement ran exactly as designed). NEW
+GOTCHAS RECORDED (handoff 39–41): a MarginContainer force-layouts
+EVERY child (layout-free chrome needs an outer Control — the
+bisect probe's panel-sized X); add_theme_*_override fires
+THEME_CHANGED synchronously (reentry-guard or overflow); probes
+NULL their _cfg (the Config autoload node EXISTS under --script
+even though the global name never compiles — an early probe run
+WROTE the designer's real settings.cfg once; undone, pattern
+fixed). NO feel verdicts — every number, key, timing, and
+placement is [T]; the designer's Green days own all of it.
