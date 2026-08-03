@@ -18,6 +18,7 @@ const ReplayRecorder := preload("res://input/replay_recorder.gd")
 const OptionsMenu := preload("res://ui/options_menu.gd")
 const CharacterSheet := preload("res://ui/character_sheet.gd")
 const QuestOffer := preload("res://ui/quest_offer.gd")
+const UniqueReveal := preload("res://ui/unique_reveal.gd")
 const QuestTracker := preload("res://ui/quest_tracker.gd")
 const QuestGiverIcons := preload("res://game/views/quest_giver_icons.gd")
 const LootBagPanel := preload("res://ui/loot_bag_panel.gd")
@@ -227,6 +228,7 @@ var bars_stack: VBoxContainer
 ## Seam B (sl-0106): the read-only character sheet + quest log panel.
 var char_sheet: Control = null
 var quest_offer: Control = null
+var unique_reveal: Control = null
 ## sl-0121: the at-a-glance errand tracker (top-right, under the
 ## bars/minimap stack [T]); the C sheet stays THE one log.
 var quest_tracker: Label = null
@@ -600,6 +602,24 @@ func _process(_delta: float) -> void:
 					)
 					if not line.is_empty():
 						_show_toast(line)
+					# Seam G (sl-0156): a picked-up UNIQUE plays the
+					# reveal — boss-sourced by construction (unique
+					# tables ride phased boss defs only, pinned in
+					# green_roster_test). The sim pauses SILENTLY
+					# (no emit — the pause menu must not open over
+					# the cinematic); pause_locked holds the key.
+					if (
+						int(lev.kind) == SimWorld.DROP_UNIQUE
+						and unique_reveal != null
+						and driver != null
+						and not driver.pause_locked
+					):
+						unique_reveal.trigger(
+							{"kind": int(lev.kind), "a": int(lev.a), "b": int(lev.b)}
+						)
+						if unique_reveal.is_active():
+							driver.paused = true
+							driver.pause_locked = true
 			SimEvents.Type.PLAYER_RESPAWNED:
 				if recap_panel != null:
 					recap_panel.visible = false
@@ -1728,6 +1748,19 @@ func _ready() -> void:
 	hud.add_child(options_menu)
 	recap_panel = RecapPanel.new()
 	hud.add_child(recap_panel)
+	# Menu pass seam G (sl-0156): the unique reveal overlay — plays on
+	# boss-unique PICKUP only, pauses the sim for the ~4 s one-shot,
+	# any input skips. Added last in the layer: the moment owns the
+	# screen (Law 1 concerns are moot — the world is FROZEN under it).
+	unique_reveal = UniqueReveal.new()
+	unique_reveal.world = world
+	unique_reveal.finished.connect(
+		func() -> void:
+			if driver != null:
+				driver.pause_locked = false
+				driver.paused = false
+	)
+	hud.add_child(unique_reveal)
 	if dev_tools:
 		console = DebugConsole.new()
 		console.line_submitted.connect(_console_exec)
@@ -1736,7 +1769,9 @@ func _ready() -> void:
 	_apply_crosshair_scale()
 	get_window().size_changed.connect(_apply_crosshair_scale)
 	# Seam B (sl-0109): the menu RIDES pause — Esc (the driver's own
-	# pause key) and O land in the same place; closing resumes.
+	# pause key) and O land in the same place; closing resumes. Seam G:
+	# the unique reveal pauses SILENTLY (no pause_changed emit), so
+	# this handler never opens the menu over the cinematic.
 	driver.pause_changed.connect(
 		func(p: bool) -> void:
 			pause_label.visible = p

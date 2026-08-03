@@ -338,6 +338,18 @@ func _init() -> void:
 	check(green_binding == Vector2i(193, 239), "green locked binding at 193,239")
 	check(green_access == Vector2i(194, 240), "green binding access at 194,240")
 	check(String(defs[23].id) == "king_grubb", "index 23 = king_grubb")
+
+	# Menu pass seam G (sl-0156): the unique reveal's source predicate
+	# is STRUCTURAL — unique drop tables ride PHASED BOSS defs only.
+	# If a non-boss def ever grows a unique table, this pin goes red
+	# FIRST and the pickup event gets real source plumbing then.
+	for udi in defs.size():
+		var ud: Resource = defs[udi]
+		if not (ud.unique_drops as Array).is_empty():
+			check(
+				ud.phases != null,
+				"def %d (%s): unique table on a phased boss only" % [udi, String(ud.id)]
+			)
 	var warren: Resource = load("res://data/scenarios/the_warren.tres")
 	# The REAL collision derivation (walls + solid props + trees) —
 	# the same path the battery's arena rows walk.
