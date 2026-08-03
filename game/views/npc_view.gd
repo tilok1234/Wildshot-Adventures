@@ -87,6 +87,9 @@ const PINNED_STATIONS := {
 	"capital-stash-keeper": Vector2(112.5, 182.5),
 	"capital-general-merchant": Vector2(106.5, 182.5),
 	"settlement-trader": Vector2(106.5, 180.5),
+	# sl-0177/0178: the tackle keeper — the pack's own dock-fisher
+	# body marks the gear shop (matching slice tackle_cell).
+	"dock-fisher-teacher": Vector2(110.5, 178.5),
 }
 
 

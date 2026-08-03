@@ -12,7 +12,7 @@ var _tick := 0
 
 
 func sample(
-	_mouse_tile: Vector2, _player_pos: Vector2, _equipped := 0, _rod_count := 0
+	_mouse_tile: Vector2, _player_pos: Vector2, _equipped := 0, _rod_mask := 0, _rod_total := 0
 ) -> InputFrame:
 	var f := InputFrame.new()
 	var leg := (_tick / 40) % 8

@@ -77,4 +77,9 @@ extends Resource
 ## (balance_frame vendors.stocks keys). Empty = no vendors here.
 @export var vendor_cells: PackedVector2Array = PackedVector2Array()
 @export var vendor_stocks: PackedStringArray = PackedStringArray()
+## THE GEAR SEAM (sl-0177/0178): the tackle vendor station cell
+## (center coords) — the rifter's gear shop, fish-priced. ZERO = no
+## tackle vendor here (every pre-gear scenario). Ops ride recorded
+## bag_op codes within VENDOR_RADIUS; the panel is the station view.
+@export var tackle_cell: Vector2 = Vector2.ZERO
 @export var default_seed: int = 1

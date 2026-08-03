@@ -21,17 +21,36 @@ extends SceneTree
 ##   hostile shots (CLEARED); the kill banks gold directly + draws
 ##   the biome fish (CATCH_LANDED + rift_catches, per-species at
 ##   harvest);
-## - RODS: four data rows, level-gated selects refused sim-side;
+## - RODS: level-gated selects refused sim-side (the four-rod legacy
+##   world stays byte-frozen; the 12-rod catalog world adds OWNERSHIP
+##   gating — sl-0177/0178);
 ## - loader refusals: broken pull def / malformed biome table;
-## - hash coverage (SERIAL 22: lives/acc/grace + ambient + catches);
+## - hash coverage (SERIAL 22: lives/acc/grace + ambient + catches;
+##   SERIAL 26: fish wallet + ownership masks + equips);
 ## - the RIFTER lane round-trip + slice premises (12 authored nodes +
-##   biomes + ambient flag on b77).
+##   biomes + ambient flag on b77);
+## - THE GEAR SEAM (sl-0177/0178, SERIAL 26): the tackle catalog shape
+##   (16 priced shelf rows over 12 species); the tackle vendor's
+##   recorded ops (buy decrements fish + sets the owned bit +
+##   auto-equips an empty slot; equip swaps among owned; refusals:
+##   poor/owned/away/legacy — fish never move on a refusal); rift
+##   gear stats (chest raises the line pool, helm mitigates BULLETS
+##   through THE formula while the 1-hp drain chunks ride the
+##   formula's floor untouched — the clock never mitigates); rod
+##   ownership on the full ladder (purchasable rods refuse unowned
+##   selects; the level-grant spine stays free; apply_to_rift skips
+##   unowned rods); the RARE-catch gear drop (deterministic
+##   chance+pool draw on rng_loot, dup-protected, harvests BY ID);
+##   fish spend round-trip + unknown-species preservation (the
+##   fish-first word).
 ## NEGATIVE-TESTED. Exit 0 = green.
 
 const SimWorld := preload("res://sim/sim_world.gd")
 const Bitgrid := preload("res://sim/collision/bitgrid.gd")
 const InputFrame := preload("res://sim/input_frame.gd")
 const StatFrame := preload("res://sim/systems/stat_frame.gd")
+const BagStep := preload("res://sim/systems/bag_step.gd")
+const TackleCatalog := preload("res://sim/tackle_catalog.gd")
 const GatherGrids := preload("res://game/arena/gather_grids.gd")
 const SimEvents := preload("res://sim/events.gd")
 const CharacterProfile := preload("res://game/drivers/character_profile.gd")
@@ -107,6 +126,71 @@ func _rift_world(rare := false, biome := 0, seed_v := 3) -> RefCounted:
 		load("res://data/rift_line.tres"), biome, rare, PackedInt32Array([1, 3, 5, 8])
 	)
 	return world
+
+
+## A 12-rod catalog rift world (the sl-0177 shape): the FULL ladder
+## from the stat frame, unlock + purchasable flags exactly as the
+## loader derives them.
+func _rift_world12(seed_v := 3, rare := false) -> RefCounted:
+	var g: RefCounted = Bitgrid.new()
+	g.setup(12, 13)
+	for x in 12:
+		g.set_solid(x, 0)
+		g.set_solid(x, 12)
+	for y in 13:
+		g.set_solid(0, y)
+		g.set_solid(11, y)
+	var world: RefCounted = SimWorld.new()
+	world.setup(seed_v, g)
+	world.set_progression(load("res://data/progression.tres"))
+	world.set_stat_frame(StatFrame.load_frame())
+	var rods: Array = []
+	var unlocks := PackedInt32Array()
+	var purch := PackedInt32Array()
+	for rod: Dictionary in TackleCatalog.rods(world.stat_frame):
+		rods.append(load("res://data/weapons/%s.tres" % String(rod.get("id", ""))))
+		unlocks.append(int(rod.get("unlock_level", 99)))
+		purch.append(1 if rod.has("price") else 0)
+	world.set_weapons(rods)
+	world.add_player(Vector2(2.9, 6.5))
+	var p: RefCounted = world.players[0]
+	p.max_hp = 60
+	p.hp = 60
+	p.move_speed = 3.6
+	world.set_rift_config(load("res://data/rift_line.tres"), 0, rare, unlocks, purch)
+	return world
+
+
+## An overworld-like shop world: class player at the tackle cell with
+## the shelf resolved exactly as the loader resolves it.
+func _shop_world(at_station := true) -> RefCounted:
+	var w: RefCounted = _world(false, false)
+	w.tackle_cell = Vector2(31.5, 10.5) if at_station else Vector2(5.5, 5.5)
+	for srow: Dictionary in TackleCatalog.shelf_rows(w.stat_frame):
+		var rd := TackleCatalog.row_data(w.stat_frame, srow)
+		var price_idx := TackleCatalog.resolve_price(w.stat_frame, rd.get("price", {}))
+		(
+			w
+			. tackle_shelf
+			. append(
+				{
+					"row_kind": int(srow.row_kind),
+					"index": int(srow.index),
+					"tier": int(rd.get("tier", 0)),
+					"price_idx": price_idx,
+				}
+			)
+		)
+	var p: RefCounted = w.players[0]
+	p.fish = PackedInt32Array()
+	p.fish.resize(TackleCatalog.species_ids(w.stat_frame).size())
+	return w
+
+
+func _op(world: RefCounted, code: int) -> void:
+	var f: RefCounted = InputFrame.new()
+	f.bag_op = code
+	world.step([f])
 
 
 func _still(world: RefCounted, n: int) -> void:
@@ -495,10 +579,257 @@ func _init() -> void:
 		combos["%d_%s" % [int(sc.rift_biome), str(sc.rift_rare)]] = true
 	check(combos.size() == 6, "six distinct biome x rarity arenas")
 
+	# 17. THE TACKLE CATALOG SHAPE (sl-0177/0178): 12 species over the
+	# three biomes; 16 priced shelf rows (8 rods + 8 chest/helm) in the
+	# rods-then-items order; the pure lookups hold.
+	var frame17 := StatFrame.load_frame()
+	var sp_ids := TackleCatalog.species_ids(frame17)
+	check(sp_ids.size() == 12, "12 species in the index space")
+	check(sp_ids[0] == "emberwisp_koi" and sp_ids[3] == "novaback_leviathan", "biome-major order")
+	var shelf17 := TackleCatalog.shelf_rows(frame17)
+	check(shelf17.size() == 16, "16 priced shelf rows")
+	var rods17 := 0
+	for srow17: Dictionary in shelf17:
+		if int(srow17.row_kind) == TackleCatalog.ROW_ROD:
+			rods17 += 1
+	check(rods17 == 8, "8 priced rods (the four originals stay the free spine)")
+	check(TackleCatalog.rods(frame17).size() == 12, "12 rods in the catalog")
+	check(TackleCatalog.items(frame17).size() == 8, "8 chest/helm rows")
+	check(TackleCatalog.tier_level(frame17, 2) == 3, "tier 2 gates at starhook 3")
+	check(
+		TackleCatalog.resolve_price(frame17, {"ghost_species": 1}).is_empty(),
+		"negative: unknown species price resolves empty"
+	)
+
+	# 18. THE SHOP: recorded buy ops decrement fish + set the owned bit
+	# + auto-equip an empty slot; equip swaps among owned; refusals
+	# leave the fish untouched (poor/owned/away/legacy/unowned-equip).
+	var wsh: RefCounted = _shop_world()
+	var psh: RefCounted = wsh.players[0]
+	psh.fish[0] = 5
+	psh.fish[1] = 2
+	psh.fish[6] = 1
+	psh.fish[8] = 5
+	psh.fish[4] = 1
+	_op(wsh, BagStep.OP_TACKLE_BUY_BASE + 0)
+	check((psh.rods_owned_mask & (1 << 4)) != 0, "buy sets the rod's owned bit")
+	check(psh.fish[0] == 3, "buy decrements the fish wallet")
+	check(not _events_of(wsh, SimEvents.Type.TACKLE_BOUGHT).is_empty(), "TACKLE_BOUGHT emitted")
+	_op(wsh, BagStep.OP_TACKLE_BUY_BASE + 0)
+	check(psh.fish[0] == 3, "an owned row refuses the re-buy (fish untouched)")
+	_op(wsh, BagStep.OP_TACKLE_BUY_BASE + 8)
+	check((psh.tackle_owned_mask & 1) != 0, "chest bought")
+	check(psh.tackle_chest == 0, "first chest auto-equips the empty slot")
+	_op(wsh, BagStep.OP_TACKLE_BUY_BASE + 9)
+	check(psh.tackle_helm == 1, "first helm auto-equips")
+	check(psh.fish[6] == 0 and psh.fish[0] == 2, "helm price drew both species")
+	_op(wsh, BagStep.OP_TACKLE_BUY_BASE + 10)
+	check((psh.tackle_owned_mask & (1 << 2)) != 0, "second chest bought")
+	check(psh.tackle_chest == 0, "an occupied slot never auto-swaps")
+	_op(wsh, BagStep.OP_TACKLE_EQUIP_BASE + 2)
+	check(psh.tackle_chest == 2, "the equip op wears the owned chest")
+	check(not _events_of(wsh, SimEvents.Type.TACKLE_EQUIPPED).is_empty(), "TACKLE_EQUIPPED emitted")
+	_op(wsh, BagStep.OP_TACKLE_EQUIP_BASE + 3)
+	check(psh.tackle_helm == 1, "negative: an unowned equip refuses")
+	_op(wsh, BagStep.OP_TACKLE_BUY_BASE + 1)
+	check((psh.rods_owned_mask & (1 << 5)) != 0 and psh.fish[8] == 0, "second rod buys clean")
+	_op(wsh, BagStep.OP_TACKLE_BUY_BASE + 4)
+	check(
+		(psh.rods_owned_mask & (1 << 8)) == 0 and psh.fish[9] == 0,
+		"negative: poor buy refuses (fan_t3 needs 4 herring, has 0)"
+	)
+	var waway: RefCounted = _shop_world(false)
+	var paway: RefCounted = waway.players[0]
+	paway.fish[0] = 9
+	_op(waway, BagStep.OP_TACKLE_BUY_BASE + 0)
+	check(
+		paway.rods_owned_mask == 0 and paway.fish[0] == 9, "negative: away from the station refuses"
+	)
+	var wleg: RefCounted = _shop_world()
+	wleg.players[0].class_id = -1
+	wleg.players[0].fish[0] = 9
+	_op(wleg, BagStep.OP_TACKLE_BUY_BASE + 0)
+	check(wleg.players[0].rods_owned_mask == 0, "negative: the legacy lane never trades")
+
+	# 19. RIFT GEAR STATS: chest raises the line pool, helm mitigates
+	# BULLETS through THE formula; the 1-hp drain chunks ride the
+	# formula's floor untouched (the clock never mitigates). Rod
+	# ownership gates selects on the full ladder; apply_to_rift skips
+	# unowned purchasable rods.
+	var prof19 := CharacterProfile.create(false, "bow")
+	prof19.starhook_tackle = ["chest_t1", "helm_t1"]
+	prof19.starhook_chest = "chest_t1"
+	prof19.starhook_helm = "helm_t1"
+	var wg19: RefCounted = _rift_world12()
+	CharacterProfile.apply_to_rift(wg19, prof19)
+	var pg19: RefCounted = wg19.players[0]
+	check(pg19.max_hp == 72 and pg19.hp == 72, "chest_t1 raises the line pool 60 -> 72")
+	check(pg19.armor == 4, "helm_t1 lands defense 4")
+	wg19.add_enemy_standin(Vector2(9.5, 2.0))
+	pg19.pos = Vector2(6.0, 6.5)
+	wg19.spawn_projectile(Vector2(6.0, 6.5), Vector2(0, 0), 0.2, 40, ActorState.FACTION_HOSTILE, 10)
+	wg19.step([InputFrame.new()])
+	check(pg19.hp == 72 - 6, "a 10-dmg bullet lands taken(10,4) = 6")
+	var wg19b: RefCounted = _rift_world12()
+	CharacterProfile.apply_to_rift(wg19b, prof19)
+	var pg19b: RefCounted = wg19b.players[0]
+	pg19b.line_drain_acc = 596
+	wg19b.step([InputFrame.new()])
+	check(pg19b.hp == 71, "the drain chunk stays exactly 1 under a helm (the floor holds)")
+	var wr12: RefCounted = _rift_world12()
+	var pr12: RefCounted = wr12.players[0]
+	check(wr12.weapon_frames.size() == 12, "the rift ladder carries the 12-rod catalog")
+	var sel5 := InputFrame.new()
+	sel5.weapon_select = 5
+	wr12.step([sel5])
+	check(pr12.equipped_weapon == 0, "negative: an unowned purchasable rod refuses the select")
+	pr12.rods_owned_mask |= 1 << 4
+	wr12.step([sel5])
+	check(pr12.equipped_weapon == 4, "the owned rod selects (level 1, tier 1)")
+	var sel2b := InputFrame.new()
+	sel2b.weapon_select = 2
+	wr12.step([sel2b])
+	check(pr12.equipped_weapon == 4, "Splitwillow stays level-locked below 3 (the free spine)")
+	pr12.level = 3
+	wr12.step([sel2b])
+	check(pr12.equipped_weapon == 1, "level 3 grants Splitwillow with no purchase (grandfather)")
+	var prof19c := CharacterProfile.create(false, "bow")
+	prof19c.starhook_rod = "rod_fan_t1"
+	var wr12b: RefCounted = _rift_world12()
+	CharacterProfile.apply_to_rift(wr12b, prof19c)
+	check(wr12b.players[0].equipped_weapon == 0, "an unowned saved rod falls back to the spine")
+	prof19c.starhook_rods = ["rod_fan_t1"]
+	var wr12c: RefCounted = _rift_world12()
+	CharacterProfile.apply_to_rift(wr12c, prof19c)
+	check(wr12c.players[0].equipped_weapon == 4, "an owned saved rod equips on entry")
+
+	# 20. THE RARE-CATCH DROP: chance + pool draw appended to the
+	# kill's fixed rng_loot sequence — deterministic per seed,
+	# dup-protected, direct-granted (no ground drops), harvested BY ID.
+	var drop_seed := -1
+	for sv in range(1, 11):
+		var wt: RefCounted = _rift_world12(sv, true)
+		wt.set_enemy_defs([load("res://data/enemies/rift_catch_rare.tres")])
+		var et: RefCounted = wt.add_enemy(0, Vector2(8.0, 6.5))
+		et.hp = 1
+		wt.spawn_projectile(
+			Vector2(8.0, 6.5), Vector2(0, 0), 0.3, 20, ActorState.FACTION_FRIENDLY, 5
+		)
+		wt.step([InputFrame.new()])
+		if not _events_of(wt, SimEvents.Type.TACKLE_DROPPED).is_empty():
+			drop_seed = sv
+			break
+	check(drop_seed > 0, "a rare-catch gear drop lands within seeds 1..10 (chance 50)")
+	if drop_seed > 0:
+		var wd1: RefCounted = _rift_world12(drop_seed, true)
+		wd1.set_enemy_defs([load("res://data/enemies/rift_catch_rare.tres")])
+		var ed1: RefCounted = wd1.add_enemy(0, Vector2(8.0, 6.5))
+		ed1.hp = 1
+		wd1.spawn_projectile(
+			Vector2(8.0, 6.5), Vector2(0, 0), 0.3, 20, ActorState.FACTION_FRIENDLY, 5
+		)
+		wd1.step([InputFrame.new()])
+		var dev1: Array = _events_of(wd1, SimEvents.Type.TACKLE_DROPPED)
+		check(dev1.size() == 1, "the drop grants exactly one piece")
+		var pd1: RefCounted = wd1.players[0]
+		check(
+			pd1.rods_owned_mask != 0 or pd1.tackle_owned_mask != 0,
+			"the grant is a direct owned bit"
+		)
+		check(wd1.drops.is_empty() and wd1.loot_bags.is_empty(), "no ground drops in the rift")
+		var rd20 := TackleCatalog.row_data(
+			wd1.stat_frame, {"row_kind": int(dev1[0].row_kind), "index": int(dev1[0].index)}
+		)
+		check(int(rd20.get("tier", 9)) <= 2, "the drop honors the Green tier bounds [1,2]")
+		var wd2: RefCounted = _rift_world12(drop_seed, true)
+		wd2.set_enemy_defs([load("res://data/enemies/rift_catch_rare.tres")])
+		var ed2: RefCounted = wd2.add_enemy(0, Vector2(8.0, 6.5))
+		ed2.hp = 1
+		wd2.spawn_projectile(
+			Vector2(8.0, 6.5), Vector2(0, 0), 0.3, 20, ActorState.FACTION_FRIENDLY, 5
+		)
+		wd2.step([InputFrame.new()])
+		check(
+			(
+				wd2.players[0].rods_owned_mask == pd1.rods_owned_mask
+				and wd2.players[0].tackle_owned_mask == pd1.tackle_owned_mask
+			),
+			"same seed -> the same drop"
+		)
+		var wd3: RefCounted = _rift_world12(drop_seed, true)
+		wd3.set_enemy_defs([load("res://data/enemies/rift_catch_rare.tres")])
+		wd3.players[0].rods_owned_mask = (1 << 12) - 1
+		wd3.players[0].tackle_owned_mask = (1 << 8) - 1
+		var ed3: RefCounted = wd3.add_enemy(0, Vector2(8.0, 6.5))
+		ed3.hp = 1
+		wd3.spawn_projectile(
+			Vector2(8.0, 6.5), Vector2(0, 0), 0.3, 20, ActorState.FACTION_FRIENDLY, 5
+		)
+		wd3.step([InputFrame.new()])
+		check(
+			_events_of(wd3, SimEvents.Type.TACKLE_DROPPED).is_empty(),
+			"an all-owned pool drops nothing (dup-protected)"
+		)
+		var prof20 := CharacterProfile.create(false, "bow")
+		CharacterProfile.harvest_rift(wd1, prof20, true)
+		var harvested: Array = []
+		harvested.append_array(prof20.starhook_rods)
+		harvested.append_array(prof20.starhook_tackle)
+		check(harvested.size() == 1, "the dropped piece harvests BY ID")
+
+	# 21. FISH ROUND-TRIP + THE FISH-FIRST WORD: spends persist by id;
+	# species the current table does not know stay in the profile
+	# untouched (a future re-roster never eats the designer's fish).
+	var prof21 := CharacterProfile.create(false, "bow")
+	prof21.starhook_fish = {"emberwisp_koi": 5, "ghost_fish": 7}
+	var wsh21: RefCounted = _shop_world()
+	CharacterProfile.apply_to_world(wsh21, prof21)
+	var psh21: RefCounted = wsh21.players[0]
+	check(psh21.fish[0] == 5, "profile fish load by id")
+	_op(wsh21, BagStep.OP_TACKLE_BUY_BASE + 0)
+	check(psh21.fish[0] == 3, "the spend lands in-sim")
+	CharacterProfile.harvest(wsh21, prof21)
+	check(int(prof21.starhook_fish.get("emberwisp_koi", -1)) == 3, "the spend persists by id")
+	check(int(prof21.starhook_fish.get("ghost_fish", -1)) == 7, "unknown species keys preserved")
+	check(prof21.starhook_rods == ["rod_fan_t1"], "the purchase persists by id")
+
+	# 22. LOADER + SLICE PREMISES (gear): the slice pins the tackle
+	# cell; the shelf resolves 16 rows on the shipped frame; the cell
+	# stays clear of every other station (the interact-sweep class).
+	var slice22: Resource = load("res://data/scenarios/slice_overworld.tres")
+	check(slice22.tackle_cell == Vector2(110.5, 178.5), "the slice pins the tackle cell")
+	for st_cell: Vector2 in [
+		Vector2(109.5, 182.5), Vector2(112.5, 182.5), Vector2(106.5, 182.5), Vector2(106.5, 180.5)
+	]:
+		check(
+			slice22.tackle_cell.distance_to(st_cell) >= 3.0,
+			"tackle cell clear of station %s" % str(st_cell)
+		)
+
+	# 23. HASH COVERAGE (SERIAL 26): the gear state hashes.
+	var wh26: RefCounted = _rift_world12()
+	var ph26: RefCounted = wh26.players[0]
+	var g0: int = wh26.state_hash()
+	ph26.fish = PackedInt32Array([3])
+	check(wh26.state_hash() != g0, "fish wallet hashed")
+	ph26.fish = PackedInt32Array()
+	var g1: int = wh26.state_hash()
+	ph26.rods_owned_mask = 1 << 4
+	check(wh26.state_hash() != g1, "rod ownership hashed")
+	ph26.rods_owned_mask = 0
+	var g2: int = wh26.state_hash()
+	ph26.tackle_owned_mask = 3
+	check(wh26.state_hash() != g2, "tackle ownership hashed")
+	ph26.tackle_owned_mask = 0
+	var g3: int = wh26.state_hash()
+	ph26.tackle_chest = 0
+	check(wh26.state_hash() != g3, "the worn chest hashes")
+
 	if fails.is_empty():
 		print(
 			"gather_test: PASS (forage/instant-cast/ambient/no-drag/drains/grace/snap/clear/",
-			"fish/rods/refusals/negatives/hash/rifter/slice)"
+			"fish/rods/refusals/negatives/hash/rifter/slice/tackle-catalog/shop-ops/rift-gear/",
+			"rare-drop/fish-roundtrip/gear-hash)"
 		)
 		quit(0)
 	else:

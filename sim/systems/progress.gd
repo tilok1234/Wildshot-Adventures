@@ -104,9 +104,15 @@ static func shot_damage(world: RefCounted, p: RefCounted, base: int) -> int:
 ## Mitigation for a friendly target (the §2.11 test schedule bypasses
 ## at the damage path). Class lane: THE docs/22 formula on the derived
 ## armor VALUE. Legacy lane: the Loop v1 flat table, floor 1 —
-## byte-frozen for retired-with-honor content.
+## byte-frozen for retired-with-honor content. GEAR SEAM RIDER
+## (sl-0177): a legacy-lane actor with a real armor VALUE (the RIFTER
+## wearing a helm — apply_to_rift sets p.armor; no other legacy actor
+## ever writes it) mitigates through THE formula; armor 0 keeps every
+## pre-gear world byte-identical structurally.
 static func mitigate(world: RefCounted, a: RefCounted, amount: int) -> int:
 	if a.class_id >= 0:
+		return StatFrame.taken(amount, a.armor)
+	if a.armor > 0:
 		return StatFrame.taken(amount, a.armor)
 	var at: int = a.armor_tier
 	if at <= 0 or world.progression == null:

@@ -12,6 +12,7 @@ const PropColliders := preload("res://game/arena/prop_colliders.gd")
 const StatFrame := preload("res://sim/systems/stat_frame.gd")
 const ContentImporter := preload("res://game/arena/content_importer.gd")
 const GatherGrids := preload("res://game/arena/gather_grids.gd")
+const TackleCatalog := preload("res://sim/tackle_catalog.gd")
 
 
 static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) -> RefCounted:
@@ -179,6 +180,36 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 					_:
 						push_error("scenario_loader: unknown vendor stock kind")
 			world.vendor_stock.append(triples)
+	# THE GEAR SEAM (sl-0177/0178): the tackle vendor station — the
+	# shelf resolves HERE (priced catalog rows, species ids -> the
+	# run's index space) so a price naming an unknown species refuses
+	# LOUDLY at build, never a quietly wrong trade.
+	world.tackle_cell = scenario.tackle_cell
+	world.tackle_shelf = []
+	if scenario.tackle_cell != Vector2.ZERO:
+		for srow: Dictionary in TackleCatalog.shelf_rows(world.stat_frame):
+			var rd := TackleCatalog.row_data(world.stat_frame, srow)
+			var price_idx := TackleCatalog.resolve_price(world.stat_frame, rd.get("price", {}))
+			if price_idx.is_empty():
+				push_error(
+					(
+						"scenario '%s': tackle row '%s' price refuses (unknown species) — SKIPPED"
+						% [String(scenario.id), String(rd.get("id", "?"))]
+					)
+				)
+				continue
+			(
+				world
+				. tackle_shelf
+				. append(
+					{
+						"row_kind": int(srow.row_kind),
+						"index": int(srow.index),
+						"tier": int(rd.get("tier", 0)),
+						"price_idx": price_idx,
+					}
+				)
+			)
 	world.add_player(scenario.player_spawn)
 	for p in scenario.standin_positions:
 		world.add_enemy_standin(p)
@@ -269,6 +300,7 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 			return world
 		var rod_frames: Array = []
 		var unlocks := PackedInt32Array()
+		var purchasable := PackedInt32Array()
 		for rod: Dictionary in rods:
 			var rod_path := "res://data/weapons/%s.tres" % String(rod.get("id", ""))
 			var rf: Resource = load(rod_path)
@@ -277,12 +309,17 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 				return world
 			rod_frames.append(rf)
 			unlocks.append(int(rod.get("unlock_level", 99)))
+			# sl-0177/0178: priced rods need the owned bit; the four
+			# unpriced originals are the free level-grant spine.
+			purchasable.append(1 if rod.has("price") else 0)
 		world.set_weapons(rod_frames)
 		for p: RefCounted in world.players:
 			p.weapon_tiers = PackedInt32Array()
 			p.weapon_tiers.resize(rod_frames.size())
 			p.weapon_tiers.fill(1)
-		world.set_rift_config(line, int(scenario.rift_biome), bool(scenario.rift_rare), unlocks)
+		world.set_rift_config(
+			line, int(scenario.rift_biome), bool(scenario.rift_rare), unlocks, purchasable
+		)
 	return world
 
 

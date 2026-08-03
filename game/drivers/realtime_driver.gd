@@ -140,13 +140,22 @@ func _sample_frame() -> RefCounted:
 	var mouse_tile: Vector2 = (
 		mouse_tile_provider.call() if mouse_tile_provider.is_valid() else Vector2.ZERO
 	)
-	# sl-0115: rod-swap context — how many rods the rifter's level has
-	# unlocked (0 outside rift worlds; R stays inert there). The edge's
-	# RESULT is what gets recorded, so replays carry the actual select.
+	# sl-0115 rod-swap context, sl-0177/0178 shape: the SELECTABLE
+	# mask mirrors player_fire's gate exactly (level >= the rod's tier
+	# threshold AND, for priced rods, the owned bit) — the catalog
+	# interleaves free/purchasable per tier, so a plain unlocked-count
+	# can no longer stand in. The R edge's RESULT is what gets
+	# recorded, so replays carry the actual select (zero format
+	# change; the sim gate stays the authority). Mask 0 = not a rift
+	# world; R stays inert.
 	var p: RefCounted = world.players[0]
-	var rod_count := 0
 	var unlocks: PackedInt32Array = world.rift_rod_unlocks
-	for lv in unlocks:
-		if p.level >= lv:
-			rod_count += 1
-	return sampler.sample(mouse_tile, p.pos, p.equipped_weapon, rod_count)
+	var purch: PackedInt32Array = world.rift_rod_purchasable
+	var rod_mask := 0
+	for ri in unlocks.size():
+		if p.level < unlocks[ri]:
+			continue
+		if ri < purch.size() and purch[ri] == 1 and (p.rods_owned_mask & (1 << ri)) == 0:
+			continue
+		rod_mask |= 1 << ri
+	return sampler.sample(mouse_tile, p.pos, p.equipped_weapon, rod_mask, unlocks.size())

@@ -56,8 +56,18 @@ foraging) was SIZED AND SPLIT OUT honestly
 (notes/FORAGE_SEAM_SIZING.md — three one-line designer questions
 route it); the player-hitbox seam (sl-0146) stays queued-deferred by
 word. **The chapter gate is the designer living in Green; S2 starts
-only on its own routing; water fishing is PARKED; the starhook GEAR
-SEAM routes next (planning's paste).**
+only on its own routing; water fishing is PARKED.** **THE GEAR SEAM
+(sl-0177/0178, 2026-08-03, SERIAL 26)**: rods are starhooking
+WEAPONS — a 12-rod catalog over the four family norms (three per
+tier; the original four stay the free level-grant spine; zero new
+patterns), rift-side CHEST + HELM rows (line capacity / bullet-
+strain defense through THE formula), THE TACKLE VENDOR at the
+harbor capital priced in FISH (the wallet is in-sim; buys/equips
+ride recorded ops 144..191 on the existing byte), and rare catches
+DROP Green-grade pieces (deterministic rng_loot, dup-protected).
+Balance calculator gate 6 validates the whole catalog including
+the rod .tres frames; every number [T]; the foraging seam builds
+next at SERIAL 27.
 
 ## Engine
 

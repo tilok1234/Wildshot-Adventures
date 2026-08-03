@@ -90,11 +90,34 @@
     "note": "sl-0105 v1; REBUILT sl-0115 (prototype #2 rules the shape, every number [T]): the RIFTER = the bait fighter, a fixed mini-class row on THIS frame (the legacy loop curve levels it); FOUR rods = attack-def data rows, starhook level gates use, R swaps; three biomes with named fish tables (fish persist PER-SPECIES - species-currency); ambient rifts spawn on land anywhere; the pull/line physics live in data/rift_pull.tres; drops feed the MAIN economy; cosmetics via the variants machinery.",
     "rifter": { "base_hp": 60, "hp_per_level": 8, "speed_tiles": 3.6 },
     "rods": [
-      { "id": "rod_cane", "name": "Cane Rod", "unlock_level": 1 },
-      { "id": "rod_splitwillow", "name": "Splitwillow", "unlock_level": 3 },
-      { "id": "rod_heavyline", "name": "Heavyline", "unlock_level": 5 },
-      { "id": "rod_twinreed", "name": "Twinreed", "unlock_level": 8 }
+      { "id": "rod_cane", "name": "Cane Rod", "unlock_level": 1, "tier": 1, "family": "line" },
+      { "id": "rod_splitwillow", "name": "Splitwillow", "unlock_level": 3, "tier": 2, "family": "fan" },
+      { "id": "rod_heavyline", "name": "Heavyline", "unlock_level": 5, "tier": 3, "family": "sinker" },
+      { "id": "rod_twinreed", "name": "Twinreed", "unlock_level": 8, "tier": 4, "family": "twin" },
+      { "id": "rod_fan_t1", "name": "Fan Rod", "unlock_level": 1, "tier": 1, "family": "fan", "price": { "emberwisp_koi": 2 } },
+      { "id": "rod_twin_t1", "name": "Twin Rod", "unlock_level": 1, "tier": 1, "family": "twin", "price": { "icetail_darter": 2 } },
+      { "id": "rod_line_t2", "name": "Line Rod", "unlock_level": 3, "tier": 2, "family": "line", "price": { "hollow_angler": 3, "emberwisp_koi": 1 } },
+      { "id": "rod_sinker_t2", "name": "Heavy Rod", "unlock_level": 3, "tier": 2, "family": "sinker", "price": { "dustfin_drifter": 3, "silence_carp": 1 } },
+      { "id": "rod_fan_t3", "name": "Fan Rod", "unlock_level": 5, "tier": 3, "family": "fan", "price": { "streakfin_herring": 4, "pulsar_gulper": 1 } },
+      { "id": "rod_twin_t3", "name": "Twin Rod", "unlock_level": 5, "tier": 3, "family": "twin", "price": { "umbral_eel": 4, "cinder_sprat": 1 } },
+      { "id": "rod_line_t4", "name": "Line Rod", "unlock_level": 8, "tier": 4, "family": "line", "price": { "pulsar_gulper": 3, "novaback_leviathan": 1 } },
+      { "id": "rod_sinker_t4", "name": "Heavy Rod", "unlock_level": 8, "tier": 4, "family": "sinker", "price": { "silence_carp": 3, "event_horizon_maw": 1 } }
     ],
+    "tackle": {
+      "_comment": "THE GEAR SEAM (sl-0177/0178) [T everywhere]: tier_levels = the sl-0115 unlock ladder verbatim (tier gates USE for every rod; the four originals keep their level-GRANT — rows without a price are the free spine, never stocked). items[] = chest/helm rows, ONE append-only list (owned-mask bit contract). Prices key species by ID STRING (the fish-first word: species re-roster later = data-only). rare_drop: RARE rift kills roll one priced row within the tier bounds (zone-gated per no-depth; Green = [1,2]).",
+      "tier_levels": { "1": 1, "2": 3, "3": 5, "4": 8 },
+      "items": [
+        { "id": "chest_t1", "name": "Rift Chest", "slot": "chest", "tier": 1, "hp": 12, "price": { "dustfin_drifter": 2 } },
+        { "id": "helm_t1", "name": "Rift Helm", "slot": "helm", "tier": 1, "defense": 4, "price": { "silence_carp": 1, "emberwisp_koi": 1 } },
+        { "id": "chest_t2", "name": "Rift Chest", "slot": "chest", "tier": 2, "hp": 16, "price": { "icetail_darter": 3, "hollow_angler": 1 } },
+        { "id": "helm_t2", "name": "Rift Helm", "slot": "helm", "tier": 2, "defense": 5, "price": { "pulsar_gulper": 2, "icetail_darter": 1 } },
+        { "id": "chest_t3", "name": "Rift Chest", "slot": "chest", "tier": 3, "hp": 21, "price": { "cinder_sprat": 4, "umbral_eel": 1 } },
+        { "id": "helm_t3", "name": "Rift Helm", "slot": "helm", "tier": 3, "defense": 6, "price": { "hollow_angler": 4, "dustfin_drifter": 2 } },
+        { "id": "chest_t4", "name": "Rift Chest", "slot": "chest", "tier": 4, "hp": 28, "price": { "streakfin_herring": 4, "harbinger_pike": 1 } },
+        { "id": "helm_t4", "name": "Rift Helm", "slot": "helm", "tier": 4, "defense": 7, "price": { "umbral_eel": 5, "novaback_leviathan": 1 } }
+      ],
+      "rare_drop": { "chance_pct": 50, "tier_min": 1, "tier_max": 2 }
+    },
     "catch_gold": { "common": [30, 60], "rare": [80, 150] },
     "biomes": [
       {

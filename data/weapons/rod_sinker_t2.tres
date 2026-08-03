@@ -1,0 +1,30 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://data/weapon_frame.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; THE GEAR SEAM (sl-0177/0178): T2 sinker-family rod — the Heavyline
+; norm (1 slow orb, pattern 9 VERBATIM) at the T2 damage row [T].
+; Purchasable (fish).
+
+[sub_resource type="Resource" id="shot0"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 9.0
+radius = 0.156
+damage = 12
+ttl_ticks = 80
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.35
+
+[resource]
+script = ExtResource("1")
+id = &"rod_sinker_t2"
+display_name = "Heavy Rod"
+pattern_id = 9
+cadence_ticks = 88
+shots = Array[Resource]([SubResource("shot0")])

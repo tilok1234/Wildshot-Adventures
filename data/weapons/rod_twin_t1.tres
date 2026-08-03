@@ -1,0 +1,44 @@
+[gd_resource type="Resource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://data/weapon_frame.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; THE GEAR SEAM (sl-0177/0178): T1 twin-family rod — the Twinreed
+; norm (2 needles ±3°, pattern 29 VERBATIM) at the T1 damage row
+; [T]. Purchasable (fish).
+
+[sub_resource type="Resource" id="shot0"]
+script = ExtResource("2")
+angle_offset_deg = -3.0
+speed = 15.0
+radius = 0.125
+damage = 2
+ttl_ticks = 52
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.35
+
+[sub_resource type="Resource" id="shot1"]
+script = ExtResource("2")
+angle_offset_deg = 3.0
+speed = 15.0
+radius = 0.125
+damage = 2
+ttl_ticks = 52
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.35
+
+[resource]
+script = ExtResource("1")
+id = &"rod_twin_t1"
+display_name = "Twin Rod"
+pattern_id = 29
+cadence_ticks = 28
+shots = Array[Resource]([SubResource("shot0"), SubResource("shot1")])

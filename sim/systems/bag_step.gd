@@ -13,6 +13,7 @@ extends RefCounted
 const SimEvents := preload("res://sim/events.gd")
 const DropKinds := preload("res://sim/drop_kinds.gd")
 const StatFrame := preload("res://sim/systems/stat_frame.gd")
+const TackleCatalog := preload("res://sim/tackle_catalog.gd")
 
 ## The op byte (input_frame.gd bag_op; 0 = none):
 ## 1..20 EQUIP bag slot / 21..40 DROP bag slot /
@@ -43,6 +44,16 @@ const BUY_ROW_MAX := 8
 const OP_ABANDON_BASE := 112
 const OP_ACCEPT_BASE := 128
 const QUEST_OP_MAX := 16
+## THE GEAR SEAM (sl-0177/0178): 144..175 TACKLE BUY shelf row (the
+## tackle_catalog shelf order — rods-with-price then items) / 176..191
+## TACKLE EQUIP tackle.items row (chest/helm among OWNED pieces). Both
+## legal only within VENDOR_RADIUS of the scenario's tackle cell.
+## Fish prices decrement the serialized wallet — the spend is recorded
+## and deterministic like every trade. 192..255 stay free.
+const OP_TACKLE_BUY_BASE := 144
+const TACKLE_BUY_MAX := 32
+const OP_TACKLE_EQUIP_BASE := 176
+const TACKLE_EQUIP_MAX := 16
 ## Capacity [T] (the sl-0116 suggested 20).
 const BAG_CAP := 20
 ## Bank capacity [T] — small, distinct from the bag (sl-0130).
@@ -93,6 +104,10 @@ static func run(world: RefCounted) -> void:
 			_sell(world, p, op - OP_SELL_BASE)
 		elif op >= OP_BUY_BASE and op < OP_BUY_BASE + BUY_ROW_MAX:
 			_buy(world, p, op - OP_BUY_BASE)
+		elif op >= OP_TACKLE_BUY_BASE and op < OP_TACKLE_BUY_BASE + TACKLE_BUY_MAX:
+			_tackle_buy(world, p, op - OP_TACKLE_BUY_BASE)
+		elif op >= OP_TACKLE_EQUIP_BASE and op < OP_TACKLE_EQUIP_BASE + TACKLE_EQUIP_MAX:
+			_tackle_equip(world, p, op - OP_TACKLE_EQUIP_BASE)
 
 
 ## ---- ground loot bags (sl-0129).
@@ -263,6 +278,94 @@ static func _buy(world: RefCounted, p: RefCounted, row: int) -> void:
 	if not bag_add(world, p, kind, a, b):
 		return
 	p.gold -= price
+
+
+## ---- the tackle vendor (sl-0177/0178): the rifter's gear shop —
+## fish-priced catalog rows, ownership bits, chest/helm equips. Ops
+## legal only at the scenario's tackle cell; the class-lane guard in
+## run() means rift worlds (rifter = legacy lane) never trade —
+## purchases are an overworld act by construction.
+
+
+static func at_tackle(world: RefCounted, p: RefCounted) -> bool:
+	if world.tackle_cell == Vector2.ZERO:
+		return false
+	return p.pos.distance_to(world.tackle_cell) <= VENDOR_RADIUS
+
+
+## Grant a shelf row's ownership bit; chest/helm auto-equip into an
+## EMPTY slot (a bought/dropped first piece is worn without ceremony;
+## replacements stay a deliberate equip op). Shared with the
+## rare-catch drop path (damage.gd).
+static func tackle_grant(world: RefCounted, p: RefCounted, row: Dictionary) -> void:
+	var idx := int(row.get("index", -1))
+	if idx < 0 or idx > 62:
+		return
+	if int(row.get("row_kind", -1)) == TackleCatalog.ROW_ROD:
+		p.rods_owned_mask |= 1 << idx
+		return
+	p.tackle_owned_mask |= 1 << idx
+	var slot := String(TackleCatalog.row_data(world.stat_frame, row).get("slot", ""))
+	if slot == "chest" and p.tackle_chest < 0:
+		p.tackle_chest = idx
+	elif slot == "helm" and p.tackle_helm < 0:
+		p.tackle_helm = idx
+
+
+static func _tackle_buy(world: RefCounted, p: RefCounted, row_i: int) -> void:
+	if not at_tackle(world, p) or row_i >= world.tackle_shelf.size():
+		return
+	var row: Dictionary = world.tackle_shelf[row_i]
+	if TackleCatalog.owned(p, row):
+		return
+	var price_idx: Dictionary = row.get("price_idx", {})
+	if price_idx.is_empty() or not TackleCatalog.can_afford(p.fish, price_idx):
+		return
+	for si: int in price_idx:
+		p.fish[si] -= int(price_idx[si])
+	tackle_grant(world, p, row)
+	(
+		world
+		. events
+		. append(
+			{
+				"type": SimEvents.Type.TACKLE_BOUGHT,
+				"tick": world.tick,
+				"player": p.id,
+				"row_kind": int(row.row_kind),
+				"index": int(row.index),
+			}
+		)
+	)
+
+
+static func _tackle_equip(world: RefCounted, p: RefCounted, items_i: int) -> void:
+	if not at_tackle(world, p):
+		return
+	var ilist: Array = TackleCatalog.items(world.stat_frame)
+	if items_i >= ilist.size() or items_i > 62:
+		return
+	if (p.tackle_owned_mask & (1 << items_i)) == 0:
+		return
+	var slot := String((ilist[items_i] as Dictionary).get("slot", ""))
+	if slot == "chest":
+		p.tackle_chest = items_i
+	elif slot == "helm":
+		p.tackle_helm = items_i
+	else:
+		return
+	(
+		world
+		. events
+		. append(
+			{
+				"type": SimEvents.Type.TACKLE_EQUIPPED,
+				"tick": world.tick,
+				"player": p.id,
+				"index": items_i,
+			}
+		)
+	)
 
 
 ## Move one bag row to the player's bag. False = refused (out of

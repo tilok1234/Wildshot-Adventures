@@ -97,6 +97,51 @@ static func _armor_line(world: RefCounted, tier: int) -> String:
 	return "T%d Armor — +%d def, +%d hp" % [tier, int(defense[tier - 1]), int(hp[tier - 1])]
 
 
+## ---- THE TACKLE GRAMMAR (sl-0177/0178): rods speak like weapons,
+## chest/helm like armor — same shape, every number visible.
+
+
+## "T3 Heavyline — 16 dmg @ 0.7/s" / "T2 Splitwillow — 3x4 dmg @ 1.7/s".
+static func rod_line(rod_row: Dictionary, frame_res: Resource) -> String:
+	var tier := int(rod_row.get("tier", 0))
+	var name := String(rod_row.get("name", rod_row.get("id", "rod")))
+	if frame_res == null:
+		return "T%d %s" % [tier, name]
+	var shots: Array = frame_res.shots
+	var cad := int(frame_res.cadence_ticks)
+	if shots.is_empty() or cad <= 0:
+		return "T%d %s" % [tier, name]
+	var dmg := int(shots[0].damage)
+	var count := shots.size()
+	var dmg_text := "%d" % dmg if count == 1 else "%dx%d" % [count, dmg]
+	return "T%d %s — %s dmg @ %s/s" % [tier, name, dmg_text, String.num(60.0 / cad, 1)]
+
+
+## "T2 Rift Chest — +16 hp" / "T2 Rift Helm — +5 def".
+static func tackle_item_line(row: Dictionary) -> String:
+	var tier := int(row.get("tier", 0))
+	var name := String(row.get("name", row.get("id", "gear")))
+	if String(row.get("slot", "")) == "chest":
+		return "T%d %s — +%d hp" % [tier, name, int(row.get("hp", 0))]
+	return "T%d %s — +%d def" % [tier, name, int(row.get("defense", 0))]
+
+
+## Fish price: "2 Emberwisp Koi + 1 Silence Carp" (species NAMES from
+## the biome tables; ids fall through so an unnamed species never
+## renders blank).
+static func fish_price_text(frame: Dictionary, price: Dictionary) -> String:
+	var names := {}
+	for biome: Dictionary in frame.get("starhook", {}).get("biomes", []):
+		for fr: Dictionary in biome.get("fish", []) as Array:
+			names[String(fr.get("id", ""))] = String(fr.get("name", fr.get("id", "")))
+		var rare: Dictionary = biome.get("rare", {})
+		names[String(rare.get("id", ""))] = String(rare.get("name", rare.get("id", "")))
+	var parts: Array[String] = []
+	for sp: String in price:
+		parts.append("%d %s" % [int(price[sp]), String(names.get(sp, sp))])
+	return " + ".join(parts)
+
+
 static func _ring_line(world: RefCounted, items_index: int) -> String:
 	var items: Array = world.stat_frame.get("items", [])
 	if items_index < 0 or items_index >= items.size():

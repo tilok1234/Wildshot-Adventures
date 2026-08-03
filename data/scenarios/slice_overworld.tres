@@ -26,4 +26,5 @@ rift_ambient = true
 bank_cell = Vector2(112.5, 182.5)
 vendor_cells = PackedVector2Array(106.5, 182.5, 106.5, 180.5)
 vendor_stocks = PackedStringArray("general", "trader")
+tackle_cell = Vector2(110.5, 178.5)
 default_seed = 100

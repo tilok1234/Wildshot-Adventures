@@ -12,7 +12,15 @@ data/balance_frame.json (or argv[1]) and proves the ruled stat frame's gates:
      combat numbers <= 3 digits (block 9 / A.4);
   5. the ITEM VALIDATOR - refuses over-budget items (block 4), un-paired
      stat uplifts (block 7's six-pair grammar), and uniques with zero/two
-     rule-breaks or a chassis outside 70-90% of tier budget (block 8).
+     rule-breaks or a chassis outside 70-90% of tier budget (block 8);
+  6. THE TACKLE FRAME (sl-0177/0178, the gear seam) - rods are starhooking
+     weapons: >= 2 per tier across the four FAMILY norms (each family ONE
+     pattern id, the pond's sword/staff/bow parallel; the .tres frames are
+     parsed and pinned to their family's norm; the four proto originals
+     exact-pinned; family DPS tier-monotone); tier_levels = the sl-0115
+     unlock ladder verbatim; prices key EXISTING species, rare species T4
+     shelves only, every species priced somewhere; chest hp steps + helm
+     defense inside the rift obtainable band vs the parsed star-spray hit.
 The ruled constants are HARD-CODED here as the design contract: a data file
 drifting from docs/22's frame FAILS - mismatches flag loudly, and docs/22 is
 never amended game-side. All damage math uses THE formula:
@@ -23,6 +31,8 @@ never amended game-side. All damage math uses THE formula:
 
 import json
 import math
+import os
+import re
 import sys
 
 # ---- the ruled frame (docs/22, designer 2026-08-01) - the design contract ----
@@ -201,6 +211,215 @@ for item in d["items"]:
         if trade is None:
             fail(f"item {iid}: a ring is exactly ONE sanctioned pair - no trade declared")
 
+# ---- gate 6: THE TACKLE FRAME (sl-0177/0178 - the gear seam) ----
+# Family norms [T]: pattern id + volley shape are THE family (sl-0169's
+# law: norms here, deviation stays the uniques' job - unique rods FUTURE).
+ROD_FAMILIES = {
+    "line":   {"pattern": 7,  "shots": 1, "speed": 14.0, "ttl": 30, "radius": 0.125, "angles": [0.0],               "cadence": (28, 32)},
+    "fan":    {"pattern": 8,  "shots": 3, "speed": 12.0, "ttl": 28, "radius": 0.11,  "angles": [-12.0, 0.0, 12.0],  "cadence": (34, 38)},
+    "sinker": {"pattern": 9,  "shots": 1, "speed": 9.0,  "ttl": 80, "radius": 0.156, "angles": [0.0],               "cadence": (84, 92)},
+    "twin":   {"pattern": 29, "shots": 2, "speed": 15.0, "ttl": 52, "radius": 0.125, "angles": [-3.0, 3.0],         "cadence": (26, 36)},
+}
+# The designer's proto rods ride verbatim [proto->T] - exact-pinned.
+ROD_ORIGINALS = {
+    "rod_cane": ([6], 30), "rod_splitwillow": ([4, 4, 4], 36),
+    "rod_heavyline": ([16], 88), "rod_twinreed": ([3, 3], 28),
+}
+TIER_LEVELS = {1: 1, 2: 3, 3: 5, 4: 8}
+RIFT_CHEST_STEP_BAND = (1.25, 1.35)
+RIFT_HELM_PLATEAU = 0.7
+
+data_dir = os.path.dirname(os.path.abspath(sys.argv[1] if len(sys.argv) > 1 else "data/balance_frame.json"))
+
+
+def parse_rod_tres(rod_id: str):
+    """Textual .tres parse: (pattern_id, cadence, [per-shot dicts])."""
+    path = os.path.join(data_dir, "weapons", rod_id + ".tres")
+    if not os.path.isfile(path):
+        return None
+    text = open(path, encoding="utf-8").read()
+    shots = []
+    for block in re.findall(r'\[sub_resource[^\]]*\]([^\[]*)', text):
+        m = {k: float(v) for k, v in re.findall(r'(\w+) = (-?[\d.]+)', block)}
+        if "damage" in m:
+            shots.append(m)
+    pat = re.search(r'^pattern_id = (\d+)', text, re.M)
+    cad = re.search(r'^cadence_ticks = (\d+)', text, re.M)
+    return (int(pat.group(1)) if pat else -1, int(cad.group(1)) if cad else -1, shots)
+
+
+sh = d.get("starhook", {})
+rods = sh.get("rods", [])
+tackle = sh.get("tackle", {})
+species_ids = set()
+rare_ids = set()
+for biome in sh.get("biomes", []):
+    for fr in biome.get("fish", []):
+        species_ids.add(fr["id"])
+    rare_ids.add(biome.get("rare", {}).get("id", ""))
+species_ids |= rare_ids
+
+if {int(k): v for k, v in tackle.get("tier_levels", {}).items()} != TIER_LEVELS:
+    fail(f"tackle tier_levels drifted from the sl-0115 unlock ladder {TIER_LEVELS}")
+
+rod_report = []
+per_tier: dict[int, int] = {}
+family_dps: dict[str, dict[int, float]] = {}
+priced_species: set[str] = set()
+slot_price_totals: dict[str, dict[int, int]] = {}
+
+
+def check_price(row_id: str, row: dict, slot_key: str, tier: int) -> None:
+    price = row.get("price")
+    if price is None:
+        return
+    total = 0
+    for sp, n in price.items():
+        if sp not in species_ids:
+            fail(f"tackle {row_id}: price species '{sp}' not in the biome tables")
+        if not (1 <= int(n) <= 9):
+            fail(f"tackle {row_id}: price count {n} outside 1..9")
+        if sp in rare_ids and tier < 4:
+            fail(f"tackle {row_id}: rare species '{sp}' priced below the T4 shelf")
+        priced_species.add(sp)
+        total += int(n)
+    slot_price_totals.setdefault(slot_key, {})
+    prev = slot_price_totals[slot_key]
+    for pt, pv in prev.items():
+        if pt < tier and pv > total:
+            fail(f"tackle {row_id}: T{tier} price total {total} under T{pt}'s {pv} (tier totals never shrink)")
+        if pt > tier and pv < total:
+            fail(f"tackle {row_id}: T{tier} price total {total} over T{pt}'s {pv} (tier totals never shrink)")
+    prev[tier] = max(prev.get(tier, 0), total)
+
+
+for rod in rods:
+    rid = rod["id"]
+    fam = rod.get("family", "")
+    tier = int(rod.get("tier", 0))
+    if fam not in ROD_FAMILIES:
+        fail(f"rod {rid}: unknown family '{fam}'")
+        continue
+    if tier not in TIER_LEVELS:
+        fail(f"rod {rid}: tier {tier} outside the ladder")
+        continue
+    if int(rod.get("unlock_level", -1)) != TIER_LEVELS[tier]:
+        fail(f"rod {rid}: unlock_level {rod.get('unlock_level')} != tier {tier}'s level {TIER_LEVELS[tier]}")
+    per_tier[tier] = per_tier.get(tier, 0) + 1
+    norm = ROD_FAMILIES[fam]
+    parsed = parse_rod_tres(rid)
+    if parsed is None:
+        fail(f"rod {rid}: data/weapons/{rid}.tres missing")
+        continue
+    pat, cad, shots = parsed
+    if pat != norm["pattern"]:
+        fail(f"rod {rid}: pattern {pat} != family '{fam}' norm {norm['pattern']} (families are norms)")
+    if len(shots) != norm["shots"]:
+        fail(f"rod {rid}: {len(shots)} shots != family norm {norm['shots']}")
+    if not (norm["cadence"][0] <= cad <= norm["cadence"][1]):
+        fail(f"rod {rid}: cadence {cad} outside family band {norm['cadence']}")
+    angles = sorted(s.get("angle_offset_deg", 0.0) for s in shots)
+    if angles != sorted(norm["angles"]):
+        fail(f"rod {rid}: volley angles {angles} != family norm {sorted(norm['angles'])}")
+    for s in shots:
+        for key, want in (("speed", norm["speed"]), ("ttl_ticks", norm["ttl"]), ("radius", norm["radius"])):
+            if abs(s.get(key, -1) - want) > 1e-6:
+                fail(f"rod {rid}: shot {key} {s.get(key)} != family norm {want}")
+    dmgs = [int(s["damage"]) for s in shots]
+    if rid in ROD_ORIGINALS:
+        want_dmg, want_cad = ROD_ORIGINALS[rid]
+        if sorted(dmgs) != sorted(want_dmg) or cad != want_cad:
+            fail(f"rod {rid}: proto original drifted (dmg {dmgs} cad {cad} vs pinned {want_dmg}/{want_cad})")
+    dps = sum(dmgs) * 60.0 / cad if cad > 0 else 0.0
+    family_dps.setdefault(fam, {})
+    if tier in family_dps[fam]:
+        fail(f"rod family {fam}: two rods at T{tier} (one identity per family per tier)")
+    family_dps[fam][tier] = dps
+    check_price(rid, rod, "rod_" + fam, tier)
+    rod_report.append(f"  T{tier} {rid:16s} [{fam:6s}] {'+'.join(str(x) for x in dmgs):8s} dmg @ {60.0 / cad:.2f}/s = {dps:5.1f} dps" + ("  (free spine)" if rod.get("price") is None else ""))
+
+for tier in TIER_LEVELS:
+    if per_tier.get(tier, 0) < 2:
+        fail(f"rod tier {tier}: only {per_tier.get(tier, 0)} rods (sl-0178: SEVERAL per level tier)")
+for fam, by_tier in family_dps.items():
+    ts = sorted(by_tier)
+    for a, b in zip(ts, ts[1:]):
+        if by_tier[b] <= by_tier[a]:
+            fail(f"rod family {fam}: DPS not tier-monotone (T{a} {by_tier[a]:.1f} >= T{b} {by_tier[b]:.1f})")
+
+# chest/helm rows: one append-only list, single-stat v1, banded.
+titems = tackle.get("items", [])
+seen_ids = set()
+chest_hp = {}
+helm_def = {}
+for row in titems:
+    tid = row["id"]
+    if tid in seen_ids:
+        fail(f"tackle items: duplicate id {tid}")
+    seen_ids.add(tid)
+    slot = row.get("slot", "")
+    tier = int(row.get("tier", 0))
+    if slot not in ("chest", "helm"):
+        fail(f"tackle {tid}: unknown slot '{slot}'")
+        continue
+    if tier not in TIER_LEVELS:
+        fail(f"tackle {tid}: tier {tier} outside the ladder")
+        continue
+    if slot == "chest":
+        chest_hp[tier] = int(row.get("hp", 0))
+        if int(row.get("defense", 0)) != 0:
+            fail(f"tackle {tid}: chest carries defense (v1 rows are single-stat)")
+    else:
+        helm_def[tier] = int(row.get("defense", 0))
+        if int(row.get("hp", 0)) != 0:
+            fail(f"tackle {tid}: helm carries hp (v1 rows are single-stat)")
+    if row.get("price") is None:
+        fail(f"tackle {tid}: chest/helm rows are vendor rows - a price is required")
+    check_price(tid, row, slot, tier)
+for tier in TIER_LEVELS:
+    if tier not in chest_hp or tier not in helm_def:
+        fail(f"tackle: missing chest/helm row at T{tier}")
+for a, b in zip(sorted(chest_hp), sorted(chest_hp)[1:]):
+    if chest_hp[a] > 0:
+        step = chest_hp[b] / chest_hp[a]
+        if not (RIFT_CHEST_STEP_BAND[0] - 1e-9 <= step <= RIFT_CHEST_STEP_BAND[1] + 1e-9):
+            fail(f"tackle chest hp step T{a}->T{b} = {step:.3f} outside {RIFT_CHEST_STEP_BAND}")
+for a, b in zip(sorted(helm_def), sorted(helm_def)[1:]):
+    if helm_def[b] <= helm_def[a]:
+        fail(f"tackle helm defense not tier-monotone (T{a} {helm_def[a]} >= T{b} {helm_def[b]})")
+
+# The rift reference hit is PARSED from the shipped star-spray pattern -
+# retuning the catch's spray moves this gate with it, never silently.
+spray = os.path.join(data_dir, "enemies", "patterns", "star_spray.tres")
+spray_dmg = 0
+if os.path.isfile(spray):
+    hits = [int(x) for x in re.findall(r'^damage = (\d+)', open(spray, encoding="utf-8").read(), re.M)]
+    spray_dmg = max(hits) if hits else 0
+if spray_dmg <= 0:
+    fail("tackle: star_spray.tres unreadable - no rift reference hit")
+else:
+    rare_drop = tackle.get("rare_drop", {})
+    lo, hi = int(rare_drop.get("tier_min", 0)), int(rare_drop.get("tier_max", 0))
+    if not (1 <= lo <= hi <= 4):
+        fail(f"tackle rare_drop tier bounds [{lo},{hi}] outside the ladder")
+    if not (1 <= int(rare_drop.get("chance_pct", 0)) <= 100):
+        fail(f"tackle rare_drop chance {rare_drop.get('chance_pct')} outside 1..100")
+    # Obtainable-at-grade helm defense vs the reference hit (armor_rules
+    # band, block-2 rider applied rift-side at the DROP-gated tiers).
+    for tier in range(lo, hi + 1):
+        ratio = helm_def.get(tier, 0) / spray_dmg
+        if not (ARMOR_BAND[0] - 1e-9 <= ratio <= ARMOR_BAND[1] + 1e-9):
+            fail(f"tackle helm T{tier}: {helm_def.get(tier, 0)} = {ratio:.2f}x the {spray_dmg} rift hit (band 0.4-0.6)")
+    if helm_def and max(helm_def.values()) / spray_dmg > RIFT_HELM_PLATEAU + 1e-9:
+        fail(f"tackle helm plateau: max {max(helm_def.values())} > {RIFT_HELM_PLATEAU}x the {spray_dmg} rift hit")
+
+unpriced = species_ids - priced_species - {""}
+if unpriced:
+    fail(f"tackle: species never priced anywhere: {sorted(unpriced)} (every fish matters)")
+for n in [v for r in titems for v in (int(r.get("hp", 0)), int(r.get("defense", 0)))]:
+    if n > MAX_NUMBER:
+        fail(f"tackle number {n} exceeds 3 digits")
+
 # ---- info report (never gated) ----
 xp = d["xp"]
 zone_levels = {z: BRACKETS[z][1] - BRACKETS[z][0] + (0 if z == "green" else 1) for z in BRACKETS}
@@ -211,10 +430,16 @@ for row in report_rows:
 print(f"  XP: total to 30 = {total_xp}; kills/level = " + ", ".join(
     f"{z} {xp['per_level'][z] / xp['per_kill'][z]:.0f}" for z in BRACKETS))
 print(f"  weapon budgets: " + ", ".join(f"T{t + 1} {budgets[t]:.1f}" for t in range(5)))
+print("  the tackle catalog (gate 6):")
+for row in sorted(rod_report):
+    print(row)
+print("  rift chest hp: " + ", ".join(f"T{t} +{chest_hp[t]}" for t in sorted(chest_hp))
+      + "; helm def: " + ", ".join(f"T{t} +{helm_def[t]}" for t in sorted(helm_def))
+      + f" (vs the {spray_dmg} rift hit)")
 
 if findings:
     print(f"\nFAIL — {len(findings)} findings:")
     for f in findings:
         print(" -", f)
     sys.exit(1)
-print("PASS — all five gates hold: the numbers exist before the code does")
+print("PASS — all six gates hold: the numbers exist before the code does")

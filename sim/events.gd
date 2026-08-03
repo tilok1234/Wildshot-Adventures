@@ -38,6 +38,9 @@ enum Type {
 	BANK_FULL,
 	QUEST_ABANDONED,
 	QUEST_OFFERED,
+	TACKLE_BOUGHT,
+	TACKLE_EQUIPPED,
+	TACKLE_DROPPED,
 }
 
 ## PROJECTILE_DESPAWNED carries one of these (§2.6 typed despawn reasons).

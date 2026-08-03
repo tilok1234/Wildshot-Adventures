@@ -1,0 +1,59 @@
+[gd_resource type="Resource" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://data/weapon_frame.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; THE GEAR SEAM (sl-0177/0178): T1 fan-family rod — the Splitwillow
+; norm (3 bolts ±12°, pattern 8 VERBATIM — families are norms,
+; sl-0169's deviation law untouched) at the T1 damage row [T].
+; Purchasable (fish) — the tackle catalog row carries the price.
+
+[sub_resource type="Resource" id="shot0"]
+script = ExtResource("2")
+angle_offset_deg = -12.0
+speed = 12.0
+radius = 0.11
+damage = 3
+ttl_ticks = 28
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.35
+
+[sub_resource type="Resource" id="shot1"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 12.0
+radius = 0.11
+damage = 3
+ttl_ticks = 28
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.35
+
+[sub_resource type="Resource" id="shot2"]
+script = ExtResource("2")
+angle_offset_deg = 12.0
+speed = 12.0
+radius = 0.11
+damage = 3
+ttl_ticks = 28
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.35
+
+[resource]
+script = ExtResource("1")
+id = &"rod_fan_t1"
+display_name = "Fan Rod"
+pattern_id = 8
+cadence_ticks = 36
+shots = Array[Resource]([SubResource("shot0"), SubResource("shot1"), SubResource("shot2")])

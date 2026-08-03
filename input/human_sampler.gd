@@ -35,12 +35,16 @@ func queue_bag_op(code: int) -> void:
 
 ## mouse_tile: mouse position in world TILE coordinates (view converts);
 ## player_pos: the sampled player's sim position, tiles.
-## equipped/rod_count (sl-0115): the live rod slot + how many rods the
-## rifter's LEVEL has unlocked — the R edge emits weapon_select as the
-## next unlocked slot, riding the byte the stream always carried (zero
-## format change; the sim gate in player_fire stays the authority).
-## rod_count 0 = not a rift world; R is inert.
-func sample(mouse_tile: Vector2, player_pos: Vector2, equipped := 0, rod_count := 0) -> InputFrame:
+## equipped/rod_mask/rod_total (sl-0115, mask since sl-0177): the live
+## rod slot + the SELECTABLE-ladder bitmask (bit i = ladder index i
+## passes the sim's level+ownership gate) + the full ladder size — the
+## R edge emits weapon_select as the NEXT selectable slot, riding the
+## byte the stream always carried (zero format change; the sim gate in
+## player_fire stays the authority). rod_total 0 = not a rift world;
+## R is inert.
+func sample(
+	mouse_tile: Vector2, player_pos: Vector2, equipped := 0, rod_mask := 0, rod_total := 0
+) -> InputFrame:
 	if suppress:
 		var nf := InputFrame.new()
 		nf.normalized = true
@@ -86,8 +90,12 @@ func sample(mouse_tile: Vector2, player_pos: Vector2, equipped := 0, rod_count :
 		if Input.is_action_pressed("weapon_%d" % (i + 1)):
 			f.weapon_select = i + 1
 	var rs := Input.is_action_pressed("rod_swap")
-	if rs and not _prev_rod_swap and rod_count > 0:
-		f.weapon_select = (equipped + 1) % rod_count + 1
+	if rs and not _prev_rod_swap and rod_total > 0 and rod_mask != 0:
+		for k in range(1, rod_total + 1):
+			var cand := (equipped + k) % rod_total
+			if (rod_mask >> cand) & 1:
+				f.weapon_select = cand + 1
+				break
 	_prev_rod_swap = rs
 	# sl-0129: the loot-all edge rides the bag_op byte; a queued pane
 	# op wins the tick (both are deliberate hands — first come holds).

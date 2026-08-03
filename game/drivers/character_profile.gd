@@ -20,6 +20,7 @@ extends RefCounted
 
 const StatFrame := preload("res://sim/systems/stat_frame.gd")
 const DropKinds := preload("res://sim/drop_kinds.gd")
+const TackleCatalog := preload("res://sim/tackle_catalog.gd")
 
 const PATH := "user://character.json"
 const VERSION := 2
@@ -63,6 +64,10 @@ static func create(hardcore: bool, cls := "bow") -> Dictionary:
 		"starhook_skins": 0,
 		"starhook_catches": 0,
 		"starhook_fish": {},
+		"starhook_rods": [],
+		"starhook_tackle": [],
+		"starhook_chest": "",
+		"starhook_helm": "",
 		"ability_index": 0,
 		"deaths": 0,
 		"runs": 0,
@@ -172,6 +177,10 @@ static func apply_to_world(world: RefCounted, d: Dictionary) -> void:
 		if qi >= 0:
 			p.quests_taken_mask |= 1 << qi
 			p.quest_progress_arr[qi] = int(prog.get(String(tid), 0))
+	# THE GEAR SEAM (sl-0177/0178): the tackle lane loads on the
+	# OVERWORLD player too — the fish wallet must be in-sim where the
+	# tackle vendor trades (recorded, deterministic spends).
+	_tackle_apply(world, p, d)
 	StatFrame.recompute(world, p)
 	p.hp = p.max_hp
 	p.mana = p.max_mana
@@ -224,6 +233,7 @@ static func harvest(world: RefCounted, d: Dictionary) -> void:
 	d.quest_progress = prog
 	d.erase("active_quest_id")
 	d.ability_index = maxi(0, world.ability_defs.find(world.ability_def))
+	_tackle_harvest(world, p, d)
 
 
 ## Item id <-> stat-frame items[] index (S1 seams 2/3): the profile's
@@ -328,15 +338,30 @@ static func apply_to_rift(world: RefCounted, d: Dictionary) -> void:
 	p.hp = p.max_hp
 	p.move_speed = float(rifter.get("speed_tiles", 3.6))
 	p.gold = 0
+	# THE GEAR SEAM: the tackle lane loads BEFORE the rod pick (the
+	# owned mask gates purchasable rods) and the worn chest/helm land
+	# as rift-side stats — chest raises the line's capacity, the helm
+	# mitigates BULLET strain via THE formula (the drains never
+	# mitigate; overworld combat untouched by construction).
+	_tackle_apply(world, p, d)
+	var titems: Array = TackleCatalog.items(world.stat_frame)
+	if p.tackle_chest >= 0 and p.tackle_chest < titems.size():
+		p.max_hp += int((titems[p.tackle_chest] as Dictionary).get("hp", 0))
+	if p.tackle_helm >= 0 and p.tackle_helm < titems.size():
+		p.armor = int((titems[p.tackle_helm] as Dictionary).get("defense", 0))
+	p.hp = p.max_hp
 	# The rod IS the rifter's class; R swaps among unlocked rods
 	# (sl-0115). Entry equips the profile's rod when its level gate
-	# holds, else the highest unlocked (never a locked rod).
+	# holds, else the highest unlocked (never a locked rod; sl-0177:
+	# purchasable rods also need their owned bit).
 	var rod_id := String(d.get("starhook_rod", "rod_cane"))
 	var rods: Array = sh.get("rods", [])
 	var equip := 0
 	for ri in rods.size():
 		var rod: Dictionary = rods[ri]
 		if lvl < int(rod.get("unlock_level", 99)):
+			continue
+		if rod.has("price") and (p.rods_owned_mask & (1 << ri)) == 0:
 			continue
 		if String(rod.get("id", "")) == rod_id:
 			equip = ri
@@ -361,6 +386,11 @@ static func harvest_rift(world: RefCounted, d: Dictionary, won: bool) -> void:
 	d.gold = int(d.get("gold", 0)) + p.gold
 	d.starhook_level = p.level
 	d.starhook_xp = p.xp
+	# THE GEAR SEAM: ownership/equips fold back BY ID first (a rare
+	# catch may have dropped a piece mid-dive); the fish sync is a
+	# no-op here (no rift spends) and the catch fold below adds onto
+	# the synced bank.
+	_tackle_harvest(world, p, d)
 	if won:
 		d.starhook_catches = int(d.get("starhook_catches", 0)) + 1
 	var sh: Dictionary = world.stat_frame.get("starhook", {})
@@ -390,6 +420,91 @@ static func harvest_rift(world: RefCounted, d: Dictionary, won: bool) -> void:
 	d.starhook_fish = fish_bank
 	if (p.unique_mask & (1 << 2)) != 0:
 		d.starhook_skins = int(d.get("starhook_skins", 0)) | 1
+
+
+## ---- THE GEAR SEAM (sl-0177/0178): the tackle lane, BOTH world
+## shapes, always BY ID (the seam-2 doctrine — lists evolve, saves
+## never silently re-point). Fish: the profile's id-keyed bank loads
+## into the run's species-index array; harvest writes CURRENT-table
+## species back and PRESERVES unknown keys (the fish-first word: a
+## species re-roster never eats the designer's fish).
+
+
+static func _tackle_apply(world: RefCounted, p: RefCounted, d: Dictionary) -> void:
+	var frame: Dictionary = world.stat_frame
+	var ids := TackleCatalog.species_ids(frame)
+	p.fish = PackedInt32Array()
+	p.fish.resize(ids.size())
+	var bank: Dictionary = (
+		d.get("starhook_fish", {}) if d.get("starhook_fish") is Dictionary else {}
+	)
+	for i in ids.size():
+		p.fish[i] = clampi(int(bank.get(ids[i], 0)), 0, 65535)
+	p.rods_owned_mask = 0
+	var rlist := TackleCatalog.rods(frame)
+	var owned_rods: Array = d.get("starhook_rods", []) if d.get("starhook_rods") is Array else []
+	for rid_v: Variant in owned_rods:
+		for ri in rlist.size():
+			if String((rlist[ri] as Dictionary).get("id", "")) == String(rid_v):
+				p.rods_owned_mask |= 1 << ri
+	p.tackle_owned_mask = 0
+	var ilist := TackleCatalog.items(frame)
+	var owned_items: Array = (
+		d.get("starhook_tackle", []) if d.get("starhook_tackle") is Array else []
+	)
+	for tid_v: Variant in owned_items:
+		for ii in ilist.size():
+			if String((ilist[ii] as Dictionary).get("id", "")) == String(tid_v):
+				p.tackle_owned_mask |= 1 << ii
+	p.tackle_chest = _tackle_item_index(ilist, String(d.get("starhook_chest", "")), "chest")
+	p.tackle_helm = _tackle_item_index(ilist, String(d.get("starhook_helm", "")), "helm")
+	# An equip the profile claims but the owned list lost is worn
+	# honestly only when owned (defensive: equips imply ownership).
+	if p.tackle_chest >= 0 and (p.tackle_owned_mask & (1 << p.tackle_chest)) == 0:
+		p.tackle_chest = -1
+	if p.tackle_helm >= 0 and (p.tackle_owned_mask & (1 << p.tackle_helm)) == 0:
+		p.tackle_helm = -1
+
+
+static func _tackle_harvest(world: RefCounted, p: RefCounted, d: Dictionary) -> void:
+	var frame: Dictionary = world.stat_frame
+	var ids := TackleCatalog.species_ids(frame)
+	var bank: Dictionary = (
+		d.get("starhook_fish", {}) if d.get("starhook_fish") is Dictionary else {}
+	)
+	for i in ids.size():
+		bank[ids[i]] = p.fish[i] if i < p.fish.size() else 0
+	d.starhook_fish = bank
+	var rlist := TackleCatalog.rods(frame)
+	var owned_rods: Array = []
+	for ri in rlist.size():
+		if (p.rods_owned_mask & (1 << ri)) != 0:
+			owned_rods.append(String((rlist[ri] as Dictionary).get("id", "")))
+	d.starhook_rods = owned_rods
+	var ilist := TackleCatalog.items(frame)
+	var owned_items: Array = []
+	for ii in ilist.size():
+		if (p.tackle_owned_mask & (1 << ii)) != 0:
+			owned_items.append(String((ilist[ii] as Dictionary).get("id", "")))
+	d.starhook_tackle = owned_items
+	d.starhook_chest = _tackle_item_id(ilist, p.tackle_chest)
+	d.starhook_helm = _tackle_item_id(ilist, p.tackle_helm)
+
+
+static func _tackle_item_index(ilist: Array, item_id: String, slot: String) -> int:
+	if item_id.is_empty():
+		return -1
+	for ii in ilist.size():
+		var row: Dictionary = ilist[ii]
+		if String(row.get("id", "")) == item_id and String(row.get("slot", "")) == slot:
+			return ii
+	return -1
+
+
+static func _tackle_item_id(ilist: Array, index: int) -> String:
+	if index < 0 or index >= ilist.size():
+		return ""
+	return String((ilist[index] as Dictionary).get("id", ""))
 
 
 ## Normal-mode death: percentage of CARRIED gold ([T] rate from

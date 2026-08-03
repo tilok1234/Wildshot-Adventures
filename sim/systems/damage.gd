@@ -14,6 +14,8 @@ const SimEvents := preload("res://sim/events.gd")
 const Progress := preload("res://sim/systems/progress.gd")
 const StatFrame := preload("res://sim/systems/stat_frame.gd")
 const PlayerRespawn := preload("res://sim/systems/player_respawn.gd")
+const TackleCatalog := preload("res://sim/tackle_catalog.gd")
+const BagStep := preload("res://sim/systems/bag_step.gd")
 
 
 ## Apply `amount` to actor `a`. hit_slot >= 0 marks a projectile hit and
@@ -274,6 +276,49 @@ static func _award_kill(world: RefCounted, e: RefCounted) -> void:
 				}
 			)
 		)
+		# THE GEAR SEAM (sl-0177/0178): a RARE catch may surrender ONE
+		# tackle piece — chance then pool draw, appended to the kill's
+		# fixed rng_loot sequence. Pool = priced shelf rows within the
+		# zone-gated tier bounds ([T]; no-depth: Green rifts drop
+		# Green-grade) that some player still lacks — dup-protected by
+		# construction. The grant is a direct owned bit (no ground
+		# drops in rifts); an empty-slot piece auto-equips for the
+		# NEXT dive.
+		if world.rift_rare:
+			var rare_drop: Dictionary = TackleCatalog.tackle(world.stat_frame).get("rare_drop", {})
+			if (
+				not rare_drop.is_empty()
+				and rng.next_bounded(100) < int(rare_drop.get("chance_pct", 0))
+			):
+				var lo := int(rare_drop.get("tier_min", 1))
+				var hi := int(rare_drop.get("tier_max", 1))
+				var pool: Array[Dictionary] = []
+				for srow: Dictionary in TackleCatalog.shelf_rows(world.stat_frame):
+					var rd := TackleCatalog.row_data(world.stat_frame, srow)
+					var rtier := int(rd.get("tier", 0))
+					if rtier < lo or rtier > hi:
+						continue
+					for pl: RefCounted in world.players:
+						if not TackleCatalog.owned(pl, srow):
+							pool.append(srow)
+							break
+				if not pool.is_empty():
+					var pick: Dictionary = pool[rng.next_bounded(pool.size())]
+					for pl: RefCounted in world.players:
+						BagStep.tackle_grant(world, pl, pick)
+					(
+						world
+						. events
+						. append(
+							{
+								"type": SimEvents.Type.TACKLE_DROPPED,
+								"tick": world.tick,
+								"row_kind": int(pick.row_kind),
+								"index": int(pick.index),
+								"pos": e.pos,
+							}
+						)
+					)
 		return
 	if int(def.gold_max) > 0:
 		var amt: int = (

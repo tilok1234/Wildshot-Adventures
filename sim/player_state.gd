@@ -105,6 +105,22 @@ var bank: PackedInt32Array = PackedInt32Array()
 var line_lives: int = 0
 var line_drain_acc: int = 0
 var line_iframe_until: int = -1000000
+## THE GEAR SEAM (sl-0177/0178, SERIAL 26). fish = the species-currency
+## wallet IN-SIM (index space = tackle_catalog species order, loaded
+## from the profile's id-keyed starhook_fish at setup) so tackle-vendor
+## spends are recorded + deterministic. rods_owned_mask /
+## tackle_owned_mask = purchased/dropped catalog rows (bit = list
+## index, both lists APPEND-ONLY); the four original rods are the free
+## level-grant spine and never need their bits. tackle_chest /
+## tackle_helm = equipped tackle.items indexes (-1 = bare) — stats
+## apply in apply_to_rift ONLY (overworld combat untouched by
+## construction). Defaults are all-zero/empty: every profile-free
+## world is byte-identical in behavior.
+var fish: PackedInt32Array = PackedInt32Array()
+var rods_owned_mask: int = 0
+var tackle_owned_mask: int = 0
+var tackle_chest: int = -1
+var tackle_helm: int = -1
 
 
 func serialize_into(buf: StreamPeerBuffer) -> void:
@@ -152,3 +168,11 @@ func serialize_into(buf: StreamPeerBuffer) -> void:
 		buf.put_u8(bank[ki * 3])
 		buf.put_16(bank[ki * 3 + 1])
 		buf.put_16(bank[ki * 3 + 2])
+	# THE GEAR SEAM (SERIAL 26): the fish wallet + tackle ownership.
+	buf.put_u8(fish.size())
+	for fc in fish:
+		buf.put_u16(fc)
+	buf.put_u32(rods_owned_mask)
+	buf.put_u32(tackle_owned_mask)
+	buf.put_8(tackle_chest)
+	buf.put_8(tackle_helm)

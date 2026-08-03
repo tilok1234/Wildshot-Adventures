@@ -2234,3 +2234,74 @@ even though the global name never compiles — an early probe run
 WROTE the designer's real settings.cfg once; undone, pattern
 fixed). NO feel verdicts — every number, key, timing, and
 placement is [T]; the designer's Green days own all of it.
+
+THE GEAR SEAM 2026-08-03 (sl-0177 as amended by sl-0178; the
+charter's rifter gear lane, functional-first by the designer's word
+— real stats, real slots, placeholder visuals; SERIAL 25→26, WSR v3
+UNCHANGED, next bump 27; design record notes/TACKLE_SEAM.md; the
+routed QUEST-PULL FINDINGS ×2 warm-up paste did NOT land in this
+session — sl-0175/0176 stay open for their own drop): RODS ARE
+STARHOOKING WEAPONS — the catalog grows 4→12 rows (append-only)
+across the four FAMILY NORMS (line 7 / fan 8 / sinker 9 / twin 29 —
+ZERO new patterns, every rod reuses its family's PatternDef verbatim;
+sl-0169's law holds: norms here, deviation stays the uniques' job,
+unique rods NOT built), 3 rods per tier, family-internal DPS
+tier-monotone, the four proto originals EXACT-PINNED in the
+validator; tier ladder = the sl-0115 unlock ladder verbatim
+{1:1,2:3,3:5,4:8} gating USE for every rod; the originals keep their
+level-GRANT (sl-0177's own sanction — the free spine, one identity
+per tier), the 8 new rods are purchase/drop-only (ownership bit on
+top of the level gate; player_fire refuses unowned selects; the
+R-swap sampler now takes a SELECTABLE MASK mirroring the sim gate —
+the recorded byte still carries the result, zero format change).
+CHEST+HELM = rift-side single-stat rows in starhook.tackle.items
+(append-only): chest +12/16/21/28 line hp (steps in [1.25,1.35]
+[T]), helm +4/5/6/7 defense vs BULLET strain through THE formula —
+the 1-hp drain chunks ride the formula's floor untouched (the clock
+never mitigates, test-pinned); overworld combat untouched
+STRUCTURALLY (stats apply in apply_to_rift only). THE TACKLE VENDOR
+v1 at the harbor capital (tackle_cell 110.5,178.5 — walkable,
+≥4.1 t from every station; the pack's own dock-fisher-teacher body
+pinned): F-opens the panel2 TACKLE shop (fish wallet in the head,
+tiered catalog with level-grant/owned/worn/equip/afford-dim row
+states — evidence committed reports/tackle_panel_audit_{base,
+desktop}.png, read by eyes); THE SPEND IS RECORDED — the fish wallet
+enters the sim at setup (profile starhook_fish id-keyed → the run's
+species-index array; 12 species, biome-major), ops 144..175 TACKLE
+BUY shelf row / 176..191 TACKLE EQUIP items row on the existing
+bag_op byte (class lane, station radius, sim-guarded: poor/owned/
+away/legacy refuse with fish untouched; first chest/helm auto-equips
+the empty slot; equip swaps among owned; no de-equip v1 — gear
+carries no downside). RARE-CATCH DROPS: a rare rift kill appends
+chance 50 [T] + a pool draw to the kill's fixed rng_loot sequence —
+pool = priced rows in tier bounds [1,2] [T] (no-depth: Green rifts
+drop Green-grade) unowned by some player; direct owned-bit grant (no
+ground drops in rifts), dup-protected by construction, TACKLE_DROPPED
+toast. PROFILE: starhook_rods/starhook_tackle/starhook_chest/
+starhook_helm ALL BY ID, absent-key tolerant (no version bump — the
+designer's save carries); harvest PRESERVES unknown fish species
+keys (the fish-first word: a species re-roster never eats the
+designer's fish — test-pinned with a ghost species). VALIDATOR:
+balance_calc GATE 6 (catalog shape, family norms parsed from the
+.tres files themselves, proto pins, DPS monotonicity, tier-level
+ladder, price species existence + rare-species-T4-only + every-
+species-priced-somewhere + tier-total-never-shrinks, chest step band,
+helm obtainable band vs the PARSED star-spray hit + 0.7x plateau,
+rare_drop bounds) — its FIRST run caught the seam's own helm_t4
+price shrinking (fixed); four negatives refuse (unknown species /
+family monotone break / ladder drift / helm plateau). Tests:
+gather_test +7 sections (catalog shape / shop ops / rift gear +
+drain floor / 12-ladder ownership / rare drop deterministic +
+dup-protected + harvest-by-id / fish round-trip + ghost-species
+preservation / SERIAL-26 hash coverage) — the four-rod legacy world
+stays byte-frozen alongside; stat/loop/quest/char-sheet/living/
+green/wiring/settings all green unchanged. Goldens re-recorded +
+verified x10 (SERIAL 26); smoke pair 12dc8be9b6f9f8af/
+e2acf522410e56b0. C-sheet starhook row grows a worn-gear note;
+lesson recorded: growing HumanSampler.sample() must grow
+audit_sampler's override too (parse error surfaces only at boot).
+NOT this seam (by routing): unique rods (FUTURE, sl-0169's
+deviants), drain/grace/lives gear stats (named future family),
+water fishing (parked), rod-swap UI beyond R. NO feel verdicts —
+every number/rate/price [T]; the designer plays before refinement
+pastes drop (the rails' own words).

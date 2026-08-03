@@ -57,7 +57,10 @@ const DT := 1.0 / 60.0
 ## 25 = sl-0130 THE BANK: settlement stash triples on PlayerState
 ## (deposit/withdraw ride recorded ops at the scenario's bank cell;
 ## death never touches the bank).
-const SERIAL_VERSION := 25
+## 26 = sl-0177/0178 THE GEAR SEAM: the fish wallet (species-currency
+## in-sim so tackle spends record), rod/tackle ownership masks, and
+## the equipped chest/helm rows on PlayerState.
+const SERIAL_VERSION := 26
 
 ## Damage-source pattern id for the scenario-declared test damage
 ## schedule (§2.11 elite transition proofs; planning log 2026-07-28).
@@ -209,6 +212,15 @@ var bank_cell: Vector2 = Vector2.ZERO
 var vendor_cells: PackedVector2Array = PackedVector2Array()
 var vendor_stock: Array = []
 
+## THE GEAR SEAM (sl-0177/0178): the tackle vendor station (setup
+## config, excluded from serialize — the scenario reproduces it).
+## ZERO = no tackle vendor here (every pre-gear world). tackle_shelf =
+## the resolved PRICED catalog rows in the tackle_catalog shelf order
+## ({row_kind, index, tier, price_idx: {species_index: count}}) —
+## recorded buy ops carry shelf row indexes.
+var tackle_cell: Vector2 = Vector2.ZERO
+var tackle_shelf: Array = []
+
 ## CORE-43 overworld death (slice S0 seam 3). Setup config like the
 ## defs (unserialized; the scenario + profile determine it): when
 ## true, a class-backed player's death costs carried gold IN-SIM and
@@ -247,6 +259,10 @@ var rift_line: Resource = null
 var rift_biome: int = 0
 var rift_rare: bool = false
 var rift_rod_unlocks: PackedInt32Array = PackedInt32Array()
+## THE GEAR SEAM: parallel to rift_rod_unlocks — 1 marks a PURCHASABLE
+## rod (needs the player's owned bit on top of the level gate); 0 =
+## the free level-grant spine (the four originals). Definitions.
+var rift_rod_purchasable: PackedInt32Array = PackedInt32Array()
 var rift_node_biomes: PackedInt32Array = PackedInt32Array()
 var rift_ambient: bool = false
 ## STARHOOK v2 SERIALIZED STATE (SERIAL 22): ambient nodes are world
@@ -366,11 +382,18 @@ func set_rift_nodes(cells: PackedVector2Array, biomes := PackedInt32Array()) -> 
 ## identity. Arms every player's line (lives from the def) — the
 ## scenario build runs this BEFORE the recorder snapshot, so replays
 ## carry the true initial state.
-func set_rift_config(line: Resource, biome: int, rare: bool, rod_unlocks: PackedInt32Array) -> void:
+func set_rift_config(
+	line: Resource,
+	biome: int,
+	rare: bool,
+	rod_unlocks: PackedInt32Array,
+	rod_purchasable := PackedInt32Array()
+) -> void:
 	rift_line = line
 	rift_biome = biome
 	rift_rare = rare
 	rift_rod_unlocks = rod_unlocks
+	rift_rod_purchasable = rod_purchasable
 	if line != null:
 		for p in players:
 			p.line_lives = int(line.lives)

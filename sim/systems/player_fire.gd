@@ -41,9 +41,17 @@ static func run(world: RefCounted) -> void:
 			# full rod ladder and starhook LEVEL gates use — a select
 			# of a locked rod is refused (kept current), so bot and
 			# replay streams stay deterministic whatever they emit.
+			# sl-0177/0178: PURCHASABLE rods additionally need the
+			# player's owned bit (the four originals stay the free
+			# level-grant spine — their purchasable flag is 0).
 			var unlocks: PackedInt32Array = world.rift_rod_unlocks
+			var purch: PackedInt32Array = world.rift_rod_purchasable
 			var wi: int = frame.weapon_select - 1
-			if wi >= unlocks.size() or p.level >= unlocks[wi]:
+			var level_ok: bool = wi >= unlocks.size() or p.level >= unlocks[wi]
+			var owned_ok: bool = (
+				wi >= purch.size() or purch[wi] == 0 or (p.rods_owned_mask & (1 << wi)) != 0
+			)
+			if level_ok and owned_ok:
 				p.equipped_weapon = wi
 		if weapons.is_empty():
 			continue

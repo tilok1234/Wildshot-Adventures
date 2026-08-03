@@ -739,7 +739,7 @@ static func sheet_rows(world: RefCounted, character: Dictionary) -> Array:
 				[
 					"starhook",
 					(
-						"lv %d  rod %s  catches %d%s"
+						"lv %d  rod %s  catches %d%s%s"
 						% [
 							int(character.get("starhook_level", 1)),
 							String(character.get("starhook_rod", "rod_cane")).trim_prefix("rod_"),
@@ -748,6 +748,37 @@ static func sheet_rows(world: RefCounted, character: Dictionary) -> Array:
 								"  ✦starlit"
 								if (int(character.get("starhook_skins", 0)) & 1) != 0
 								else ""
+							),
+							# sl-0177: the worn rift gear, BY ID (empty
+							# slots stay silent — the row reads clean
+							# pre-gear).
+							(
+								""
+								if (
+									String(character.get("starhook_chest", "")).is_empty()
+									and String(character.get("starhook_helm", "")).is_empty()
+								)
+								else (
+									"  gear %s/%s"
+									% [
+										(
+											String(character.get("starhook_chest", ""))
+											if not (
+												String(character.get("starhook_chest", ""))
+												. is_empty()
+											)
+											else "—"
+										),
+										(
+											String(character.get("starhook_helm", ""))
+											if not (
+												String(character.get("starhook_helm", ""))
+												. is_empty()
+											)
+											else "—"
+										),
+									]
+								)
 							),
 						]
 					),

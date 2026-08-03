@@ -24,6 +24,8 @@ const QuestGiverIcons := preload("res://game/views/quest_giver_icons.gd")
 const LootBagPanel := preload("res://ui/loot_bag_panel.gd")
 const BankPanel := preload("res://ui/bank_panel.gd")
 const VendorPanel := preload("res://ui/vendor_panel.gd")
+const TacklePanel := preload("res://ui/tackle_panel.gd")
+const TackleCatalog := preload("res://sim/tackle_catalog.gd")
 const GifRecorder := preload("res://game/drivers/gif_recorder.gd")
 const FlashView := preload("res://game/views/flash_view.gd")
 const EffectLibrary := preload("res://game/views/effect_library.gd")
@@ -238,6 +240,8 @@ var loot_panel: Control = null
 var bank_panel: Control = null
 ## sl-0131: the walk-up vendor panel.
 var vendor_panel: Control = null
+## sl-0177/0178: the tackle keeper's panel (the rifter's gear shop).
+var tackle_panel: Control = null
 var _console_events := "off"
 ## §2.10 tester-profile gate (M7): tester exports carry the custom
 ## feature tag "tester" (export preset) and lose every sim-mutating dev
@@ -315,6 +319,7 @@ func _process(_delta: float) -> void:
 			or (loot_panel != null and loot_panel.wants_suppress())
 			or (bank_panel != null and bank_panel.wants_suppress())
 			or (vendor_panel != null and vendor_panel.wants_suppress())
+			or (tackle_panel != null and tackle_panel.wants_suppress())
 		)
 		driver.sampler.suppress = typing or over_pane
 	# §2.9 prev/curr render toggle — view-side only, replay-irrelevant.
@@ -368,6 +373,10 @@ func _process(_delta: float) -> void:
 					vendor_panel.station_toggle()
 					if vendor_panel.is_open():
 						_menus_exclusive(vendor_panel)
+				elif tackle_panel != null and BagStep.at_tackle(world, p0):
+					tackle_panel.station_toggle()
+					if tackle_panel.is_open():
+						_menus_exclusive(tackle_panel)
 	if not typing and density_meter != null and Input.is_action_just_pressed("density_toggle"):
 		density_meter.visible = not density_meter.visible
 	# One-key reseeding reset (§2.10): next seed persisted + logged, full
@@ -704,6 +713,25 @@ func _process(_delta: float) -> void:
 							]
 						)
 					)
+			SimEvents.Type.TACKLE_BOUGHT:
+				_show_toast(
+					(
+						"bought — %s"
+						% _tackle_row_line(int(lev.get("row_kind", 0)), int(lev.get("index", 0)))
+					)
+				)
+			SimEvents.Type.TACKLE_EQUIPPED:
+				_show_toast("worn — %s" % _tackle_row_line(1, int(lev.get("index", 0))))
+			SimEvents.Type.TACKLE_DROPPED:
+				# sl-0177: the rare catch surrendered a piece — the grant
+				# is direct (no ground drops in rifts); it rides home at
+				# harvest and the next dive wears it.
+				_show_toast(
+					(
+						"RARE CATCH GEAR — %s"
+						% _tackle_row_line(int(lev.get("row_kind", 0)), int(lev.get("index", 0)))
+					)
+				)
 	# F10: dump the always-on session recording. NOTE: the main scene is a
 	# hardcoded dev scenario until M4 — saved replays verify only against
 	# the same build (no scenario id exists for it yet); golden fixtures
@@ -773,6 +801,7 @@ func _apply_ui_scale(k: int) -> void:
 		loot_panel,
 		bank_panel,
 		vendor_panel,
+		tackle_panel,
 		autofire_icon,
 		weapon_label,
 		rec_label,
@@ -933,6 +962,9 @@ func _close_topmost_menu() -> bool:
 	if vendor_panel != null and vendor_panel.is_open():
 		vendor_panel.station_close()
 		return true
+	if tackle_panel != null and tackle_panel.is_open():
+		tackle_panel.station_close()
+		return true
 	return false
 
 
@@ -947,6 +979,8 @@ func _menus_exclusive(keep: Control) -> void:
 		bank_panel.station_close()
 	if vendor_panel != null and vendor_panel != keep and vendor_panel.is_open():
 		vendor_panel.station_close()
+	if tackle_panel != null and tackle_panel != keep and tackle_panel.is_open():
+		tackle_panel.station_close()
 
 
 func _refresh_hints() -> void:
@@ -1068,6 +1102,22 @@ func _rift_fish_name(biome: int, fish: int, rare: bool) -> String:
 	if fish >= 0 and fish < table.size():
 		return String(table[fish].get("name", "the catch"))
 	return "the catch"
+
+
+## THE GEAR SEAM: one grammar line for a tackle catalog row (toasts).
+func _tackle_row_line(row_kind: int, index: int) -> String:
+	var frame: Dictionary = world.stat_frame
+	if row_kind == TackleCatalog.ROW_ROD:
+		var rlist: Array = TackleCatalog.rods(frame)
+		if index >= 0 and index < rlist.size():
+			var rod: Dictionary = rlist[index]
+			var res: Resource = load("res://data/weapons/%s.tres" % String(rod.get("id", "")))
+			return ItemText.rod_line(rod, res)
+		return "a rod"
+	var ilist: Array = TackleCatalog.items(frame)
+	if index >= 0 and index < ilist.size():
+		return ItemText.tackle_item_line(ilist[index])
+	return "a piece of tackle"
 
 
 ## Death bookkeeping — once per death, on the recap. Hardcore: the
@@ -1745,6 +1795,13 @@ func _ready() -> void:
 	if driver != null and driver.sampler != null:
 		vendor_panel.bag_op_sink = Callable(driver.sampler, "queue_bag_op")
 	hud.add_child(vendor_panel)
+	# sl-0177/0178: the tackle keeper (F at the harbor tackle cell).
+	tackle_panel = TacklePanel.new()
+	tackle_panel.world = world
+	tackle_panel.character = character
+	if driver != null and driver.sampler != null:
+		tackle_panel.bag_op_sink = Callable(driver.sampler, "queue_bag_op")
+	hud.add_child(tackle_panel)
 	hud.add_child(options_menu)
 	recap_panel = RecapPanel.new()
 	hud.add_child(recap_panel)

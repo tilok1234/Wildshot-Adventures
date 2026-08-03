@@ -1,4 +1,27 @@
-# Session Handoff — updated 2026-08-03 (post-MENU-PASS v2: sl-0143..0157 landed + pushed, 0a5edd2..3838f60; seam I split out with its question shape)
+# Session Handoff — updated 2026-08-03 (post-GEAR-SEAM: sl-0177/0178 landed at SERIAL 26; the menu pass v2 stands beneath)
+
+> **THE GEAR SEAM IS LANDED (2026-08-03 evening; sl-0177 as amended
+> by sl-0178; SERIAL 26, WSR v3 unchanged, next bump 27; full record
+> = the CLAUDE.md milestone tail's last block + notes/TACKLE_SEAM.md
+> design record):** RODS ARE STARHOOKING WEAPONS — 12-rod catalog
+> over the four family norms (zero new patterns; originals = the
+> free level-grant spine, EXACT-pinned; new rods purchase/drop-only
+> with ownership bits); chest+helm = rift-side single-stat rows
+> (chest line-hp, helm defense through THE formula; the drain's 1-hp
+> chunks ride the floor untouched); THE TACKLE VENDOR at the harbor
+> capital (110.5,178.5, dock-fisher-teacher body) — fish-priced,
+> recorded ops 144..175 buy / 176..191 equip on the bag_op byte,
+> fish wallet IN-SIM (SERIAL 26 fields: fish + two owned masks +
+> chest/helm equips); rare catches drop Green-grade pieces
+> (deterministic rng_loot chance+pool, dup-protected); profile all
+> BY ID with unknown-fish-species preservation (the fish-first
+> word); balance_calc GATE 6 validates the whole catalog including
+> the .tres frames (negative-tested x4); gather_test +7 sections.
+> R-swap feeds a selectable MASK now (sampler mirrors the sim gate;
+> recorded byte unchanged). The routed QUEST-PULL FINDINGS ×2
+> warm-up paste did NOT land this session — sl-0175/0176 stay OPEN
+> for their own drop. NO feel verdicts; every number [T]; the
+> designer plays before refinement pastes drop.
 
 > **THE MENU PASS v2 IS LANDED (2026-08-03 marathon, nine seams
 > A–I; full record = the CLAUDE.md milestone tail's last block +
@@ -33,10 +56,13 @@ contract doesn't. The account-switch note from the previous handoff
 stands: nothing repo-side gates on the Claude account; git identity
 and gh auth are machine-local; this file + `CLAUDE.md` + planning
 `docs/23` are the complete context carrier. (Serialization is
-**SERIAL 25** — 23 the bag, 24 loot bags, 25 the bank; **WSR VERSION
-3** since the bag op joined the recorded frame (InputFrame 17 bytes;
-v2 replays refuse loudly). NEXT BUMP IS 26. Smoke record pair since
-SERIAL 25: 61503273bc2519da / 3f3aff864ed9e48f.)
+**SERIAL 26** — 23 the bag, 24 loot bags, 25 the bank, 26 the gear
+seam (fish wallet + rod/tackle owned masks + chest/helm equips on
+PlayerState); **WSR VERSION 3** since the bag op joined the recorded
+frame (InputFrame 17 bytes; v2 replays refuse loudly — the tackle
+ops ride the EXISTING byte, no format growth). NEXT BUMP IS 27.
+Smoke record pair since SERIAL 26: 12dc8be9b6f9f8af /
+e2acf522410e56b0.)
 
 **THE GREEN-DAYS PASS (2026-08-02 evening, nine sealed seams, all
 pushed 42d8260..912049f; session record: planning

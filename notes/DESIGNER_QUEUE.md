@@ -1,5 +1,29 @@
 # Designer queue — everything waiting on you (historical; see banner)
 
+> **2026-08-03 EVENING (post-GEAR-SEAM sweep): still historical — the
+> LIVE queue is planning-side (notes/HANDOFF.md §2 has the current
+> open list).** Your starhook gear is real now: the tackle keeper
+> stands by the harbor docks (the fisher NPC, north-east of your
+> spawn) — walk up, press F, and the shop opens. Rods are weapons
+> now: three per tier, the four you know stay free at their levels,
+> the new ones cost fish; chest and helm pieces make the line
+> tougher in rifts (more stability, less bullet strain). Rare
+> catches can hand you a piece on the kill. Genuinely open your
+> side, in plain words:
+> - **Fish, buy, wear, dive** — every price, rate, and stat number
+>   is provisional until your hands say otherwise; one-liners flip
+>   any of them.
+> - **One shape word when you play**: new rods reuse their family's
+>   firing pattern (a T2 Line Rod shoots like the Cane, harder). If
+>   you'd rather every rod feel unique, say so — it's a data change.
+> - **Should the free four ever become shop-only?** They level-grant
+>   today (as always); one word flips them to purchases.
+> - The quest-icon findings you sent (map markers + the icon under
+>   the NPC) did NOT ride this session — drop that paste any time.
+> - Standing from before: the menu-pass play, the three foraging
+>   answers are IN (that seam builds next), weekly GIF (the tackle
+>   shop + a geared dive are fresh material).
+
 > **2026-08-03 (post-MENU-PASS sweep): still historical — the LIVE
 > queue is planning-side (notes/HANDOFF.md §2 has the current open
 > list).** Your menu package is the built game now (sl-0143..0157,
