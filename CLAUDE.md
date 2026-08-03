@@ -398,7 +398,8 @@ regardless — clean-stamped zips are what make warm testing frictionless.
 
 ## Weekly GIF cadence (from M3)
 
-One 30–60 s GIF per week (F9 ring buffer + `tools/gif.ps1`), posted to the
+One 30–60 s GIF per week (G starts, G stops — start-to-finish frames
+since 098a679; `tools/gif.ps1` converts), posted to the
 devlog and one community. This is a deliverable, not marketing garnish — it
 primes the tester-recruitment pipeline both Gate 1 cycles draw from.
 

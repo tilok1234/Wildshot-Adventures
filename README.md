@@ -37,10 +37,27 @@ balance calculator; the ruled hits-band caps the raise at ~1.3×),
 THE BAG (pick up into it, equip is a decision on a recorded input
 byte — replay format v3), LOOT BAGS on kills ([B] loot-all), THE
 BANK at the capital stash keeper, and VENDORS v1 (sell 50%/buy
-200%, fixed catalogs). Serialization SERIAL 25. **The chapter gate
-is the designer living in Green; S2 starts only on its own routing;
-water fishing is PARKED; the starhook GEAR SEAM routes next
-(planning's paste).**
+200%, fixed catalogs). Serialization SERIAL 25. **THE MENU PASS
+v2 (sl-0143..0157, 2026-08-03, nine sealed seams on the designer's
+menu-workbench package-as-spec)**: the C menu became ONE window with
+TWO TABS on the drawn panel2 chrome (character = portrait + stats +
+dollslots + the bag as a SLOT GRID with item glyphs; quest log =
+cards + parchment detail + per-quest TRACKED + ABANDON), L
+deep-links the log, quest givers OFFER on F with accept as a real
+decision (recorded op; Later-only, no Decline), bank + vendors open
+on F (never walk-over — loot bags stay walk-over by the designer's
+word), Esc/O close the topmost menu first (one surface at a time),
+HP/mana bars sit in the LEFT corner, options carries every row on
+the new chrome, and THE UNIQUE REVEAL plays on boss-unique pickups
+(no-strobe mechanized, sim paused under it, any input skips). The
+quest ops ride the existing recorded byte — WSR stays v3, SERIAL
+stays 25, the whole battery byte-identical. Seam I (minimal
+foraging) was SIZED AND SPLIT OUT honestly
+(notes/FORAGE_SEAM_SIZING.md — three one-line designer questions
+route it); the player-hitbox seam (sl-0146) stays queued-deferred by
+word. **The chapter gate is the designer living in Green; S2 starts
+only on its own routing; water fishing is PARKED; the starhook GEAR
+SEAM routes next (planning's paste).**
 
 ## Engine
 
@@ -75,7 +92,7 @@ by rule.
 
 | Path | Contents |
 |---|---|
-| `assets/` | Raw forge drops (`.gdignore`d — importers consume these): `tileforge/` (theme packages incl. the 9b8b2a2 dusk drop), `assembler-pack/` (full enemy catalog: 57 families / 202 variants + 4 players), `assembler-boss-pack/` (13 bosses 48×48 — THE boss roster by sl-0084), `wildshot-npc-slice-v1/` (32 NPCs, sl-0089), `wildshot-icons-proto_0.1.0/` (470 glyphs, sl-0083), `wildshot-overworld-pack-dusk-content/` (the world_filler content pack, reference-only, sl-0093), `wildshot-projectiles-sphere-v0/` (the SHIPPED projectile set; `projectile-pack/` = the 5-style recorded fallback), `uikit/`, `worldforge-packs/` (two committed worlds: dusk small-cold-coastal b65 + wildshot-overworld b77, per-pack pins). Every vendored pack carries a `.passport.json` byte pin + a fixed validation gate |
+| `assets/` | Raw forge drops (`.gdignore`d — importers consume these): `tileforge/` (theme packages incl. the 9b8b2a2 dusk drop), `assembler-pack/` (full enemy catalog: 57 families / 202 variants + 4 players), `assembler-boss-pack/` (13 bosses 48×48 — THE boss roster by sl-0084), `wildshot-npc-slice-v1/` (32 NPCs, sl-0089), `wildshot-icons-proto_0.1.0/` (470 glyphs, sl-0083), `wildshot-ui-v2/` (the menu-workbench v2 UI pack — menu-specs.json IS the layout source of truth, 4 hue palettes, captures, the stampede cinematic frame; sl-0155), `wildshot-overworld-pack-dusk-content/` (the world_filler content pack, reference-only, sl-0093), `wildshot-projectiles-sphere-v0/` (the SHIPPED projectile set; `projectile-pack/` = the 5-style recorded fallback), `uikit/`, `worldforge-packs/` (two committed worlds: dusk small-cold-coastal b65 + wildshot-overworld b77, per-pack pins). Every vendored pack carries a `.passport.json` byte pin + a fixed validation gate |
 | `tileforge/` | The M1 theme package import (dusk-ae1eecb) as `res://tileforge/` per its GAME-GUIDE; `tileforge.tres` built by `addons/tileforge_importer/run_import.gd` (headless). Later package builds live beside it under `tileforge_packages/<id>/` (same driver, `--package=`); `world_builder` resolves each world pack's pinned identity against the registry |
 | `assembler/` | The imported actor roster (player + mapped enemies) — roster-filtered by `addons/assembler_importer` from `data/actor_sheet_map.tres` |
 | `addons/` | `tileforge_importer` (M1), `assembler_importer` (M4/M5, docs/14), `uikit_importer` (M4), `worldforge_importer` (post-M5, docs/15 — validates + consumes generated world packs) |
@@ -86,9 +103,9 @@ by rule.
 | `input/` | HumanSampler, ReplaySource, `bot/` — three equal InputSources |
 | `game/` | Main scene, render layers, `views/` (presentation only — never mutates sim) |
 | `ui/` | HUD, menus, options |
-| `tests/` | `pixel_match/`, `assembler_pack/`, `projectile_pack/`, `uikit/`, `worldforge_pack/` (validator test + per-drop one-shot probes), `settings/`, `feedback/`, `loop/`, `stat_frame/` (docs/22 contracts), `living_world/` (leash/respawn/importer contracts), `wiring/` (npc+icon contracts + render probe), `dev_map/` (minimap consumer + render probe), `crosshair/` (styles contract + preview), `pinch_probe/` (fit-rule + movement diagnosis probes), `green_roster/` (S1: 14-family contracts + pattern→lead law), `loot_label/` (drop grammar + render probe), `quests/` (multi-active interact-era contracts), `gather/` (forage/starhook cast + rifter round-trip), `rift_split/` (rift arena + split render probe), `char_sheet/` (screen==recompute parity), `ui_family/` (HUD relayout render probe), `motion_probe/`, `determinism/` (the smoke), `replay_fixtures/` (golden replays, WSR v2), `bot_scenarios/` (proof isolates + calibration canaries + the density-audit scenario + slice/Green/dungeon/rift proofs) |
-| `tools/` | `pretester_check.ps1` (THE one-command ship gate) + `battery_runner.ps1` (the parallel proof-battery pool — workers = physical cores, cap 10, longest-first; `-Workers 1` = serial), `export.ps1` (dev+tester zips), `lockdown_lint.py`/`lockdown_probe.ps1`, `balance_calc.py` (the docs/22 stat-frame gates over `data/balance_frame.json`), `validate_icon_pack.py`/`validate_npc_pack.py`/`validate_content_pack.py` (pack byte pins; the content gate also enforces the b77 base pairing), `diag_walkability_grid.py` (porosity, per-drop pins), `diag_pinch.py` (prop-pinch census baseline), `evidence_report.py` + `decode_summary_code.py`, `hourslog.ps1`/`hours_report.ps1`, `gif.ps1` (G starts, G stops — start-to-finish frames stream to disk since 098a679), `godot_guard.ps1`, `validate_boss_pack.py`, `import_boss_actor.py`, `import_npcs.py`/`import_icons.py` (consumed-tree builders), `gen_cue_wavs.py` |
-| `notes/` | `hours.csv`, `TECH_DEBT_LEDGER.md`, `HANDOFF.md` (cold-start briefing for any new session), `PACK_INTAKE_RUNBOOK.md` (world-pack drops), per-area records (nine-row, audio map, CORE-50 checklist) |
+| `tests/` | `pixel_match/`, `assembler_pack/`, `projectile_pack/`, `uikit/`, `worldforge_pack/` (validator test + per-drop one-shot probes), `settings/`, `feedback/`, `loop/`, `stat_frame/` (docs/22 contracts), `living_world/` (leash/respawn/importer contracts), `wiring/` (npc+icon contracts + render probe), `dev_map/` (minimap consumer + render probe), `crosshair/` (styles contract + preview), `pinch_probe/` (fit-rule + movement diagnosis probes), `green_roster/` (S1: 14-family contracts + pattern→lead law), `loot_label/` (drop grammar + render probe), `quests/` (multi-active interact-era contracts), `gather/` (forage/starhook cast + rifter round-trip), `rift_split/` (rift arena + split render probe), `char_sheet/` (screen==recompute parity), `ui_family/` (HUD relayout render probe), `quest_pull/` + `boss_sprites/` (green-days render probes), `bank/` + `vendors/` + `loot_bags/` (station render probes — station_open stands in for the F press), `menu_v2/` (the menu-pass probes: two-tab menu, offer dialogue, options restyle, the unique reveal + its mechanized no-strobe check), `motion_probe/`, `determinism/` (the smoke), `replay_fixtures/` (golden replays, WSR v3), `bot_scenarios/` (proof isolates + calibration canaries + the density-audit scenario + slice/Green/dungeon/rift proofs) |
+| `tools/` | `pretester_check.ps1` (THE one-command ship gate) + `battery_runner.ps1` (the parallel proof-battery pool — workers = physical cores, cap 10, longest-first; `-Workers 1` = serial), `export.ps1` (dev+tester zips), `lockdown_lint.py`/`lockdown_probe.ps1`, `balance_calc.py` (the docs/22 stat-frame gates over `data/balance_frame.json`), `validate_icon_pack.py`/`validate_npc_pack.py`/`validate_content_pack.py`/`validate_menu_pack.py` (pack byte pins; the content gate also enforces the b77 base pairing; the menu gate re-checks icon parity LIVE against the wired proto pack), `diag_walkability_grid.py` (porosity, per-drop pins), `diag_pinch.py` (prop-pinch census baseline), `evidence_report.py` + `decode_summary_code.py`, `hourslog.ps1`/`hours_report.ps1`, `gif.ps1` (G starts, G stops — start-to-finish frames stream to disk since 098a679), `godot_guard.ps1`, `validate_boss_pack.py`, `import_boss_actor.py`, `import_npcs.py`/`import_icons.py` (consumed-tree builders), `gen_cue_wavs.py` |
+| `notes/` | `hours.csv`, `TECH_DEBT_LEDGER.md`, `HANDOFF.md` (cold-start briefing for any new session), `PACK_INTAKE_RUNBOOK.md` (world-pack drops), `INTERACT_SWEEP.md` (the seam-H audit), `FORAGE_SEAM_SIZING.md` (the split-out seam-I questions), per-area records (nine-row, audio map, CORE-50 checklist) |
 | `reports/` | Committed mechanical evidence: the canonical proof battery (byte-identical gate), stress/density + render audit captures — bot/harness output, never feel evidence |
 
 ## CI
@@ -104,8 +121,9 @@ npc+icon wiring, and the S1 rows: green roster, loot grammar, quests,
 gather, character sheet). The full ship gate — the fixed steps + the
 TWO-LANE proof battery byte-identical (every reactive row at the
 CORE-53 floor AND the 115 cap; sl-0102 speeds 3.6/4.14) + export
-both-artifacts-boot + lockdown probe (30 fixed steps / 43 rows / 83
-battery runs as of sl-0131) — runs locally as `tools/pretester_check.ps1`
+both-artifacts-boot + lockdown probe (31 fixed steps / 43 rows / 83
+battery runs as of the menu pass — the menu-pack validator joined
+the fixed steps) — runs locally as `tools/pretester_check.ps1`
 (needs exclusive project access; **~13 min since the battery went
 parallel** — `battery_runner.ps1` worker pool, byte-identical to
 serial, every verdict exit-code-gated). The lint job also runs the

@@ -1,5 +1,28 @@
 # Designer queue — everything waiting on you (historical; see banner)
 
+> **2026-08-03 (post-MENU-PASS sweep): still historical — the LIVE
+> queue is planning-side (notes/HANDOFF.md §2 has the current open
+> list).** Your menu package is the built game now (sl-0143..0157,
+> all nine seams): C opens the two-tab menu (your inventory finally
+> LOOKS like one), L jumps to the quest log, givers offer with a
+> real Accept, the bank and traders open on F, Esc closes menus
+> before it pauses, your bars sit top-left, and killing a boss for
+> its unique plays the reveal. Genuinely open your side, in plain
+> words:
+> - **Play it** — every key, timing, and placement is provisional
+>   until your hands say otherwise; one-liners flip any of them.
+> - **The three foraging questions** (one word each): should F work
+>   at forage spots instead of standing still? should foraging give
+>   items in the bag instead of small gold? should the 12 marked
+>   spots be rich ones that run dry and come back?
+> - **The gear seam** starts on planning's paste, as before.
+> - The reveal's dragon stage waits on a dragon sheet — your
+>   assembler owes no such actor yet; say the word if you want one.
+> - Standing from before: the ×1.25 firing feel, the drag-free test
+>   cast, the split flip-and-pick, rested ratification stack,
+>   CORE-50 render checklist, onboarding voice, icon tool-source
+>   push, weekly GIF (the menus + the reveal are fresh material).
+
 > **2026-08-02 EVENING (post-starhook-merge sweep): still historical —
 > the LIVE queue is planning-side (notes/HANDOFF.md §2 has the
 > current open list).** Your prototype #2 IS the built game now

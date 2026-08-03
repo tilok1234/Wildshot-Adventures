@@ -20,6 +20,16 @@
 > is the LAB-preset era record — class speeds since sl-0100/0102 come
 > from creation (3.60/3.78/3.96, cap 4.14); re-word at that row's own
 > pass.
+>
+> **ERA NOTE 2 (2026-08-03, post-MENU-PASS v2):** the options menu is
+> RESTYLED onto the panel2 chrome (option rows above the remap list,
+> spec order; every row carried — the mechanized pair still asserts
+> them all) and **Esc/O run MENU-FIRST now** (sl-0145): with any menu
+> open the first press closes IT — run the render pass with no menus
+> open, or press twice. The remappable `quest_log` (L) action joined
+> the same remap machinery. The menu's own [ui] keys (menu_tab /
+> tracked_quest) are view-state, not CORE-50 options — settings
+> round-trip covers them, core50-verify deliberately does not.
 
 ## Mechanized (green in pretester on every run — no eyes needed)
 

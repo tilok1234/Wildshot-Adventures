@@ -1,6 +1,7 @@
 # WorldForge pack intake runbook — porosity-fix re-drop (2026-07-28)
 
-> **CURRENT STATE (2026-08-01, after ten clean intakes through b77).**
+> **CURRENT STATE (2026-08-03, world intakes clean through b77;
+> non-world intakes through the menu-system v2 pack).**
 > The PROCEDURE below stands; the embedded EXPECTATIONS are
 > era-stamped — live values: TWO committed worlds, per-pack porosity
 > pins (`small-cold-coastal-pack-dusk` b65 = **44**;
@@ -12,10 +13,13 @@
 > pack now rides scenarios as living-world spawn tables, and
 > `proof_slice_leash` guards the leash); walkable-unreachable cells
 > are LEGAL under WYSIWYG. Step 3's "first_contact still FAIL" is
-> obsolete. Non-world packs (icons/NPCs/content) follow the passport
-> + fixed-gate pattern instead — see their validators in tools/; NPC
-> + icon re-drops additionally re-run tools/import_npcs.py /
-> import_icons.py (consumed trees) + the wiring test.
+> obsolete. Non-world packs (icons/NPCs/content/the sl-0155
+> menu-system v2) follow the passport + fixed-gate pattern instead —
+> see their validators in tools/; NPC + icon re-drops additionally
+> re-run tools/import_npcs.py / import_icons.py (consumed trees) +
+> the wiring test; a menu-pack re-drop gets a fresh intake seam (new
+> passport — its validator never regenerates hashes) and its icon
+> parity re-verified (identical → still not re-vendored).
 >
 > **RELEASE TRANSPORT (doc 18 §5, blessed sl-0016, first exercised
 > 2026-07-30):** packs arrive as GitHub releases from

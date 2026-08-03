@@ -127,8 +127,10 @@ Unused pack inventory (recorded, zero wired): enemy_laser
 warning/impact/cooldown, plasma_rifle charge/impact/ui/cooldown,
 shield_break hit variants v01–v12 + warning, boss_telegraphs
 attention/enrage, pickups ×8 (written under the zero-reward law;
-since Loop v1 (2026-07-30) walk-over loot pickups DO exist — wiring
-pickup cues is a future designer taste call, zero wired today),
+loot exists since Loop v1 and the hands have evolved twice since —
+equipment pickups are F-interact INTO THE BAG (sl-0112/0116) and
+only gold stays walk-over; wiring pickup cues is a future designer
+taste call, zero wired today),
 ui_feedback ×14 (menu sounds are a future taste call), the manifest's
 music_states table (MENU/EXPLORE/COMBAT/... — superseded by the queue
 ruling; revisit post-Gate-1 if ever), mix/crossfade defaults,

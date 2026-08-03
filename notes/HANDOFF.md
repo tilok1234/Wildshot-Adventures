@@ -111,9 +111,11 @@ NO run framing) is what the docs/19 three-sentence bar judges, over
 the designer's week, then 2–3 warm watched first-touches. Build
 order: chapter by chapter, **Green Country first** (planning
 docs/23). **S1 GREEN COUNTRY ENGINEERING IS COMPLETE (sl-0104 +
-sl-0105 + the sl-0113 UI/interaction family; 2026-08-02) — THE
-CHAPTER GATE IS THE DESIGNER LIVING IN GREEN; S2 does not start
-without their word.**
+sl-0105 + the sl-0113 UI/interaction family; 2026-08-02) AND THE
+MENU PASS v2 IS LANDED ON TOP (sl-0143..0157, 2026-08-03 — the
+designer's menu-workbench package as spec; nine seams, the block at
+the top of this file) — THE CHAPTER GATE IS THE DESIGNER LIVING IN
+GREEN; S2 does not start without their word.**
 
 **S0 FOUNDATIONS ARE COMPLETE (2026-08-01, sl-0100 executed as four
 sealed seams — game 695f898→4acca00→8c0ce7a→5ad9dbb; gate ALL GREEN
@@ -239,11 +241,14 @@ planning `notes/sessions/2026-08-02-slice-s1.md`):**
    the CORE-31 pause bit; menu rides pause_changed), debug readout
    behind an options toggle; windowed evidence committed
    (hud_relayout/character_sheet/rift_split/loot_label audit PNGs).
-   **SUPERSEDED IN PART by the Green-days pass (see the block at the
-   top): WSR is v3 now (17-byte frames), the one-per-press pickup +
-   ring ground-swap languages retired into THE BAG, and the C sheet
-   grew the interactive equipment pane — the history above is how it
-   stood at sl-0113.**
+   **SUPERSEDED IN PART by the Green-days pass AND AGAIN by the menu
+   pass (see the top block): WSR is v3 (17-byte frames), the
+   one-per-press pickup + ring ground-swap languages retired into
+   THE BAG, the C sheet became THE TWO-TAB MENU on panel2 (character
+   + quest log; L deep-links), press-accept became the OFFER
+   dialogue with accept as a recorded op, walk-up stations became
+   F-open, and O/Esc run MENU-FIRST before the pause menu — the
+   history above is how it stood at sl-0113.**
 
 **HOLDS RESOLVED at sl-0115 (the soul merged; water fishing PARKED
 by correction #3). The GEAR SEAM is next-after-soul, on its own
@@ -311,25 +316,30 @@ clean seam.
   recordings are BIG (~80 MB/30 s) — cut posting-size versions with
   ffmpeg fps/scale filters on request.
 
-## §1 Where things stand (2026-08-02 late, post-GREEN-DAYS)
+## §1 Where things stand (2026-08-03, post-MENU-PASS v2)
 
 **M0–M8 + S0 + S1 engineering complete; STARHOOK v2 merged AND
 refined (sl-0115/0123/0125); THE NINE-SEAM GREEN-DAYS PASS LANDED
-(sl-0119..0132 → resolutions sl-0134..0142), all pushed
-(42d8260..912049f + docs).** The one-command ship gate
+(sl-0119..0132 → resolutions sl-0134..0142); THE MENU PASS v2
+LANDED (sl-0143..0157, nine seams A–I, game 0a5edd2..3838f60 +
+docs) — all pushed.** The one-command ship gate
 `tools/pretester_check.ps1` runs ALL GREEN (**31 fixed steps + the
 two-lane battery — 43 rows / 83 runs — byte-identical + export both
-artifacts + lockdown probe**); the latest full runs: sl-0120 (green
-modulo its own re-baselined evidence, the sl-0123 shape), sl-0116
-(same shape), sl-0129 ALL GREEN 13.2 min, sl-0130 ALL GREEN 13.1
-min, sl-0131 ALL GREEN 14.5 min. No deferred-gate debt stands.
-Artifacts on disk are current-era: balance_frame.json (×1.25 tables
-+ the vendors block) + the content pack ride the export.
+artifacts + lockdown probe**); the latest full runs: the menu
+pass's seam B (15.8 min) + seam C (13.6 min), both with the battery
+BYTE-IDENTICAL (the new quest ops are provably inert on every
+recorded stream), plus five view-only -SkipBattery gates at ~3.1
+min. No deferred-gate debt stands. Artifacts on disk are
+current-era: balance_frame.json (×1.25 tables + the vendors block)
++ the content pack ride the export; the menu-pack spec source is
+assets-only (never ships).
 
 The designer is LIVING IN GREEN — that IS the chapter gate (and the
 docs/19 bar clock). Their prototype #2 landed and IS the built
 starhook now — refined twice same-day by their own casts (the drag
-cut; the flippable split); the refinement rounds are theirs.
+cut; the flippable split); their menu workbench's v2 package IS the
+built UI now (the same design→spec→build loop, one day later); the
+refinement rounds on both are theirs.
 
 ## §2 Open — designer-side (do not nag; the deck + planning carry these)
 
@@ -386,18 +396,31 @@ cut; the flippable split); the refinement rounds are theirs.
 
 ## §3 Open — engineering
 
-- **NOTHING ROUTED.** The nine-seam Green-days pass (sl-0119..0132)
-  is FULLY LANDED (sl-0134..0142 resolutions); the routing's own
-  "NOT this pass" list stands: the GEAR SEAM routes right after this
-  family (planning's next paste), class trees later, water fishing
-  PARKED. S2 needs its own word. Until then: intakes, feel
-  one-liners, tuning batches, whatever the designer asks.
-- Recorded honest gaps from the pass (planning owns the calls):
-  KILL/COLLECT quests have no objective cell (QuestDef data call if
-  markers are wanted); the capital zone-hub giver has no NPC body
-  (slot == spawn cell); the tester-facing map = the doc-13 Part II
-  round; the ×1.5 firing-rate feel needs trash_hp or the hits band
-  moved planning-side (ceiling ~1.3× as ruled).
+- **NOTHING ROUTED.** The menu pass v2 (sl-0143..0157) is FULLY
+  LANDED — a live planning seat swept every seam (sl-0158+). Three
+  queued-not-routed threads wait on words: **SEAM I / minimal
+  foraging** (split out by its own escape hatch — the three
+  one-line questions in notes/FORAGE_SEAM_SIZING.md route it; it
+  builds under SERIAL 26 + full re-baseline when routed), **the
+  PLAYER HITBOX** (sl-0146, queued-deferred by the designer's
+  sl-0148 word — its own future SIM seam with the before/after
+  margins table), and **the GEAR SEAM** (rods + simple equipment
+  from starhook bosses, level-gated — planning's next paste). Class
+  trees later; water fishing PARKED; S2 needs its own word. Until
+  then: intakes, feel one-liners, tuning batches, whatever the
+  designer asks.
+- Recorded honest gaps (planning owns the calls): KILL/COLLECT
+  quests have no objective cell (QuestDef data call if markers are
+  wanted); the capital zone-hub giver has no NPC body (slot ==
+  spawn cell — re-flagged loud at the seam-H sweep); crowd NPCs
+  have no interact response BY DESIGN (CORE-35 pure view; villager
+  one-liners stay the incremental item below); a drop underfoot AT
+  a station answers on both layers in one F press (rare by
+  geometry — designer-walk watch item [T]); the reveal's dragon
+  stage waits on a dragon sheet (no such assembler actor exists —
+  refinement-round material); the tester-facing map = the doc-13
+  Part II round; the ×1.5 firing-rate feel needs trash_hp or the
+  hits band moved planning-side (ceiling ~1.3× as ruled).
 - **World interactables** (signs / POI plaques / villager
   one-liners) hang off the interact verb INCREMENTALLY [T] as
   content wants them — each is a small routed-or-asked addition,
@@ -409,10 +432,12 @@ cut; the flippable split); the refinement rounds are theirs.
   doctrine; passport + fixed-gate pattern for non-world packs; NPC/
   icon re-drops re-run their import_*.py + the wiring test).
 - Ledger: OPEN = #16 (replay character block — class/ring at S0,
-  then armor-item/quests/gather/starhook fields at S1: profile
-  replays refuse verification honestly) and #17 (fit-rule round-1
-  scope: arena-def props full-cell). #7 amended (recorder reworked;
-  async readback stays the improvement path).
+  then armor-item/quests/gather/starhook fields at S1; amended at
+  the menu pass: the quest ops ride the recorded byte, tracked/tab
+  are view-side — the gap does not grow; profile replays refuse
+  verification honestly) and #17 (fit-rule round-1 scope: arena-def
+  props full-cell). #7 amended (recorder reworked; async readback
+  stays the improvement path).
 - Tooling candidate (recorded, unrouted): lane-suffixed repro
   filenames in the pool (floor/cap lanes race on shared
   repro_*.wsr names — benign, diagnostic-only; a fresh serial run
@@ -460,7 +485,9 @@ Before every commit, per touched area:
 - Cross-repo events ⇒ sync-log entry planning-side (doc 18; no
   event, no entry). Gotcha #25 before appending.
 
-### Canonical proof battery (state 2026-08-02 post-GREEN-DAYS —
+### Canonical proof battery (state 2026-08-03 — VERIFIED UNCHANGED
+### through the menu pass: two full gates byte-identical with the
+### quest ops aboard; the table itself is the green-days matrix —
 ### POLICY OF RECORD = REACTIVE; SERIAL 25; WSR v3; Warden 575;
 ### b65 flood 34641).
 ### TWO LANES (docs/22 block 6: proofs at floor AND cap FOREVER),
