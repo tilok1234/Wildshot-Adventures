@@ -7,28 +7,31 @@
 [ext_resource type="Resource" path="res://data/enemies/patterns/rift_helix_arms.tres" id="5"]
 [ext_resource type="Resource" path="res://data/enemies/patterns/star_spray.tres" id="6"]
 
-; RIFT BOSS POOL (sl-0180 wave 1A): Twin Helix — grade 1, nebula pool.
-; PLACEHOLDER descriptive id (no lore names — the designer's fish
-; designs re-skin later; identity is data-keyed). Keep-range only
-; (the hooked-fish law: no chaser phases in the one-room arena);
-; every emitter telegraph == its pattern's ONE lead (mechanized
-; law); elite amber; every number [T]. Fight length gated by
-; balance_calc GATE 7 vs the grade's free-spine rod DPS.
+; RIFT BOSS POOL (sl-0180 wave 1A; REBUILT sl-0187+0188): Twin Helix —
+; grade 1, nebula pool. PLACEHOLDER descriptive id (designer's fish
+; designs re-skin later; identity data-keyed). BEHAVIOURAL family
+; (sl-0188): FLANKER — spirals to band and circle-strafes while the
+; helix arms precess, phase speeds climb 2.2/2.6/3.0 (the standing-
+; there statue is dead; never a CHASER — the one-room corner-trap law
+; holds). hp 420 = 35s at the g1 spine (sl-0187: 20-60s INTENSE;
+; cooldowns compressed ~x0.7). Every emitter telegraph == its
+; pattern's ONE lead (mechanized law); elite amber; every number [T].
+; Fight length gated by balance_calc GATE 7.
 
 [sub_resource type="Resource" id="e0"]
 script = ExtResource("2")
 pattern = ExtResource("5")
 trigger_range = 11.0
 telegraph_ticks = 36
-cooldown_ticks = 96
+cooldown_ticks = 66
 recover_ticks = 16
 
 [sub_resource type="Resource" id="phase1"]
 script = ExtResource("3")
 id = &"p1_open"
 hp_floor_pct = 60.0
-movement_policy = 1
-move_speed = -1.0
+movement_policy = 4
+move_speed = 2.2
 range_min = 3.5
 range_max = 6.0
 entry_cooldown_ticks = 0
@@ -39,7 +42,7 @@ script = ExtResource("2")
 pattern = ExtResource("5")
 trigger_range = 11.0
 telegraph_ticks = 36
-cooldown_ticks = 84
+cooldown_ticks = 58
 recover_ticks = 14
 
 [sub_resource type="Resource" id="e2"]
@@ -47,15 +50,15 @@ script = ExtResource("2")
 pattern = ExtResource("6")
 trigger_range = 11.0
 telegraph_ticks = 24
-cooldown_ticks = 110
+cooldown_ticks = 76
 recover_ticks = 16
 
 [sub_resource type="Resource" id="phase2"]
 script = ExtResource("3")
 id = &"p2_surge"
 hp_floor_pct = 25.0
-movement_policy = 1
-move_speed = -1.0
+movement_policy = 4
+move_speed = 2.6
 range_min = 3.5
 range_max = 6.0
 entry_cooldown_ticks = 30
@@ -66,7 +69,7 @@ script = ExtResource("2")
 pattern = ExtResource("5")
 trigger_range = 11.0
 telegraph_ticks = 36
-cooldown_ticks = 72
+cooldown_ticks = 50
 recover_ticks = 12
 
 [sub_resource type="Resource" id="e4"]
@@ -74,15 +77,15 @@ script = ExtResource("2")
 pattern = ExtResource("6")
 trigger_range = 11.0
 telegraph_ticks = 24
-cooldown_ticks = 96
+cooldown_ticks = 66
 recover_ticks = 14
 
 [sub_resource type="Resource" id="phase3"]
 script = ExtResource("3")
 id = &"p3_finale"
 hp_floor_pct = 0.0
-movement_policy = 1
-move_speed = -1.0
+movement_policy = 4
+move_speed = 3.0
 range_min = 3.5
 range_max = 6.0
 entry_cooldown_ticks = 30
@@ -96,13 +99,13 @@ phases = Array[Resource]([SubResource("phase1"), SubResource("phase2"), SubResou
 script = ExtResource("1")
 id = &"rift_boss_twin_helix"
 display_name = "Rift Boss — Twin Helix"
-hp = 1500
+hp = 420
 body_radius = 0.6
 move_speed = 2.2
 contact_damage = 0
 contact_cooldown_ticks = 30
 aggro_range = 14.0
-movement_policy = 1
+movement_policy = 4
 range_min = 3.5
 range_max = 6.0
 phases = SubResource("phaselist")

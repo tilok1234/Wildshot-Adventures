@@ -2,8 +2,9 @@
 
 [ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
 
-; RIFT BOSS proof (sl-0180): Decel Wall paced 100 every 120 -> every phase
-; flip (floors 50%) lives mid-flight, kill t1800, cleanup to 3600.
+; RIFT BOSS proof (sl-0180): Decel Wall paced 95 -> the phase flip
+; (floor 50% — tick-exact crossing at t350) lives mid-flight, kill
+; t750 (sl-0187: hp 380, the 20-60s intense band), cleanup to 3600.
 ; PASS = ZERO bullet hits at the floor and the cap (CORE-33 proven
 ; against the fight the player actually gets, line rules aboard).
 
@@ -22,49 +23,16 @@ enemy_spawns = {
 "rift_boss_decel_wall": PackedVector2Array(7.9, 6.5)
 }
 damage_schedule = Array[Dictionary]([{
-"amount": 100,
-"tick": 120
+"amount": 95,
+"tick": 150
 }, {
-"amount": 100,
-"tick": 240
+"amount": 95,
+"tick": 350
 }, {
-"amount": 100,
-"tick": 360
+"amount": 95,
+"tick": 550
 }, {
-"amount": 100,
-"tick": 480
-}, {
-"amount": 100,
-"tick": 600
-}, {
-"amount": 100,
-"tick": 720
-}, {
-"amount": 100,
-"tick": 840
-}, {
-"amount": 100,
-"tick": 960
-}, {
-"amount": 100,
-"tick": 1080
-}, {
-"amount": 100,
-"tick": 1200
-}, {
-"amount": 100,
-"tick": 1320
-}, {
-"amount": 100,
-"tick": 1440
-}, {
-"amount": 100,
-"tick": 1560
-}, {
-"amount": 100,
-"tick": 1680
-}, {
-"amount": 100,
-"tick": 1800
+"amount": 95,
+"tick": 750
 }])
 default_seed = 1

@@ -9,20 +9,21 @@
 [ext_resource type="Resource" path="res://data/enemies/patterns/rift_pulse_fan.tres" id="7"]
 [ext_resource type="Resource" path="res://data/enemies/patterns/star_dart.tres" id="8"]
 
-; RIFT BOSS POOL (sl-0180 wave 1A): Pulse Lattice — grade 4, comet pool.
-; PLACEHOLDER descriptive id (no lore names — the designer's fish
-; designs re-skin later; identity is data-keyed). Keep-range only
-; (the hooked-fish law: no chaser phases in the one-room arena);
-; every emitter telegraph == its pattern's ONE lead (mechanized
-; law); elite amber; every number [T]. Fight length gated by
-; balance_calc GATE 7 vs the grade's free-spine rod DPS.
+; RIFT BOSS POOL (sl-0180 wave 1A; REBUILT sl-0187+0188): Pulse
+; Lattice — grade 4, comet pool. PLACEHOLDER id. ROOM-PATTERN family
+; (sl-0188): ANCHOR — the boss holds its ground and the lattice
+; (pulse fans + hanging walls + rings) weaves the WHOLE room
+; regardless of the player (the choreography IS the fight). hp 580 =
+; 45s at the g4 spine (sl-0187: 20-60s INTENSE; cooldowns compressed
+; ~x0.7). One lead per pattern; elite amber; every number [T];
+; GATE 7 owns the length.
 
 [sub_resource type="Resource" id="e0"]
 script = ExtResource("2")
 pattern = ExtResource("5")
 trigger_range = 11.0
 telegraph_ticks = 24
-cooldown_ticks = 96
+cooldown_ticks = 66
 recover_ticks = 14
 
 [sub_resource type="Resource" id="e1"]
@@ -30,14 +31,14 @@ script = ExtResource("2")
 pattern = ExtResource("6")
 trigger_range = 11.0
 telegraph_ticks = 36
-cooldown_ticks = 190
+cooldown_ticks = 132
 recover_ticks = 20
 
 [sub_resource type="Resource" id="phase1"]
 script = ExtResource("3")
 id = &"p1_open"
 hp_floor_pct = 65.0
-movement_policy = 1
+movement_policy = 3
 move_speed = -1.0
 range_min = 3.5
 range_max = 6.0
@@ -49,7 +50,7 @@ script = ExtResource("2")
 pattern = ExtResource("7")
 trigger_range = 11.0
 telegraph_ticks = 30
-cooldown_ticks = 96
+cooldown_ticks = 66
 recover_ticks = 14
 
 [sub_resource type="Resource" id="e3"]
@@ -57,14 +58,14 @@ script = ExtResource("2")
 pattern = ExtResource("6")
 trigger_range = 11.0
 telegraph_ticks = 36
-cooldown_ticks = 200
+cooldown_ticks = 140
 recover_ticks = 20
 
 [sub_resource type="Resource" id="phase2"]
 script = ExtResource("3")
 id = &"p2_surge"
 hp_floor_pct = 30.0
-movement_policy = 1
+movement_policy = 3
 move_speed = -1.0
 range_min = 3.5
 range_max = 6.0
@@ -76,7 +77,7 @@ script = ExtResource("2")
 pattern = ExtResource("7")
 trigger_range = 11.0
 telegraph_ticks = 30
-cooldown_ticks = 84
+cooldown_ticks = 58
 recover_ticks = 12
 
 [sub_resource type="Resource" id="e5"]
@@ -84,7 +85,7 @@ script = ExtResource("2")
 pattern = ExtResource("6")
 trigger_range = 11.0
 telegraph_ticks = 36
-cooldown_ticks = 190
+cooldown_ticks = 132
 recover_ticks = 18
 
 [sub_resource type="Resource" id="e6"]
@@ -92,14 +93,14 @@ script = ExtResource("2")
 pattern = ExtResource("8")
 trigger_range = 11.0
 telegraph_ticks = 40
-cooldown_ticks = 170
+cooldown_ticks = 118
 recover_ticks = 18
 
 [sub_resource type="Resource" id="phase3"]
 script = ExtResource("3")
 id = &"p3_finale"
 hp_floor_pct = 0.0
-movement_policy = 1
+movement_policy = 3
 move_speed = -1.0
 range_min = 3.5
 range_max = 6.0
@@ -114,13 +115,13 @@ phases = Array[Resource]([SubResource("phase1"), SubResource("phase2"), SubResou
 script = ExtResource("1")
 id = &"rift_boss_pulse_lattice"
 display_name = "Rift Boss — Pulse Lattice"
-hp = 1900
+hp = 580
 body_radius = 0.7
 move_speed = 2.4
 contact_damage = 0
 contact_cooldown_ticks = 30
 aggro_range = 14.0
-movement_policy = 1
+movement_policy = 3
 range_min = 3.5
 range_max = 6.0
 phases = SubResource("phaselist")

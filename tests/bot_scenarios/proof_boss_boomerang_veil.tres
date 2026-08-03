@@ -2,8 +2,9 @@
 
 [ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
 
-; RIFT BOSS proof (sl-0180): Boomerang Veil paced 200 every 120 -> every phase
-; flip (floors 60/25%) lives mid-flight, kill t1680, cleanup to 3600.
+; RIFT BOSS proof (sl-0180): Boomerang Veil paced 100 every 150 -> every phase
+; flip (floors 60/25%) lives mid-flight (P2 t600 / P3 t900), kill
+; t1200 (sl-0187: hp 800, the 20-60s intense band), cleanup to 3600.
 ; PASS = ZERO bullet hits at the floor and the cap (CORE-33 proven
 ; against the fight the player actually gets, line rules aboard).
 
@@ -22,46 +23,28 @@ enemy_spawns = {
 "rift_boss_boomerang_veil": PackedVector2Array(7.9, 6.5)
 }
 damage_schedule = Array[Dictionary]([{
-"amount": 200,
-"tick": 120
+"amount": 100,
+"tick": 150
 }, {
-"amount": 200,
-"tick": 240
+"amount": 100,
+"tick": 300
 }, {
-"amount": 200,
-"tick": 360
+"amount": 100,
+"tick": 450
 }, {
-"amount": 200,
-"tick": 480
-}, {
-"amount": 200,
+"amount": 100,
 "tick": 600
 }, {
-"amount": 200,
-"tick": 720
+"amount": 100,
+"tick": 750
 }, {
-"amount": 200,
-"tick": 840
+"amount": 100,
+"tick": 900
 }, {
-"amount": 200,
-"tick": 960
+"amount": 100,
+"tick": 1050
 }, {
-"amount": 200,
-"tick": 1080
-}, {
-"amount": 200,
+"amount": 100,
 "tick": 1200
-}, {
-"amount": 200,
-"tick": 1320
-}, {
-"amount": 200,
-"tick": 1440
-}, {
-"amount": 200,
-"tick": 1560
-}, {
-"amount": 200,
-"tick": 1680
 }])
 default_seed = 1

@@ -5,7 +5,10 @@
 ; DUNGEON RIFT proof (sl-0180 wave 2): THE BOSS ROOM — decel_wall
 ; paced through its flip (floor 50%) and kill in the 16x9 room
 ; (wider than the one-room rift; the hanging walls get real air).
-; 1500 hp at 100 every 120 -> flip mid-flight, kill t1800, cleanup
+; sl-0187/0188 REBUILT: 380 hp at 95 (t150/350/550/750) -> the 50%
+; flip tick-exact at t350, kill t750; the boss is ANCHOR now (the
+; sl-0186 walk finding: keep-range chased the walker out of the
+; room to tether edge — an anchored holder cannot leave), cleanup
 ; to 3600. PASS = zero bullet hits at floor + cap.
 
 [resource]
@@ -23,49 +26,16 @@ enemy_spawns = {
 "rift_boss_decel_wall": PackedVector2Array(58.5, 38.5)
 }
 damage_schedule = Array[Dictionary]([{
-"amount": 100,
-"tick": 120
+"amount": 95,
+"tick": 150
 }, {
-"amount": 100,
-"tick": 240
+"amount": 95,
+"tick": 350
 }, {
-"amount": 100,
-"tick": 360
+"amount": 95,
+"tick": 550
 }, {
-"amount": 100,
-"tick": 480
-}, {
-"amount": 100,
-"tick": 600
-}, {
-"amount": 100,
-"tick": 720
-}, {
-"amount": 100,
-"tick": 840
-}, {
-"amount": 100,
-"tick": 960
-}, {
-"amount": 100,
-"tick": 1080
-}, {
-"amount": 100,
-"tick": 1200
-}, {
-"amount": 100,
-"tick": 1320
-}, {
-"amount": 100,
-"tick": 1440
-}, {
-"amount": 100,
-"tick": 1560
-}, {
-"amount": 100,
-"tick": 1680
-}, {
-"amount": 100,
-"tick": 1800
+"amount": 95,
+"tick": 750
 }])
 default_seed = 1

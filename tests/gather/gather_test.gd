@@ -868,9 +868,13 @@ func _init() -> void:
 	check(wm.players[0].gold > mgold0, "the mob's gold still banks (no ground drops)")
 	check(wm.rift_catches.is_empty(), "no fish drawn for a mob")
 
-	# 26. BOSS ROSTER + KIT PREMISES (sl-0180): the eight pool defs sit
-	# at roster 30-37, phased, and NO rift kit phase ever chases (the
-	# hooked-fish law, mechanized across catches AND bosses).
+	# 26. BOSS ROSTER + KIT PREMISES (sl-0180; AMENDED sl-0188): the
+	# eight pool defs sit at roster 30-37, phased. THE LAW AS AMENDED:
+	# rift bosses MAY MOVE AND BEHAVE (the designer's word — the
+	# standing-there statue is dead) but NO rift kit phase ever CHASES
+	# (policy 0): the one-room corner-trap law and the hooked-fish law
+	# both survive the amendment — orbit, reposition, and anchor are
+	# life; pursuit-to-contact in a one-room box is a trap.
 	var loader_scenario := ScenarioDef.new()
 	loader_scenario.id = &"premise_probe"
 	var g26: RefCounted = Bitgrid.new()
@@ -907,6 +911,34 @@ func _init() -> void:
 				int(ph26.movement_policy) != 0,
 				"%s phase %s never chases (one-room law)" % [String(rdef.id), String(ph26.id)]
 			)
+	# sl-0188 FAMILY PINS [P at build]: the eight kits split
+	# ROOM-PATTERN (ANCHOR 3 — the boss holds ground, the choreography
+	# fills the room; the anchored decel_wall also cannot leave the
+	# dungeon boss room, the sl-0186 walk finding) vs BEHAVIOURAL
+	# (FLANKER 4 — orbit/reposition/dash-reads). Def AND every phase.
+	var kit_families := {
+		30: 4,  # twin_helix — behavioural
+		31: 3,  # ring_nest — room-pattern
+		32: 4,  # sine_shoal — behavioural
+		33: 4,  # boomerang_veil — behavioural
+		34: 3,  # decel_wall — room-pattern (the dungeon holder)
+		35: 3,  # zone_constellation — room-pattern
+		36: 4,  # cross_burst — behavioural
+		37: 3,  # pulse_lattice — room-pattern
+	}
+	for ki26: int in kit_families:
+		var kdef: Resource = wl26.enemy_defs[ki26]
+		var fam26: int = kit_families[ki26]
+		check(
+			int(kdef.movement_policy) == fam26,
+			"%s base policy is its sl-0188 family (%d)" % [String(kdef.id), fam26]
+		)
+		for kph26: Resource in kdef.phases.phases:
+			check(
+				int(kph26.movement_policy) == fam26,
+				"%s phase %s carries the family" % [String(kdef.id), String(kph26.id)]
+			)
+
 	# Wave 2: the dungeon mobs are PHASELESS (the gold-only kill
 	# contract), never chasers, and wake close (aggro 8 [T] — the
 	# distance-discipline law's partner).

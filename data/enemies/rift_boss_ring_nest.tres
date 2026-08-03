@@ -7,27 +7,31 @@
 [ext_resource type="Resource" path="res://data/enemies/patterns/rift_ring.tres" id="5"]
 [ext_resource type="Resource" path="res://data/enemies/patterns/rift_ring_offset.tres" id="6"]
 
-; RIFT BOSS POOL (sl-0180 wave 1A): Ring Nest — grade 1, nebula pool.
-; PLACEHOLDER descriptive id (no lore names — the designer's fish
-; designs re-skin later; identity is data-keyed). Keep-range only
-; (the hooked-fish law: no chaser phases in the one-room arena);
-; every emitter telegraph == its pattern's ONE lead (mechanized
+; RIFT BOSS POOL (sl-0180 wave 1A; REBUILT sl-0187+0188): Ring Nest —
+; grade 1, nebula pool. PLACEHOLDER descriptive id (designer's fish
+; designs re-skin later; identity data-keyed). ROOM-PATTERN family
+; (sl-0188): ANCHOR — the boss holds its ground and the nested rings
+; + offset rings FILL THE ROOM regardless of where the player
+; stands (the choreography IS the fight; the standing-there statue
+; is dead because the show never stops). hp 360 = 30s at the g1
+; spine (sl-0187: 20-60s INTENSE; cooldowns compressed ~x0.67).
+; Every emitter telegraph == its pattern's ONE lead (mechanized
 ; law); elite amber; every number [T]. Fight length gated by
-; balance_calc GATE 7 vs the grade's free-spine rod DPS.
+; balance_calc GATE 7.
 
 [sub_resource type="Resource" id="e0"]
 script = ExtResource("2")
 pattern = ExtResource("5")
 trigger_range = 11.0
 telegraph_ticks = 36
-cooldown_ticks = 168
+cooldown_ticks = 112
 recover_ticks = 20
 
 [sub_resource type="Resource" id="phase1"]
 script = ExtResource("3")
 id = &"p1_open"
 hp_floor_pct = 45.0
-movement_policy = 1
+movement_policy = 3
 move_speed = -1.0
 range_min = 3.5
 range_max = 6.0
@@ -39,7 +43,7 @@ script = ExtResource("2")
 pattern = ExtResource("5")
 trigger_range = 11.0
 telegraph_ticks = 36
-cooldown_ticks = 150
+cooldown_ticks = 100
 recover_ticks = 18
 
 [sub_resource type="Resource" id="e2"]
@@ -47,14 +51,14 @@ script = ExtResource("2")
 pattern = ExtResource("6")
 trigger_range = 11.0
 telegraph_ticks = 36
-cooldown_ticks = 150
+cooldown_ticks = 100
 recover_ticks = 18
 
 [sub_resource type="Resource" id="phase2"]
 script = ExtResource("3")
 id = &"p2_finale"
 hp_floor_pct = 0.0
-movement_policy = 1
+movement_policy = 3
 move_speed = -1.0
 range_min = 3.5
 range_max = 6.0
@@ -69,13 +73,13 @@ phases = Array[Resource]([SubResource("phase1"), SubResource("phase2")])
 script = ExtResource("1")
 id = &"rift_boss_ring_nest"
 display_name = "Rift Boss — Ring Nest"
-hp = 1400
+hp = 360
 body_radius = 0.6
 move_speed = 2.0
 contact_damage = 0
 contact_cooldown_ticks = 30
 aggro_range = 14.0
-movement_policy = 1
+movement_policy = 3
 range_min = 3.5
 range_max = 6.0
 phases = SubResource("phaselist")

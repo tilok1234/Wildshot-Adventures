@@ -424,11 +424,13 @@ for n in [v for r in titems for v in (int(r.get("hp", 0)), int(r.get("defense", 
 # Fight length [T]: each boss's hp against the GRADE's free-spine rod
 # DPS (the guaranteed-available identity, derived from the parsed rod
 # frames above - retuning a rod moves this gate with it) must land in
-# the designer's 1-5 minute band. Pools: per-biome common/rare lists,
+# the designer's band. sl-0187 RE-RULED: 20-60 s MAX, INTENSE (the
+# designer's own correction of their 1-5 minute word after playing
+# the batch; shorter AND denser). Pools: per-biome common/rare lists,
 # catch present everywhere, every id resolving, every boss pooled,
 # scenario + proof files on disk. The strain clock is REPORTED per
 # fight (info - the designer's lever), never gated.
-FIGHT_LEN_BAND = (60.0, 300.0)
+FIGHT_LEN_BAND = (20.0, 60.0)
 spine_dps: dict[int, float] = {}
 for rod in rods:
     if rod.get("price") is None and int(rod.get("tier", 0)) in TIER_LEVELS:
@@ -469,7 +471,7 @@ for boss in bosses:
         continue
     flen = hp_v / dps
     if not (FIGHT_LEN_BAND[0] <= flen <= FIGHT_LEN_BAND[1]):
-        fail(f"rift boss {bid}: fight length {flen:.0f}s at grade-{grade} spine DPS {dps:.1f} outside [60, 300]")
+        fail(f"rift boss {bid}: fight length {flen:.0f}s at grade-{grade} spine DPS {dps:.1f} outside [{FIGHT_LEN_BAND[0]:.0f}, {FIGHT_LEN_BAND[1]:.0f}] (sl-0187: 20-60s intense)")
     # Scenario/proof presence anchors to the REPO tree (the script's
     # own parent), not the data dir — scratch-copied frames validate
     # against the real scenario files.

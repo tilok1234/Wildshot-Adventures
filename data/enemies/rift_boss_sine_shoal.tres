@@ -7,28 +7,34 @@
 [ext_resource type="Resource" path="res://data/enemies/patterns/rift_sine_shoal.tres" id="5"]
 [ext_resource type="Resource" path="res://data/enemies/patterns/star_spray.tres" id="6"]
 
-; RIFT BOSS POOL (sl-0180 wave 1A): Sine Shoal — grade 2, nebula pool.
-; PLACEHOLDER descriptive id (no lore names — the designer's fish
-; designs re-skin later; identity is data-keyed). Keep-range only
-; (the hooked-fish law: no chaser phases in the one-room arena);
-; every emitter telegraph == its pattern's ONE lead (mechanized
-; law); elite amber; every number [T]. Fight length gated by
-; balance_calc GATE 7 vs the grade's free-spine rod DPS.
+; RIFT BOSS POOL (sl-0180 wave 1A; REBUILT sl-0187+0188): Sine Shoal
+; — grade 2, void pool. PLACEHOLDER id. BEHAVIOURAL family
+; (sl-0188): FLANKER — the shoal WEAVES: spirals to band and
+; circle-strafes while the sine bolts snake, phase speeds climb
+; 2.4/2.7/3.2 (never a CHASER — the one-room corner-trap law
+; holds). P2 ITERATED under never-weaken: sine 58t / speed 2.7 /
+; entry beat 40 — a byte-identical cap-lane graze (FIRST@576 x3
+; seeds) rode the FROZEN entry-beat firing position; only the
+; longer beat (more telegraph, never less) moved it. Every number
+; [T].
+; hp 700 = 35s at the g2 spine (sl-0187: 20-60s INTENSE; cooldowns
+; compressed ~x0.7). One lead per pattern; elite amber; every
+; number [T]; GATE 7 owns the length.
 
 [sub_resource type="Resource" id="e0"]
 script = ExtResource("2")
 pattern = ExtResource("5")
 trigger_range = 11.0
 telegraph_ticks = 24
-cooldown_ticks = 90
+cooldown_ticks = 62
 recover_ticks = 14
 
 [sub_resource type="Resource" id="phase1"]
 script = ExtResource("3")
 id = &"p1_open"
 hp_floor_pct = 60.0
-movement_policy = 1
-move_speed = -1.0
+movement_policy = 4
+move_speed = 2.4
 range_min = 3.5
 range_max = 6.0
 entry_cooldown_ticks = 0
@@ -39,7 +45,7 @@ script = ExtResource("2")
 pattern = ExtResource("5")
 trigger_range = 11.0
 telegraph_ticks = 24
-cooldown_ticks = 78
+cooldown_ticks = 58
 recover_ticks = 12
 
 [sub_resource type="Resource" id="e2"]
@@ -47,18 +53,18 @@ script = ExtResource("2")
 pattern = ExtResource("6")
 trigger_range = 11.0
 telegraph_ticks = 24
-cooldown_ticks = 108
+cooldown_ticks = 75
 recover_ticks = 14
 
 [sub_resource type="Resource" id="phase2"]
 script = ExtResource("3")
 id = &"p2_surge"
 hp_floor_pct = 25.0
-movement_policy = 1
-move_speed = -1.0
+movement_policy = 4
+move_speed = 2.7
 range_min = 3.5
 range_max = 6.0
-entry_cooldown_ticks = 30
+entry_cooldown_ticks = 40
 emitters = Array[Resource]([SubResource("e1"), SubResource("e2")])
 
 [sub_resource type="Resource" id="e3"]
@@ -66,7 +72,7 @@ script = ExtResource("2")
 pattern = ExtResource("5")
 trigger_range = 11.0
 telegraph_ticks = 24
-cooldown_ticks = 96
+cooldown_ticks = 66
 recover_ticks = 12
 
 [sub_resource type="Resource" id="e4"]
@@ -74,7 +80,7 @@ script = ExtResource("2")
 pattern = ExtResource("5")
 trigger_range = 11.0
 telegraph_ticks = 24
-cooldown_ticks = 96
+cooldown_ticks = 66
 recover_ticks = 12
 
 [sub_resource type="Resource" id="e5"]
@@ -82,15 +88,15 @@ script = ExtResource("2")
 pattern = ExtResource("6")
 trigger_range = 11.0
 telegraph_ticks = 24
-cooldown_ticks = 96
+cooldown_ticks = 66
 recover_ticks = 12
 
 [sub_resource type="Resource" id="phase3"]
 script = ExtResource("3")
 id = &"p3_finale"
 hp_floor_pct = 0.0
-movement_policy = 1
-move_speed = -1.0
+movement_policy = 4
+move_speed = 3.2
 range_min = 3.5
 range_max = 6.0
 entry_cooldown_ticks = 30
@@ -104,13 +110,13 @@ phases = Array[Resource]([SubResource("phase1"), SubResource("phase2"), SubResou
 script = ExtResource("1")
 id = &"rift_boss_sine_shoal"
 display_name = "Rift Boss — Sine Shoal"
-hp = 2600
+hp = 700
 body_radius = 0.65
 move_speed = 2.4
 contact_damage = 0
 contact_cooldown_ticks = 30
 aggro_range = 14.0
-movement_policy = 1
+movement_policy = 4
 range_min = 3.5
 range_max = 6.0
 phases = SubResource("phaselist")

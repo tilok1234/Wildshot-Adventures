@@ -7,27 +7,30 @@
 [ext_resource type="Resource" path="res://data/enemies/patterns/rift_decel_wall.tres" id="5"]
 [ext_resource type="Resource" path="res://data/enemies/patterns/star_spray.tres" id="6"]
 
-; RIFT BOSS POOL (sl-0180 wave 1A): Decel Wall — grade 3, void pool.
-; PLACEHOLDER descriptive id (no lore names — the designer's fish
-; designs re-skin later; identity is data-keyed). Keep-range only
-; (the hooked-fish law: no chaser phases in the one-room arena);
-; every emitter telegraph == its pattern's ONE lead (mechanized
-; law); elite amber; every number [T]. Fight length gated by
-; balance_calc GATE 7 vs the grade's free-spine rod DPS.
+; RIFT BOSS POOL (sl-0180 wave 1A; REBUILT sl-0187+0188): Decel Wall
+; — grade 3, comet pool + THE DUNGEON'S END ROOM. PLACEHOLDER id.
+; ROOM-PATTERN family (sl-0188): ANCHOR — the boss holds its ground
+; and the hanging walls travel the room regardless of the player
+; (the choreography IS the fight). The anchor ALSO fixes the sl-0186
+; walk finding structurally: the old keep-range chased the walker out
+; of the dungeon boss room to its tether edge — an anchored holder
+; can never leave its room. hp 380 = 35s at the g3 spine (sl-0187:
+; 20-60s INTENSE; cooldowns compressed ~x0.7). One lead per pattern;
+; elite amber; every number [T]; GATE 7 owns the length.
 
 [sub_resource type="Resource" id="e0"]
 script = ExtResource("2")
 pattern = ExtResource("5")
 trigger_range = 11.0
 telegraph_ticks = 30
-cooldown_ticks = 120
+cooldown_ticks = 84
 recover_ticks = 18
 
 [sub_resource type="Resource" id="phase1"]
 script = ExtResource("3")
 id = &"p1_open"
 hp_floor_pct = 50.0
-movement_policy = 1
+movement_policy = 3
 move_speed = -1.0
 range_min = 3.5
 range_max = 6.0
@@ -39,7 +42,7 @@ script = ExtResource("2")
 pattern = ExtResource("5")
 trigger_range = 11.0
 telegraph_ticks = 30
-cooldown_ticks = 100
+cooldown_ticks = 70
 recover_ticks = 14
 
 [sub_resource type="Resource" id="e2"]
@@ -47,14 +50,14 @@ script = ExtResource("2")
 pattern = ExtResource("6")
 trigger_range = 11.0
 telegraph_ticks = 24
-cooldown_ticks = 110
+cooldown_ticks = 76
 recover_ticks = 14
 
 [sub_resource type="Resource" id="phase2"]
 script = ExtResource("3")
 id = &"p2_finale"
 hp_floor_pct = 0.0
-movement_policy = 1
+movement_policy = 3
 move_speed = -1.0
 range_min = 3.5
 range_max = 6.0
@@ -69,13 +72,13 @@ phases = Array[Resource]([SubResource("phase1"), SubResource("phase2")])
 script = ExtResource("1")
 id = &"rift_boss_decel_wall"
 display_name = "Rift Boss — Decel Wall"
-hp = 1500
+hp = 380
 body_radius = 0.6
 move_speed = 2.0
 contact_damage = 0
 contact_cooldown_ticks = 30
 aggro_range = 14.0
-movement_policy = 1
+movement_policy = 3
 range_min = 3.5
 range_max = 6.0
 phases = SubResource("phaselist")
