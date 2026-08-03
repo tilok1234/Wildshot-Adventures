@@ -29,6 +29,22 @@ const ZONE_MAP := {
 var _stations: Array[Dictionary] = []
 
 
+## sl-0176: authored def cell -> body station cell for every station
+## that answers for an authored cell (zone givers + pinned bodies).
+## The overhead giver icons anchor to the BODY the player actually
+## sees; the sim's interact radius stays on the authored cell.
+func giver_map() -> Dictionary:
+	return giver_cell_map(_stations)
+
+
+static func giver_cell_map(stations: Array[Dictionary]) -> Dictionary:
+	var out: Dictionary = {}
+	for st: Dictionary in stations:
+		if st.has("def_cell"):
+			out[st.def_cell] = st.cell
+	return out
+
+
 ## Build stations + sprites. `content_pack` = the resolved pack dir;
 ## `bitgrid` = the world's conservative grid; `spawn` = the
 ## settlement spawn cell the crowd scatters around.
@@ -129,7 +145,8 @@ static func compute_stations(
 		# the bank cell; vendors join at sl-0131) — the body marks the
 		# ground, the sim owns the interaction (CORE-35 pure view).
 		if PINNED_STATIONS.has(aid):
-			out.append({"id": aid, "cell": _nudge_walkable(bitgrid, PINNED_STATIONS[aid])})
+			var pin: Vector2 = PINNED_STATIONS[aid]
+			out.append({"id": aid, "cell": _nudge_walkable(bitgrid, pin), "def_cell": pin})
 			continue
 		if group == "zone-quest-giver" and not zkey.is_empty() and zone_cells.has(zkey):
 			var cells: Array = zone_cells[zkey]
@@ -138,8 +155,13 @@ static func compute_stations(
 				used[zkey] = next_i + 1
 				# Giver cells are pack-authored at structures — some sit
 				# on solid footprint cells (doorsteps). Nudge to the
-				# nearest walkable cell, deterministically.
-				out.append({"id": aid, "cell": _nudge_walkable(bitgrid, cells[next_i])})
+				# nearest walkable cell, deterministically. The authored
+				# cell rides along (def_cell) so overhead icons can
+				# anchor to the body the nudge placed (sl-0176).
+				var authored: Vector2 = cells[next_i]
+				out.append(
+					{"id": aid, "cell": _nudge_walkable(bitgrid, authored), "def_cell": authored}
+				)
 				continue
 		crowd.append(aid)
 	# Settlement crowd: golden-angle spiral, walkability-probed.

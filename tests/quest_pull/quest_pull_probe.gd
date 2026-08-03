@@ -1,11 +1,13 @@
-## One-shot WINDOWED render probe (sl-0121): the quest-pull kit on
-## real b77 ground — overhead giver icons in BOTH states (available
-## over the waystation farmer; turn-in at the capital), the HUD
-## tracker lines, and the map markers (objective diamond + turn-in
-## ring) on the corner minimap AND the fullscreen map. Quest state is
-## staged on a stub world over the REAL quest defs; the icon/tracker/
-## marker models only read that state. Captures (committed, read by
-## eyes; desktop = screen crop per the rift_split_probe discipline):
+## One-shot WINDOWED render probe (sl-0121; sl-0175/0176 findings
+## pass): the quest-pull kit on real b77 ground — overhead giver
+## icons in BOTH states (available riding the waystation farmer's
+## head via the body-anchor map; turn-in at the bodiless capital
+## slot), the HUD tracker lines, and the THREE map marker kinds
+## (available bang + turn-in ring + objective diamond) on the corner
+## minimap AND the fullscreen map. Quest state is staged on a stub
+## world over the REAL quest defs; the icon/tracker/marker models
+## only read that state. Captures (committed, read by eyes; desktop
+## = screen crop per the rift_split_probe discipline):
 ##   reports/quest_pull_audit_waystation_base.png
 ##   reports/quest_pull_audit_capital_base.png
 ##   reports/quest_pull_audit_full_map.png
@@ -99,6 +101,8 @@ func _run() -> void:
 
 	var icons: Node2D = QuestGiverIcons.new()
 	icons.world = stub
+	# sl-0176: the same body-anchor wiring main performs.
+	icons.cell_map = npcs.giver_map()
 	root.add_child(icons)
 
 	var hud := CanvasLayer.new()
@@ -125,7 +129,11 @@ func _run() -> void:
 	await process_frame
 	# _ready fires on the first frame for SceneTree-script nodes —
 	# feed the under-the-minimap inset AFTER it (the way main's
-	# _apply_ui_scale runs post-ready).
+	# _apply_ui_scale runs post-ready). The overlay's Config hookup
+	# gets NULLED the same way (gotcha 41: the autoload NODE exists
+	# under --script — the designer's live tracked_quest setting must
+	# never steer a committed capture).
+	overlay._cfg = null
 	tracker.set_top(34.0 + 96.0 + 4.0)
 	cam.make_current()
 	overlay.cycle()  # corner
@@ -162,11 +170,19 @@ func _run() -> void:
 	# via screen crop, topmost-forced, with a two-point signature guard
 	# against bystander-window crops. Signature points sit on STATIC
 	# pixels (the corner map texture + far-corner ground) — NPC idle
-	# frames animate between captures.
+	# frames animate between captures. Window stays 1440x1080 (2x
+	# integer scale): OS notification banners own the screen's
+	# bottom-right and render above even ALWAYS_ON_TOP — a live toast
+	# rode into a committed 1920-wide capture once (sl-0175/0176
+	# session); the narrower window keeps the crop out of toast land
+	# and the guard cannot sample there (it is normally content).
 	var sig_map := shot_cap.get_pixel(620, 30)
 	var sig_ground := shot_cap.get_pixel(20, 340)
+	# The window opens effectively maximized — set_size is ignored
+	# until the mode is explicitly WINDOWED.
+	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 	DisplayServer.window_set_position(Vector2i(0, 0))
-	DisplayServer.window_set_size(Vector2i(1920, 1080))
+	DisplayServer.window_set_size(Vector2i(1440, 1080))
 	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_ALWAYS_ON_TOP, true)
 	DisplayServer.window_move_to_foreground()
 	for i in 30:

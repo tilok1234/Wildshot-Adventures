@@ -2417,3 +2417,56 @@ mob phaseless/no-chase/aggro-8 contracts, the dungeon scenario
 tester-safe + its line def rows). NO feel verdicts — the walk, the
 clock, the mob density, the ambient wiring: the designer's word
 rules; the dungeon proves the SHAPE, content rounds follow it.
+
+THE QUEST-PULL FINDINGS ×2 2026-08-03 (sl-0175 + sl-0176; the
+designer's play findings on their own routed drop; VIEW-ONLY — ZERO
+sim bytes, SERIAL 26 / WSR v3 untouched; gate -SkipBattery ALL
+GREEN 3.1 min per the view-seam precedent): sl-0175 DIAGNOSED
+FIRST — the sl-0135 markers DO land on BOTH map surfaces (one
+_draw_markers on the shared corner/fullscreen rect chain; the
+preserved before-captures prove it) and the "black squares" are the
+pack minimap.png's OWN baked structure footprints (raw texture
+read — NOT markers rendering without art); the designer's empty map
+was the MODEL's coverage: only turn-in rings + carried-VISIT
+diamonds ever drew — AVAILABLE givers never marked, and
+KILL/COLLECT carry no objective cell (that recorded honest gap
+stands unchanged, planning's call). THE FIX: map markers now mirror
+THE overhead-icon model (QuestGiverIcons.giver_states — turn-in
+wins per cell, available hides at the hands cap; ONE truth on the
+world and both maps): gold BANG = giver has work / green RING =
+turn-in / amber DIAMOND = VISIT objective (shape-first, CORE-50,
+black halos over the baked dark cells), objectives bound to the
+tracked quest EXACTLY like the HUD tracker (none tracked = all
+carried [T]; map_overlay reads [ui] tracked_quest defensively —
+probes null it, gotcha 41). dev_map_test pins the model
+(fresh-hands 3-bang / staged ring-wins-cell / tracked narrow +
+untaken fallback + complete-rings-never-diamonds / legacy-lane
+empty). sl-0176 MEASURED then fixed: the icon anchored the AUTHORED
+def cell at LIFT 34 — over a 24px @1x body that is ~0.7 t of
+detached air (the waystation read), and at the BODILESS capital
+slot (slot == spawn cell) it landed at the FEET of the crowd body
+two tiles north (the circle representative — the designer's literal
+"under the npc"; before-capture preserved); three zone givers
+additionally stand walkability-NUDGED off their authored cells
+(dry scout 1N / cold trapper 1N / cold wayfinder 1NW, measured on
+b77) with icons not following. FIX: icons anchor to the giver's
+BODY cell — compute_stations records def_cell per giver/pinned
+station, NpcView.giver_cell_map() maps authored→body, main + the
+probe wire it (bodiless slots keep the authored interact cell — the
+capital body stays planning's flagged call); LIFT 34→18 sits the
+icon just above the head, attached; occlusion is STRUCTURAL:
+HP_BARS 35 > CANOPY 32 > ACTORS 30 — the giver's own sprite,
+adjacent props, and crowns can never cover it (desktop-scale
+capture read). npc_icon_wiring_test pins the giver map (≥10
+entries, walkable bodies, nudge reach ≤4.5, the green-waystation
+identity + the dry-scout 1N as the per-pack b77 pin). EVIDENCE both
+scales before/after: reports/quest_pull_before_{waystation_base,
+capital_base,full_map,capital_desktop}.png preserved + the four
+audit captures re-run and read by eyes. PROBE LESSON recorded:
+Windows notification banners render ABOVE ALWAYS_ON_TOP windows and
+one rode into a 1920-wide screen crop (twice — it was persistent),
+and window_set_size is IGNORED while the window is effectively
+maximized — the desktop leg now forces WINDOWED 1440x1080 (2x
+integer scale), keeping committed evidence out of toast land. NO
+feel verdicts — marker shapes/colors/sizes + the lift are the
+designer's to move.

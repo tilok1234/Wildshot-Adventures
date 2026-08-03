@@ -1569,6 +1569,7 @@ func _ready() -> void:
 	# NPC presence (slice S0 seam 4, W-8): the 32 pack looks stationed
 	# at giver slots + the settlement crowd — pure view inside the same
 	# y-sort space, only where a content pack rides the scenario.
+	var npc_giver_map: Dictionary = {}
 	if not String(scenario.content_pack).is_empty():
 		var lib_npc := AssemblerLibrary.new()
 		lib_npc.manifest_path = "res://npcs/manifest.json"
@@ -1583,18 +1584,23 @@ func _ready() -> void:
 				scenario.player_spawn
 			)
 			actor_space.add_child(npcs)
+			# sl-0176: overhead giver icons anchor to the body the
+			# nudge actually placed, not the authored def cell.
+			npc_giver_map = npcs.giver_map()
 
 	var hp_bars := HpBarView.new()
 	hp_bars.world = world
 	hp_bars.clock = view_clock
 	add_child(hp_bars)
 
-	# sl-0121: overhead giver icons — two states over the authored
-	# giver cells (pure view; rift arenas carry no givers; the model
-	# is inert for legacy-lane players, so labs/proofs draw nothing).
+	# sl-0121: overhead giver icons — two states, anchored to giver
+	# bodies where they exist (sl-0176; authored cells otherwise —
+	# pure view; rift arenas carry no givers; the model is inert for
+	# legacy-lane players, so labs/proofs draw nothing).
 	if not _scenario_rift:
 		var giver_icons := QuestGiverIcons.new()
 		giver_icons.world = world
+		giver_icons.cell_map = npc_giver_map
 		add_child(giver_icons)
 
 	var pv := ProjectileView.new()

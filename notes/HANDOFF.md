@@ -1,4 +1,26 @@
-# Session Handoff — updated 2026-08-03 (post-BOSS-EXPANSION waves 1A+1B: sl-0180/0181; the gear seam + menu pass stand beneath)
+# Session Handoff — updated 2026-08-03 (post-QUEST-PULL-FINDINGS sl-0175/0176; boss expansion + gear seam + menu pass stand beneath)
+
+> **THE QUEST-PULL FINDINGS ×2 ARE LANDED (2026-08-03 late; sl-0175 +
+> sl-0176 — the designer's two play findings, on their own routed
+> drop at last; VIEW-ONLY, ZERO sim bytes, SERIAL 26 / WSR v3
+> untouched; -SkipBattery gate ALL GREEN 3.1 min; full record = the
+> CLAUDE.md milestone tail's last block):** sl-0175 — the markers
+> always drew on BOTH map surfaces; the designer's empty map was
+> MODEL coverage (only turn-in rings + carried-VISIT diamonds;
+> available givers never marked) and the "black squares" are the
+> pack minimap's own baked structure footprints. Map markers now
+> mirror THE overhead-icon model: gold BANG available / green RING
+> turn-in / amber DIAMOND tracked VISIT objective (tracker-identical
+> binding; KILL/COLLECT still carry no cell — the recorded gap is
+> planning's). sl-0176 — the overhead icon anchored the AUTHORED
+> cell at LIFT 34: detached air over stationed givers, and at the
+> bodiless capital slot it hung at the FEET of the crowd body two
+> tiles north ("under the npc", literally). Icons now anchor the
+> giver's BODY cell (NpcView.giver_cell_map — nudged doorstep
+> givers followed; bodiless slots keep the interact cell) at LIFT
+> 18, just above the head; occlusion structural (35>32>30).
+> Evidence both scales before/after (quest_pull_before_* preserved).
+> NO feel verdicts — shapes/colors/lift all the designer's to move.
 
 > **THE STARHOOK BOSS EXPANSION waves 1A+1B ARE LANDED (2026-08-03
 > night; sl-0180 + sl-0181; SERIAL 26 / WSR v3 UNCHANGED — zero
@@ -857,6 +879,17 @@ names; cap runs use --speed=4.14 + an explicit --out=..._cap115.json).
     must exercise reaches Config via get_node_or_null("/root/Config")
     AND probes NULL the _cfg field before feeding state (the
     menu_probe pattern).
+42. **Desktop-capture probes vs the OS (sl-0175/0176 session):
+    Windows notification banners render ABOVE even ALWAYS_ON_TOP
+    windows** — a persistent toast rode into a 1920-wide committed
+    screen crop TWICE (the two-point signature guard can't see a
+    region it doesn't sample, and toast land is normally content).
+    AND `window_set_size` is silently IGNORED while the window is
+    effectively maximized — force
+    `window_set_mode(WINDOW_MODE_WINDOWED)` first. The recorded
+    shape: WINDOWED 1440x1080 at (0,0) (2x integer scale) keeps the
+    crop clear of the screen's bottom-right toast region; read every
+    capture by eyes before committing regardless.
 
 ## Ledger + scope
 

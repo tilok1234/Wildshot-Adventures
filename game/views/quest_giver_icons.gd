@@ -4,22 +4,31 @@ extends Node2D
 ## quest.turn_in (a carried errand is complete; the walk back pays).
 ## Pure view over quest sim state, mirroring quest_step's own rules
 ## (turn-in wins; available hides at the hands cap exactly like the
-## sim refuses the accept). Icons mark the authored giver CELL — the
-## interact truth — not an NPC sprite (the capital giver has no body;
-## station cells are walkability-nudged off the def cell). CORE-35:
+## sim refuses the accept). sl-0176: icons anchor to the giver's BODY
+## cell (`cell_map`, fed from NpcView's station table) when a body
+## exists — station cells are walkability-nudged off the def cell —
+## and fall back to the authored giver CELL, the interact truth (the
+## capital giver has no body; its icon marks the ground). CORE-35:
 ## general presentation, never selection or hover. Sits in the
-## HP_BARS band: above actors, below every hostile band (Law 1).
+## HP_BARS band: above actors and canopy, below every hostile band
+## (Law 1) — the giver's own sprite can never occlude it.
 
 const RenderLayers := preload("res://game/render_layers.gd")
 const IconAtlas := preload("res://ui/icon_atlas.gd")
 const QuestStep := preload("res://sim/systems/quest_step.gd")
 
 const TILE := 32.0
-## Icon bottom sits this far above the giver cell center (bodies are
-## 24 px; the icon floats a head above them).
-const LIFT := 34.0
+## Icon bottom sits this far above the anchor cell center. Bodies are
+## 24 px @1x (head top 12 px above center): 18 keeps a small clear
+## gap over the head — overhead and ATTACHED, not floating a tile of
+## air away (sl-0176: 34 read as detached, and at the bodiless
+## capital slot it landed under the crowd body two tiles north).
+const LIFT := 18.0
 
 var world: RefCounted = null
+## Authored giver def cell -> body station cell (NpcView.giver_map()).
+## Empty = identity (labs, rifts, packless scenarios).
+var cell_map: Dictionary = {}
 
 var _avail_tex: Texture2D = null
 var _turnin_tex: Texture2D = null
@@ -44,7 +53,7 @@ func _draw() -> void:
 		var tex: Texture2D = _turnin_tex if bool(st.turn_in) else _avail_tex
 		if tex == null:
 			continue
-		var cell: Vector2 = st.cell
+		var cell: Vector2 = cell_map.get(st.cell, st.cell)
 		var px: Vector2 = (cell * TILE).round()
 		var size: Vector2 = tex.get_size()
 		draw_texture(tex, px + Vector2(-size.x * 0.5, -LIFT - size.y))

@@ -95,6 +95,34 @@ func _init() -> void:
 		)
 		check(near_spawn >= 20, "the settlement crowd gathers at the capital (%d)" % near_spawn)
 
+		# sl-0176: the giver map (authored def cell -> body station
+		# cell) that anchors overhead icons to the body the player
+		# actually sees. Every zone-giver/pinned station answers for
+		# its authored cell; nudges stay small; the Green givers stand
+		# at their authored cells; the dry caravan scout is the pack's
+		# REAL doorstep nudge (per-pack pin, b77 — a pack drop that
+		# moves it gets re-pinned deliberately, never silently).
+		var gmap: Dictionary = NpcView.giver_cell_map(st_a)
+		check(gmap.size() >= 10, "giver map covers zone givers + pinned bodies (%d)" % gmap.size())
+		for def_cell: Vector2 in gmap:
+			var body: Vector2 = gmap[def_cell]
+			check(
+				def_cell.distance_to(body) <= 4.5,
+				"giver body within nudge reach of its authored cell (%s)" % str(def_cell)
+			)
+			check(
+				not grid.is_solid(int(floorf(body.x)), int(floorf(body.y))),
+				"giver-map body cell walkable (%s)" % str(body)
+			)
+		check(
+			gmap.get(Vector2(91.5, 110.5)) == Vector2(91.5, 110.5),
+			"green waystation giver stands at its authored cell"
+		)
+		check(
+			gmap.get(Vector2(25.5, 251.5)) == Vector2(25.5, 250.5),
+			"dry caravan scout nudge carried into the giver map (b77 pin)"
+		)
+
 	# 3. Icons: every id the UI requests exists and cuts a region.
 	var need: Array[String] = ["currency.gold"]
 	for fam: String in [

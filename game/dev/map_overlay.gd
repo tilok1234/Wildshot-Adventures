@@ -22,6 +22,8 @@ extends Control
 
 enum Mode { OFF, CORNER, FULL }
 
+const QuestGiverIcons := preload("res://game/views/quest_giver_icons.gd")
+
 const FULL_MARGIN := 12.0
 const CORNER_EDGE := 96.0
 ## Inset keeps the corner variant clear of the hints line (bottom).
@@ -35,6 +37,9 @@ var mouse_tile := Callable()  # viewport mouse in tile space (facing tick)
 var grid_size := Vector2i.ONE  # pack cell dims (arena def width/height)
 var mode: int = Mode.OFF
 var _tex: ImageTexture = null
+## Config autoload (tracked-quest binding); probes NULL this after the
+## first frame (gotcha 41: the node exists under --script runs).
+var _cfg: Node = null
 
 
 func _ready() -> void:
@@ -43,6 +48,7 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_cfg = get_node_or_null("/root/Config")
 
 
 ## Raw pack texture or nothing: a missing/unreadable minimap.png
@@ -102,31 +108,56 @@ func _draw() -> void:
 	_draw_player(rect)
 
 
-## sl-0121 quest markers: the active VISIT objective (amber diamond)
-## and every complete errand's turn-in giver (green ring), drawn with
+## sl-0121 quest markers, extended by sl-0175: every giver worth a
+## press — available (gold bang) and turn-in (green ring) — from THE
+## overhead-icon model (QuestGiverIcons.giver_states: turn-in wins per
+## cell, available hides at the hands cap), plus tracked-quest VISIT
+## objectives (amber diamond), tracked-binding identical to the HUD
+## tracker (a tracked carried unfinished errand narrows objectives to
+## it; no tracked choice = every carried errand [T]). All drawn with
 ## the player-dot mapping chain so markers can never drift off the
-## dot's math. Shape-first (CORE-50): diamond vs ring, never color
-## alone. KILL/COLLECT quests carry no objective cell in data — no
-## marker is the honest answer (recorded gap, planning-side).
-static func quest_markers(world: RefCounted) -> Array:
+## dot's math. Shape-first (CORE-50): bang vs ring vs diamond, never
+## color alone. KILL/COLLECT quests carry no objective cell in data —
+## no objective marker is the honest answer (recorded gap,
+## planning-side). The pack minimap bakes structure footprints as
+## dark cells; markers ride above them with black halos.
+static func quest_markers(world: RefCounted, tracked_id := "") -> Array:
 	var out: Array = []
 	if world == null or world.players.is_empty():
 		return out
 	var p: RefCounted = world.players[0]
 	if p.class_id < 0:
 		return out
+	for st: Dictionary in QuestGiverIcons.giver_states(world):
+		out.append({"cell": Vector2(st.cell), "kind": "turn_in" if bool(st.turn_in) else "avail"})
+	var only_qi := -1
+	if not tracked_id.is_empty():
+		for ti in world.quest_defs.size():
+			if String(world.quest_defs[ti].id) != tracked_id:
+				continue
+			if (p.quests_taken_mask & (1 << ti)) == 0:
+				continue
+			if (p.quests_done_mask & (1 << ti)) != 0:
+				continue
+			only_qi = ti
 	for qi in world.quest_defs.size():
+		if only_qi >= 0 and qi != only_qi:
+			continue
 		if (p.quests_taken_mask & (1 << qi)) == 0:
 			continue
 		if (p.quests_done_mask & (1 << qi)) != 0:
 			continue
 		var q: Resource = world.quest_defs[qi]
 		var prog: int = p.quest_progress_arr[qi] if qi < p.quest_progress_arr.size() else 0
-		if prog >= int(q.count):
-			out.append({"cell": Vector2(q.giver_cell), "turn_in": true})
-		elif int(q.kind) == 1:
-			out.append({"cell": Vector2(q.target_cell), "turn_in": false})
+		if prog < int(q.count) and int(q.kind) == 1:
+			out.append({"cell": Vector2(q.target_cell), "kind": "objective"})
 	return out
+
+
+func _tracked_quest() -> String:
+	if _cfg == null:
+		return ""
+	return String(_cfg.get_setting("ui", "tracked_quest", ""))
 
 
 func _draw_markers(rect: Rect2) -> void:
@@ -135,31 +166,47 @@ func _draw_markers(rect: Rect2) -> void:
 	var tex_size := Vector2i(_tex.get_width(), _tex.get_height())
 	var disp_scale := rect.size / Vector2(tex_size)
 	var r := 5.0 if mode == Mode.FULL else 3.0
-	for m: Dictionary in quest_markers(world):
+	for m: Dictionary in quest_markers(world, _tracked_quest()):
 		var cell: Vector2 = m.cell
 		var px := rect.position + tile_to_map_px(cell, grid_size, tex_size) * disp_scale
-		if bool(m.turn_in):
-			draw_arc(px, r, 0.0, TAU, 16, Color(0.0, 0.0, 0.0, 0.9), 3.5)
-			draw_arc(px, r, 0.0, TAU, 16, Color(0.55, 1.0, 0.62), 1.5)
-		else:
-			var halo := PackedVector2Array(
-				[
-					px + Vector2(0, -r - 1.5),
-					px + Vector2(r + 1.5, 0),
-					px + Vector2(0, r + 1.5),
-					px + Vector2(-r - 1.5, 0),
-				]
-			)
-			draw_colored_polygon(halo, Color(0.0, 0.0, 0.0, 0.9))
-			var pts := PackedVector2Array(
-				[
-					px + Vector2(0, -r),
-					px + Vector2(r, 0),
-					px + Vector2(0, r),
-					px + Vector2(-r, 0),
-				]
-			)
-			draw_colored_polygon(pts, Color(1.0, 0.78, 0.25))
+		match String(m.kind):
+			"turn_in":
+				draw_arc(px, r, 0.0, TAU, 16, Color(0.0, 0.0, 0.0, 0.9), 3.5)
+				draw_arc(px, r, 0.0, TAU, 16, Color(0.55, 1.0, 0.62), 1.5)
+			"avail":
+				# Gold exclamation: bar + dot (the press-worth cue).
+				var bw := r * 0.5
+				draw_rect(
+					Rect2(
+						px + Vector2(-bw * 0.5 - 1.0, -r - 1.6), Vector2(bw + 2.0, r * 1.2 + 2.0)
+					),
+					Color(0.0, 0.0, 0.0, 0.9)
+				)
+				draw_circle(px + Vector2(0.0, r * 0.8), bw * 0.6 + 1.0, Color(0.0, 0.0, 0.0, 0.9))
+				draw_rect(
+					Rect2(px + Vector2(-bw * 0.5, -r - 0.6), Vector2(bw, r * 1.2)),
+					Color(1.0, 0.85, 0.35)
+				)
+				draw_circle(px + Vector2(0.0, r * 0.8), bw * 0.6, Color(1.0, 0.85, 0.35))
+			"objective":
+				var halo := PackedVector2Array(
+					[
+						px + Vector2(0, -r - 1.5),
+						px + Vector2(r + 1.5, 0),
+						px + Vector2(0, r + 1.5),
+						px + Vector2(-r - 1.5, 0),
+					]
+				)
+				draw_colored_polygon(halo, Color(0.0, 0.0, 0.0, 0.9))
+				var pts := PackedVector2Array(
+					[
+						px + Vector2(0, -r),
+						px + Vector2(r, 0),
+						px + Vector2(0, r),
+						px + Vector2(-r, 0),
+					]
+				)
+				draw_colored_polygon(pts, Color(1.0, 0.78, 0.25))
 
 
 func _draw_player(rect: Rect2) -> void:
