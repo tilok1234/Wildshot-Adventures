@@ -1,0 +1,28 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; DUNGEON RIFT proof (sl-0180 wave 2): THE DARTER PAIR in leg 3's
+; 4-wide geometry — the fight the path actually ships (the play
+; scenario's darter packs and lurkers sit 20+ apart and fight
+; SEQUENTIALLY; proof iterations 1-2 composed pair+lurker at once —
+; denser than any shipped fight zone — and taught the wall-pin
+; class: 9 seed-invariant hits at t1209. Proofs prove the fights
+; the player actually gets; the lurker gets its own row). Mobs are
+; phaseless — no catch can land; the slow clock rides.
+
+[resource]
+script = ExtResource("1")
+id = &"proof_dungeon_corridor"
+display_name = "PROOF: dungeon corridor (the darter pair)"
+arena = "res://data/arena_rift_path.json"
+starhook_rift = true
+rift_line = "res://data/rift_line_dungeon.tres"
+rift_biome = 1
+rift_rare = false
+player_spawn = Vector2(37.5, 20.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"rift_mob_darter": PackedVector2Array(33.5, 19.5, 30.5, 20.5)
+}
+default_seed = 1

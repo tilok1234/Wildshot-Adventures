@@ -876,7 +876,10 @@ func _init() -> void:
 	var g26: RefCounted = Bitgrid.new()
 	g26.setup(12, 13)
 	var wl26: RefCounted = ScenarioLoader.build_world(loader_scenario, 1, g26)
-	check(wl26.enemy_defs.size() == 38, "roster carries 38 defs (30-37 = the boss pool)")
+	check(
+		wl26.enemy_defs.size() == 40,
+		"roster carries 40 defs (30-37 = the boss pool, 38-39 = the dungeon mobs)"
+	)
 	var boss_ids26: Array[String] = [
 		"twin_helix",
 		"ring_nest",
@@ -904,6 +907,28 @@ func _init() -> void:
 				int(ph26.movement_policy) != 0,
 				"%s phase %s never chases (one-room law)" % [String(rdef.id), String(ph26.id)]
 			)
+	# Wave 2: the dungeon mobs are PHASELESS (the gold-only kill
+	# contract), never chasers, and wake close (aggro 8 [T] — the
+	# distance-discipline law's partner).
+	for mi26 in [38, 39]:
+		var mdef: Resource = wl26.enemy_defs[mi26]
+		check(mdef.phases == null, "%s is phaseless (mob contract)" % String(mdef.id))
+		check(int(mdef.movement_policy) != 0, "%s never chases" % String(mdef.id))
+		check(absf(float(mdef.aggro_range) - 8.0) < 0.001, "%s wakes at 8 [T]" % String(mdef.id))
+	var dsc: Resource = load("res://data/scenarios/rift_dungeon_path.tres")
+	check(
+		dsc != null and bool(dsc.starhook_rift) and (dsc.damage_schedule as Array).is_empty(),
+		"the dungeon scenario is a rift world with NO damage schedule (tester-safe)"
+	)
+	check(
+		String(dsc.rift_line) == "res://data/rift_line_dungeon.tres",
+		"the dungeon rides its own line def (the slow clock [T])"
+	)
+	var dline: Resource = load(String(dsc.rift_line))
+	check(
+		absf(float(dline.passive_drain_per_sec) - 0.1) < 0.0001 and int(dline.lives) == 3,
+		"dungeon line: passive 0.1/s [T], three lives unchanged"
+	)
 
 	# 23. HASH COVERAGE (SERIAL 26): the gear state hashes.
 	var wh26: RefCounted = _rift_world12()

@@ -2378,3 +2378,42 @@ character-tab capture now). Fish-fighter placeholder bodies scale
 by radius (catch 2.0 exact-preserved, bosses read bigger, rare
 +0.4). NO feel verdicts — pool weights, kit numbers, fight
 lengths, the creel look: all [T], the designer's hands rule.
+
+THE DUNGEON RIFT TEST wave 2 2026-08-04 (sl-0180 §4; own gated
+commit; SERIAL 26 / WSR v3 still unchanged): the designer's shape
+VERBATIM — "a 1-5 min long 'path'... walk through it like a path
+with enemy mobs scattered along the way and a boss at the end" —
+as data/arena_rift_path.json: a 64x44 SERPENTINE (five 4-wide legs
++ end shafts, ~280 path tiles ≈ 78 s pure walk at 3.6) in galaxy
+skin on the committed-instance machinery. TWO PHASELESS RIFT MOBS
+at roster 38-39 (append-only; star language, existing patterns
+26/28, aggro 8 [T]): the darter (keep-range spray) + the lurker
+(anchored intercept picket) — their kills BANK GOLD AND STOP (the
+wave-1A phased-only gate: no fish, no dive-end — a mob can never
+close the dungeon). PACK SPACING under the Warren distance law,
+script-verified at authoring (min cross-pack 12.2 > 12; spawn 10.3
+from the first picket > aggro 8) AND the tether-12 makes the
+sequential-fight promise STRUCTURAL (a driven darter stops ~12 from
+home, still 8+ from any lurker — the compound cannot compose in
+play). The pool's decel_wall holds the 16x9 end room — its kill
+LANDS THE CATCH and the dive ends won (the auto-exit machinery
+free). THE DUNGEON LINE (data/rift_line_dungeon.tres): passive
+0.1/s [T] — the walk is the point (~26 stability over a run; the
+[T] clock is THE wave's designer question); deep edge structurally
+OFF (0.0 tiles = inside the wall ring); three lives + graces
+unchanged. TEST ACCESS FIRST per the routing: the dev console
+`dungeon` command jumps in (one-flag law); the picker lists it like
+every scenario; ambient dungeon-rift spawns wire later behind [T]
+once the walk proves. PROOFS EARNED THEIR SHAPE across THREE
+iterations under never-weaken (the play content untouched
+throughout): iteration 1 spawned the bot ON the pack (the
+slice-leash lesson re-earned — 6 hits, near −0.46); iteration 2
+composed pair+lurker AT ONCE — denser than any shipped fight zone —
+and taught the corridor WALL-PIN class (9 seed-invariant hits
+t1209); the honest shape = proofs prove THE FIGHTS THE PLAYER GETS:
+darter-pair / lurker-solo / boss-room rows, ALL SIX LANES PASS
+(battery 99→105 runs). gather_test grew the wave-2 pins (roster 40,
+mob phaseless/no-chase/aggro-8 contracts, the dungeon scenario
+tester-safe + its line def rows). NO feel verdicts — the walk, the
+clock, the mob density, the ambient wiring: the designer's word
+rules; the dungeon proves the SHAPE, content rounds follow it.

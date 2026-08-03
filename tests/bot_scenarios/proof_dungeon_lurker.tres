@@ -1,0 +1,25 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; DUNGEON RIFT proof (sl-0180 wave 2): THE LURKER SOLO — the
+; anchored intercept picket in the 4-wide corridor, engaged from
+; inside its reach (6.1 t). The play path's lurkers always fight
+; alone (20+ from every darter pack); this row proves that shipped
+; fight at the floor and the cap.
+
+[resource]
+script = ExtResource("1")
+id = &"proof_dungeon_lurker"
+display_name = "PROOF: dungeon corridor (the lurker solo)"
+arena = "res://data/arena_rift_path.json"
+starhook_rift = true
+rift_line = "res://data/rift_line_dungeon.tres"
+rift_biome = 1
+rift_rare = false
+player_spawn = Vector2(37.5, 20.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"rift_mob_lurker": PackedVector2Array(43.5, 19.5)
+}
+default_seed = 1

@@ -85,9 +85,10 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 	# sl-0105), 26-29=the void/comet catch variants (sl-0115),
 	# 30-37=the rift boss pool (sl-0180 wave 1A: twin_helix/ring_nest/
 	# sine_shoal/boomerang_veil/decel_wall/zone_constellation/
-	# cross_burst/pulse_lattice). Append-only; never reorder. Scenario
-	# extras (bot canaries) append after, keeping standard indexes
-	# stable.
+	# cross_burst/pulse_lattice), 38-39=the dungeon rift mobs (wave 2:
+	# darter/lurker — PHASELESS by design, gold-only kills). Append-
+	# only; never reorder. Scenario extras (bot canaries) append
+	# after, keeping standard indexes stable.
 	var defs: Array = [
 		load("res://data/enemies/rusher.tres"),
 		load("res://data/enemies/husk_archer.tres"),
@@ -127,6 +128,8 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 		load("res://data/enemies/rift_boss_zone_constellation.tres"),
 		load("res://data/enemies/rift_boss_cross_burst.tres"),
 		load("res://data/enemies/rift_boss_pulse_lattice.tres"),
+		load("res://data/enemies/rift_mob_darter.tres"),
+		load("res://data/enemies/rift_mob_lurker.tres"),
 	]
 	for extra: Resource in scenario.extra_enemy_defs:
 		defs.append(extra)

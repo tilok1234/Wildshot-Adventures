@@ -288,7 +288,14 @@ if (-not $SkipBattery) {
         @("proof_boss_decel_wall","1,2,3",3600,"","","PASS","PASS"),
         @("proof_boss_zone_constellation","1,2,3",3600,"","","PASS","PASS"),
         @("proof_boss_cross_burst","1,2,3",3600,"","","PASS","PASS"),
-        @("proof_boss_pulse_lattice","1,2,3",3600,"","","PASS","PASS")
+        @("proof_boss_pulse_lattice","1,2,3",3600,"","","PASS","PASS"),
+        # sl-0180 wave 2: the dungeon-rift path — the SHIPPED fights
+        # (the path's packs sit 20+ apart and the tether keeps them
+        # sequential): the darter pair, the lurker solo, and the boss
+        # room (decel_wall paced through its flip in the 16x9 room).
+        @("proof_dungeon_corridor","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_dungeon_lurker","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_dungeon_bossroom","1,2,3",3600,"","","PASS","PASS")
     )
     . "$PSScriptRoot\battery_runner.ps1"
     if ($Workers -le 0) { $Workers = Get-PhysicalCoreCount }

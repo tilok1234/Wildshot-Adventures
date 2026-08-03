@@ -1,0 +1,31 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; THE DUNGEON RIFT TEST (sl-0180 wave 2): the designer's shape — a
+; path walked like a path, mobs scattered along it, a boss at the
+; end. Void galaxy skin; the DUNGEON line (slow clock, no deep
+; edge); pack spacing script-verified >12 (min 12.2 — the Warren
+; law). The end boss = the pool's decel_wall: its kill LANDS THE
+; CATCH and the dive ends won (the phased-only gate makes mob
+; deaths safe). TEST ACCESS: the dev console command `dungeon`
+; jumps here; the picker lists it like every scenario; ambient
+; dungeon-rift spawns wire later behind [T] once this proves.
+
+[resource]
+script = ExtResource("1")
+id = &"rift_dungeon_path"
+display_name = "STARHOOK DUNGEON: the path (test)"
+arena = "res://data/arena_rift_path.json"
+starhook_rift = true
+rift_line = "res://data/rift_line_dungeon.tres"
+rift_biome = 1
+rift_rare = false
+player_spawn = Vector2(5.5, 3.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"rift_mob_darter": PackedVector2Array(26.5, 3.5, 30.5, 4.5, 14.5, 11.5, 10.5, 12.5, 28.5, 19.5, 24.5, 20.5, 12.5, 27.5, 26.5, 35.5, 30.5, 36.5),
+"rift_mob_lurker": PackedVector2Array(52.5, 3.5, 40.5, 11.5, 52.5, 19.5, 8.5, 28.5),
+"rift_boss_decel_wall": PackedVector2Array(56.5, 38.5)
+}
+default_seed = 31

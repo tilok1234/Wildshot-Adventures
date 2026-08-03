@@ -67,7 +67,23 @@ ride recorded ops 144..191 on the existing byte), and rare catches
 DROP Green-grade pieces (deterministic rng_loot, dup-protected).
 Balance calculator gate 6 validates the whole catalog including
 the rod .tres frames; every number [T]; the foraging seam builds
-next at SERIAL 27.
+next at SERIAL 27. **THE STARHOOK BOSS EXPANSION + DUNGEON TEST
+(sl-0180/0181, 2026-08-03/04, three gated waves, SERIAL/WSR
+unchanged)**: casts DRAW A FIGHT from per-biome weighted pools —
+eight boss kits at roster 30-37 (placeholder descriptive ids;
+2-3 phases; keep-range only, the one-room law mechanized) over
+eight new patterns (ids 30-37: the first hostile SINE/BOOMERANG/
+DECELERATE uses, two precessing rotors, the alternating half-gap
+ring, a galaxy zone), fight lengths gated by balance_calc gate 7,
+NO-STROBE extended per pattern (probe + report committed), all
+proofs green first authoring; THE CREEL (fish stacks under the
+bag — the wallet stays the one truth, zero cap impact) + THE
+RIFTER PANEL in C (click-cycles owned gear via the recorded op;
+equip-anywhere re-pin, buy stays at the station); and the
+DUNGEON-RIFT PATH TEST (a 64x44 serpentine walk, phaseless mobs
+whose deaths can never end the dive, the pool's decel_wall at the
+end, the slow dungeon line [T], console `dungeon` access) —
+battery 83→105 runs.
 
 ## Engine
 

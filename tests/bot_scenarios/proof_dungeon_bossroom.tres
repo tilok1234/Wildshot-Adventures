@@ -1,0 +1,71 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; DUNGEON RIFT proof (sl-0180 wave 2): THE BOSS ROOM — decel_wall
+; paced through its flip (floor 50%) and kill in the 16x9 room
+; (wider than the one-room rift; the hanging walls get real air).
+; 1500 hp at 100 every 120 -> flip mid-flight, kill t1800, cleanup
+; to 3600. PASS = zero bullet hits at floor + cap.
+
+[resource]
+script = ExtResource("1")
+id = &"proof_dungeon_bossroom"
+display_name = "PROOF: dungeon boss room (decel_wall)"
+arena = "res://data/arena_rift_path.json"
+starhook_rift = true
+rift_line = "res://data/rift_line_dungeon.tres"
+rift_biome = 1
+rift_rare = false
+player_spawn = Vector2(50.5, 38.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"rift_boss_decel_wall": PackedVector2Array(58.5, 38.5)
+}
+damage_schedule = Array[Dictionary]([{
+"amount": 100,
+"tick": 120
+}, {
+"amount": 100,
+"tick": 240
+}, {
+"amount": 100,
+"tick": 360
+}, {
+"amount": 100,
+"tick": 480
+}, {
+"amount": 100,
+"tick": 600
+}, {
+"amount": 100,
+"tick": 720
+}, {
+"amount": 100,
+"tick": 840
+}, {
+"amount": 100,
+"tick": 960
+}, {
+"amount": 100,
+"tick": 1080
+}, {
+"amount": 100,
+"tick": 1200
+}, {
+"amount": 100,
+"tick": 1320
+}, {
+"amount": 100,
+"tick": 1440
+}, {
+"amount": 100,
+"tick": 1560
+}, {
+"amount": 100,
+"tick": 1680
+}, {
+"amount": 100,
+"tick": 1800
+}])
+default_seed = 1

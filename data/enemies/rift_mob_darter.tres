@@ -1,0 +1,38 @@
+[gd_resource type="Resource" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://data/enemy_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/emitter_slot.gd" id="2"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/star_spray.tres" id="3"]
+
+; DUNGEON RIFT MOB (sl-0180 wave 2): the darter — a small star-fish
+; picket on the path (keep-range, star spray at the spray lead;
+; PHASELESS by design: its death banks gold and NEVER lands a catch
+; or ends the dive — the damage-path gate is the contract).
+; Placeholder body = the star-fish scaled by radius. Aggro 8 [T]
+; (pickets wake close — the distance-discipline law pairs with it).
+
+[sub_resource type="Resource" id="slot0"]
+script = ExtResource("2")
+pattern = ExtResource("3")
+trigger_range = 8.0
+telegraph_ticks = 24
+cooldown_ticks = 130
+recover_ticks = 16
+
+[resource]
+script = ExtResource("1")
+id = &"rift_mob_darter"
+display_name = "Rift Darter"
+hp = 40
+body_radius = 0.32
+move_speed = 2.6
+contact_damage = 0
+contact_cooldown_ticks = 30
+aggro_range = 8.0
+movement_policy = 1
+range_min = 3.0
+range_max = 5.0
+emitters = Array[Resource]([SubResource("slot0")])
+xp_value = 12
+gold_min = 8
+gold_max = 14

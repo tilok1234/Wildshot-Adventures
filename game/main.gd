@@ -114,6 +114,18 @@ const DUNGEON_DOORS := {
 	&"rift_boss_zone_constellation": [RIFT_EXIT_DOOR],
 	&"rift_boss_cross_burst": [RIFT_EXIT_DOOR],
 	&"rift_boss_pulse_lattice": [RIFT_EXIT_DOOR],
+	# sl-0180 wave 2: the dungeon path's mouth (its own flee cell —
+	# the spawn sits 3 t east, the ping-pong law honored; the return
+	# rides the rift machinery: back to the slice at the cast shore).
+	&"rift_dungeon_path":
+	[
+		{
+			"cell": Vector2(2.5, 3.5),
+			"to": "res://data/scenarios/slice_overworld.tres",
+			"spawn": "",
+			"label": "the line goes slack — back to the shore...",
+		}
+	],
 }
 const DOOR_RADIUS := 0.7
 const RenderLayers := preload("res://game/render_layers.gd")
@@ -896,7 +908,7 @@ func _console_exec(line: String) -> void:
 		return
 	match String(tokens[0]).to_lower():
 		"help":
-			console.println("god | slowmo <1-10> | events <on|off|all> | reset")
+			console.println("god | slowmo <1-10> | events <on|off|all> | reset | dungeon")
 			console.println("verdict <dodgeability|feel> <rested-human|bot-proof> <text>")
 		"god":
 			var want: bool = not world.god_mode
@@ -918,6 +930,14 @@ func _console_exec(line: String) -> void:
 			console.println("event tail: " + _console_events)
 		"reset":
 			Config.set_setting("dev", "seed", world.run_seed + 1)
+			get_tree().reload_current_scene()
+		"dungeon":
+			# sl-0180 wave 2 TEST ACCESS: jump into the dungeon-rift
+			# path (dev console = dev-only by the one-flag law; the
+			# ambient dungeon-spawn wiring waits on the walk proving).
+			Config.set_setting("dev", "scenario", "res://data/scenarios/rift_dungeon_path.tres")
+			Config.set_setting("dev", "door_spawn", "")
+			console.println("descending the dungeon rift (test access)...")
 			get_tree().reload_current_scene()
 		_:
 			console.println("unknown: %s (try help)" % tokens[0])

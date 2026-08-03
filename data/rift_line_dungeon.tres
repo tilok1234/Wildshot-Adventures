@@ -1,0 +1,20 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/rift_line_def.gd" id="1"]
+
+; THE DUNGEON LINE (sl-0180 wave 2): the line's rules for the PATH
+; class — the walk is the point, so the strain clock slows to 0.1/s
+; [T] (~26 stability over a mid-band run: honest pressure, never a
+; timer death at L1; the designer's word picks the final clock). The
+; deep edge is OFF STRUCTURALLY (0.0 tiles = the strip sits inside
+; the east wall ring, unreachable). Three lives + graces unchanged —
+; the line frame is the line frame.
+
+[resource]
+script = ExtResource("1")
+passive_drain_per_sec = 0.1
+deep_drain_per_sec = 2.2
+deep_edge_tiles = 0.0
+lives = 3
+hit_iframe_ticks = 30
+snap_grace_ticks = 90
