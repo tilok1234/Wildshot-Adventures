@@ -1,0 +1,4 @@
+{
+  "comment": "sl-0190 - THE NAME TABLE: display names for FUNCTIONAL (interactable) NPC bodies, keyed by npc actor id (the station table's ids: capital-stash-keeper, capital-general-merchant, settlement-trader, dock-fisher-teacher, and the zone quest-giver actors). SHIPS EMPTY: v1 shows role labels auto-derived from the interact registry (Banker / Merchant / Trader / Tackle Keeper / Quest Giver). The designer's proper-name pass fills entries here whenever - data only, zero code. Crowd NPCs never get plates (the designer's own scoping: names only on NPCs you can at some point interact with).",
+  "names": {}
+}

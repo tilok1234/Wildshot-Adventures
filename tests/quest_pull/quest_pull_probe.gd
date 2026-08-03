@@ -23,6 +23,7 @@ const NpcView := preload("res://game/views/npc_view.gd")
 const WorldforgePack := preload("res://addons/worldforge_importer/worldforge_pack.gd")
 const MapOverlay := preload("res://game/dev/map_overlay.gd")
 const QuestGiverIcons := preload("res://game/views/quest_giver_icons.gd")
+const NpcNameplates := preload("res://game/views/npc_nameplates.gd")
 const QuestTracker := preload("res://ui/quest_tracker.gd")
 
 const PACK := "res://assets/worldforge-packs/wildshot-overworld-pack-dusk/"
@@ -104,6 +105,12 @@ func _run() -> void:
 	# sl-0176: the same body-anchor wiring main performs.
 	icons.cell_map = npcs.giver_map()
 	root.add_child(icons)
+	# sl-0190: the nameplates ride the same captures — role labels
+	# over the interactable bodies (icon above name), crowd unlabeled.
+	var plates: Node2D = NpcNameplates.new()
+	plates.stations = npcs.stations()
+	plates.names = NpcNameplates.load_name_table()
+	root.add_child(plates)
 
 	var hud := CanvasLayer.new()
 	get_root().add_child(hud)

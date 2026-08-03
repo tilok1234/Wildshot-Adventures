@@ -9,6 +9,7 @@ extends SceneTree
 
 const AssemblerLibrary := preload("res://game/views/assembler_library.gd")
 const NpcView := preload("res://game/views/npc_view.gd")
+const NpcNameplates := preload("res://game/views/npc_nameplates.gd")
 const IconAtlas := preload("res://ui/icon_atlas.gd")
 const WorldforgePack := preload("res://addons/worldforge_importer/worldforge_pack.gd")
 
@@ -122,6 +123,51 @@ func _init() -> void:
 			gmap.get(Vector2(25.5, 251.5)) == Vector2(25.5, 250.5),
 			"dry caravan scout nudge carried into the giver map (b77 pin)"
 		)
+
+		# sl-0190: NAMEPLATES — the plated set is EXACTLY the
+		# def_cell-carrying stations (the interactable-bodied class:
+		# pinned bodies + zone givers); the crowd is STRUCTURALLY
+		# unlabeled (no def_cell) and the bodiless capital slot never
+		# appears (not a body). Role labels derive from the interact
+		# registry; the designer's name table wins when filled
+		# (data-only, data/npc_names.json).
+		var plated: Array[Dictionary] = NpcNameplates.plated(st_a)
+		check(plated.size() == gmap.size(), "plates == interactable bodies (%d)" % plated.size())
+		var plate_ids := {}
+		for pst: Dictionary in plated:
+			plate_ids[String(pst.id)] = true
+		for pid: String in NpcNameplates.ROLE_LABELS:
+			check(plate_ids.has(pid), "pinned station plated: " + pid)
+		check(NpcNameplates.label_for("capital-stash-keeper", {}) == "Banker", "bank role word")
+		check(NpcNameplates.label_for("settlement-trader", {}) == "Trader", "trader role word")
+		check(
+			NpcNameplates.label_for("capital-general-merchant", {}) == "Merchant",
+			"merchant role word"
+		)
+		check(
+			NpcNameplates.label_for("dock-fisher-teacher", {}) == "Tackle Keeper",
+			"tackle role word"
+		)
+		check(
+			NpcNameplates.label_for("green-zone-giver-x", {}) == "Quest Giver",
+			"giver fallback role word (zero authoring)"
+		)
+		check(
+			(
+				NpcNameplates.label_for("capital-stash-keeper", {"capital-stash-keeper": "Maro"})
+				== "Maro"
+			),
+			"the name table wins (the designer's proper-name hook)"
+		)
+		check(
+			NpcNameplates.load_name_table().is_empty(),
+			"npc_names.json ships EMPTY (role labels rule v1)"
+		)
+		var crowd_plated := 0
+		for st: Dictionary in st_a:
+			if not st.has("def_cell") and plate_ids.has(String(st.id)):
+				crowd_plated += 1
+		check(crowd_plated == 0, "the crowd is never plated")
 
 	# 3. Icons: every id the UI requests exists and cuts a region.
 	var need: Array[String] = ["currency.gold"]

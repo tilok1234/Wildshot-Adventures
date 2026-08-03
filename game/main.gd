@@ -21,6 +21,7 @@ const QuestOffer := preload("res://ui/quest_offer.gd")
 const UniqueReveal := preload("res://ui/unique_reveal.gd")
 const QuestTracker := preload("res://ui/quest_tracker.gd")
 const QuestGiverIcons := preload("res://game/views/quest_giver_icons.gd")
+const NpcNameplates := preload("res://game/views/npc_nameplates.gd")
 const LootBagPanel := preload("res://ui/loot_bag_panel.gd")
 const BankPanel := preload("res://ui/bank_panel.gd")
 const VendorPanel := preload("res://ui/vendor_panel.gd")
@@ -1606,6 +1607,15 @@ func _ready() -> void:
 			# sl-0176: overhead giver icons anchor to the body the
 			# nudge actually placed, not the authored def cell.
 			npc_giver_map = npcs.giver_map()
+			# sl-0190: nameplates over the INTERACTABLE class only
+			# (role labels from the registry; data/npc_names.json is
+			# the designer's proper-name hook; the crowd stays
+			# unlabeled by their own scoping — pure view, HP_BARS
+			# occlusion like the icons).
+			var plates := NpcNameplates.new()
+			plates.stations = npcs.stations()
+			plates.names = NpcNameplates.load_name_table()
+			add_child(plates)
 
 	var hp_bars := HpBarView.new()
 	hp_bars.world = world

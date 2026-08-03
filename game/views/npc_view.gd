@@ -37,6 +37,12 @@ func giver_map() -> Dictionary:
 	return giver_cell_map(_stations)
 
 
+## sl-0190: the full station table (nameplates read it — the
+## def_cell-carrying rows ARE the interactable-bodied class).
+func stations() -> Array[Dictionary]:
+	return _stations
+
+
 static func giver_cell_map(stations: Array[Dictionary]) -> Dictionary:
 	var out: Dictionary = {}
 	for st: Dictionary in stations:
