@@ -55,6 +55,7 @@ const HitboxView := preload("res://game/views/hitbox_view.gd")
 const SimEvents := preload("res://sim/events.gd")
 const ItemText := preload("res://game/views/item_text.gd")
 const BagStep := preload("res://sim/systems/bag_step.gd")
+const MenuPalette := preload("res://ui/menu_palette.gd")
 
 ## S1 seam 4 (sl-0104): dungeon doors — a LIVING character in a
 ## persistent world walking onto a door cell transitions via the
@@ -148,7 +149,7 @@ var mana_bar: StatBar
 var ability_label: Label
 ## Loop v1 HUD line: level/xp/gold + the minimal equip surface.
 var loot_label: Label
-var options_menu: PanelContainer
+var options_menu: Control
 var density_meter: PanelContainer
 var hints_label: Label
 var gif_recorder: Node
@@ -1624,11 +1625,32 @@ func _ready() -> void:
 	rec_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
 	# Transient notice line (bundle saved / summary code); auto-hides.
 	toast_label = Label.new()
+	# Menu pass (seam F): the toast line rides a gold-on-dark chip
+	# (the workbench toast surface, built from its spec — the capture
+	# is absent by the accepted workbench limitation).
+	var toast_box := StyleBoxFlat.new()
+	toast_box.bg_color = MenuPalette.PLAQUE_BOTTOM
+	toast_box.border_color = MenuPalette.GOLD_DIM
+	toast_box.set_border_width_all(1)
+	toast_box.content_margin_left = 8.0
+	toast_box.content_margin_right = 8.0
+	toast_box.content_margin_top = 2.0
+	toast_box.content_margin_bottom = 2.0
+	toast_label.add_theme_stylebox_override("normal", toast_box)
+	toast_label.add_theme_color_override("font_color", MenuPalette.GOLD_BRIGHT)
 	toast_label.visible = false
 	toast_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	toast_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
 	toast_label.offset_top = 24.0
 	options_menu = OptionsMenu.new()
+	# Menu pass chrome rule (sl-0145): the menu's close button IS
+	# unpausing — same meaning as Esc/O with nothing else open.
+	options_menu.close_requested.connect(
+		func() -> void:
+			if driver != null and driver.paused and not driver.pause_locked:
+				driver.paused = false
+				driver.pause_changed.emit(false)
+	)
 	# Live key-hint line: reads the ACTUAL InputMap, so it stays correct
 	# after remaps.
 	hints_label = Label.new()

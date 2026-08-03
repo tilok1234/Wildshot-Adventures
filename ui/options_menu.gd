@@ -1,17 +1,34 @@
-extends PanelContainer
-## Input remap panel (docs/12 §2.8, CORE-50 "full remapping from start" —
-## honestly met at M3 with persistence). Toggled by the options_toggle
-## action (default O). Every registered gameplay action is listed; click
-## a binding, press the new key or mouse button, Esc cancels capture.
-## Rebinds route through the Config autoload (live + persisted in one
-## call). Duplicate bindings are permitted silently at M3 — the M4 UX
-## pass adds conflict warnings.
+extends Control
+## The pause + options menu (docs/12 §2.8, CORE-50 "full remapping
+## from start" — honestly met at M3 with persistence; RESTYLED by the
+## menu pass onto the options_v2 panel2 chrome, EVERY existing row
+## carried). Toggled by the options_toggle action (O) and the pause
+## key through pause_changed. Every registered gameplay action is
+## listed; click a binding, press the new key or mouse button, Esc
+## cancels capture. Rebinds route through the Config autoload (live +
+## persisted in one call). Duplicate bindings are permitted silently
+## at M3 — the M4 UX pass adds conflict warnings. The close button
+## emits close_requested — main resumes (closing the menu IS
+## unpausing; the sl-0145 chrome rule).
+
+signal close_requested
 
 const InputMapDefaults := preload("res://input/input_map_defaults.gd")
+const MenuPalette := preload("res://ui/menu_palette.gd")
+const Panel2 := preload("res://ui/panel2.gd")
+
+## The options_v2 stage [T].
+const BASE_SIZE := Vector2(340.0, 324.0)
 
 var _buttons: Dictionary = {}
 var _capturing := ""
 var _rows: VBoxContainer = null
+var _panel: Panel2 = null
+## Defensive autoload access (the char_sheet pattern): probes/tests
+## run without the Config GLOBAL NAME compiling under --script — the
+## node lookup keeps this file probe-able (sl-0065 lesson, re-earned
+## by the seam-F options probe hang).
+var _cfg: Node = null
 
 
 ## Persisted-feedback checkbox row; cb receives the new bool.
@@ -80,31 +97,64 @@ func add_button_row(title: String, names: Array, cb: Callable) -> void:
 
 func _ready() -> void:
 	visible = false
-	set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	# Center-anchored panels must grow in BOTH directions to stay centered.
-	grow_horizontal = Control.GROW_DIRECTION_BOTH
-	grow_vertical = Control.GROW_DIRECTION_BOTH
+	_cfg = get_node_or_null("/root/Config")
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_panel = Panel2.new()
+	_panel.title = "OPTIONS"
+	_panel.title_icon = "emblem.class.staff"
+	_panel.show_close = true
+	_panel.close_requested.connect(func() -> void: close_requested.emit())
+	add_child(_panel)
 	var scroll := ScrollContainer.new()
-	scroll.custom_minimum_size = Vector2(280.0, 300.0)
+	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	var rows := VBoxContainer.new()
+	rows.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_rows = rows
+	scroll.add_child(rows)
+	_panel.content.add_child(scroll)
+	# The options_v2 order: option rows first, INPUT REMAPS below —
+	# main wires its rows right after construction (same frame), so
+	# the remap section builds DEFERRED to land beneath them.
+	_build_remaps.call_deferred()
+	_fit()
+	get_viewport().size_changed.connect(_fit)
+
+
+func _build_remaps() -> void:
 	var title := Label.new()
 	title.text = "INPUT REMAPS — click, then press a key"
-	rows.add_child(title)
+	title.add_theme_color_override("font_color", MenuPalette.TEXT_DIM)
+	_rows.add_child(title)
 	for action: String in _remappable_actions():
 		var row := HBoxContainer.new()
 		var name_label := Label.new()
 		name_label.text = action
 		name_label.custom_minimum_size = Vector2(160.0, 0.0)
 		var btn := Button.new()
-		btn.text = Config.binding_text(action)
+		btn.text = _binding_text(action)
 		btn.pressed.connect(_begin_capture.bind(action))
 		row.add_child(name_label)
 		row.add_child(btn)
-		rows.add_child(row)
+		_rows.add_child(row)
 		_buttons[action] = btn
-	scroll.add_child(rows)
-	add_child(scroll)
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_THEME_CHANGED and is_inside_tree():
+		_fit()
+
+
+func _fit() -> void:
+	if _panel == null:
+		return
+	var k := maxf(get_theme_default_base_scale(), 1.0)
+	var vp := get_viewport_rect().size
+	var w := minf(BASE_SIZE.x * k, vp.x - 8.0)
+	var h := minf(BASE_SIZE.y * k, vp.y - 8.0)
+	_panel.position = (vp - Vector2(w, h)) * 0.5
+	_panel.size = Vector2(w, h)
 
 
 func toggle() -> void:
@@ -124,7 +174,7 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
 		get_viewport().set_input_as_handled()
 		if event.physical_keycode == KEY_ESCAPE:
-			_buttons[_capturing].text = Config.binding_text(_capturing)
+			_buttons[_capturing].text = _binding_text(_capturing)
 			_capturing = ""
 			return
 		_apply(event)
@@ -134,9 +184,16 @@ func _input(event: InputEvent) -> void:
 
 
 func _apply(event: InputEvent) -> void:
-	Config.rebind(_capturing, event)
-	_buttons[_capturing].text = Config.binding_text(_capturing)
+	if _cfg != null:
+		_cfg.call("rebind", _capturing, event)
+	_buttons[_capturing].text = _binding_text(_capturing)
 	_capturing = ""
+
+
+func _binding_text(action: String) -> String:
+	if _cfg != null:
+		return String(_cfg.call("binding_text", action))
+	return action
 
 
 static func _remappable_actions() -> Array:
