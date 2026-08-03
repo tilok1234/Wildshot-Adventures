@@ -61,3 +61,28 @@ waystation two (west_road + provisions), the far field one.
 3. **Foraging**: the world's gather interaction is 90-tick
    STILLNESS (sl-0105 v1), not the F verb — seam I holds the
    routed minimal F-forage build and its sizing report.
+   (Since answered: the sl-0168 words re-shape foraging to
+   F-press + gather bar; that seam builds at the next free
+   SERIAL.)
+
+## Addendum — surfaces grown since the sweep (2026-08-03/04, docs sweep)
+
+The sl-0157 table above is the seam-H record; these joined after it,
+each on the standing rules:
+
+- **THE TACKLE KEEPER (sl-0177)** — a fourth F station at
+  110.5,178.5 (the dock-fisher body): opens the TACKLE shop
+  (station_toggle, never walk-over; sl-0147 rule inherited).
+  Cross-class separations re-verified at authoring: ≥4.1 t from
+  every existing station (past the 2.4 overlap threshold).
+  Recorded ops 144..175 buy / 176..191 equip on the bag_op byte.
+- **THE EQUIP-ANYWHERE RE-PIN (sl-0181)** — the tackle EQUIP op is
+  legal ANYWHERE for class players (the C-menu rifter panel wears
+  owned gear from the field); BUY keeps the station gate. The
+  sl-0177 at-station equip pin flipped deliberately.
+- **Boss + dungeon flee doors (sl-0180)** — the eight rift-boss
+  arenas ride the one RIFT_EXIT_DOOR; the dungeon path's mouth has
+  its own walk-on door (spawn 3 t off it, the ping-pong law).
+- **The dev `dungeon` console command (sl-0180 wave 2)** — dev-only
+  jump into the dungeon path; sl-0189 (refinement round 1) grows
+  this into a command family for EVERY instanced encounter.

@@ -1,5 +1,14 @@
 # THE GEAR SEAM — design record (sl-0177 as amended by sl-0178)
 
+> **SINCE LANDING (2026-08-03/04):** the equip-at-station pin
+> flipped — tackle EQUIP ops are legal anywhere since sl-0181
+> (the C-menu rifter panel wears owned gear from the field; BUY
+> stays station-gated). The sl-0182 naming ruling relaxes
+> no-coined-names INSIDE starhooking to the cosmic vocabulary
+> rail — rod/tackle/keeper words stand until the designer's own
+> naming act renames them (only the creel was routed; it is THE
+> CONSTELLATION now). This file stays the as-built record.
+
 SIM seam, SERIAL 26 (the sl-0168 "26 = foraging" reservation amends to
 this seam per sl-0177's whichever-builds-first rule; foraging takes the
 next free number). Functional-first by the designer's word: real stats,

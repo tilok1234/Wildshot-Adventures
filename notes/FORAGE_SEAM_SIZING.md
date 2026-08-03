@@ -53,3 +53,17 @@ choices that are the designer's to flip, not a session's
 One word per line routes the seam; it then builds under full sim
 discipline (SERIAL 26, goldens, battery). The 12 water-fishing
 markers stay parked with sl-0111.
+
+## Postscript (2026-08-04 docs sweep)
+
+ALL THREE QUESTIONS WERE ANSWERED 2026-08-03 (sl-0168, Tier 1): F-press
+→ a short gather bar (~0.5–1 s [T], interrupts on move/hit) → a loot
+bag drops (sl-0129 machinery); yields = forage MATERIALS as
+per-species profile currency on the starhook_fish{} doctrine
+(cosmetic trade-in sink later; the fish-stacks representation from
+sl-0181 is the named model); spots SPAWN AMBIENTLY like rifts
+(capped, rng_misc, consumed on gather — the ~1.9k standing cells
+become the candidate pool [P]). SPEC COMPLETE — the seam builds at
+the NEXT FREE SERIAL under full re-baseline at its build slot (the
+gear seam took 26; nothing has taken 27 yet). This report stays as
+the sizing record.

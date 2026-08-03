@@ -83,7 +83,19 @@ equip-anywhere re-pin, buy stays at the station); and the
 DUNGEON-RIFT PATH TEST (a 64x44 serpentine walk, phaseless mobs
 whose deaths can never end the dive, the pool's decel_wall at the
 end, the slow dungeon line [T], console `dungeon` access) —
-battery 83→105 runs.
+battery 83→105 runs. **The QUEST-PULL FINDINGS (sl-0175/0176,
+view-only)**: map markers mirror the overhead giver-icon model on
+both map surfaces (bang/ring/diamond, one truth) and giver icons
+anchor the BODY at head height. **REFINEMENT ROUND 1 IS THE ROUTED
+NEXT (designer play verdicts, planning sl-0186..0189)**: the
+dungeon loads wrong in real play (diagnose-first — the walk
+contradicts the passing bot proofs), fight length RE-RULED 20–60 s
+intense (all eight kits re-derive), boss life splits
+room-pattern/behavioural (the one-room law amends for rift
+bosses), and console jump commands for every instanced encounter;
+starhook names ride the cosmic vocabulary rail (sl-0182 — the
+constellation, not the creel). Foraging builds behind it at the
+next free SERIAL.
 
 ## Engine
 

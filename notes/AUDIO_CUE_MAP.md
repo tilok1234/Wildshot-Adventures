@@ -138,3 +138,17 @@ ruling; revisit post-Gate-1 if ever), mix/crossfade defaults,
 inference was OVERRULED by designer ruling 2026-07-30 — attacks are
 audible; the Law-2 hierarchy holds through bus separation instead
 (−7 dB defaults, AttackSfx row with off).
+
+## Addendum — the rift boss pool's patterns (sl-0180, 2026-08-04 docs sweep)
+
+The eight new hostile patterns (ids 30-34, 36, 37) classify RANGED
+by the data-driven default — every one rides the existing
+telegraph_ranged charge cue + enemy_fire attack variations with no
+map edit (the classification reads projectile_map + the melee list;
+none of the new ids is melee). The constellation zone (pattern 35)
+joined `projectile_map.zones`, so it classifies into the HAZARD
+cast/armed cue class automatically (the sl-0115 faction-carrying
+HAZARD_ARMED payload). Zero cue-map edits were needed — recorded
+here so the next audio round knows the boss pool is already
+speaking; per-kit signature cues (a boss "voice") stay a future
+designer taste call on the cosmic-rail naming (sl-0182).

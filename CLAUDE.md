@@ -2470,3 +2470,50 @@ maximized — the desktop leg now forces WINDOWED 1440x1080 (2x
 integer scale), keeping committed evidence out of toast land. NO
 feel verdicts — marker shapes/colors/sizes + the lift are the
 designer's to move.
+
+THE FIRST REAL PLAY VERDICTS + THE DOCS SWEEP 2026-08-04 (the
+designer PLAYED the starhook batch; planning recorded sl-0184..0189
+between game sessions; this sweep truths every doc + rewrites the
+handoff — no engineering built, the verdicts belong to REFINEMENT
+ROUND 1 on its own routed paste): sl-0184/0185 = the quest-pull
+findings RESOLVED planning-side (the 078283c session's work;
+KILL/COLLECT objective cells + the capital giver body stay
+planning's open calls). THE VERDICTS, recorded as history — each
+supersedes a piece of the sl-0180 batch AS ROUTED, none is built
+yet: **sl-0186** — THE DUNGEON IS BROKEN IN REAL PLAY ("its just a
+normal sized room and half of it doesnt work to walk in"; the bot
+proofs passed — the walk contradicts the built serpentine;
+DIAGNOSE-FIRST routed: what actually loads vs
+data/arena_rift_path.json, fix, real-walk evidence, the DESIGNER
+RE-WALKS before it resolves; the lesson candidate for that
+resolution: script proofs prove the sim's fights, never the
+designer's WALK — a human-shaped load check belongs in the gate
+for walked content). **sl-0187 [RULING]** — fight length RE-RULED
+20-60 s MAX, INTENSE (the designer's own correction of their 1-5
+min word); gate 7 re-pins [20,60], all eight kits' HP re-derive
+(117-148 s all fail the new bar — shorter AND denser is the
+direction). **sl-0188** — BOSS LIFE: the standing-there problem;
+the eight kits split into ROOM-PATTERN (choreography that moves
+around the room regardless of the player) vs BEHAVIOURAL
+(reposition/dash/orbit/react) families [P at build]; THE KEEP-RANGE
+ONE-ROOM LAW AMENDS FOR RIFT BOSSES by the designer's word — they
+may move and behave; the fairness floor stays ABSOLUTE (per-kit
+no-strobe re-probe rides every change). **sl-0189** — dev console
+jump commands for EVERY instanced encounter (the `dungeon`
+precedent generalized: every boss kit by id, the dungeons, a plain
+catch, a list form; joins round 1 as item 4). **sl-0182 [RULING,
+landed]** — the cosmic naming rail (the constellation rename
+already shipped, 0103acf). SWEPT this pass: HANDOFF REWRITTEN for
+the era (banners compressed; §1-§4 + the battery table truthed to
+54 rows / 105 runs; gotchas current through 42); ledger #16
+amended (SERIAL-26 gear fields join the replay-header gap; the
+boss batch grew it zero); INTERACT_SWEEP addendum (tackle station /
+equip-anywhere / boss+dungeon doors / the dungeon command);
+AUDIO_CUE_MAP addendum (patterns 30-37 classify ranged by default,
+zone 35 rides the zones map — zero edits were needed);
+FORAGE_SEAM_SIZING postscript (the three answers are IN; the seam
+builds at the next free SERIAL); TACKLE_SEAM + RIFT_BOSS_POOL
+supersession banners (as-built records stay); README + designer
+queue truthed. NEXT ROUTED WORK = REFINEMENT ROUND 1 (four items:
+the dungeon diagnosis FIRST, the 20-60 s re-derive, boss life, the
+jump commands); foraging builds behind it at the next free SERIAL.

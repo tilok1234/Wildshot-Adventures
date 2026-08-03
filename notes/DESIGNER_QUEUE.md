@@ -1,5 +1,26 @@
 # Designer queue — everything waiting on you (historical; see banner)
 
+> **2026-08-04 (post-PLAY docs sweep): still historical — the LIVE
+> queue is planning-side (notes/HANDOFF.md §2 has the current open
+> list).** Your play verdicts are all recorded and the fix round is
+> the next build: the broken dungeon gets diagnosed FIRST (you
+> re-walk it before it counts as fixed), every boss fight shortens
+> to your 20–60 second word and gets denser, bosses get their life
+> (some pattern the room, some move and react — your split), and
+> the console gets jump commands for every boss and dungeon. Your
+> quest-map fixes landed earlier (markers on both maps, icons on
+> heads). Genuinely open your side, in plain words:
+> - **Drop the refinement paste when you want the fix round built**
+>   — the dungeon diagnosis leads it.
+> - **Names are wanted now** (your cosmic-words ruling): the fish
+>   collection is "the constellation" already; boss names, rod
+>   names, species names are yours whenever words come — everything
+>   renames by data.
+> - The foraging rework (F + gather bar + materials) is
+>   spec-complete and builds right after the fix round.
+> - Standing: play the tackle shop + gear, weekly GIF (a hooked
+>   boss or the fixed dungeon walk will be prime material).
+
 > **2026-08-03 NIGHT (post-BOSS-EXPANSION sweep): still historical —
 > the LIVE queue is planning-side (notes/HANDOFF.md §2 has the
 > current open list).** Rifts have a boss pool now: casting can hook

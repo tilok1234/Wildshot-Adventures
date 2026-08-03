@@ -1,5 +1,23 @@
 # THE STARHOOK BOSS EXPANSION + DUNGEON TEST — design record (sl-0180 + sl-0181)
 
+> **SUPERSESSIONS SINCE LANDING (2026-08-03/04 designer play —
+> refinement round 1 owns all of these; this file stays the
+> as-built record):** (1) sl-0187 RE-RULES fight length to
+> **20–60 s MAX, INTENSE** — the [60,300] gate-7 band and all
+> eight kits' HP re-derive at the refinement build ("i think i
+> exagurated the length"); (2) sl-0188 AMENDS the keep-range
+> one-room law FOR RIFT BOSSES — the eight split into
+> ROOM-PATTERN vs BEHAVIOURAL families and may move/behave (the
+> fairness floor stays absolute); (3) sl-0186: THE DUNGEON IS
+> BROKEN IN REAL PLAY ("a normal sized room and half of it
+> doesnt work to walk in") — the bot proofs passed but the
+> designer's walk contradicts the built serpentine;
+> DIAGNOSE-FIRST is routed, and the designer re-walks before it
+> resolves; (4) sl-0189 grows the `dungeon` command into a jump
+> family for every instanced encounter; (5) sl-0182 relaxes
+> no-coined-names INSIDE starhooking to the cosmic vocabulary
+> rail (the constellation rename already landed, 0103acf).
+
 Size-first check invoked as sanctioned: THREE WAVES, each gated and
 resolved honestly. Wave 1A = the boss pool (sim); wave 1B = fish in
 the bag + the C-menu rifter panel (view); wave 2 = the dungeon test.
