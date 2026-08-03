@@ -359,12 +359,15 @@ func _build_character_tab() -> void:
 		grid.add_child(cell)
 	right.add_child(_label("click equips · right-click drops", MenuPalette.TEXT_DIM))
 	if p.class_id >= 0:
-		# THE CREEL rides directly under the bag (sl-0181: "fish should
-		# be added to inventory" — the catch is VISIBLE where the
-		# inventory lives) while the species counts stay THE one
-		# pricing truth; fish occupy zero bag capacity by construction.
+		# THE CONSTELLATION rides directly under the bag (sl-0181:
+		# "fish should be added to inventory" — the catch is VISIBLE
+		# where the inventory lives; RENAMED from "creel" by the
+		# sl-0182 naming ruling: starhook names ride the COSMIC rail,
+		# fishing-metaphor words fail it — your caught star-fish ARE
+		# a constellation). The species counts stay THE one pricing
+		# truth; fish occupy zero bag capacity by construction.
 		var crows := creel_rows(world)
-		right.add_child(_rule("— creel — (fish · priced at the tackle keeper)"))
+		right.add_child(_rule("— constellation — (caught fish · priced at the tackle keeper)"))
 		if crows.is_empty():
 			right.add_child(_label("(cast a rift line)", MenuPalette.TEXT_DIM))
 		else:
