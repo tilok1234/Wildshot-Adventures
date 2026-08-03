@@ -1326,6 +1326,14 @@ func _ready() -> void:
 	_scenario_id = scenario.id
 	_scenario_rift = bool(scenario.starhook_rift)
 	_rift_won = false
+	if not _scenario_rift:
+		# sl-0186: the pane capture belongs to ONE dive — it is static
+		# (survives the reload into the rift by design), so entering any
+		# non-rift world retires it. Without this, a console/picker jump
+		# into a rift after any cast that session mounted the split
+		# panes over a STALE overworld frame ("half of it doesnt work
+		# to walk in" — the left half was a picture).
+		_rift_capture = null
 	if not (audit_mode or verify_mode):
 		character = CharacterProfile.load_profile()
 		if not character.is_empty() and _scenario_rift:
@@ -1376,8 +1384,9 @@ func _ready() -> void:
 	# rift camera FITS the whole interior in the pane at either ratio
 	# — Law 1 by construction). The divider is a glowing seam.
 	# Anchors/camera land in _apply_rift_split (after the camera
-	# mounts below).
-	if _scenario_rift and _rift_capture != null:
+	# mounts below). sl-0186: PATH rifts never split — walked content
+	# gets the whole screen.
+	if _scenario_rift and not scenario.rift_path and _rift_capture != null:
 		var pane_layer := CanvasLayer.new()
 		pane_layer.layer = 40
 		add_child(pane_layer)
@@ -1529,6 +1538,16 @@ func _ready() -> void:
 		rift_view.rare = bool(scenario.rift_rare)
 		rift_view.arena_w = int(def.width)
 		rift_view.arena_h = int(def.height)
+		# sl-0186: a PATH rift renders its AUTHORED arena (backdrop
+		# under the tiles) and its galaxy-side portal sits at the
+		# scenario's OWN flee door (the 12x13 default drew the
+		# dungeon's portal inside a wall band). Fit rifts keep the
+		# proven default look untouched.
+		rift_view.path_mode = bool(scenario.rift_path)
+		if bool(scenario.rift_path):
+			var rift_doors: Array = DUNGEON_DOORS.get(scenario.id, [])
+			if not rift_doors.is_empty():
+				rift_view.mouth = rift_doors[0].cell
 		add_child(rift_view)
 	elif lib_ok and sheet_map != null and lib.has_actor(String(sheet_map.map.player)):
 		var av := AnimatedActor.new()
@@ -1685,13 +1704,16 @@ func _ready() -> void:
 	camera.world = world
 	camera.clock = view_clock
 	add_child(camera)
-	if _scenario_rift:
+	if _scenario_rift and not scenario.rift_path:
 		# sl-0115/sl-0125: fixed framing at the LIVE split ratio — the
 		# interior FITS its pane at either ratio (no follow, no
 		# off-screen bullets, ever — Law 1 by construction).
 		_rift_cam = camera
 		_apply_rift_split()
 	else:
+		# sl-0186: path rifts are WALKED content — the standard
+		# clamped follow camera, like every dungeon/overworld (the
+		# fixed one-room fit lost the walking player four tiles in).
 		camera.setup(int(def.width), int(def.height))
 
 	var pause_label := Label.new()

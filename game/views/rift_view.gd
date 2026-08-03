@@ -134,6 +134,15 @@ var arena_h: int = 13
 var stub_cells: Array[Vector2i] = [Vector2i(4, 4), Vector2i(7, 9)]
 ## The galaxy-side portal: the line comes OUT of here (tiles).
 var mouth := Vector2(1.35, 6.5)
+## sl-0186: PATH rifts (the walked dungeon) render the AUTHORED arena
+## — the backdrop drops UNDER the tile layers (the serpentine's
+## dungeonfloor/dungeonwall draw; the galaxy stays as the skirt, the
+## rim, the portal, the actors, the line), the deep-edge shimmer and
+## the one-room star-rock stubs are skipped (the dungeon's deep edge
+## is structurally off and the stub cells are one-room wall cells —
+## they'd sit mid-corridor here). Fit rifts keep the proven look:
+## backdrop OVER the floor at z 2, walls off-pane by construction.
+var path_mode := false
 
 var _backdrop: ImageTexture = null
 var _backdrop_node: Sprite2D = null
@@ -153,7 +162,7 @@ func _ready() -> void:
 	# ratio the fitted camera sees past the interior sides, and the
 	# galaxy must reach the pane edge, never void.
 	_backdrop_node.position = Vector2(-1.0, -1.0) * TILE
-	_backdrop_node.z_index = 2
+	_backdrop_node.z_index = -4 if path_mode else 2
 	add_child(_backdrop_node)
 	_dress = Node2D.new()
 	_dress.z_index = 3
@@ -266,12 +275,16 @@ func _draw_dress(cv: Node2D) -> void:
 	var rim_faint := Color(rim, 0.27)
 	cv.draw_rect(Rect2(x0 - 0.5, y0 - 0.5, x1 - x0 + 1.0, y1 - y0 + 1.0), rim_faint, false, 1.0)
 	# Deep-edge shimmer strip (the biome accent warns, never blocks).
-	var deep_x := RiftStep.deep_edge_x(world) * TILE
-	var grad_w := x1 - deep_x
-	for i in 6:
-		var a := 0.04 + 0.03 * float(i)
-		var gx := deep_x + grad_w * float(i) / 6.0
-		cv.draw_rect(Rect2(gx, y0, grad_w / 6.0, y1 - y0), Color(accent, a), true)
+	# sl-0186: skipped in path mode — the dungeon's deep edge is
+	# structurally off (0.0 = inside the wall ring; the strip would
+	# wash the whole serpentine).
+	if not path_mode:
+		var deep_x := RiftStep.deep_edge_x(world) * TILE
+		var grad_w := x1 - deep_x
+		for i in 6:
+			var a := 0.04 + 0.03 * float(i)
+			var gx := deep_x + grad_w * float(i) / 6.0
+			cv.draw_rect(Rect2(gx, y0, grad_w / 6.0, y1 - y0), Color(accent, a), true)
 	# The galaxy-side portal (the mouth): squashed spinning rings.
 	var t := _view_tick()
 	var mp := mouth * TILE
@@ -284,10 +297,12 @@ func _draw_dress(cv: Node2D) -> void:
 	cv.draw_set_transform_matrix(Transform2D.IDENTITY)
 	cv.draw_circle(mp, 22.0, Color(rim, 0.13))
 	# Star-rock stubs in biome dress (solid cells; sprites read over
-	# the wall tiles, under actors like the prototype).
-	for sc in stub_cells:
-		var base := Vector2(float(sc.x), float(sc.y)) * TILE
-		_draw_stub(cv, base, b)
+	# the wall tiles, under actors like the prototype). sl-0186: fit
+	# rifts only — the stub cells are one-room coordinates.
+	if not path_mode:
+		for sc in stub_cells:
+			var base := Vector2(float(sc.x), float(sc.y)) * TILE
+			_draw_stub(cv, base, b)
 	# sl-0123: the flow arrows retired WITH the drag [T call] — they
 	# advertised a current that no longer moves anything. The line's
 	# tension + the deep shimmer are the strain story now.

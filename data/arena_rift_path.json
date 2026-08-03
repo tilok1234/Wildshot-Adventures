@@ -1,10 +1,9 @@
 {
-  "comment": "THE DUNGEON RIFT TEST PATH (sl-0180 wave 2): the designer's shape verbatim - 'a 1-5 min long path... you walk through it like a path with enemy mobs scattered along the way and a boss at the end'. 64x44 serpentine: five 4-wide legs joined by end shafts, ~280 path tiles (~78 s pure walk at 3.6 t/s; fights + the boss land the run mid-band). Pack spacing under the WARREN DISTANCE-DISCIPLINE LAW (aggro is euclidean and walls do not block it): every pack >12 t from the previous pack's fight zone, script-verified at authoring (min separation 14.4). The boss room (16x9, wider than the one-room rift) holds the pool's decel_wall at the far end; the flee door sits at the mouth (2,3). Galaxy skin rides view-side (rift_view backdrop); quiet dark floor (Law 6).",
+  "comment": "THE DUNGEON RIFT TEST PATH (sl-0180 wave 2): the designer's shape verbatim - 'a 1-5 min long path... you walk through it like a path with enemy mobs scattered along the way and a boss at the end'. 64x44 serpentine: five 4-wide legs joined by end shafts, ~280 path tiles (~78 s pure walk at 3.6 t/s; fights + the boss land the run mid-band). Pack spacing under the WARREN DISTANCE-DISCIPLINE LAW (aggro is euclidean and walls do not block it): every pack >12 t from the previous pack's fight zone, script-verified at authoring (min separation 14.4). The boss room (16x9, wider than the one-room rift) holds the pool's decel_wall at the far end; the flee door sits at the mouth (2,3). Galaxy skin rides view-side (rift_view backdrop); quiet dark floor (Law 6). sl-0186: props speak the ARENA dialect - 'name' + 'tree'/'solid' flags (the first build used 'species', a foreign key: the resolver died mid-flight and the whole arena rendered as void over real collision - the designer's 'half of it doesnt work to walk in').",
   "width": 64,
   "height": 44,
   "floor_family": "dungeonfloor",
   "wall_family": "dungeonwall",
-  "pillar_species": "pillar",
   "wall_segments": [
     { "x": 0, "y": 0, "w": 64, "h": 1 },
     { "x": 0, "y": 43, "w": 64, "h": 1 },
@@ -21,11 +20,11 @@
     { "x": 46, "y": 34, "w": 16, "h": 9, "family": "templefloor" }
   ],
   "props": [
-    { "x": 20, "y": 3, "species": "pillar", "solid": true },
-    { "x": 44, "y": 12, "species": "pillar", "solid": true },
-    { "x": 16, "y": 19, "species": "pillar", "solid": true },
-    { "x": 36, "y": 28, "species": "pillar", "solid": true },
-    { "x": 30, "y": 35, "species": "pillar", "solid": true }
+    { "x": 20, "y": 3, "name": "pillar", "tree": true, "solid": true },
+    { "x": 44, "y": 12, "name": "pillar", "tree": true, "solid": true },
+    { "x": 16, "y": 19, "name": "pillar", "tree": true, "solid": true },
+    { "x": 36, "y": 28, "name": "pillar", "tree": true, "solid": true },
+    { "x": 30, "y": 35, "name": "pillar", "tree": true, "solid": true }
   ],
   "decals": []
 }

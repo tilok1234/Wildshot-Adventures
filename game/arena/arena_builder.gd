@@ -246,7 +246,12 @@ static func resolve_placements(def: Dictionary, manifest: Dictionary) -> Array[D
 	# Decals: isolated (mask_000) frame-0 overlays, cosmetic only.
 	var decal_tiles := {}
 	for d: Dictionary in def.get("decals", []):
-		var dfam := String(d.name)
+		var dfam := String(d.get("name", ""))
+		if dfam.is_empty():
+			push_error(
+				"arena_builder: decal at %d,%d has no 'name' — SKIPPED" % [int(d.x), int(d.y)]
+			)
+			continue
 		if not decal_tiles.has(dfam):
 			var all := _tiles_by_prefix(manifest, dfam, "terrain.%s_decal.mask_000.variant_" % dfam)
 			var frame0 := all.filter(
@@ -263,17 +268,31 @@ static func resolve_placements(def: Dictionary, manifest: Dictionary) -> Array[D
 
 	# Props: single-cell prop.<name> tiles; solidity handled in solid_cells.
 	# Trees ("tree": true) split into <name>_ground + <name>_over (canopy
-	# one cell up, skipped at the map edge).
+	# one cell up, skipped at the map edge). sl-0186: a malformed prop is
+	# a NAMED SKIP, never an abort — the dungeon's first build died here
+	# on a wrong-dialect key ("species") and the abort erased the ENTIRE
+	# placement set (floors, walls, everything) while solid_cells kept
+	# collision real: invisible walls in play. The walk test reds on any
+	# solid cell left artless.
 	var prop_tiles := {}
 	for pr: Dictionary in def.get("props", []):
-		if bool(pr.get("tree", false)):
-			_place_tree(placements, prop_tiles, manifest, String(pr.name), int(pr.x), int(pr.y))
+		var pname := String(pr.get("name", ""))
+		if pname.is_empty():
+			push_error(
+				(
+					"arena_builder: prop at %d,%d has no 'name' (wrong dialect?) — SKIPPED"
+					% [int(pr.x), int(pr.y)]
+				)
+			)
 			continue
-		var pname := String(pr.name)
+		if bool(pr.get("tree", false)):
+			_place_tree(placements, prop_tiles, manifest, pname, int(pr.x), int(pr.y))
+			continue
 		if not prop_tiles.has(pname):
 			prop_tiles[pname] = _tiles_by_prefix(manifest, "prop", "prop.%s.variant_" % pname)
 		var pvariants: Array = prop_tiles[pname]
 		if pvariants.is_empty():
+			push_error("arena_builder: prop '%s' has no variants in the manifest — SKIPPED" % pname)
 			continue
 		var pcell := Vector2i(int(pr.x), int(pr.y))
 		var ptile: Dictionary = pvariants[variant_hash(pcell.x, pcell.y) % pvariants.size()]
@@ -283,9 +302,12 @@ static func resolve_placements(def: Dictionary, manifest: Dictionary) -> Array[D
 	# every blocked cell carries blocking art), crowns overhang inward.
 	var border: Dictionary = def.get("tree_border", {})
 	if not border.is_empty():
-		var bname := String(border.name)
-		for c: Vector2i in _border_cells(def):
-			_place_tree(placements, prop_tiles, manifest, bname, c.x, c.y)
+		var bname := String(border.get("name", ""))
+		if bname.is_empty():
+			push_error("arena_builder: tree_border has no 'name' — SKIPPED")
+		else:
+			for c: Vector2i in _border_cells(def):
+				_place_tree(placements, prop_tiles, manifest, bname, c.x, c.y)
 
 	var walls := wall_cells(def)
 	for c: Vector2i in walls:
@@ -333,6 +355,10 @@ static func _place_tree(
 	var gvariants: Array = prop_tiles[gkey]
 	var ovariants: Array = prop_tiles[okey]
 	if gvariants.is_empty():
+		# sl-0186: a tree that resolves no ground art would be an
+		# INVISIBLE solid (trees are always solid) — refuse quietly no
+		# more.
+		push_error("arena_builder: tree '%s' has no %s variants — SKIPPED" % [name, gkey])
 		return
 	var pick := variant_hash(x, y)
 	placements.append(

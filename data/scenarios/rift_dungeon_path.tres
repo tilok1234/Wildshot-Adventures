@@ -18,6 +18,7 @@ id = &"rift_dungeon_path"
 display_name = "STARHOOK DUNGEON: the path (test)"
 arena = "res://data/arena_rift_path.json"
 starhook_rift = true
+rift_path = true
 rift_line = "res://data/rift_line_dungeon.tres"
 rift_biome = 1
 rift_rare = false

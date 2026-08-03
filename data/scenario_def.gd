@@ -68,6 +68,12 @@ extends Resource
 ## the pattern-variant def follow from them.
 @export var rift_biome: int = 0
 @export var rift_rare: bool = false
+## sl-0186: PATH rifts (the dungeon shape) are WALKED content — the
+## standard clamped follow camera, full-screen galaxy, no split panes.
+## The fixed one-room fit presentation stays the FIT rifts' law (the
+## 12x13 arenas, Law 1 by construction); a 64x44 serpentine under that
+## camera rendered as one room-sized window the player walked out of.
+@export var rift_path: bool = false
 ## sl-0130 THE BANK: the settlement stash station cell (center
 ## coords). ZERO = no bank in this world (every pre-bank scenario).
 ## Deposit/withdraw ride recorded bag_op codes, legal only within

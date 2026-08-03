@@ -236,6 +236,13 @@ jobs:
       - name: Gather + Starhook contracts
         run: ~/godot/godot --headless --path . --script tests/gather/gather_test.gd
 
+      # sl-0186: the walk check — arena render resolution (blocking
+      # art on every blocked cell, every scenario), the dungeon
+      # serpentine traverse on real Kinematics, path-rift routing
+      # pins. Linux-safe (data + sim only).
+      - name: Dungeon walk (render + traverse)
+        run: ~/godot/godot --headless --path . --script tests/rift_dungeon/dungeon_walk_test.gd
+
       # Seam B (sl-0106): the character sheet's screen==recompute
       # parity law + quest-log state mirroring. Linux-safe.
       - name: Character sheet parity
