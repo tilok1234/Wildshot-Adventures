@@ -4,10 +4,12 @@ extends SceneTree
 ## against corrupt packs + unknown roster ids), leash wake/sleep with
 ## damage-persistent fold-back and NO kill events on fold, away-only
 ## respawn (nothing ever pops in a player's face — structurally),
-## territory tether walk-home, rng stream discipline (single-option
-## draws consume nothing; pack draws never touch rng_loot), site-state
-## hash coverage, and end-to-end slice-world determinism. Exit 0 =
-## green.
+## territory tether walk-home, the sl-0219 chase leash (give-up
+## beyond 18 t + full return-home past the rim, site members only —
+## non-site enemies keep chase-forever), rng stream discipline
+## (single-option draws consume nothing; pack draws never touch
+## rng_loot), site-state hash coverage, and end-to-end slice-world
+## determinism. Exit 0 = green.
 
 const SimWorld := preload("res://sim/sim_world.gd")
 const Bitgrid := preload("res://sim/collision/bitgrid.gd")
@@ -214,6 +216,78 @@ func _init() -> void:
 	check(dist_after < dist_before, "tethered member walks home")
 	check(int(stray.ai_state) == 0, "walking home reads IDLE (windup canceled)")
 
+	# 5b. sl-0219 chase-leash: give-up + full return-home, SITE
+	# MEMBERS ONLY (the measured gang-train fix —
+	# reports/chase_leash_diagnosis.md). Positions are staged
+	# directly per sub-check; the player always stays inside the
+	# site's 30-t sleep envelope so nothing folds mid-pin.
+	var w3b: RefCounted = _synth_world(19)
+	var p3b: RefCounted = w3b.players[0]
+	p3b.pos = Vector2(63.5, 16.5)
+	_step(w3b)
+	var chaser: RefCounted = _site_enemies(w3b)[0]
+	chaser.pos = Vector2(68.5, 16.5)
+	_step(w3b)
+	check(int(chaser.ai_state) != 0, "member engages inside aggro (5 t)")
+	# Between aggro and give-up (13.5 t): the chase holds — the
+	# hysteresis band is structural (give-up 18 > aggro 12).
+	chaser.pos = Vector2(68.5, 16.5)
+	p3b.pos = Vector2(55.0, 16.5)
+	_step(w3b)
+	check(int(chaser.ai_state) != 0, "13.5 t: still chasing (inside the band)")
+	# Beyond give-up (20 t): one tick disengages.
+	chaser.pos = Vector2(68.5, 16.5)
+	p3b.pos = Vector2(48.5, 16.5)
+	_step(w3b)
+	check(int(chaser.ai_state) == 0, "20 t from the player: gives up (IDLE)")
+	# The rim case the old code parked forever: 11 t out (inside the
+	# tether), player away but the site still awake — the member now
+	# walks ALL the way home to RETURN_RADIUS and stands. Budget: 6 t
+	# at 2.7 t/s = ~134 ticks at 60 tps, plus slack.
+	chaser.pos = Vector2(59.5, 16.5)
+	p3b.pos = Vector2(44.5, 16.5)
+	_step(w3b, 240)
+	var hd: float = chaser.pos.distance_to(Vector2(70.5, 16.5))
+	check(hd <= SiteStep.RETURN_RADIUS + 0.01, "walks home past the rim (%.2f <= 5)" % hd)
+	var settle: Vector2 = chaser.pos
+	_step(w3b, 30)
+	check(chaser.pos == settle, "and stands once re-centered")
+	# A windup in flight is never interrupted by give-up (Law 8: the
+	# telegraph completes and resolves honestly at range).
+	chaser.pos = Vector2(68.5, 16.5)
+	p3b.pos = Vector2(48.5, 16.5)
+	chaser.ai_state = 2
+	chaser.winding_slot = 0
+	chaser.state_until = w3b.tick + 30
+	_step(w3b)
+	check(int(chaser.ai_state) == 2, "give-up never interrupts a windup")
+	# Fresh wakes never shuffle: spawn rings max 4.4 sit inside
+	# RETURN_RADIUS, so a woken-but-unaggroed pack stands still.
+	var w3c: RefCounted = _synth_world(23)
+	var p3c: RefCounted = w3c.players[0]
+	p3c.pos = Vector2(50.5, 16.5)
+	_step(w3c)
+	var spawn_spots: Array[Vector2] = []
+	for e: RefCounted in _site_enemies(w3c):
+		spawn_spots.append(e.pos)
+	_step(w3c, 30)
+	var shuffled := false
+	var spot_i := 0
+	for e: RefCounted in _site_enemies(w3c):
+		if e.pos != spawn_spots[spot_i]:
+			shuffled = true
+		spot_i += 1
+	check(not shuffled, "a woken unaggroed pack never shuffles at its slots")
+	# Non-site enemies keep chase-forever by construction (labs, the
+	# Warren, the rift dungeon, every authored proof).
+	var loner: RefCounted = w3c.add_enemy(0, Vector2(30.5, 16.5))
+	p3c.pos = Vector2(28.5, 16.5)
+	_step(w3c)
+	check(int(loner.ai_state) != 0, "non-site enemy engages")
+	p3c.pos = Vector2(5.5, 16.5)
+	_step(w3c, 30)
+	check(int(loner.ai_state) != 0, "non-site enemy NEVER gives up (25 t away, still chasing)")
+
 	# 6. RNG discipline: fixed single-option draws consume NOTHING;
 	# varied draws advance rng_enemy and never rng_loot.
 	var w4: RefCounted = _synth_world(13, 3, 3)
@@ -257,6 +331,25 @@ func _init() -> void:
 		var a: RefCounted = ScenarioLoader.build_world(scen, 100, wf.bitgrid)
 		var b: RefCounted = ScenarioLoader.build_world(scen, 100, wf.bitgrid)
 		check(a.sites.size() == 193, "slice world carries all 193 sites")
+		# sl-0219 structural pins on the real roster: give-up strictly
+		# above every site-reachable def's aggro (hysteresis by
+		# construction), return radius strictly above the outermost
+		# spawn ring (fresh wakes never shuffle).
+		var worst_aggro := 0.0
+		for sd: Dictionary in a.site_defs:
+			for d in sd.roster_defs:
+				worst_aggro = maxf(worst_aggro, float(a.enemy_defs[d].aggro_range))
+		check(
+			worst_aggro < SiteStep.GIVE_UP_RADIUS,
+			(
+				"give-up %.1f sits above every site def's aggro (max %.1f)"
+				% [SiteStep.GIVE_UP_RADIUS, worst_aggro]
+			)
+		)
+		var max_ring := 0.0
+		for r: float in SiteStep.SPAWN_RINGS:
+			max_ring = maxf(max_ring, r)
+		check(SiteStep.RETURN_RADIUS > max_ring, "return radius clears the outermost spawn ring")
 		_step(a, 60)
 		_step(b, 60)
 		check(
@@ -333,7 +426,9 @@ func _init() -> void:
 	check(lp2.dead, "legacy player stays dead")
 
 	if fails.is_empty():
-		print("living_world_test: PASS (census/leash/respawn/tether/rng/hash/determinism/death)")
+		print(
+			"living_world_test: PASS (census/leash/respawn/tether/give-up/rng/hash/determinism/death)"
+		)
 		quit(0)
 	else:
 		for m: String in fails:

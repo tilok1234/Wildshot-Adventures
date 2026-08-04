@@ -30,6 +30,20 @@ const SLEEP_RADIUS := 30.0
 ## Tether [T]: a site member farther than this from its site cell
 ## disengages and walks home (enemy_step's gate); nobody migrates.
 const TETHER_RADIUS := 12.0
+## GIVE-UP [T] (sl-0219, the chase-leash tune): an ENGAGED site
+## member whose nearest living player sits beyond this disengages
+## and walks home. Strictly above every site-roster def's aggro
+## (12/14) so hysteresis is structural — re-engaging requires the
+## player to close back inside aggro. The measured alternative was
+## 27-30 mobs engaged for 48 s straight with terrain-wedged chasers
+## pressing forever (reports/chase_leash_diagnosis.md).
+const GIVE_UP_RADIUS := 18.0
+## RETURN HOME [T] (sl-0219): a disengaged site member walks all the
+## way back until inside this radius of its site cell — not merely
+## inside the tether rim, which ratcheted whole camps up to exactly
+## 12.0 t toward the road (the census: 10/20 rim-parked). Strictly
+## above the outermost spawn ring (4.4) so fresh wakes never shuffle.
+const RETURN_RADIUS := 5.0
 ## Deterministic spawn probe rings (tiles out from the site cell).
 const SPAWN_RINGS: Array[float] = [2.0, 2.8, 3.6, 4.4]
 

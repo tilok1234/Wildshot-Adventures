@@ -65,27 +65,28 @@ static func run(world: RefCounted) -> void:
 			rmin = float(pe.range_min)
 			rmax = float(pe.range_max)
 
-		# TERRITORY TETHER (docs/23 S0 plumbing (b), seam 2): a site
-		# member beyond its tether disengages and walks straight home —
-		# nobody migrates, chases end at the territory line. An
-		# in-progress windup cancels (an unkept telegraph cannot kill,
-		# Law 8). At the exact boundary it alternates step-home /
-		# re-engage — bounded edge-guarding, which reads as "it will
-		# not chase past its ground".
-		if e.site_index >= 0 and e.site_index < world.site_defs.size():
+		# TERRITORY DISCIPLINE (docs/23 S0 tether; sl-0219 give-up +
+		# full return-home). The tether: a site member beyond its
+		# territory line disengages and walks straight home — nobody
+		# migrates, chases end at the line. An in-progress windup
+		# cancels (an unkept telegraph cannot kill, Law 8). At the
+		# exact boundary it alternates step-home / re-engage — bounded
+		# edge-guarding, which reads as "it will not chase past its
+		# ground". Give-up and return-home live in the state machine
+		# below (IDLE walk-home / REPOSITION give-up) and apply to
+		# SITE MEMBERS ONLY — labs, the Warren, the rift dungeon and
+		# every authored proof keep chase-forever by construction.
+		var is_site: bool = e.site_index >= 0 and e.site_index < world.site_defs.size()
+		var home := Vector2.ZERO
+		var home_dist := 0.0
+		if is_site:
 			var site_def: Dictionary = world.site_defs[e.site_index]
-			var home: Vector2 = site_def.cell
-			var epos_now: Vector2 = e.pos
-			var home_dist: float = epos_now.distance_to(home)
+			home = site_def.cell
+			home_dist = e.pos.distance_to(home)
 			if home_dist > SiteStep.TETHER_RADIUS:
 				e.ai_state = EnemyState.AIState.IDLE
 				e.winding_slot = -1
-				var toward_home: Vector2 = (home - epos_now) / home_dist
-				e.pos = Kinematics.move_circle(
-					grid, epos_now, e.radius, toward_home * float(e.move_speed) * dt
-				)
-				var epos_after: Vector2 = e.pos
-				e.vel = (epos_after - epos_now) / dt
+				_walk_home(grid, e, home, home_dist, dt)
 				continue
 
 		# Nearest living player: linear scan, first-wins ties (stable §2.4).
@@ -118,7 +119,24 @@ static func run(world: RefCounted) -> void:
 			EnemyState.AIState.IDLE:
 				if dist <= float(def.aggro_range):
 					e.ai_state = EnemyState.AIState.REPOSITION
+				elif is_site and home_dist > SiteStep.RETURN_RADIUS:
+					# sl-0219 FULL RETURN-HOME: a disengaged member
+					# re-centers all the way (the tether's stop-inside
+					# parked whole camps at the rim — the measured
+					# ratchet). Never moves a fresh wake: spawn rings
+					# max 4.4 < RETURN_RADIUS.
+					_walk_home(grid, e, home, home_dist, dt)
 			EnemyState.AIState.REPOSITION:
+				if is_site and dist > SiteStep.GIVE_UP_RADIUS:
+					# sl-0219 GIVE-UP: the player left — stop caring.
+					# One standing tick; the IDLE branch walks it home
+					# from the next. Structural hysteresis: give-up 18
+					# > aggro 12/14, so re-engaging means the player
+					# actually came back. A windup in flight is not
+					# interrupted here — it completes harmlessly at
+					# this range (Law 8 keeps its telegraph honest).
+					e.ai_state = EnemyState.AIState.IDLE
+					continue
 				_move(grid, e, policy, rmin, rmax, tpos, dist, dt)
 				var slot := _ready_slot(e, emitters, t, dist)
 				if slot >= 0:
@@ -153,6 +171,17 @@ static func run(world: RefCounted) -> void:
 			EnemyState.AIState.RECOVER:
 				if t >= e.state_until:
 					e.ai_state = EnemyState.AIState.REPOSITION
+
+
+## One step of the walk home (tether return + sl-0219 re-centering —
+## the same math either way). Callers guarantee home_dist > 0.
+static func _walk_home(
+	grid: RefCounted, e: RefCounted, home: Vector2, home_dist: float, dt: float
+) -> void:
+	var epos_now: Vector2 = e.pos
+	var toward_home: Vector2 = (home - epos_now) / home_dist
+	e.pos = Kinematics.move_circle(grid, epos_now, e.radius, toward_home * float(e.move_speed) * dt)
+	e.vel = (e.pos - epos_now) / dt
 
 
 ## Phase transition (§3.5): re-arm cooldowns for the new phase's slots

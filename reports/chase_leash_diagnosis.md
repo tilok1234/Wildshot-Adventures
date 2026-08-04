@@ -28,18 +28,19 @@ every route point's 30-t sleep envelope, seed 100).
 
 ## The measured truth (probe, seed 100)
 
-**Phase 1 — three road laps (t 0–2855, ~95 s).** Engagement saturates
-in 12 s and never decays: engaged 15 → 28 by t=360, then **27–30
-engaged steady across all three laps**. Live population along the one
-corridor: 30–39. The near-8 gang re-forms on **every** mid-road pass —
-peaks 24 / 24 / 24 on laps 1/2/3 (no habituation, no decay: the
-corridor re-collects identically each lap because its chasers parked
-at the road-facing rims).
+**Phase 1 — three road laps (t 0–2855, ~48 s at 60 tps).** Engagement
+saturates in 6 s and never decays: engaged 15 → 28 by t=360, then
+**27–30 engaged steady across all three laps**. Live population along
+the one corridor: 30–39. The near-8 gang re-forms on **every**
+mid-road pass — peaks 24 / 24 / 24 on laps 1/2/3 (no habituation, no
+decay: the corridor re-collects identically each lap because its
+chasers parked at the road-facing rims).
 
-**Phase 2 — stand mid-road 240 t.** The train catches and holds:
-near-8 = 21 sustained. This is the designer's "ganging unreasonably".
+**Phase 2 — stand mid-road 240 t (4 s).** The train catches and
+holds: near-8 = 21 sustained. This is the designer's "ganging
+unreasonably".
 
-**Phase 3 — walk 20+ t off-road NE and hold 300 t.** near-8 falls
+**Phase 3 — walk 20+ t off-road NE and hold 300 t (5 s).** near-8 falls
 21 → 0 purely by the speed gap (outrunning, the only honest shed
 today), and live falls 39 → 20 (sites > 30 t behind sleep-fold — the
 only re-centering mechanism today). But **15 mobs remain engaged the
@@ -94,3 +95,23 @@ Fairness frame satisfied by construction: a kiting player sheds
 pursuers honestly (give-up + walk home), a standing player still gets
 pressured (aggro/wake untouched), no permanent trains (the world
 re-centers itself).
+
+---
+
+## AFTER (sl-0219b built: GIVE_UP_RADIUS 18 [T] + RETURN_RADIUS 5 [T])
+
+Same probe, same seed, same route — the sim change is the only
+variable:
+
+| measure | before | after |
+|---|---|---|
+| engaged during active corridor laps | 27–30, zero decay | 22–27, decays at road ends |
+| near-8 gang standing mid-road | 21 | 22 (**unchanged by design** — a standing player still gets pressured) |
+| engaged after walking 20+ t off-road | **15, pinned forever** (terrain-wedged chasers included) | **4**, each explainable as live proximity to a territory disc |
+| rim census: near home (<=6 t) | 5 / 20 | 12 / 23 |
+| rim census: rim-parked (>10 t) | **10** | 3 |
+| max home-distance | **exactly 12.0 (parked at the tether line)** | 10.2 (mid-walk, transient — the walk home completes) |
+
+The corridor still presses while you are in it (wake/aggro/tether
+untouched); leaving it now actually ends it. Both numbers [T] — the
+designer's run around the map is the acceptance.
