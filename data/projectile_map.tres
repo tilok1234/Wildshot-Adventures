@@ -38,7 +38,14 @@ shots = {
 33: "hostile-orb:d10-amber-deep",
 34: "hostile-orb:d10-amber-dark",
 36: "hostile-orb:d10-amber",
-37: "hostile-orb:d10-amber-deep"
+37: "hostile-orb:d10-amber-deep",
+38: "hostile-orb:d10-amber-dark",
+39: "hostile-orb:d10-amber",
+40: "hostile-orb:d10-amber-deep",
+42: "hostile-orb:d10-amber-dark",
+43: "hostile-orb:d12-amber",
+44: "hostile-orb:d12-amber",
+45: "hostile-orb:d10-amber-deep"
 }
 alts = {
 }

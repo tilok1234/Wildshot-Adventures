@@ -115,6 +115,13 @@ const DUNGEON_DOORS := {
 	&"rift_boss_zone_constellation": [RIFT_EXIT_DOOR],
 	&"rift_boss_cross_burst": [RIFT_EXIT_DOOR],
 	&"rift_boss_pulse_lattice": [RIFT_EXIT_DOOR],
+	&"rift_boss_gap_carousel": [RIFT_EXIT_DOOR],
+	&"rift_boss_sickle_weaver": [RIFT_EXIT_DOOR],
+	&"rift_boss_dart_skirmisher": [RIFT_EXIT_DOOR],
+	&"rift_boss_decel_orchard": [RIFT_EXIT_DOOR],
+	&"rift_boss_halo_lasher": [RIFT_EXIT_DOOR],
+	&"rift_boss_tide_stalker": [RIFT_EXIT_DOOR],
+	&"rift_boss_pulse_cross": [RIFT_EXIT_DOOR],
 	# sl-0180 wave 2: the dungeon path's mouth (its own flee cell —
 	# the spawn sits 3 t east, the ping-pong law honored; the return
 	# rides the rift machinery: back to the slice at the cast shore).
@@ -981,6 +988,13 @@ func _console_rift_jump(tokens: PackedStringArray) -> void:
 		"zone_constellation",
 		"cross_burst",
 		"pulse_lattice",
+		"gap_carousel",
+		"sickle_weaver",
+		"dart_skirmisher",
+		"decel_orchard",
+		"halo_lasher",
+		"tide_stalker",
+		"pulse_cross",
 	]
 	match arg:
 		"list", "help":

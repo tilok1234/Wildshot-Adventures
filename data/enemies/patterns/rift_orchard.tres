@@ -1,0 +1,144 @@
+[gd_resource type="Resource" load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://data/pattern_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; POOL EXTENSION (sl-0200): THE ORCHARD — a nine-bolt full ring on
+; the DECELERATE program with ALTERNATING launch speeds (5.5 / 6.5
+; at 3.5 t/s² bleed → stopping radii ~4.3 vs ~6.0 tiles): each cast
+; plants TWO nested rings of hanging stars that fade (ttl 85). The
+; room becomes an orchard you thread; 40° spacing keeps lanes at
+; every range. Room-pattern language. Pattern id 42; lead 36 (the
+; radial danger class). Elite amber placeholder; identity data-keyed.
+
+[sub_resource type="Resource" id="s0"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 5.5
+radius = 0.18
+damage = 10
+ttl_ticks = 85
+program = 1
+prog_a = 5.5
+prog_b = 3.5
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s1"]
+script = ExtResource("2")
+angle_offset_deg = 40.0
+speed = 6.5
+radius = 0.18
+damage = 10
+ttl_ticks = 85
+program = 1
+prog_a = 6.5
+prog_b = 3.5
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s2"]
+script = ExtResource("2")
+angle_offset_deg = 80.0
+speed = 5.5
+radius = 0.18
+damage = 10
+ttl_ticks = 85
+program = 1
+prog_a = 5.5
+prog_b = 3.5
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s3"]
+script = ExtResource("2")
+angle_offset_deg = 120.0
+speed = 6.5
+radius = 0.18
+damage = 10
+ttl_ticks = 85
+program = 1
+prog_a = 6.5
+prog_b = 3.5
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s4"]
+script = ExtResource("2")
+angle_offset_deg = 160.0
+speed = 5.5
+radius = 0.18
+damage = 10
+ttl_ticks = 85
+program = 1
+prog_a = 5.5
+prog_b = 3.5
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s5"]
+script = ExtResource("2")
+angle_offset_deg = 200.0
+speed = 6.5
+radius = 0.18
+damage = 10
+ttl_ticks = 85
+program = 1
+prog_a = 6.5
+prog_b = 3.5
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s6"]
+script = ExtResource("2")
+angle_offset_deg = 240.0
+speed = 5.5
+radius = 0.18
+damage = 10
+ttl_ticks = 85
+program = 1
+prog_a = 5.5
+prog_b = 3.5
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s7"]
+script = ExtResource("2")
+angle_offset_deg = 280.0
+speed = 6.5
+radius = 0.18
+damage = 10
+ttl_ticks = 85
+program = 1
+prog_a = 6.5
+prog_b = 3.5
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s8"]
+script = ExtResource("2")
+angle_offset_deg = 320.0
+speed = 5.5
+radius = 0.18
+damage = 10
+ttl_ticks = 85
+program = 1
+prog_a = 5.5
+prog_b = 3.5
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[resource]
+script = ExtResource("1")
+id = &"rift_orchard"
+pattern_id = 42
+shots = Array[Resource]([SubResource("s0"), SubResource("s1"), SubResource("s2"), SubResource("s3"), SubResource("s4"), SubResource("s5"), SubResource("s6"), SubResource("s7"), SubResource("s8")])

@@ -1,0 +1,87 @@
+[gd_resource type="Resource" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://data/pattern_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; POOL EXTENSION (sl-0200): SICKLES — a five-bolt fan whose SINE sway
+; ALTERNATES direction shot to shot (prog_b sign flips), so the
+; blades cross and re-open as they travel: a weave lattice, not the
+; shoal's parallel waves. Pure function of age — bot-projected
+; closed-form. Pattern id 39; lead 30 (the fan danger class). Elite
+; amber placeholder; identity data-keyed.
+
+[sub_resource type="Resource" id="s0"]
+script = ExtResource("2")
+angle_offset_deg = -24.0
+speed = 4.4
+radius = 0.2
+damage = 10
+ttl_ticks = 64
+program = 2
+prog_a = 4.4
+prog_b = 2.6
+prog_c = 5.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s1"]
+script = ExtResource("2")
+angle_offset_deg = -12.0
+speed = 4.4
+radius = 0.2
+damage = 10
+ttl_ticks = 64
+program = 2
+prog_a = 4.4
+prog_b = -2.6
+prog_c = 5.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s2"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 4.4
+radius = 0.2
+damage = 10
+ttl_ticks = 64
+program = 2
+prog_a = 4.4
+prog_b = 2.6
+prog_c = 5.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s3"]
+script = ExtResource("2")
+angle_offset_deg = 12.0
+speed = 4.4
+radius = 0.2
+damage = 10
+ttl_ticks = 64
+program = 2
+prog_a = 4.4
+prog_b = -2.6
+prog_c = 5.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s4"]
+script = ExtResource("2")
+angle_offset_deg = 24.0
+speed = 4.4
+radius = 0.2
+damage = 10
+ttl_ticks = 64
+program = 2
+prog_a = 4.4
+prog_b = 2.6
+prog_c = 5.0
+max_passes = 0
+spawn_offset = 0.4
+
+[resource]
+script = ExtResource("1")
+id = &"rift_sickles"
+pattern_id = 39
+shots = Array[Resource]([SubResource("s0"), SubResource("s1"), SubResource("s2"), SubResource("s3"), SubResource("s4")])

@@ -86,9 +86,16 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 	# 30-37=the rift boss pool (sl-0180 wave 1A: twin_helix/ring_nest/
 	# sine_shoal/boomerang_veil/decel_wall/zone_constellation/
 	# cross_burst/pulse_lattice), 38-39=the dungeon rift mobs (wave 2:
-	# darter/lurker — PHASELESS by design, gold-only kills). Append-
-	# only; never reorder. Scenario extras (bot canaries) append
-	# after, keeping standard indexes stable.
+	# darter/lurker — PHASELESS by design, gold-only kills),
+	# 40-46=the sl-0200 pool extension (gap_carousel/sickle_weaver/
+	# dart_skirmisher/decel_orchard/halo_lasher/tide_stalker/
+	# pulse_cross — 45 tide_stalker is THE sanctioned pursuer
+	# experiment, every phase strictly under the 3.6 floor; the
+	# second pursuer candidate, shadow_hound, FAILED the fairness
+	# floor across seven proof iterations — reported and NOT shipped,
+	# per the sl-0200 routing). Append-only; never reorder. Scenario
+	# extras (bot canaries) append after, keeping standard indexes
+	# stable.
 	var defs: Array = [
 		load("res://data/enemies/rusher.tres"),
 		load("res://data/enemies/husk_archer.tres"),
@@ -130,6 +137,13 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 		load("res://data/enemies/rift_boss_pulse_lattice.tres"),
 		load("res://data/enemies/rift_mob_darter.tres"),
 		load("res://data/enemies/rift_mob_lurker.tres"),
+		load("res://data/enemies/rift_boss_gap_carousel.tres"),
+		load("res://data/enemies/rift_boss_sickle_weaver.tres"),
+		load("res://data/enemies/rift_boss_dart_skirmisher.tres"),
+		load("res://data/enemies/rift_boss_decel_orchard.tres"),
+		load("res://data/enemies/rift_boss_halo_lasher.tres"),
+		load("res://data/enemies/rift_boss_tide_stalker.tres"),
+		load("res://data/enemies/rift_boss_pulse_cross.tres"),
 	]
 	for extra: Resource in scenario.extra_enemy_defs:
 		defs.append(extra)

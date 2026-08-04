@@ -1,0 +1,85 @@
+[gd_resource type="Resource" load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://data/enemy_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/emitter_slot.gd" id="2"]
+[ext_resource type="Script" path="res://data/phase_def.gd" id="3"]
+[ext_resource type="Script" path="res://data/phase_list.gd" id="4"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/rift_half_halo.tres" id="5"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/star_spray.tres" id="6"]
+
+; POOL EXTENSION (sl-0200): Halo Lasher — grade 3, comet pool.
+; PLACEHOLDER descriptive id (fish re-skin later; identity
+; data-keyed). BEHAVIOURAL family (sl-0188): FLANKER, TWO-PHASE
+; surge kit (the 2-4 phase recipe's floor) — orbit at 2.3, then one
+; hard flip to 3.1 with the halo cadence compressed (never a
+; CHASER — not one of the two sl-0200 pursuer experiments). hp 305
+; = 28s at the g3 spine (20-60s INTENSE; GATE 7). One lead per
+; pattern; every number [T].
+
+[sub_resource type="Resource" id="e0"]
+script = ExtResource("2")
+pattern = ExtResource("5")
+trigger_range = 11.0
+telegraph_ticks = 30
+cooldown_ticks = 60
+recover_ticks = 14
+
+[sub_resource type="Resource" id="phase1"]
+script = ExtResource("3")
+id = &"p1_circle"
+hp_floor_pct = 45.0
+movement_policy = 4
+move_speed = 2.3
+range_min = 3.5
+range_max = 6.0
+entry_cooldown_ticks = 0
+emitters = Array[Resource]([SubResource("e0")])
+
+[sub_resource type="Resource" id="e1"]
+script = ExtResource("2")
+pattern = ExtResource("5")
+trigger_range = 11.0
+telegraph_ticks = 30
+cooldown_ticks = 44
+recover_ticks = 12
+
+[sub_resource type="Resource" id="e2"]
+script = ExtResource("2")
+pattern = ExtResource("6")
+trigger_range = 11.0
+telegraph_ticks = 24
+cooldown_ticks = 72
+recover_ticks = 12
+
+[sub_resource type="Resource" id="phase2"]
+script = ExtResource("3")
+id = &"p2_lash"
+hp_floor_pct = 0.0
+movement_policy = 4
+move_speed = 3.1
+range_min = 3.5
+range_max = 6.0
+entry_cooldown_ticks = 40
+emitters = Array[Resource]([SubResource("e1"), SubResource("e2")])
+
+[sub_resource type="Resource" id="phaselist"]
+script = ExtResource("4")
+phases = Array[Resource]([SubResource("phase1"), SubResource("phase2")])
+
+[resource]
+script = ExtResource("1")
+id = &"rift_boss_halo_lasher"
+display_name = "Rift Boss — Halo Lasher"
+hp = 305
+body_radius = 0.6
+move_speed = 2.3
+contact_damage = 0
+contact_cooldown_ticks = 30
+aggro_range = 14.0
+movement_policy = 4
+range_min = 3.5
+range_max = 6.0
+phases = SubResource("phaselist")
+xp_value = 320
+gold_min = 200
+gold_max = 300

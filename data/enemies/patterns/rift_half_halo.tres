@@ -1,0 +1,115 @@
+[gd_resource type="Resource" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://data/pattern_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; POOL EXTENSION (sl-0200): HALF HALO — seven chunky slow orbs
+; spanning 180° at the player's side: half the compass closes, the
+; other half is the answer, and the LASHER'S orbit keeps rotating
+; which half. Chunky radius 0.24 reads at a glance (Law 3). Pattern
+; id 43; lead 30 (the fan danger class). Elite amber placeholder;
+; identity data-keyed.
+
+[sub_resource type="Resource" id="s0"]
+script = ExtResource("2")
+angle_offset_deg = -90.0
+speed = 4.0
+radius = 0.24
+damage = 10
+ttl_ticks = 75
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s1"]
+script = ExtResource("2")
+angle_offset_deg = -60.0
+speed = 4.0
+radius = 0.24
+damage = 10
+ttl_ticks = 75
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s2"]
+script = ExtResource("2")
+angle_offset_deg = -30.0
+speed = 4.0
+radius = 0.24
+damage = 10
+ttl_ticks = 75
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s3"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 4.0
+radius = 0.24
+damage = 10
+ttl_ticks = 75
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s4"]
+script = ExtResource("2")
+angle_offset_deg = 30.0
+speed = 4.0
+radius = 0.24
+damage = 10
+ttl_ticks = 75
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s5"]
+script = ExtResource("2")
+angle_offset_deg = 60.0
+speed = 4.0
+radius = 0.24
+damage = 10
+ttl_ticks = 75
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s6"]
+script = ExtResource("2")
+angle_offset_deg = 90.0
+speed = 4.0
+radius = 0.24
+damage = 10
+ttl_ticks = 75
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[resource]
+script = ExtResource("1")
+id = &"rift_half_halo"
+pattern_id = 43
+shots = Array[Resource]([SubResource("s0"), SubResource("s1"), SubResource("s2"), SubResource("s3"), SubResource("s4"), SubResource("s5"), SubResource("s6")])

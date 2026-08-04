@@ -1,0 +1,50 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; POOL EXTENSION proof (sl-0200): THE CORNERING AUDIT — the wall-pin
+; class made explicit for pursuer experiment 2 (the dungeon
+; iteration's lesson applied). The bait spawns IN the SE corner
+; pocket (10.3,11.3 — walls on two sides, the 7,9 star-rock stub
+; shaping the pocket) with the stalker at 8.5,10.5 BETWEEN it and
+; the open room: pursuit meets worst-case geometry from tick 0,
+; every phase speed live via the same 82x6 schedule, the slow wake
+; rings filling the pocket's mouth. PASS = ZERO bullet hits floor
+; AND cap = the pursuer cannot convert the worst pocket into damage
+; at either lane; a FAIL here is the experiment failing honestly,
+; never a reason to weaken the audit.
+
+[resource]
+script = ExtResource("1")
+id = &"proof_boss_tide_stalker_corner"
+display_name = "PROOF: tide_stalker CORNER AUDIT (wall-pin class)"
+arena = "res://data/arena_rift.json"
+starhook_rift = true
+rift_line = "res://data/rift_line.tres"
+rift_biome = 2
+rift_rare = false
+player_spawn = Vector2(10.3, 11.3)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"rift_boss_tide_stalker": PackedVector2Array(8.5, 10.5)
+}
+damage_schedule = Array[Dictionary]([{
+"amount": 82,
+"tick": 150
+}, {
+"amount": 82,
+"tick": 300
+}, {
+"amount": 82,
+"tick": 450
+}, {
+"amount": 82,
+"tick": 600
+}, {
+"amount": 82,
+"tick": 750
+}, {
+"amount": 82,
+"tick": 900
+}])
+default_seed = 1

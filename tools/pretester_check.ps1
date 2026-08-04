@@ -290,6 +290,22 @@ if (-not $SkipBattery) {
         @("proof_boss_zone_constellation","1,2,3",3600,"","","PASS","PASS"),
         @("proof_boss_cross_burst","1,2,3",3600,"","","PASS","PASS"),
         @("proof_boss_pulse_lattice","1,2,3",3600,"","","PASS","PASS"),
+        # sl-0200: the pool extension — seven more kits (15 total),
+        # same schedule-paced full-fight shape; tide_stalker is THE
+        # sanctioned pursuer experiment (every phase strictly under
+        # the 3.6 floor) and carries an explicit CORNER AUDIT row
+        # (the wall-pin class): the bait starts pinned in the worst
+        # pocket with the pursuit already on top of it. (The second
+        # pursuer candidate, shadow_hound, FAILED the fairness floor
+        # across seven proof iterations — reported, never shipped.)
+        @("proof_boss_gap_carousel","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_boss_sickle_weaver","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_boss_dart_skirmisher","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_boss_decel_orchard","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_boss_halo_lasher","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_boss_tide_stalker","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_boss_tide_stalker_corner","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_boss_pulse_cross","1,2,3",3600,"","","PASS","PASS"),
         # sl-0180 wave 2: the dungeon-rift path — the SHIPPED fights
         # (the path's packs sit 20+ apart and the tether keeps them
         # sequential): the darter pair, the lurker solo, and the boss

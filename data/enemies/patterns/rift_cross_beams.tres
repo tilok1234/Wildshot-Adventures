@@ -1,0 +1,133 @@
+[gd_resource type="Resource" load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://data/pattern_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; POOL EXTENSION (sl-0200): CROSS BEAMS — a four-arm world-frame
+; cross (0/90/180/270), two staggered speeds per arm (3.6 / 4.8), on
+; a slow ROTOR (0.8°/tick): the cross sweeps the room like a
+; lighthouse and the quadrant gaps WALK. Two emitters of this one
+; pattern firing at different ticks lace a checker (rotor angle is a
+; pure function of the fire tick). Room-pattern language. Pattern
+; id 45; lead 36 (the radial danger class). Elite amber placeholder;
+; identity data-keyed.
+
+[sub_resource type="Resource" id="s0"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 3.6
+radius = 0.2
+damage = 10
+ttl_ticks = 95
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s1"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 4.8
+radius = 0.2
+damage = 10
+ttl_ticks = 72
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s2"]
+script = ExtResource("2")
+angle_offset_deg = 90.0
+speed = 3.6
+radius = 0.2
+damage = 10
+ttl_ticks = 95
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s3"]
+script = ExtResource("2")
+angle_offset_deg = 90.0
+speed = 4.8
+radius = 0.2
+damage = 10
+ttl_ticks = 72
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s4"]
+script = ExtResource("2")
+angle_offset_deg = 180.0
+speed = 3.6
+radius = 0.2
+damage = 10
+ttl_ticks = 95
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s5"]
+script = ExtResource("2")
+angle_offset_deg = 180.0
+speed = 4.8
+radius = 0.2
+damage = 10
+ttl_ticks = 72
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s6"]
+script = ExtResource("2")
+angle_offset_deg = 270.0
+speed = 3.6
+radius = 0.2
+damage = 10
+ttl_ticks = 95
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s7"]
+script = ExtResource("2")
+angle_offset_deg = 270.0
+speed = 4.8
+radius = 0.2
+damage = 10
+ttl_ticks = 72
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[resource]
+script = ExtResource("1")
+id = &"rift_cross_beams"
+pattern_id = 45
+aim_mode = 2
+rotor_deg_per_tick = 0.8
+shots = Array[Resource]([SubResource("s0"), SubResource("s1"), SubResource("s2"), SubResource("s3"), SubResource("s4"), SubResource("s5"), SubResource("s6"), SubResource("s7")])

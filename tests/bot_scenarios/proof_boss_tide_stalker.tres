@@ -1,0 +1,46 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; POOL EXTENSION proof (sl-0200): Tide Stalker — TRUE PURSUER
+; experiment 2 of 2 — paced 82 every 150 -> both phase flips (floors
+; 60/25%) live mid-flight under LIVE PURSUIT at 2.4/2.8/3.2 (all
+; strictly below the 3.6 floor), kill t900 (hp 490), cleanup to
+; 3600. PASS = ZERO bullet hits at the floor and the cap. The
+; cornering-specific audit is its own scenario
+; (proof_boss_tide_stalker_corner).
+
+[resource]
+script = ExtResource("1")
+id = &"proof_boss_tide_stalker"
+display_name = "PROOF: rift boss tide_stalker (pursuer schedule fight)"
+arena = "res://data/arena_rift.json"
+starhook_rift = true
+rift_line = "res://data/rift_line.tres"
+rift_biome = 2
+rift_rare = false
+player_spawn = Vector2(2.9, 6.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"rift_boss_tide_stalker": PackedVector2Array(7.9, 6.5)
+}
+damage_schedule = Array[Dictionary]([{
+"amount": 82,
+"tick": 150
+}, {
+"amount": 82,
+"tick": 300
+}, {
+"amount": 82,
+"tick": 450
+}, {
+"amount": 82,
+"tick": 600
+}, {
+"amount": 82,
+"tick": 750
+}, {
+"amount": 82,
+"tick": 900
+}])
+default_seed = 1

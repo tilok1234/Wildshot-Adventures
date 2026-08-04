@@ -1,0 +1,43 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; POOL EXTENSION proof (sl-0200): Pulse Cross paced 108 every 150 ->
+; all THREE phase flips (floors 70/45/20%) live mid-flight (~t300 /
+; ~t600 / ~t750), kill t900 (hp 645, the 20-60s intense band),
+; cleanup to 3600. PASS = ZERO bullet hits at the floor and the cap.
+
+[resource]
+script = ExtResource("1")
+id = &"proof_boss_pulse_cross"
+display_name = "PROOF: rift boss pulse_cross (schedule fight)"
+arena = "res://data/arena_rift.json"
+starhook_rift = true
+rift_line = "res://data/rift_line.tres"
+rift_biome = 2
+rift_rare = false
+player_spawn = Vector2(2.9, 6.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"rift_boss_pulse_cross": PackedVector2Array(7.9, 6.5)
+}
+damage_schedule = Array[Dictionary]([{
+"amount": 108,
+"tick": 150
+}, {
+"amount": 108,
+"tick": 300
+}, {
+"amount": 108,
+"tick": 450
+}, {
+"amount": 108,
+"tick": 600
+}, {
+"amount": 108,
+"tick": 750
+}, {
+"amount": 108,
+"tick": 900
+}])
+default_seed = 1

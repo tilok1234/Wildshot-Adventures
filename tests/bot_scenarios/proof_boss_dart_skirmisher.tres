@@ -1,0 +1,43 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; POOL EXTENSION proof (sl-0200): Dart Skirmisher paced 100 every
+; 150 -> both phase flips (floors 60/25%) live mid-flight, kill t900
+; (hp 600, the 20-60s intense band), cleanup to 3600. PASS = ZERO
+; bullet hits at the floor and the cap.
+
+[resource]
+script = ExtResource("1")
+id = &"proof_boss_dart_skirmisher"
+display_name = "PROOF: rift boss dart_skirmisher (schedule fight)"
+arena = "res://data/arena_rift.json"
+starhook_rift = true
+rift_line = "res://data/rift_line.tres"
+rift_biome = 1
+rift_rare = false
+player_spawn = Vector2(2.9, 6.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"rift_boss_dart_skirmisher": PackedVector2Array(7.9, 6.5)
+}
+damage_schedule = Array[Dictionary]([{
+"amount": 100,
+"tick": 150
+}, {
+"amount": 100,
+"tick": 300
+}, {
+"amount": 100,
+"tick": 450
+}, {
+"amount": 100,
+"tick": 600
+}, {
+"amount": 100,
+"tick": 750
+}, {
+"amount": 100,
+"tick": 900
+}])
+default_seed = 1

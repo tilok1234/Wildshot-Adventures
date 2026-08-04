@@ -29,6 +29,13 @@ const KITS: Array[String] = [
 	"zone_constellation",
 	"cross_burst",
 	"pulse_lattice",
+	"gap_carousel",
+	"sickle_weaver",
+	"dart_skirmisher",
+	"decel_orchard",
+	"halo_lasher",
+	"tide_stalker",
+	"pulse_cross",
 ]
 const SAMPLE_EVERY := 8
 const TICKS := 300

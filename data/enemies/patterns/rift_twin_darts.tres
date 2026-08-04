@@ -1,0 +1,45 @@
+[gd_resource type="Resource" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://data/pattern_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; POOL EXTENSION (sl-0200): TWIN DARTS — a fast tight pair (±5°,
+; 7.0 t/s straight) from a weaving flanker: the dash-read life is
+; the SKIRMISHER'S movement, the darts just make standing still
+; wrong. Lead 30 (fast aimed shots earn the fan-class lead, never
+; less — prominence == danger). Pattern id 40. Elite amber
+; placeholder; identity data-keyed.
+
+[sub_resource type="Resource" id="s0"]
+script = ExtResource("2")
+angle_offset_deg = -5.0
+speed = 7.0
+radius = 0.16
+damage = 10
+ttl_ticks = 46
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[sub_resource type="Resource" id="s1"]
+script = ExtResource("2")
+angle_offset_deg = 5.0
+speed = 7.0
+radius = 0.16
+damage = 10
+ttl_ticks = 46
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.4
+
+[resource]
+script = ExtResource("1")
+id = &"rift_twin_darts"
+pattern_id = 40
+shots = Array[Resource]([SubResource("s0"), SubResource("s1")])

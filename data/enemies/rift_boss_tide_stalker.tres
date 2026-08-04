@@ -1,0 +1,118 @@
+[gd_resource type="Resource" load_steps=19 format=3]
+
+[ext_resource type="Script" path="res://data/enemy_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/emitter_slot.gd" id="2"]
+[ext_resource type="Script" path="res://data/phase_def.gd" id="3"]
+[ext_resource type="Script" path="res://data/phase_list.gd" id="4"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/rift_wake_rings.tres" id="5"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/star_spray.tres" id="6"]
+
+; POOL EXTENSION (sl-0200): Tide Stalker — grade 3, comet pool.
+; PLACEHOLDER descriptive id (fish re-skin later; identity
+; data-keyed). *** TRUE PURSUER — sl-0200 EXPERIMENT 2 of 2 (the
+; designer's word: "maybe 1 or 2 pursuiters"). The no-chase law is
+; AMENDED to sanction exactly these two kits. FAIRNESS IS
+; STRUCTURAL: pursuit speed 2.4/2.8/3.2 — STRICTLY below the 3.6
+; player floor at EVERY phase (pressure, never cornering; the
+; gather_test pursuer pins enforce the ceiling; the corner-audit
+; proof walks the worst pocket). *** The heavy shape: slow wake
+; rings pulse off the advance — the room fills BEHIND the pursuit
+; and crossing a wake is the play. Contact 0 like the whole rift
+; family. hp 490 = 45s at the g3 spine (20-60s INTENSE; GATE 7).
+; One lead per pattern; every number [T]; lunge/stamina cycles
+; deliberately NOT taken (data-pure experiment).
+
+[sub_resource type="Resource" id="e0"]
+script = ExtResource("2")
+pattern = ExtResource("5")
+trigger_range = 11.0
+telegraph_ticks = 36
+cooldown_ticks = 84
+recover_ticks = 16
+
+[sub_resource type="Resource" id="phase1"]
+script = ExtResource("3")
+id = &"p1_rise"
+hp_floor_pct = 60.0
+movement_policy = 0
+move_speed = 2.4
+range_min = 0.0
+range_max = 0.0
+entry_cooldown_ticks = 0
+emitters = Array[Resource]([SubResource("e0")])
+
+[sub_resource type="Resource" id="e1"]
+script = ExtResource("2")
+pattern = ExtResource("5")
+trigger_range = 11.0
+telegraph_ticks = 36
+cooldown_ticks = 72
+recover_ticks = 14
+
+[sub_resource type="Resource" id="e1b"]
+script = ExtResource("2")
+pattern = ExtResource("6")
+trigger_range = 11.0
+telegraph_ticks = 24
+cooldown_ticks = 88
+recover_ticks = 14
+
+[sub_resource type="Resource" id="phase2"]
+script = ExtResource("3")
+id = &"p2_swell"
+hp_floor_pct = 25.0
+movement_policy = 0
+move_speed = 2.8
+range_min = 0.0
+range_max = 0.0
+entry_cooldown_ticks = 40
+emitters = Array[Resource]([SubResource("e1"), SubResource("e1b")])
+
+[sub_resource type="Resource" id="e2"]
+script = ExtResource("2")
+pattern = ExtResource("5")
+trigger_range = 11.0
+telegraph_ticks = 36
+cooldown_ticks = 58
+recover_ticks = 12
+
+[sub_resource type="Resource" id="e2b"]
+script = ExtResource("2")
+pattern = ExtResource("6")
+trigger_range = 11.0
+telegraph_ticks = 24
+cooldown_ticks = 72
+recover_ticks = 12
+
+[sub_resource type="Resource" id="phase3"]
+script = ExtResource("3")
+id = &"p3_break"
+hp_floor_pct = 0.0
+movement_policy = 0
+move_speed = 3.2
+range_min = 0.0
+range_max = 0.0
+entry_cooldown_ticks = 40
+emitters = Array[Resource]([SubResource("e2"), SubResource("e2b")])
+
+[sub_resource type="Resource" id="phaselist"]
+script = ExtResource("4")
+phases = Array[Resource]([SubResource("phase1"), SubResource("phase2"), SubResource("phase3")])
+
+[resource]
+script = ExtResource("1")
+id = &"rift_boss_tide_stalker"
+display_name = "Rift Boss — Tide Stalker"
+hp = 490
+body_radius = 0.6
+move_speed = 2.4
+contact_damage = 0
+contact_cooldown_ticks = 30
+aggro_range = 14.0
+movement_policy = 0
+range_min = 0.0
+range_max = 0.0
+phases = SubResource("phaselist")
+xp_value = 320
+gold_min = 200
+gold_max = 300

@@ -11,10 +11,35 @@
 			"luma_max": 0.101111865911713,
 			"luma_min": 0.0967601501533463
 		},
+		"dart_skirmisher": {
+			"flips": 0,
+			"luma_max": 0.0563289655905198,
+			"luma_min": 0.0547649268959892
+		},
+		"decel_orchard": {
+			"flips": 0,
+			"luma_max": 0.0594158665499704,
+			"luma_min": 0.055457705032825
+		},
 		"decel_wall": {
 			"flips": 0,
 			"luma_max": 0.0581507300078968,
 			"luma_min": 0.0551067756977241
+		},
+		"gap_carousel": {
+			"flips": 0,
+			"luma_max": 0.096029139528226,
+			"luma_min": 0.0923114021579537
+		},
+		"halo_lasher": {
+			"flips": 0,
+			"luma_max": 0.102041577303185,
+			"luma_min": 0.0978511836497343
+		},
+		"pulse_cross": {
+			"flips": 0,
+			"luma_max": 0.101071159206195,
+			"luma_min": 0.0969431907209506
 		},
 		"pulse_lattice": {
 			"flips": 0,
@@ -26,10 +51,20 @@
 			"luma_max": 0.0970968172370829,
 			"luma_min": 0.0916205865212225
 		},
+		"sickle_weaver": {
+			"flips": 0,
+			"luma_max": 0.0947492869188998,
+			"luma_min": 0.0923114021579537
+		},
 		"sine_shoal": {
 			"flips": 0,
 			"luma_max": 0.0943776569901696,
 			"luma_min": 0.0899495863278516
+		},
+		"tide_stalker": {
+			"flips": 0,
+			"luma_max": 0.104122505612797,
+			"luma_min": 0.0977760338697453
 		},
 		"twin_helix": {
 			"flips": 0,

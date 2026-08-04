@@ -1,0 +1,23 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; POOL EXTENSION (sl-0200): Tide Stalker — TRUE PURSUER experiment 2
+; of 2. Drawn from the comet fight pool at a cast; also dev-reachable
+; via the picker + `rift tide_stalker`. No damage schedule (tester-safe).
+
+[resource]
+script = ExtResource("1")
+id = &"rift_boss_tide_stalker"
+display_name = "STARHOOK BOSS: tide stalker (comet, pursuer)"
+arena = "res://data/arena_rift.json"
+starhook_rift = true
+rift_line = "res://data/rift_line.tres"
+rift_biome = 2
+rift_rare = false
+player_spawn = Vector2(2.9, 6.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"rift_boss_tide_stalker": PackedVector2Array(7.9, 6.5)
+}
+default_seed = 28

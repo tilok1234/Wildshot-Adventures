@@ -1,0 +1,112 @@
+[gd_resource type="Resource" load_steps=16 format=3]
+
+[ext_resource type="Script" path="res://data/enemy_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/emitter_slot.gd" id="2"]
+[ext_resource type="Script" path="res://data/phase_def.gd" id="3"]
+[ext_resource type="Script" path="res://data/phase_list.gd" id="4"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/rift_sickles.tres" id="5"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/star_spray.tres" id="6"]
+
+; POOL EXTENSION (sl-0200): Sickle Weaver — grade 1, nebula pool.
+; PLACEHOLDER descriptive id (fish re-skin later; identity
+; data-keyed). BEHAVIOURAL family (sl-0188): FLANKER — spirals to
+; band and circle-strafes while the crossing sickle weave travels;
+; phase speeds climb 2.2/2.6/3.0 (never a CHASER — this kit is NOT
+; one of the two sl-0200 pursuer experiments). hp 300 = 25s at the
+; g1 spine (20-60s INTENSE; GATE 7). One lead per pattern; every
+; number [T].
+
+[sub_resource type="Resource" id="e0"]
+script = ExtResource("2")
+pattern = ExtResource("5")
+trigger_range = 11.0
+telegraph_ticks = 30
+cooldown_ticks = 64
+recover_ticks = 14
+
+[sub_resource type="Resource" id="phase1"]
+script = ExtResource("3")
+id = &"p1_open"
+hp_floor_pct = 60.0
+movement_policy = 4
+move_speed = 2.2
+range_min = 3.5
+range_max = 6.0
+entry_cooldown_ticks = 0
+emitters = Array[Resource]([SubResource("e0")])
+
+[sub_resource type="Resource" id="e1"]
+script = ExtResource("2")
+pattern = ExtResource("5")
+trigger_range = 11.0
+telegraph_ticks = 30
+cooldown_ticks = 56
+recover_ticks = 14
+
+[sub_resource type="Resource" id="e2"]
+script = ExtResource("2")
+pattern = ExtResource("6")
+trigger_range = 11.0
+telegraph_ticks = 24
+cooldown_ticks = 80
+recover_ticks = 14
+
+[sub_resource type="Resource" id="phase2"]
+script = ExtResource("3")
+id = &"p2_surge"
+hp_floor_pct = 25.0
+movement_policy = 4
+move_speed = 2.6
+range_min = 3.5
+range_max = 6.0
+entry_cooldown_ticks = 40
+emitters = Array[Resource]([SubResource("e1"), SubResource("e2")])
+
+[sub_resource type="Resource" id="e3"]
+script = ExtResource("2")
+pattern = ExtResource("5")
+trigger_range = 11.0
+telegraph_ticks = 30
+cooldown_ticks = 46
+recover_ticks = 12
+
+[sub_resource type="Resource" id="e4"]
+script = ExtResource("2")
+pattern = ExtResource("6")
+trigger_range = 11.0
+telegraph_ticks = 24
+cooldown_ticks = 68
+recover_ticks = 12
+
+[sub_resource type="Resource" id="phase3"]
+script = ExtResource("3")
+id = &"p3_finale"
+hp_floor_pct = 0.0
+movement_policy = 4
+move_speed = 3.0
+range_min = 3.5
+range_max = 6.0
+entry_cooldown_ticks = 40
+emitters = Array[Resource]([SubResource("e3"), SubResource("e4")])
+
+[sub_resource type="Resource" id="phaselist"]
+script = ExtResource("4")
+phases = Array[Resource]([SubResource("phase1"), SubResource("phase2"), SubResource("phase3")])
+
+[resource]
+script = ExtResource("1")
+id = &"rift_boss_sickle_weaver"
+display_name = "Rift Boss — Sickle Weaver"
+hp = 300
+body_radius = 0.6
+move_speed = 2.2
+contact_damage = 0
+contact_cooldown_ticks = 30
+aggro_range = 14.0
+movement_policy = 4
+range_min = 3.5
+range_max = 6.0
+phases = SubResource("phaselist")
+xp_value = 150
+gold_min = 80
+gold_max = 140

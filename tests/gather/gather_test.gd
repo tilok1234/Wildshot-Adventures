@@ -1140,21 +1140,27 @@ func _init() -> void:
 	check(wm.players[0].gold > mgold0, "the mob's gold still banks (no ground drops)")
 	check(wm.rift_catches.is_empty(), "no fish drawn for a mob")
 
-	# 26. BOSS ROSTER + KIT PREMISES (sl-0180; AMENDED sl-0188): the
-	# eight pool defs sit at roster 30-37, phased. THE LAW AS AMENDED:
-	# rift bosses MAY MOVE AND BEHAVE (the designer's word — the
-	# standing-there statue is dead) but NO rift kit phase ever CHASES
-	# (policy 0): the one-room corner-trap law and the hooked-fish law
-	# both survive the amendment — orbit, reposition, and anchor are
-	# life; pursuit-to-contact in a one-room box is a trap.
+	# 26. BOSS ROSTER + KIT PREMISES (sl-0180; AMENDED sl-0188;
+	# AMENDED AGAIN sl-0200): the pool defs sit at roster 30-37 +
+	# 40-46, phased. THE LAW AS AMENDED TWICE: rift bosses MAY MOVE
+	# AND BEHAVE (sl-0188 — the standing-there statue is dead), and NO
+	# rift kit phase ever CHASES (policy 0) EXCEPT the sl-0200
+	# SANCTIONED PURSUER EXPERIMENT (the designer's word: "maybe 1
+	# or 2 pursuiters" — the band's honest landing is ONE: the
+	# second candidate, shadow_hound, failed the fairness floor
+	# across seven proof iterations and was REPORTED, not shipped) —
+	# for the pursuer, fairness is STRUCTURAL: every phase's pursuit
+	# speed sits STRICTLY below the 3.6 player floor (pressure,
+	# never cornering; the corner-audit proof walks the worst
+	# pocket). The hooked-fish law survives whole.
 	var loader_scenario := ScenarioDef.new()
 	loader_scenario.id = &"premise_probe"
 	var g26: RefCounted = Bitgrid.new()
 	g26.setup(12, 13)
 	var wl26: RefCounted = ScenarioLoader.build_world(loader_scenario, 1, g26)
 	check(
-		wl26.enemy_defs.size() == 40,
-		"roster carries 40 defs (30-37 = the boss pool, 38-39 = the dungeon mobs)"
+		wl26.enemy_defs.size() == 47,
+		"roster carries 47 defs (30-37 + 40-46 = the boss pool, 38-39 = the dungeon mobs)"
 	)
 	var boss_ids26: Array[String] = [
 		"twin_helix",
@@ -1173,9 +1179,44 @@ func _init() -> void:
 			"roster %d is rift_boss_%s" % [30 + bi26, boss_ids26[bi26]]
 		)
 		check(bdef.phases != null, "boss %s is phased" % boss_ids26[bi26])
-	for di26 in range(24, 38):
+	# THE PURSUER SANCTION (sl-0200): EXACTLY this kit id may carry
+	# policy 0 — and every phase of its must sit STRICTLY under the
+	# 3.6 floor. Everyone else in the rift lane still never chases.
+	# The sanction list is the amendment's whole text: a second
+	# chaser is a red gate, not a design option (shadow_hound tried
+	# and failed the floor — the record lives in the sl-0200 close).
+	var sanctioned_pursuers: Array[String] = [
+		"rift_boss_tide_stalker",
+	]
+	var pursuers_found: Array[String] = []
+	for di26 in range(24, 47):
+		if di26 == 38 or di26 == 39:
+			continue  # the dungeon mobs have their own block below
 		var rdef: Resource = wl26.enemy_defs[di26]
 		if rdef.phases == null:
+			continue
+		if String(rdef.id) in sanctioned_pursuers:
+			pursuers_found.append(String(rdef.id))
+			check(
+				int(rdef.movement_policy) == 0,
+				"%s base policy IS the sanctioned pursuit" % String(rdef.id)
+			)
+			check(
+				float(rdef.move_speed) < 3.6,
+				"%s base pursuit strictly under the 3.6 floor" % String(rdef.id)
+			)
+			for php: Resource in rdef.phases.phases:
+				check(
+					int(php.movement_policy) == 0,
+					"%s phase %s carries the pursuit" % [String(rdef.id), String(php.id)]
+				)
+				check(
+					float(php.move_speed) < 3.6,
+					(
+						"%s phase %s pursuit %.1f strictly under the 3.6 floor"
+						% [String(rdef.id), String(php.id), float(php.move_speed)]
+					)
+				)
 			continue
 		check(int(rdef.movement_policy) != 0, "%s base policy never chases" % String(rdef.id))
 		for ph26: Resource in rdef.phases.phases:
@@ -1183,6 +1224,10 @@ func _init() -> void:
 				int(ph26.movement_policy) != 0,
 				"%s phase %s never chases (one-room law)" % [String(rdef.id), String(ph26.id)]
 			)
+	check(
+		pursuers_found.size() == 1,
+		"exactly the one sanctioned pursuer experiment exists (found %d)" % pursuers_found.size()
+	)
 	# sl-0188 FAMILY PINS [P at build]: the eight kits split
 	# ROOM-PATTERN (ANCHOR 3 — the boss holds ground, the choreography
 	# fills the room; the anchored decel_wall also cannot leave the
@@ -1197,6 +1242,13 @@ func _init() -> void:
 		35: 3,  # zone_constellation — room-pattern
 		36: 4,  # cross_burst — behavioural
 		37: 3,  # pulse_lattice — room-pattern
+		40: 3,  # gap_carousel — room-pattern (sl-0200)
+		41: 4,  # sickle_weaver — behavioural (sl-0200)
+		42: 4,  # dart_skirmisher — behavioural (sl-0200)
+		43: 3,  # decel_orchard — room-pattern (sl-0200)
+		44: 4,  # halo_lasher — behavioural (sl-0200)
+		45: 0,  # tide_stalker — THE SANCTIONED PURSUER (sl-0200)
+		46: 3,  # pulse_cross — room-pattern (sl-0200)
 	}
 	for ki26: int in kit_families:
 		var kdef: Resource = wl26.enemy_defs[ki26]

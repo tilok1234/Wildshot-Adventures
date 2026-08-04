@@ -1,0 +1,23 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; POOL EXTENSION (sl-0200): Sickle Weaver — drawn from the nebula fight
+; pool at a cast (gather_step, rng_loot [T weights]); also dev-reachable
+; via the picker + `rift sickle_weaver`. No damage schedule (tester-safe).
+
+[resource]
+script = ExtResource("1")
+id = &"rift_boss_sickle_weaver"
+display_name = "STARHOOK BOSS: sickle weaver (nebula)"
+arena = "res://data/arena_rift.json"
+starhook_rift = true
+rift_line = "res://data/rift_line.tres"
+rift_biome = 0
+rift_rare = false
+player_spawn = Vector2(2.9, 6.5)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"rift_boss_sickle_weaver": PackedVector2Array(7.9, 6.5)
+}
+default_seed = 23
