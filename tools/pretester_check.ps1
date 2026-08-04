@@ -158,6 +158,7 @@ $tests = @(
     @("dungeon walk (sl-0186 render+traverse)", "tests/rift_dungeon/dungeon_walk_test.gd"),
     @("character sheet (parity==recompute)", "tests/char_sheet/char_sheet_test.gd"),
     @("npc + icon wiring (seam 4)", "tests/wiring/npc_icon_wiring_test.gd"),
+    @("console swallow (sl-0206 input law)", "tests/console_swallow/console_swallow_test.gd"),
     @("determinism smoke (all contracts)", "tests/determinism/determinism_smoke.gd"),
     @("golden replays x10", "tests/replay_fixtures/verify_replays.gd")
 )

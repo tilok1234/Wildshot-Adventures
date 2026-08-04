@@ -332,12 +332,20 @@ static func _scenario_minimap_path(scenario: Resource) -> String:
 
 
 func _process(_delta: float) -> void:
-	# M8 comments box: while it has keyboard focus, letter hotkeys and
-	# gameplay input are suppressed — a 't' mid-sentence must never
-	# reset the scene, WASD must not move the player (the sampler sends
-	# neutral frames). Esc still reaches the driver's pause toggle by
-	# design: leaving the box and resuming are the same key.
-	var typing := comments_box != null and comments_box.has_focus()
+	# THE INPUT-SWALLOW LAW (sl-0206; grows the M8 comments-box rule):
+	# console-open swallows ALL non-console input — the letter hotkeys
+	# below AND gameplay (the sampler sends neutral frames) — exactly
+	# like comments-box focus. A 't' typed into the console must never
+	# reset the scene; WASD must not move the player. Close restores.
+	# Sanctioned exceptions: the console toggle itself stays live while
+	# the console is open (the close key IS console input; only the
+	# comments box swallows it), and Esc reaches the driver by design —
+	# it closes the console first via esc_intercept (the sl-0145
+	# menu-first law), and leaving the comments box and resuming are
+	# the same key.
+	var console_open := console != null and console.visible
+	var box_typing := comments_box != null and comments_box.has_focus()
+	var typing := console_open or box_typing
 	if driver != null and driver.sampler != null:
 		# sl-0128: the C pane sanctions mouse — while the cursor rides
 		# the OPEN sheet (or the sl-0129 loot panel), gameplay input
@@ -418,8 +426,10 @@ func _process(_delta: float) -> void:
 		return
 	# Alt+Enter: borderless fullscreen — windowed-mode compositing is a
 	# known stutter source on Windows; this is the one-key A/B for it.
-	# Choice persists (§2.13 window key).
-	if Input.is_action_just_pressed("fullscreen_toggle"):
+	# Choice persists (§2.13 window key). Swallowed while the console
+	# is open like every other binding (sl-0206); the comments box
+	# never suppressed the chord and keeps that shipped behavior.
+	if not console_open and Input.is_action_just_pressed("fullscreen_toggle"):
 		var fs := DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN
 		DisplayServer.window_set_mode(
 			DisplayServer.WINDOW_MODE_WINDOWED if fs else DisplayServer.WINDOW_MODE_FULLSCREEN
@@ -470,7 +480,9 @@ func _process(_delta: float) -> void:
 						print(String(door.label))
 						get_tree().reload_current_scene()
 						return
-	if not typing and console != null and Input.is_action_just_pressed("console_toggle"):
+	# `not box_typing`, deliberately not `not typing`: backtick must
+	# still CLOSE the open console (sl-0206 sanctioned exception).
+	if not box_typing and console != null and Input.is_action_just_pressed("console_toggle"):
 		console.toggle()
 	if not typing and hitboxes != null and Input.is_action_just_pressed("hitbox_toggle"):
 		hitboxes.visible = not hitboxes.visible
@@ -481,6 +493,12 @@ func _process(_delta: float) -> void:
 	if dev_tools and not typing and Input.is_action_just_pressed("map_toggle"):
 		if map_overlay != null:
 			map_overlay.cycle()
+	# sl-0206: the GIF key polls HERE, not in the recorder — pollers
+	# live where the swallow guard lives (a bare poll in the recorder
+	# leaked G into console typing; the console_swallow test now REDs
+	# on any Input poll outside the sanctioned poller files).
+	if not typing and gif_recorder != null and Input.is_action_just_pressed("gif_dump"):
+		gif_recorder.toggle_recording()
 	# Event-console tail (§2.10): only while the console is open.
 	if console != null and console.visible and _console_events != "off":
 		for ev: Dictionary in driver.frame_events:
@@ -1165,12 +1183,16 @@ func _console_verdict(tokens: PackedStringArray) -> void:
 
 
 ## ESC-CLOSES-MENU-FIRST (sl-0145): one close per press, topmost
-## first — the sheet's drop confirm, then the offer dialogue, then
-## the menu itself, then open stations. False = nothing was open
-## (the press means pause). The walk-over loot readout is exempt
-## (not a menu). Fed to the driver as esc_intercept; the O handler
-## calls it too.
+## first — the console (sl-0206: topmost of all — close restores
+## swallowed input), the sheet's drop confirm, then the offer
+## dialogue, then the menu itself, then open stations. False =
+## nothing was open (the press means pause). The walk-over loot
+## readout is exempt (not a menu). Fed to the driver as
+## esc_intercept; the O handler calls it too.
 func _close_topmost_menu() -> bool:
+	if console != null and console.visible:
+		console.toggle()
+		return true
 	if char_sheet != null and char_sheet.close_topmost():
 		return true
 	if quest_offer != null and quest_offer.visible:

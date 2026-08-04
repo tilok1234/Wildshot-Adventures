@@ -44,15 +44,21 @@ for p, text in repo_gd.items():
     if p.name != "main.gd" and 'has_feature("tester")' in text:
         fail(f'has_feature("tester") outside main.gd (second gate?): {p.relative_to(REPO)}')
 
-# 2. Debug console: constructed exactly once, inside an `if dev_tools:` block.
+# 2. Debug console: constructed exactly once in main, inside an
+#    `if dev_tools:` block, plus the sl-0206 input-swallow test harness
+#    (tests/* is excluded from the tester artifact — the exclusion
+#    filter itself is pinned in section 9 below).
 ctor_lines = [i for i, l in enumerate(main_lines) if "DebugConsole.new()" in l]
-all_ctors = [
+all_ctors = sorted(
     (p.relative_to(REPO), text.count("DebugConsole.new()"))
     for p, text in repo_gd.items()
     if "DebugConsole.new()" in text
-]
-if [(Path("game/main.gd"), 1)] != [(Path(str(f)), c) for f, c in all_ctors]:
-    fail(f"DebugConsole constructed outside the one gated site: {all_ctors}")
+)
+if all_ctors != [
+    (Path("game/main.gd"), 1),
+    (Path("tests/console_swallow/console_swallow_test.gd"), 1),
+]:
+    fail(f"DebugConsole constructed outside the sanctioned sites: {all_ctors}")
 if ctor_lines:
     i = ctor_lines[0]
     ctor_indent = len(main_lines[i]) - len(main_lines[i].lstrip("\t"))

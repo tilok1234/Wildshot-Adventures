@@ -272,6 +272,13 @@ jobs:
       - name: NPC + icon wiring
         run: ~/godot/godot --headless --path . --script tests/wiring/npc_icon_wiring_test.gd
 
+      # sl-0206: THE INPUT-SWALLOW LAW — console-open swallows every
+      # non-console binding (sampler neutral frames + guarded polls);
+      # zero device polls outside the sanctioned poller files.
+      # Linux-safe (Input action state + source scans).
+      - name: Console input swallow
+        run: ~/godot/godot --headless --path . --script tests/console_swallow/console_swallow_test.gd
+
       - name: Upload diff artifacts on failure
         if: failure()
         uses: actions/upload-artifact@v4
