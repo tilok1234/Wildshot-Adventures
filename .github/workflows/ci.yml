@@ -170,6 +170,15 @@ jobs:
           unzip -q /tmp/godot.zip -d ~/godot
           mv ~/godot/Godot_v4.6.2-stable_linux.x86_64 ~/godot/godot
 
+      # sl-0201 (second layer): --script runs load() imported textures
+      # through .godot/imported — a fresh checkout has none, so texture
+      # rows nulled (crosshair aborted+idled 6h at GitHub's default;
+      # feedback failed clean on the theme's uikit buttons). Build the
+      # cache once, runner-local — CI then runs the same shape as the
+      # local tree. A wedged import dies at the job timeout.
+      - name: Import pass (build .godot/imported)
+        run: ~/godot/godot --headless --path . --import
+
       - name: Pixel-match acceptance (GAME-GUIDE §4 step 1)
         run: ~/godot/godot --headless --path . --script tests/pixel_match/pixel_match.gd
 
