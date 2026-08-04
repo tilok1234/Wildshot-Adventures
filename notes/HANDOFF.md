@@ -1,6 +1,64 @@
-# Session Handoff — updated 2026-08-04 (THE POOL EXTENSION sl-0200: 15 kits, ONE sanctioned pursuer + CI GREEN sl-0201; the foraging build + refinement round 1 landed earlier the same day)
+# Session Handoff — updated 2026-08-05 (THE ACTIVITY PASS sl-0216/0218/0219: vocabulary guard + quest activity indicators + the chase-leash diagnose-then-tune; resolutions sl-0224..0226)
 
-> **NEWEST FIRST — sl-0200 + sl-0201 (2026-08-04 afternoon,
+> **NEWEST FIRST — THE ACTIVITY PASS (2026-08-05 night, hands-free;
+> four sealed gated seams aa65ec7 / 7b6b9a7 / 3f2a996 / d2900e8;
+> resolutions sl-0224..0226; SERIAL 27 / WSR v3 UNTOUCHED all
+> session):** (1) **THE DUNGEON VOCABULARY GUARD** (sl-0216,
+> view/console): every starhook surface says RIFT DUNGEON (picker row
+> + both toasts); the bare `dungeon` console jump RETIRED into a
+> reservation hint (the plain word belongs to future overworld
+> dungeons — the Warren class); the inverted phrase
+> (dungeon-before-rift) purged from 12 living-source sites and BANNED
+> by scan (dungeon_walk_test §4: concatenation-built pattern per the
+> sl-0123 precedent + starhook display_name rule + main.gd
+> one-route/hint text pins; NEGATIVE-TESTED x3). File/test ids STAY
+> [P] (already rift_dungeon_* prefixed). (2) **QUEST ACTIVITY
+> INDICATORS** (sl-0218, view over quest data, zero sim): quest-mob
+> marks (game/views/quest_mob_marks.gd, both profiles, HP_BARS band,
+> CORE-35 general presentation; tracker-identical binding — tracked
+> narrows, none = all carried [T]; a finished errand un-marks; KILL
+> only) — ships AMBER DOT (sl-0184 objective family; green belongs
+> to turn-in) with the designer's green-dot lean + an amber chevron
+> captured beside it in evidence, style = one line [T]; kill/collect
+> soft REGIONS on both map scales (map_overlay.quest_regions) — **the
+> routed whole-species centroid REFUTED BY DATA** (93 matching sites
+> spread p50=106 t; re-tabled species live zone-wide) so the honest
+> neighbor shipped: single-linkage NEAREST CLUSTER from the quest's
+> own giver (LINK 15 / CAP 10 / PAD 4 / clamp 10-30 [T]; west_road's
+> blob lands WEST of the station — data agreeing with fiction);
+> COLLECT = every populated site; the sl-0184 honest gap closes;
+> exact-geometry model pins in dev_map_test; lockdown lint's
+> MapOverlay allowlist grew with the probe (its catch); SIX evidence
+> PNGs committed + read (the woken meadow camp: a marked bandit
+> beside unmarked ranged kin — the discrimination in one frame).
+> (3) **THE CHASE-LEASH** (sl-0219, diagnose-first then sim values):
+> the gang train MEASURED on a real five-site b77 corridor (committed
+> probe tests/chase_leash/ + reports/chase_leash_diagnosis.md) —
+> aggro 12.0 UNIFORM, IDLE-only; NO player-distance give-up existed;
+> the tether walk-home STOPPED AT THE RIM (census max home-dist
+> EXACTLY 12.0; 10/20 rim-parked); engagement saturates in 6 s and
+> holds 27-30 of 30-39 for 48 s with ZERO decay, near-8 gang
+> 24/24/24 identically every lap, 21 sustained standing, 15 still
+> engaged through a 5-s hold 20+ t away (terrain-wedged chasers
+> press forever). THE TUNE: SiteStep.GIVE_UP_RADIUS 18.0 [T]
+> (hysteresis structural — 18 > aggro 12/14, pinned vs the real
+> roster; a windup completes, Law 8) + RETURN_RADIUS 5.0 [T] (full
+> re-center past the rim; > spawn ring 4.4 — wakes never shuffle),
+> SITE MEMBERS ONLY — labs/Warren/rift-dungeon/proofs keep
+> chase-forever BY CONSTRUCTION, PROVEN: the full 121-run battery
+> reproduced BYTE-IDENTICAL (zero re-records; goldens + smoke
+> byte-identical; the three canary repro strays = the recorded
+> pool-race noise class, restored). AFTER (same probe/seed):
+> off-road engaged 15→4 (each explainable as live proximity),
+> rim-parked 10→3, standing near-8 21→22 (pressure UNCHANGED by
+> design) — the fairness frame exactly. living_world_test +8 pins.
+> Gates: -SkipBattery 3.0 min x3 + the gotcha-43 pair on the sim
+> seam (diagnostic full → commit → SEAL full ALL GREEN 14.6 min on
+> the committed tree). sl-0213 stays its own word. **NO feel
+> verdicts — mark style, region params, both leash radii: ALL [T];
+> the designer's run around the map is the acceptance.**
+
+> **PREVIOUS — sl-0200 + sl-0201 (2026-08-04 afternoon,
 > hands-free):** (0a) **CI IS GREEN FOR THE FIRST TIME IN THE REPO'S
 > RECORDED RUN HISTORY** — the 6h auto-cancel on every push since
 > 08-01 was the CROSSHAIR row (gotcha-47's CI sibling: load() of the
@@ -269,7 +327,7 @@ clean seam.
   recordings are BIG (~80 MB/30 s) — cut posting-size versions with
   ffmpeg fps/scale filters on request.
 
-## §1 Where things stand (2026-08-04, refinement round 1 landed)
+## §1 Where things stand (2026-08-05, the activity pass landed)
 
 **Everything routed through sl-0208 is LANDED AND PUSHED.** THE
 COMBAT RESHAPE (paste B; sl-0208 then sl-0207; game df624d4/1f6e964/
@@ -826,6 +884,19 @@ names; cap runs use --speed=4.14 + an explicit --out=..._cap115.json).
     reproduce, and true-body gains land as pure margin. A future
     hurtbox tune rides the envelope for free; genuinely retuning the
     PLANNER is its own deliberate re-baseline, never a side effect.
+
+50. **Seconds derive from DT — the sim runs 60 tps (sl-0219a).** The
+    sl-0115 merge converted 30→60 tps (sim_world DT = 1/60); tick
+    counts are the truth in every probe and report, and a seconds
+    claim converted at the old rate ships silently wrong (the
+    chase-leash diagnosis said "95 s" for 2855 ticks for an hour —
+    corrected to 48 s). Convert through DT, never from memory.
+    Sibling trap re-earned the same hour: `var x := <duck-typed
+    expr>` is a PARSE error ("cannot infer") that kills every
+    DEPENDENT script — the failing checks then scatter across
+    UNRELATED test sections and read as logic bugs (the gotcha-1/45
+    class); run the test unpiped and grep SCRIPT ERROR before
+    believing any partial-fail set.
 
 ## Ledger + scope
 

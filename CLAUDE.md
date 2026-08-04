@@ -2872,3 +2872,68 @@ STRUCTURAL: smoke pair unmoved, goldens verify unchanged, battery
 byte-identical — the seam provably never touches the legacy lane.
 Seal ALL GREEN 13.9 min. NO feel verdicts — every rate, ladder,
 breakpoint, price [T]; the designer's trigger finger rules.
+
+THE ACTIVITY PASS 2026-08-05 (PASTE C: sl-0216/0218/0219 as four
+sealed gated seams aa65ec7 / 7b6b9a7 / 3f2a996 / d2900e8, all pushed;
+resolutions sl-0224..0226; SERIAL 27 / WSR v3 UNTOUCHED all session —
+the C2 tune is values + state-machine reads, zero format growth):
+**sl-0216 THE DUNGEON VOCABULARY GUARD** (view/console): every
+starhook surface says RIFT DUNGEON (picker row + both console
+toasts); the bare `dungeon` console jump RETIRED into a reservation
+hint (the plain word is reserved for future overworld dungeons — the
+Warren keeps "(Green dungeon)"); the inverted phrase
+(dungeon-before-rift) purged from 12 living-source sites and BANNED
+by scan — dungeon_walk_test §4 (concatenation-built pattern, the
+sl-0123 precedent; starhook display_name rule; main.gd
+one-route-site + hint text pins), NEGATIVE-TESTED x3; file/test ids
+STAY [P] (already rift_dungeon_* prefixed). **sl-0218 QUEST ACTIVITY
+INDICATORS** (view over quest data, zero sim): quest-mob marks
+(game/views/quest_mob_marks.gd, both profiles, HP_BARS band, CORE-35
+general presentation) — a mob serving a carried unfinished KILL
+errand wears a small mark above its bar; binding mirrors the HUD
+tracker/map EXACTLY (tracked narrows, none = all carried [T]);
+finished errand un-marks; ships AMBER DOT (sl-0184 objective family —
+green belongs to turn-in) with the designer's green-dot lean + an
+amber chevron captured beside it (style = one line [T]); kill/collect
+SOFT REGIONS on both map scales (map_overlay.quest_regions — closes
+the sl-0184 honest gap): THE ROUTED whole-species centroid REFUTED BY
+DATA (93 matching sites spread p50=106 t — re-tabled species live
+zone-wide; one disc washes the map) → the honest neighbor ships:
+single-linkage NEAREST CLUSTER from the quest's OWN giver (LINK 15 /
+CAP 10 / PAD 4 / clamp 10-30 [T]; west_road's blob lands WEST of the
+station — the data agrees with the fiction); COLLECT = every
+populated site; VISIT keeps its diamond; exact-geometry model pins in
+dev_map_test (synthetic sites); lockdown lint's MapOverlay allowlist
+grew with the probe (its catch); SIX evidence PNGs committed + read
+(the woken meadow camp: a marked bandit beside unmarked ranged kin —
+the discrimination in one frame). **sl-0219 THE CHASE-LEASH**
+(DIAGNOSE FIRST, then sim values): the gang train MEASURED on a real
+five-site b77 corridor (committed probe tests/chase_leash/ + report
+reports/chase_leash_diagnosis.md) — aggro 12.0 UNIFORM, IDLE-only,
+NO player-distance give-up existed; the tether walk-home STOPPED AT
+THE RIM (census max home-dist EXACTLY 12.0; 10/20 rim-parked facing
+the road); engagement saturates in 6 s, holds 27-30 of 30-39 for
+48 s with ZERO decay, near-8 gang 24/24/24 identically every lap, 21
+sustained standing, 15 still engaged through a 5-s hold 20+ t away
+(terrain-wedged chasers press forever). THE TUNE:
+SiteStep.GIVE_UP_RADIUS 18.0 [T] (engaged member disengages beyond
+it; hysteresis structural — 18 > aggro 12/14, pinned against the
+real imported roster; a windup completes, Law 8) +
+SiteStep.RETURN_RADIUS 5.0 [T] (full re-center past the rim; > spawn
+ring 4.4 — wakes never shuffle, test-pinned); SITE MEMBERS ONLY —
+labs/Warren/rift-dungeon/proofs keep chase-forever BY CONSTRUCTION,
+PROVEN: the full 121-run battery reproduced BYTE-IDENTICAL (zero
+re-records; goldens + smoke byte-identical; the three canary repro
+strays = the recorded pool-race noise class, restored). AFTER (same
+probe/seed): off-road engaged 15→4 (each explainable as live
+proximity), rim-parked 10→3, max home-dist 12.0-parked →
+10.2-transient, standing near-8 21→22 (pressure UNCHANGED by
+design) — the fairness frame exactly. living_world_test +8 pins.
+TICK-RATE LESSON (gotcha 50): seconds derive from DT (60 tps since
+sl-0115) — the diagnosis first said 95 s for 2855 t, corrected to
+48 s. Gates: -SkipBattery 3.0 min x3 (view seams + diagnosis) + the
+gotcha-43 pair on the sim seam (diagnostic full → commit d2900e8 →
+SEAL full ALL GREEN on the committed tree). sl-0213 (close-fighter
+re-arm) NOT folded in, exactly as routed. NO feel verdicts — mark
+style, region params, GIVE_UP/RETURN radii: ALL [T]; the designer's
+run around the map is the acceptance.
