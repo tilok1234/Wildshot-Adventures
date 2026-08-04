@@ -61,7 +61,13 @@ const DT := 1.0 / 60.0
 ## 26 = sl-0177/0178 THE GEAR SEAM: the fish wallet (species-currency
 ## in-sim so tackle spends record), rod/tackle ownership masks, and
 ## the equipped chest/helm rows on PlayerState.
-const SERIAL_VERSION := 26
+## 27 = sl-0198 THE FORAGING BUILD: ambient forage nodes (pos +
+## species, consumed on gather — the rift-ambient shape), the gather
+## bar (forage_target + forage_ticks on PlayerState), and the
+## forage-materials wallet (forage_mats, the fish doctrine). The
+## sl-0105 stillness fields (gather_still_ticks / gather_rearm)
+## RETIRED with their verb.
+const SERIAL_VERSION := 27
 
 ## Damage-source pattern id for the scenario-declared test damage
 ## schedule (§2.11 elite transition proofs; planning log 2026-07-28).
@@ -103,6 +109,8 @@ enum Command {
 	GRANT_TACKLE,
 	ADD_FISH,
 	TELEPORT,
+	# sl-0198: forage-kin grant (the ADD_FISH mirror; console-only).
+	ADD_FORAGE,
 }
 
 ## §3.2 move-speed tuning band. The sim-side clamp means NO path — debug
@@ -248,11 +256,28 @@ var unique_defs: Array = []
 ## Quest definitions (S1 seam 5): definitions, excluded from
 ## serialize; append-only order is the mask/profile contract.
 var quest_defs: Array = []
-## S1 seam 6: FORAGE cell mask (definitions; null = the verb is inert
-## — every arena/proof world) and STARHOOK rift nodes (sl-0105):
-## node CELLS are definitions; per-node respawn ticks are SERIALIZED
-## state (a cast consumes the node until its timer lands).
-var forage_grid: RefCounted = null
+## sl-0198 THE FORAGING BUILD. Definitions (excluded from serialize —
+## the pack reproduces them): the CANDIDATE POOL = every forage-prop
+## cell (~1.9k on b77; candidacy, NEVER simultaneity — the designer's
+## word), parallel species indexes, and the derived species id list
+## (gather_grids.FORAGE_SPECIES order, append-only; profile keys +
+## the wallet index space ride it). forage_ambient = this world rolls
+## ambient forage-node spawns (the ambient-rift spawner's SECOND
+## rng_misc consumer; tuning in balance_frame forage [T]). Empty pool
+## = the verb is inert (every arena/proof world by construction).
+var forage_pool_cells: PackedVector2Array = PackedVector2Array()
+var forage_pool_species: PackedInt32Array = PackedInt32Array()
+var forage_species_ids: Array[String] = []
+var forage_ambient: bool = false
+## sl-0198 SERIALIZED STATE (SERIAL 27): live forage nodes — ambient
+## world state exactly like rift_ambient_pos (spawned by gather_step,
+## consumed on a completed gather; NO per-node respawn timers — the
+## spawner tops the world up elsewhere over time).
+var forage_nodes_pos: PackedVector2Array = PackedVector2Array()
+var forage_nodes_species: PackedInt32Array = PackedInt32Array()
+## STARHOOK rift nodes (S1 seam 6, sl-0105): node CELLS are
+## definitions; per-node respawn ticks are SERIALIZED state (a cast
+## consumes the node until its timer lands).
 var rift_nodes: PackedVector2Array = PackedVector2Array()
 var rift_node_respawn_at: PackedInt64Array = PackedInt64Array()
 ## STARHOOK v2 (sl-0115; drag cut by sl-0123 — the pull lives in THE
@@ -372,9 +397,14 @@ func set_quests(defs: Array) -> void:
 	quest_defs = defs
 
 
-## Setup-phase (S1 seam 6): the forage cell mask — definitions.
-func set_forage_grid(grid: RefCounted) -> void:
-	forage_grid = grid
+## Setup-phase (sl-0198): the forage candidate pool + species
+## vocabulary — definitions (pack-derived, deterministic order).
+func set_forage_pool(
+	cells: PackedVector2Array, species: PackedInt32Array, ids: Array[String]
+) -> void:
+	forage_pool_cells = cells
+	forage_pool_species = species
+	forage_species_ids = ids
 
 
 ## Setup-phase (S1 seam 6, sl-0105): rift node cells — definitions;
@@ -592,7 +622,9 @@ func step(frames: Array) -> void:
 	# sl-0116: the bag's recorded ops (equip/drop/de-equip) — after
 	# LootStep so a same-tick pickup is already in the bag.
 	BagStep.run(self)
-	# S1 seam 6: the patience verbs (forage yields, rift casts).
+	# S1 seam 6 (sl-0198 rebuild): rift casts + the forage gather bar
+	# + both ambient spawners (after every damage emitter — the bar's
+	# hit-interrupt reads this tick's own DAMAGE_APPLIED events).
 	GatherStep.run(self)
 	# S1 seam 5: quests read the tick's OWN events (kills, pickups) —
 	# last by construction, after every emitter.
@@ -744,6 +776,12 @@ func serialize() -> PackedByteArray:
 		buf.put_u8(int(cd.biome))
 		buf.put_u8(int(cd.fish))
 		buf.put_u8(1 if bool(cd.rare) else 0)
+	# sl-0198 (SERIAL 27): live forage nodes — ambient world state.
+	buf.put_u16(forage_nodes_pos.size())
+	for fi in forage_nodes_pos.size():
+		buf.put_double(forage_nodes_pos[fi].x)
+		buf.put_double(forage_nodes_pos[fi].y)
+		buf.put_u8(forage_nodes_species[fi])
 	return buf.data_array
 
 
@@ -811,6 +849,8 @@ func _drain_commands() -> void:
 				_cmd_grant_tackle(int(cmd.get("player", 0)))
 			Command.ADD_FISH:
 				_cmd_add_fish(int(cmd.get("player", 0)), int(cmd.get("count", 0)))
+			Command.ADD_FORAGE:
+				_cmd_add_forage(int(cmd.get("player", 0)), int(cmd.get("count", 0)))
 			Command.TELEPORT:
 				_cmd_teleport(int(cmd.get("player", 0)), cmd.get("pos", Vector2.ZERO))
 	_commands.clear()
@@ -915,6 +955,25 @@ func _cmd_add_fish(pi: int, count: int) -> void:
 			p.fish[si] = 0
 	for si in species:
 		p.fish[si] += count
+	replay_dirty = true
+
+
+## N of every forage species (shop-later testing) — the wallet sized
+## from the pool's own derived vocabulary; poolless worlds no-op.
+func _cmd_add_forage(pi: int, count: int) -> void:
+	if pi < 0 or pi >= players.size() or count <= 0:
+		return
+	var species := forage_species_ids.size()
+	if species <= 0:
+		return
+	var p: RefCounted = players[pi]
+	if p.forage_mats.size() < species:
+		var old: int = p.forage_mats.size()
+		p.forage_mats.resize(species)
+		for si in range(old, species):
+			p.forage_mats[si] = 0
+	for si in species:
+		p.forage_mats[si] = mini(p.forage_mats[si] + count, 65535)
 	replay_dirty = true
 
 

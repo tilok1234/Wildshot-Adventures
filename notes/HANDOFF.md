@@ -1,4 +1,4 @@
-# Session Handoff — updated 2026-08-04 (REFINEMENT ROUND 1 LANDED: sl-0186..0191 built + gated + pushed)
+# Session Handoff — updated 2026-08-04 (THE FORAGING BUILD LANDED: sl-0198 at SERIAL 27; refinement round 1 landed earlier the same day)
 
 > **WHERE THE PROJECT STANDS IN ONE BREATH:** REFINEMENT ROUND 1 IS
 > LANDED, GATED, AND PUSHED (2026-08-04 night session; resolutions
@@ -37,9 +37,17 @@
 > auto-PROVISIONAL — the god contract; zero format growth; smoke pair
 > byte-identical). NO feel verdicts anywhere — every number/key/name
 > [T]; the designer's replay of the round is the next word. Starhook
-> names still ride the COSMIC VOCABULARY RAIL (sl-0182). Foraging
-> (sl-0168, spec-complete) still builds behind the round at the next
-> free SERIAL.
+> names still ride the COSMIC VOCABULARY RAIL (sl-0182). **(5) THE
+> FORAGING BUILD LANDED BEHIND THE ROUND (sl-0198, the sl-0168 spec;
+> SERIAL 26→27, WSR v3 untouched)** — F at a shimmer-marked ambient
+> forage node → the gather bar (interrupts on move/hit) → a loot bag
+> of per-species MATERIALS into the forage WALLET (zero bag
+> capacity; profile by species name, ghost-tolerant; visible as
+> plain-named inventory tiles under the bag). The stillness verb +
+> anti-AFK rule RETIRED. Nodes spawn ambiently on the ~1.9k-cell
+> prop pool (candidacy never simultaneity — cap starts 15 [T] in
+> the ruled 12-18 band, world-wide); the old 12 forage POIs are
+> ordinary pool members.
 
 **COLD START — this handoff assumes NO prior context.** Read the game
 repo's `CLAUDE.md` first (auto-loads; BINDING contract + the
@@ -49,20 +57,21 @@ carries the current session state and the hard-won lessons the
 contract doesn't. Nothing repo-side gates on the Claude account; git
 identity and gh auth are machine-local; this file + `CLAUDE.md` +
 planning `docs/23` are the complete context carrier. (Serialization is
-**SERIAL 26** — 23 the bag, 24 loot bags, 25 the bank, 26 the gear
-seam (fish wallet + rod/tackle owned masks + chest/helm equips on
-PlayerState); the boss/dungeon batch added ZERO serialized state.
-**WSR VERSION 3** (InputFrame 17 bytes; v2 replays refuse loudly —
-the tackle ops at 144..191 ride the EXISTING recorded byte). NEXT
-BUMP IS **27**. Smoke record pair since SERIAL 26: 12dc8be9b6f9f8af /
-e2acf522410e56b0.)
+**SERIAL 27** — 23 the bag, 24 loot bags, 25 the bank, 26 the gear
+seam, 27 THE FORAGING BUILD (sl-0198: ambient forage nodes
+pos+species on the world; the gather bar target+ticks + the
+forage_mats wallet on PlayerState; the sl-0105 stillness fields
+RETIRED). **WSR VERSION 3** (InputFrame 17 bytes; v2 replays refuse
+loudly — the foraging verb rides EXISTING inputs, zero format
+growth). NEXT BUMP IS **28**. Smoke record pair since SERIAL 27:
+316bc4c7cc5004be / 30fa8ce4fb8f7b27.)
 
 ## §0 What this project is (60 seconds)
 
 Wildshot Adventures: a solo-developed RotMG-inspired top-down realtime
 bullet-hell ARPG in **Godot 4.6.2 (pinned), typed GDScript, custom
 deterministic sim, no Godot physics in gameplay**. Serialization
-SERIAL 26 (next bump 27); replay format WSR v3; goldens current;
+SERIAL 27 (next bump 28); replay format WSR v3; goldens current;
 local gates green.
 
 Current phase: **THE SLICE ERA** (sl-0098: the world is the test).
@@ -172,6 +181,13 @@ does not start without its own word.**
   (occlusion structural 35>32>30). KILL/COLLECT still carry no
   objective cell; the capital giver still has no body — both
   planning's calls.
+- **THE FORAGING BUILD (sl-0198, SERIAL 27)**: F-press gather bar at
+  shimmer-marked ambient nodes (the rift spawner's second rng_misc
+  consumer; the ~1.9k prop cells = candidacy, cap 15 [T] world-wide);
+  materials land per-species in the forage WALLET (zero bag capacity,
+  profile by name, ghost-tolerant; plain-named inventory tiles). The
+  sl-0105 stillness verb + anti-AFK RETIRED. The trade-in shop is
+  FUTURE.
 
 ## §0.5 Working with the designer
 
@@ -256,7 +272,11 @@ the toolbelt put every fight one console line away at proper gear.
   acquisition shapes — free-spine-vs-purchase and rare-drop rates),
   the boss pool weights ("a boss sighting is an event" — flip the
   weights if it isn't), the constellation + rifter panel, the menu
-  pass keys/timings/placements, quest markers' shapes/colors/lift.
+  pass keys/timings/placements, quest markers' shapes/colors/lift,
+  **FORAGING IN GREEN (sl-0198)**: the shimmer hunt (cap 15 /
+  interval / chance), the bar length (45t), the 1-2 yields, the
+  shimmer look — every knob [T] in the balance_frame `forage`
+  block; `forage tp` jumps to a live shimmer for a quick look.
 - **LIVING IN GREEN** — the chapter gate: feel one-liners as they
   play; batch tuning numbers into single gate runs.
 - **THE S2 GO WORD** — the next chapter starts only on its routing.
@@ -287,10 +307,11 @@ the toolbelt put every fight one console line away at proper gear.
   bosses by the designer's word; the fairness floor is absolute).
   (4) The console jump family: every boss kit by id + dungeons + a
   plain catch + a list form (the `dungeon` one-flag precedent).
-- **THE FORAGING SEAM (sl-0168, spec-complete)**: builds at the
-  NEXT FREE SERIAL under full re-baseline at its slot (F-press +
-  gather bar + materials-as-species-currency + ambient spots; the
-  sizing record + postscript: notes/FORAGE_SEAM_SIZING.md).
+- **THE FORAGING SEAM (sl-0168) — BUILT (sl-0198, SERIAL 27)**: the
+  F-press gather bar + ambient shimmer nodes + materials-as-
+  species-currency landed whole; the cosmetic TRADE-IN SHOP stays
+  FUTURE (the counts store correctly from day one; the sizing
+  record: notes/FORAGE_SEAM_SIZING.md).
 - **Queued-not-routed:** the PLAYER HITBOX (sl-0146, deferred by
   sl-0148 — its own future SIM seam with the before/after margins
   table); class trees (sl-0169 partial: pattern law + 5/15/25
@@ -326,7 +347,7 @@ Before every commit, per touched area:
   re-grep before editing formatted files).
 - smoke: `godot_console --headless --path . --script tests/determinism/determinism_smoke.gd`.
 - goldens: any sim/serialization change ⇒ bump SERIAL_VERSION
-  (next bump is **27**), regenerate + verify ×10, say so in the
+  (next bump is **28**), regenerate + verify ×10, say so in the
   commit. InputFrame layout changes additionally bump
   `input/replay_format.gd` VERSION (now **3**; old .wsr refuse
   loudly; committed repro/golden replays re-record deliberately
@@ -364,7 +385,7 @@ Before every commit, per touched area:
   fast signal (gotcha #26).
 
 ### Canonical proof battery (state 2026-08-04 — 54 rows / 105 runs;
-### POLICY OF RECORD = REACTIVE; SERIAL 26; WSR v3; Warden 575;
+### POLICY OF RECORD = REACTIVE; SERIAL 27; WSR v3; Warden 575;
 ### b65 flood 34641; b77 current).
 ### TWO LANES FOREVER (docs/22 block 6): floor --speed=3.6 (the
 ### CORE-53 floor), cap --speed=4.14 (the 115 hard cap; reports keep
@@ -423,7 +444,9 @@ names; cap runs use --speed=4.14 + an explicit --out=..._cap115.json).
    offer, the C menu, open stations — via driver.esc_intercept;
    NOTHING open = the one pause+options menu, the sl-0109 law
    beneath; the CORE-31 pause bit stays the driver's), **F interact**
-   (pickups-into-bag / givers offer+turn-in / rift casts /
+   (pickups-into-bag / givers offer+turn-in / rift casts / FORAGE
+   GATHERS at shimmer nodes (sl-0198: the bar interrupts on move/hit;
+   a rift node wins a shared press) /
    BANK+VENDOR+TACKLE MENUS — stations never walk-over now,
    sl-0145/0147; F-as-confirm accepts in the open offer window),
    **C = THE MENU** (ONE window, two tabs: character + quest log;
@@ -435,7 +458,8 @@ names; cap runs use --speed=4.14 + an explicit --out=..._cap115.json).
    (rifts; cycles SELECTABLE rods — level + ownership), J replay,
    T reset, M meter, H hitboxes, N map (dev-only, pack scenarios
    only), ` console (dev-only; `dungeon` jumps the dungeon path —
-   sl-0189 grows this into the full jump family), Alt+Enter
+   sl-0189 grew this into the full jump family; sl-0198 adds
+   `forage <n>|tp`), Alt+Enter
    fullscreen, Space = ability AND respawn-now while dead
    (persistent worlds). E stays RATIFIED autofire — never rebind it
    casually. Any-input SKIPS the unique reveal while it plays.

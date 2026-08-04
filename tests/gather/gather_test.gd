@@ -1,9 +1,23 @@
 extends SceneTree
-## S1 seam 6 contracts, REBUILT by sl-0115 (STARHOOK v2 — prototype #2
-## rules the shape; deliberate re-baseline with the seam):
-## - FORAGING (unchanged): stillness 90 near a forage cell yields via
-##   rng_loot; movement resets; ANTI-AFK rearm (one yield per 4-tile
-##   walk);
+## S1 seam 6 contracts, REBUILT by sl-0115 (STARHOOK v2) and AGAIN by
+## sl-0198 (THE FORAGING BUILD — the sl-0168 spec; SERIAL 27,
+## deliberate re-baseline with the seam):
+## - THE FORAGE VERB (sl-0198; stillness + anti-AFK RETIRED): F at a
+##   LIVE forage node starts the gather bar (bar_ticks [T]); the bar
+##   interrupts on movement / getting hit / reach loss; completion
+##   drops ONE loot bag from the node (sl-0129 machinery) carrying
+##   FORAGE kin (species from the node's prop family, count [T] via
+##   rng_loot) and consumes the node away; standing still forever
+##   yields NOTHING (the retirement negative);
+## - THE WALLET: bag pickup of FORAGE kin lands in the per-species
+##   wallet (forage_mats — the fish doctrine): ZERO bag capacity, a
+##   full bag still takes kin; profile round-trip by species NAME
+##   with ghost-key preservation;
+## - AMBIENT FORAGE NODES: the spawner's SECOND rng_misc consumer
+##   (own interval/chance/cap [T]; rolled after the rift roll): nodes
+##   land ON candidate pool cells with the cell's own species, the
+##   world-wide cap holds, consumed cells respawn ELSEWHERE over
+##   time, same seed = same spawn;
 ## - THE CAST IS INSTANT: an interact press at an ACTIVE node casts
 ##   NOW (no stillness) — CAST_COMPLETE carries rarity (rng_loot,
 ##   deterministic) + the node's BIOME; authored nodes consume until
@@ -59,6 +73,8 @@ const ScenarioLoader := preload("res://game/scenario_loader.gd")
 const ScenarioDef := preload("res://data/scenario_def.gd")
 const ActorState := preload("res://sim/actor_state.gd")
 const RiftStep := preload("res://sim/systems/rift_step.gd")
+const GatherStep := preload("res://sim/systems/gather_step.gd")
+const DropKinds := preload("res://sim/drop_kinds.gd")
 
 const WF_PACK := "res://assets/worldforge-packs/wildshot-overworld-pack-dusk/"
 const ROD_PATHS: Array[String] = [
@@ -76,6 +92,9 @@ func check(cond: bool, name: String) -> void:
 		fails.append(name)
 
 
+## with_forage: install a 4-cell candidate pool (one cell per species,
+## spread apart) + the ambient opt-in, and surface ONE LIVE bush node
+## at (30.5, 10.5) — one tile from the player spawn (in REACH).
 func _world(with_forage := true, with_node := false, class_backed := true) -> RefCounted:
 	var g: RefCounted = Bitgrid.new()
 	g.setup(48, 24)
@@ -84,10 +103,9 @@ func _world(with_forage := true, with_node := false, class_backed := true) -> Re
 	world.set_progression(load("res://data/progression.tres"))
 	world.set_stat_frame(StatFrame.load_frame())
 	if with_forage:
-		var forage: RefCounted = Bitgrid.new()
-		forage.setup(48, 24)
-		forage.set_solid(30, 10)
-		world.set_forage_grid(forage)
+		_install_pool(world)
+		world.forage_nodes_pos.append(Vector2(30.5, 10.5))
+		world.forage_nodes_species.append(2)
 	if with_node:
 		world.set_rift_nodes(PackedVector2Array([Vector2(10.5, 10.5)]), PackedInt32Array([2]))
 	world.add_player(Vector2(31.5, 10.5))
@@ -96,6 +114,18 @@ func _world(with_forage := true, with_node := false, class_backed := true) -> Re
 		p.class_id = 2
 		StatFrame.recompute(world, p)
 	return world
+
+
+func _install_pool(world: RefCounted, ambient := false) -> void:
+	var ids: Array[String] = ["stump", "fallen_log", "bush", "mushrooms"]
+	world.set_forage_pool(
+		PackedVector2Array(
+			[Vector2(30.5, 10.5), Vector2(5.5, 5.5), Vector2(40.5, 18.5), Vector2(12.5, 20.5)]
+		),
+		PackedInt32Array([2, 0, 1, 3]),
+		ids
+	)
+	world.forage_ambient = ambient
 
 
 ## A rift-arena-like world: open grid, pull attached, four rods,
@@ -219,30 +249,172 @@ func _events_of(world: RefCounted, type: int) -> Array:
 
 
 func _init() -> void:
-	# 1. Foraging: 90 still ticks near a forage cell yields; movement
-	# resets the count; the event carries the numbers.
+	var bar: int = int(StatFrame.load_frame().get("forage", {}).get("bar_ticks", 45))
+
+	# 1. THE FORAGE VERB (sl-0198): the F-press at a live node starts
+	# the bar; stillness alone NEVER yields (the retirement negative);
+	# completion drops ONE loot bag AT the node with the node's own
+	# species, consumes the node away, and emits GATHERED.
 	var w: RefCounted = _world()
 	var p: RefCounted = w.players[0]
-	var gold0: int = p.gold
-	_still(w, 89)
-	check(p.gold == gold0, "no forage yield before 90 still ticks")
-	_move(w)
-	_still(w, 89)
-	check(p.gold == gold0, "movement reset the count")
-	_still(w, 1)
-	check(p.gold > gold0 and p.gold <= gold0 + 2, "forage yields 1-2 gold at 90")
-	check(not _events_of(w, SimEvents.Type.GATHERED).is_empty(), "GATHERED emitted")
-	var gold1: int = p.gold
-
-	# 2. Anti-AFK: standing forever earns exactly one yield; a 4-tile
-	# walk re-arms.
 	_still(w, 400)
-	check(p.gold == gold1, "standing forever earns exactly one yield")
-	p.pos = Vector2(36.5, 10.5)
+	check(w.loot_bags.is_empty() and p.gold == 0, "stillness never yields (the verb retired)")
+	check(p.forage_ticks == 0, "no bar without the press")
+	_press(w)
+	check(p.forage_target == Vector2(30.5, 10.5), "the press targets the node")
+	_still(w, bar - 2)
+	check(p.forage_ticks == bar - 1, "the bar advances while still")
+	check(w.loot_bags.is_empty(), "no bag before the bar completes")
 	_still(w, 1)
-	p.pos = Vector2(31.5, 10.5)
-	_still(w, 90)
-	check(p.gold > gold1, "a 4-tile walk re-arms the verb")
+	check(w.loot_bags.size() == 1, "completion drops ONE loot bag")
+	if w.loot_bags.size() == 1:
+		var lb: Dictionary = w.loot_bags[0]
+		check(Vector2(lb.pos) == Vector2(30.5, 10.5), "the bag drops FROM the node")
+		var items: PackedInt32Array = lb.items
+		check(items.size() == 3 and items[0] == DropKinds.FORAGE, "the bag carries kin")
+		check(items[1] == 2, "the kin carry the node's own species (bush)")
+		check(items[2] >= 1 and items[2] <= 2, "yield count in the [T] band")
+	check(w.forage_nodes_pos.is_empty(), "the node is consumed away")
+	check(
+		p.forage_target == GatherStep.NONE and p.forage_ticks == 0, "the bar resets on completion"
+	)
+	var gevs: Array = _events_of(w, SimEvents.Type.GATHERED)
+	check(gevs.size() == 1 and int(gevs[0].species) == 2, "GATHERED carries the species")
+	_press(w)
+	_still(w, bar + 10)
+	check(w.loot_bags.size() == 1, "a consumed node cannot be gathered again")
+
+	# 2. THE INTERRUPTS (the designer's own rider): movement resets the
+	# bar whole; a landed hit resets it; leaving reach (teleport class)
+	# resets it. A fresh press restarts from zero.
+	var wi: RefCounted = _world()
+	var pi2: RefCounted = wi.players[0]
+	_press(wi)
+	_still(wi, 10)
+	_move(wi)
+	check(
+		pi2.forage_target == GatherStep.NONE and pi2.forage_ticks == 0,
+		"movement interrupts the bar"
+	)
+	_still(wi, bar + 5)
+	check(wi.loot_bags.is_empty(), "an interrupted bar never completes")
+	_press(wi)
+	_still(wi, 10)
+	check(pi2.forage_ticks == 11, "the re-press restarts from zero")
+	wi.add_enemy_standin(Vector2(9.5, 2.0))
+	wi.spawn_projectile(Vector2(31.5, 10.5), Vector2(0, 0), 0.5, 20, ActorState.FACTION_HOSTILE, 5)
+	wi.step([InputFrame.new()])
+	check(
+		pi2.forage_target == GatherStep.NONE and pi2.forage_ticks == 0,
+		"getting hit interrupts the bar (same tick)"
+	)
+	var wt2: RefCounted = _world()
+	var pt2: RefCounted = wt2.players[0]
+	_press(wt2)
+	_still(wt2, 10)
+	pt2.pos = Vector2(40.5, 10.5)
+	_still(wt2, 1)
+	check(
+		pt2.forage_target == GatherStep.NONE and pt2.forage_ticks == 0,
+		"leaving reach cancels the bar"
+	)
+
+	# 2b. THE WALLET (the fish doctrine): B loot-all lands kin in
+	# forage_mats — ZERO bag capacity; a FULL bag still takes them;
+	# LOOT_PICKED carries the FORAGE kind.
+	var ww2: RefCounted = _world()
+	var pw2: RefCounted = ww2.players[0]
+	for fill in 20:
+		BagStep.bag_add(ww2, pw2, DropKinds.GOLD, 1, 0)
+	check(BagStep.bag_count(pw2) == 20, "the bag is FULL")
+	_press(ww2)
+	_still(ww2, bar)
+	check(ww2.loot_bags.size() == 1, "the gather bag waits")
+	pw2.pos = Vector2(30.5, 10.5)
+	_op(ww2, BagStep.OP_LOOT_ALL)
+	var picked: Array = _events_of(ww2, SimEvents.Type.LOOT_PICKED)
+	check(
+		picked.size() == 1 and int(picked[0].kind) == DropKinds.FORAGE,
+		"loot-all picks the kin (LOOT_PICKED kind FORAGE)"
+	)
+	check(ww2.loot_bags.is_empty(), "the emptied bag despawns")
+	check(BagStep.bag_count(pw2) == 20, "kin consume ZERO bag capacity (full bag took them)")
+	check(
+		pw2.forage_mats.size() >= 3 and pw2.forage_mats[2] >= 1,
+		"the wallet holds the species count"
+	)
+
+	# 2c. DETERMINISM: same seed -> same yield (species fixed by the
+	# node; count via rng_loot's fixed order).
+	var wdet1: RefCounted = _world()
+	_press(wdet1)
+	_still(wdet1, bar)
+	var wdet2: RefCounted = _world()
+	_press(wdet2)
+	_still(wdet2, bar)
+	check(
+		(
+			wdet1.loot_bags.size() == 1
+			and wdet2.loot_bags.size() == 1
+			and (
+				(wdet1.loot_bags[0].items as PackedInt32Array)
+				== (wdet2.loot_bags[0].items as PackedInt32Array)
+			)
+		),
+		"same seed -> the same yield"
+	)
+
+	# 2d. THE AMBIENT FORAGE SPAWNER (rng_misc's second consumer):
+	# interval + chance surface nodes ON pool cells with the cell's
+	# own species; the cap holds; same seed = same spawn; a consumed
+	# cell can resurface later (the spawner tops the world up).
+	var wa3: RefCounted = _world(false, false)
+	_install_pool(wa3, true)
+	wa3.stat_frame = wa3.stat_frame.duplicate(true)
+	(
+		wa3
+		. stat_frame
+		. merge(
+			{
+				"forage":
+				{
+					"bar_ticks": 45,
+					"interval_ticks": 60,
+					"chance_permille": 1000,
+					"max_live": 2,
+					"yield_min": 1,
+					"yield_max": 2,
+				}
+			},
+			true
+		)
+	)
+	_still(wa3, 61)
+	check(wa3.forage_nodes_pos.size() == 1, "a forage node spawned on the interval")
+	if wa3.forage_nodes_pos.size() == 1:
+		var spawned: Vector2 = wa3.forage_nodes_pos[0]
+		var pool_i: int = wa3.forage_pool_cells.find(spawned)
+		check(pool_i >= 0, "the node sits ON a candidate pool cell")
+		check(
+			pool_i >= 0 and wa3.forage_nodes_species[0] == wa3.forage_pool_species[pool_i],
+			"the node carries the cell's own species"
+		)
+		var sevs: Array = _events_of(wa3, SimEvents.Type.FORAGE_NODE_SPAWNED)
+		check(sevs.size() == 1, "FORAGE_NODE_SPAWNED emitted")
+	_still(wa3, 300)
+	check(wa3.forage_nodes_pos.size() == 2, "the world-wide live cap holds at max_live")
+	var wa4: RefCounted = _world(false, false)
+	_install_pool(wa4, true)
+	wa4.stat_frame = wa3.stat_frame
+	_still(wa4, 61)
+	check(
+		(
+			wa4.forage_nodes_pos.size() == 1
+			and wa3.forage_nodes_pos.size() >= 1
+			and wa4.forage_nodes_pos[0] == wa3.forage_nodes_pos[0]
+		),
+		"same seed -> same forage spawn"
+	)
 
 	# 3. THE CAST IS INSTANT (sl-0115): the interact press at an
 	# ACTIVE node casts NOW; stillness never casts; the event carries
@@ -465,20 +637,44 @@ func _init() -> void:
 		"the shipped biome table validates"
 	)
 
-	# 13. NEGATIVES: legacy players never cast; dead players inert;
-	# nodeless worlds inert.
+	# 13. NEGATIVES: legacy players never cast NOR gather; dead players
+	# inert; poolless worlds inert; a rift node WINS the press over a
+	# forage node (deliberate tie order).
 	var wl: RefCounted = _world(true, true, false)
 	wl.players[0].pos = Vector2(10.5, 10.5)
 	_press(wl)
 	check(_events_of(wl, SimEvents.Type.CAST_COMPLETE).is_empty(), "negative: legacy never casts")
+	wl.players[0].pos = Vector2(31.5, 10.5)
+	_press(wl)
+	_still(wl, 60)
+	check(
+		wl.players[0].forage_target == GatherStep.NONE and wl.loot_bags.is_empty(),
+		"negative: legacy never gathers"
+	)
 	var wdead: RefCounted = _world(false, true)
 	wdead.players[0].pos = Vector2(10.5, 10.5)
 	wdead.players[0].dead = true
 	_press(wdead)
 	check(_events_of(wdead, SimEvents.Type.CAST_COMPLETE).is_empty(), "negative: dead never casts")
 	var wn: RefCounted = _world(false, false)
+	_press(wn)
 	_still(wn, 300)
-	check(wn.players[0].gold == 0, "negative: maskless world inert")
+	check(
+		wn.players[0].gold == 0 and wn.players[0].forage_target == GatherStep.NONE,
+		"negative: poolless world inert"
+	)
+	var wprio: RefCounted = _world(true, true)
+	wprio.forage_nodes_pos[0] = Vector2(10.5, 11.5)
+	wprio.players[0].pos = Vector2(10.5, 10.9)
+	_press(wprio)
+	check(
+		_events_of(wprio, SimEvents.Type.CAST_COMPLETE).size() == 1,
+		"the rift node wins the shared press"
+	)
+	check(
+		wprio.players[0].forage_target == GatherStep.NONE,
+		"the winning cast never also starts a gather"
+	)
 
 	# 14. Hash coverage (SERIAL 22).
 	var wh: RefCounted = _rift_world()
@@ -503,6 +699,25 @@ func _init() -> void:
 	var h4: int = wh.state_hash()
 	wh.rift_catches.append({"biome": 0, "fish": 1, "rare": false})
 	check(wh.state_hash() != h4, "landed catches hashed")
+	# sl-0198 hash coverage (SERIAL 27): forage state hashes.
+	wh.rift_catches.clear()
+	var h5: int = wh.state_hash()
+	wh.forage_nodes_pos.append(Vector2(6.5, 6.5))
+	wh.forage_nodes_species.append(1)
+	check(wh.state_hash() != h5, "live forage nodes hashed")
+	wh.forage_nodes_pos.clear()
+	wh.forage_nodes_species.clear()
+	var h6: int = wh.state_hash()
+	wh.players[0].forage_target = Vector2(6.5, 6.5)
+	check(wh.state_hash() != h6, "the gather target hashes")
+	wh.players[0].forage_target = GatherStep.NONE
+	var h7: int = wh.state_hash()
+	wh.players[0].forage_ticks = 12
+	check(wh.state_hash() != h7, "the bar progress hashes")
+	wh.players[0].forage_ticks = 0
+	var h8: int = wh.state_hash()
+	wh.players[0].forage_mats = PackedInt32Array([0, 3])
+	check(wh.state_hash() != h8, "the forage wallet hashes")
 
 	# 15. THE RIFTER lane (v2): the profile's rod choice equips among
 	# the loader's four-rod ladder (locked falls back to highest
@@ -544,14 +759,47 @@ func _init() -> void:
 	CharacterProfile.apply_to_rift(rw3, prof)
 	check((rw3.players[0].unique_mask & (1 << 2)) != 0, "owned skin rides back in (no re-grant)")
 
+	# 15b. THE FORAGE PROFILE ROUND-TRIP (the fish-first word's
+	# sibling): the wallet loads by species NAME, harvests by name,
+	# and PRESERVES ghost keys; a poolless world's harvest never
+	# touches the dict.
+	var prof15: Dictionary = CharacterProfile.create(false, "bow")
+	prof15.forage_mats = {"bush": 4, "ghost_moss": 9}
+	var wfp: RefCounted = _world()
+	CharacterProfile.apply_to_world(wfp, prof15)
+	var pfp: RefCounted = wfp.players[0]
+	check(pfp.forage_mats.size() == 4 and pfp.forage_mats[2] == 4, "profile kin load by name")
+	_press(wfp)
+	_still(wfp, bar)
+	pfp.pos = Vector2(30.5, 10.5)
+	_op(wfp, BagStep.OP_LOOT_ALL)
+	check(pfp.forage_mats[2] >= 5, "the gather lands on the loaded wallet")
+	CharacterProfile.harvest(wfp, prof15)
+	var fbank: Dictionary = prof15.forage_mats
+	check(int(fbank.get("bush", 0)) == pfp.forage_mats[2], "the harvest persists by name")
+	check(int(fbank.get("ghost_moss", 0)) == 9, "unknown species keys preserved")
+	var wnp15: RefCounted = _world(false, false)
+	CharacterProfile.apply_to_world(wnp15, prof15)
+	CharacterProfile.harvest(wnp15, prof15)
+	check(
+		(
+			int(prof15.forage_mats.get("bush", 0)) >= 5
+			and int(prof15.forage_mats.get("ghost_moss", 0)) == 9
+		),
+		"a poolless harvest preserves the whole dict"
+	)
+
 	# 16. Slice premises: the 12 authored nodes walk on b77, carry 12
-	# biomes, ambient is ON; the six rift scenarios carry the pull +
-	# distinct biome x rarity.
+	# biomes, ambient rifts AND ambient forage are ON; the pool derives
+	# with the four-species vocabulary; the six rift scenarios carry
+	# the pull + distinct biome x rarity; the forage block holds its
+	# ruled shapes ([T] numbers live in data, the shapes are law).
 	var slice: Resource = load("res://data/scenarios/slice_overworld.tres")
 	var nodes: PackedVector2Array = slice.rift_nodes
 	check(nodes.size() == 12, "12 rift nodes authored [T]")
 	check(slice.rift_node_biomes.size() == 12, "12 authored node biomes")
 	check(bool(slice.rift_ambient), "ambient rifts ride the slice")
+	check(bool(slice.forage_ambient), "ambient forage rides the slice (sl-0198)")
 	var wf := WorldforgePack.validate(WF_PACK)
 	check(bool(wf.ok), "b77 validates")
 	if bool(wf.ok):
@@ -561,9 +809,33 @@ func _init() -> void:
 			check(not bg.is_solid(int(n.x), int(n.y)), "node walkable %s" % str(n))
 			check(n.distance_to(cap) >= 26.0, "node clear of the capital %s" % str(n))
 	var got := GatherGrids.derive(WF_PACK)
-	check(bool(got.ok), "b77 forage derivation green")
+	check(bool(got.ok), "b77 forage pool derivation green")
 	if bool(got.ok):
-		check(int(got.forage_cells) > 1500, "forage cells cover the countryside")
+		check(int(got.forage_cells) > 1500, "the candidate pool covers the countryside")
+		check(
+			(got.cells as PackedVector2Array).size() == (got.species as PackedInt32Array).size(),
+			"pool cells and species ride parallel"
+		)
+		check(
+			(
+				(got.species_ids as Array).size() == 4
+				and String((got.species_ids as Array)[0]) == "stump"
+			),
+			"the derived vocabulary is the four prop species"
+		)
+	var fcfg: Dictionary = StatFrame.load_frame().get("forage", {})
+	check(not fcfg.is_empty(), "the forage block ships in the frame")
+	var fbar := int(fcfg.get("bar_ticks", 0))
+	check(fbar >= 30 and fbar <= 60, "bar_ticks in the routed 0.5-1 s band [T]")
+	var fcap := int(fcfg.get("max_live", 0))
+	check(fcap >= 12 and fcap <= 18, "max_live starts in the ruled 12-18 band [T]")
+	check(
+		(
+			int(fcfg.get("yield_min", 0)) >= 1
+			and int(fcfg.get("yield_max", 0)) >= int(fcfg.get("yield_min", 0))
+		),
+		"yields sane [T]"
+	)
 	var combos := {}
 	for sc_name in [
 		"rift_nebula_common",
@@ -983,9 +1255,10 @@ func _init() -> void:
 
 	if fails.is_empty():
 		print(
-			"gather_test: PASS (forage/instant-cast/ambient/no-drag/drains/grace/snap/clear/",
-			"fish/rods/refusals/negatives/hash/rifter/slice/tackle-catalog/shop-ops/rift-gear/",
-			"rare-drop/fish-roundtrip/gear-hash/boss-pool/phased-only-catch/kit-premises)"
+			"gather_test: PASS (forage-verb/interrupts/wallet/forage-spawner/instant-cast/",
+			"ambient/no-drag/drains/grace/snap/clear/fish/rods/refusals/negatives/hash/",
+			"forage-profile/rifter/slice/tackle-catalog/shop-ops/rift-gear/rare-drop/",
+			"fish-roundtrip/gear-hash/boss-pool/phased-only-catch/kit-premises)"
 		)
 		quit(0)
 	else:

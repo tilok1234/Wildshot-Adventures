@@ -13,3 +13,9 @@ const UNIQUE := 4
 ## S1 seam 2 (sl-0104): ring drops — `a` = the balance_frame items[]
 ## index (block-7 one-pair trade; the pure situational slot).
 const RING := 5
+## sl-0198 THE FORAGING BUILD: forage materials — `a` = the species
+## index (SimWorld.forage_species_ids order), `b` = the kin count.
+## Rides loot bags like any kind, but pickup lands in the per-species
+## WALLET (PlayerState.forage_mats — the starhook_fish doctrine):
+## ZERO bag capacity consumed, one profile truth.
+const FORAGE := 6

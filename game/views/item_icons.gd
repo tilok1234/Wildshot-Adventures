@@ -67,4 +67,8 @@ static func icon_id(world: RefCounted, item: Dictionary, class_id: int) -> Strin
 			return "item.unique.patience"
 		DropKinds.ABILITY:
 			return "item.ability.%s.%s" % [cls, String(ABILITY_STYLE[cls])]
+		DropKinds.FORAGE:
+			# sl-0198: forage kin — the plant collect set by species
+			# index (the constellation's fish-glyph pattern exactly).
+			return "collect.flower.p%02d" % clampi(int(item.a) + 1, 1, 24)
 	return "quest.available"

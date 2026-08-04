@@ -382,6 +382,29 @@ func _build_character_tab() -> void:
 				ccell.badge = "x%d" % int(crow.count)
 				ccell.tooltip_text = String(crow.tip)
 				cgrid.add_child(ccell)
+		# FORAGE MATERIALS (sl-0198): the constellation pattern exactly,
+		# PLAIN-NAMED (overworld words — the cosmic rail is
+		# starhook-lane-only): per-species stacked tiles with count
+		# badges composed from the IN-SIM wallet (forage_mats, SERIAL
+		# 27) — ONE truth, ZERO bag capacity by construction.
+		var frows := forage_rows(world)
+		right.add_child(_rule("— forage materials — (gathered in the wild)"))
+		if frows.is_empty():
+			right.add_child(
+				_label("(forage the countryside — [F] at a shimmer)", MenuPalette.TEXT_DIM)
+			)
+		else:
+			var fgrid := GridContainer.new()
+			fgrid.columns = 10
+			fgrid.add_theme_constant_override("h_separation", 2)
+			fgrid.add_theme_constant_override("v_separation", 2)
+			right.add_child(fgrid)
+			for frow: Dictionary in frows:
+				var fcell := ItemSlot.new()
+				fcell.icon_tex = IconAtlas.icon(String(frow.icon_id))
+				fcell.badge = "x%d" % int(frow.count)
+				fcell.tooltip_text = String(frow.tip)
+				fgrid.add_child(fcell)
 	# THE RIFTER PANEL (sl-0181): rod/chest/helm doll slots over the
 	# LIVE sim gear (SERIAL 26 fields); a click wears the NEXT owned
 	# piece via the recorded equip op (legal anywhere since the
@@ -1079,6 +1102,37 @@ static func creel_rows(world_ref: RefCounted) -> Array:
 					"icon_id": "collect.fish.f%02d" % mini(si + 1, 18),
 					"tip":
 					"%d %s\n(species-currency — spend it at the tackle keeper)" % [p.fish[si], nm],
+				}
+			)
+		)
+	return rows
+
+
+## FORAGE MATERIALS (sl-0198): per-species kin stacks composed from
+## the IN-SIM wallet (p.forage_mats, SERIAL 27) — the ONE truth the
+## profile persists by species name; zero bag-capacity interaction by
+## construction. Only nonzero species render; glyphs = the icon
+## pack's plant collect set by species index (placeholder-sanctioned,
+## the creel's own pattern). Names stay PLAIN overworld words.
+static func forage_rows(world_ref: RefCounted) -> Array:
+	var p: RefCounted = world_ref.players[0]
+	var rows: Array = []
+	if p.class_id < 0:
+		return rows
+	for si in p.forage_mats.size():
+		if p.forage_mats[si] <= 0:
+			continue
+		var nm := ItemText.forage_species_name(world_ref, si)
+		(
+			rows
+			. append(
+				{
+					"species_index": si,
+					"count": p.forage_mats[si],
+					"name": nm,
+					"icon_id": "collect.flower.p%02d" % mini(si + 1, 24),
+					"tip":
+					"%d %s\n(forage material — gathered in the wild)" % [p.forage_mats[si], nm],
 				}
 			)
 		)

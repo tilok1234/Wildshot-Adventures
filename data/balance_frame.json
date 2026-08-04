@@ -86,6 +86,15 @@
       ]
     }
   },
+  "forage": {
+    "_comment": "sl-0198 THE FORAGING BUILD [T everywhere]: ambient forage nodes - the ambient-rift spawner's SECOND rng_misc consumer (own interval/chance/cap; rolled after the rift roll, fixed order). The ~1.9k forage prop cells are CANDIDACY, never simultaneity (the designer's word: '1900 is too many'; cap starts in the ruled 12-18 band, world-wide); a node is consumed on gather - no per-node respawn timers, the spawner tops the world up elsewhere. bar_ticks = the F-press gather bar (~0.75 s; interrupts on move/hit); yields = kin per gather via rng_loot.",
+    "bar_ticks": 45,
+    "interval_ticks": 300,
+    "chance_permille": 500,
+    "max_live": 15,
+    "yield_min": 1,
+    "yield_max": 2
+  },
   "starhook": {
     "note": "sl-0105 v1; REBUILT sl-0115 (prototype #2 rules the shape, every number [T]): the RIFTER = the bait fighter, a fixed mini-class row on THIS frame (the legacy loop curve levels it); FOUR rods = attack-def data rows, starhook level gates use, R swaps; three biomes with named fish tables (fish persist PER-SPECIES - species-currency); ambient rifts spawn on land anywhere; the pull/line physics live in data/rift_pull.tres; drops feed the MAIN economy; cosmetics via the variants machinery.",
     "rifter": { "base_hp": 60, "hp_per_level": 8, "speed_tiles": 3.6 },

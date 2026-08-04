@@ -138,6 +138,7 @@ const ViewClock := preload("res://game/views/view_clock.gd")
 const CameraRig := preload("res://game/views/camera_rig.gd")
 const RiftView := preload("res://game/views/rift_view.gd")
 const RiftNodesView := preload("res://game/views/rift_nodes_view.gd")
+const ForageNodesView := preload("res://game/views/forage_nodes_view.gd")
 const RiftWorldPane := preload("res://game/views/rift_world_pane.gd")
 const RiftStep := preload("res://sim/systems/rift_step.gd")
 const ProjectileView := preload("res://game/views/projectile_view.gd")
@@ -673,7 +674,17 @@ func _process(_delta: float) -> void:
 					quest_offer.offer(int(lev.quest))
 					_menus_exclusive(quest_offer)
 			SimEvents.Type.GATHERED:
-				_show_toast("foraged +%d gold" % int(lev.gold))
+				# sl-0198: the gather completed — the node dropped its
+				# loot bag (walk-over panel + [B] loot-all pick it up).
+				_show_toast(
+					(
+						"foraged — %d %s"
+						% [
+							int(lev.get("count", 1)),
+							ItemText.forage_species_name(world, int(lev.get("species", -1))),
+						]
+					)
+				)
 			SimEvents.Type.CAST_COMPLETE:
 				# STARHOOK v2 (sl-0115): the cast is INSTANT — the line
 				# sinks into the rift the moment you press. Capture the
@@ -914,6 +925,7 @@ func _console_exec(line: String) -> void:
 			console.println(
 				"level <1-30|max> | gold <n> | gear | tackle | fish <n>  (sl-0191 belt)"
 			)
+			console.println("forage <n>|tp  (sl-0198: grant kin / jump to a shimmer)")
 			console.println("tp list|<name>|cell <x> <y>")
 			console.println("verdict <dodgeability|feel> <rested-human|bot-proof> <text>")
 		"god":
@@ -947,7 +959,7 @@ func _console_exec(line: String) -> void:
 			get_tree().reload_current_scene()
 		"rift":
 			_console_rift_jump(tokens)
-		"level", "gold", "gear", "tackle", "fish", "tp":
+		"level", "gold", "gear", "tackle", "fish", "tp", "forage":
 			_console_toolbelt(tokens)
 		_:
 			console.println("unknown: %s (try help)" % tokens[0])
@@ -1054,6 +1066,29 @@ func _console_toolbelt(tokens: PackedStringArray) -> void:
 			var n := int(arg) if not arg.is_empty() else 10
 			world.enqueue_command({"type": SimWorld.Command.ADD_FISH, "player": 0, "count": n})
 			console.println("+%d of every fish species (replay-dirty)" % n)
+		"forage":
+			# sl-0198 [P]: `forage tp` jumps to the nearest live node;
+			# `forage [n]` grants n of every material (both dirty).
+			if arg.to_lower() == "tp":
+				if world.forage_nodes_pos.is_empty():
+					console.println("no live forage nodes (the spawner tops the world up)")
+					return
+				var ppos: Vector2 = world.players[0].pos
+				var best := 0
+				for ni in world.forage_nodes_pos.size():
+					var better: bool = (
+						ppos.distance_to(world.forage_nodes_pos[ni])
+						< ppos.distance_to(world.forage_nodes_pos[best])
+					)
+					if better:
+						best = ni
+				var npos: Vector2 = world.forage_nodes_pos[best] + Vector2(1.0, 0.0)
+				world.enqueue_command({"type": SimWorld.Command.TELEPORT, "player": 0, "pos": npos})
+				console.println("tp -> the nearest shimmer (replay-dirty)")
+				return
+			var fk := int(arg) if not arg.is_empty() else 10
+			world.enqueue_command({"type": SimWorld.Command.ADD_FORAGE, "player": 0, "count": fk})
+			console.println("+%d of every forage material (replay-dirty)" % fk)
 		"tp":
 			if arg.is_empty() or arg.to_lower() == "list":
 				console.println("tp: " + " ".join(TP_TABLE.keys()) + " | tp cell <x> <y>")
@@ -1692,6 +1727,12 @@ func _ready() -> void:
 		var nodes_view := RiftNodesView.new()
 		nodes_view.world = world
 		add_child(nodes_view)
+	# Forage shimmers (sl-0198): wherever ambient forage rolls, live
+	# nodes shimmer (WYSIWYG) + the gather bar draws at the node.
+	if bool(scenario.forage_ambient):
+		var forage_view := ForageNodesView.new()
+		forage_view.world = world
+		add_child(forage_view)
 
 	# Real enemies: assembler sheets + overhead HP bars (M5; CORE-35 —
 	# general presentation, no targeting anything).

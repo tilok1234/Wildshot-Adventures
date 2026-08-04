@@ -387,7 +387,19 @@ static func _take_from_bag(world: RefCounted, p: RefCounted, bag_i: int, row: in
 		# a duplicate unique stays in the ground bag and expires.
 		if a < 0 or a >= world.unique_defs.size() or (p.unique_mask & (1 << a)) != 0:
 			return false
-	if not bag_add(world, p, kind, a, b):
+	if kind == DropKinds.FORAGE:
+		# sl-0198: forage kin land in the per-species WALLET, never the
+		# bag — ZERO capacity consumed (the fish doctrine); a full bag
+		# still takes them. `a` = species index, `b` = count.
+		if a < 0 or a >= world.forage_species_ids.size():
+			return false
+		if p.forage_mats.size() <= a:
+			var old: int = p.forage_mats.size()
+			p.forage_mats.resize(a + 1)
+			for si in range(old, a + 1):
+				p.forage_mats[si] = 0
+		p.forage_mats[a] = mini(p.forage_mats[a] + maxi(1, b), 65535)
+	elif not bag_add(world, p, kind, a, b):
 		return false
 	if kind == DropKinds.UNIQUE:
 		p.unique_mask |= 1 << a

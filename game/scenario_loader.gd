@@ -273,15 +273,18 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 	# soak, and replay verification share, so player and bot walk
 	# byte-identical collision by construction. No-op when packless.
 	PropColliders.attach(world, scenario)
-	# S1 seam 6: the forage mask (pack worlds only — WYSIWYG species
-	# cells) + the scenario's authored rift nodes (sl-0105; biomes
-	# ride parallel since sl-0115).
+	# S1 seam 6 (sl-0198 rebuild): the forage CANDIDATE POOL (pack
+	# worlds only — WYSIWYG species cells, deterministic pack order) +
+	# the scenario's authored rift nodes (sl-0105; biomes ride
+	# parallel since sl-0115). The ambient forage spawner additionally
+	# needs the scenario's own opt-in (proof worlds stay inert).
 	if not String(scenario.worldforge_pack).is_empty():
 		var gathered := GatherGrids.derive(
 			ContentImporter.resolve_src(String(scenario.worldforge_pack))
 		)
 		if bool(gathered.ok):
-			world.set_forage_grid(gathered.forage)
+			world.set_forage_pool(gathered.cells, gathered.species, gathered.species_ids)
+	world.forage_ambient = bool(scenario.forage_ambient)
 	world.set_rift_nodes(scenario.rift_nodes, scenario.rift_node_biomes)
 	world.rift_ambient = bool(scenario.rift_ambient)
 	# STARHOOK v2 (sl-0115; drag cut by sl-0123): rift-fight scenarios

@@ -68,6 +68,7 @@ static func create(hardcore: bool, cls := "bow") -> Dictionary:
 		"starhook_tackle": [],
 		"starhook_chest": "",
 		"starhook_helm": "",
+		"forage_mats": {},
 		"ability_index": 0,
 		"deaths": 0,
 		"runs": 0,
@@ -181,6 +182,10 @@ static func apply_to_world(world: RefCounted, d: Dictionary) -> void:
 	# OVERWORLD player too — the fish wallet must be in-sim where the
 	# tackle vendor trades (recorded, deterministic spends).
 	_tackle_apply(world, p, d)
+	# sl-0198: the forage wallet loads by species NAME (the fish
+	# doctrine; the index space is the world's derived vocabulary —
+	# empty in poolless worlds, where the verb is inert anyway).
+	_forage_apply(world, p, d)
 	StatFrame.recompute(world, p)
 	p.hp = p.max_hp
 	p.mana = p.max_mana
@@ -234,6 +239,7 @@ static func harvest(world: RefCounted, d: Dictionary) -> void:
 	d.erase("active_quest_id")
 	d.ability_index = maxi(0, world.ability_defs.find(world.ability_def))
 	_tackle_harvest(world, p, d)
+	_forage_harvest(world, p, d)
 
 
 ## Item id <-> stat-frame items[] index (S1 seams 2/3): the profile's
@@ -489,6 +495,34 @@ static func _tackle_harvest(world: RefCounted, p: RefCounted, d: Dictionary) -> 
 	d.starhook_tackle = owned_items
 	d.starhook_chest = _tackle_item_id(ilist, p.tackle_chest)
 	d.starhook_helm = _tackle_item_id(ilist, p.tackle_helm)
+
+
+## ---- sl-0198 THE FORAGE WALLET: the starhook_fish doctrine EXACTLY
+## — the profile's name-keyed bank loads into the run's species-index
+## array (the world's pack-derived vocabulary); harvest writes
+## CURRENT-vocabulary species back and PRESERVES unknown keys (ghost
+## species tolerant: a future species re-roster never eats the
+## designer's materials). In poolless worlds (empty vocabulary) both
+## directions are no-ops — the profile dict rides through untouched.
+
+
+static func _forage_apply(world: RefCounted, p: RefCounted, d: Dictionary) -> void:
+	var ids: Array = world.forage_species_ids
+	p.forage_mats = PackedInt32Array()
+	p.forage_mats.resize(ids.size())
+	var bank: Dictionary = d.get("forage_mats", {}) if d.get("forage_mats") is Dictionary else {}
+	for i in ids.size():
+		p.forage_mats[i] = clampi(int(bank.get(String(ids[i]), 0)), 0, 65535)
+
+
+static func _forage_harvest(world: RefCounted, p: RefCounted, d: Dictionary) -> void:
+	var ids: Array = world.forage_species_ids
+	if ids.is_empty():
+		return
+	var bank: Dictionary = d.get("forage_mats", {}) if d.get("forage_mats") is Dictionary else {}
+	for i in ids.size():
+		bank[String(ids[i])] = p.forage_mats[i] if i < p.forage_mats.size() else 0
+	d.forage_mats = bank
 
 
 static func _tackle_item_index(ilist: Array, item_id: String, slot: String) -> int:

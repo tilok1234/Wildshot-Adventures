@@ -75,13 +75,21 @@ var armor_item_index: int = -1
 var quests_taken_mask: int = 0
 var quests_done_mask: int = 0
 var quest_progress_arr: PackedInt32Array = PackedInt32Array()
-## S1 seam 6 (SERIAL 20): the gather/cast verbs are PATIENCE — still
-## ticks accrue near forage cells (yield at 90) or active rift nodes
-## (cast at 120, sl-0105 STARHOOK). gather_rearm anti-AFK: after a
-## forage yield the verb re-arms only 4 tiles away (ARMED sentinel =
-## far away). Casting needs no rearm — node consumption covers it.
-var gather_still_ticks: int = 0
-var gather_rearm: Vector2 = Vector2(-1000000.0, -1000000.0)
+## sl-0198 THE FORAGING BUILD (SERIAL 27; supersedes the SERIAL-20
+## stillness fields — the patience verb + its anti-AFK rearm RETIRED
+## from foraging): F at a live forage node starts a short GATHER BAR
+## (bar_ticks [T] in balance_frame forage). forage_target = the node
+## CELL being gathered (the sentinel = none; nodes are tracked by
+## position, stable under other players' consumes); forage_ticks =
+## bar progress, sim state advanced by ticks. The bar INTERRUPTS on
+## movement or getting hit (gather_step). forage_mats = the
+## per-species materials WALLET (index space =
+## SimWorld.forage_species_ids order, loaded from the profile's
+## name-keyed forage_mats at setup — the starhook_fish doctrine
+## exactly; zero bag capacity by construction).
+var forage_target: Vector2 = Vector2(-1000000.0, -1000000.0)
+var forage_ticks: int = 0
+var forage_mats: PackedInt32Array = PackedInt32Array()
 ## THE BAG (sl-0116/0128, SERIAL 23): carried items as flat
 ## (kind, a, b) triples in acquisition order — the same {kind,a,b}
 ## vocabulary drops speak (drop_kinds.gd). Class lane only: pickups
@@ -152,9 +160,13 @@ func serialize_into(buf: StreamPeerBuffer) -> void:
 	buf.put_u16(quest_progress_arr.size())
 	for qp in quest_progress_arr:
 		buf.put_16(qp)
-	buf.put_u16(gather_still_ticks)
-	buf.put_float(gather_rearm.x)
-	buf.put_float(gather_rearm.y)
+	# sl-0198 (SERIAL 27): the gather bar replaces the stillness pair.
+	buf.put_float(forage_target.x)
+	buf.put_float(forage_target.y)
+	buf.put_u16(forage_ticks)
+	buf.put_u8(forage_mats.size())
+	for fm in forage_mats:
+		buf.put_u16(fm)
 	buf.put_u8(line_lives)
 	buf.put_u16(line_drain_acc)
 	buf.put_64(line_iframe_until)

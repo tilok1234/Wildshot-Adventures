@@ -198,6 +198,26 @@ func _init() -> void:
 	check(bag_before == 0, "fish occupy ZERO bag slots (one truth, no dual)")
 	check(CharacterSheet.creel_rows(lw).is_empty(), "NEGATIVE: legacy world gets no creel")
 
+	# 5b. FORAGE MATERIALS (sl-0198): the constellation pattern exactly
+	# — pure-model rows over the in-sim forage wallet, nonzero species
+	# only, PLAIN names from the world's derived vocabulary, zero bag
+	# interaction by construction.
+	check(CharacterSheet.forage_rows(world).is_empty(), "empty wallet -> no forage rows")
+	var fids: Array[String] = ["stump", "fallen_log", "bush", "mushrooms"]
+	world.set_forage_pool(PackedVector2Array([Vector2(5.5, 5.5)]), PackedInt32Array([0]), fids)
+	p.forage_mats = PackedInt32Array([0, 2, 0, 5])
+	var frows: Array = CharacterSheet.forage_rows(world)
+	check(frows.size() == 2, "forage rows render exactly the nonzero species")
+	var f0: Dictionary = frows[0]
+	check(
+		int(f0.count) == 2 and String(f0.name) == "fallen log",
+		"forage row: count + PLAIN species name (underscore -> space)"
+	)
+	check(String(f0.icon_id) == "collect.flower.p02", "forage glyph keys by species index")
+	check(CharacterSheet.bag_rows(world).size() == 0, "kin occupy ZERO bag slots (one truth)")
+	check(CharacterSheet.forage_rows(lw).is_empty(), "NEGATIVE: legacy world gets no forage rows")
+	p.forage_mats = PackedInt32Array()
+
 	# 6. THE RIFTER PANEL (sl-0181): rod row informational; chest/helm
 	# rows read live sim equips and the click op wears the NEXT owned
 	# piece via the recorded tackle-equip range.
@@ -232,7 +252,7 @@ func _init() -> void:
 	if fails.is_empty():
 		print(
 			"char_sheet_test: PASS (parity-exact/perturbation/quest-log/legacy/pane/",
-			"creel/rifter-panel)"
+			"creel/forage-materials/rifter-panel)"
 		)
 		quit(0)
 	else:

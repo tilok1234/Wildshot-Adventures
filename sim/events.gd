@@ -41,6 +41,7 @@ enum Type {
 	TACKLE_BOUGHT,
 	TACKLE_EQUIPPED,
 	TACKLE_DROPPED,
+	FORAGE_NODE_SPAWNED,
 }
 
 ## PROJECTILE_DESPAWNED carries one of these (§2.6 typed despawn reasons).

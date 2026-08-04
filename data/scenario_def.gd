@@ -54,6 +54,12 @@ extends Resource
 ## anywhere on walkable land, anytime (gather_step, rng_misc; tuning
 ## in balance_frame starhook.ambient [T]). Proof worlds stay false.
 @export var rift_ambient: bool = false
+## sl-0198 THE FORAGING BUILD: this world rolls AMBIENT forage-node
+## spawns — ON candidate forage-prop cells (the pack-derived pool;
+## WYSIWYG shimmer marks live nodes), capped world-wide [T]
+## (gather_step, rng_misc's second consumer; tuning in balance_frame
+## forage [T]). Proof worlds stay false.
+@export var forage_ambient: bool = false
 ## True on rift-fight scenarios: the driver applies the RIFTER
 ## mini-class shape (sl-0105) instead of the main character, and the
 ## split-screen presentation mounts.

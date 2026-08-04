@@ -2613,3 +2613,67 @@ parallel runspaces — godot_console always). NO feel verdicts — every
 number/key/label [T]; the designer's re-walk + kit replay (the jumps
 make both one line) are the next word; foraging still builds behind
 the round at the next free SERIAL.
+
+THE FORAGING BUILD 2026-08-04 (sl-0198 — the sl-0168 spec, all three
+designer answers built exactly; hands-free routed session; SERIAL
+26→27, WSR v3 UNCHANGED — the 17-byte InputFrame carries the whole
+verb (F/movement/damage are existing inputs; the bar is sim state
+advanced by ticks): ZERO recorded-format growth, VERIFIED; smoke
+record pair 316bc4c7cc5004be/30fa8ce4fb8f7b27; next bump 28): THE
+VERB — F at a live forage node starts the GATHER BAR (bar_ticks 45
+[T] ≈0.75 s, drawn AT the node on the HP_BARS band) → completion
+drops ONE LOOT BAG from the node (the sl-0129 machinery VERBATIM —
+walk-over panel + [B] loot-all untouched) and consumes the node
+away; the bar INTERRUPTS sim-side on movement, getting hit (a
+DAMAGE_APPLIED scan — GatherStep runs after every damage emitter),
+or reach loss; THE sl-0105 STILLNESS VERB + ANTI-AFK RULE RETIRED
+WHOLE (gather_still_ticks/gather_rearm replaced at SERIAL 27;
+standing still forever yields NOTHING — the retirement negative is
+test-pinned). THE SPOTS — ambient forage nodes: the ambient-rift
+spawner's SECOND rng_misc consumer (own interval 300 / chance 500 /
+cap 15 [T] in the NEW balance_frame `forage` block; rolled AFTER the
+rift roll, fixed draw order); CANDIDATE POOL = the forage-prop cells
+(1873 derive on b77; gather_grids returns parallel cell/species
+arrays in deterministic pack order — a node always sits ON a real
+stump/fallen-log/bush/mushrooms prop, WYSIWYG); the cap is
+WORLD-WIDE in the ruled 12-18 band (the pool is candidacy, NEVER
+simultaneity — the designer's word); consumed on gather, NO per-node
+respawn timers (the spawner tops the world up elsewhere); the 12 old
+forage POIs are ordinary pool members now; VISIBLE SHIMMER
+(game/views/forage_nodes_view.gd: glow ring + gold arc + rising
+motes at FRIENDLY_GROUND; plain prompt "[F] forage — bush");
+slice_overworld opts in via ScenarioDef.forage_ambient — proof
+worlds stay false AND poolless (inert by construction, the battery
+untouched behaviorally). THE YIELD — FORAGE MATERIALS per-species
+from the prop's own family (ids derive from FORAGE_SPECIES: stump /
+fallen_log / bush / mushrooms — zero authoring; PLAIN overworld
+names, the cosmic rail is starhook-lane-only); DropKinds.FORAGE (6)
+rides the bag-item triples; PICKUP LANDS IN THE WALLET
+(PlayerState.forage_mats — the starhook_fish doctrine EXACTLY: ZERO
+bag capacity by construction, a FULL bag still takes kin,
+test-pinned); the profile persists forage_mats{} BY SPECIES NAME
+with unknown-key preservation (ghost-species tolerant); ON PICKUP
+THE MATERIAL IS VISIBLE IN THE INVENTORY — the "— forage materials —"
+section under the bag grid (the constellation pattern exactly,
+plain-named; collect.flower glyphs by species index + count badges);
+yields 1-2 [T] via rng_loot on the completion. CONSOLE [P]:
+`forage <n>` grants kin (Command.ADD_FORAGE, dirty-stamped like the
+whole belt) / `forage tp` jumps to the nearest shimmer (rides
+TELEPORT). TESTS: gather_test REBUILT for the era (verb / interrupts
+/ wallet-zero-capacity / spawner determinism + cap + pool-cell truth
+/ same-seed yields / negatives incl. THE-RIFT-NODE-WINS-THE-PRESS +
+legacy/dead/poolless inert / forage profile round-trip w/ ghost keys
+/ SERIAL-27 hash coverage / slice premises + the forage block's
+ruled shapes); char_sheet_test +forage-materials rows (plain names,
+zero bag slots, legacy negative). EVIDENCE (the walked-content
+discipline for the new visible content): the WHOLE gather sequence
+captured at BOTH scales and read by eyes —
+reports/forage_gather_{shimmer,bar,bag,inv}_{base,desktop}.png
+(shimmer+prompt → the filling bar → the bag + LOOT panel ("1 bush")
+→ the inventory tile with the x1 badge). Goldens re-recorded +
+verified x10 (SERIAL 27); the committed battery repros re-record
+with the seam (.wsr headers carry state hashes — the re-baseline
+class). NOT this seam (by routing): the cosmetic trade-in shop
+(FUTURE — the counts store correctly from day one); water fishing
+stays PARKED. NO feel verdicts — bar time, cap, interval/chance,
+yields: ALL [T], the designer's Green days own every one.

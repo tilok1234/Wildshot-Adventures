@@ -36,6 +36,10 @@ static func drop_line(world: RefCounted, d: Dictionary) -> String:
 			return ""
 		DropKinds.RING:
 			return _ring_line(world, int(d.a))
+		DropKinds.FORAGE:
+			# sl-0198: forage kin — plain overworld names (the cosmic
+			# rail is starhook-lane-only); picks up into the WALLET.
+			return "%d %s" % [maxi(1, int(d.b)), forage_species_name(world, int(d.a))]
 		DropKinds.UNIQUE:
 			var ui := int(d.a)
 			if ui >= 0 and ui < world.unique_defs.size():
@@ -163,3 +167,12 @@ static func _ring_line(world: RefCounted, items_index: int) -> String:
 			String(STAT_SHORT.get(String(t.get("down", "")), String(t.get("down", "")))),
 		]
 	)
+
+
+## sl-0198: forage species display name from the world's derived
+## vocabulary ("fallen_log" -> "fallen log"); plain overworld words.
+static func forage_species_name(world: RefCounted, species: int) -> String:
+	var ids: Array = world.forage_species_ids
+	if species >= 0 and species < ids.size():
+		return String(ids[species]).replace("_", " ")
+	return "forage kin"
