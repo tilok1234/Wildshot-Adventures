@@ -18,6 +18,21 @@ func check(cond: bool, name: String) -> void:
 
 func _init() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("user://logs"))
+	# sl-0201 (the CI repair's third find): save_bundle packs
+	# BUNDLE_FILES — on a dev machine those real logs always exist, so
+	# this test silently rode the DEVELOPER'S OWN session.jsonl; on a
+	# pristine runner none exist and the bundle came back empty
+	# ("no evidence files found"). Provision any ABSENT evidence file
+	# with fixture bytes (real logs are NEVER touched) and sweep only
+	# what we created at the end — the packing checks now mean the
+	# same thing in both environments.
+	var provisioned: Array[String] = []
+	for src: String in FeedbackBundle.BUNDLE_FILES:
+		if not FileAccess.file_exists(src):
+			var pf := FileAccess.open(src, FileAccess.WRITE)
+			pf.store_line('{"kind": "ci_fixture"}')
+			pf.close()
+			provisioned.append(src)
 	var lines := [
 		# tester session 1: 10 min clean close, one death, two kills
 		{"kind": "session_start", "dev_profile": false, "unix": 1000},
@@ -113,6 +128,8 @@ func _init() -> void:
 		check(false, "comment zip readable")
 	DirAccess.remove_absolute(String(result2.path))
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(FIXTURE))
+	for src: String in provisioned:
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(src))
 
 	if fails.is_empty():
 		print("feedback_bundle_test: PASS (scan/exclusion/code/checksum/zip/comment)")
