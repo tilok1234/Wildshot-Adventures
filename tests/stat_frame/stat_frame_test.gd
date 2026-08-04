@@ -429,6 +429,52 @@ func _init() -> void:
 	hw.players[0].bag = PackedInt32Array([2, 1, 0])
 	check(hw.state_hash() != h6, "the bag is hashed state (SERIAL 23)")
 
+	# 12. THE DEV TOOLBELT (sl-0191): console-queued state grants —
+	# every command dirty-stamps (the verdict contract: a granted
+	# session can never pass as a clean feel/replay source), grants
+	# recompute + refill through the real frame, the class-lane guard
+	# holds, and the fish wallet sizes itself from the frame's biomes.
+	var tb: RefCounted = _class_world("sword", 31)
+	var tbp: RefCounted = tb.players[0]
+	check(not tb.replay_dirty, "a fresh world starts clean")
+	tb.enqueue_command({"type": SimWorld.Command.SET_LEVEL, "player": 0, "level": 30})
+	tb.step([InputFrame.new()])
+	check(tbp.level == 30, "level max lands")
+	check(tbp.hp == tbp.max_hp and tbp.max_hp > 120, "level grant recomputes + refills")
+	check(tb.replay_dirty, "SET_LEVEL dirty-stamps (verdicts stay honest)")
+	tb.enqueue_command({"type": SimWorld.Command.ADD_GOLD, "player": 0, "amount": 500})
+	tb.enqueue_command({"type": SimWorld.Command.GRANT_GEAR, "player": 0})
+	tb.enqueue_command({"type": SimWorld.Command.GRANT_TACKLE, "player": 0})
+	tb.enqueue_command({"type": SimWorld.Command.ADD_FISH, "player": 0, "count": 7})
+	tb.enqueue_command({"type": SimWorld.Command.TELEPORT, "player": 0, "pos": Vector2(30.5, 20.5)})
+	tb.step([InputFrame.new()])
+	check(tbp.gold >= 500, "gold grant lands")
+	check(
+		int(tbp.weapon_tiers[0]) == 5,
+		"best gear = the frame table's own top tier (5; class lane carries ONE frame)"
+	)
+	check(tbp.armor_tier == 5, "armor grant = the ladder top")
+	check(tbp.rods_owned_mask == (1 << 12) - 1, "all 12 rods owned")
+	check(tbp.tackle_owned_mask == (1 << 8) - 1, "all 8 tackle items owned")
+	check(tbp.tackle_chest == 6 and tbp.tackle_helm == 7, "top chest/helm worn (t4 indexes)")
+	check(tbp.fish.size() == 12, "the fish wallet sizes from the frame's biomes (12 species)")
+	var fish_ok := true
+	for fi in tbp.fish.size():
+		fish_ok = fish_ok and int(tbp.fish[fi]) == 7
+	check(fish_ok, "+7 of every species")
+	check(tbp.pos == Vector2(30.5, 20.5), "teleport lands (prev_pos too — no interp streak)")
+	check(tbp.prev_pos == Vector2(30.5, 20.5), "teleport sets prev_pos")
+	# The class-lane guard: legacy players refuse level/gear silently.
+	var tl: RefCounted = _world(33)
+	var tlp: RefCounted = tl.players[0]
+	var lvl0: int = tlp.level
+	tl.enqueue_command({"type": SimWorld.Command.SET_LEVEL, "player": 0, "level": 30})
+	tl.enqueue_command({"type": SimWorld.Command.GRANT_GEAR, "player": 0})
+	tl.step([InputFrame.new()])
+	check(tlp.level == lvl0, "legacy lane refuses the level grant (class lane only)")
+	check(int(tlp.weapon_tiers[0]) == 1, "legacy lane refuses the gear grant")
+	check(not tl.replay_dirty, "refused grants never dirty a clean world")
+
 	if fails.is_empty():
 		print("stat_frame_test: PASS (formula/curves/xp/tiers/trades/cap/profile/hash)")
 		quit(0)

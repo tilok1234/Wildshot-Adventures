@@ -34,6 +34,7 @@ const GatherStep := preload("res://sim/systems/gather_step.gd")
 const QuestStep := preload("res://sim/systems/quest_step.gd")
 const RiftStep := preload("res://sim/systems/rift_step.gd")
 const Damage := preload("res://sim/systems/damage.gd")
+const StatFrame := preload("res://sim/systems/stat_frame.gd")
 
 const TICKS_PER_SECOND := 60
 const DT := 1.0 / 60.0
@@ -91,6 +92,17 @@ enum Command {
 	SET_MOVE_SPEED,
 	SET_ABILITY,
 	SET_GOD,
+	# sl-0191 — THE DEV TOOLBELT (console-only; every handler stamps
+	# replay_dirty exactly like SET_GOD, so recorded replays and
+	# feel-verdict eligibility stay uncorrupted — the verdict system's
+	# existing contract; zero format growth: commands are never
+	# recorded input).
+	SET_LEVEL,
+	ADD_GOLD,
+	GRANT_GEAR,
+	GRANT_TACKLE,
+	ADD_FISH,
+	TELEPORT,
 }
 
 ## §3.2 move-speed tuning band. The sim-side clamp means NO path — debug
@@ -787,7 +799,132 @@ func _drain_commands() -> void:
 			Command.SET_GOD:
 				god_mode = bool(cmd.on)
 				replay_dirty = true
+			# sl-0191 dev toolbelt — dirty-stamped state grants; the
+			# console is the only caller (one-flag law gates it there).
+			Command.SET_LEVEL:
+				_cmd_set_level(int(cmd.get("player", 0)), int(cmd.get("level", 1)))
+			Command.ADD_GOLD:
+				_cmd_add_gold(int(cmd.get("player", 0)), int(cmd.get("amount", 0)))
+			Command.GRANT_GEAR:
+				_cmd_grant_gear(int(cmd.get("player", 0)))
+			Command.GRANT_TACKLE:
+				_cmd_grant_tackle(int(cmd.get("player", 0)))
+			Command.ADD_FISH:
+				_cmd_add_fish(int(cmd.get("player", 0)), int(cmd.get("count", 0)))
+			Command.TELEPORT:
+				_cmd_teleport(int(cmd.get("player", 0)), cmd.get("pos", Vector2.ZERO))
 	_commands.clear()
+
+
+## ---- sl-0191 toolbelt handlers (dev console only; all dirty) ----
+func _cmd_set_level(pi: int, lvl: int) -> void:
+	if pi < 0 or pi >= players.size():
+		return
+	var p: RefCounted = players[pi]
+	if p.class_id < 0:
+		return  # class lane only — the rifter levels through the loop curve
+	p.level = clampi(lvl, 1, StatFrame.LEVEL_CAP)
+	p.xp = 0
+	StatFrame.recompute(self, p)
+	p.hp = p.max_hp
+	p.mana = p.max_mana
+	replay_dirty = true
+
+
+func _cmd_add_gold(pi: int, amount: int) -> void:
+	if pi < 0 or pi >= players.size():
+		return
+	var p: RefCounted = players[pi]
+	p.gold = maxi(0, p.gold + amount)
+	replay_dirty = true
+
+
+## Best-in-slot NORMAL gear: weapon tiers to each frame table's own
+## top, armor to the ladder top. Rings and uniques deliberately stay
+## drops (a ring is a choice; a unique is a boss's word).
+func _cmd_grant_gear(pi: int) -> void:
+	if pi < 0 or pi >= players.size():
+		return
+	var p: RefCounted = players[pi]
+	if p.class_id < 0 or stat_frame.is_empty():
+		return
+	var frames: Dictionary = stat_frame.get("weapon_tiers", {}).get("frames", {})
+	var top := 1
+	for fk: String in frames:
+		top = maxi(top, (frames[fk].damage as Array).size())
+	for wi in p.weapon_tiers.size():
+		p.weapon_tiers[wi] = top
+	var defense: Array = stat_frame.get("armor_slot", {}).get("defense", [])
+	if not defense.is_empty() and p.armor_item_index < 0:
+		p.armor_tier = defense.size()
+	StatFrame.recompute(self, p)
+	p.hp = p.max_hp
+	p.mana = p.max_mana
+	replay_dirty = true
+
+
+## Own the whole tackle catalog + wear the top chest/helm (shop
+## testing: ownership bits + worn indexes; the rod stays the R-swap's
+## word — everything owned is selectable).
+func _cmd_grant_tackle(pi: int) -> void:
+	if pi < 0 or pi >= players.size():
+		return
+	var p: RefCounted = players[pi]
+	var sh: Dictionary = stat_frame.get("starhook", {})
+	var rods: Array = sh.get("rods", [])
+	var items: Array = sh.get("tackle", {}).get("items", [])
+	if rods.is_empty() and items.is_empty():
+		return
+	if not rods.is_empty():
+		p.rods_owned_mask = (1 << rods.size()) - 1
+	if not items.is_empty():
+		p.tackle_owned_mask = (1 << items.size()) - 1
+		var best_chest := -1
+		var best_helm := -1
+		var bc_tier := 0
+		var bh_tier := 0
+		for ii in items.size():
+			var it: Dictionary = items[ii]
+			var tier := int(it.get("tier", 0))
+			if String(it.get("id", "")).begins_with("chest_") and tier > bc_tier:
+				bc_tier = tier
+				best_chest = ii
+			elif String(it.get("id", "")).begins_with("helm_") and tier > bh_tier:
+				bh_tier = tier
+				best_helm = ii
+		p.tackle_chest = best_chest
+		p.tackle_helm = best_helm
+	replay_dirty = true
+
+
+## N of every fish species (shop testing) — the wallet sized from the
+## frame's own biome tables (biome-major, rare last per biome).
+func _cmd_add_fish(pi: int, count: int) -> void:
+	if pi < 0 or pi >= players.size() or count <= 0:
+		return
+	var p: RefCounted = players[pi]
+	var species := 0
+	for b: Dictionary in stat_frame.get("starhook", {}).get("biomes", []):
+		species += (b.get("fish", []) as Array).size() + 1
+	if species <= 0:
+		return
+	if p.fish.size() < species:
+		var old: int = p.fish.size()
+		p.fish.resize(species)
+		for si in range(old, species):
+			p.fish[si] = 0
+	for si in species:
+		p.fish[si] += count
+	replay_dirty = true
+
+
+func _cmd_teleport(pi: int, pos: Vector2) -> void:
+	if pi < 0 or pi >= players.size():
+		return
+	var p: RefCounted = players[pi]
+	p.prev_pos = pos
+	p.pos = pos
+	replay_dirty = true
 
 
 ## Runtime stat edit (M2: movement speed only; the full lean-stat editor is

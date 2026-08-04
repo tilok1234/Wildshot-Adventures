@@ -910,6 +910,11 @@ func _console_exec(line: String) -> void:
 	match String(tokens[0]).to_lower():
 		"help":
 			console.println("god | slowmo <1-10> | events <on|off|all> | reset | dungeon")
+			console.println("rift list|<boss_id>|catch [biome] [rare]|dungeon  (sl-0189 jumps)")
+			console.println(
+				"level <1-30|max> | gold <n> | gear | tackle | fish <n>  (sl-0191 belt)"
+			)
+			console.println("tp list|<name>|cell <x> <y>")
 			console.println("verdict <dodgeability|feel> <rested-human|bot-proof> <text>")
 		"god":
 			var want: bool = not world.god_mode
@@ -940,8 +945,129 @@ func _console_exec(line: String) -> void:
 			Config.set_setting("dev", "door_spawn", "")
 			console.println("descending the dungeon rift (test access)...")
 			get_tree().reload_current_scene()
+		"rift":
+			_console_rift_jump(tokens)
+		"level", "gold", "gear", "tackle", "fish", "tp":
+			_console_toolbelt(tokens)
 		_:
 			console.println("unknown: %s (try help)" % tokens[0])
+
+
+## sl-0189 — dev jump commands for EVERY instanced encounter (the
+## `dungeon` precedent generalized; dev console = dev-only by the
+## one-flag law; ZERO sim semantics — scenario routing only, the same
+## Config + reload machinery as every door). `rift list` names
+## everything jumpable; unknown ids answer with the list hint.
+func _console_rift_jump(tokens: PackedStringArray) -> void:
+	var arg := String(tokens[1]).to_lower() if tokens.size() > 1 else "list"
+	var boss_ids: Array[String] = [
+		"twin_helix",
+		"ring_nest",
+		"sine_shoal",
+		"boomerang_veil",
+		"decel_wall",
+		"zone_constellation",
+		"cross_burst",
+		"pulse_lattice",
+	]
+	match arg:
+		"list", "help":
+			console.println("bosses: " + " ".join(boss_ids))
+			console.println("rift catch [nebula|void|comet] [rare] | rift dungeon")
+		"dungeon":
+			Config.set_setting("dev", "scenario", "res://data/scenarios/rift_dungeon_path.tres")
+			Config.set_setting("dev", "door_spawn", "")
+			console.println("descending the dungeon rift...")
+			get_tree().reload_current_scene()
+		"catch":
+			var biome := String(tokens[2]).to_lower() if tokens.size() > 2 else "nebula"
+			if not biome in RIFT_BIOME_KEYS:
+				console.println("unknown biome '%s' (nebula|void|comet)" % biome)
+				return
+			var rare := tokens.size() > 3 and String(tokens[3]).to_lower() == "rare"
+			Config.set_setting(
+				"dev",
+				"scenario",
+				"res://data/scenarios/rift_%s_%s.tres" % [biome, "rare" if rare else "common"]
+			)
+			Config.set_setting("dev", "door_spawn", "")
+			console.println("casting into a %s %s catch..." % [biome, "rare" if rare else "common"])
+			get_tree().reload_current_scene()
+		_:
+			if arg in boss_ids:
+				Config.set_setting(
+					"dev", "scenario", "res://data/scenarios/rift_boss_%s.tres" % arg
+				)
+				Config.set_setting("dev", "door_spawn", "")
+				console.println("diving straight into rift_boss_%s..." % arg)
+				get_tree().reload_current_scene()
+			else:
+				console.println("unknown jump '%s' — try: rift list" % arg)
+
+
+## sl-0191 — THE DEV TOOLBELT: state grants + teleports through the
+## sim's command queue (every handler dirty-stamps exactly like god —
+## recorded replays and feel-verdict eligibility stay uncorrupted;
+## zero format growth). Teleport names are CURATED WALKABLE cells:
+## the capital + one giver anchor per zone (content-pack authored
+## cells, per-pack pins like the wiring test's) + the stations + the
+## warren doorstep. `tp cell <x> <y>` is raw and on the dev's head.
+const TP_TABLE := {
+	"capital": Vector2(109.5, 182.5),
+	"green": Vector2(91.5, 110.5),
+	"dry": Vector2(41.5, 196.5),
+	"wet": Vector2(210.5, 53.5),
+	"cold": Vector2(156.5, 29.5),
+	"warren": Vector2(196.5, 240.5),
+	"bank": Vector2(112.5, 182.5),
+	"merchant": Vector2(106.5, 182.5),
+	"trader": Vector2(106.5, 180.5),
+	"tackle": Vector2(110.5, 178.5),
+}
+
+
+func _console_toolbelt(tokens: PackedStringArray) -> void:
+	var cmd := String(tokens[0]).to_lower()
+	var arg := String(tokens[1]) if tokens.size() > 1 else ""
+	match cmd:
+		"level":
+			var lvl := (
+				30
+				if arg.to_lower() == "max"
+				else clampi(int(arg) if not arg.is_empty() else 1, 1, 30)
+			)
+			world.enqueue_command({"type": SimWorld.Command.SET_LEVEL, "player": 0, "level": lvl})
+			console.println("level -> %d (replay-dirty; class lane only)" % lvl)
+		"gold":
+			var amount := int(arg) if not arg.is_empty() else 1000
+			world.enqueue_command(
+				{"type": SimWorld.Command.ADD_GOLD, "player": 0, "amount": amount}
+			)
+			console.println("gold %+d (replay-dirty)" % amount)
+		"gear":
+			world.enqueue_command({"type": SimWorld.Command.GRANT_GEAR, "player": 0})
+			console.println("best normal gear granted (replay-dirty; rings/uniques stay drops)")
+		"tackle":
+			world.enqueue_command({"type": SimWorld.Command.GRANT_TACKLE, "player": 0})
+			console.println("the whole tackle catalog owned + top chest/helm worn (replay-dirty)")
+		"fish":
+			var n := int(arg) if not arg.is_empty() else 10
+			world.enqueue_command({"type": SimWorld.Command.ADD_FISH, "player": 0, "count": n})
+			console.println("+%d of every fish species (replay-dirty)" % n)
+		"tp":
+			if arg.is_empty() or arg.to_lower() == "list":
+				console.println("tp: " + " ".join(TP_TABLE.keys()) + " | tp cell <x> <y>")
+				return
+			var dest: Vector2
+			if arg.to_lower() == "cell" and tokens.size() > 3:
+				dest = Vector2(float(tokens[2]), float(tokens[3]))
+			elif TP_TABLE.has(arg.to_lower()):
+				dest = TP_TABLE[arg.to_lower()]
+			else:
+				console.println("unknown destination '%s' — try: tp list" % arg)
+				return
+			world.enqueue_command({"type": SimWorld.Command.TELEPORT, "player": 0, "pos": dest})
+			console.println("tp -> %.1f,%.1f (replay-dirty)" % [dest.x, dest.y])
 
 
 ## The fresh-hands split verdict command (§2.10, PLAN-fresh-hands):
