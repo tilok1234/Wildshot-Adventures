@@ -215,11 +215,12 @@ func _run() -> void:
 	var banned_re := RegEx.new()
 	banned_re.compile("(?i)" + "dungeon" + "[ _-]?" + "rift")
 	var flagged: Array[String] = []
-	for d: String in ["res://game", "res://ui", "res://sim", "res://data", "res://tests", "res://tools"]:
+	for d: String in [
+		"res://game", "res://ui", "res://sim", "res://data", "res://tests", "res://tools"
+	]:
 		_scan_sources(d, banned_re, flagged)
 	check(
-		flagged.is_empty(),
-		"inverted dungeon/rift phrasing in living source: " + ", ".join(flagged)
+		flagged.is_empty(), "inverted dungeon/rift phrasing in living source: " + ", ".join(flagged)
 	)
 	# (b) Surface rule: starhook display_names say 'dungeon' only as
 	# 'RIFT DUNGEON'; non-starhook rows keep the plain word freely.
@@ -237,10 +238,7 @@ func _run() -> void:
 	# recorded limit; lint + boot pin main's side).
 	var main_src := FileAccess.get_file_as_string("res://game/main.gd")
 	var routes := main_src.count(DUNGEON_SCENARIO)
-	check(
-		routes == 1,
-		"main.gd routes the rift dungeon from exactly one site (found %d)" % routes
-	)
+	check(routes == 1, "main.gd routes the rift dungeon from exactly one site (found %d)" % routes)
 	check(
 		main_src.contains("'dungeon' is reserved"),
 		"the bare `dungeon` command answers with the reservation hint"

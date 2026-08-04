@@ -104,6 +104,7 @@ func _draw() -> void:
 		rect = Rect2(Vector2(vp.x - sz.x - CORNER_INSET.x, corner_top_inset).floor(), sz)
 		draw_texture_rect(_tex, rect, false, Color(1.0, 1.0, 1.0, 0.8))
 		draw_rect(rect, Color(0.0, 0.0, 0.0, 0.6), false, 1.0)
+	_draw_regions(rect)
 	_draw_markers(rect)
 	_draw_player(rect)
 
@@ -117,10 +118,11 @@ func _draw() -> void:
 ## it; no tracked choice = every carried errand [T]). All drawn with
 ## the player-dot mapping chain so markers can never drift off the
 ## dot's math. Shape-first (CORE-50): bang vs ring vs diamond, never
-## color alone. KILL/COLLECT quests carry no objective cell in data —
-## no objective marker is the honest answer (recorded gap,
-## planning-side). The pack minimap bakes structure footprints as
-## dark cells; markers ride above them with black halos.
+## color alone. KILL/COLLECT quests carry no objective CELL in data —
+## no exact marker is the honest answer; sl-0218 closes the gap with
+## a soft REGION instead (quest_regions below). The pack minimap
+## bakes structure footprints as dark cells; markers ride above them
+## with black halos.
 static func quest_markers(world: RefCounted, tracked_id := "") -> Array:
 	var out: Array = []
 	if world == null or world.players.is_empty():
@@ -158,6 +160,135 @@ func _tracked_quest() -> String:
 	if _cfg == null:
 		return ""
 	return String(_cfg.get_setting("ui", "tracked_quest", ""))
+
+
+## sl-0218 — soft objective REGIONS for KILL/COLLECT errands: the
+## general position, never an exact pin (closing the honest gap
+## recorded since sl-0184). THE ROUTED LITERAL WAS REFUTED BY DATA:
+## whole-species territory centroid + radius washes the entire map —
+## on the live b77 content 93 sites match the cull and spread
+## p50=106 t from their centroid (re-tabled species live zone-wide).
+## The honest neighbor keeps the mechanism (species territory
+## centroid + radius) on the NEAREST CLUSTER: single-linkage growth
+## from the nearest matching site to the quest's OWN giver cell (the
+## errand's narrative anchor — static, deterministic, no player
+## coupling), link REGION_LINK, cap REGION_CAP sites; the disc =
+## cluster centroid + enclosing radius + REGION_PAD, clamped to
+## [REGION_R_MIN, REGION_R_MAX]. KILL matches sites whose roster
+## carries any target def; COLLECT (any-kind pickups) matches every
+## populated site — the countryside around the giver. VISIT keeps
+## its exact diamond (a cell exists in data). Site-less worlds
+## return nothing by construction. All numbers [T].
+const REGION_LINK := 15.0
+const REGION_CAP := 10
+const REGION_PAD := 4.0
+const REGION_R_MIN := 10.0
+const REGION_R_MAX := 30.0
+
+
+static func quest_regions(world: RefCounted, tracked_id := "") -> Array:
+	var out: Array = []
+	if world == null or world.players.is_empty() or world.site_defs.is_empty():
+		return out
+	var p: RefCounted = world.players[0]
+	if p.class_id < 0:
+		return out
+	var only_qi := -1
+	if not tracked_id.is_empty():
+		for ti in world.quest_defs.size():
+			if String(world.quest_defs[ti].id) != tracked_id:
+				continue
+			if (p.quests_taken_mask & (1 << ti)) == 0:
+				continue
+			if (p.quests_done_mask & (1 << ti)) != 0:
+				continue
+			only_qi = ti
+	for qi in world.quest_defs.size():
+		if only_qi >= 0 and qi != only_qi:
+			continue
+		if (p.quests_taken_mask & (1 << qi)) == 0:
+			continue
+		if (p.quests_done_mask & (1 << qi)) != 0:
+			continue
+		var q: Resource = world.quest_defs[qi]
+		var kind := int(q.kind)
+		if kind != 0 and kind != 2:
+			continue
+		var prog: int = p.quest_progress_arr[qi] if qi < p.quest_progress_arr.size() else 0
+		if prog >= int(q.count):
+			continue
+		var matching: Array[Vector2] = []
+		for sd: Dictionary in world.site_defs:
+			var roster: PackedInt32Array = sd.roster_defs
+			if roster.is_empty():
+				continue
+			var hit := kind == 2
+			if not hit:
+				for d in q.target_defs:
+					if roster.has(int(d)):
+						hit = true
+						break
+			if hit:
+				matching.append(Vector2(sd.cell))
+		if matching.is_empty():
+			continue
+		var giver: Vector2 = q.giver_cell
+		var seed_i := 0
+		var best := 1.0e18
+		for i in matching.size():
+			var d := giver.distance_to(matching[i])
+			if d < best:
+				best = d
+				seed_i = i
+		var cluster: Array[Vector2] = [matching[seed_i]]
+		var used := {seed_i: true}
+		var grew := true
+		while grew and cluster.size() < REGION_CAP:
+			grew = false
+			for i in matching.size():
+				if used.has(i):
+					continue
+				for m: Vector2 in cluster:
+					if m.distance_to(matching[i]) <= REGION_LINK:
+						cluster.append(matching[i])
+						used[i] = true
+						grew = true
+						break
+				if cluster.size() >= REGION_CAP:
+					break
+		var center := Vector2.ZERO
+		for m: Vector2 in cluster:
+			center += m
+		center /= float(cluster.size())
+		var enclose := 0.0
+		for m: Vector2 in cluster:
+			enclose = maxf(enclose, center.distance_to(m))
+		var radius := clampf(enclose + REGION_PAD, REGION_R_MIN, REGION_R_MAX)
+		out.append({"center": center, "radius": radius})
+	return out
+
+
+## Soft amber wash + faint rim, drawn UNDER the markers and the
+## player dot. Per-axis scaling keeps the disc honest on a
+## non-square pack (an ellipse is the truthful projection).
+func _draw_regions(rect: Rect2) -> void:
+	if world == null or _tex == null:
+		return
+	var tex_size := Vector2i(_tex.get_width(), _tex.get_height())
+	var disp_scale := rect.size / Vector2(tex_size)
+	var g := Vector2(maxi(grid_size.x, 1), maxi(grid_size.y, 1))
+	var px_per_tile := Vector2(tex_size) / g * disp_scale
+	for rg: Dictionary in quest_regions(world, _tracked_quest()):
+		var c := rect.position + tile_to_map_px(rg.center, grid_size, tex_size) * disp_scale
+		var rr: Vector2 = px_per_tile * float(rg.radius)
+		var pts := PackedVector2Array()
+		for i in 24:
+			var a := TAU * float(i) / 24.0
+			pts.append(c + Vector2(cos(a) * rr.x, sin(a) * rr.y))
+		draw_colored_polygon(pts, Color(1.0, 0.78, 0.25, 0.13))
+		var ring := pts.duplicate()
+		ring.append(pts[0])
+		draw_polyline(ring, Color(1.0, 0.78, 0.25, 0.35), 1.0)
 
 
 func _draw_markers(rect: Rect2) -> void:

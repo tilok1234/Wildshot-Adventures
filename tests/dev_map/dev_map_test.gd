@@ -5,15 +5,20 @@ extends SceneTree
 ## contract the overlay draws with), and pack-less scenarios must
 ## resolve to NO minimap path (the overlay hides by absence). Also
 ## pins the overlay's one pure mapping function, its load-refusal
-## contract, and (sl-0175) the quest-marker model: available givers
+## contract, (sl-0175) the quest-marker model: available givers
 ## (bang), turn-in givers (ring, wins per cell), tracked-quest VISIT
-## objectives (diamond) with tracker-identical binding. Pure JSON/PNG
-## reads + pure statics over stub state — Linux-safe.
+## objectives (diamond) with tracker-identical binding, and
+## (sl-0218) the activity-indicator models: KILL/COLLECT soft
+## REGIONS (nearest-cluster over synthetic sites — exact geometry
+## pins) and the quest-mob mark def set (tracker-identical binding,
+## KILL only). Pure JSON/PNG reads + pure statics over stub state —
+## Linux-safe.
 ##
 ## Run: godot --headless --path . --script tests/dev_map/dev_map_test.gd
 
 const WorldforgePack := preload("res://addons/worldforge_importer/worldforge_pack.gd")
 const MapOverlay := preload("res://game/dev/map_overlay.gd")
+const QuestMobMarks := preload("res://game/views/quest_mob_marks.gd")
 
 const CAPITAL := Vector2(109.5, 182.5)
 const WAYSTATION := Vector2(91.5, 110.5)
@@ -31,6 +36,22 @@ class StubPlayer:
 class StubWorld:
 	var players: Array = []
 	var quest_defs: Array = []
+	var site_defs: Array = []
+
+
+## Synthetic sites with controlled geometry (sl-0218): A/B form a
+## bandit pair 10 t apart near the waystation, C is a far unlinked
+## bandit camp, D a shroom-only pocket beside the station, E an
+## empty-roster site (matches nothing, not even COLLECT).
+static func _stub_sites(w: StubWorld) -> StubWorld:
+	w.site_defs = [
+		{"cell": Vector2(100.0, 100.0), "roster_defs": PackedInt32Array([21])},
+		{"cell": Vector2(110.0, 100.0), "roster_defs": PackedInt32Array([21])},
+		{"cell": Vector2(200.0, 200.0), "roster_defs": PackedInt32Array([21])},
+		{"cell": Vector2(95.0, 105.0), "roster_defs": PackedInt32Array([13])},
+		{"cell": Vector2(90.0, 90.0), "roster_defs": PackedInt32Array()},
+	]
+	return w
 
 
 static func _stub(taken: int, prog: PackedInt32Array, class_id := 1) -> StubWorld:
@@ -220,6 +241,89 @@ func _init() -> void:
 	# Legacy lane draws nothing (labs and proofs stay marker-free).
 	if not MapOverlay.quest_markers(_stub(0b10110, zeros, -1)).is_empty():
 		printerr("FAIL: legacy-lane player must draw zero markers")
+		failed = true
+
+	# ---- sl-0218 region model pins (synthetic sites, exact geometry).
+	# west_road (KILL bandit=21) carried: seed = site A (nearest to the
+	# waystation giver), links B (10 t <= LINK 15), never far C —
+	# centroid (105,100), enclose 5, radius clamped up to R_MIN 10.
+	var wr: Array = MapOverlay.quest_regions(_stub_sites(_stub(0b00100, zeros)))
+	var ok_wr: bool = (
+		wr.size() == 1
+		and Vector2(wr[0].center) == Vector2(105.0, 100.0)
+		and absf(float(wr[0].radius) - 10.0) < 0.01
+	)
+	if not ok_wr:
+		printerr("FAIL: west_road region drifted: %s" % str(wr))
+		failed = true
+	# provisions (COLLECT) carried: any populated site matches (A/B/C/D,
+	# never empty-roster E); seed D beside the station, links A then B —
+	# centroid (305/3, 305/3), enclose 8.4984, radius 12.4984.
+	var pv: Array = MapOverlay.quest_regions(_stub_sites(_stub(0b01000, zeros)))
+	var ok_pv: bool = (
+		pv.size() == 1
+		and Vector2(pv[0].center).distance_to(Vector2(305.0 / 3.0, 305.0 / 3.0)) < 0.01
+		and absf(float(pv[0].radius) - 12.4984) < 0.01
+	)
+	if not ok_pv:
+		printerr("FAIL: provisions region drifted: %s" % str(pv))
+		failed = true
+	# Both carried -> two regions; tracked west_road narrows to one;
+	# a finished-but-unturned errand renders no region (the ring is
+	# the guidance); VISIT never regions (the diamond exists); legacy
+	# and site-less worlds stay empty.
+	if MapOverlay.quest_regions(_stub_sites(_stub(0b01100, zeros))).size() != 2:
+		printerr("FAIL: two carried KILL/COLLECT errands should region both")
+		failed = true
+	var wr_tracked: Array = MapOverlay.quest_regions(
+		_stub_sites(_stub(0b01100, zeros)), "green_west_road"
+	)
+	if not (wr_tracked.size() == 1 and Vector2(wr_tracked[0].center) == Vector2(105.0, 100.0)):
+		printerr("FAIL: tracked west_road should narrow regions to it (%s)" % str(wr_tracked))
+		failed = true
+	if not (
+		MapOverlay
+		. quest_regions(_stub_sites(_stub(0b00100, PackedInt32Array([0, 0, 6, 0, 0]))))
+		. is_empty()
+	):
+		printerr("FAIL: a complete unturned KILL errand must render no region")
+		failed = true
+	if not MapOverlay.quest_regions(_stub_sites(_stub(0b00010, zeros))).is_empty():
+		printerr("FAIL: VISIT errands never region (the diamond is the guidance)")
+		failed = true
+	if not MapOverlay.quest_regions(_stub_sites(_stub(0b01100, zeros, -1))).is_empty():
+		printerr("FAIL: legacy-lane player must render zero regions")
+		failed = true
+	if not MapOverlay.quest_regions(_stub(0b01100, zeros)).is_empty():
+		printerr("FAIL: a site-less world must render zero regions")
+		failed = true
+
+	# ---- sl-0218 quest-mob mark model pins (tracker-identical
+	# binding; KILL only; a finished errand un-marks its mobs).
+	var both := 0b00101  # cull (9/11/21) + west_road (21)
+	var marks: Dictionary = QuestMobMarks.marked_defs(_stub(both, zeros))
+	if marks.size() != 3 or not (marks.has(9) and marks.has(11) and marks.has(21)):
+		printerr("FAIL: carried KILL errands should mark the union (%s)" % str(marks))
+		failed = true
+	var narrowed: Dictionary = QuestMobMarks.marked_defs(_stub(both, zeros), "green_west_road")
+	if narrowed.size() != 1 or not narrowed.has(21):
+		printerr("FAIL: tracked west_road should narrow marks to bandit (%s)" % str(narrowed))
+		failed = true
+	var fallback: Dictionary = QuestMobMarks.marked_defs(_stub(both, zeros), "green_provisions")
+	if fallback.size() != 3:
+		printerr("FAIL: tracking an unbindable id must fall back to the union")
+		failed = true
+	var cull_done: Dictionary = QuestMobMarks.marked_defs(
+		_stub(both, PackedInt32Array([8, 0, 0, 0, 0]))
+	)
+	if cull_done.size() != 1 or not cull_done.has(21):
+		printerr("FAIL: a complete cull should un-mark its mobs (%s)" % str(cull_done))
+		failed = true
+	if not QuestMobMarks.marked_defs(_stub(0b11010, zeros)).is_empty():
+		printerr("FAIL: VISIT/COLLECT errands never mark mobs")
+		failed = true
+	if not QuestMobMarks.marked_defs(_stub(both, zeros, -1)).is_empty():
+		printerr("FAIL: legacy-lane player must mark zero mobs")
 		failed = true
 
 	print("dev map consumer test: " + ("FAIL" if failed else "PASS"))

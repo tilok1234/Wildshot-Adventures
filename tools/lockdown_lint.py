@@ -88,6 +88,7 @@ if mo_all != [
     (Path("game/main.gd"), 1),
     (Path("tests/dev_map/dev_map_test.gd"), 1),
     (Path("tests/dev_map/map_overlay_probe.gd"), 1),
+    (Path("tests/quest_activity/quest_activity_probe.gd"), 1),
     (Path("tests/quest_pull/quest_pull_probe.gd"), 1),
 ]:
     fail(f"MapOverlay construction sites drifted: {mo_all}")

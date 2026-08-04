@@ -21,6 +21,7 @@ const QuestOffer := preload("res://ui/quest_offer.gd")
 const UniqueReveal := preload("res://ui/unique_reveal.gd")
 const QuestTracker := preload("res://ui/quest_tracker.gd")
 const QuestGiverIcons := preload("res://game/views/quest_giver_icons.gd")
+const QuestMobMarks := preload("res://game/views/quest_mob_marks.gd")
 const NpcNameplates := preload("res://game/views/npc_nameplates.gd")
 const LootBagPanel := preload("res://ui/loot_bag_panel.gd")
 const BankPanel := preload("res://ui/bank_panel.gd")
@@ -1822,6 +1823,13 @@ func _ready() -> void:
 	hp_bars.world = world
 	hp_bars.clock = view_clock
 	add_child(hp_bars)
+
+	# sl-0218: quest-mob marks — pure view, both profiles; the model
+	# is inert wherever no KILL errand binds (labs, rifts, legacy).
+	var mob_marks := QuestMobMarks.new()
+	mob_marks.world = world
+	mob_marks.clock = view_clock
+	add_child(mob_marks)
 
 	# sl-0121: overhead giver icons — two states, anchored to giver
 	# bodies where they exist (sl-0176; authored cells otherwise —
