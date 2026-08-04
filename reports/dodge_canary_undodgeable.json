@@ -8,7 +8,7 @@
 	"policy": "reactive-16dir-melee-on-telegraph",
 	"runs": [
 		{
-			"first_hit_tick": 23,
+			"first_hit_tick": 24,
 			"heatmap": [
 				[
 					0,
@@ -73,7 +73,7 @@
 					0,
 					0,
 					0,
-					29,
+					89,
 					0,
 					0,
 					0,
@@ -124,13 +124,13 @@
 				]
 			],
 			"hits": 10,
-			"near_miss_min": 0.0108620166778565,
+			"near_miss_min": -0.101266074180603,
 			"repro": "res://reports/repro_canary_undodgeable_reactive_seed1.wsr",
 			"seed": 1,
-			"survived_ticks": 29
+			"survived_ticks": 89
 		},
 		{
-			"first_hit_tick": 23,
+			"first_hit_tick": 24,
 			"heatmap": [
 				[
 					0,
@@ -195,7 +195,7 @@
 					0,
 					0,
 					0,
-					29,
+					89,
 					0,
 					0,
 					0,
@@ -246,13 +246,13 @@
 				]
 			],
 			"hits": 10,
-			"near_miss_min": 0.0108620166778565,
+			"near_miss_min": -0.101266074180603,
 			"repro": "res://reports/repro_canary_undodgeable_reactive_seed2.wsr",
 			"seed": 2,
-			"survived_ticks": 29
+			"survived_ticks": 89
 		},
 		{
-			"first_hit_tick": 23,
+			"first_hit_tick": 24,
 			"heatmap": [
 				[
 					0,
@@ -317,7 +317,7 @@
 					0,
 					0,
 					0,
-					29,
+					89,
 					0,
 					0,
 					0,
@@ -368,10 +368,10 @@
 				]
 			],
 			"hits": 10,
-			"near_miss_min": 0.0108620166778565,
+			"near_miss_min": -0.101266074180603,
 			"repro": "res://reports/repro_canary_undodgeable_reactive_seed3.wsr",
 			"seed": 3,
-			"survived_ticks": 29
+			"survived_ticks": 89
 		}
 	],
 	"scenario": "canary_undodgeable",

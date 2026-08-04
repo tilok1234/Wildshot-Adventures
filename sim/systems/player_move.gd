@@ -17,8 +17,9 @@ const StatFrame := preload("res://sim/systems/stat_frame.gd")
 ## more then enough for the character sprite to go between it it
 ## should be able to go between it"): the body IS the character
 ## sprite's visible feet — ranger frame 0 rows 19-22 measure exactly
-## 10 px wide, so the radius is 5/32 tiles, art-exact. The 0.35
-## HURTBOX (ActorState.radius) is untouched everywhere it matters —
+## 10 px wide, so the radius is 5/32 tiles, art-exact. The COMBAT
+## HURTBOX (PlayerState.HURTBOX_RADIUS since sl-0208 — 0.35 through
+## that seam) is untouched by locomotion everywhere it matters —
 ## projectile/hazard/contact hits, the hitbox indicator, recaps —
 ## this constant governs terrain sliding only. DodgeBot walks with
 ## the same value (one locomotion truth, bot honesty §2.8).

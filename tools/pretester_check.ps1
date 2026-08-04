@@ -216,14 +216,16 @@ if (-not $SkipBattery) {
     # story lives in the S0 session file); proof_rusher [primary] =
     # PASS at the 3.6 floor (the conservative model gains the margin
     # it lacked at 3.0). first_contact [primary] stays FAIL.
-    # NEW PIN — meet_leadshot cap FAIL at 4.14 (seed-invariant 1-hit
-    # graze @t647, near 0.013; repros committed): the INTERCEPT dart
-    # aims where you are GOING — a bot at constant full commitment is
-    # perfectly predictable, the purest form of the full-speed lattice
-    # class (the retired ringer pin's sibling; humans tap-modulate out
-    # of it, the 16-heading model cannot). The FLOOR row (the CORE-33
-    # mandate) PASSES. All pins WATCHED: any verdict move off THIS
-    # table = the sim (or policy) changed under us.
+    # meet_leadshot cap RE-PINNED FAIL->PASS at sl-0208 (the halving's
+    # own signature, exactly the watched-pin design working): the
+    # sl-0102 pin was a seed-invariant 1-hit INTERCEPT graze @t647
+    # (near 0.013) — the dart aims where a fully-committed bot is
+    # GOING, the full-speed lattice class. The bot PLANS at the
+    # unchanged 0.35 envelope (PLAN_ENVELOPE), so the dance is the
+    # same — but the graze lands inside the old shell and MISSES the
+    # true 0.175 body. Same dance, no hit: the halving demonstrated
+    # in one row. All pins WATCHED: any verdict move off THIS table
+    # = the sim (or policy) changed under us.
     # S1 seam 6 (sl-0105) — the rift kit needed NO pin in the end:
     # a draft rare-cap pin (the meet_leadshot class) existed
     # mid-seam, but the STRUCTURAL fix — P3 KEEP_RANGE in both
@@ -255,7 +257,7 @@ if (-not $SkipBattery) {
         @("first_contact","1,2,3",3600,"res://reports/dodge_first_contact_composition_primary.json","primary","FAIL",""),
         @("lab_default","1,2,3",3600,"","","PASS","PASS"),
         @("meet_blightcaster","1,2,3",3600,"","","PASS","PASS"),
-        @("meet_leadshot","1,2,3",3600,"","","PASS","FAIL"),
+        @("meet_leadshot","1,2,3",3600,"","","PASS","PASS"),
         @("meet_yard_warden","1,2,3",3600,"","","PASS","PASS"),
         @("loop_ring1","1,2,3",3600,"","","PASS","PASS"),
         @("loop_ring2","1,2,3",3600,"","","PASS","PASS"),

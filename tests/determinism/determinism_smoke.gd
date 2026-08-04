@@ -14,6 +14,7 @@ const SimWorld := preload("res://sim/sim_world.gd")
 const InputFrame := preload("res://sim/input_frame.gd")
 const SimEvents := preload("res://sim/events.gd")
 const PlayerMove := preload("res://sim/systems/player_move.gd")
+const PlayerState := preload("res://sim/player_state.gd")
 
 const TICKS := 1800
 const HASH_EVERY := 30
@@ -70,6 +71,16 @@ func _init() -> void:
 	var wall_floor: float = 1.0 + PlayerMove.TERRAIN_RADIUS
 	if a.min_x < wall_floor - 0.0001:
 		printerr("FAIL: player penetrated the west wall (min_x=%f)" % a.min_x)
+		failed = true
+	# sl-0208 (sl-0146 as written): "at least half the size" = the
+	# combat hurtbox never exceeds half the original 0.35 body. A
+	# CEILING pin only — smaller stays the designer's license. Also
+	# pins the ctor wiring (a fresh player carries the constant).
+	if PlayerState.HURTBOX_RADIUS > 0.175 + 0.0001:
+		printerr("FAIL: sl-0146/0208 — the combat hurtbox must stay <= 0.175")
+		failed = true
+	if absf(PlayerState.new().radius - PlayerState.HURTBOX_RADIUS) > 0.0001:
+		printerr("FAIL: a fresh player must carry PlayerState.HURTBOX_RADIUS")
 		failed = true
 	if a.min_x > wall_floor + 0.0001:
 		printerr("FAIL: wall slide never engaged (min_x=%f)" % a.min_x)
@@ -390,8 +401,20 @@ func _check_enemy_behavior() -> bool:
 	if int(ra.slash_hits) < 3:
 		printerr("FAIL: only %d slash hits landed on a standing player" % int(ra.slash_hits))
 		ok = false
-	if not bool(ra.player_died):
-		printerr("FAIL: standing player survived the rusher — slash not lethal")
+	# sl-0208 DELIBERATE RE-PIN (the halving's loudest finding,
+	# measured by tests/determinism/rusher_lethality_probe.gd:
+	# 0.35 body = 13 hits / dead t307; 0.175 = 4 hits over 63 volleys
+	# and ALIVE at t2400 — the 3-blade 50° slash whiffs a small
+	# standing target and out-of-combat regen heals the sparse
+	# connects). The MECHANISM stays proven above (blades connect,
+	# the death trace carries the pattern); lone-rusher LETHALITY is
+	# now a balance fact awaiting the designer's melee word
+	# (reported at the seam). If a slash re-tune makes this kill
+	# again, this pin REDs — re-pin deliberately with that seam
+	# (the battery pinned-FAIL idiom).
+	if bool(ra.player_died):
+		printerr("FAIL: standing player DIED to the lone rusher — the sl-0208 melee-whiff")
+		printerr("      signature moved (slash re-tuned?); re-pin deliberately with that seam")
 		ok = false
 	if int(ra.last_hit_pattern) != rpid:
 		printerr("FAIL: death trace pattern %d != %d (slash)" % [int(ra.last_hit_pattern), rpid])

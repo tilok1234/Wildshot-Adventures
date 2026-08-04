@@ -11,6 +11,9 @@ var pos: Vector2 = Vector2.ZERO
 ## Previous-tick position, stored for view-side interpolation only (§2.9).
 ## No sim system may read it, so it is excluded from serialize/state_hash.
 var prev_pos: Vector2 = Vector2.ZERO
+## The COMBAT hurtbox every damage class reads. 0.35 = the enemy/
+## stand-in body default (enemy defs override per row); PLAYERS
+## override to PlayerState.HURTBOX_RADIUS at construction (sl-0208).
 var radius: float = 0.35
 var hp: int = 100
 var faction: int = FACTION_FRIENDLY

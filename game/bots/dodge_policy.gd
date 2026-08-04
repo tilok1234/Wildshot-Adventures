@@ -63,6 +63,20 @@ const ANCHOR_W := 3.0
 ## Threat inflation (tiles): projected overlaps use hitbox + this margin,
 ## so near-misses count against a candidate before they become hits.
 const MARGIN := 0.12
+## THE PLANNING ENVELOPE (sl-0208): the bot PLANS threat clearances at
+## the true combat hurtbox PLUS this pad — the proven 0.35-era
+## envelope, kept when the body halved. The sl-0078 doctrine's ranged
+## sibling: walk the true model, position conservatively. Planning
+## tighter than the record re-rolled every deterministic dance and
+## three radial/chase-class proofs found fresh pockets (seed-invariant
+## grazes: ringer-class parked closer to winding radials; Grubb's P3
+## chase cornered the floor lane at t2206). With the envelope, the
+## survival predicate is numerically the proven record's, realized
+## hits land on the TRUE 0.175 body, and every reported margin rises
+## by the full hurtbox gain. A conservative planner surviving is a
+## STRONGER dodgeability proof, never a weaker one (CORE-53 sources
+## unaffected: bots verify mechanics, never feel).
+const PLAN_ENVELOPE := 0.175
 ## Threat-relevance filter radius (tiles): fastest shot in the game is
 ## 14 t/s (§3.3) + player 5.5 ceiling over the horizon, padded.
 const RELEVANT_R := 12.0
@@ -138,8 +152,10 @@ static func compute_frame(
 		# Positioning stays CONSERVATIVE (sl-0078): prop fields keep
 		# repelling the stationkeeper even though the body can thread
 		# them — a pocket the sprite fits is not a pocket to LIVE in
-		# (the 0.35 hurtbox cannot dodge inside sprite-width gaps;
-		# loop_ring2 parked 3600 ticks in one and got clipped at t436).
+		# (a hurtbox cannot dodge inside sprite-width gaps — learned at
+		# 0.35 when loop_ring2 parked in one and got clipped at t436;
+		# still the doctrine at the sl-0208 half hurtbox: threading
+		# room is not orbit room).
 		# Escapes still WALK the true fit-rule model in _score.
 		var wall_pen := maxf(0.0, 2.5 - _wall_clearance(world.bitgrid, end_pos, 3.0)) * 2.0
 		var ring_score := -wall_pen
@@ -206,7 +222,10 @@ static func _score(
 	var discs: Dictionary = world.prop_discs
 	var dt: float = world.DT
 	var speed: float = p.move_speed
-	var pr: float = p.radius
+	# sl-0208: plan at the ENVELOPE, get hit at the true body — the
+	# survival predicate stays the proven record's (proj_r + 0.35 +
+	# MARGIN) while realized margins rise by the whole hurtbox gain.
+	var pr: float = p.radius + PLAN_ENVELOPE
 	var pos: Vector2 = p.pos
 	var proj_pos: Array = threats.proj_pos
 	var proj_r: PackedFloat32Array = threats.proj_r
@@ -486,7 +505,9 @@ static func _project_threats(world: RefCounted, p: RefCounted, reactive: bool) -
 		# projectiles the normal projection dodges reactively. A full-reach
 		# disc marked every fleeing candidate doomed and cost a proof.
 		if int(e.ai_state) == EnemyState.AIState.WINDUP and e.winding_slot >= 0:
-			var ring := _slot_birth_ring(e_emitters, int(e.winding_slot))
+			var ring := _slot_birth_ring(
+				e_emitters, int(e.winding_slot), float(p.radius) + PLAN_ENVELOPE
+			)
 			var warm := int(e.state_until) - t
 			if ring > 0.0 and warm >= 1 and warm <= HORIZON:
 				hazards.append({"pos": epos, "radius": ring, "arm_in": warm})
@@ -554,7 +575,7 @@ static func _melee_trigger(emitters: Array) -> float:
 ## plus a reaction pad. Standing inside it at the arm tick is a
 ## near-guaranteed hit; outside it, the spawned shots are dodged as
 ## ordinary projectiles. The set is phase-resolved by the caller.
-static func _slot_birth_ring(emitters: Array, slot_index: int) -> float:
+static func _slot_birth_ring(emitters: Array, slot_index: int, hurtbox: float) -> float:
 	if slot_index >= emitters.size():
 		return 0.0
 	var es: Resource = emitters[slot_index]
@@ -565,7 +586,9 @@ static func _slot_birth_ring(emitters: Array, slot_index: int) -> float:
 	var shots: Array = pattern.shots
 	for shot: Resource in shots:
 		ring = maxf(ring, float(shot.spawn_offset) + float(shot.radius))
-	return ring + 0.35 if ring > 0.0 else 0.0
+	# `hurtbox` arrives PLANNING-PADDED (the sl-0208 envelope): the
+	# standoff stays the record's ring + 0.35, tracking the live body.
+	return ring + hurtbox if ring > 0.0 else 0.0
 
 
 ## True when no solid tile sits within `reach` of pos — the horizon's

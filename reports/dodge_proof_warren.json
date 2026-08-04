@@ -126,7 +126,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": -0.0000729322433471458,
+			"near_miss_min": 0.174927067756653,
 			"peak_hostile_live": 12,
 			"phase_transitions": [],
 			"repro": "",
@@ -250,7 +250,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": -0.0000729322433471458,
+			"near_miss_min": 0.174927067756653,
 			"peak_hostile_live": 12,
 			"phase_transitions": [],
 			"repro": "",
@@ -374,7 +374,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": -0.0000729322433471458,
+			"near_miss_min": 0.174927067756653,
 			"peak_hostile_live": 12,
 			"phase_transitions": [],
 			"repro": "",

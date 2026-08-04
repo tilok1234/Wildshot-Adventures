@@ -126,7 +126,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.120448419451714,
+			"near_miss_min": 0.295448419451714,
 			"peak_hostile_live": 12,
 			"phase_transitions": [
 				{
@@ -261,7 +261,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.120448419451714,
+			"near_miss_min": 0.295448419451714,
 			"peak_hostile_live": 12,
 			"phase_transitions": [
 				{
@@ -396,7 +396,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.120448419451714,
+			"near_miss_min": 0.295448419451714,
 			"peak_hostile_live": 12,
 			"phase_transitions": [
 				{

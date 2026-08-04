@@ -126,7 +126,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 1.28597569465637,
+			"near_miss_min": 1.46097569465637,
 			"peak_hostile_live": 12,
 			"phase_transitions": [
 				{
@@ -256,7 +256,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 1.28597569465637,
+			"near_miss_min": 1.46097569465637,
 			"peak_hostile_live": 12,
 			"phase_transitions": [
 				{
@@ -386,7 +386,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 1.28597569465637,
+			"near_miss_min": 1.46097569465637,
 			"peak_hostile_live": 12,
 			"phase_transitions": [
 				{
@@ -516,7 +516,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 1.28597569465637,
+			"near_miss_min": 1.46097569465637,
 			"peak_hostile_live": 12,
 			"phase_transitions": [
 				{
@@ -646,7 +646,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 1.28597569465637,
+			"near_miss_min": 1.46097569465637,
 			"peak_hostile_live": 12,
 			"phase_transitions": [
 				{

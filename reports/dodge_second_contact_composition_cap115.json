@@ -124,7 +124,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.121425235271454,
+			"near_miss_min": 0.296425235271454,
 			"repro": "",
 			"seed": 10,
 			"survived_ticks": 3600
@@ -246,7 +246,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.121425235271454,
+			"near_miss_min": 0.296425235271454,
 			"repro": "",
 			"seed": 11,
 			"survived_ticks": 3600
@@ -368,7 +368,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.121425235271454,
+			"near_miss_min": 0.296425235271454,
 			"repro": "",
 			"seed": 12,
 			"survived_ticks": 3600
@@ -490,7 +490,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.121425235271454,
+			"near_miss_min": 0.296425235271454,
 			"repro": "",
 			"seed": 13,
 			"survived_ticks": 3600
@@ -612,7 +612,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.121425235271454,
+			"near_miss_min": 0.296425235271454,
 			"repro": "",
 			"seed": 14,
 			"survived_ticks": 3600

@@ -1,9 +1,29 @@
 extends "res://sim/actor_state.gd"
 ## Player sim state, v0 class shell (docs/12 §3.2): hp 100, mana 100 (mana
 ## exists only for the CORE-34 ability slot — primary fire costs nothing,
-## ever; CORE-32), baseline speed 4.0 tiles/s, body radius 0.35.
+## ever; CORE-32), baseline speed 4.0 tiles/s.
+## BODY RADII, deliberately split three ways: the COMBAT hurtbox below
+## (sl-0208), locomotion = PlayerMove.TERRAIN_RADIUS (the fit rule),
+## interact/door/station reaches = their own constants (audited
+## uncoupled at the sl-0208 seam — none read ActorState.radius).
 ## SimWorld.players is an ARRAY of these (GDD-16 co-op insurance) — no player
 ## singleton or get_player() global exists anywhere.
+
+## sl-0208 (sl-0146 executed as written — the designer: "the player
+## hitbox should be atleast half the size of what it is now"): the
+## COMBAT hurtbox. Every damage class reads ActorState.radius
+## (projectile/melee/hazard/contact — THE one damage path), so this
+## one value IS the player character hitbox. Half the original 0.35
+## body [T; "at least" = license smaller — the designer's hands rule
+## the final value; the smoke pins the 0.175 CEILING, never a floor].
+## A serialized VALUE, not a format change — SERIAL 27 stands; the
+## goldens/battery re-baseline deliberately with the seam.
+const HURTBOX_RADIUS := 0.175
+
+
+func _init() -> void:
+	radius = HURTBOX_RADIUS
+
 
 var mana: int = 100
 ## Sim-side autofire latch (§2.8): toggled by the frame's toggle edge, so
