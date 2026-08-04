@@ -2677,3 +2677,82 @@ class). NOT this seam (by routing): the cosmetic trade-in shop
 (FUTURE — the counts store correctly from day one); water fishing
 stays PARKED. NO feel verdicts — bar time, cap, interval/chance,
 yields: ALL [T], the designer's Green days own every one.
+
+THE CI HANG KILLED + THE POOL EXTENSION 2026-08-04 (~13:40-15:30
+local, hands-free routed session; sl-0201 the warm-up + sl-0200 the
+build; commits 24a0cac/ed77943/8f2bd7d + e5a5f30 + docs; SERIAL 27 /
+WSR v3 UNTOUCHED — smoke pair 316bc4c7cc5004be/30fa8ce4fb8f7b27
+byte-identical throughout; next bump stays 28): **sl-0201 — THE 6H
+AUTO-CANCELS WERE THE CROSSHAIR ROW, NOT THE DUNGEON WALK** (the
+briefing's suspect corrected by evidence): EVERY main push
+2026-08-01..08-04 hung pixel-match at "Crosshair styles contract" —
+since the sl-0077 row's FIRST CI execution, masked until 08-02 behind
+fast lint-red run conclusions (gotcha 26 — lint was the only watched
+job); the dungeon row never executed at all (downstream of the hang).
+ROOT (gotcha-47's CI sibling, REPRODUCED in a fresh clone): load() of
+the kit cursor PNG rides .godot/imported — a fresh checkout has none,
+load() nulls, null.get_image() aborts _init, the SceneTree idles
+FOREVER, GitHub's 6h default kills the job. THREE LAYERS: (1)
+crosshair_styles.kit_image() = load()-first + raw-PNG-bytes fallback
+(compress/mode=0 lossless — identical opaque pixels; game path
+byte-unchanged) + timeout-minutes 15/30/45 on the three jobs (any
+future wedge = fast red, never 6h silence); (2) a --headless --import
+pass builds the cache runner-local (CI now runs the local tree's
+shape); (3) feedback_bundle_test provisions absent BUNDLE_FILES (it
+had passed locally by riding the DEVELOPER'S OWN session.jsonl — a
+test-honesty hole; pristine runners bundled nothing). Run ladder:
+6h0m cancelled → 56s honest red → 49s red → **49s GREEN
+(30908801389) — the first fully-green pipeline in the repo's
+recorded run history**; the never-executed rows (stat frame / living
+world / green roster / quests / gather / dungeon walk / char sheet /
+npc wiring) all ran and passed; the local walk-check gate step
+untouched throughout (its value was never in question). The doomed
+in-flight pre-fix run was cancelled deliberately (evidence banked
+first). **sl-0200 — THE POOL EXTENSION: +8 ROUTED, SEVEN SHIP; THE
+EIGHTH PURSUER FAILED THE FLOOR HONESTLY** (the routing's own clause
+exercised): the pool grows 8→15 of the routed 12-24 at roster 40-46
+(append-only; placeholder descriptive ids, cosmic-rail-ready,
+identities data-keyed for the fish re-skin): ANCHOR gap_carousel g1
+384/32s (rotor ring, 108° walking gap) / FLANKER sickle_weaver g1
+300/25s (sign-alternating SINE weave lattice, ladder 2.2/2.6/3.0) /
+FLANKER dart_skirmisher g2 600/30s (7.0 t/s twin darts, 2.4/2.8/3.2)
+/ ANCHOR decel_orchard g3 360/33s (decel double-ring orchard, void)
+/ FLANKER halo_lasher g3 305/28s (TWO-PHASE 180° halo surge,
+2.3/3.1) / **TRUE PURSUER tide_stalker g3 490/45s — THE no-chase
+law's ONE sanctioned experiment (policy 0; pursuit 2.4/2.8/3.2
+STRICTLY under the 3.6 floor; slow wake rings pulse off the advance;
+ALL SIX LANES PASS incl. the explicit CORNER-AUDIT rows — the
+wall-pin class mechanized: bait spawned IN the worst stub pocket
+with the pursuit on top, zero hits floor AND cap)** / ANCHOR
+pulse_cross g4 645/50s (FOUR-PHASE rotor lighthouse; P3 doubles
+emitters into the checker — rotor angle = f(fire tick)). Patterns
+38-40/42-45 (leads 30/36; Law-4 grew to 35 rows non-decreasing; one
+lead per pattern; star_spray reused at its lawful 24; elite amber
+placeholders; audio zero-edit — new ids classify ranged by default).
+THE FAILED EXPERIMENT: shadow_hound (pursuit + close-materializing
+snap fan) grazed the FLOOR lane seed-invariantly at the P2 entry
+volley across SEVEN iterations (volley membership / ttl 40→34 /
+ladder steps 0.4→0.3 / entry beats 40→52 — the gotcha-46 lever slid
+the hit EXACTLY +12t for +12 entry / trigger gates / fan seams
+30°→36°: every lever slid or re-rolled the 0.004-0.016 razor, never
+dissolved it) — the structural verdict: a close-range-materializing
+fan from a pursuing body cannot be proven floor-fair in the 10x11
+stub room under the record policy; UNWIRED WHOLE pre-ship (roster
+recompacted — nothing had landed) and reported, per the routing's
+"report honestly rather than ship weakened into boring". gather_test
+pins the ONE-pursuer sanction list + the strict <3.6 per-phase
+ceiling + one-chaser-max. Pools rebalanced 5/5/5 per biome (catch
+70/80 held; every pool sums 100; a boss sighting stays an event,
+weights [T]). Battery 54→62 rows (121-run pool); all 16 new lanes
+PASS; every old row byte-identical; goldens verified x10 UNTOUCHED —
+ZERO recorded runs shifted, NO re-record (the routed question's
+answer). Strobe: 15 kits ZERO flips. Evidence committed + READ:
+reports/rift_pool_ext_{anchor_gap_carousel,flanker_sickle_weaver,
+pursuer_tide_stalker}.png (the pursuer shot shows the closed
+distance + the expanding wake ring) + 16 dodge JSONs. `rift <id>`
+jumps + doors grew the seven. Gates: diagnostic full ALL-GREEN-but-
+evidence-dirt (the gotcha-43 shape exactly) → commit → SEAL ALL
+GREEN 17.5 min ON THE COMMITTED TREE; CI green on the seam push in
+47s (30911971956). NO feel verdicts — grades, hp, weights, ladders,
+biome pins: ALL [T], the designer's dives rule; their word on the
+pursuer experiment's half-landing routes any rematch.

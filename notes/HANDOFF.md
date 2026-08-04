@@ -1,4 +1,33 @@
-# Session Handoff — updated 2026-08-04 (THE FORAGING BUILD LANDED: sl-0198 at SERIAL 27; refinement round 1 landed earlier the same day)
+# Session Handoff — updated 2026-08-04 (THE POOL EXTENSION sl-0200: 15 kits, ONE sanctioned pursuer + CI GREEN sl-0201; the foraging build + refinement round 1 landed earlier the same day)
+
+> **NEWEST FIRST — sl-0200 + sl-0201 (2026-08-04 afternoon,
+> hands-free):** (0a) **CI IS GREEN FOR THE FIRST TIME IN THE REPO'S
+> RECORDED RUN HISTORY** — the 6h auto-cancel on every push since
+> 08-01 was the CROSSHAIR row (gotcha-47's CI sibling: load() of the
+> kit cursor nulls on a fresh checkout with no .godot/imported; the
+> abort idles the SceneTree forever), NOT the dungeon-walk row (it
+> never executed). Three layers: kit_image() raw-PNG fallback +
+> job timeout-minutes 15/30/45, a CI --import pass, and
+> feedback_bundle_test provisioning absent evidence (it had been
+> riding the developer's REAL session.jsonl locally). The pipeline
+> now concludes green in ~50 s — watch the WHOLE run, not just lint.
+> (0b) **THE STARHOOK POOL IS 15 KITS** (sl-0200: +8 routed, SEVEN
+> shipped at roster 40-46; SERIAL 27 untouched — defs are data):
+> three anchors (gap_carousel g1 / decel_orchard g3 / FOUR-PHASE
+> pulse_cross g4), three flankers (sickle_weaver g1 /
+> dart_skirmisher g2 / two-phase halo_lasher g3), and **tide_stalker
+> g3 — THE one sanctioned TRUE PURSUER** (policy 0, pursuit
+> 2.4/2.8/3.2 strictly under the 3.6 floor, wake rings off the
+> advance; six lanes green incl. explicit CORNER-AUDIT battery rows
+> — the wall-pin class mechanized). **The second pursuer candidate
+> (shadow_hound) FAILED the fairness floor across seven proof
+> iterations and was REPORTED, NOT SHIPPED** (the sl-0200 routing's
+> own clause; the structural finding: a close-materializing fan from
+> a pursuing body cannot be proven floor-fair in the one-room box —
+> single-threat phases are the pursuer-fair grammar). Pools 5/5/5
+> per biome, catch 70/80 held; battery 54→62 rows; goldens
+> UNTOUCHED; strobe 15 kits zero flips; the designer's dives rule
+> every [T].
 
 > **WHERE THE PROJECT STANDS IN ONE BREATH:** REFINEMENT ROUND 1 IS
 > LANDED, GATED, AND PUSHED (2026-08-04 night session; resolutions
@@ -188,6 +217,13 @@ does not start without its own word.**
   profile by name, ghost-tolerant; plain-named inventory tiles). The
   sl-0105 stillness verb + anti-AFK RETIRED. The trade-in shop is
   FUTURE.
+- **THE POOL EXTENSION + CI GREEN (sl-0200/0201)**: the boss pool is
+  15 kits at roster 30-37 + 40-46 (7A/7F/1P); tide_stalker = THE one
+  sanctioned pursuer (gather_test pins the list + the strict <3.6
+  ceiling + one-chaser-max); shadow_hound = the recorded FAILED
+  pursuer experiment (never shipped); patterns 38-40/42-45 (id 41
+  retired with the hound); pools 5/5/5; CI runs green whole (~50 s)
+  since the sl-0201 three-layer repair.
 
 ## §0.5 Working with the designer
 
@@ -235,20 +271,18 @@ clean seam.
 
 ## §1 Where things stand (2026-08-04, refinement round 1 landed)
 
-**Everything routed through sl-0191 is LANDED AND PUSHED** (game
-main 451d4a0; planning sync log through sl-0197). Four gated seams
-this session: 4733560 (sl-0186 dungeon), 427bd32 (sl-0187+0188 kit
-rebuild, deliberate re-baseline sealed by a post-commit full gate),
-4f7a660 (sl-0190 nameplates, -SkipBattery view seam), 451d4a0
-(sl-0189+0191 console family). The one-command ship gate
-`tools/pretester_check.ps1` runs ALL GREEN — **32 fixed steps (the
-sl-0186 dungeon walk joined: arena render resolution EVERY scenario
-+ the serpentine traverse) + the two-lane battery (54 rows / 105
-runs) byte-identical + export both artifacts + lockdown probe,
-~15–16.5 min** — this session's full runs: 15.8 / 15.6+16.4 (the
-re-baseline pair) / 16.0 min, plus one -SkipBattery view gate at
-3.2 min. No deferred-gate debt. Check the CI lint job after the
-pushes (gotcha #26) — the session's pushes landed overnight.
+**Everything routed through sl-0201 is LANDED AND PUSHED** (game
+main e5a5f30 + this docs close; planning sync log entries are the
+planning sweep's). The afternoon session: three CI-repair commits
+(24a0cac / ed77943 / 8f2bd7d — sl-0201) + the sl-0200 seam
+(e5a5f30, 59 files) sealed by a post-commit full gate. The
+one-command ship gate `tools/pretester_check.ps1` runs ALL GREEN —
+**32 fixed steps + the two-lane battery (62 rows / 121-run pool)
+byte-identical + export both artifacts + lockdown probe — 17.5 min
+at the sl-0200 seal**. No deferred-gate debt. **CI is GREEN whole
+(~50 s per push) since sl-0201** — `gh run list` after every push;
+watch the run conclusion itself now, not just lint (gotcha #26's
+watching gap is what hid a 6h hang for three days).
 
 The round's engineering is DONE; the acceptance is the designer's:
 **re-walk the dungeon** (sl-0186's own routed term) and **replay
@@ -264,6 +298,13 @@ the toolbelt put every fight one console line away at proper gear.
 - **REPLAY THE EIGHT KITS** (`rift <boss_id>` jumps straight in;
   `gear`/`tackle`/`level max` set up proper loadouts) — 20-60s
   lengths, anchor-vs-flanker life, all [T] and theirs to move.
+- **DIVE THE SEVEN NEW KITS (sl-0200)** — `rift gap_carousel|
+  sickle_weaver|dart_skirmisher|decel_orchard|halo_lasher|
+  tide_stalker|pulse_cross`; 25-50s each; **tide_stalker is the one
+  TRUE PURSUER** (their "maybe 1 or 2 pursuiters" word landed at
+  ONE: the second candidate failed the fairness floor under proofs
+  and was reported, not shipped — their word routes any rematch of
+  the experiment); pool weights/grades/ladders/biome pins ALL [T].
 - **NAMES, whenever words come** (the cosmic rail): boss kit names,
   rod names, species names, the tackle keeper's sign — everything
   is data-keyed for renames; the constellation is already live.
@@ -384,8 +425,8 @@ Before every commit, per touched area:
 - After any push: `gh run list` → the lint job concluding is the
   fast signal (gotcha #26).
 
-### Canonical proof battery (state 2026-08-04 — 54 rows / 105 runs;
-### POLICY OF RECORD = REACTIVE; SERIAL 27; WSR v3; Warden 575;
+### Canonical proof battery (state 2026-08-04 — 62 rows / 121-run
+### pool; POLICY OF RECORD = REACTIVE; SERIAL 27; WSR v3; Warden 575;
 ### b65 flood 34641; b77 current).
 ### TWO LANES FOREVER (docs/22 block 6): floor --speed=3.6 (the
 ### CORE-53 floor), cap --speed=4.14 (the 115 hard cap; reports keep
@@ -415,6 +456,7 @@ Before every commit, per touched area:
 | proof_rift_catch / _rare / _void / _comet (the line's rules aboard; drains never count as hits) | 1,2,3 | 3600 | PASS / PASS |
 | **proof_boss_twin_helix / ring_nest / sine_shoal / boomerang_veil / decel_wall / zone_constellation / cross_burst / pulse_lattice** (sl-0180: schedule-paced full fights, every flip mid-flight; margins 0.120–0.123; zone_constellation floor near reads −0.000 = the M6 hazard-proximity reporting nit, hits=0 is the verdict) | 1,2,3 | 3600 | PASS / PASS ×8 — **HP re-derives at the sl-0187 20-60 s re-rule; rows re-baseline with that build** |
 | **proof_dungeon_corridor (darter pair) / proof_dungeon_lurker (solo) / proof_dungeon_bossroom** (sl-0180 wave 2 — proofs prove THE FIGHTS THE PLAYER GETS: the play path's packs sit 20+ apart, tether-sequential) | 1,2,3 | 3600 | PASS / PASS ×3 — **the dungeon ARENA is sl-0186-broken in real play; the proofs' sim fights passed; expect these rows to re-baseline with the diagnosis fix** |
+| **proof_boss_gap_carousel / sickle_weaver / dart_skirmisher / decel_orchard / halo_lasher / tide_stalker / tide_stalker_corner / pulse_cross** (sl-0200: the pool extension, same schedule-paced shape; tide_stalker = THE sanctioned pursuer, every phase strictly <3.6; the _corner row = the explicit wall-pin audit — bait spawned IN the worst stub pocket, pursuit on top) | 1,2,3 | 3600 | PASS / PASS ×8 |
 
 Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- --scenario=<id> --speed=3.6 --seeds=<list> --ticks=<n> [--out=res://reports/<name>.json] [--policy=primary|orbit|axis]`
 (default policy = reactive; compositions need the explicit --out
@@ -572,9 +614,12 @@ names; cap runs use --speed=4.14 + an explicit --out=..._cap115.json).
 26. **CI lint is a second gate nobody watches live** — the pretester
     does NOT run gdformat; an intake that adds a generated .gd tree
     must extend ci.yml's format-exemption filter. Never hand-format
-    a consumed package tree. After any push, `gh run list` → the
-    lint job concluding is the fast signal (the Windows jobs queue
-    for hours behind it).
+    a consumed package tree. AMENDED sl-0201: watching ONLY lint hid
+    a 6h pixel-match hang for three days — the pipeline is green
+    whole (~50 s) now; after any push `gh run list` and read the RUN
+    conclusion. The hang class (gotcha 47's CI sibling: import-cache
+    load() null → abort → idle) is capped by job timeout-minutes and
+    the CI --import pass; any future wedge reads as a fast red.
 27. **Headless gates cannot see windowed-only teardown** — the 4.6.2
     cursor API leaks 2 Texture RIDs per final applied cursor at exit;
     main releases the cursor at NOTIFICATION_EXIT_TREE — keep that
@@ -693,7 +738,14 @@ names; cap runs use --speed=4.14 + an explicit --out=..._cap115.json).
     param edits). The lawful lever is the entry beat itself (longer
     = MORE telegraph across the flip, never less; 30→40 dissolved
     it). Check this class FIRST when a kit proof fails
-    seed-invariantly right after a phase flip.
+    seed-invariantly right after a phase flip. AMENDED sl-0200: for
+    a PURSUING kit the entry-beat lever only SLIDES the hit (+12t
+    for +12 entry, byte-tracked) — a chaser's body keeps closing
+    while the volley re-arms, so a braided double entry (two
+    emitters) or a close-materializing fan stays razor at the floor
+    no matter the beat. The pursuer-fair grammar proven by the
+    shadow_hound failure + the tide_stalker pass: SINGLE-THREAT
+    PHASES with long-lead volleys that exist at range.
 
 47. **A RUNTIME abort in a --script test reads as a hang** (the
     hang-is-a-parse-error gotcha's sibling): an invalid index (etc.)
