@@ -271,9 +271,21 @@ clean seam.
 
 ## §1 Where things stand (2026-08-04, refinement round 1 landed)
 
-**Everything routed through sl-0206 is LANDED AND PUSHED.** The
-evening quick-three (sl-0204/0205/0206, game a01bbe5/563eb32/
-5ca812c): the INPUT-SWALLOW LAW (console-open swallows every
+**Everything routed through sl-0208 is LANDED AND PUSHED.** THE
+COMBAT RESHAPE (paste B; sl-0208 then sl-0207; game df624d4/1f6e964/
+5a87cca; resolutions sl-0214/0215): the hurtbox halved to 0.175 with
+every rift-kit margin rising EXACTLY +0.175 (the PLANNING ENVELOPE —
+gotcha 49 — keeps the record's dances while true-body gains land as
+margin); the melee-whiff finding measured + pinned (a lone rusher
+cannot kill a standing player now — the sl-0213 projectile-ecosystem
+word owns that tuning round); cadences re-composed x1.51/1.54/1.6
+DPS-budget-neutral with per-class DEXTERITY ladders (calc gate 8
+bounds the ripple ≤9.5%), the hits-band re-pinned [3,5]→[5,8]
+(hits = TTK × rate — reported loudly), rods verified untouched, the
+battery byte-identical (the seam never touches the legacy lane).
+The designer play-accepted the quick three same night (sl-0212).
+Before that, the quick-three session (sl-0204/0205/0206, game
+a01bbe5/563eb32/5ca812c): the INPUT-SWALLOW LAW (console-open swallows every
 non-console binding — the `typing` predicate never knew the console;
 the gif recorder carried a bare G poll; both mechanized as the 33rd
 fixed step + a repo-wide poll scan), the capital hub giver's BODY
@@ -782,6 +794,20 @@ names; cap runs use --speed=4.14 + an explicit --out=..._cap115.json).
     through main, never poll from a view/driver. Sanctioned
     exceptions are deliberate: console_toggle stays live while open
     (the close key), Esc closes the console FIRST via esc_intercept.
+
+49. **Bot-planning inputs re-roll EVERY deterministic dance
+    (sl-0208).** The proofs are deterministic dances; ANY change to
+    the policy's planning numbers (threat radii, pads, margins) —
+    even a strictly-favorable one — re-rolls all of them, and a
+    re-rolled dance can land in a fresh seed-invariant pocket (three
+    radial/chase proofs regressed when the halved hurtbox planned
+    tighter). The recorded answer: PLAN AT THE PROVEN ENVELOPE,
+    REALIZE ON THE TRUE BODY (dodge_policy.PLAN_ENVELOPE — the
+    sl-0078 conservative-positioning doctrine's ranged sibling). The
+    survival predicate stays numerically the record's, dances
+    reproduce, and true-body gains land as pure margin. A future
+    hurtbox tune rides the envelope for free; genuinely retuning the
+    PLANNER is its own deliberate re-baseline, never a side effect.
 
 ## Ledger + scope
 

@@ -2817,3 +2817,58 @@ byte-identical (deterministic render, the fix touched only the
 capital). CI green on the push. NO feel verdicts — hub body cell,
 casting, plate metrics: [T], the designer's plaza walk rules;
 sl-0204/0205/0206 resolved in the sync log with findings named.
+
+THE COMBAT RESHAPE 2026-08-04 late (PASTE B: sl-0208 then sl-0207 as
+sequential SIM-VALUE seams, full gate + deliberate re-baseline per
+commit; game df624d4 / 1f6e964 / 5a87cca all pushed, CI green 45s;
+resolutions sl-0214/0215; SERIAL 27 UNCHANGED both seams — values,
+never format; the quick three accepted by the designer's own play
+mid-session, sl-0212): **sl-0208 THE HITBOX HALVING** (sl-0146 as
+written): PlayerState.HURTBOX_RADIUS 0.175 [T] — every damage class
+reads the one radius; the smoke pins the 0.175 CEILING (license
+smaller stays the designer's); scope audit CLEAN (zero coupled radii
+— locomotion/doors/pickups/stations own their constants). THE
+PLANNING ENVELOPE born (dodge_policy.PLAN_ENVELOPE 0.175): planning
+tighter than the record re-rolled every deterministic dance — three
+radial/chase proofs found fresh seed-invariant pockets (pass-1:
+ringer-class parked closer to winding radials, Grubb P3 cornered the
+floor lane t2206) — so the bot PLANS at the proven 0.35 envelope and
+takes hits on the TRUE body: the survival predicate is numerically
+the record's, every dance reproduces, and ALL 15 RIFT KITS' 30 LANES
+ROSE EXACTLY +0.175 (margins table committed
+reports/hitbox_margins_sl0208.md; whole battery 114 rose / 12 held /
+1 canary-diagnostic). meet_leadshot cap RE-PINNED FAIL→PASS (the
+sl-0102 INTERCEPT graze lands inside the old shell — same dance, no
+hit). THE MELEE FINDING measured + pinned (rusher_lethality_probe +
+the smoke's re-pinned contract): a lone rusher vs a STANDING player
+= 13 hits/dead t307 at 0.35 → 4 hits/63 volleys/ALIVE t2400 at
+0.175 — arc gaps outsize the body; the sl-0213 projectile-ecosystem
+word (planning-captured) owns the tuning round; a slash re-tune that
+kills again REDs the pin deliberately. Goldens re-recorded x10;
+smoke pair eb4fc037725be5ae/2b69caba844a45d7; seal ALL GREEN 14.1
+min. **sl-0207 THE CADENCE RE-COMPOSITION** (DPS-budget-neutral BY
+CONSTRUCTION, the calc the arbiter at EIGHT gates): baselines sword
+0.75→1.132/s (c53, x1.509) / staff 1.5→2.308/s (c26, x1.538) / bow
+2.5→4.0/s (c15, x1.6 — THE INTEGER CRAMP reported: the x1.5
+target's 16 ticks has no in-band T2 integer; the cleaner derive
+ships); damage tables re-derived in-band (sword [11,16,22,31,44] /
+staff [5,7,10,13,18] / bow [3,4,6,8,12]), TTK 1.77-2.65s.
+DEXTERITY [T]: per-class level ladders on the cadence integer
+lattice at zone entries (sword 100/110/123/139, staff
+100/108/124/137, bow 100/107/136 — no bow wet step: c13/c12 have no
+in-ripple integers, the granularity finding); tier_damage NORMALIZES
+per-shot damage by THE one effective cadence
+(StatFrame.effective_cadence, shared with player_fire) so DPS(level)
+ripples ≤9.5% and never creeps — calc GATE 8 bounds it. The
++attack_speed/−damage pair joins the grammar + t2-ring-quick-hand
+(+10/−1) [T]; rods UNTOUCHED verified (legacy lane structurally —
+gates 6/7 green, proto pins intact); quickdraw stacks reported (bow
+peak 7.5/s at L23; peak friendly stream 3 bolts in flight —
+friendly_stream_audit_sl0207.png read by eyes, Law 2 holds; strobe
+15 kits ZERO flips); HITS-BAND RE-PIN [3,5]→[5,8] reported loudly
+(hits = TTK × rate — the sl-0120 impossibility resolved by the
+routed player-damage-down lever; all four zones land exactly 8).
+STRUCTURAL: smoke pair unmoved, goldens verify unchanged, battery
+byte-identical — the seam provably never touches the legacy lane.
+Seal ALL GREEN 13.9 min. NO feel verdicts — every rate, ladder,
+breakpoint, price [T]; the designer's trigger finger rules.
