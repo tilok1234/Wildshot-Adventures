@@ -2756,3 +2756,64 @@ GREEN 17.5 min ON THE COMMITTED TREE; CI green on the seam push in
 47s (30911971956). NO feel verdicts — grades, hp, weights, ladders,
 biome pins: ALL [T], the designer's dives rule; their word on the
 pursuer experiment's half-landing routes any rematch.
+
+THE QUICK THREE 2026-08-04 evening (sl-0204/0205/0206 — the
+designer's live-play findings; three sealed view/input seams
+a01bbe5/563eb32/5ca812c, ZERO sim bytes, smoke + goldens
+byte-identical throughout; -SkipBattery gates per the view-seam
+precedent, final ALL GREEN 2.9 min = 33 fixed steps + export +
+probe; housekeeping first: the three canary repro strays restored
+to the committed record — pool-race noise, gotcha-48's sibling
+class): **sl-0206 THE INPUT-SWALLOW LAW** ("hotkeys activate when
+you write in console... T... restarting when i load new world"):
+the `typing` predicate knew only the comments box — console focus
+never joined it, so every guarded hotkey fired mid-command AND the
+sampler kept feeding real gameplay frames; fullscreen_toggle
+carried no guard; the gif recorder polled G bare, outside main
+entirely. Fixed: typing := console_open OR box_typing (sampler
+suppress rides it — neutral frames, edges trained); the gif poll
+MOVED into main (pollers live where the guard lives — gotcha 48);
+sanctioned exceptions deliberate (backtick closes while open —
+box-typing-only guard; Esc closes the console FIRST via
+esc_intercept, the sl-0145 menu-first law extended). MECHANIZED =
+tests/console_swallow (33RD FIXED STEP + CI row): the real
+sampler's suppress contract, the guard replica over the REAL
+binding table (the routed negative test at the mechanized layer),
+and source pins — every main poll site guard-checked by span walk,
+ZERO device polls outside {main, human_sampler, realtime_driver}
+repo-wide, the esc-first block, the driver's single pause poll;
+lockdown_lint's DebugConsole ctor pin grew the harness site.
+**sl-0204 THE ERRAND BANG RIDES A GIVER** ("the quest icon is
+still under the mob"): diagnosed at the capital — the sl-0176
+body-anchor worked as built and the built behavior was the bug:
+compute_stations EXCLUDES spawn-parked giver slots (the capital
+zone_hub slot sits ON the spawn by design), so no body ever
+answered, the map had no entry, and the bang fell back to bare
+plaza ground ringed by crowd at spiral 1.8+. Fixed view-only:
+HUB_GIVERS pins the WARDENS' REPRESENTATIVE (the capital pair ARE
+the Wardens' errands; casting provisional, one-line swap) one cell
+north of the spawn [T] on verified-walkable b77 ground, def_cell =
+the authored spawn cell — the sim's interact truth and the
+coming-home-is-the-turn-in design UNTOUCHED; the existing cell_map
++ LIFT-18 + HP_BARS machinery does the rest; the sl-0190 plate
+derives "Quest Giver" free. Wiring test +3 pins (map entry, rep
+identity, plate label). **sl-0205 NAMEPLATES ON THE FONT GRID**
+("the npc names are really broken-"): the kit font's own license
+line is the law — "10 px em ... use at 10 px (or integer
+multiples)" — and the sl-0190 plates rendered it at 8, the game's
+ONLY off-grid consumer; with AA/hinting/subpixel OFF (kit spec),
+0.8-scale rasterization drops/merges stems and letterforms
+genuinely mutate (Banker's collapsed 'k', Trader's lost T-arm —
+the designer's exact letters, reproduced in the committed befores).
+Fixed: FONT_SIZE 10 native / PLATE_H 12 (the font's line) /
+baseline PLATE_TOP+9; the license line MECHANIZED in the wiring
+test (off-grid plate sizes RED). EVIDENCE both scales committed +
+read, same plaza, before AND after:
+reports/quest_pull_audit_{capital_base,capital_desktop,
+waystation_base,full_map}.png — final frames show the ring + plate
+stacked on the representative's head and every plate
+letter-perfect; the waystation before-capture reproduced
+byte-identical (deterministic render, the fix touched only the
+capital). CI green on the push. NO feel verdicts — hub body cell,
+casting, plate metrics: [T], the designer's plaza walk rules;
+sl-0204/0205/0206 resolved in the sync log with findings named.

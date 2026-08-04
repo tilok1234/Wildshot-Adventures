@@ -271,18 +271,29 @@ clean seam.
 
 ## §1 Where things stand (2026-08-04, refinement round 1 landed)
 
-**Everything routed through sl-0201 is LANDED AND PUSHED** (game
-main e5a5f30 + this docs close; planning sync log entries are the
-planning sweep's). The afternoon session: three CI-repair commits
-(24a0cac / ed77943 / 8f2bd7d — sl-0201) + the sl-0200 seam
+**Everything routed through sl-0206 is LANDED AND PUSHED.** The
+evening quick-three (sl-0204/0205/0206, game a01bbe5/563eb32/
+5ca812c): the INPUT-SWALLOW LAW (console-open swallows every
+non-console binding — the `typing` predicate never knew the console;
+the gif recorder carried a bare G poll; both mechanized as the 33rd
+fixed step + a repo-wide poll scan), the capital hub giver's BODY
+(the errand bang rode bare plaza ground — the spawn-parked slot was
+excluded from zone assignment; the Wardens' representative now
+stands one cell north [T], casting provisional), and NAMEPLATES ON
+THE FONT GRID (the sl-0190 plates rendered the 10px-em kit pixel
+font at 8px — the game's only off-grid consumer; letterforms
+genuinely mutated; 10/12/baseline+9 now, license-line pin in the
+wiring test). Before that, the afternoon session: three CI-repair
+commits (24a0cac / ed77943 / 8f2bd7d — sl-0201) + the sl-0200 seam
 (e5a5f30, 59 files) sealed by a post-commit full gate. The
 one-command ship gate `tools/pretester_check.ps1` runs ALL GREEN —
-**32 fixed steps + the two-lane battery (62 rows / 121-run pool)
+**33 fixed steps + the two-lane battery (62 rows / 121-run pool)
 byte-identical + export both artifacts + lockdown probe — 17.5 min
-at the sl-0200 seal**. No deferred-gate debt. **CI is GREEN whole
-(~50 s per push) since sl-0201** — `gh run list` after every push;
-watch the run conclusion itself now, not just lint (gotcha #26's
-watching gap is what hid a 6h hang for three days).
+at the sl-0200 seal; view-only seams ride `-SkipBattery` (~3 min)**.
+No deferred-gate debt. **CI is GREEN whole (~50 s per push) since
+sl-0201** — `gh run list` after every push; watch the run conclusion
+itself now, not just lint (gotcha #26's watching gap is what hid a
+6h hang for three days).
 
 The round's engineering is DONE; the acceptance is the designer's:
 **re-walk the dungeon** (sl-0186's own routed term) and **replay
@@ -399,9 +410,9 @@ Before every commit, per touched area:
   (table below), BOTH LANES; commit reports
   (`git add -f reports/...`). Unchanged scenarios must reproduce
   BYTE-IDENTICAL.
-- the one-command gate: `pwsh tools/pretester_check.ps1` = **31
-  fixed steps + the 105-run two-lane battery (54 rows; pinned FAILs
-  are expectations) + export + lockdown — ~14–15 min ALL GREEN**
+- the one-command gate: `pwsh tools/pretester_check.ps1` = **33
+  fixed steps + the 121-run two-lane battery (62 rows; pinned FAILs
+  are expectations) + export + lockdown — ~17 min ALL GREEN**
   (tools/battery_runner.ps1 pool: default = physical cores, cap 10,
   longest-first; every verdict marker+exit-code gated; the
   reports/-clean byte gate is the final word). `-Workers 1` =
@@ -757,6 +768,20 @@ names; cap runs use --speed=4.14 + an explicit --out=..._cap115.json).
     zero output, zero exit code, orphaned engine processes. Scripted
     parallel runs use godot_console.exe, always (the battery runner
     was called with the wrong binary once; 18 detached processes).
+
+48. **Pollers live where the guard lives (sl-0206).** `Input.is_action*`
+    polling IGNORES GUI focus — a bare poll anywhere fires while the
+    designer types in the console or comments box (the gif recorder
+    carried one for weeks; T-in-console reset whole worlds because
+    the `typing` predicate never included the console). ALL device
+    polls sit in main.gd behind the swallow guard (`typing` =
+    console-open OR box focus; `sampler.suppress` carries gameplay),
+    plus human_sampler + the driver's single pause poll. The
+    console_swallow fixed step REDs any poll outside those three
+    files AND any unguarded poll line in main — route new keys
+    through main, never poll from a view/driver. Sanctioned
+    exceptions are deliberate: console_toggle stays live while open
+    (the close key), Esc closes the console FIRST via esc_intercept.
 
 ## Ledger + scope
 
