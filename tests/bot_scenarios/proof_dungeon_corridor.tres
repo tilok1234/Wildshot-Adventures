@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
 
-; DUNGEON RIFT proof (sl-0180 wave 2): THE DARTER PAIR in leg 3's
+; RIFT DUNGEON proof (sl-0180 wave 2): THE DARTER PAIR in leg 3's
 ; 4-wide geometry — the fight the path actually ships (the play
 ; scenario's darter packs and lurkers sit 20+ apart and fight
 ; SEQUENTIALLY; proof iterations 1-2 composed pair+lurker at once —

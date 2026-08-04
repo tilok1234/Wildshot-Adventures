@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
 
-; THE DUNGEON RIFT TEST (sl-0180 wave 2): the designer's shape — a
+; THE RIFT DUNGEON TEST (sl-0180 wave 2): the designer's shape — a
 ; path walked like a path, mobs scattered along it, a boss at the
 ; end. Void galaxy skin; the DUNGEON line (slow clock, no deep
 ; edge); pack spacing script-verified >12 (min 12.2 — the Warren
@@ -10,12 +10,12 @@
 ; CATCH and the dive ends won (the phased-only gate makes mob
 ; deaths safe). TEST ACCESS: the dev console command `dungeon`
 ; jumps here; the picker lists it like every scenario; ambient
-; dungeon-rift spawns wire later behind [T] once this proves.
+; rift-dungeon spawns wire later behind [T] once this proves.
 
 [resource]
 script = ExtResource("1")
 id = &"rift_dungeon_path"
-display_name = "STARHOOK DUNGEON: the path (test)"
+display_name = "RIFT DUNGEON: the path (test)"
 arena = "res://data/arena_rift_path.json"
 starhook_rift = true
 rift_path = true

@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://data/emitter_slot.gd" id="2"]
 [ext_resource type="Resource" path="res://data/enemies/patterns/star_dart.tres" id="3"]
 
-; DUNGEON RIFT MOB (sl-0180 wave 2): the lurker — an anchored
+; RIFT DUNGEON MOB (sl-0180 wave 2): the lurker — an anchored
 ; corridor picket firing intercept star darts (the dart lead).
 ; PHASELESS: gold only, never a catch. ANCHOR policy = a bot-modeled
 ; keep-out disc; the path walks AROUND its reach. Aggro 8 [T].

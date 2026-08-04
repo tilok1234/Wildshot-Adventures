@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
 
-; DUNGEON RIFT proof (sl-0180 wave 2): THE BOSS ROOM — decel_wall
+; RIFT DUNGEON proof (sl-0180 wave 2): THE BOSS ROOM — decel_wall
 ; paced through its flip (floor 50%) and kill in the 16x9 room
 ; (wider than the one-room rift; the hanging walls get real air).
 ; sl-0187/0188 REBUILT: 380 hp at 95 (t150/350/550/750) -> the 50%

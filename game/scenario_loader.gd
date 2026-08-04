@@ -85,7 +85,7 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 	# sl-0105), 26-29=the void/comet catch variants (sl-0115),
 	# 30-37=the rift boss pool (sl-0180 wave 1A: twin_helix/ring_nest/
 	# sine_shoal/boomerang_veil/decel_wall/zone_constellation/
-	# cross_burst/pulse_lattice), 38-39=the dungeon rift mobs (wave 2:
+	# cross_burst/pulse_lattice), 38-39=the rift-dungeon mobs (wave 2:
 	# darter/lurker — PHASELESS by design, gold-only kills),
 	# 40-46=the sl-0200 pool extension (gap_carousel/sickle_weaver/
 	# dart_skirmisher/decel_orchard/halo_lasher/tide_stalker/

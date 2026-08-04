@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
 
-; DUNGEON RIFT proof (sl-0180 wave 2): THE LURKER SOLO — the
+; RIFT DUNGEON proof (sl-0180 wave 2): THE LURKER SOLO — the
 ; anchored intercept picket in the 4-wide corridor, engaged from
 ; inside its reach (6.1 t). The play path's lurkers always fight
 ; alone (20+ from every darter pack); this row proves that shipped

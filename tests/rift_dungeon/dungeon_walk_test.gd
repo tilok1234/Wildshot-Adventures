@@ -20,6 +20,13 @@
 ##    one-room presentation (rift_path false); the flee door cell
 ##    (2.5,3.5 — replica of main's DUNGEON_DOORS entry, the recorded
 ##    --script limit) is walkable beside the spawn.
+## 4. THE VOCABULARY GUARD (sl-0216) — rift dungeons and future
+##    overworld dungeons are never the same thing, and the words keep
+##    them apart: the inverted phrase ('dungeon' directly before
+##    'rift') is banned in living source; a starhook scenario's
+##    display_name says 'dungeon' only as 'RIFT DUNGEON' (the plain
+##    word is reserved for overworld dungeons — the Warren class);
+##    the bare `dungeon` console jump stays retired.
 ##
 ## Run: godot --headless --path . --script tests/rift_dungeon/dungeon_walk_test.gd
 extends SceneTree
@@ -68,6 +75,23 @@ func _scenarios() -> Array[Resource]:
 		if f.ends_with(".tres"):
 			out.append(load("res://data/scenarios/" + f))
 	return out
+
+
+## sl-0216: recursive source scan for the vocabulary guard. Text
+## files only (.gd/.tres/.py/.ps1); .godot caches skipped.
+func _scan_sources(dir_path: String, re: RegEx, flagged: Array[String]) -> void:
+	var dir := DirAccess.open(dir_path)
+	if dir == null:
+		return
+	for f in dir.get_files():
+		if f.get_extension() in ["gd", "tres", "py", "ps1"]:
+			var p := dir_path + "/" + f
+			if re.search(FileAccess.get_file_as_string(p)) != null:
+				flagged.append(p)
+	for sub in dir.get_directories():
+		if sub.begins_with("."):
+			continue
+		_scan_sources(dir_path + "/" + sub, re, flagged)
 
 
 func _run() -> void:
@@ -182,8 +206,48 @@ func _run() -> void:
 		"the flee door sits beside the spawn (no ping-pong law)"
 	)
 
+	# 4. THE VOCABULARY GUARD (sl-0216). (a) The inverted phrase — the
+	# word 'dungeon' directly before 'rift' — reads as a rift subtype
+	# of dungeon, the exact confusion the designer flagged; it is
+	# banned in living source (notes/ and CLAUDE.md keep their
+	# history). The pattern is built by concatenation so this file
+	# never trips its own scan (the sl-0123 never-bind precedent).
+	var banned_re := RegEx.new()
+	banned_re.compile("(?i)" + "dungeon" + "[ _-]?" + "rift")
+	var flagged: Array[String] = []
+	for d: String in ["res://game", "res://ui", "res://sim", "res://data", "res://tests", "res://tools"]:
+		_scan_sources(d, banned_re, flagged)
+	check(
+		flagged.is_empty(),
+		"inverted dungeon/rift phrasing in living source: " + ", ".join(flagged)
+	)
+	# (b) Surface rule: starhook display_names say 'dungeon' only as
+	# 'RIFT DUNGEON'; non-starhook rows keep the plain word freely.
+	for s: Resource in _scenarios():
+		var dn := String(s.display_name).to_lower()
+		if bool(s.starhook_rift) and dn.contains("dungeon"):
+			check(
+				dn.contains("rift dungeon"),
+				"%s display_name says 'dungeon' without RIFT DUNGEON" % String(s.id)
+			)
+	# (c) The bare `dungeon` console jump stays retired: main.gd
+	# routes the rift-dungeon scenario from exactly ONE call site (the
+	# rift family arm) and the bare word answers with the reservation
+	# hint (main cannot compile under --script — text pins, the
+	# recorded limit; lint + boot pin main's side).
+	var main_src := FileAccess.get_file_as_string("res://game/main.gd")
+	var routes := main_src.count(DUNGEON_SCENARIO)
+	check(
+		routes == 1,
+		"main.gd routes the rift dungeon from exactly one site (found %d)" % routes
+	)
+	check(
+		main_src.contains("'dungeon' is reserved"),
+		"the bare `dungeon` command answers with the reservation hint"
+	)
+
 	if fails.is_empty():
-		print("dungeon_walk_test: PASS (render-resolution/traverse/routing)")
+		print("dungeon_walk_test: PASS (render-resolution/traverse/routing/vocabulary)")
 		quit(0)
 	else:
 		for m: String in fails:

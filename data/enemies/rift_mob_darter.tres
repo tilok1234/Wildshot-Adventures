@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://data/emitter_slot.gd" id="2"]
 [ext_resource type="Resource" path="res://data/enemies/patterns/star_spray.tres" id="3"]
 
-; DUNGEON RIFT MOB (sl-0180 wave 2): the darter — a small star-fish
+; RIFT DUNGEON MOB (sl-0180 wave 2): the darter — a small star-fish
 ; picket on the path (keep-range, star spray at the spray lead;
 ; PHASELESS by design: its death banks gold and NEVER lands a catch
 ; or ends the dive — the damage-path gate is the contract).

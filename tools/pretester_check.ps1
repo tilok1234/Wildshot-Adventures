@@ -309,7 +309,7 @@ if (-not $SkipBattery) {
         @("proof_boss_tide_stalker","1,2,3",3600,"","","PASS","PASS"),
         @("proof_boss_tide_stalker_corner","1,2,3",3600,"","","PASS","PASS"),
         @("proof_boss_pulse_cross","1,2,3",3600,"","","PASS","PASS"),
-        # sl-0180 wave 2: the dungeon-rift path — the SHIPPED fights
+        # sl-0180 wave 2: the rift-dungeon path — the SHIPPED fights
         # (the path's packs sit 20+ apart and the tether keeps them
         # sequential): the darter pair, the lurker solo, and the boss
         # room (decel_wall paced through its flip in the 16x9 room).

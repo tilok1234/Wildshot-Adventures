@@ -122,7 +122,7 @@ const DUNGEON_DOORS := {
 	&"rift_boss_halo_lasher": [RIFT_EXIT_DOOR],
 	&"rift_boss_tide_stalker": [RIFT_EXIT_DOOR],
 	&"rift_boss_pulse_cross": [RIFT_EXIT_DOOR],
-	# sl-0180 wave 2: the dungeon path's mouth (its own flee cell —
+	# sl-0180 wave 2: the rift dungeon's mouth (its own flee cell —
 	# the spawn sits 3 t east, the ping-pong law honored; the return
 	# rides the rift machinery: back to the slice at the cast shore).
 	&"rift_dungeon_path":
@@ -945,7 +945,7 @@ func _console_exec(line: String) -> void:
 		return
 	match String(tokens[0]).to_lower():
 		"help":
-			console.println("god | slowmo <1-10> | events <on|off|all> | reset | dungeon")
+			console.println("god | slowmo <1-10> | events <on|off|all> | reset")
 			console.println("rift list|<boss_id>|catch [biome] [rare]|dungeon  (sl-0189 jumps)")
 			console.println(
 				"level <1-30|max> | gold <n> | gear | tackle | fish <n>  (sl-0191 belt)"
@@ -975,13 +975,11 @@ func _console_exec(line: String) -> void:
 			Config.set_setting("dev", "seed", world.run_seed + 1)
 			get_tree().reload_current_scene()
 		"dungeon":
-			# sl-0180 wave 2 TEST ACCESS: jump into the dungeon-rift
-			# path (dev console = dev-only by the one-flag law; the
-			# ambient dungeon-spawn wiring waits on the walk proving).
-			Config.set_setting("dev", "scenario", "res://data/scenarios/rift_dungeon_path.tres")
-			Config.set_setting("dev", "door_spawn", "")
-			console.println("descending the dungeon rift (test access)...")
-			get_tree().reload_current_scene()
+			# sl-0216 VOCABULARY GUARD: the bare word is RESERVED for
+			# future overworld dungeons (the Warren class); the starhook
+			# path lane is the RIFT DUNGEON and its jump lives under the
+			# rift family. The old direct jump retired into this hint.
+			console.println("'dungeon' is reserved (overworld dungeons). starhook: rift dungeon")
 		"rift":
 			_console_rift_jump(tokens)
 		"level", "gold", "gear", "tackle", "fish", "tp", "forage":
@@ -1021,7 +1019,7 @@ func _console_rift_jump(tokens: PackedStringArray) -> void:
 		"dungeon":
 			Config.set_setting("dev", "scenario", "res://data/scenarios/rift_dungeon_path.tres")
 			Config.set_setting("dev", "door_spawn", "")
-			console.println("descending the dungeon rift...")
+			console.println("descending the rift dungeon...")
 			get_tree().reload_current_scene()
 		"catch":
 			var biome := String(tokens[2]).to_lower() if tokens.size() > 2 else "nebula"
@@ -1738,7 +1736,7 @@ func _ready() -> void:
 		rift_view.arena_h = int(def.height)
 		# sl-0186: a PATH rift renders its AUTHORED arena (backdrop
 		# under the tiles) and its galaxy-side portal sits at the
-		# scenario's OWN flee door (the 12x13 default drew the
+		# scenario's OWN flee door (the 12x13 default drew the rift
 		# dungeon's portal inside a wall band). Fit rifts keep the
 		# proven default look untouched.
 		rift_view.path_mode = bool(scenario.rift_path)
