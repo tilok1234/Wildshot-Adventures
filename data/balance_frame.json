@@ -32,9 +32,17 @@
     "budget_step": 1.4,
     "frame_band": 0.1,
     "frames": {
-      "slow_heavy": { "shots_per_sec": 0.75, "damage": [17, 24, 34, 48, 67], "band_note": "short/awkward earns up to +10% (sl-0120 x1.25 cadence pass)" },
-      "fast_light": { "shots_per_sec": 2.5, "damage": [5, 7, 10, 13, 18], "band_note": "the budget-exact reference frame (sl-0120 x1.25 cadence pass)" },
-      "long_reach": { "shots_per_sec": 1.5, "damage": [8, 11, 15, 20, 28], "band_note": "range/comfort pays up to -10%; T1-T3 sit nearer 1.0 by integer granularity (sl-0120)" }
+      "slow_heavy": { "shots_per_sec": 1.1320754716981132, "damage": [11, 16, 22, 31, 44], "band_note": "short/awkward earns up to +10%; sl-0207 x1.509 re-composition (cadence 80->53, DPS within 2.5% of the sl-0120 tables at every tier)" },
+      "fast_light": { "shots_per_sec": 4.0, "damage": [3, 4, 6, 8, 12], "band_note": "the budget-exact reference frame; sl-0207 x1.6 re-composition (cadence 24->15 - the x1.5 target's 16 ticks cramps T2 outside the +/-10% band; the cleaner derive ships, reported)" },
+      "long_reach": { "shots_per_sec": 2.3076923076923075, "damage": [5, 7, 10, 13, 18], "band_note": "range/comfort pays up to -10%; sl-0207 x1.538 re-composition (cadence 40->26, T4 DPS-exact on the sl-0120 table)" }
+    }
+  },
+  "dexterity": {
+    "note": "sl-0207 [T]: attack speed grows with level (the Quickdraw-start feel); per-shot damage normalizes by cadence in tier_damage so TOTAL DPS(level) ripples <= 10% of the level-1 value and never creeps. Ladder steps sit on cadence-integer lattice points; breakpoints at zone entries. Bow carries no wet-entry step: cadences 13/12 have no in-ripple damage integers at its small T1/T3 values (the granularity finding, reported sl-0207).",
+    "ladders": {
+      "sword": [[1, 100], [8, 110], [16, 123], [23, 139]],
+      "staff": [[1, 100], [8, 108], [16, 124], [23, 137]],
+      "bow": [[1, 100], [8, 107], [23, 136]]
     }
   },
   "armor_slot": {
@@ -54,7 +62,7 @@
     "snow": { "typical_hit": 40, "trash_hp": 64, "landed_hits_per_sec": 0.833 }
   },
   "armor_rules": { "obtainable_band": [0.4, 0.6], "plateau_flag": 0.8 },
-  "hits_to_kill": { "band": [3, 5], "reference_frame": "fast_light" },
+  "hits_to_kill": { "band": [5, 8], "reference_frame": "fast_light" },
   "digit_rule": { "max_combat_number": 999 },
   "ttk_band_seconds": [1.0, 6.0],
   "ttd_band_seconds": [12.0, 90.0],
@@ -249,7 +257,8 @@
     { "up": "range", "down": "attack_speed" },
     { "up": "hp", "down": "speed" },
     { "up": "defense", "down": "damage" },
-    { "up": "mana", "down": "hp" }
+    { "up": "mana", "down": "hp" },
+    { "up": "attack_speed", "down": "damage" }
   ],
   "unique_rules": {
     "breaks_required": 1,
@@ -275,6 +284,7 @@
     { "id": "t2-heavy-plate", "slot": "armor", "tier": 2, "archetype": "heavy", "trade": { "up": "hp", "up_amount": 10, "down": "speed", "down_amount": 3 } },
     { "id": "t3-light-leathers", "slot": "armor", "tier": 3, "archetype": "light", "trade": { "up": "speed", "up_amount": 4, "down": "hp", "down_amount": 12 } },
     { "id": "t2-ring-of-reach", "slot": "ring", "tier": 2, "trade": { "up": "range", "up_amount": 2, "down": "attack_speed", "down_amount": 1 } },
+    { "id": "t2-ring-quick-hand", "slot": "ring", "tier": 2, "name": "Ring of the Quick Hand", "trade": { "up": "attack_speed", "up_amount": 10, "down": "damage", "down_amount": 1 } },
     { "id": "t3-ring-of-fangs", "slot": "ring", "tier": 3, "trade": { "up": "damage", "up_amount": 4, "down": "defense", "down_amount": 4 } },
     {
       "id": "u-reliquary-coil",

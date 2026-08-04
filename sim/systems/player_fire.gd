@@ -16,6 +16,7 @@ extends RefCounted
 const ActorState := preload("res://sim/actor_state.gd")
 const SimEvents := preload("res://sim/events.gd")
 const Progress := preload("res://sim/systems/progress.gd")
+const StatFrame := preload("res://sim/systems/stat_frame.gd")
 
 ## Tap buffer: a tap that lands during cooldown fires when the gate opens
 ## if it was held within this many ticks (~67 ms) — without it, taps mid-
@@ -67,12 +68,11 @@ static func run(world: RefCounted) -> void:
 		if aim == Vector2.ZERO:
 			aim = Vector2.RIGHT
 		aim = aim.normalized()
-		# Attack-speed stat (docs/22 block 1/7): scales the frame's
-		# cadence; the != 100 gate makes identity STRUCTURAL for the
-		# legacy lane (no float ever runs at the default).
-		var cadence := int(wf.cadence_ticks)
-		if p.attack_speed_stat != 100:
-			cadence = maxi(1, roundi(float(cadence) * 100.0 / float(p.attack_speed_stat)))
+		# Attack-speed stat (docs/22 block 1/7) scales the frame's
+		# cadence — ONE formula shared with tier_damage's sl-0207
+		# DPS normalization (StatFrame.effective_cadence; identity
+		# stays structural for the legacy lane).
+		var cadence := StatFrame.effective_cadence(wf, p)
 		# Quickdraw (ledger #2): hard-coded 2/3 cadence while buffed —
 		# +50% attack speed, no stat pipeline.
 		if world.tick < p.quickdraw_until_tick:

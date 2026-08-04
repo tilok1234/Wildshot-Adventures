@@ -13,13 +13,13 @@
 		},
 		"dart_skirmisher": {
 			"flips": 0,
-			"luma_max": 0.0563289655905198,
+			"luma_max": 0.0567808514950068,
 			"luma_min": 0.0547649268959892
 		},
 		"decel_orchard": {
 			"flips": 0,
 			"luma_max": 0.0594158665499704,
-			"luma_min": 0.055457705032825
+			"luma_min": 0.0556044506778724
 		},
 		"decel_wall": {
 			"flips": 0,
@@ -28,7 +28,7 @@
 		},
 		"gap_carousel": {
 			"flips": 0,
-			"luma_max": 0.096029139528226,
+			"luma_max": 0.0962122890430962,
 			"luma_min": 0.0923114021579537
 		},
 		"halo_lasher": {

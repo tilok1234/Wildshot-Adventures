@@ -3,12 +3,12 @@
 [ext_resource type="Script" path="res://data/weapon_frame.gd" id="1"]
 [ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
 
-; docs/22 long_reach frame (slice S0; sl-0120 x1.25 cadence pass):
-; 1.5 shots/s (cadence 40), one long piercing bolt (max_passes 3) —
+; docs/22 long_reach frame (slice S0; sl-0207 x1.538 re-composition):
+; 2.308 shots/s (cadence 26), one long piercing bolt (max_passes 3) —
 ; pierce owns lines (block-3 matrix); range/comfort pays the budget
 ; discount where integers allow (T1-T3 sit nearer 1.0, recorded).
-; Per-shot damage 8 documents T1; the CLASS LANE reads the
-; balance_frame.json tier table (8/11/15/20/28). Handling flavor
+; Per-shot damage 5 documents T1; the CLASS LANE reads the
+; balance_frame.json tier table (5/7/10/13/18). Handling flavor
 ; [P]: reach ~9.4 tiles.
 
 [sub_resource type="Resource" id="shot0"]
@@ -16,7 +16,7 @@ script = ExtResource("2")
 angle_offset_deg = 0.0
 speed = 12.0
 radius = 0.15
-damage = 8
+damage = 5
 ttl_ticks = 45
 program = 0
 prog_a = 0.0
@@ -30,6 +30,6 @@ script = ExtResource("1")
 id = &"class_staff"
 display_name = "Staff"
 pattern_id = 6
-cadence_ticks = 40
+cadence_ticks = 26
 shots = Array[Resource]([SubResource("shot0")])
 archetype = &"long_reach"

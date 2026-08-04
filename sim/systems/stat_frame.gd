@@ -123,10 +123,45 @@ static func xp_to_next(world: RefCounted, level: int) -> int:
 	return 0
 
 
+## sl-0207 — THE one cadence formula: player_fire and tier_damage both
+## read it (one truth; quickdraw stacks after, in the fire path only).
+## The attack-speed stat scales the frame's cadence; the != 100 gate
+## keeps identity STRUCTURAL for the legacy lane — no float ever runs
+## at the default.
+static func effective_cadence(wf: Resource, p: RefCounted) -> int:
+	var cadence := int(wf.cadence_ticks)
+	if p.attack_speed_stat != 100:
+		cadence = maxi(1, roundi(float(cadence) * 100.0 / float(p.attack_speed_stat)))
+	return cadence
+
+
+## sl-0207 — the level-derived attack-speed component [T]: the class's
+## dexterity ladder from the frame (the highest breakpoint at or below
+## `level` rules; 0 when the block is absent, so pre-sl-0207 frames
+## and the legacy lane stay identity by construction).
+static func dex_level_bonus(world: RefCounted, class_id: int, level: int) -> int:
+	var f: Dictionary = world.stat_frame
+	if f.is_empty() or class_id < 0 or class_id >= CLASS_IDS.size():
+		return 0
+	var dex: Dictionary = f.get("dexterity", {})
+	var ladders: Dictionary = dex.get("ladders", {})
+	var ladder: Array = ladders.get(String(CLASS_IDS[class_id]), [])
+	var stat := 100
+	for step: Array in ladder:
+		if level >= int(step[0]):
+			stat = int(step[1])
+	return stat - 100
+
+
 ## docs/22 blocks 3/4 — per-shot damage for a class-backed player firing
 ## a slice archetype frame: the tier table value plus gear damage mod
-## (never below 1). Returns -1 when the frame has no archetype (lab
-## frames) — the caller falls back to the legacy lane.
+## (never below 1), NORMALIZED by the live cadence (sl-0207): damage
+## scales with the SAME effective cadence the fire path runs, so attack
+## speed from levels or gear moves the trigger finger, never total DPS
+## (the calculator's gate 8 bounds the integer ripple to +/-10%).
+## Integer path at identity — legacy and level-1 lanes never touch
+## floats. Returns -1 when the frame has no archetype (lab frames) —
+## the caller falls back to the legacy lane.
 static func tier_damage(world: RefCounted, p: RefCounted, wf: Resource) -> int:
 	var arch := String(wf.archetype)
 	if arch.is_empty():
@@ -141,7 +176,12 @@ static func tier_damage(world: RefCounted, p: RefCounted, wf: Resource) -> int:
 	var frame_row: Dictionary = frames[arch]
 	var table: Array = frame_row.damage
 	var tier: int = clampi(int(p.weapon_tiers[p.equipped_weapon]), 1, table.size())
-	return maxi(1, int(table[tier - 1]) + p.damage_mod)
+	var base := maxi(1, int(table[tier - 1]) + p.damage_mod)
+	var c_base := int(wf.cadence_ticks)
+	var c_eff := effective_cadence(wf, p)
+	if c_eff == c_base:
+		return base
+	return maxi(1, roundi(float(base) * float(c_eff) / float(c_base)))
 
 
 ## Recompute every derived stat for a class-backed player from class
@@ -195,7 +235,12 @@ static func recompute(world: RefCounted, p: RefCounted) -> void:
 	)
 	p.armor = maxi(0, armor_v + int(trades.defense))
 	p.damage_mod = int(trades.damage)
-	p.attack_speed_stat = maxi(10, 100 + int(trades.attack_speed))
+	# sl-0207: level-grown dexterity + gear trades share the one stat;
+	# tier_damage normalizes by the same cadence, so both move feel,
+	# never the DPS budget.
+	p.attack_speed_stat = maxi(
+		10, 100 + dex_level_bonus(world, p.class_id, lvl) + int(trades.attack_speed)
+	)
 	p.range_stat = maxi(10, 100 + int(trades.range))
 	# Block 6: gear speed is a STAT trade; the hard cap counts
 	# everything combined. The integrator re-applies the cap in t/s so

@@ -155,23 +155,31 @@ func _init() -> void:
 	bp2.level = 2
 
 	# 5. Tier-table weapon damage (blocks 3/4) + the T1 drift pin
-	# (sl-0120 x1.25 cadence pass tables).
-	check(Progress.shot_damage(bow, bp2, 5) == 5, "bow T1 = 5 (table, not multiplier)")
+	# (sl-0207 x1.5-1.6 re-composition tables).
+	check(Progress.shot_damage(bow, bp2, 3) == 3, "bow T1 = 3 (table, not multiplier)")
 	bp2.weapon_tiers[0] = 3
-	check(Progress.shot_damage(bow, bp2, 5) == 10, "bow T3 = 10")
+	check(Progress.shot_damage(bow, bp2, 3) == 6, "bow T3 = 6")
 	bp2.weapon_tiers[0] = 5
-	check(Progress.shot_damage(bow, bp2, 5) == 18, "bow T5 = 18")
+	check(Progress.shot_damage(bow, bp2, 3) == 12, "bow T5 = 12")
 	bp2.weapon_tiers[0] = 6
-	check(Progress.shot_damage(bow, bp2, 5) == 18, "tier 6 clamps to the T5 table")
+	check(Progress.shot_damage(bow, bp2, 3) == 12, "tier 6 clamps to the T5 table")
 	bp2.weapon_tiers[0] = 1
 	bp2.damage_mod = 4
-	check(Progress.shot_damage(bow, bp2, 5) == 9, "gear damage mod adds flat")
+	check(Progress.shot_damage(bow, bp2, 3) == 7, "gear damage mod adds flat (identity path)")
 	bp2.damage_mod = 0
-	check(Progress.shot_damage(sword, sp, 17) == 17, "sword T1 = 17")
+	check(Progress.shot_damage(sword, sp, 11) == 11, "sword T1 = 11")
 	sp.weapon_tiers[0] = 5
-	check(Progress.shot_damage(sword, sp, 17) == 67, "sword T5 = 67")
+	check(Progress.shot_damage(sword, sp, 11) == 44, "sword T5 = 44")
 	sp.weapon_tiers[0] = 1
-	check(Progress.shot_damage(staff, tp, 8) == 8, "staff T1 = 8")
+	tp.level = 1
+	StatFrame.recompute(staff, tp)
+	check(Progress.shot_damage(staff, tp, 5) == 5, "staff T1 = 5")
+	tp.level = 30
+	StatFrame.recompute(staff, tp)
+	check(
+		Progress.shot_damage(staff, tp, 5) == 4,
+		"staff T1 at L30: dex normalizes 5 -> 4 (c26 -> c19; DPS +9.5%, gate-8 band)"
+	)
 	var wt_frames: Dictionary = f.weapon_tiers.frames
 	for pair: Array in [
 		["res://data/weapons/class_sword.tres", "slow_heavy"],
@@ -200,20 +208,23 @@ func _init() -> void:
 	var fire_world: RefCounted = _class_world("bow", 9)
 	var fp: RefCounted = fire_world.players[0]
 	fire_world.step([_fire_frame()])
-	check(fp.next_fire_tick == 24, "cadence identity at attack_speed 100")
+	check(fp.next_fire_tick == 15, "cadence identity at attack_speed 100")
 	var slot := _first_active_slot(fire_world)
 	check(slot >= 0, "identity fire spawned a shot")
 	var ttl_identity: int = fire_world.projectiles.ttl[slot]
-	check(fire_world.projectiles.damage[slot] == 5, "spawned shot carries table damage")
+	check(fire_world.projectiles.damage[slot] == 3, "spawned shot carries table damage")
 	check(fire_world.projectiles.pattern_id[slot] == 5, "bow pattern id 5")
 	var fire2: RefCounted = _class_world("bow", 9)
 	var fp2: RefCounted = fire2.players[0]
 	fp2.attack_speed_stat = 150
 	fp2.range_stat = 150
 	fire2.step([_fire_frame()])
-	check(fp2.next_fire_tick == 16, "attack_speed 150 -> cadence 16")
+	check(fp2.next_fire_tick == 10, "attack_speed 150 -> cadence 10")
 	var slot2 := _first_active_slot(fire2)
 	check(slot2 >= 0, "scaled fire spawned a shot")
+	# sl-0207: damage normalizes by the SAME cadence — DPS held
+	# (3 x 4.0/s = 12.0; 2 x 6.0/s = 12.0, integer-exact here).
+	check(fire2.projectiles.damage[slot2] == 2, "attack_speed 150 normalizes damage 3 -> 2")
 	var ttl_scaled: int = fire2.projectiles.ttl[slot2]
 	check(ttl_scaled - ttl_identity == 12, "range 150 -> ttl 24->36 (+12)")
 	var items: Array = f.items
@@ -232,6 +243,30 @@ func _init() -> void:
 	fp2.ring_index = -1
 	StatFrame.recompute(fire2, fp2)
 	check(fp2.range_stat == 100 and fp2.attack_speed_stat == 100, "unequip clears the trade")
+
+	# 6b. sl-0207 DEXTERITY: level-grown attack speed, DPS-neutral by
+	# cadence-normalized damage (calc gate 8 bounds the integer ripple;
+	# the ladder numbers here are the [T] frame data, pinned).
+	var dex_world: RefCounted = _class_world("bow", 9)
+	var dp: RefCounted = dex_world.players[0]
+	check(StatFrame.dex_level_bonus(dex_world, dp.class_id, 1) == 0, "dex identity at L1")
+	check(StatFrame.dex_level_bonus(dex_world, dp.class_id, 8) == 7, "bow dex +7 at L8")
+	check(StatFrame.dex_level_bonus(dex_world, dp.class_id, 22) == 7, "bow holds 107 through wet")
+	check(StatFrame.dex_level_bonus(dex_world, dp.class_id, 23) == 36, "bow dex +36 at L23")
+	check(StatFrame.dex_level_bonus(dex_world, dp.class_id, 30) == 36, "ladder holds to cap")
+	check(StatFrame.dex_level_bonus(dex_world, 0, 23) == 39, "sword dex +39 at L23")
+	check(StatFrame.dex_level_bonus(dex_world, 1, 16) == 24, "staff dex +24 at L16")
+	dp.level = 23
+	StatFrame.recompute(dex_world, dp)
+	check(dp.attack_speed_stat == 136, "recompute wires the ladder (bow L23 -> 136)")
+	dex_world.step([_fire_frame()])
+	check(dp.next_fire_tick == 11, "L23 bow fires at cadence 11 (5.45/s)")
+	var dslot := _first_active_slot(dex_world)
+	check(
+		dex_world.projectiles.damage[dslot] == 2,
+		"L23 bow damage normalizes 3 -> 2 (DPS 12.0 -> 10.9, in the gate-8 band)"
+	)
+	check(StatFrame.dex_level_bonus(_world(), -1, 30) == 0, "legacy lane gets ZERO dexterity")
 
 	# 7. Armor slot (block 4) + THE formula through THE damage path.
 	var aw: RefCounted = _class_world("sword", 11)

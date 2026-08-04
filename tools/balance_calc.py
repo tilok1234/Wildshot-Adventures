@@ -42,13 +42,22 @@ BUDGET_STEP = 1.4
 FRAME_BAND = 0.1
 ARMOR_BAND = (0.4, 0.6)
 PLATEAU = 0.8
-HITS_BAND = (3, 5)
+# sl-0207 RE-PIN [3,5] -> [5,8]: hits = TTK x rate, so the ruled band
+# is mathematically inseparable from firing rate at held TTK (the
+# sl-0120 x1.5 impossibility). The x1.5-1.6 re-composition ships the
+# routed player-damage-down lever: same TTK, more and smaller hits -
+# the band moves to its rate-image. Reported at the seam.
+HITS_BAND = (5, 8)
 MAX_NUMBER = 999
 HP_STEP_BAND = (1.25, 1.30)
 SPEED_BASES = [100, 105, 110]
 SPEED_CAP = 115
+# sl-0207: +attack_speed/-damage joins the block-7 grammar (the
+# trigger-finger trade - under cadence-normalized damage the up side
+# buys FEEL, the down side costs real DPS).
 PAIRS = {("damage", "defense"), ("speed", "hp"), ("range", "attack_speed"),
-         ("hp", "speed"), ("defense", "damage"), ("mana", "hp")}
+         ("hp", "speed"), ("defense", "damage"), ("mana", "hp"),
+         ("attack_speed", "damage")}
 UNIQUE_WHITELIST = {"pattern_replacement", "exception_behaviour", "over_budget_paired_cost", "utility"}
 CHASSIS_BAND = (0.7, 0.9)
 
@@ -509,6 +518,70 @@ unpooled = boss_ids - pooled_ids
 if bosses and unpooled:
     fail(f"rift bosses never pooled: {sorted(unpooled)}")
 
+# ---- gate 8: DEXTERITY (sl-0207 - level-grown attack speed, DPS-neutral) ----
+# The ladders are [T] data; the LAW is budget-neutrality: at every
+# (class, tier, ladder step) the sim's own integer math - cadence_eff =
+# gd_round(cadence * 100 / stat), damage_eff = gd_round(damage *
+# cadence_eff / cadence) - must hold DPS within +/-10% of the level-1
+# value. gd_round mirrors GDScript roundi (half AWAY from zero; python
+# round() half-evens and would lie at .5 boundaries).
+RIPPLE_BAND = 0.10
+DEX_FINAL_BAND = (130, 145)
+
+
+def gd_round(x: float) -> int:
+    return math.floor(x + 0.5)
+
+
+dex = d.get("dexterity", {})
+ladders = dex.get("ladders", {})
+if set(ladders) != set(d["classes"]):
+    fail(f"dexterity ladders must cover the classes exactly (got {sorted(ladders)})")
+dex_report = []
+worst_ripple = (0.0, "")
+for cname, ladder in ladders.items():
+    c = d["classes"].get(cname)
+    if c is None:
+        continue
+    f = frames[c["weapon_frame"]]
+    cad = gd_round(60.0 / f["shots_per_sec"])
+    if not ladder or ladder[0] != [1, 100]:
+        fail(f"dexterity {cname}: ladder must start [1, 100] (identity at level 1)")
+    prev_lvl, prev_stat = 0, 0
+    for lvl, stat in ladder:
+        if not (1 <= lvl <= 30):
+            fail(f"dexterity {cname}: breakpoint level {lvl} outside 1..30")
+        if lvl <= prev_lvl or stat <= prev_stat:
+            fail(f"dexterity {cname}: ladder must rise strictly (L{lvl}/{stat})")
+        prev_lvl, prev_stat = lvl, stat
+    final = ladder[-1][1]
+    if not (DEX_FINAL_BAND[0] <= final <= DEX_FINAL_BAND[1]):
+        fail(f"dexterity {cname}: final stat {final} outside the ~140 lean band {DEX_FINAL_BAND}")
+    steps = []
+    for lvl, stat in ladder:
+        c_eff = cad if stat == 100 else max(1, gd_round(cad * 100.0 / stat))
+        row = []
+        for t in range(5):
+            base_d = f["damage"][t]
+            d_eff = base_d if c_eff == cad else max(1, gd_round(base_d * c_eff / float(cad)))
+            dps_l = d_eff * 60.0 / c_eff
+            base_dps = base_d * f["shots_per_sec"]
+            rip = dps_l / base_dps - 1
+            if abs(rip) > RIPPLE_BAND + 1e-9:
+                fail(f"dexterity {cname} L{lvl}+ (stat {stat}) T{t + 1}: DPS ripple {rip:+.1%} outside +/-10%")
+            if abs(rip) > abs(worst_ripple[0]):
+                worst_ripple = (rip, f"{cname} L{lvl}+ T{t + 1}")
+            row.append(rip)
+        steps.append((lvl, stat, c_eff, max(abs(r) for r in row)))
+    # Quickdraw stack (ledger #2 stays hard-coded x2/3 in player_fire):
+    # reported at the fastest ladder step, never gated.
+    top_c = steps[-1][2]
+    qd_c = max(1, (top_c * 2 + 2) // 3)
+    dex_report.append(
+        f"  {cname:5s}: " + " -> ".join(f"L{s[0]}+ stat {s[1]} (c{s[2]}, ripple<={s[3]:.1%})" for s in steps)
+        + f"; quickdraw peak {60.0 / qd_c:.2f}/s"
+    )
+
 # ---- info report (never gated) ----
 xp = d["xp"]
 zone_levels = {z: BRACKETS[z][1] - BRACKETS[z][0] + (0 if z == "green" else 1) for z in BRACKETS}
@@ -528,10 +601,13 @@ print("  rift chest hp: " + ", ".join(f"T{t} +{chest_hp[t]}" for t in sorted(che
 print("  the rift boss pool (gate 7; strain clock %.1f/s reported, never gated):" % drain_rate)
 for row in boss_report:
     print(row)
+print("  dexterity ladders (gate 8; worst ripple %+.1f%% at %s):" % (worst_ripple[0] * 100, worst_ripple[1] or "n/a"))
+for row in dex_report:
+    print(row)
 
 if findings:
     print(f"\nFAIL — {len(findings)} findings:")
     for f in findings:
         print(" -", f)
     sys.exit(1)
-print("PASS — all seven gates hold: the numbers exist before the code does")
+print("PASS — all eight gates hold: the numbers exist before the code does")
