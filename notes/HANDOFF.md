@@ -1,30 +1,45 @@
-# Session Handoff — updated 2026-08-04 (post-play docs sweep: the refinement-round-1 threshold)
+# Session Handoff — updated 2026-08-04 (REFINEMENT ROUND 1 LANDED: sl-0186..0191 built + gated + pushed)
 
-> **WHERE THE PROJECT STANDS IN ONE BREATH:** everything routed
-> through 2026-08-03 is LANDED, GATED, AND PUSHED — the menu pass
-> v2 (sl-0143..0157), THE GEAR SEAM (sl-0177/0178: rods are
-> starhooking weapons, the fish-priced tackle vendor, rift
-> chest/helm, rare-catch drops, SERIAL 26), THE STARHOOK BOSS
-> EXPANSION + DUNGEON TEST (sl-0180/0181, three gated waves: the
-> per-biome fight pool, eight boss kits over eight playful
-> patterns, the constellation + the rifter panel, the serpentine
-> dungeon path), and THE QUEST-PULL FINDINGS (sl-0175/0176:
-> markers on both maps, icons on heads). THEN THE DESIGNER PLAYED,
-> and the verdicts are recorded planning-side (sl-0184..0189):
-> **REFINEMENT ROUND 1 is the routed next** — (1) THE DUNGEON IS
-> BROKEN IN REAL PLAY (diagnose FIRST; the walk contradicts the
-> passing bot proofs; the designer re-walks before it resolves);
-> (2) fight length RE-RULED **20–60 s max, intense** (gate 7
-> re-pins; all eight kits' HP re-derive — every one fails the new
-> bar as shipped); (3) BOSS LIFE — the eight split into
-> ROOM-PATTERN vs BEHAVIOURAL families; the keep-range one-room
-> law AMENDS for rift bosses (fairness floor absolute); (4) dev
-> console JUMP COMMANDS for every instanced encounter. Starhook
-> names ride the COSMIC VOCABULARY RAIL now (sl-0182 — the
-> constellation rename already shipped). Foraging (sl-0168,
-> spec-complete) builds behind the round at the next free SERIAL.
-> The round builds when its paste drops — the dungeon diagnosis
-> leads it.
+> **WHERE THE PROJECT STANDS IN ONE BREATH:** REFINEMENT ROUND 1 IS
+> LANDED, GATED, AND PUSHED (2026-08-04 night session; resolutions
+> sl-0192..0197): **(1) THE DUNGEON WAS INVISIBLE, NOT SMALL**
+> (sl-0186, game 4733560) — the serpentine's props spoke a foreign
+> dialect ('species' vs 'name') and the resolver ABORT erased every
+> floor and wall tile while collision stayed real; the one-room fixed
+> rift camera framed 4.0% of the arena; a stale static cast-capture
+> mounted split panes over console jumps. Fixed (dialect + hardened
+> builder + rift_path follow-camera routing + capture lifecycle +
+> path-mode rendering with the backdrop UNDER the authored tiles);
+> THE LESSON IS A GATE STEP NOW (dungeon_walk_test: arena render
+> resolution for EVERY scenario + the full serpentine traversed on
+> real Kinematics) — **the designer RE-WALKS before sl-0186 closes
+> for good**. (2) **THE EIGHT KITS ARE SHORT, DENSE, AND ALIVE**
+> (sl-0187+0188, game 427bd32) — gate 7 re-pinned [20,60]s, HP
+> re-derived 30–45s each, cooldowns ~×0.7; the standing-there statue
+> typed (keep-range satisfaction + long cooldowns) and killed via the
+> designer's own split: ROOM-PATTERN = ANCHOR (ring_nest, decel_wall,
+> zone_constellation, pulse_lattice — the choreography fills the
+> room; the anchored decel_wall also can never leave the dungeon boss
+> room again) vs BEHAVIOURAL = FLANKER with climbing speed ladders
+> ≤3.2 (twin_helix, sine_shoal, boomerang_veil, cross_burst); the law
+> amended to NEVER-A-CHASER (gather_test family pins); proofs
+> re-paced + re-recorded both lanes, one never-weaken iteration
+> (sine_shoal's frozen-entry-beat graze — the entry beat 30→40 moved
+> what no P2 param could); strobe re-probed all-zero. (3) **NAMES
+> OVER FUNCTIONAL NPCS** (sl-0190, game 4f7a660) — role-label plates
+> (Banker/Merchant/Trader/Tackle Keeper/Quest Giver) over exactly the
+> def_cell station class, icon-above-name at the icons' anchor,
+> data/npc_names.json ships empty as the designer's proper-name hook;
+> the crowd is structurally unplateable. (4) **THE JUMPS + THE
+> TOOLBELT** (sl-0189+0191) — `rift list|<boss_id>|catch|dungeon`
+> jumps + `level/gold/gear/tackle/fish/tp` grants riding NEW
+> dirty-stamping SimWorld commands (replays refuse, verdicts
+> auto-PROVISIONAL — the god contract; zero format growth; smoke pair
+> byte-identical). NO feel verdicts anywhere — every number/key/name
+> [T]; the designer's replay of the round is the next word. Starhook
+> names still ride the COSMIC VOCABULARY RAIL (sl-0182). Foraging
+> (sl-0168, spec-complete) still builds behind the round at the next
+> free SERIAL.
 
 **COLD START — this handoff assumes NO prior context.** Read the game
 repo's `CLAUDE.md` first (auto-loads; BINDING contract + the
@@ -202,29 +217,37 @@ clean seam.
   recordings are BIG (~80 MB/30 s) — cut posting-size versions with
   ffmpeg fps/scale filters on request.
 
-## §1 Where things stand (2026-08-04, post-play docs sweep)
+## §1 Where things stand (2026-08-04, refinement round 1 landed)
 
-**Everything routed through sl-0181 is LANDED AND PUSHED** (game
-main at the docs-sweep commit; planning at sl-0189). The one-command
-ship gate `tools/pretester_check.ps1` runs ALL GREEN — **31 fixed
-steps + the two-lane battery (54 rows / 105 runs) byte-identical +
-export both artifacts + lockdown probe, ~14–15 min** — last full
-runs: the boss waves (14.9 / 15.0 min) + the wave-1 seal (14.1 min),
-plus -SkipBattery view gates at ~3.1 min. No deferred-gate debt.
-CI's fast signals (lint + Windows determinism-smoke) were green on
-every push of the batch.
+**Everything routed through sl-0191 is LANDED AND PUSHED** (game
+main 451d4a0; planning sync log through sl-0197). Four gated seams
+this session: 4733560 (sl-0186 dungeon), 427bd32 (sl-0187+0188 kit
+rebuild, deliberate re-baseline sealed by a post-commit full gate),
+4f7a660 (sl-0190 nameplates, -SkipBattery view seam), 451d4a0
+(sl-0189+0191 console family). The one-command ship gate
+`tools/pretester_check.ps1` runs ALL GREEN — **32 fixed steps (the
+sl-0186 dungeon walk joined: arena render resolution EVERY scenario
++ the serpentine traverse) + the two-lane battery (54 rows / 105
+runs) byte-identical + export both artifacts + lockdown probe,
+~15–16.5 min** — this session's full runs: 15.8 / 15.6+16.4 (the
+re-baseline pair) / 16.0 min, plus one -SkipBattery view gate at
+3.2 min. No deferred-gate debt. Check the CI lint job after the
+pushes (gotcha #26) — the session's pushes landed overnight.
 
-The designer has PLAYED the batch. Their verdicts are recorded
-(sl-0186..0189) and REFINEMENT ROUND 1 is staged planning-side —
-the dungeon walk contradiction is its lead item and diagnosis comes
-FIRST. No engineering from the verdicts is built yet; the round
-builds when its paste drops.
+The round's engineering is DONE; the acceptance is the designer's:
+**re-walk the dungeon** (sl-0186's own routed term) and **replay
+the eight kits** at the new lengths/families — the `rift` jumps +
+the toolbelt put every fight one console line away at proper gear.
 
 ## §2 Open — designer-side (do not nag; the deck + planning carry these)
 
-- **DROP THE REFINEMENT-ROUND-1 PASTE** when the fix round should
-  build (dungeon diagnosis → 20-60 s re-derive → boss life → jump
-  commands). The dungeon re-walk after the fix is theirs.
+- **RE-WALK THE DUNGEON** (`dungeon` or `rift dungeon` in the dev
+  console) — sl-0186 resolves for good on their walk, not before.
+  The serpentine now RENDERS (their 'invisible walls' were unplaced
+  tiles over real collision) under a follow camera.
+- **REPLAY THE EIGHT KITS** (`rift <boss_id>` jumps straight in;
+  `gear`/`tackle`/`level max` set up proper loadouts) — 20-60s
+  lengths, anchor-vs-flanker life, all [T] and theirs to move.
 - **NAMES, whenever words come** (the cosmic rail): boss kit names,
   rod names, species names, the tackle keeper's sign — everything
   is data-keyed for renames; the constellation is already live.
@@ -624,8 +647,40 @@ names; cap runs use --speed=4.14 + an explicit --out=..._cap115.json).
     verified) and manufactured a wall-pin FAIL. Split proofs to the
     shipped fights; iterate the PROOF's spawn to real-but-fair
     (never-weaken binds the CONTENT, not the proof composition);
-    and remember the sibling (sl-0186 pending): sim proofs don't
-    prove the designer's WALK.
+    and remember the sibling (sl-0186 RESOLVED into gotcha 45): sim
+    proofs don't prove the designer's WALK.
+
+45. **The walk check is a GATE STEP now (sl-0186's lesson
+    mechanized).** dungeon_walk_test resolves EVERY arena-routed
+    scenario's render (every wall cell carries wall art, every prop
+    places, every SOLID cell covered — an invisible wall is a RED
+    gate) and traverses the serpentine on real Kinematics. The
+    original defect: the dungeon JSON spoke the WorldForge dialect
+    ('species') where the arena schema reads 'name' — the resolver
+    ABORT erased the whole placement set while solid_cells (flags
+    only) kept collision real. arena_builder now NAMED-SKIPS
+    malformed entries instead of aborting; new arena JSONs must
+    speak the arena dialect.
+
+46. **The frozen-entry-beat firing position (kit-authoring class).**
+    A phase's FIRST volley fires from where the boss froze at the
+    entry beat — cadence and phase-speed changes CANNOT move it (the
+    sine_shoal cap graze reproduced byte-identically through two P2
+    param edits). The lawful lever is the entry beat itself (longer
+    = MORE telegraph across the flip, never less; 30→40 dissolved
+    it). Check this class FIRST when a kit proof fails
+    seed-invariantly right after a phase flip.
+
+47. **A RUNTIME abort in a --script test reads as a hang** (the
+    hang-is-a-parse-error gotcha's sibling): an invalid index (etc.)
+    aborts _init and the SceneTree never quits — same symptom, no
+    parse error printed at launch. Run godot_console unpiped and
+    look for 'SCRIPT ERROR' mid-run, not just at load. Related
+    tooling trap: plain godot.exe is a GUI-SUBSYSTEM binary — in
+    ForEach-Object -Parallel runspaces (no console) it DETACHES:
+    zero output, zero exit code, orphaned engine processes. Scripted
+    parallel runs use godot_console.exe, always (the battery runner
+    was called with the wrong binary once; 18 detached processes).
 
 ## Ledger + scope
 

@@ -2517,3 +2517,99 @@ supersession banners (as-built records stay); README + designer
 queue truthed. NEXT ROUTED WORK = REFINEMENT ROUND 1 (four items:
 the dungeon diagnosis FIRST, the 20-60 s re-derive, boss life, the
 jump commands); foraging builds behind it at the next free SERIAL.
+
+REFINEMENT ROUND 1 LANDED 2026-08-04 (~00:15-02:30 local, hands-free
+night session; sl-0186/0187/0188/0189 + the mid-session addenda
+sl-0190/0191; four sealed gated seams, game 4733560/427bd32/4f7a660/
+451d4a0 all pushed; resolutions sl-0192..0197 appended planning-side;
+SERIAL 26 / WSR v3 UNTOUCHED throughout — smoke pair
+12dc8be9b6f9f8af/e2acf522410e56b0 byte-identical at every seam; next
+bump stays 27): **sl-0186 — THE DUNGEON WAS INVISIBLE, NOT SMALL**
+(diagnosed FIRST per the routing; view+data only): the designer's
+"normal sized room, half of it doesnt work to walk in" = THREE
+stacked presentation defects over a fully-real sim — (1) the
+serpentine's props spoke the WF dialect ("species") where the arena
+schema reads "name": resolve_placements ABORTED at the first prop and
+erased the ENTIRE placement set (floors AND walls) while solid_cells
+(flags only) kept collision real — invisible walls over void; (2)
+every starhook_rift scenario wore the 12x13 fixed fit camera —
+MEASURED 4.0% of the 64x44 visible, the player off-frame 150 ticks
+in; (3) the static _rift_capture never cleared — console jumps after
+any cast mounted split panes over a STALE overworld frame (the
+literal left half). FIXED: data dialect (pillar = the manifest's
+ground+crown tree pair) + arena_builder HARDENED (malformed
+prop/decal/border = NAMED SKIP with push_error, never an abort) +
+ScenarioDef.rift_path routing (path rifts = the standard clamped
+follow camera, full-screen galaxy, no panes, portal at the flee door,
+RiftView.path_mode backdrop UNDER the authored tiles; fit rifts
+byte-untouched) + capture lifecycle (retires on every non-rift
+build). THE LESSON MECHANIZED = dungeon_walk_test, 32ND FIXED STEP +
+CI row (arena render resolution for EVERY arena-routed scenario:
+every wall cell carries wall art, every prop places, every SOLID cell
+covered — an invisible wall is a RED gate; + the full serpentine
+TRAVERSED spawn→boss-room on real Kinematics with a wedge watchdog; +
+rift_path routing pins). EVIDENCE both eras committed + read:
+rift_dungeon_before_* = the preserved pre-fix record (void + stale
+pane + off-frame player), after_* = the serpentine rendering
+mid-fight under the follow camera (tick-identical traverse before/
+after = collision provably untouched). THE DESIGNER RE-WALKS before
+sl-0186 closes for good. **sl-0187+0188 — THE EIGHT KITS SHORT,
+DENSE, AND ALIVE** (one design act, pure data; deliberate re-baseline
+sealed by a post-commit full gate per gotcha 43): gate 7 re-pinned
+[60,300]→[20,60]s; HP re-derived vs the grade's free-spine rod DPS —
+twin_helix 420/35s, ring_nest 360/30s, cross_burst 480/40s,
+sine_shoal 700/35s, boomerang_veil 800/40s, decel_wall 380/35s,
+zone_constellation 440/40s, pulse_lattice 580/45s (strain clock now
+~12-18 stability/fight, reported); every cooldown ~×0.7 (telegraph
+leads BYTE-UNTOUCHED — one lead per pattern stays law). THE STATUE
+TYPED: all eight were KEEP_RANGE 3.5-6.0 + aggro 14 in a 10x11 room —
+instant aggro, walk to band, STAND between 96-210t cooldowns. THE TWO
+FAMILIES [P at build]: ROOM-PATTERN = ANCHOR (ring_nest / decel_wall
+/ zone_constellation / pulse_lattice — the choreography fills the
+room regardless of the player) vs BEHAVIOURAL = FLANKER with climbing
+speed ladders ≤3.2 (twin_helix 2.2/2.6/3.0, sine_shoal 2.4/2.7/3.2,
+boomerang_veil 2.0/3.0/2.4 the surge, cross_burst 2.2/2.6/3.2). THE
+LAW AS AMENDED (gather_test re-pinned + family pins def AND phase):
+rift bosses MAY MOVE AND BEHAVE, but NO kit phase ever CHASES — the
+corner-trap and hooked-fish laws both survive. The sl-0186 walk's
+bonus finding closed STRUCTURALLY: the dungeon's decel_wall had
+keep-ranged OUT of its boss room to tether edge — an anchored holder
+cannot leave. Proofs re-paced (kills t750-1200, flips mid-flight) +
+re-recorded BOTH lanes, all nine scenarios PASS after ONE
+never-weaken iteration: sine_shoal's cap graze (FIRST@576 x3 seeds)
+reproduced BYTE-IDENTICALLY through two P2 param changes — the
+killing volley fires from the FROZEN entry-beat position; only the
+entry beat (30→40 = MORE telegraph across the flip) moved it (gotcha
+46, the kit-authoring class). No-strobe re-probed: all eight kits
+zero flips. **sl-0190 — NAMES OVER FUNCTIONAL NPCS** (view-only,
+-SkipBattery): the station table already encoded the designer's
+scoping structurally — def_cell rows ARE the interactable-bodied
+class; role labels auto-derived (Banker/Merchant/Trader/Tackle
+Keeper/Quest Giver), data/npc_names.json ships EMPTY as the
+proper-name hook (data-only, per actor id); icon-above-name at the
+icons' LIFT-18 anchor, always-on [T], HP_BARS occlusion; the crowd is
+STRUCTURALLY unplateable (no def_cell — test-pinned); the bodiless
+capital slot stays planning's call. Evidence: all four quest_pull
+audit captures re-recorded (the waystation shot = bang over "Quest
+Giver" over the farmer's head). **sl-0189+0191 — THE JUMPS + THE
+TOOLBELT** (one console seam; SimWorld.Command grew SET_LEVEL/
+ADD_GOLD/GRANT_GEAR/GRANT_TACKLE/ADD_FISH/TELEPORT): `rift
+list|<boss_id>|catch [biome] [rare]|dungeon` jumps (pure scenario
+routing, the door machinery) + `level <1-30|max>` / `gold` / `gear`
+(frame-table tops; rings/uniques deliberately stay drops) / `tackle`
+(catalog owned + top chest/helm worn) / `fish <n>` (wallet sized from
+the frame's biomes) / `tp list|<name>|cell` (curated walkable cells:
+capital, one giver anchor per zone, the stations, the warren
+doorstep). THE RAIL STRUCTURAL: every grant rides the command queue
+and DIRTY-STAMPS like god — replays refuse, feel verdicts
+auto-PROVISIONAL (test-pinned incl. legacy-lane refusals never
+dirtying); zero format growth; battery byte-identical proves the
+commands inert outside the console; one-flag law (lint green, tester
+exe blind). Gates: 15.8 (sl-0186) + 15.6/16.4 (the re-baseline pair)
++ 3.2 (-SkipBattery) + 16.0 (console) min, ALL GREEN. NEW GOTCHAS
+45-47 recorded (the walk-check gate step; the frozen-entry-beat
+class; runtime-abort-reads-as-hang + plain godot.exe DETACHES in
+parallel runspaces — godot_console always). NO feel verdicts — every
+number/key/label [T]; the designer's re-walk + kit replay (the jumps
+make both one line) are the next word; foraging still builds behind
+the round at the next free SERIAL.
