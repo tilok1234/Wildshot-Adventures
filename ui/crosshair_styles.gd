@@ -36,6 +36,23 @@ static func clamp_size(size: int) -> int:
 	return best
 
 
+## The ratified kit cursor pixels. load() rides the import cache; a
+## fresh checkout (CI — no .godot/imported) has none, load() nulls,
+## and the old null.get_image() aborted _init under --script and
+## idled the SceneTree forever: the 6h CI hang (sl-0201, gotcha-47
+## class). Fall back to decoding the committed PNG bytes directly —
+## the import is compress/mode=0 lossless, so opaque pixels are
+## identical either way.
+static func kit_image() -> Image:
+	var tex := load(KIT_CURSOR) as Texture2D
+	if tex != null:
+		return tex.get_image()
+	var img := Image.new()
+	if img.load_png_from_buffer(FileAccess.get_file_as_bytes(KIT_CURSOR)) != OK:
+		push_error("crosshair kit cursor unreadable: " + KIT_CURSOR)
+	return img
+
+
 ## Base (unscaled) cursor image for a style at an odd size. Style 0 at
 ## kit-native size is the ratified bitmap verbatim; other sizes
 ## nearest-resize it (odd->odd keeps the true center pixel). Drawn
@@ -43,7 +60,7 @@ static func clamp_size(size: int) -> int:
 static func build_base_image(style: int, size: int) -> Image:
 	style = clamp_style(style)
 	size = clamp_size(size)
-	var kit := (load(KIT_CURSOR) as Texture2D).get_image()
+	var kit := kit_image()
 	if style == 0:
 		if size != kit.get_width():
 			kit.resize(size, size, Image.INTERPOLATE_NEAREST)

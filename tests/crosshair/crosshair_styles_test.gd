@@ -23,7 +23,9 @@ func _init() -> void:
 	var failed := false
 
 	# 1. Default pin: style 0 @ kit-native size = the ratified bitmap.
-	var kit := (load(CrosshairStyles.KIT_CURSOR) as Texture2D).get_image()
+	# (Via kit_image(): a fresh checkout has no import cache — the old
+	# raw load() nulled there and the abort idled forever; sl-0201.)
+	var kit := CrosshairStyles.kit_image()
 	kit.convert(Image.FORMAT_RGBA8)
 	var def := CrosshairStyles.build_base_image(0, 11)
 	def.convert(Image.FORMAT_RGBA8)

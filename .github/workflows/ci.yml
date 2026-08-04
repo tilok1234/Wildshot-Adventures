@@ -8,9 +8,17 @@ on:
   push:
   pull_request:
 
+# sl-0201: every job carries timeout-minutes. A wedged Godot --script
+# row (runtime abort under _init -> SceneTree idles forever, the
+# gotcha-47 class) used to sit at GitHub's 6h default before
+# auto-cancel — every main push 2026-08-01..08-04 burned 6h in
+# pixel-match at the crosshair row (import-cache-dependent load()).
+# Timeouts turn any future hang into a fast red, never 6h of silence.
+
 jobs:
   lint:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -102,6 +110,7 @@ jobs:
   # float drift.
   determinism-smoke:
     runs-on: windows-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
 
@@ -139,6 +148,7 @@ jobs:
   # compositing — no sim execution, so a Linux runner is allowed.
   pixel-match:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
 
