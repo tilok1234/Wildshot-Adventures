@@ -137,9 +137,10 @@
 > ordinary pool members.
 
 **COLD START — this handoff assumes NO prior context.** Read the game
-repo's `CLAUDE.md` first (auto-loads; BINDING contract + the
-authoritative milestone tracker — its milestone tail is the full
-append-only history this file deliberately does not repeat). This file
+repo's `CLAUDE.md` first (auto-loads; BINDING contract + a compact
+CURRENT milestone block). The full append-only milestone history moved
+to `notes/MILESTONE_HISTORY.md` (sl-0227 diet — append THERE at each
+session close; this file deliberately does not repeat it). This file
 carries the current session state and the hard-won lessons the
 contract doesn't. Nothing repo-side gates on the Claude account; git
 identity and gh auth are machine-local; this file + `CLAUDE.md` +
@@ -197,7 +198,7 @@ does not start without its own word.**
   become recorded asks. Reading other repos for context is fine;
   INTAKING their delivered packs is game-repo work.
 
-## §0.2 The era history (compressed — CLAUDE.md's tail is the record)
+## §0.2 The era history (compressed — `notes/MILESTONE_HISTORY.md` is the record)
 
 - **M0–M8**: the lab era — deterministic sim, the proof battery +
   DodgeBot, replay/goldens, export + lockdown, packs intaken
