@@ -9,7 +9,7 @@ work here.
 | # | Entry | Where (lands at) | Exit condition |
 |---|---|---|---|
 | 1 | Hard-coded ability effects — the three test abilities are bespoke code, no item/skill composition system (TECH-06 deferred) | `sim/` (M4) | Phase C item-system design |
-| 2 | Quickdraw is a hard-coded cadence multiplier — no stat pipeline exists (TECH-08 deferred) | `sim/` (M4) | TECH-08 stat-pipeline decision |
+| 2 | Quickdraw is a hard-coded cadence multiplier — no stat pipeline exists (TECH-08 deferred). AMENDED sl-0207: kept hard-coded DELIBERATELY — the attack-speed stat pipeline now exists (dexterity ladders + gear trades) but folding Quickdraw into it would change stacking semantics (×2/3 AFTER the stat division vs additive); it stacks on the new baseline (bow peak 7.5/s at L23, reported, [T]) | `sim/` (M4) | TECH-08 stat-pipeline decision |
 | 3 | Fixed class-shell stats — flat values in data, no growth curves | `data/` (M2) | Phase C build grammar |
 | 4 | Arena-only spawning — scenario spawner assumes the one greybox arena | `sim/` (M2+) | Phase B+ encounter authoring |
 | 5 | Placeholder EffectLibrary entries until the effects pack lands (M-FX; pack-or-placeholder call pre-registered for end of M5) | `game/` (M3+) | Effects-pack acceptance — 9-row checklist (M6) |

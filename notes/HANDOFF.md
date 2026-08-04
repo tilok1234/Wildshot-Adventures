@@ -341,6 +341,12 @@ the toolbelt put every fight one console line away at proper gear.
   interval / chance), the bar length (45t), the 1-2 yields, the
   shimmer look — every knob [T] in the balance_frame `forage`
   block; `forage tp` jumps to a live shimmer for a quick look.
+- **PLAY THE COMBAT RESHAPE (sl-0208/0207, all [T])**: the halved
+  hitbox in real dodging; the new fire rates from level 1 (bow
+  4.0/s — the Quickdraw-start wish); the dexterity steps at levels
+  8/16/23 (bow skips 16 — the granularity finding); the Ring of
+  the Quick Hand; Quickdraw stacking (bow peaks 7.5/s at L23).
+  Their verdicts route re-tunes through the calculator.
 - **LIVING IN GREEN** — the chapter gate: feel one-liners as they
   play; batch tuning numbers into single gate runs.
 - **THE S2 GO WORD** — the next chapter starts only on its routing.
@@ -376,19 +382,28 @@ the toolbelt put every fight one console line away at proper gear.
   species-currency landed whole; the cosmetic TRADE-IN SHOP stays
   FUTURE (the counts store correctly from day one; the sizing
   record: notes/FORAGE_SEAM_SIZING.md).
-- **Queued-not-routed:** the PLAYER HITBOX (sl-0146, deferred by
-  sl-0148 — its own future SIM seam with the before/after margins
-  table); class trees (sl-0169 partial: pattern law + 5/15/25
-  skeleton + sword L5; the rest waits on designer testing); water
-  fishing PARKED; S2 on its own word.
+- **THE COMBAT RESHAPE — BUILT (sl-0208/0207, SERIAL 27 held)**: the
+  hitbox halving landed with the margins table
+  (reports/hitbox_margins_sl0208.md) and the cadence re-composition
+  landed budget-neutral (calc gate 8). What it OPENED: the sl-0213
+  melee-contribution round (close-range fighters' blade patterns
+  were shaped against the fat body — a lone rusher cannot kill a
+  standing player now; measured in rusher_lethality_probe, pinned in
+  the smoke; pattern-data tuning on planning's routing — pins RED
+  deliberately when the re-tune lands).
+- **Queued-not-routed:** class trees (sl-0169 partial: pattern law +
+  5/15/25 skeleton + sword L5; the rest waits on designer testing);
+  water fishing PARKED; S2 on its own word.
 - Recorded honest gaps (planning owns the calls): KILL/COLLECT
   quests have no objective cell; the capital zone-hub giver has no
   NPC body; crowd NPCs have no interact response BY DESIGN
   (villager one-liners incremental [T]); a drop underfoot AT a
   station answers on both layers in one press (watch item [T]);
   the reveal's dragon stage waits on a sheet; the tester-facing
-  map = the doc-13 Part II round; ×1.5 firing feel needs trash_hp
-  or the hits band moved planning-side; bosses are biome-PINNED v1
+  map = the doc-13 Part II round; the ×1.5 firing wish SHIPPED at
+  sl-0207 (the hits band moved [3,5]→[5,8] by the routing's own
+  lever — the sl-0120 blocker resolved, reported); bosses are
+  biome-PINNED v1
   and ignore cast rarity v1; a physical-fish-items flip (fish as
   real bag items) would be its own sim seam; drain/grace/lives
   gear stats are a named future family.
@@ -448,18 +463,21 @@ Before every commit, per touched area:
 - After any push: `gh run list` → the lint job concluding is the
   fast signal (gotcha #26).
 
-### Canonical proof battery (state 2026-08-04 — 62 rows / 121-run
+### Canonical proof battery (state 2026-08-05 — 62 rows / 121-run
 ### pool; POLICY OF RECORD = REACTIVE; SERIAL 27; WSR v3; Warden 575;
-### b65 flood 34641; b77 current).
+### b65 flood 34641; b77 current; HURTBOX 0.175 since sl-0208 with
+### the bot PLANNING at the proven 0.35 envelope — gotcha 49; the
+### whole record re-baselined with margins +0.175 across the board,
+### the table committed at reports/hitbox_margins_sl0208.md).
 ### TWO LANES FOREVER (docs/22 block 6): floor --speed=3.6 (the
 ### CORE-53 floor), cap --speed=4.14 (the 115 hard cap; reports keep
 ### dodge_*_cap115 names). Primary rows stay floor-only
 ### watch-baselines: rusher PASS, forest_walk PASS, first_contact
-### FAIL. PINNED CAP FAIL: meet_leadshot at 4.14 (seed-invariant
-### 1-hit graze @t647 — INTERCEPT punishes constant full commitment;
-### humans tap-modulate out; the floor row PASSES = the CORE-33
-### mandate). All pins WATCHED: a verdict move = the sim (or policy)
-### changed under us.
+### FAIL. meet_leadshot cap RE-PINNED FAIL→PASS at sl-0208 (the
+### sl-0102 INTERCEPT graze lands inside the old shell and misses
+### the true body — same dance, no hit; the halving in one row).
+### All pins WATCHED: a verdict move = the sim (or policy) changed
+### under us.
 
 | scenario | seeds | ticks | expected (reactive record, floor/cap) |
 |---|---|---|---|
@@ -471,14 +489,14 @@ Before every commit, per touched area:
 | proof_yw_p1/p2/p3/full (575 schedule) | ladders 208..215 | 3600 | PASS / PASS ×4 |
 | proof_rusher **[primary]** / forest_walk **[primary]** | 1..5 / 1,2,3 | 3600 | PASS (watch-baselines) |
 | first_contact **[primary]** | 1,2,3 | 3600 | **FAIL — the standing primary baseline** |
-| lab_default + meet_blightcaster/leadshot/yard_warden | 1,2,3 | 3600 | PASS / PASS — EXCEPT **meet_leadshot cap = PINNED FAIL** |
+| lab_default + meet_blightcaster/leadshot/yard_warden | 1,2,3 | 3600 | PASS / PASS (meet_leadshot cap re-pinned FAIL→PASS at sl-0208) |
 | loop_ring1/2/3 + proof_brk_site | 1,2,3 | 3600 | PASS / PASS |
 | overworld_green/dry/wet/cold + green_boss compositions | 1,2,3 | 3600 | PASS / PASS |
 | proof_old_tusk / proof_warren / proof_king_grubb | 1,2,3 | 3600 | PASS / PASS |
 | proof_slice_leash / proof_green_camp / proof_green_ranged | 1,2,3 | 3600 | PASS / PASS |
 | proof_rift_catch / _rare / _void / _comet (the line's rules aboard; drains never count as hits) | 1,2,3 | 3600 | PASS / PASS |
-| **proof_boss_twin_helix / ring_nest / sine_shoal / boomerang_veil / decel_wall / zone_constellation / cross_burst / pulse_lattice** (sl-0180: schedule-paced full fights, every flip mid-flight; margins 0.120–0.123; zone_constellation floor near reads −0.000 = the M6 hazard-proximity reporting nit, hits=0 is the verdict) | 1,2,3 | 3600 | PASS / PASS ×8 — **HP re-derives at the sl-0187 20-60 s re-rule; rows re-baseline with that build** |
-| **proof_dungeon_corridor (darter pair) / proof_dungeon_lurker (solo) / proof_dungeon_bossroom** (sl-0180 wave 2 — proofs prove THE FIGHTS THE PLAYER GETS: the play path's packs sit 20+ apart, tether-sequential) | 1,2,3 | 3600 | PASS / PASS ×3 — **the dungeon ARENA is sl-0186-broken in real play; the proofs' sim fights passed; expect these rows to re-baseline with the diagnosis fix** |
+| **proof_boss_twin_helix / ring_nest / sine_shoal / boomerang_veil / decel_wall / zone_constellation / cross_burst / pulse_lattice** (sl-0180: schedule-paced full fights, every flip mid-flight; margins 0.120–0.123; zone_constellation floor near reads −0.000 = the M6 hazard-proximity reporting nit, hits=0 is the verdict) | 1,2,3 | 3600 | PASS / PASS ×8 (the sl-0187 20-60 s lengths + sl-0188 life families live; margins ~0.28-0.41 since the sl-0208 re-baseline) |
+| **proof_dungeon_corridor (darter pair) / proof_dungeon_lurker (solo) / proof_dungeon_bossroom** (sl-0180 wave 2 — proofs prove THE FIGHTS THE PLAYER GETS: the play path's packs sit 20+ apart, tether-sequential) | 1,2,3 | 3600 | PASS / PASS ×3 (the sl-0186 render fix landed — the serpentine draws under a follow camera; the designer's re-walk stays the open acceptance) |
 | **proof_boss_gap_carousel / sickle_weaver / dart_skirmisher / decel_orchard / halo_lasher / tide_stalker / tide_stalker_corner / pulse_cross** (sl-0200: the pool extension, same schedule-paced shape; tide_stalker = THE sanctioned pursuer, every phase strictly <3.6; the _corner row = the explicit wall-pin audit — bait spawned IN the worst stub pocket, pursuit on top) | 1,2,3 | 3600 | PASS / PASS ×8 |
 
 Runner: `godot_console --headless --path . --script game/bots/bot_runner.gd -- --scenario=<id> --speed=3.6 --seeds=<list> --ticks=<n> [--out=res://reports/<name>.json] [--policy=primary|orbit|axis]`

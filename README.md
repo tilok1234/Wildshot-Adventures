@@ -54,8 +54,8 @@ quest ops ride the existing recorded byte — WSR stays v3, SERIAL
 stays 25, the whole battery byte-identical. Seam I (minimal
 foraging) was SIZED AND SPLIT OUT honestly
 (notes/FORAGE_SEAM_SIZING.md — three one-line designer questions
-route it); the player-hitbox seam (sl-0146) stays queued-deferred by
-word. **The chapter gate is the designer living in Green; S2 starts
+route it); the player-hitbox seam (sl-0146) was queued-deferred by
+word and later landed as sl-0208 (see the combat reshape below). **The chapter gate is the designer living in Green; S2 starts
 only on its own routing; water fishing is PARKED.** **THE GEAR SEAM
 (sl-0177/0178, 2026-08-03, SERIAL 26)**: rods are starhooking
 WEAPONS — a 12-rod catalog over the four family norms (three per
@@ -86,16 +86,40 @@ end, the slow dungeon line [T], console `dungeon` access) —
 battery 83→105 runs. **The QUEST-PULL FINDINGS (sl-0175/0176,
 view-only)**: map markers mirror the overhead giver-icon model on
 both map surfaces (bang/ring/diamond, one truth) and giver icons
-anchor the BODY at head height. **REFINEMENT ROUND 1 IS THE ROUTED
-NEXT (designer play verdicts, planning sl-0186..0189)**: the
-dungeon loads wrong in real play (diagnose-first — the walk
-contradicts the passing bot proofs), fight length RE-RULED 20–60 s
-intense (all eight kits re-derive), boss life splits
-room-pattern/behavioural (the one-room law amends for rift
-bosses), and console jump commands for every instanced encounter;
-starhook names ride the cosmic vocabulary rail (sl-0182 — the
-constellation, not the creel). Foraging builds behind it at the
-next free SERIAL.
+anchor the BODY at head height. **REFINEMENT ROUND 1 LANDED (sl-0186..0191,
+2026-08-04)**: the dungeon was INVISIBLE, not small (a data-dialect
+mismatch erased every placement while collision stayed real — fixed,
+walk-check mechanized as a fixed gate), the eight kits re-derived to
+the 20–60 s intense re-rule with ROOM-PATTERN vs BEHAVIOURAL life
+(no kit phase ever chases), functional NPCs got role nameplates, and
+the console grew `rift` jumps + a full toolbelt (level/gold/gear/
+tackle/fish/tp — every grant replay-dirty). **THE FORAGING BUILD
+(sl-0198, SERIAL 27)**: F-press gather bar at ambient shimmer nodes,
+materials as species-currency in the wallet + inventory section.
+**THE POOL EXTENSION (sl-0200)**: +7 kits to a 15-kit pool (5 per
+biome; tide_stalker = the ONE sanctioned true pursuer — the second
+candidate failed the fairness floor and was reported, not shipped);
+**the first fully-green CI pipeline** (sl-0201 killed a 6h
+import-cache hang). **THE QUICK THREE (sl-0204/0205/0206,
+2026-08-04 evening, designer-accepted in play the same night)**: the
+console swallows ALL input while typing (33rd fixed step + a
+repo-wide poller scan), the capital hub giver got a BODY (the errand
+bang rides the Wardens' representative), nameplates render the kit
+font on its native 10px grid. **THE COMBAT RESHAPE (sl-0208/0207,
+2026-08-04 late)**: the combat hurtbox HALVED to 0.175 (sl-0146 as
+written; the bot plans at the proven 0.35 envelope and takes hits on
+the true body — all 15 rift-kit proof margins rose EXACTLY +0.175;
+the melee-whiff finding measured + pinned for the sl-0213
+close-range tuning round), and cadences re-composed ×1.51/1.54/1.6
+DPS-budget-neutral with per-class DEXTERITY ladders (attack speed
+grows with level, damage normalizes on the same cadence formula —
+calc gate 8 bounds the ripple ≤9.5%; the hits-band re-pinned
+[3,5]→[5,8], hits = TTK × rate; rods untouched; the battery
+byte-identical — the seam never touches the legacy lane). Gate =
+33 fixed steps + the 121-run two-lane battery + export + lockdown;
+starhook names ride the cosmic vocabulary rail (sl-0182). NEXT: the
+designer's play verdicts on the reshape + the sl-0213
+projectile-ecosystem round on planning's routing.
 
 ## Engine
 
@@ -135,13 +159,13 @@ by rule.
 | `assembler/` | The imported actor roster (player + mapped enemies) — roster-filtered by `addons/assembler_importer` from `data/actor_sheet_map.tres` |
 | `addons/` | `tileforge_importer` (M1), `assembler_importer` (M4/M5, docs/14), `uikit_importer` (M4), `worldforge_importer` (post-M5, docs/15 — validates + consumes generated world packs) |
 | `autoload/` | Config, Telemetry, DebugHub, BootArgs — exactly four, none holding gameplay state |
-| `data/` | Weapons (lab trio + the three class frames + the FOUR starhook rods), enemies (incl. the 14 Green families, Old Tusk, King Grubb, the six rift catches across three biomes), patterns (incl. the biome twist variants), abilities, quests, uniques, scenarios (incl. `slice_overworld` — THE SLICE — plus `the_warren` and the six `rift_<biome>_<rarity>` arenas), arenas (`arena_warren.json`, `arena_rift.json`), `rift_line.tres` (sl-0115, amended sl-0123 — the drag is cut: the line's drains/deep-edge/lives/graces; nothing in a rift drags any body or shot), actor sheet map, budgets — `.tres`, hot-reloadable; plus `balance_frame.json` (THE docs/22 stat-frame tuning source incl. the starhook block: rods, biome fish tables, ambient spawns — the sim loads it, the calculator gates it) |
+| `data/` | Weapons (lab trio + the three class frames + the TWELVE starhook rods), enemies (incl. the 14 Green families, Old Tusk, King Grubb, the six rift catches across three biomes), patterns (incl. the biome twist variants), abilities, quests, uniques, scenarios (incl. `slice_overworld` — THE SLICE — plus `the_warren` and the six `rift_<biome>_<rarity>` arenas), arenas (`arena_warren.json`, `arena_rift.json`), `rift_line.tres` (sl-0115, amended sl-0123 — the drag is cut: the line's drains/deep-edge/lives/graces; nothing in a rift drags any body or shot), actor sheet map, budgets — `.tres`, hot-reloadable; plus `balance_frame.json` (THE docs/22 stat-frame tuning source incl. the starhook block: rods, biome fish tables, ambient spawns — the sim loads it, the calculator gates it) |
 | `npcs/`, `icons/` | Consumed pack trees (S0 seam 4): 32 NPC sheets + translated manifest (`tools/import_npcs.py`), the 470-glyph icon atlas pair (`tools/import_icons.py`) — regenerate from `assets/`, never hand-edit |
 | `sim/` | The engine-decoupled deterministic sim core (`systems/`, `collision/`) — global RNG banned here |
 | `input/` | HumanSampler, ReplaySource, `bot/` — three equal InputSources |
 | `game/` | Main scene, render layers, `views/` (presentation only — never mutates sim) |
 | `ui/` | HUD, menus, options |
-| `tests/` | `pixel_match/`, `assembler_pack/`, `projectile_pack/`, `uikit/`, `worldforge_pack/` (validator test + per-drop one-shot probes), `settings/`, `feedback/`, `loop/`, `stat_frame/` (docs/22 contracts), `living_world/` (leash/respawn/importer contracts), `wiring/` (npc+icon contracts + render probe), `dev_map/` (minimap consumer + render probe), `crosshair/` (styles contract + preview), `pinch_probe/` (fit-rule + movement diagnosis probes), `green_roster/` (S1: 14-family contracts + pattern→lead law), `loot_label/` (drop grammar + render probe), `quests/` (multi-active interact-era contracts), `gather/` (forage/starhook cast + rifter round-trip), `rift_split/` (rift arena + split render probe), `char_sheet/` (screen==recompute parity), `ui_family/` (HUD relayout render probe), `quest_pull/` + `boss_sprites/` (green-days render probes), `bank/` + `vendors/` + `loot_bags/` (station render probes — station_open stands in for the F press), `menu_v2/` (the menu-pass probes: two-tab menu, offer dialogue, options restyle, the unique reveal + its mechanized no-strobe check), `motion_probe/`, `determinism/` (the smoke), `replay_fixtures/` (golden replays, WSR v3), `bot_scenarios/` (proof isolates + calibration canaries + the density-audit scenario + slice/Green/dungeon/rift proofs) |
+| `tests/` | `pixel_match/`, `assembler_pack/`, `projectile_pack/`, `uikit/`, `worldforge_pack/` (validator test + per-drop one-shot probes), `settings/`, `feedback/`, `loop/`, `stat_frame/` (docs/22 contracts), `living_world/` (leash/respawn/importer contracts), `wiring/` (npc+icon contracts + render probe), `dev_map/` (minimap consumer + render probe), `crosshair/` (styles contract + preview), `pinch_probe/` (fit-rule + movement diagnosis probes), `green_roster/` (S1: 14-family contracts + pattern→lead law), `loot_label/` (drop grammar + render probe), `quests/` (multi-active interact-era contracts), `gather/` (forage/starhook cast + rifter round-trip), `rift_split/` (rift arena + split render probe), `char_sheet/` (screen==recompute parity), `ui_family/` (HUD relayout render probe), `quest_pull/` + `boss_sprites/` (green-days render probes), `bank/` + `vendors/` + `loot_bags/` (station render probes — station_open stands in for the F press), `menu_v2/` (the menu-pass probes: two-tab menu, offer dialogue, options restyle, the unique reveal + its mechanized no-strobe check), `rift_dungeon/` (the sl-0186 walk-check gate: arena render resolution + real-Kinematics traverse), `console_swallow/` (the sl-0206 input law: sampler suppress + guard replica + repo-wide poller scan), `patterns/` (the no-strobe probe over all 15 kits + the sl-0207 friendly-stream audit), `motion_probe/`, `determinism/` (the smoke + the sl-0208 rusher-lethality probe), `replay_fixtures/` (golden replays, WSR v3), `bot_scenarios/` (proof isolates + calibration canaries + the density-audit scenario + slice/Green/dungeon/rift proofs) |
 | `tools/` | `pretester_check.ps1` (THE one-command ship gate) + `battery_runner.ps1` (the parallel proof-battery pool — workers = physical cores, cap 10, longest-first; `-Workers 1` = serial), `export.ps1` (dev+tester zips), `lockdown_lint.py`/`lockdown_probe.ps1`, `balance_calc.py` (the docs/22 stat-frame gates over `data/balance_frame.json`), `validate_icon_pack.py`/`validate_npc_pack.py`/`validate_content_pack.py`/`validate_menu_pack.py` (pack byte pins; the content gate also enforces the b77 base pairing; the menu gate re-checks icon parity LIVE against the wired proto pack), `diag_walkability_grid.py` (porosity, per-drop pins), `diag_pinch.py` (prop-pinch census baseline), `evidence_report.py` + `decode_summary_code.py`, `hourslog.ps1`/`hours_report.ps1`, `gif.ps1` (G starts, G stops — start-to-finish frames stream to disk since 098a679), `godot_guard.ps1`, `validate_boss_pack.py`, `import_boss_actor.py`, `import_npcs.py`/`import_icons.py` (consumed-tree builders), `gen_cue_wavs.py` |
 | `notes/` | `hours.csv`, `TECH_DEBT_LEDGER.md`, `HANDOFF.md` (cold-start briefing for any new session), `PACK_INTAKE_RUNBOOK.md` (world-pack drops), `INTERACT_SWEEP.md` (the seam-H audit), `FORAGE_SEAM_SIZING.md` (the split-out seam-I questions), per-area records (nine-row, audio map, CORE-50 checklist) |
 | `reports/` | Committed mechanical evidence: the canonical proof battery (byte-identical gate), stress/density + render audit captures — bot/harness output, never feel evidence |
