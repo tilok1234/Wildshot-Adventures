@@ -3,10 +3,9 @@ extends Node2D
 ## the alike is really hard to spot"). Nameplates over the
 ## INTERACTABLE class ONLY: the station-table entries that carry a
 ## def_cell — pinned station bodies (bank / merchant / trader /
-## tackle keeper) and zone quest givers. Crowd NPCs stay unlabeled by
-## the designer's own scoping, structurally: crowd rows carry no
-## def_cell, and the bodiless capital giver slot is not a body at all
-## (its quest icon marks the ground; the body stays planning's call).
+## tackle keeper), zone quest givers, and the sl-0204 capital hub
+## giver. Crowd NPCs stay unlabeled by the designer's own scoping,
+## structurally: crowd rows carry no def_cell.
 ##
 ## V1 labels = ROLE WORDS auto-derived from the interact registry
 ## (zero authoring); data/npc_names.json is THE NAME TABLE underneath
@@ -17,15 +16,28 @@ extends Node2D
 ## sprite, props, and canopy crowns can never cover it. Pure view
 ## (CORE-35): never selection, never hover, reads sim nothing — the
 ## station table is deterministic pack data.
+##
+## sl-0205 ("the npc names are really broken-"): the kit font is a
+## strict-grid pixel TTF whose own license line is the law — "use at
+## 10 px (or integer multiples)". The plates rendered at 8 px, the
+## game's ONLY off-grid consumer: with AA/hinting/subpixel all OFF
+## (the kit import), 0.8-scale rasterization drops and merges stems
+## and letterforms genuinely mutate ('Banker' grew a collapsed 'k',
+## 'Trader' lost its T-arm). Text renders at the font's native 10
+## now; the plate carries the font's own 12 px line.
 
 const RenderLayers := preload("res://game/render_layers.gd")
 
 const TILE := 32.0
 ## The quest icon sits at LIFT 18 (bottom) — the plate stacks under
 ## it, over the head (24 px @1x body: head top 12 above center).
+## FONT_SIZE 10 = the kit font's native grid (sl-0205 — never render
+## it off-grid); PLATE_H 12 = the font's own line height. Baseline
+## sits at PLATE_TOP + 9: 7 px cap height under a 2 px top pad, 1 px
+## clear of the 2 px descender.
 const PLATE_TOP := -19.0
-const PLATE_H := 9.0
-const FONT_SIZE := 8
+const PLATE_H := 12.0
+const FONT_SIZE := 10
 const TEXT_COLOR := Color(0.96, 0.92, 0.85)
 const BACK_COLOR := Color(0.04, 0.05, 0.08, 0.55)
 
@@ -101,7 +113,7 @@ func _draw() -> void:
 		)
 		draw_string(
 			_font,
-			px + Vector2(-w * 0.5, PLATE_TOP + PLATE_H - 2.0),
+			px + Vector2(-w * 0.5, PLATE_TOP + 9.0),
 			label,
 			HORIZONTAL_ALIGNMENT_LEFT,
 			-1.0,

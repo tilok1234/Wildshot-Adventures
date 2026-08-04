@@ -142,6 +142,13 @@ func _init() -> void:
 			NpcNameplates.label_for("warden-representative", {}) == "Quest Giver",
 			"the hub giver plates as Quest Giver (zero authoring)"
 		)
+		# sl-0205: the kit font's own license line is the law — "use at
+		# 10 px (or integer multiples)". Off-grid sizes mangle the
+		# strict-grid glyphs (AA/hinting/subpixel are OFF by kit spec).
+		check(
+			int(NpcNameplates.FONT_SIZE) >= 10 and int(NpcNameplates.FONT_SIZE) % 10 == 0,
+			"plate text renders on the kit font's 10px grid (sl-0205)"
+		)
 
 		# sl-0190: NAMEPLATES — the plated set is EXACTLY the
 		# def_cell-carrying stations (the interactable-bodied class:
