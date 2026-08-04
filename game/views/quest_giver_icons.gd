@@ -7,8 +7,11 @@ extends Node2D
 ## sim refuses the accept). sl-0176: icons anchor to the giver's BODY
 ## cell (`cell_map`, fed from NpcView's station table) when a body
 ## exists — station cells are walkability-nudged off the def cell —
-## and fall back to the authored giver CELL, the interact truth (the
-## capital giver has no body; its icon marks the ground). CORE-35:
+## and fall back to the authored giver CELL, the interact truth.
+## sl-0204: the capital hub giver carries a pinned body now (the
+## bang rides the Warden representative's head, one cell off the
+## spawn); the bare-ground fallback remains for anything unmapped
+## (labs, future packs mid-intake). CORE-35:
 ## general presentation, never selection or hover. Sits in the
 ## HP_BARS band: above actors and canopy, below every hostile band
 ## (Law 1) — the giver's own sprite can never occlude it.

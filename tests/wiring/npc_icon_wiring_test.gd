@@ -123,6 +123,25 @@ func _init() -> void:
 			gmap.get(Vector2(25.5, 251.5)) == Vector2(25.5, 250.5),
 			"dry caravan scout nudge carried into the giver map (b77 pin)"
 		)
+		# sl-0204: the capital hub giver — def stays the spawn-parked
+		# authored cell (the sim's interact truth), the BODY pins one
+		# cell north; the errand bang rides a giver's head at last.
+		check(
+			gmap.get(Vector2(109.5, 182.5)) == Vector2(109.5, 181.5),
+			"capital hub giver body pinned one cell off the spawn (sl-0204)"
+		)
+		var hub_st := {}
+		for st: Dictionary in st_a:
+			if String(st.id) == "warden-representative":
+				hub_st = st
+		check(
+			hub_st.has("def_cell") and hub_st.def_cell == Vector2(109.5, 182.5),
+			"the Wardens' representative answers for the capital slot"
+		)
+		check(
+			NpcNameplates.label_for("warden-representative", {}) == "Quest Giver",
+			"the hub giver plates as Quest Giver (zero authoring)"
+		)
 
 		# sl-0190: NAMEPLATES — the plated set is EXACTLY the
 		# def_cell-carrying stations (the interactable-bodied class:

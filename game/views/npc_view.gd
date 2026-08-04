@@ -6,6 +6,10 @@ extends Node2D
 ## stands at a deterministic station playing idle:
 ## - ZONE QUEST-GIVERS at their zone's content-pack giver-slot cells
 ##   (in slot order; the pack authored those cells);
+## - THE CAPITAL HUB GIVER (sl-0204): the zone_hub slot sits ON the
+##   settlement spawn, so its body pins one cell north — the errand
+##   bang finally rides a giver's head; the authored cell stays the
+##   sim's interact truth (coming home IS the turn-in, CORE-43);
 ## - everyone else (named roles, ambient crowd, multi-zone looks,
 ##   giver overflow) scattered around the settlement spawn on a
 ##   deterministic golden-angle spiral, walkability-probed on the
@@ -114,6 +118,19 @@ const PINNED_STATIONS := {
 	"dock-fisher-teacher": Vector2(110.5, 178.5),
 }
 
+## sl-0204: the capital hub giver — a BODY under the errand bang at
+## last ("the quest icon is still under the mob": the bang hung over
+## bare plaza ground because the spawn-parked slot is excluded from
+## zone assignment below). def = the authored slot cell ON the spawn
+## (the sim's interact truth — coming home IS the turn-in, CORE-43,
+## quest data untouched); body = one cell north [T], deliberately off
+## the player's boot cell, inside the crowd ring. Casting is
+## provisional (designer swap = one line): the Wardens' errands get
+## the Wardens' representative.
+const HUB_GIVERS := {
+	"warden-representative": {"def": Vector2(109.5, 182.5), "body": Vector2(109.5, 181.5)},
+}
+
 
 ## it without a scene. Returns [{id, cell: Vector2 (center)}].
 static func compute_stations(
@@ -153,6 +170,10 @@ static func compute_stations(
 		if PINNED_STATIONS.has(aid):
 			var pin: Vector2 = PINNED_STATIONS[aid]
 			out.append({"id": aid, "cell": _nudge_walkable(bitgrid, pin), "def_cell": pin})
+			continue
+		if HUB_GIVERS.has(aid):
+			var hub: Dictionary = HUB_GIVERS[aid]
+			out.append({"id": aid, "cell": _nudge_walkable(bitgrid, hub.body), "def_cell": hub.def})
 			continue
 		if group == "zone-quest-giver" and not zkey.is_empty() and zone_cells.has(zkey):
 			var cells: Array = zone_cells[zkey]
