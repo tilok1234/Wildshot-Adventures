@@ -124,7 +124,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.933030445873737,
+			"near_miss_min": 0.900112231075764,
 			"repro": "",
 			"seed": 1,
 			"survived_ticks": 3600
