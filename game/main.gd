@@ -147,6 +147,7 @@ const CameraRig := preload("res://game/views/camera_rig.gd")
 const RiftView := preload("res://game/views/rift_view.gd")
 const RiftNodesView := preload("res://game/views/rift_nodes_view.gd")
 const ForageNodesView := preload("res://game/views/forage_nodes_view.gd")
+const RecallView := preload("res://game/views/recall_view.gd")
 const RiftWorldPane := preload("res://game/views/rift_world_pane.gd")
 const RiftStep := preload("res://sim/systems/rift_step.gd")
 const ProjectileView := preload("res://game/views/projectile_view.gd")
@@ -416,6 +417,21 @@ func _process(_delta: float) -> void:
 					tackle_panel.station_toggle()
 					if tackle_panel.is_open():
 						_menus_exclusive(tackle_panel)
+				else:
+					# sl-0221 THE WAYPOST: F binds home INSTANTLY — a
+					# recorded op, no menu (the sim guards radius +
+					# idempotence; the HOME_SET toast rides the event).
+					var wpi := BagStep.nearest_waypost(world, p0)
+					if wpi >= 0:
+						if int(p0.home_town) == wpi:
+							_show_toast("this is already your home")
+						else:
+							driver.sampler.queue_bag_op(BagStep.OP_SET_HOME)
+	# sl-0221 THE RECALL CAST: P starts the recorded cast (the op rides
+	# the bag_op byte — zero input-format growth). The view owns the
+	# refusal LINES; the sim owns the refusals themselves.
+	if not typing and world != null and Input.is_action_just_pressed("recall"):
+		_try_recall()
 	if not typing and density_meter != null and Input.is_action_just_pressed("density_toggle"):
 		density_meter.visible = not density_meter.visible
 	# One-key reseeding reset (§2.10): next seed persisted + logged, full
@@ -682,6 +698,11 @@ func _process(_delta: float) -> void:
 				if recap_panel != null:
 					recap_panel.visible = false
 				_show_toast("back at the settlement — the walk out is yours")
+			SimEvents.Type.HOME_SET:
+				# sl-0221: the waypost bound a new home (recorded op).
+				_show_toast("HOME SET — %s" % _settlement_name(int(lev.get("town", 0))))
+			SimEvents.Type.RECALLED:
+				_show_toast("recalled — %s" % _settlement_name(int(lev.get("town", 0))))
 			SimEvents.Type.QUEST_ACCEPTED:
 				var qa := int(lev.quest)
 				if qa >= 0 and qa < world.quest_defs.size():
@@ -1229,6 +1250,10 @@ func _refresh_hints() -> void:
 	# sl-0115: the rod hint only where rods exist (rift arenas).
 	if _scenario_rift:
 		parts.append("%s rod" % Config.binding_text("rod_swap"))
+	# sl-0221: the recall hint only where a settlement table exists —
+	# the binding surface the ask names (reads the LIVE remap).
+	if world != null and not world.settlement_cells.is_empty():
+		parts.append("%s recall" % Config.binding_text("recall"))
 	for entry: Array in [
 		["interact", "interact"],
 		["loot_all", "loot"],
@@ -1434,6 +1459,32 @@ func _on_player_death() -> void:
 
 
 ## Transient HUD notice (12 s); later calls replace earlier ones.
+## sl-0221 THE RECALL CAST: the view-side press — refusal LINES here
+## (plain words), the refusals themselves sim-side (the op is guarded
+## regardless of what any view believes).
+func _try_recall() -> void:
+	if world.players.is_empty() or driver == null or driver.sampler == null:
+		return
+	var p0: RefCounted = world.players[0]
+	if p0.dead:
+		return
+	if world.settlement_cells.is_empty() or p0.class_id < 0:
+		_show_toast("RECALL — overworld only")
+		return
+	if world.tick < int(p0.recall_ready_tick):
+		var secs := int(ceilf(float(int(p0.recall_ready_tick) - world.tick) / 60.0))
+		_show_toast("recall is not ready (%ds)" % secs)
+		return
+	driver.sampler.queue_bag_op(BagStep.OP_RECALL)
+
+
+## Settlement display name (sl-0221) — the id with plain spacing.
+func _settlement_name(town: int) -> String:
+	if world != null and town >= 0 and town < world.settlement_ids.size():
+		return String(world.settlement_ids[town]).replace("_", " ")
+	return "home"
+
+
 func _show_toast(text: String) -> void:
 	_toast_gen += 1
 	var gen := _toast_gen
@@ -1768,6 +1819,12 @@ func _ready() -> void:
 		var forage_view := ForageNodesView.new()
 		forage_view.world = world
 		add_child(forage_view)
+	# THE RECALL CAST bar (sl-0221): only where a settlement table
+	# exists — the bar draws over the caster's own head (HP_BARS).
+	if not scenario.settlement_cells.is_empty():
+		var recall_view := RecallView.new()
+		recall_view.world = world
+		add_child(recall_view)
 
 	# Real enemies: assembler sheets + overhead HP bars (M5; CORE-35 —
 	# general presentation, no targeting anything).

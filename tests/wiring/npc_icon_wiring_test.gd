@@ -142,6 +142,30 @@ func _init() -> void:
 			NpcNameplates.label_for("warden-representative", {}) == "Quest Giver",
 			"the hub giver plates as Quest Giver (zero authoring)"
 		)
+		# sl-0221 THE WAYPOSTS: the SET-HOME station bodies — pinned to
+		# the slice scenario's OWN waypost_cells (the body marks the
+		# ground, the sim owns the op; the bank/vendor doctrine), both
+		# walkable on b77, both plated with the plain word.
+		var slice_sc: Resource = load("res://data/scenarios/slice_overworld.tres")
+		var wp_pins := {
+			"capital-gate-guard": 0,
+			"rough-outpost-guard": 1,
+		}
+		for wp_id: String in wp_pins:
+			var wp_st := {}
+			for st: Dictionary in st_a:
+				if String(st.id) == wp_id:
+					wp_st = st
+			var want: Vector2 = slice_sc.waypost_cells[wp_pins[wp_id]]
+			check(
+				wp_st.has("def_cell") and wp_st.def_cell == want,
+				"%s pinned to the slice waypost cell %s" % [wp_id, str(want)]
+			)
+			check(
+				wp_st.has("cell") and wp_st.cell == want,
+				"%s body stands ON its cell (walkable, no nudge)" % wp_id
+			)
+			check(NpcNameplates.label_for(wp_id, {}) == "Waypost", "%s plates as Waypost" % wp_id)
 		# sl-0205: the kit font's own license line is the law — "use at
 		# 10 px (or integer multiples)". Off-grid sizes mangle the
 		# strict-grid glyphs (AA/hinting/subpixel are OFF by kit spec).

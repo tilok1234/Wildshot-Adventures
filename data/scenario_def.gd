@@ -94,4 +94,13 @@ extends Resource
 ## tackle vendor here (every pre-gear scenario). Ops ride recorded
 ## bag_op codes within VENDOR_RADIUS; the panel is the station view.
 @export var tackle_cell: Vector2 = Vector2.ZERO
+## THE NIGHT SEAM (sl-0221): the settlement table — ids, arrival
+## cells, and SET-HOME waypost station cells, PARALLEL by index.
+## Settlement 0 must be the capital with its cell == player_spawn
+## (the default home preserves today's respawn exactly; test-pinned
+## on the slice). Empty = no settlements: death keeps respawn_cell,
+## the recall op refuses (labs, proofs, rifts, dungeons).
+@export var settlement_ids: PackedStringArray = PackedStringArray()
+@export var settlement_cells: PackedVector2Array = PackedVector2Array()
+@export var waypost_cells: PackedVector2Array = PackedVector2Array()
 @export var default_seed: int = 1

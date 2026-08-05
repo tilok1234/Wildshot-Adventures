@@ -48,6 +48,9 @@ const ROLE_LABELS := {
 	"capital-general-merchant": "Merchant",
 	"settlement-trader": "Trader",
 	"dock-fisher-teacher": "Tackle Keeper",
+	# sl-0221: the SET-HOME stations (plain overworld word [T]).
+	"capital-gate-guard": "Waypost",
+	"rough-outpost-guard": "Waypost",
 }
 const GIVER_LABEL := "Quest Giver"
 

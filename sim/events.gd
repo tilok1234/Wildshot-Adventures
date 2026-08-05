@@ -42,6 +42,10 @@ enum Type {
 	TACKLE_EQUIPPED,
 	TACKLE_DROPPED,
 	FORAGE_NODE_SPAWNED,
+	# THE NIGHT SEAM (sl-0221): the home bind + the recall cast.
+	HOME_SET,
+	RECALL_STARTED,
+	RECALLED,
 }
 
 ## PROJECTILE_DESPAWNED carries one of these (§2.6 typed despawn reasons).

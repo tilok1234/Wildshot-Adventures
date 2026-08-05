@@ -22,6 +22,7 @@ const WorldforgePack := preload("res://addons/worldforge_importer/worldforge_pac
 const SimEvents := preload("res://sim/events.gd")
 const StatFrame := preload("res://sim/systems/stat_frame.gd")
 const CharacterProfile := preload("res://game/drivers/character_profile.gd")
+const BagStep := preload("res://sim/systems/bag_step.gd")
 
 const PACK := "res://assets/wildshot-overworld-pack-dusk-content/"
 
@@ -425,9 +426,40 @@ func _init() -> void:
 	_step(lw2, 300)
 	check(lp2.dead, "legacy player stays dead")
 
+	# 10. THE HOME BIND (sl-0221): the death-respawn resolves the SET
+	# home through the settlement table. §9 above IS the no-table
+	# fallback proof (respawn_cell through the same resolver); here a
+	# waypost-bound waystation home moves the revive there — the fee
+	# semantics untouched (25% [T], the same slice).
+	var hw10: RefCounted = _synth_world(27)
+	hw10.set_stat_frame(StatFrame.load_frame())
+	CharacterProfile.apply_to_world(hw10, CharacterProfile.create(false, "bow"))
+	hw10.persistent_respawn = true
+	hw10.respawn_cell = Vector2(10.5, 16.5)
+	hw10.settlement_ids = PackedStringArray(["capital", "waystation"])
+	hw10.settlement_cells = PackedVector2Array([Vector2(10.5, 16.5), Vector2(30.5, 16.5)])
+	hw10.waypost_cells = PackedVector2Array([Vector2(12.5, 16.5), Vector2(32.5, 16.5)])
+	var hp10: RefCounted = hw10.players[0]
+	hp10.gold = 100
+	hp10.pos = Vector2(32.5, 16.5)
+	var hof: RefCounted = InputFrame.new()
+	hof.bag_op = BagStep.OP_SET_HOME
+	hw10.step([hof])
+	check(int(hp10.home_town) == 1, "the waypost bound the waystation home (recorded op)")
+	Damage.apply(hw10, hp10, 99999, 0)
+	check(hp10.dead and hp10.gold == 75, "the fee semantics carry EXACTLY (25% [T])")
+	var hcf: RefCounted = InputFrame.new()
+	hcf.ability_pressed = true
+	hw10.step([hcf])
+	check(not hp10.dead, "early confirm revives")
+	check(hp10.pos == Vector2(30.5, 16.5), "the revive lands at the SET home, not the capital")
+
 	if fails.is_empty():
 		print(
-			"living_world_test: PASS (census/leash/respawn/tether/give-up/rng/hash/determinism/death)"
+			(
+				"living_world_test: PASS "
+				+ "(census/leash/respawn/tether/give-up/rng/hash/determinism/death/home-bind)"
+			)
 		)
 		quit(0)
 	else:

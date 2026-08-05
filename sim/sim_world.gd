@@ -67,7 +67,13 @@ const DT := 1.0 / 60.0
 ## forage-materials wallet (forage_mats, the fish doctrine). The
 ## sl-0105 stillness fields (gather_still_ticks / gather_rearm)
 ## RETIRED with their verb.
-const SERIAL_VERSION := 27
+## 28 = sl-0221 THE HOME BIND + THE RECALL CAST: home_town (settlement
+## index; recorded SET-HOME op at a waypost) + recall_ready_tick (the
+## recall cooldown) on PlayerState — 9 bytes/player. The recall cast
+## itself rides the SERIAL-27 gather target+ticks fields with a
+## sentinel target (zero new cast-state fields); the settlement/
+## waypost tables are definitions, excluded from serialize.
+const SERIAL_VERSION := 28
 
 ## Damage-source pattern id for the scenario-declared test damage
 ## schedule (§2.11 elite transition proofs; planning log 2026-07-28).
@@ -249,7 +255,20 @@ var tackle_shelf: Array = []
 ## hardcore characters, profile-free runs).
 var persistent_respawn: bool = false
 ## Where persistent respawn lands — the scenario's settlement spawn.
+## Since sl-0221 this is the FALLBACK: worlds with a settlement table
+## resolve through home_cell() (the player's set home) instead.
 var respawn_cell: Vector2 = Vector2.ZERO
+## THE HOME BIND (sl-0221): the settlement table — ids, arrival cells,
+## and SET-HOME waypost station cells, parallel by index. Setup
+## config from the scenario (definitions, excluded from serialize —
+## a replay reproduces them by naming its scenario). Empty = no
+## settlements: death keeps respawn_cell and the recall op refuses
+## (every lab/proof/rift/dungeon world is inert by construction).
+## Settlement 0 is the capital: its cell equals the scenario spawn,
+## so the default home preserves today's respawn exactly.
+var settlement_ids: PackedStringArray = PackedStringArray()
+var settlement_cells: PackedVector2Array = PackedVector2Array()
+var waypost_cells: PackedVector2Array = PackedVector2Array()
 ## Unique item definitions (boss-tied, docs/19): definitions, excluded;
 ## drops reference them by index.
 var unique_defs: Array = []
@@ -439,6 +458,17 @@ func set_rift_config(
 	if line != null:
 		for p in players:
 			p.line_lives = int(line.lives)
+
+
+## THE HOME BIND (sl-0221): where this player's death-respawn and a
+## completed recall land. The settlement table resolves the set home;
+## worlds without one (and out-of-range indexes — ghost tolerance)
+## fall back to the scenario's respawn cell, today's behavior exactly.
+func home_cell(p: RefCounted) -> Vector2:
+	var ht := int(p.home_town)
+	if ht < 0 or ht >= settlement_cells.size():
+		return respawn_cell
+	return settlement_cells[ht]
 
 
 ## In-step ground-drop spawn (the death-sweep drop rolls call this).

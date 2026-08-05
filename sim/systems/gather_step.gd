@@ -24,6 +24,14 @@ extends RefCounted
 ##   a world-wide live cap [T]; no per-node respawn timers — the
 ##   spawner tops the world up elsewhere over time. Tuning:
 ##   balance_frame.json forage [T].
+## - THE RECALL CAST (sl-0221, THE NIGHT SEAM): the recorded RECALL op
+##   (bag_step) starts a cast on the SAME serialized target+ticks pair
+##   with the RECALL sentinel target — zero new cast-state fields (the
+##   gather machinery precedent, by routing). Moving or getting hit
+##   cancels (the cooldown stays unspent); completion teleports the
+##   player to their home settlement (SimWorld.home_cell) and arms the
+##   cooldown [T]. Settlement-less worlds never start one (the op
+##   refuses in bag_step) — labs/proofs/rifts/dungeons inert.
 ## Class lane only; pools/nodes are absent in every arena/proof world —
 ## the battery is inert by construction.
 ##
@@ -44,6 +52,15 @@ const NONE := Vector2(-1000000.0, -1000000.0)
 const AMBIENT_PROBES := 8
 ## _near_node ambient encoding: ambient j returns -(2 + j).
 const AMBIENT_HIT_BASE := -2
+## THE RECALL CAST (sl-0221): forage_target sentinel for a recall in
+## progress — rides the serialized target+ticks pair, distinct from
+## NONE (no node can ever sit here).
+const RECALL_TARGET := Vector2(-2000000.0, -2000000.0)
+## Recall cast length [T] (2 s) + cooldown [T] (45 s — the routed
+## 30–60 s lean), armed on COMPLETION only (an interrupted cast
+## costs nothing).
+const RECALL_CAST_TICKS := 120
+const RECALL_COOLDOWN_TICKS := 2700
 
 
 static func run(world: RefCounted) -> void:
@@ -55,6 +72,7 @@ static func run(world: RefCounted) -> void:
 		world.forage_nodes_pos.is_empty()
 		and world.rift_nodes.is_empty()
 		and world.rift_ambient_pos.is_empty()
+		and not _any_recall_active(world)
 	):
 		return
 	var frames: Array = world.current_frames
@@ -79,6 +97,19 @@ static func run(world: RefCounted) -> void:
 				p.forage_ticks = 0
 		# THE BAR (sl-0198): advance while still, in reach, unhit.
 		if p.forage_target == NONE:
+			continue
+		# THE RECALL CAST (sl-0221): the sentinel target rides the same
+		# bar rules minus reach — moving or a hit cancels with the
+		# cooldown unspent; completion teleports home and arms it.
+		if p.forage_target == RECALL_TARGET:
+			var rmoving: bool = frame != null and (frame.move_x != 0 or frame.move_y != 0)
+			if rmoving or _hit_this_tick(world, p):
+				p.forage_target = NONE
+				p.forage_ticks = 0
+				continue
+			p.forage_ticks += 1
+			if p.forage_ticks >= RECALL_CAST_TICKS:
+				_recall_complete(world, p)
 			continue
 		var target_i := _forage_node_at(world, p.forage_target)
 		var moving: bool = frame != null and (frame.move_x != 0 or frame.move_y != 0)
@@ -126,6 +157,40 @@ static func _forage_complete(world: RefCounted, p: RefCounted, node_i: int) -> v
 			}
 		)
 	)
+
+
+## Completed recall (sl-0221): teleport to the player's home
+## settlement, reset the cast pair, arm the cooldown, emit RECALLED.
+static func _recall_complete(world: RefCounted, p: RefCounted) -> void:
+	var dest: Vector2 = world.home_cell(p)
+	p.pos = dest
+	p.prev_pos = dest
+	p.vel = Vector2.ZERO
+	p.forage_target = NONE
+	p.forage_ticks = 0
+	p.recall_ready_tick = world.tick + RECALL_COOLDOWN_TICKS
+	(
+		world
+		. events
+		. append(
+			{
+				"type": SimEvents.Type.RECALLED,
+				"tick": world.tick,
+				"player": p.id,
+				"town": int(p.home_town),
+				"pos": dest,
+			}
+		)
+	)
+
+
+## Any player mid-recall? Keeps the node-less early-out honest (a
+## recall must keep ticking in a world with zero live nodes).
+static func _any_recall_active(world: RefCounted) -> bool:
+	for p: RefCounted in world.players:
+		if p.forage_target == RECALL_TARGET:
+			return true
+	return false
 
 
 ## Did THE damage path land a hit on this player THIS tick? GatherStep

@@ -75,6 +75,7 @@ const ActorState := preload("res://sim/actor_state.gd")
 const RiftStep := preload("res://sim/systems/rift_step.gd")
 const GatherStep := preload("res://sim/systems/gather_step.gd")
 const DropKinds := preload("res://sim/drop_kinds.gd")
+const Damage := preload("res://sim/systems/damage.gd")
 
 const WF_PACK := "res://assets/worldforge-packs/wildshot-overworld-pack-dusk/"
 const ROD_PATHS: Array[String] = [
@@ -214,6 +215,18 @@ func _shop_world(at_station := true) -> RefCounted:
 	var p: RefCounted = w.players[0]
 	p.fish = PackedInt32Array()
 	p.fish.resize(TackleCatalog.species_ids(w.stat_frame).size())
+	return w
+
+
+## sl-0221: a settlements world — the _world base (no forage node, no
+## rift node) + capital/waystation tables (capital cell = the player
+## spawn, the slice identity shape).
+func _home_world(class_backed := true) -> RefCounted:
+	var w: RefCounted = _world(false, false, class_backed)
+	w.settlement_ids = PackedStringArray(["capital", "waystation"])
+	w.settlement_cells = PackedVector2Array([Vector2(31.5, 10.5), Vector2(5.5, 5.5)])
+	w.waypost_cells = PackedVector2Array([Vector2(33.5, 10.5), Vector2(7.5, 5.5)])
+	w.respawn_cell = Vector2(31.5, 10.5)
 	return w
 
 
@@ -1305,12 +1318,198 @@ func _init() -> void:
 	ph26.tackle_chest = 0
 	check(wh26.state_hash() != g3, "the worn chest hashes")
 
+	# 27. THE HOME BIND + THE RECALL CAST (sl-0221, THE NIGHT SEAM;
+	# SERIAL 28). Settlement/waypost tables are definitions; SET HOME
+	# is a recorded op at a waypost; RECALL is a recorded op starting a
+	# 2 s cast on the gather target+ticks pair (the RECALL sentinel —
+	# zero new cast-state fields); moving or a hit cancels with the
+	# cooldown UNSPENT; completion teleports home and arms the
+	# cooldown [T 2700]. Settlement-less worlds refuse structurally.
+	var hw: RefCounted = _home_world()
+	var hp27: RefCounted = hw.players[0]
+	check(hw.home_cell(hp27) == Vector2(31.5, 10.5), "default home = settlement 0 (the capital)")
+	_op(hw, BagStep.OP_SET_HOME)
+	check(int(hp27.home_town) == 0, "set-home away from any waypost refuses")
+	hp27.pos = Vector2(7.5, 5.5)
+	_op(hw, BagStep.OP_SET_HOME)
+	check(int(hp27.home_town) == 1, "the waypost binds home to ITS settlement")
+	check(_events_of(hw, SimEvents.Type.HOME_SET).size() == 1, "HOME_SET emitted on the change")
+	_op(hw, BagStep.OP_SET_HOME)
+	check(_events_of(hw, SimEvents.Type.HOME_SET).is_empty(), "re-binding the same home is silent")
+	check(hw.home_cell(hp27) == Vector2(5.5, 5.5), "home_cell resolves the set home")
+	hp27.pos = Vector2(31.5, 10.5)
+	_op(hw, BagStep.OP_RECALL)
+	check(hp27.forage_target == GatherStep.RECALL_TARGET, "the recall op starts the cast")
+	check(_events_of(hw, SimEvents.Type.RECALL_STARTED).size() == 1, "RECALL_STARTED emitted")
+	check(hp27.forage_ticks == 1, "the cast advances on the op tick (BagStep runs first)")
+	_still(hw, GatherStep.RECALL_CAST_TICKS - 2)
+	check(hp27.forage_ticks == GatherStep.RECALL_CAST_TICKS - 1, "one tick short of done")
+	check(hp27.pos == Vector2(31.5, 10.5), "no teleport before completion")
+	_still(hw, 1)
+	check(hp27.pos == Vector2(5.5, 5.5), "completion teleports HOME")
+	check(
+		hp27.forage_target == GatherStep.NONE and hp27.forage_ticks == 0,
+		"the cast pair resets on completion"
+	)
+	check(_events_of(hw, SimEvents.Type.RECALLED).size() == 1, "RECALLED emitted")
+	check(
+		int(hp27.recall_ready_tick) == hw.tick - 1 + GatherStep.RECALL_COOLDOWN_TICKS,
+		"the cooldown arms on completion [T 2700]"
+	)
+	_op(hw, BagStep.OP_RECALL)
+	check(
+		(
+			hp27.forage_target == GatherStep.NONE
+			and _events_of(hw, SimEvents.Type.RECALL_STARTED).is_empty()
+		),
+		"a cooling recall refuses"
+	)
+	# Move-cancel leaves the cooldown unspent — an immediate recast
+	# is legal; a hit cancels the same tick (the gather bar's rule).
+	var hm: RefCounted = _home_world()
+	var hmp: RefCounted = hm.players[0]
+	_op(hm, BagStep.OP_RECALL)
+	_still(hm, 10)
+	_move(hm)
+	check(hmp.forage_target == GatherStep.NONE, "moving cancels the cast")
+	_op(hm, BagStep.OP_RECALL)
+	check(hmp.forage_target == GatherStep.RECALL_TARGET, "a canceled cast never spent the cooldown")
+	hm.spawn_projectile(hmp.pos, Vector2(0, 0), 0.5, 20, ActorState.FACTION_HOSTILE, 5)
+	hm.step([InputFrame.new()])
+	check(hmp.forage_target == GatherStep.NONE, "getting hit cancels the cast (same tick)")
+	# A recall deliberately OVERRIDES a running forage bar.
+	var hf: RefCounted = _world()
+	hf.settlement_ids = PackedStringArray(["capital"])
+	hf.settlement_cells = PackedVector2Array([Vector2(31.5, 10.5)])
+	hf.waypost_cells = PackedVector2Array([Vector2(33.5, 10.5)])
+	var hfp: RefCounted = hf.players[0]
+	_press(hf)
+	check(hfp.forage_target == Vector2(30.5, 10.5), "forage bar running first")
+	_op(hf, BagStep.OP_RECALL)
+	check(
+		hfp.forage_target == GatherStep.RECALL_TARGET and hfp.forage_ticks == 1,
+		"a recall overrides the forage bar"
+	)
+	# Refusals: settlement-less worlds (labs/proofs/rifts/dungeons)
+	# and the legacy lane (run()'s class guard — proofs stay inert).
+	var hn: RefCounted = _world(false, false)
+	_op(hn, BagStep.OP_RECALL)
+	check(
+		(
+			hn.players[0].forage_target == GatherStep.NONE
+			and _events_of(hn, SimEvents.Type.RECALL_STARTED).is_empty()
+		),
+		"a settlement-less world refuses the recall op"
+	)
+	_op(hn, BagStep.OP_SET_HOME)
+	check(int(hn.players[0].home_town) == 0, "a settlement-less world refuses set-home")
+	var hl: RefCounted = _home_world(false)
+	_op(hl, BagStep.OP_RECALL)
+	check(
+		hl.players[0].forage_target == GatherStep.NONE,
+		"legacy players never recall (the battery stays inert)"
+	)
+	# Ghost home index: home_cell falls back to the respawn cell.
+	var hg: RefCounted = _home_world()
+	hg.players[0].home_town = 7
+	check(hg.home_cell(hg.players[0]) == hg.respawn_cell, "a ghost home falls back to respawn")
+	# Death mid-cast: the revive clears the pair — no posthumous
+	# teleport (player_respawn owns the clear) — and lands at HOME.
+	var hd: RefCounted = _home_world()
+	hd.persistent_respawn = true
+	var hdp: RefCounted = hd.players[0]
+	_op(hd, BagStep.OP_RECALL)
+	_still(hd, 10)
+	check(hdp.forage_target == GatherStep.RECALL_TARGET, "cast running before the death")
+	Damage.apply(hd, hdp, 99999, 0)
+	check(hdp.dead, "dead mid-cast")
+	var cf27: RefCounted = InputFrame.new()
+	cf27.ability_pressed = true
+	hd.step([cf27])
+	check(not hdp.dead, "early confirm revives")
+	check(
+		hdp.forage_target == GatherStep.NONE and hdp.forage_ticks == 0,
+		"the revive clears the cast (no posthumous recall)"
+	)
+	check(hdp.pos == Vector2(31.5, 10.5), "the revive lands at home (settlement 0 default)")
+	# Profile round-trip BY ID; ghost ids read the capital; a
+	# settlement-less session never overwrites the set home.
+	var prof27 := CharacterProfile.create(false, "bow")
+	check(String(prof27.home_town_id) == "capital", "fresh profiles carry the capital home")
+	prof27.home_town_id = "waystation"
+	var hr: RefCounted = _home_world()
+	CharacterProfile.apply_to_world(hr, prof27)
+	check(int(hr.players[0].home_town) == 1, "profile home loads by id")
+	CharacterProfile.harvest(hr, prof27)
+	check(String(prof27.home_town_id) == "waystation", "harvest persists the home by id")
+	prof27.home_town_id = "atlantis"
+	var hr2: RefCounted = _home_world()
+	CharacterProfile.apply_to_world(hr2, prof27)
+	check(int(hr2.players[0].home_town) == 0, "a ghost home id reads the capital")
+	prof27.home_town_id = "waystation"
+	var hr3: RefCounted = _world(false, false)
+	CharacterProfile.apply_to_world(hr3, prof27)
+	CharacterProfile.harvest(hr3, prof27)
+	check(
+		String(prof27.home_town_id) == "waystation",
+		"a settlement-less harvest preserves the home (ghost rule)"
+	)
+	# SERIAL 28 hash coverage — the seam's whole format growth.
+	var wh27: RefCounted = _home_world()
+	var hh0: int = wh27.state_hash()
+	wh27.players[0].home_town = 1
+	check(wh27.state_hash() != hh0, "home_town hashed (SERIAL 28)")
+	wh27.players[0].home_town = 0
+	var hh1: int = wh27.state_hash()
+	wh27.players[0].recall_ready_tick = 999
+	check(wh27.state_hash() != hh1, "recall_ready_tick hashed (SERIAL 28)")
+	# Slice premises: named tables, parallel sizes, settlement 0 cell
+	# == the spawn (the default home IS today's respawn — identity),
+	# every cell walkable on b77, wayposts >= 2.4 t (the interact-sweep
+	# threshold; measured >= 3.0) from every other station + giver.
+	var slice27: Resource = load("res://data/scenarios/slice_overworld.tres")
+	check(
+		slice27.settlement_ids == PackedStringArray(["capital", "waystation"]),
+		"the slice names capital + waystation"
+	)
+	check(
+		(
+			slice27.settlement_cells.size() == slice27.settlement_ids.size()
+			and slice27.waypost_cells.size() == slice27.settlement_ids.size()
+		),
+		"settlement tables ride parallel"
+	)
+	check(
+		slice27.settlement_cells[0] == slice27.player_spawn,
+		"settlement 0 cell == the spawn (the default home IS today's respawn)"
+	)
+	if bool(wf.ok):
+		var bg27: RefCounted = wf.bitgrid
+		for sc27: Vector2 in slice27.settlement_cells:
+			check(not bg27.is_solid(int(sc27.x), int(sc27.y)), "settlement walks %s" % str(sc27))
+		for wc27: Vector2 in slice27.waypost_cells:
+			check(not bg27.is_solid(int(wc27.x), int(wc27.y)), "waypost walks %s" % str(wc27))
+	for wp27: Vector2 in slice27.waypost_cells:
+		for other27: Vector2 in [
+			slice27.bank_cell,
+			slice27.tackle_cell,
+			Vector2(106.5, 182.5),
+			Vector2(106.5, 180.5),
+			Vector2(109.5, 182.5),
+			Vector2(91.5, 110.5),
+		]:
+			check(
+				wp27.distance_to(other27) >= 2.4,
+				"waypost %s clear of %s (sweep threshold)" % [str(wp27), str(other27)]
+			)
+
 	if fails.is_empty():
 		print(
 			"gather_test: PASS (forage-verb/interrupts/wallet/forage-spawner/instant-cast/",
 			"ambient/no-drag/drains/grace/snap/clear/fish/rods/refusals/negatives/hash/",
 			"forage-profile/rifter/slice/tackle-catalog/shop-ops/rift-gear/rare-drop/",
-			"fish-roundtrip/gear-hash/boss-pool/phased-only-catch/kit-premises)"
+			"fish-roundtrip/gear-hash/boss-pool/phased-only-catch/kit-premises/",
+			"home-bind/recall-cast (sl-0221, SERIAL 28))"
 		)
 		quit(0)
 	else:

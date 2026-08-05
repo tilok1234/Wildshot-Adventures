@@ -23,6 +23,10 @@ const KEY_ACTIONS := {
 	"quest_log": KEY_L,
 	# sl-0129: loot-all at a ground loot bag [T — B, remappable].
 	"loot_all": KEY_B,
+	# sl-0221 THE RECALL CAST [T — P "port home", remappable; no-F-row
+	# law]: starts the 2 s cast to the set home settlement (overworld
+	# only; moving or a hit cancels; cooldown [T] sim-side).
+	"recall": KEY_P,
 	"weapon_1": KEY_1,
 	"weapon_2": KEY_2,
 	"weapon_3": KEY_3,

@@ -149,6 +149,20 @@ var rods_owned_mask: int = 0
 var tackle_owned_mask: int = 0
 var tackle_chest: int = -1
 var tackle_helm: int = -1
+## THE HOME BIND (sl-0221, SERIAL 28): index into the world's
+## settlement table (SimWorld.settlement_cells; definitions). 0 = the
+## capital — the default preserves today's respawn exactly (settlement
+## 0's cell IS the scenario spawn). Set by the recorded SET-HOME op at
+## a waypost; death-respawn and the recall cast both resolve through
+## SimWorld.home_cell(). Profiles persist BY ID (home_town_id,
+## ghost-tolerant — unknown ids read capital).
+var home_town: int = 0
+## THE RECALL CAST (sl-0221): recall is legal when tick >= this.
+## Armed on cast COMPLETION (an interrupted cast costs nothing);
+## cooldown [T] in gather_step. The cast itself rides the gather
+## target+ticks fields with the RECALL sentinel target — zero new
+## cast-state fields (the gather machinery precedent).
+var recall_ready_tick: int = 0
 
 
 func serialize_into(buf: StreamPeerBuffer) -> void:
@@ -208,3 +222,7 @@ func serialize_into(buf: StreamPeerBuffer) -> void:
 	buf.put_u32(tackle_owned_mask)
 	buf.put_8(tackle_chest)
 	buf.put_8(tackle_helm)
+	# THE NIGHT SEAM (SERIAL 28): the home bind + the recall cooldown —
+	# 9 bytes per player (u8 + 64), the seam's whole format growth.
+	buf.put_u8(home_town)
+	buf.put_64(recall_ready_tick)

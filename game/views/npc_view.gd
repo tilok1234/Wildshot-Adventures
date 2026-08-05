@@ -116,6 +116,13 @@ const PINNED_STATIONS := {
 	# sl-0177/0178: the tackle keeper — the pack's own dock-fisher
 	# body marks the gear shop (matching slice tackle_cell).
 	"dock-fisher-teacher": Vector2(110.5, 178.5),
+	# sl-0221 THE WAYPOSTS — the SET-HOME stations (matching the slice
+	# waypost_cells; b77 walkability-verified, >=3.0 t from every
+	# other station). Casting [P] (one-line swap, the hub precedent):
+	# guards mark the home posts — the gate guard at the capital, the
+	# outpost guard at the west waystation.
+	"capital-gate-guard": Vector2(113.5, 179.5),
+	"rough-outpost-guard": Vector2(91.5, 113.5),
 }
 
 ## sl-0204: the capital hub giver — a BODY under the errand bang at

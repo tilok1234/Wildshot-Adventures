@@ -14,6 +14,7 @@ const SimEvents := preload("res://sim/events.gd")
 const DropKinds := preload("res://sim/drop_kinds.gd")
 const StatFrame := preload("res://sim/systems/stat_frame.gd")
 const TackleCatalog := preload("res://sim/tackle_catalog.gd")
+const GatherStep := preload("res://sim/systems/gather_step.gd")
 
 ## The op byte (input_frame.gd bag_op; 0 = none):
 ## 1..20 EQUIP bag slot / 21..40 DROP bag slot /
@@ -49,11 +50,18 @@ const QUEST_OP_MAX := 16
 ## TACKLE EQUIP tackle.items row (chest/helm among OWNED pieces). Both
 ## legal only within VENDOR_RADIUS of the scenario's tackle cell.
 ## Fish prices decrement the serialized wallet — the spend is recorded
-## and deterministic like every trade. 192..255 stay free.
+## and deterministic like every trade.
 const OP_TACKLE_BUY_BASE := 144
 const TACKLE_BUY_MAX := 32
 const OP_TACKLE_EQUIP_BASE := 176
 const TACKLE_EQUIP_MAX := 16
+## THE NIGHT SEAM (sl-0221): 192 SET HOME (legal within WAYPOST_RADIUS
+## of a waypost cell — binds home_town to that settlement) / 193
+## RECALL (starts the 2 s cast in gather_step; refused with no
+## settlement table, while dead-through-run()'s guard, mid-cast, or on
+## cooldown). 194..255 stay free.
+const OP_SET_HOME := 192
+const OP_RECALL := 193
 ## Capacity [T] (the sl-0116 suggested 20).
 const BAG_CAP := 20
 ## Bank capacity [T] — small, distinct from the bag (sl-0130).
@@ -108,6 +116,10 @@ static func run(world: RefCounted) -> void:
 			_tackle_buy(world, p, op - OP_TACKLE_BUY_BASE)
 		elif op >= OP_TACKLE_EQUIP_BASE and op < OP_TACKLE_EQUIP_BASE + TACKLE_EQUIP_MAX:
 			_tackle_equip(world, p, op - OP_TACKLE_EQUIP_BASE)
+		elif op == OP_SET_HOME:
+			_set_home(world, p)
+		elif op == OP_RECALL:
+			_recall_start(world, p)
 
 
 ## ---- ground loot bags (sl-0129).
@@ -365,6 +377,73 @@ static func _tackle_equip(world: RefCounted, p: RefCounted, items_i: int) -> voi
 				"tick": world.tick,
 				"player": p.id,
 				"index": items_i,
+			}
+		)
+	)
+
+
+## ---- THE HOME BIND + THE RECALL CAST (sl-0221). Station guards live
+## HERE like every trade; the cast itself advances in gather_step.
+
+
+## Nearest waypost within reach, else -1 (the station-radius class;
+## index == settlement index by the parallel-table contract).
+static func nearest_waypost(world: RefCounted, p: RefCounted) -> int:
+	var best := -1
+	var best_d := VENDOR_RADIUS * VENDOR_RADIUS
+	for wi in world.waypost_cells.size():
+		var dd: float = p.pos.distance_squared_to(world.waypost_cells[wi])
+		if dd <= best_d:
+			best_d = dd
+			best = wi
+	return best
+
+
+## SET HOME: bind home_town to the waypost's settlement. Idempotent —
+## re-binding the current home moves nothing and emits nothing.
+static func _set_home(world: RefCounted, p: RefCounted) -> void:
+	var wi := nearest_waypost(world, p)
+	if wi < 0 or wi >= world.settlement_cells.size():
+		return
+	if int(p.home_town) == wi:
+		return
+	p.home_town = wi
+	(
+		world
+		. events
+		. append(
+			{
+				"type": SimEvents.Type.HOME_SET,
+				"tick": world.tick,
+				"player": p.id,
+				"town": wi,
+			}
+		)
+	)
+
+
+## RECALL: start the cast (gather_step advances it this same tick —
+## BagStep runs first in the step order). Overworld only — a world
+## without a settlement table refuses structurally (labs, proofs,
+## rifts, dungeons); a cooldown or an already-running cast refuses.
+## Starting a recall deliberately overrides a forage bar in progress.
+static func _recall_start(world: RefCounted, p: RefCounted) -> void:
+	if world.settlement_cells.is_empty():
+		return
+	if world.tick < int(p.recall_ready_tick):
+		return
+	if p.forage_target == GatherStep.RECALL_TARGET:
+		return
+	p.forage_target = GatherStep.RECALL_TARGET
+	p.forage_ticks = 0
+	(
+		world
+		. events
+		. append(
+			{
+				"type": SimEvents.Type.RECALL_STARTED,
+				"tick": world.tick,
+				"player": p.id,
 			}
 		)
 	)

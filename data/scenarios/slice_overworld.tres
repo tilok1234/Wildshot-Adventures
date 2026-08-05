@@ -13,6 +13,13 @@
 ; on real forage props (the ~1.9k-cell pool is candidacy, never
 ; simultaneity; cap [T] world-wide), shimmer-marked, F-gathered.
 ; The 12 old forage POI markers are ordinary pool members now.
+; sl-0221 THE NIGHT SEAM: the settlement table — capital (index 0,
+; cell == the spawn: the default home preserves today's respawn
+; exactly) + the west waystation (arrival 91.5,112.5 — south of its
+; giver). Wayposts = the SET-HOME stations [T cells, b77
+; walkability-verified, >=3.0 t from every other station]: capital
+; 113.5,179.5 (the gate guard), waystation 91.5,113.5 (the outpost
+; guard). F binds home; P casts recall (2 s, cancel on move/hit).
 
 [resource]
 script = ExtResource("1")
@@ -32,4 +39,7 @@ bank_cell = Vector2(112.5, 182.5)
 vendor_cells = PackedVector2Array(106.5, 182.5, 106.5, 180.5)
 vendor_stocks = PackedStringArray("general", "trader")
 tackle_cell = Vector2(110.5, 178.5)
+settlement_ids = PackedStringArray("capital", "waystation")
+settlement_cells = PackedVector2Array(109.5, 182.5, 91.5, 112.5)
+waypost_cells = PackedVector2Array(113.5, 179.5, 91.5, 113.5)
 default_seed = 100

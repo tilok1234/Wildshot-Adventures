@@ -69,6 +69,7 @@ static func create(hardcore: bool, cls := "bow") -> Dictionary:
 		"starhook_chest": "",
 		"starhook_helm": "",
 		"forage_mats": {},
+		"home_town_id": "capital",
 		"ability_index": 0,
 		"deaths": 0,
 		"runs": 0,
@@ -186,6 +187,9 @@ static func apply_to_world(world: RefCounted, d: Dictionary) -> void:
 	# doctrine; the index space is the world's derived vocabulary —
 	# empty in poolless worlds, where the verb is inert anyway).
 	_forage_apply(world, p, d)
+	# sl-0221 THE HOME BIND: home by settlement ID (absent key or a
+	# ghost id reads capital — index 0; the seam-2 doctrine).
+	p.home_town = _settlement_index_for(world, String(d.get("home_town_id", "")))
 	StatFrame.recompute(world, p)
 	p.hp = p.max_hp
 	p.mana = p.max_mana
@@ -240,6 +244,11 @@ static func harvest(world: RefCounted, d: Dictionary) -> void:
 	d.ability_index = maxi(0, world.ability_defs.find(world.ability_def))
 	_tackle_harvest(world, p, d)
 	_forage_harvest(world, p, d)
+	# sl-0221: home by ID — written only where a settlement table
+	# exists (a lab/dungeon session must never overwrite the set home;
+	# the ghost-preservation rule).
+	if int(p.home_town) >= 0 and int(p.home_town) < world.settlement_ids.size():
+		d.home_town_id = String(world.settlement_ids[int(p.home_town)])
 
 
 ## Item id <-> stat-frame items[] index (S1 seams 2/3): the profile's
@@ -314,6 +323,15 @@ static func _quest_index_for(world: RefCounted, quest_id: String) -> int:
 		if String(world.quest_defs[i].id) == quest_id:
 			return i
 	return -1
+
+
+## sl-0221: settlement id -> index; unknown/absent reads the capital
+## (index 0 — ghost tolerance, the profile doctrine).
+static func _settlement_index_for(world: RefCounted, town_id: String) -> int:
+	for i in world.settlement_ids.size():
+		if String(world.settlement_ids[i]) == town_id:
+			return i
+	return 0
 
 
 ## ---- STARHOOK (S1 seam 6, sl-0105; v2 by sl-0115). The RIFTER —

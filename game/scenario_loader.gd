@@ -154,6 +154,20 @@ static func build_world(scenario: Resource, seed_v: int, bitgrid: RefCounted) ->
 	# PROFILE is known (normal-mode character in a persistent-world
 	# scenario) — bot and replay builds stay dead-in-place.
 	world.respawn_cell = scenario.player_spawn
+	# sl-0221 THE HOME BIND: the settlement/waypost tables (parallel by
+	# index; definitions). A mismatched table is a data bug — refuse
+	# loudly, never a quietly wrong home.
+	if scenario.settlement_ids.size() == scenario.settlement_cells.size():
+		world.settlement_ids = scenario.settlement_ids
+		world.settlement_cells = scenario.settlement_cells
+		world.waypost_cells = scenario.waypost_cells
+	elif not scenario.settlement_ids.is_empty() or not scenario.settlement_cells.is_empty():
+		push_error(
+			(
+				"scenario '%s': settlement ids/cells tables disagree — settlements REFUSED"
+				% String(scenario.id)
+			)
+		)
 	# sl-0130: the settlement bank station (ZERO = none).
 	world.bank_cell = scenario.bank_cell
 	# sl-0131: vendors — stock-set names resolve to item triples at
