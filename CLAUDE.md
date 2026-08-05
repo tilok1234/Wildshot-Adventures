@@ -426,15 +426,19 @@ starhook (rift fights, 15 boss kits, the rift dungeon path, 12 rods +
 tackle gear, the creel), foraging (gather bar), the game-zoom
 accessibility option (1x/1.5x/2x, sl-0222/0223), dev map overlay +
 console toolbelt + jump commands, hitbox 0.175 + the cadence
-re-composition.
+re-composition, the close-fighter round wave 1 (sl-0213/0234: wolf =
+the pack circler, goblin = flee-and-pelt, Old Tusk trample +
+zero-range blades; the press; the range-band vocabulary; wave 2 holds
+until the designer plays wave 1).
 
-**State:** SERIAL 28 / WSR v3 (next bump 29). Battery 62 rows / 121-run
+**State:** SERIAL 28 / WSR v3 (next bump 29). Battery 64 rows / 125-run
 pool (floor 3.6 + cap 4.14 lanes; two pinned [primary] FAILs + canaries
-by design). Gate = tools/pretester_check.ps1: 33 fixed steps + battery
+by design). Gate = tools/pretester_check.ps1: 34 fixed steps + battery
 + export + lockdown probe; CI green. Engine Godot 4.6.2 pinned.
 
 **Open designer-owned:** the slice week on the docs/19 bar (Green days);
-every [T] number; the sl-0186 dungeon re-walk; the 1.5x zoom
+every [T] number; PLAY WAVE 1 of the close fighters (wave 2 waits on
+their worded feel); the sl-0186 dungeon re-walk; the 1.5x zoom
 pixel-integrity call; refinement pastes follow their play.
 
 > The full append-only milestone history lives at

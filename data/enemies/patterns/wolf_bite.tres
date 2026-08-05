@@ -1,0 +1,33 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://data/pattern_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; CLOSE-FIGHTER WAVE 1 (sl-0213/0234): the wolf's bite — ONE aimed
+; blade, ZERO-RANGE-VALID (spawn 0.05 < hurtbox 0.175 + radius 0.156:
+; a volley born on an overlapped player CONNECTS; the sl-0208 whiff
+; class — arc gaps outside, outward spawns inside — cannot recur by
+; geometry). Reach 0.05 + 4.5x18/60 + 0.156 = 1.56 covers the 1.2
+; trigger with margin; the honest counter is walking off the line
+; during the 14-tick lead (blade 4.5 t/s vs the 3.6 floor). Pattern
+; id 46 (namespace: 46.. close-fighter wave 1). All numbers [T].
+
+[sub_resource type="Resource" id="shot0"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 4.5
+radius = 0.156
+damage = 8
+ttl_ticks = 18
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.05
+
+[resource]
+script = ExtResource("1")
+id = &"wolf_bite"
+pattern_id = 46
+shots = Array[Resource]([SubResource("shot0")])

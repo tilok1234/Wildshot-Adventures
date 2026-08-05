@@ -37,6 +37,17 @@ const KITS: Array[String] = [
 	"tide_stalker",
 	"pulse_cross",
 ]
+## Close-fighter wave 1 (sl-0213): the overworld kits obey the SAME
+## law — same probe, same bound, no rift dressing (bare projectile +
+## hazard render over the arena floor's darkness, the flash content
+## itself). Old Tusk's window samples P1 (the schedule's P2/P3
+## crossings sit past the 300-tick window; the mud zone's pulse
+## family is already probed via zone_constellation).
+const CLOSE_KITS := [
+	["wolf_pack", "res://tests/bot_scenarios/proof_wolf_pack.tres"],
+	["goblin_skirmish", "res://tests/bot_scenarios/proof_goblin_skirmish.tres"],
+	["old_tusk", "res://tests/bot_scenarios/proof_old_tusk.tres"],
+]
 const SAMPLE_EVERY := 8
 const TICKS := 300
 const DELTA_BIG := 0.02
@@ -54,6 +65,10 @@ func _run() -> void:
 		var flips := await _probe_kit(kid)
 		results[kid] = flips
 		worst = maxi(worst, int(flips.flips))
+	for pair: Array in CLOSE_KITS:
+		var flips2 := await _probe_scenario(String(pair[0]), load(String(pair[1])), false)
+		results[String(pair[0])] = flips2
+		worst = maxi(worst, int(flips2.flips))
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://reports"))
 	var f := FileAccess.open(
 		ProjectSettings.globalize_path("res://reports/pattern_strobe_report.json"), FileAccess.WRITE
@@ -86,23 +101,27 @@ func _run() -> void:
 	print(
 		(
 			"pattern_strobe_probe: PASS — worst flips %d <= %d across %d kits (report committed)"
-			% [worst, FLIP_BOUND, KITS.size()]
+			% [worst, FLIP_BOUND, results.size()]
 		)
 	)
 	quit(0)
 
 
 func _probe_kit(kid: String) -> Dictionary:
-	var scenario: Resource = load("res://data/scenarios/rift_boss_%s.tres" % kid)
+	return await _probe_scenario(kid, load("res://data/scenarios/rift_boss_%s.tres" % kid), true)
+
+
+func _probe_scenario(kid: String, scenario: Resource, with_rift: bool) -> Dictionary:
 	var grid: RefCounted = DodgeProof._build_bitgrid(String(scenario.arena))
 	var world: RefCounted = ScenarioLoader.build_world(scenario, 1, grid)
 	var root := Node2D.new()
 	get_root().add_child(root)
-	var rift := RiftView.new()
-	rift.world = world
-	rift.biome = int(scenario.rift_biome)
-	rift.rare = bool(scenario.rift_rare)
-	root.add_child(rift)
+	if with_rift:
+		var rift := RiftView.new()
+		rift.world = world
+		rift.biome = int(scenario.rift_biome)
+		rift.rare = bool(scenario.rift_rare)
+		root.add_child(rift)
 	var pview := ProjectileView.new()
 	pview.world = world
 	pview.z_index = RenderLayers.HOSTILE_PROJECTILES
@@ -112,7 +131,7 @@ func _probe_kit(kid: String) -> Dictionary:
 	hview.z_index = RenderLayers.HOSTILE_HAZARD_FILL
 	root.add_child(hview)
 	var cam := Camera2D.new()
-	cam.position = Vector2(6.0, 6.5) * 32.0
+	cam.position = (Vector2(6.0, 6.5) if with_rift else Vector2(scenario.player_spawn)) * 32.0
 	cam.zoom = Vector2(1.6, 1.6)
 	root.add_child(cam)
 	await process_frame

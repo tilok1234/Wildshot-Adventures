@@ -1,20 +1,35 @@
-[gd_resource type="Resource" load_steps=4 format=3]
+[gd_resource type="Resource" load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://data/enemy_def.gd" id="1"]
 [ext_resource type="Script" path="res://data/emitter_slot.gd" id="2"]
-[ext_resource type="Resource" path="res://data/enemies/patterns/rusher_slash.tres" id="3"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/wolf_bite.tres" id="3"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/wolf_cutoff.tres" id="4"]
 
-; S1 GREEN ROSTER (sl-0104 seam 1): rusher archetype — the pack
-; hunter (the lab Rusher's own family, Green-band tuned). Lead 10
-; exact; [T].
+; CLOSE-FIGHTER WAVE 1 (sl-0213; variety rule f): THE PACK CIRCLER —
+; the wolf's OWN archetype, nobody else's. FLANKER orbit at the
+; [2.2, 3.2] band (chirality by id parity: a pack surrounds from both
+; sides by construction) + the press (an open bite gate turns the
+; orbit into a committed lunge; the swing re-arms it and the circle
+; resumes — lunge-and-out). Cutoff darts fly WHILE it circles: the
+; pack cuts off escape lines, the bullets are real. Replaces the
+; sl-0104 rusher-slash chaser whose arcs whiffed the 0.175 body
+; (sl-0208 finding). Lead 14 bite / 18 dart, exact. All numbers [T].
 
 [sub_resource type="Resource" id="slot0"]
 script = ExtResource("2")
 pattern = ExtResource("3")
 trigger_range = 1.2
-telegraph_ticks = 10
-cooldown_ticks = 36
+telegraph_ticks = 14
+cooldown_ticks = 120
 recover_ticks = 8
+
+[sub_resource type="Resource" id="slot1"]
+script = ExtResource("2")
+pattern = ExtResource("4")
+trigger_range = 5.0
+telegraph_ticks = 18
+cooldown_ticks = 108
+recover_ticks = 6
 
 [resource]
 script = ExtResource("1")
@@ -26,10 +41,12 @@ move_speed = 2.8
 contact_damage = 0
 contact_cooldown_ticks = 30
 aggro_range = 12.0
-movement_policy = 0
-range_min = 0.0
-range_max = 0.0
-emitters = Array[Resource]([SubResource("slot0")])
+movement_policy = 4
+range_min = 2.2
+range_max = 3.2
+press_on_melee_gate = true
+range_band = &"point_blank"
+emitters = Array[Resource]([SubResource("slot0"), SubResource("slot1")])
 xp_value = 3
 gold_min = 1
 gold_max = 3

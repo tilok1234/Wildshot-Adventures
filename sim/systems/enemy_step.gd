@@ -58,6 +58,11 @@ static func run(world: RefCounted) -> void:
 				_enter_phase(world, e, def, want, t)
 		var emitters: Array = def.active_emitters(e.phase_index)
 		var policy: int = def.active_policy(e.phase_index)
+		# THE PRESS (sl-0213 close-fighter wave 1): an open melee-class
+		# gate overrides the base policy with a committed close. Pure
+		# function of (t, serialized cooldowns) — no mode state exists.
+		if bool(def.press_on_melee_gate) and _melee_gate_open(e, emitters, t):
+			policy = EnemyDef.MovementPolicy.CHASER
 		var rmin: float = float(def.range_min)
 		var rmax: float = float(def.range_max)
 		if phase_res != null:
@@ -275,6 +280,22 @@ static func _move(
 	e.vel = (e.pos - before) / dt
 
 
+## True when any melee-class pattern slot (trigger_range <=
+## EnemyDef.MELEE_TRIGGER_MAX) could begin its windup now — the same
+## fire-to-fire gate _ready_slot reads, minus the range condition (the
+## press exists exactly to CLOSE that range). Hazard slots never press.
+static func _melee_gate_open(e: RefCounted, emitters: Array, t: int) -> bool:
+	for k in emitters.size():
+		var es: Resource = emitters[k]
+		if es.pattern == null:
+			continue
+		if float(es.trigger_range) > EnemyDef.MELEE_TRIGGER_MAX:
+			continue
+		if t >= e.cooldowns[k] - int(es.telegraph_ticks):
+			return true
+	return false
+
+
 ## Pattern id a slot's attack carries: the cast hazard's id when the
 ## slot is a caster (M6), else the volley pattern's.
 static func _slot_pattern_id(es: Resource) -> int:
@@ -287,14 +308,15 @@ static func _slot_pattern_id(es: Resource) -> int:
 
 ## First emitter slot whose cooldown gate is open (windup may begin
 ## telegraph_ticks before the fire gate: cooldown is fire-to-fire) and
-## whose trigger range contains the nearest player. -1 = none. The
+## whose trigger band contains the nearest player (range_min <= dist
+## <= range; the min defaults 0.0 — sl-0213 wave 1). -1 = none. The
 ## caller passes the phase-resolved emitter set (§3.5).
 static func _ready_slot(e: RefCounted, emitters: Array, t: int, dist: float) -> int:
 	for k in emitters.size():
 		var es: Resource = emitters[k]
 		if t < e.cooldowns[k] - int(es.telegraph_ticks):
 			continue
-		if dist <= float(es.trigger_range):
+		if dist <= float(es.trigger_range) and dist >= float(es.trigger_range_min):
 			return k
 	return -1
 

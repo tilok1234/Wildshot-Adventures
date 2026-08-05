@@ -5,12 +5,12 @@
 	"hostile_elite_budget": 300,
 	"kind": "dodge_proof",
 	"label": "mechanical verification (no gate code reads this — CORE-53)",
-	"pass": true,
-	"peak_hostile_live_max": 9,
+	"pass": false,
+	"peak_hostile_live_max": 12,
 	"policy": "reactive-16dir-melee-on-telegraph",
 	"runs": [
 		{
-			"first_hit_tick": -1,
+			"first_hit_tick": 1560,
 			"heatmap": [
 				[
 					0,
@@ -97,12 +97,12 @@
 					0
 				],
 				[
-					0,
-					3254,
-					106,
-					71,
-					83,
-					26,
+					1420,
+					120,
+					225,
+					65,
+					240,
+					25,
 					0,
 					0,
 					0,
@@ -111,11 +111,11 @@
 					0
 				],
 				[
-					0,
-					37,
-					23,
-					0,
-					0,
+					9,
+					194,
+					24,
+					101,
+					32,
 					0,
 					0,
 					0,
@@ -125,9 +125,9 @@
 					0
 				]
 			],
-			"hits": 0,
-			"near_miss_min": 0.306780365109444,
-			"peak_hostile_live": 9,
+			"hits": 12,
+			"near_miss_min": 0.00282987654209138,
+			"peak_hostile_live": 12,
 			"phase_transitions": [
 				{
 					"hp": 260,
@@ -140,12 +140,12 @@
 					"tick": 1800
 				}
 			],
-			"repro": "",
+			"repro": "res://reports/repro_proof_king_grubb_reactive_seed1.wsr",
 			"seed": 1,
-			"survived_ticks": 3600
+			"survived_ticks": 2455
 		},
 		{
-			"first_hit_tick": -1,
+			"first_hit_tick": 1560,
 			"heatmap": [
 				[
 					0,
@@ -232,12 +232,12 @@
 					0
 				],
 				[
-					0,
-					3254,
-					106,
-					71,
-					83,
-					26,
+					1420,
+					120,
+					225,
+					65,
+					240,
+					25,
 					0,
 					0,
 					0,
@@ -246,11 +246,11 @@
 					0
 				],
 				[
-					0,
-					37,
-					23,
-					0,
-					0,
+					9,
+					194,
+					24,
+					101,
+					32,
 					0,
 					0,
 					0,
@@ -260,9 +260,9 @@
 					0
 				]
 			],
-			"hits": 0,
-			"near_miss_min": 0.306780365109444,
-			"peak_hostile_live": 9,
+			"hits": 12,
+			"near_miss_min": 0.00282987654209138,
+			"peak_hostile_live": 12,
 			"phase_transitions": [
 				{
 					"hp": 260,
@@ -275,12 +275,12 @@
 					"tick": 1800
 				}
 			],
-			"repro": "",
+			"repro": "res://reports/repro_proof_king_grubb_reactive_seed2.wsr",
 			"seed": 2,
-			"survived_ticks": 3600
+			"survived_ticks": 2455
 		},
 		{
-			"first_hit_tick": -1,
+			"first_hit_tick": 1560,
 			"heatmap": [
 				[
 					0,
@@ -367,12 +367,12 @@
 					0
 				],
 				[
-					0,
-					3254,
-					106,
-					71,
-					83,
-					26,
+					1420,
+					120,
+					225,
+					65,
+					240,
+					25,
 					0,
 					0,
 					0,
@@ -381,11 +381,11 @@
 					0
 				],
 				[
-					0,
-					37,
-					23,
-					0,
-					0,
+					9,
+					194,
+					24,
+					101,
+					32,
 					0,
 					0,
 					0,
@@ -395,9 +395,9 @@
 					0
 				]
 			],
-			"hits": 0,
-			"near_miss_min": 0.306780365109444,
-			"peak_hostile_live": 9,
+			"hits": 12,
+			"near_miss_min": 0.00282987654209138,
+			"peak_hostile_live": 12,
 			"phase_transitions": [
 				{
 					"hp": 260,
@@ -410,9 +410,9 @@
 					"tick": 1800
 				}
 			],
-			"repro": "",
+			"repro": "res://reports/repro_proof_king_grubb_reactive_seed3.wsr",
 			"seed": 3,
-			"survived_ticks": 3600
+			"survived_ticks": 2455
 		}
 	],
 	"scenario": "proof_king_grubb",

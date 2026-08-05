@@ -1,6 +1,55 @@
-# Session Handoff — updated 2026-08-05 (THE NIGHT SEAM sl-0227/0221/0222/0223: the CLAUDE.md diet + the home bind & recall cast (SERIAL 28) + the game-zoom option)
+# Session Handoff — updated 2026-08-05 evening (THE CLOSE-FIGHTER ROUND WAVE 1, PASTE E: sl-0213 wave 1 + sl-0234 — wolf circler / goblin flee-pelt / tusk trample; the press; range bands; SERIAL 28 held)
 
-> **NEWEST FIRST — THE NIGHT SEAM (2026-08-05 ~01:30-03:30 local,
+> **NEWEST FIRST — THE CLOSE-FIGHTER ROUND WAVE 1 (2026-08-05
+> evening, PASTE E + the f-addendum live; ONE sealed sim seam;
+> SERIAL 28 / WSR v3 UNTOUCHED — zero recorded-format growth, the
+> rails' expectation held; smoke pair 9dffd5bb9fc30ed5/
+> abc54568d0cdceda UNMOVED = the legacy lane provably untouched;
+> goldens re-recorded BYTE-IDENTICAL):** the sl-0229 SEAL WARM-UP
+> discharged first (ALL GREEN 15.8 min, no guard block). THE
+> PRINCIPLES (a-f, the designer's verbatim rulings) now bind every
+> close kit: everyone fires; states welcome; no silly rules; free
+> proposals; no density quota; THE VARIETY RULE (flee-pelt spent on
+> the goblin alone — every family invents fresh). **WOLF = THE PACK
+> CIRCLER** (its own archetype): FLANKER orbit [2.2,3.2] w/ parity
+> chirality + THE PRESS (open bite gate → committed lunge; swing
+> re-arms → circle resumes) + INTERCEPT cutoff darts while circling
+> (patterns 46 bite lead 14 / 47 dart lead 18, both ZERO-RANGE-VALID
+> — spawn 0.05/0.2 inside the combined hitbox, the sl-0208 whiff
+> class dead by geometry). **GOBLIN = FLEE-AND-PELT** (the
+> designer's archetype, this family ALONE): FLANKER juke band
+> [3.5,5.0] (the corridor twin-stack finding: straight-radial
+> keep-range collapsed twins onto ONE point = doubled pelts; the
+> tangent splits them) + sling pelt (49, lead 16, speed 5.4) with
+> **trigger_range_min 2.0** (NEW EmitterSlot field, default 0 =
+> zero effect elsewhere: a pressing goblin commits to the shiv (48,
+> lead 12, cd 300 = the skirmish clock), never plinks point-blank —
+> the king_grubb pinch finding) + past 5.0 [T] it spirals in like a
+> chaser. **OLD TUSK (sl-0234)**: THE TRAMPLE (contact 10 / 30 t,
+> any state — bot + clearance machinery already carried it) + sweep/
+> gore-rush spawn offsets moved INSIDE the hurtbox (0.5/0.6 → 0.05;
+> ttls +5/+4 keep proven reaches) — a standing/hugging player is
+> genuinely threatened three ways; recap names landed (22/23/46-49).
+> **THE PRESS** = data flag + pure function of (tick, serialized
+> cooldowns) — zero new state; **range_band vocabulary** (sl-0213:
+> BANDS point_blank/close/mid/long on EnemyDef; the wave-1 three
+> declare; "melee" = DISTANCE forever). PROOFS: wolf 0.295/0.295,
+> goblin 0.295/0.296, tusk 0.298/0.183, warren-with-live-goblins
+> 0.251/0.314, camps/overworld/boss green; strobe 18 kits ZERO
+> flips; 5 evidence frames committed + READ (the sl-0234 answer
+> frame: his blades erupting INSIDE his own body ring onto the
+> hugger). **THE ONE OPEN FINDING (pinned FAIL, watched):**
+> proof_king_grubb FLOOR — the throne-room pocket deadlock (see the
+> battery table); two bot-model refinements tried and REVERTED
+> (each broke the green warren row — the conservative body model is
+> load-bearing); routed for the designer's word. sl-0208
+> melee-harmless pins retired: the wave-1 three now KILL a standing
+> player (test-pinned inverse); the LAB RUSHER's whiff pin stands
+> untouched for wave 2. Gate: close_fighter_test = fixed step 34;
+> battery 64 rows / 125 runs. WAVE 2 (every remaining close family,
+> fresh archetypes each) HOLDS until the designer plays wave 1.**
+
+> **PREVIOUS — THE NIGHT SEAM (2026-08-05 ~01:30-03:30 local,
 > hands-free; three sealed seams 0c81144 / 5c4d0ce / 007703e + the
 > docs close; SERIAL 27→28 at the sim seam, WSR v3 untouched, next
 > bump 29; smoke pair 9dffd5bb9fc30ed5/abc54568d0cdceda):**
@@ -395,9 +444,11 @@ wiring test). Before that, the afternoon session: three CI-repair
 commits (24a0cac / ed77943 / 8f2bd7d — sl-0201) + the sl-0200 seam
 (e5a5f30, 59 files) sealed by a post-commit full gate. The
 one-command ship gate `tools/pretester_check.ps1` runs ALL GREEN —
-**33 fixed steps + the two-lane battery (62 rows / 121-run pool)
-byte-identical + export both artifacts + lockdown probe — 17.5 min
-at the sl-0200 seal; view-only seams ride `-SkipBattery` (~3 min)**.
+**34 fixed steps + the two-lane battery (64 rows / 125-run pool)
+byte-identical + export both artifacts + lockdown probe — ~16 min;
+view-only seams ride `-SkipBattery` (~3 min)** (the close-fighter
+round added the close_fighters fixed step + the wolf-pack/goblin
+rows at the 2026-08-05 evening seam).
 No deferred-gate debt. **CI is GREEN whole (~50 s per push) since
 sl-0201** — `gh run list` after every push; watch the run conclusion
 itself now, not just lint (gotcha #26's watching gap is what hid a
@@ -410,6 +461,11 @@ the toolbelt put every fight one console line away at proper gear.
 
 ## §2 Open — designer-side (do not nag; the deck + planning carry these)
 
+- **PLAY CLOSE-FIGHTER WAVE 1** (walk Green: wolves circle-and-lunge,
+  goblins skirmish-and-press, Old Tusk tramples + his blades land on
+  a hugger now). Every number [T]; their worded feel gates WAVE 2
+  (every remaining close family, each with its OWN fresh archetype —
+  the variety rule; flee-pelt is SPENT on the goblin).
 - **RE-WALK THE DUNGEON** (`dungeon` or `rift dungeon` in the dev
   console) — sl-0186 resolves for good on their walk, not before.
   The serpentine now RENDERS (their 'invisible walls' were unplaced
@@ -559,8 +615,8 @@ Before every commit, per touched area:
 - After any push: `gh run list` → the lint job concluding is the
   fast signal (gotcha #26).
 
-### Canonical proof battery (state 2026-08-05 — 62 rows / 121-run
-### pool; POLICY OF RECORD = REACTIVE; SERIAL 28; WSR v3; Warden 575;
+### Canonical proof battery (state 2026-08-05 evening — 64 rows /
+### 125-run pool; POLICY OF RECORD = REACTIVE; SERIAL 28; WSR v3; Warden 575;
 ### b65 flood 34641; b77 current; HURTBOX 0.175 since sl-0208 with
 ### the bot PLANNING at the proven 0.35 envelope — gotcha 49; the
 ### whole record re-baselined with margins +0.175 across the board,
@@ -588,8 +644,10 @@ Before every commit, per touched area:
 | lab_default + meet_blightcaster/leadshot/yard_warden | 1,2,3 | 3600 | PASS / PASS (meet_leadshot cap re-pinned FAIL→PASS at sl-0208) |
 | loop_ring1/2/3 + proof_brk_site | 1,2,3 | 3600 | PASS / PASS |
 | overworld_green/dry/wet/cold + green_boss compositions | 1,2,3 | 3600 | PASS / PASS |
-| proof_old_tusk / proof_warren / proof_king_grubb | 1,2,3 | 3600 | PASS / PASS |
+| proof_old_tusk / proof_warren | 1,2,3 | 3600 | PASS / PASS (tusk re-proven at the sl-0234 fix: trample + zero-range blades aboard, 0.298/0.183; the warren gauntlet holds with LIVE goblins, 0.251/0.314 — the FLANKER juke split the corridor twin-stack that doubled pelts) |
+| **proof_king_grubb** | 1,2,3 | 3600 | **FAIL (PINNED, watched) / PASS** — THE THRONE-ROOM POCKET DEADLOCK (close-fighter wave 1's one open finding): the floor bot flees the south wing's west dead-end and the live goblin escort seals the mouth (press cycle + wall-stuck FLANKER + the proven always-hard body model). Two bot-model refinements tried, both REVERTED (each broke the green warren row). Routed for the designer's word; flipping the pin is that seam's exit bar |
 | proof_slice_leash / proof_green_camp / proof_green_ranged | 1,2,3 | 3600 | PASS / PASS |
+| **proof_wolf_pack / proof_goblin_skirmish** (close-fighter wave 1, sl-0213: the circler pack ×3 / the flee-pelt trio ×3 — isolate rows; margins 0.295/0.295 and 0.295/0.296, seed-invariant deterministic dances) | 1,2,3 | 3600 | PASS / PASS ×2 |
 | proof_rift_catch / _rare / _void / _comet (the line's rules aboard; drains never count as hits) | 1,2,3 | 3600 | PASS / PASS |
 | **proof_boss_twin_helix / ring_nest / sine_shoal / boomerang_veil / decel_wall / zone_constellation / cross_burst / pulse_lattice** (sl-0180: schedule-paced full fights, every flip mid-flight; margins 0.120–0.123; zone_constellation floor near reads −0.000 = the M6 hazard-proximity reporting nit, hits=0 is the verdict) | 1,2,3 | 3600 | PASS / PASS ×8 (the sl-0187 20-60 s lengths + sl-0188 life families live; margins ~0.28-0.41 since the sl-0208 re-baseline) |
 | **proof_dungeon_corridor (darter pair) / proof_dungeon_lurker (solo) / proof_dungeon_bossroom** (sl-0180 wave 2 — proofs prove THE FIGHTS THE PLAYER GETS: the play path's packs sit 20+ apart, tether-sequential) | 1,2,3 | 3600 | PASS / PASS ×3 (the sl-0186 render fix landed — the serpentine draws under a follow camera; the designer's re-walk stays the open acceptance) |
@@ -603,7 +661,10 @@ names; cap runs use --speed=4.14 + an explicit --out=..._cap115.json).
 
 1. **A silently hanging `--script` run = a PARSE ERROR.** Godot prints
    to stderr and the SceneTree idles FOREVER. Kill it, re-run unpiped
-   at tiny scale. Then kill orphaned godot_console processes — NOTE
+   at tiny scale. **The RUNTIME sibling (close-fighter round): any
+   script error that unwinds `_init` before `quit()` (e.g. assigning
+   an untyped Array to an `Array[Resource]` export) hangs the exact
+   same way — mid-file, after sections already printed.** Then kill orphaned godot_console processes — NOTE
    the console wrapper spawns an engine child named plain "godot";
    process-kill filters must include both names. ALSO: main.gd cannot
    compile under `--script` runs (it reads the Config autoload) — a

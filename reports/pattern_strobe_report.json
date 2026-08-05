@@ -31,10 +31,20 @@
 			"luma_max": 0.0962122890430962,
 			"luma_min": 0.0923114021579537
 		},
+		"goblin_skirmish": {
+			"flips": 0,
+			"luma_max": 0.298179512308031,
+			"luma_min": 0.298038642211462
+		},
 		"halo_lasher": {
 			"flips": 0,
 			"luma_max": 0.102041577303185,
 			"luma_min": 0.0978511836497343
+		},
+		"old_tusk": {
+			"flips": 0,
+			"luma_max": 0.298905906283232,
+			"luma_min": 0.298039227724075
 		},
 		"pulse_cross": {
 			"flips": 0,
@@ -70,6 +80,11 @@
 			"flips": 0,
 			"luma_max": 0.0946910829222816,
 			"luma_min": 0.0920034841368478
+		},
+		"wolf_pack": {
+			"flips": 0,
+			"luma_max": 0.298263294986048,
+			"luma_min": 0.298039227724075
 		},
 		"zone_constellation": {
 			"flips": 0,

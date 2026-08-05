@@ -2,11 +2,9 @@
 	"ability_used": false,
 	"fire_used": false,
 	"horizon_ticks": 60,
-	"hostile_elite_budget": 300,
 	"kind": "dodge_proof",
 	"label": "mechanical verification (no gate code reads this — CORE-53)",
 	"pass": true,
-	"peak_hostile_live_max": 6,
 	"policy": "reactive-16dir-melee-on-telegraph",
 	"runs": [
 		{
@@ -45,24 +43,10 @@
 					0,
 					0,
 					0,
-					157,
-					155,
-					117,
-					11,
-					0,
-					0,
-					0,
-					0
-				],
-				[
 					0,
 					0,
 					0,
 					0,
-					1406,
-					465,
-					677,
-					374,
 					0,
 					0,
 					0,
@@ -74,10 +58,10 @@
 					0,
 					0,
 					0,
-					0,
-					137,
-					101,
-					0,
+					309,
+					857,
+					419,
+					17,
 					0,
 					0,
 					0
@@ -88,9 +72,23 @@
 					0,
 					0,
 					0,
+					387,
+					851,
+					484,
+					37,
+					0,
+					0,
+					0
+				],
+				[
 					0,
 					0,
 					0,
+					0,
+					0,
+					57,
+					168,
+					14,
 					0,
 					0,
 					0,
@@ -126,20 +124,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.183487606048584,
-			"peak_hostile_live": 6,
-			"phase_transitions": [
-				{
-					"hp": 312,
-					"phase": 1,
-					"tick": 910
-				},
-				{
-					"hp": 144,
-					"phase": 2,
-					"tick": 1820
-				}
-			],
+			"near_miss_min": 0.295196351408958,
 			"repro": "",
 			"seed": 1,
 			"survived_ticks": 3600
@@ -180,24 +165,10 @@
 					0,
 					0,
 					0,
-					157,
-					155,
-					117,
-					11,
-					0,
-					0,
-					0,
-					0
-				],
-				[
 					0,
 					0,
 					0,
 					0,
-					1406,
-					465,
-					677,
-					374,
 					0,
 					0,
 					0,
@@ -209,10 +180,10 @@
 					0,
 					0,
 					0,
-					0,
-					137,
-					101,
-					0,
+					309,
+					857,
+					419,
+					17,
 					0,
 					0,
 					0
@@ -223,9 +194,23 @@
 					0,
 					0,
 					0,
+					387,
+					851,
+					484,
+					37,
+					0,
+					0,
+					0
+				],
+				[
 					0,
 					0,
 					0,
+					0,
+					0,
+					57,
+					168,
+					14,
 					0,
 					0,
 					0,
@@ -261,20 +246,7 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.183487606048584,
-			"peak_hostile_live": 6,
-			"phase_transitions": [
-				{
-					"hp": 312,
-					"phase": 1,
-					"tick": 910
-				},
-				{
-					"hp": 144,
-					"phase": 2,
-					"tick": 1820
-				}
-			],
+			"near_miss_min": 0.295196351408958,
 			"repro": "",
 			"seed": 2,
 			"survived_ticks": 3600
@@ -315,24 +287,10 @@
 					0,
 					0,
 					0,
-					157,
-					155,
-					117,
-					11,
-					0,
-					0,
-					0,
-					0
-				],
-				[
 					0,
 					0,
 					0,
 					0,
-					1406,
-					465,
-					677,
-					374,
 					0,
 					0,
 					0,
@@ -344,10 +302,10 @@
 					0,
 					0,
 					0,
-					0,
-					137,
-					101,
-					0,
+					309,
+					857,
+					419,
+					17,
 					0,
 					0,
 					0
@@ -358,9 +316,23 @@
 					0,
 					0,
 					0,
+					387,
+					851,
+					484,
+					37,
+					0,
+					0,
+					0
+				],
+				[
 					0,
 					0,
 					0,
+					0,
+					0,
+					57,
+					168,
+					14,
 					0,
 					0,
 					0,
@@ -396,32 +368,19 @@
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.183487606048584,
-			"peak_hostile_live": 6,
-			"phase_transitions": [
-				{
-					"hp": 312,
-					"phase": 1,
-					"tick": 910
-				},
-				{
-					"hp": 144,
-					"phase": 2,
-					"tick": 1820
-				}
-			],
+			"near_miss_min": 0.295196351408958,
 			"repro": "",
 			"seed": 3,
 			"survived_ticks": 3600
 		}
 	],
-	"scenario": "proof_old_tusk",
-	"scenario_path": "res://tests/bot_scenarios/proof_old_tusk.tres",
+	"scenario": "proof_wolf_pack",
+	"scenario_path": "res://tests/bot_scenarios/proof_wolf_pack.tres",
 	"seeds": [
 		1,
 		2,
 		3
 	],
-	"speed": 4.14,
+	"speed": 3.6,
 	"ticks_per_run": 3600
 }

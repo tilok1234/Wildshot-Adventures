@@ -1,0 +1,33 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://data/pattern_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; CLOSE-FIGHTER WAVE 1 (sl-0213): the goblin's sling pelt — the
+; flee-phase bullet stream. ONE aimed stone on a quick cadence.
+; Reach 0.2 + 5.4x64/60 + 0.12 = 6.08 EXCEEDS the 6.0 trigger and
+; the [3.5, 5.0] hold band (a banded kit must out-reach its own
+; band or it parks outside its range); speed 5.4 is the corridor
+; dodge-room lever (the proof-warren floor iteration); spawn 0.2 <
+; 0.295 stays overlap-valid, so a caught goblin still fights.
+; Pattern id 49. All numbers [T].
+
+[sub_resource type="Resource" id="shot0"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 5.4
+radius = 0.12
+damage = 4
+ttl_ticks = 64
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.2
+
+[resource]
+script = ExtResource("1")
+id = &"goblin_pelt"
+pattern_id = 49
+shots = Array[Resource]([SubResource("shot0")])

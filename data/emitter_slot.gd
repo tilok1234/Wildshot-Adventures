@@ -14,6 +14,13 @@ extends Resource
 @export var hazard: Resource = null
 ## Fire only when the nearest player is within this many tiles.
 @export var trigger_range: float = 7.0
+## Fire only when the nearest player is AT LEAST this far (tiles).
+## 0.0 = no floor (every pre-wave-1 slot, by default). The CORE-44
+## readable-engagement-range grammar in data: a skirmisher's ranged
+## slot declares the band it fires FROM, so a pressing close-fighter
+## commits to its swing instead of stopping to plink point-blank
+## (close-fighter wave 1, sl-0213 — the king_grubb pinch finding).
+@export var trigger_range_min: float = 0.0
 ## TELEGRAPH_STARTED leads the volley by exactly this many ticks
 ## (prominence scales with danger — CORE-51 Law 4).
 @export var telegraph_ticks: int = 12

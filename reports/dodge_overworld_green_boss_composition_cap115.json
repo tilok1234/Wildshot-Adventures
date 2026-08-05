@@ -120,13 +120,13 @@
 					0,
 					0,
 					0,
-					2,
-					2179,
-					1419
+					0,
+					0,
+					3600
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.299453285336494,
+			"near_miss_min": 0.29653468132019,
 			"peak_hostile_live": 5,
 			"phase_transitions": [],
 			"repro": "",
@@ -244,13 +244,13 @@
 					0,
 					0,
 					0,
-					2,
-					2179,
-					1419
+					0,
+					0,
+					3600
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.299453285336494,
+			"near_miss_min": 0.29653468132019,
 			"peak_hostile_live": 5,
 			"phase_transitions": [],
 			"repro": "",
@@ -368,13 +368,13 @@
 					0,
 					0,
 					0,
-					2,
-					2179,
-					1419
+					0,
+					0,
+					3600
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.299453285336494,
+			"near_miss_min": 0.29653468132019,
 			"peak_hostile_live": 5,
 			"phase_transitions": [],
 			"repro": "",

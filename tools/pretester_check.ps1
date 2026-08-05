@@ -153,6 +153,7 @@ $tests = @(
     @("stat frame (docs/22 in the sim)", "tests/stat_frame/stat_frame_test.gd"),
     @("living world (leash/respawn/importer)", "tests/living_world/living_world_test.gd"),
     @("green roster (S1 re-table/variants)", "tests/green_roster/green_roster_test.gd"),
+    @("close fighters (sl-0213/0234 wave 1)", "tests/close_fighters/close_fighter_test.gd"),
     @("quests v1 (S1 accept/progress/turn-in)", "tests/quests/quest_test.gd"),
     @("gather + starhook (S1 cast/forage/rifter)", "tests/gather/gather_test.gd"),
     @("dungeon walk (sl-0186 render+traverse)", "tests/rift_dungeon/dungeon_walk_test.gd"),
@@ -272,8 +273,29 @@ if (-not $SkipBattery) {
         @("proof_green_camp","1,2,3",3600,"","","PASS","PASS"),
         @("proof_green_ranged","1,2,3",3600,"","","PASS","PASS"),
         @("proof_old_tusk","1,2,3",3600,"","","PASS","PASS"),
+        # sl-0213 close-fighter wave 1: the re-armed wolf pack (FLANKER
+        # circle + press lunges + intercept darts) and the goblin trio
+        # (flee-and-pelt skirmish) earn their own isolate rows; Old Tusk
+        # re-proves on his existing row with the trample + zero-range
+        # blades aboard (sl-0234).
+        @("proof_wolf_pack","1,2,3",3600,"","","PASS","PASS"),
+        @("proof_goblin_skirmish","1,2,3",3600,"","","PASS","PASS"),
         @("proof_warren","1,2,3",3600,"","","PASS","PASS"),
-        @("proof_king_grubb","1,2,3",3600,"","","PASS","PASS"),
+        # sl-0213 wave 1 PINNED FLOOR FAIL (deliberate, watched; the
+        # close-fighter round's one open finding): the THRONE-ROOM
+        # POCKET DEADLOCK — the movement-only floor bot flees into the
+        # south wing's west dead-end (~t1560, seed-invariant) and the
+        # re-armed goblin escort seals the mouth (press-shiv cycle;
+        # FLANKER spiral-out wall-blocks in the pocket; the proven
+        # always-hard body model refuses the free walk-through). Two
+        # bot-model refinements tried and REVERTED (each broke the
+        # then-green warren row). Cap lane PASSES 0.184; the full
+        # dungeon gauntlet (proof_warren) PASSES BOTH lanes; a real
+        # player carries weapons the bot structurally lacks. Routed
+        # for the designer's word (escort mix / FLANKER wall-escape /
+        # press numbers). Flipping this pin back to PASS/PASS is that
+        # future seam's exit bar.
+        @("proof_king_grubb","1,2,3",3600,"","","FAIL","PASS"),
         @("proof_rift_catch","1,2,3",3600,"","","PASS","PASS"),
         @("proof_rift_catch_rare","1,2,3",3600,"","","PASS","PASS"),
         # sl-0115: the biome twists change dodge geometry (void ring

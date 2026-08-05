@@ -1,0 +1,21 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; CLOSE-FIGHTER WAVE 1 (sl-0213): the wolf-pack isolate — THREE pack
+; circlers (opposite chiralities by id parity) on the lab floor, the
+; family's worst honest case: staggered lunges + cutoff darts from
+; both orbit directions at once. CORE-33 at the 3.6 floor and the
+; 4.14 cap; the verdict judges hits (bite, dart — and nothing else,
+; wolves carry no contact damage).
+
+[resource]
+script = ExtResource("1")
+id = &"proof_wolf_pack"
+display_name = "PROOF: wolf pack x3 (circler archetype, wave 1)"
+player_spawn = Vector2(24, 16)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"wolf": PackedVector2Array(30, 16, 18, 12, 24, 22)
+}
+default_seed = 1

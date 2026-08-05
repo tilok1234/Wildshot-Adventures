@@ -20,6 +20,15 @@
 ;   blight_zone hazard IS the mud vocabulary — shared with shroom,
 ;   arm 45 exactly, the pattern->lead law holds) and the sweeps
 ;   come denser. All numbers [T]; speeds 3.2 max < the 3.6 floor.
+; sl-0234 (the designer's live find): he stood ON a still player,
+; untouchable — no stopping distance, volleys spawning outward past
+; the 0.175 body. The fix: THE TRAMPLE (contact 10 every 30 t, any
+; state — a giant boar's body is its own honest warning, dodgeable
+; at every speed above his 3.2) + the sweep/rush spawn offsets moved
+; INSIDE the hurtbox (zero-range-valid, see the pattern files). A
+; standing player under Old Tusk is now genuinely threatened three
+; ways: trample, blades born on top of them, and P3's mud cast at
+; their feet. All numbers [T].
 
 [sub_resource type="Resource" id="p1_sweep"]
 script = ExtResource("2")
@@ -113,12 +122,13 @@ display_name = "Old Tusk"
 hp = 480
 body_radius = 0.55
 move_speed = 3.0
-contact_damage = 0
+contact_damage = 10
 contact_cooldown_ticks = 30
 aggro_range = 14.0
 movement_policy = 0
 range_min = 0.0
 range_max = 0.0
+range_band = &"point_blank"
 phases = SubResource("phaselist")
 xp_value = 150
 gold_min = 20

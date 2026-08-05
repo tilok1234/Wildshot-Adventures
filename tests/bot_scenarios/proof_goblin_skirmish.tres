@@ -1,0 +1,20 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; CLOSE-FIGHTER WAVE 1 (sl-0213): the goblin isolate — THREE
+; flee-and-pelt skirmishers on the lab floor: three pelt streams from
+; the hold band with desynced shiv presses cutting through them (the
+; press clocks drift apart as fights force different first-press
+; ticks). CORE-33 at the 3.6 floor and the 4.14 cap.
+
+[resource]
+script = ExtResource("1")
+id = &"proof_goblin_skirmish"
+display_name = "PROOF: goblin trio (flee-and-pelt archetype, wave 1)"
+player_spawn = Vector2(24, 16)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"goblin": PackedVector2Array(30, 16, 18, 20, 28, 10)
+}
+default_seed = 1

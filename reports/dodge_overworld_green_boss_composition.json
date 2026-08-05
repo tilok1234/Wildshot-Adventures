@@ -120,13 +120,13 @@
 					0,
 					0,
 					0,
-					118,
-					2262,
-					1220
+					36,
+					2144,
+					1420
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.238571551442146,
+			"near_miss_min": 0.310987734794617,
 			"peak_hostile_live": 5,
 			"phase_transitions": [],
 			"repro": "",
@@ -244,13 +244,13 @@
 					0,
 					0,
 					0,
-					118,
-					2262,
-					1220
+					36,
+					2144,
+					1420
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.238571551442146,
+			"near_miss_min": 0.310987734794617,
 			"peak_hostile_live": 5,
 			"phase_transitions": [],
 			"repro": "",
@@ -368,13 +368,13 @@
 					0,
 					0,
 					0,
-					118,
-					2262,
-					1220
+					36,
+					2144,
+					1420
 				]
 			],
 			"hits": 0,
-			"near_miss_min": 0.238571551442146,
+			"near_miss_min": 0.310987734794617,
 			"peak_hostile_live": 5,
 			"phase_transitions": [],
 			"repro": "",

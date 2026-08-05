@@ -65,7 +65,9 @@ const GREEN_FAMILY := {
 	"treant": "treant",
 	"bandit": "bandit",
 }
-const PROVEN_PATTERNS := [10, 11, 12, 13, 14]  # + hazard 15 via slot.hazard
+# 46-49 = close-fighter wave 1 (sl-0213: wolf bite/cutoff, goblin
+# shiv/pelt), proven by their own battery rows + close_fighter_test.
+const PROVEN_PATTERNS := [10, 11, 12, 13, 14, 46, 47, 48, 49]  # + hazard 15 via slot.hazard
 const PROVEN_POLICIES := [0, 1, 3, 4]  # CHASER/KEEP_RANGE/ANCHOR/FLANKER
 const FLOOR_SPEED := 3.6
 

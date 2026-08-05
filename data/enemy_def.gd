@@ -12,6 +12,23 @@ extends Resource
 
 enum MovementPolicy { CHASER, KEEP_RANGE, ORBIT, ANCHOR, FLANKER }
 
+## Melee-CLASS slot ceiling (tiles): a pattern slot triggering at or
+## under this range is a close swing. One truth for the sim's press
+## gate (enemy_step) and the DodgeBot's body model (dodge_policy).
+const MELEE_TRIGGER_MAX := 2.0
+
+## sl-0213 RANGE-BAND VOCABULARY: "melee" names ENGAGEMENT DISTANCE,
+## never weapon type (every enemy is a projectile fighter). The band
+## words are the vocabulary; a def declares the distance its kit wants.
+## &"" = undeclared (pre-vocabulary defs — each combat wave fills its
+## own families as it rebuilds them).
+const BANDS := {
+	&"point_blank": [0.0, 2.0],
+	&"close": [2.0, 6.0],
+	&"mid": [6.0, 10.0],
+	&"long": [10.0, 999.0],
+}
+
 @export var id: StringName = &""
 @export var display_name: String = ""
 @export var hp: int = 20
@@ -29,6 +46,19 @@ enum MovementPolicy { CHASER, KEEP_RANGE, ORBIT, ANCHOR, FLANKER }
 ## range_max, hold between.
 @export var range_min: float = 0.0
 @export var range_max: float = 0.0
+## THE PRESS (close-fighter wave 1, sl-0213): while any melee-class
+## pattern slot's gate is open (cooldown allows a fire), the movement
+## policy resolves to CHASER — the enemy commits in for its swing; the
+## swing re-arms the gate and the base policy resumes. A pure function
+## of (tick, serialized cooldowns): zero new state (GDD-16). Composes
+## archetypes without new policies: FLANKER+press = the wolf's
+## circling lunge; KEEP_RANGE+press = the goblin's flee-and-pelt.
+@export var press_on_melee_gate: bool = false
+## sl-0213: this kit's declared engagement band — a BANDS key, or &""
+## for undeclared. Data vocabulary only in v1 (tests validate it; no
+## sim system reads it): the word exists so records, tests, and future
+## UI say "melee" as a DISTANCE, never a weapon type.
+@export var range_band: StringName = &""
 ## EmitterSlot resources; empty = melee-only.
 @export var emitters: Array[Resource] = []
 ## PhaseList resource (docs/12 §3.5 elite): when set, the active phase's

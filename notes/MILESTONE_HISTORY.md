@@ -2600,3 +2600,72 @@ rides the first guard-clear (monitored; gotcha 43 honored at the
 seal). NO feel verdicts — waypost cells/casting, cast length,
 cooldown, binding, zoom levels, the 1.5x integrity call: ALL [T];
 the designer's walk + flips rule.
+
+THE CLOSE-FIGHTER ROUND WAVE 1 2026-08-05 evening (PASTE E +
+the live f-addendum; sl-0213 wave-1 scope + sl-0234; ONE sealed
+gated sim seam; SERIAL 28 / WSR v3 UNTOUCHED — zero recorded-format
+growth as the rails expected; smoke pair 9dffd5bb9fc30ed5/
+abc54568d0cdceda UNMOVED; goldens re-recorded BYTE-IDENTICAL — the
+legacy and golden lanes provably untouched): the sl-0229 FORMAL SEAL
+discharged at session start on the committed night-seam tree (ALL
+GREEN 15.8 min — 33 fixed + 121-run battery byte-identical + export
++ probe; no guard block). THE PRINCIPLES (the designer's verbatim
+rulings a-f) bound in: everyone fires / states welcome / no silly
+rules / free proposals per enemy / no density quota / THE VARIETY
+RULE (flee-pelt on the goblin ALONE ever; every family its own
+invention). **THE WOLF = THE PACK CIRCLER** (fresh archetype):
+FLANKER orbit [2.2,3.2] chirality-split by id parity + THE PRESS (a
+data flag: any open melee-class gate resolves movement to CHASER —
+a pure function of tick + serialized cooldowns, ZERO new state;
+composes archetypes without new policies) + intercept cutoff darts
+thrown while circling. Patterns 46 (bite, lead 14) / 47 (dart, lead
+18), both ZERO-RANGE-VALID (spawn offsets inside the combined
+hitbox — the sl-0208 whiff class dead by geometry, wolf kills a
+standing player t1099 test-pinned). **THE GOBLIN = FLEE-AND-PELT**
+(the designer's archetype): FLANKER juke band [3.5,5.0] + shiv (48,
+lead 12, cd 300 = the press clock) + sling pelt (49, lead 16) with
+the NEW EmitterSlot trigger_range_min (2.0 — a pressing goblin
+commits, never plinks point-blank; default 0 = every other slot
+untouched). Two composition findings fixed by design: the CORRIDOR
+TWIN-STACK (straight-radial keep-range collapsed tunnel twins onto
+one point = doubled pelts; the FLANKER tangent splits them
+structurally) and the POINT-BLANK PELT (the king_grubb pinch).
+**OLD TUSK (sl-0234)**: THE TRAMPLE (contact 10 per 30 t, any
+state) + tusk_sweep/gore_rush spawn offsets 0.5/0.6 → 0.05 (ttls
++5/+4 hold the proven reaches) — the designer's overlap exploit is
+dead three ways (trample cadence-exact + his own blades born inside
+the hug + P3 mud; test-pinned, overlap kill t90). Recap PATTERN_
+NAMES landed (22/23/46-49 — Law 8 names the new killers). **THE
+RANGE-BAND VOCABULARY** (sl-0213): EnemyDef.BANDS {point_blank/
+close/mid/long} + range_band declarations on the wave-1 three;
+"melee" names DISTANCE forever. RETIREMENTS: the sl-0208
+melee-harmless era ends for wolf/goblin/tusk (inverse pins — a
+standing player DIES, explainably); the LAB RUSHER whiff pin stands
+untouched for wave 2; green PROVEN_PATTERNS grew 46-49
+deliberately. PROOFS first-run-green on the kits: wolf 0.295/0.295,
+goblin 0.295/0.296, tusk 0.298/0.183, the warren gauntlet WITH live
+goblins 0.251/0.314, camps/overworld/boss compositions green;
+strobe 18 kits ZERO flips; FIVE evidence frames committed + read
+(close_fighter_{wolf_pack,goblin_skirmish,old_tusk_overlap,
+density_worstcase,density_camp}.png — the sl-0234 answer frame
+shows his blades erupting INSIDE his own body ring onto the
+hugger; the authored audit_close_density scene peaks 13 live
+hostile shots). **THE ONE OPEN FINDING, pinned loudly:**
+proof_king_grubb FLOOR = THE THRONE-ROOM POCKET DEADLOCK (the
+floor bot flees the south wing dead-end, the live escort seals the
+mouth: press cycle + wall-stuck FLANKER + the proven always-hard
+body model). TWO bot-model refinements built and REVERTED in
+session (dropping zero-contact bodies: 13 hits on warren;
+gate-aware porosity: broke warren the other way) — the
+conservative body model is load-bearing pack pressure; the row's
+floor lane is PINNED expected-FAIL watched (cap PASSES 0.184; the
+full dungeon PASSES both lanes; players carry weapons the
+movement-only bot lacks) and the finding is ROUTED for the
+designer's word (escort mix / FLANKER wall-escape / press numbers
+— paste-F material per sl-0236's own size law). Gate:
+close_fighter_test joined as fixed step 34 (archetype contracts,
+leads exact, lethality, overlap, bands, press classifier,
+negatives); battery 62→64 rows / 121→125 runs; goldens x10; full
+pretester sealed on the committed tree. NO feel verdicts — every
+number [T]; the designer PLAYS WAVE 1 before wave 2 exists;
+resolutions sl-0238/0239 in the sync log.

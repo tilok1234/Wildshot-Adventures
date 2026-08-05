@@ -23,14 +23,16 @@ const EnemyState := preload("res://sim/enemy_state.gd")
 const ProjectilePool := preload("res://sim/projectile_pool.gd")
 const EnemyDef := preload("res://data/enemy_def.gd")
 
-## Policy modes (M7 §2.11). PRIMARY is the canonical proof policy.
-## REACTIVE (ledger #11's re-adjudication route) differs in exactly one
-## model choice: melee-slot enemies are bodies at their RAW radius —
-## the bot may enter trigger range and dodge the windup on its
-## telegraph like a human, instead of treating the whole trigger
-## bubble as do-not-enter. ORBIT and AXIS_STRAFE are deliberately
-## simple baselines (no threat projection) for evidence diversity —
-## they are expected to be worse and their reports say so.
+## Policy modes (M7 §2.11). PRIMARY is the canonical proof policy
+## shape; REACTIVE is the POLICY OF RECORD (designer ruling
+## 2026-07-29, ledger #11's re-adjudication route) and differs in
+## exactly one model choice: melee-slot enemies are bodies at their
+## RAW radius — the bot may enter trigger range and dodge the windup
+## on its telegraph like a human, instead of treating the whole
+## trigger bubble as do-not-enter. ORBIT and AXIS_STRAFE are
+## deliberately simple baselines (no threat projection) for evidence
+## diversity — they are expected to be worse and their reports say
+## so.
 enum Policy { PRIMARY, REACTIVE, ORBIT, AXIS_STRAFE }
 
 ## Baseline axis-strafe flip period (ticks).
@@ -470,7 +472,13 @@ static func _project_threats(world: RefCounted, p: RefCounted, reactive: bool) -
 		# (the sim starts a windup at center-distance <= trigger), pursued
 		# with the same simulation. Without this, removing contact damage
 		# deleted the bot's long-horizon pack pressure and compositions
-		# failed.
+		# failed. RE-CONFIRMED at close-fighter wave 1 (two refinement
+		# attempts, both REVERTED): dropping zero-contact bodies
+		# wholesale put 13 hits on the warren row; a gate-aware porous
+		# variant (body hard only while its melee gate could open within
+		# the horizon) broke the same row the other way — the proven
+		# conservative body model IS the pack-pressure keeper, and its
+		# corner cost is a composition finding, never a model bug.
 		# ANCHOR-policy enemies are keep-out DISCS (shot reach from the
 		# def's own data), never orbit targets: an anchor cannot close the
 		# gap, so respecting its envelope costs nothing — while averaging
@@ -559,13 +567,14 @@ static func _anchor_reach(emitters: Array, dt: float) -> float:
 	return reach
 
 
-## Smallest melee-class trigger range on an emitter set (slots with
-## trigger_range <= 2.0), or 0.0 when it has none.
+## Smallest melee-class trigger range on an emitter set (slots at or
+## under EnemyDef.MELEE_TRIGGER_MAX — the sim press gate's own
+## classifier, one truth), or 0.0 when it has none.
 static func _melee_trigger(emitters: Array) -> float:
 	var best := 0.0
 	for es: Resource in emitters:
 		var tr := float(es.trigger_range)
-		if tr <= 2.0 and (best == 0.0 or tr < best):
+		if tr <= EnemyDef.MELEE_TRIGGER_MAX and (best == 0.0 or tr < best):
 			best = tr
 	return best
 

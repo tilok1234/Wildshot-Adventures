@@ -1,0 +1,32 @@
+[gd_resource type="Resource" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://data/pattern_def.gd" id="1"]
+[ext_resource type="Script" path="res://data/shot_def.gd" id="2"]
+
+; CLOSE-FIGHTER WAVE 1 (sl-0213): the goblin's shiv — the flee-and-
+; pelt archetype's committed close jab (the designer's archetype:
+; keeps distance, pelts, flips to close-chaser). ONE aimed blade,
+; ZERO-RANGE-VALID (spawn 0.05 < 0.175 + 0.156). Reach 0.05 +
+; 4.5x16/60 + 0.156 = 1.41 covers the 1.2 trigger. Its long cooldown
+; IS the flee-phase clock: gate open = press in (enemy_step press),
+; gate cooling = skirmish at the band. Pattern id 48. All numbers [T].
+
+[sub_resource type="Resource" id="shot0"]
+script = ExtResource("2")
+angle_offset_deg = 0.0
+speed = 4.5
+radius = 0.156
+damage = 7
+ttl_ticks = 16
+program = 0
+prog_a = 0.0
+prog_b = 0.0
+prog_c = 0.0
+max_passes = 0
+spawn_offset = 0.05
+
+[resource]
+script = ExtResource("1")
+id = &"goblin_shiv"
+pattern_id = 48
+shots = Array[Resource]([SubResource("shot0")])

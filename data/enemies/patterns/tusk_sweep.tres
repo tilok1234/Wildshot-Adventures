@@ -8,6 +8,11 @@
 ; cone, short-lived, the boar's melee identity writ large. Elite
 ; amber language (Law 3: one elite shot family). Pattern id 22
 ; (namespace: 22..24 Old Tusk). Lead 30 rides the emitter slots.
+; sl-0234 GEOMETRY FIX: spawn 0.5 -> 0.05 (blades are born INSIDE
+; the 0.175 + 0.24 overlap disc — a player standing in him is hit by
+; his own sweep, the exploit dies); ttl 16 -> 21 keeps the outer
+; reach at 2.04 ~= the proven 2.07 so the mid-range fight is
+; unchanged. [T].
 
 [sub_resource type="Resource" id="shot0"]
 script = ExtResource("2")
@@ -15,13 +20,13 @@ angle_offset_deg = -35.0
 speed = 5.0
 radius = 0.24
 damage = 12
-ttl_ticks = 16
+ttl_ticks = 21
 program = 0
 prog_a = 0.0
 prog_b = 0.0
 prog_c = 0.0
 max_passes = 0
-spawn_offset = 0.5
+spawn_offset = 0.05
 
 [sub_resource type="Resource" id="shot1"]
 script = ExtResource("2")
@@ -29,13 +34,13 @@ angle_offset_deg = -17.5
 speed = 5.0
 radius = 0.24
 damage = 12
-ttl_ticks = 16
+ttl_ticks = 21
 program = 0
 prog_a = 0.0
 prog_b = 0.0
 prog_c = 0.0
 max_passes = 0
-spawn_offset = 0.5
+spawn_offset = 0.05
 
 [sub_resource type="Resource" id="shot2"]
 script = ExtResource("2")
@@ -43,13 +48,13 @@ angle_offset_deg = 0.0
 speed = 5.0
 radius = 0.24
 damage = 12
-ttl_ticks = 16
+ttl_ticks = 21
 program = 0
 prog_a = 0.0
 prog_b = 0.0
 prog_c = 0.0
 max_passes = 0
-spawn_offset = 0.5
+spawn_offset = 0.05
 
 [sub_resource type="Resource" id="shot3"]
 script = ExtResource("2")
@@ -57,13 +62,13 @@ angle_offset_deg = 17.5
 speed = 5.0
 radius = 0.24
 damage = 12
-ttl_ticks = 16
+ttl_ticks = 21
 program = 0
 prog_a = 0.0
 prog_b = 0.0
 prog_c = 0.0
 max_passes = 0
-spawn_offset = 0.5
+spawn_offset = 0.05
 
 [sub_resource type="Resource" id="shot4"]
 script = ExtResource("2")
@@ -71,13 +76,13 @@ angle_offset_deg = 35.0
 speed = 5.0
 radius = 0.24
 damage = 12
-ttl_ticks = 16
+ttl_ticks = 21
 program = 0
 prog_a = 0.0
 prog_b = 0.0
 prog_c = 0.0
 max_passes = 0
-spawn_offset = 0.5
+spawn_offset = 0.05
 
 [resource]
 script = ExtResource("1")

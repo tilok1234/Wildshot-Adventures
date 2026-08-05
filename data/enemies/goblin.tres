@@ -1,19 +1,45 @@
-[gd_resource type="Resource" load_steps=4 format=3]
+[gd_resource type="Resource" load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://data/enemy_def.gd" id="1"]
 [ext_resource type="Script" path="res://data/emitter_slot.gd" id="2"]
-[ext_resource type="Resource" path="res://data/enemies/patterns/rusher_slash.tres" id="3"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/goblin_shiv.tres" id="3"]
+[ext_resource type="Resource" path="res://data/enemies/patterns/goblin_pelt.tres" id="4"]
 
-; S1 GREEN ROSTER (sl-0104 seam 1): rusher archetype — the quick pack
-; scrapper. Lead 10 exact; numbers [T], Green band.
+; CLOSE-FIGHTER WAVE 1 (sl-0213; variety rule f): THE FLEE-AND-PELT
+; SKIRMISHER — the designer's archetype, carried by the goblin ALONE
+; (one or a couple of families ever; wave 2 invents fresh). FLANKER
+; holds the [3.5, 5.0] band as a JUKING circle (chirality by id
+; parity — the proof-warren finding: straight-radial keep-range
+; collapsed corridor twins onto ONE point, two shooters one doubled
+; shot; the tangent splits them structurally) while the sling pelts
+; from the band (trigger floor 2.0 — a pressing goblin commits to
+; the jab, never plinks point-blank; the king_grubb pinch finding);
+; past 5.0 [T] — THE SET DISTANCE — it spirals in like a chaser;
+; when the shiv gate opens (cooldown 300 = the 5 s skirmish clock)
+; the press sends it ALL the way in for the jab, then the flee
+; resumes. Replaces the sl-0104 rusher-slash chaser (the sl-0208
+; whiff class). Lead 12 shiv / 16 pelt, exact. All numbers [T].
+; The wolf also rides FLANKER — the POLICY is shared grammar like
+; CHASER; the read differs by band and kit (tight lunge-orbit
+; biter vs ranged juking plinker) per the variety rule's own terms
+; (behavior identity, not enum identity).
 
 [sub_resource type="Resource" id="slot0"]
 script = ExtResource("2")
 pattern = ExtResource("3")
 trigger_range = 1.2
-telegraph_ticks = 10
-cooldown_ticks = 42
-recover_ticks = 8
+telegraph_ticks = 12
+cooldown_ticks = 300
+recover_ticks = 10
+
+[sub_resource type="Resource" id="slot1"]
+script = ExtResource("2")
+pattern = ExtResource("4")
+trigger_range = 6.0
+trigger_range_min = 2.0
+telegraph_ticks = 16
+cooldown_ticks = 96
+recover_ticks = 6
 
 [resource]
 script = ExtResource("1")
@@ -25,10 +51,12 @@ move_speed = 2.5
 contact_damage = 0
 contact_cooldown_ticks = 30
 aggro_range = 12.0
-movement_policy = 0
-range_min = 0.0
-range_max = 0.0
-emitters = Array[Resource]([SubResource("slot0")])
+movement_policy = 4
+range_min = 3.5
+range_max = 5.0
+press_on_melee_gate = true
+range_band = &"close"
+emitters = Array[Resource]([SubResource("slot0"), SubResource("slot1")])
 xp_value = 3
 gold_min = 1
 gold_max = 3

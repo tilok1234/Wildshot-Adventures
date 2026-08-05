@@ -8,6 +8,9 @@
 ; shot's speed; the honest counter is changing direction during the
 ; 40-tick lead, the leadshot lesson at boss scale). Elite amber-deep.
 ; Pattern id 23.
+; sl-0234 GEOMETRY FIX: spawn 0.6 -> 0.05 (overlap-valid — see
+; tusk_sweep); ttls +4 each (54/46/40 -> 58/50/44) keep the three
+; reaches within 0.15 of the proven record. [T].
 
 [sub_resource type="Resource" id="shot0"]
 script = ExtResource("2")
@@ -15,13 +18,13 @@ angle_offset_deg = 0.0
 speed = 7.5
 radius = 0.2
 damage = 14
-ttl_ticks = 54
+ttl_ticks = 58
 program = 0
 prog_a = 0.0
 prog_b = 0.0
 prog_c = 0.0
 max_passes = 0
-spawn_offset = 0.6
+spawn_offset = 0.05
 
 [sub_resource type="Resource" id="shot1"]
 script = ExtResource("2")
@@ -29,13 +32,13 @@ angle_offset_deg = 0.0
 speed = 9.0
 radius = 0.2
 damage = 14
-ttl_ticks = 46
+ttl_ticks = 50
 program = 0
 prog_a = 0.0
 prog_b = 0.0
 prog_c = 0.0
 max_passes = 0
-spawn_offset = 0.6
+spawn_offset = 0.05
 
 [sub_resource type="Resource" id="shot2"]
 script = ExtResource("2")
@@ -43,13 +46,13 @@ angle_offset_deg = 0.0
 speed = 10.5
 radius = 0.2
 damage = 14
-ttl_ticks = 40
+ttl_ticks = 44
 program = 0
 prog_a = 0.0
 prog_b = 0.0
 prog_c = 0.0
 max_passes = 0
-spawn_offset = 0.6
+spawn_offset = 0.05
 
 [resource]
 script = ExtResource("1")

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/scenario_def.gd" id="1"]
+
+; CLOSE-FIGHTER WAVE 1 (sl-0213): the authored worst-case density
+; scene (the audit_density sibling, M5 convention) — Old Tusk plus a
+; full wolf pack and goblin gang converging on ONE standing target:
+; trample + sweeps + press bites + shivs + pelts + cutoff darts all
+; live at once. Screenshot audit only (ungated, never a battery row);
+; the ecosystem read is the designer's.
+
+[resource]
+script = ExtResource("1")
+id = &"audit_close_density"
+display_name = "AUDIT: close-fighter worst-case density (wave 1)"
+player_spawn = Vector2(24, 16)
+standin_positions = PackedVector2Array()
+enemy_spawns = {
+"goblin": PackedVector2Array(30, 12, 18, 20, 30, 20, 18, 12),
+"wolf": PackedVector2Array(28, 16, 20, 16, 24, 11, 24, 21),
+"old_tusk": PackedVector2Array(24, 18)
+}
+default_seed = 77
