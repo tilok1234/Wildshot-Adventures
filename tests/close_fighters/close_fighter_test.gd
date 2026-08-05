@@ -140,7 +140,10 @@ func _check_leads(r: Dictionary, expected: Dictionary, label: String) -> void:
 		if best >= 0:
 			check(
 				atick - best == int(expected[apat]),
-				label + ": pattern %d lead %d == %d exact" % [apat, atick - best, int(expected[apat])]
+				(
+					label
+					+ ": pattern %d lead %d == %d exact" % [apat, atick - best, int(expected[apat])]
+				)
 			)
 		seen[apat] = true
 	for pid: int in expected:
@@ -163,7 +166,10 @@ func _init() -> void:
 	_check_leads(wa, {46: 14, 47: 18}, "wolf")
 	var bite_hits := _hit_ticks(wa, 46)
 	var dart_hits := _hit_ticks(wa, 47)
-	check(bite_hits.size() >= 5, "wolf: bites CONNECT on a standing player (%d >= 5)" % bite_hits.size())
+	check(
+		bite_hits.size() >= 5,
+		"wolf: bites CONNECT on a standing player (%d >= 5)" % bite_hits.size()
+	)
 	check(dart_hits.size() >= 2, "wolf: cutoff darts land (%d >= 2)" % dart_hits.size())
 	# THE RETIREMENT PIN (inverts the sl-0208 melee-whiff for this
 	# family): the re-armed wolf KILLS the standing player, explainably.
@@ -221,7 +227,12 @@ func _init() -> void:
 			have_prev = false
 	check(drift >= 3.0, "wolf: the orbit orbits (band drift %.2f rad >= 3.0)" % drift)
 
-	print("wolf circler ok: bites=%d darts=%d death@%d drift=%.1f" % [bite_hits.size(), dart_hits.size(), int(wa.death_tick), drift])
+	print(
+		(
+			"wolf circler ok: bites=%d darts=%d death@%d drift=%.1f"
+			% [bite_hits.size(), dart_hits.size(), int(wa.death_tick), drift]
+		)
+	)
 
 	# ---- 2. THE WOLF at zero distance: overlap CONNECTS. ----
 	var wo := _run_family(wolf, Vector2(24.0, 16.0), 240)
@@ -231,7 +242,10 @@ func _init() -> void:
 	if not wo.attacks.is_empty() and not wo_bites.is_empty():
 		check(
 			int(wo_bites[0]) <= int(wo.attacks[0][0]) + 3,
-			"wolf overlap: the blade lands on arrival (t%d vs volley t%d)" % [int(wo_bites[0]), int(wo.attacks[0][0])]
+			(
+				"wolf overlap: the blade lands on arrival (t%d vs volley t%d)"
+				% [int(wo_bites[0]), int(wo.attacks[0][0])]
+			)
 		)
 
 	print("wolf overlap ok")
@@ -300,7 +314,10 @@ func _init() -> void:
 			far_moves += 1
 			if bool(row[2]):
 				far_toward += 1
-	check(far_moves >= 30, "goblin set-distance: the walk actually opens the gap (%d ticks)" % far_moves)
+	check(
+		far_moves >= 30,
+		"goblin set-distance: the walk actually opens the gap (%d ticks)" % far_moves
+	)
 	if far_moves > 0:
 		check(
 			float(far_toward) / float(far_moves) >= 0.8,
@@ -342,7 +359,12 @@ func _init() -> void:
 	)
 	check(not _hit_ticks(tm, 22).is_empty(), "old tusk march: sweeps connect on the way in")
 
-	print("old tusk ok: trample=%d sweep=%d overlap-death@%d" % [trample.size(), sweep.size(), int(ta.death_tick)])
+	print(
+		(
+			"old tusk ok: trample=%d sweep=%d overlap-death@%d"
+			% [trample.size(), sweep.size(), int(ta.death_tick)]
+		)
+	)
 
 	# ---- 5. THE RANGE-BAND VOCABULARY (sl-0213). ----
 	var grid: RefCounted = Bitgrid.new()
@@ -380,15 +402,20 @@ func _init() -> void:
 		close_after_settle = minf(close_after_settle, na.dist_trace[t])
 	check(
 		close_after_settle >= 2.8,
-		"negative: a kit with no melee-class slot NEVER presses (min %.2f >= 2.8)" % close_after_settle
+		(
+			"negative: a kit with no melee-class slot NEVER presses (min %.2f >= 2.8)"
+			% close_after_settle
+		)
 	)
 
 	if fails.is_empty():
 		print(
 			(
 				"close_fighter_test: PASS (wolf circler / goblin flee-pelt / tusk overlap / "
-				+ "bands / press classifier; wolf kill t%d, goblin kill t%d, tusk overlap kill t%d)"
-				% [int(wa.death_tick), int(ga.death_tick), int(ta.death_tick)]
+				+ (
+					"bands / press classifier; wolf kill t%d, goblin kill t%d, tusk overlap kill t%d)"
+					% [int(wa.death_tick), int(ga.death_tick), int(ta.death_tick)]
+				)
 			)
 		)
 		quit(0)
