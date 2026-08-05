@@ -225,9 +225,27 @@ const RIFT_BIOME_KEYS: Array[String] = ["nebula", "void", "comet"]
 ## rules; the INDEX amends when they pick.
 const RIFT_SPLIT_RATIOS: Array[float] = [0.5, 2.0 / 3.0]
 const RIFT_SPLIT_NAMES: Array = ["half & half", "two-thirds galaxy"]
+## THE ZOOM OPTION (sl-0222 + the sl-0223 accessibility framing —
+## the doc 01 family; UI/text scaling's gameplay-view sibling): an
+## options cycle row scaling the GAME CAMERA only [T levels]; HUD and
+## menus stay on ui-scale (CanvasLayer — structurally untouched by
+## camera zoom); [ui] game_zoom persisted; default 1x = today's view.
+## The multiplier rides the FOLLOW camera ONLY — the fixed-fit rift
+## camera keeps its law-derived fit (Law 1 by construction; a zoomed
+## pane would push arena cells off-pane). PIXEL-INTEGRITY [P->T]:
+## 1.5x is non-integer over pixel art — ships nearest-neighbor
+## (sharp, honest fractional stepping; 2x stays pixel-exact); the
+## side-by-side evidence is the designer's to rule on. HONEST NOTE:
+## zoom-in shrinks visible warning distance; the fairness floor is
+## sim-level and unchanged.
+const GAME_ZOOM_LEVELS: Array[float] = [1.0, 1.5, 2.0]
+const GAME_ZOOM_NAMES: Array = ["1x", "1.5x", "2x"]
 ## Live refs for the re-anchor (empty outside rift scenarios).
 var _rift_panes := {}
 var _rift_cam: CameraRig = null
+## The follow camera (null in fixed-fit rift scenarios — the zoom
+## option's structural exclusion).
+var _follow_cam: CameraRig = null
 ## The world frame captured at cast — the split-screen's world pane
 ## (presentation only; survives the scene reload).
 static var _rift_capture: Image = null
@@ -1356,6 +1374,17 @@ func _apply_rift_split() -> void:
 	seam.anchor_right = world_frac
 
 
+## sl-0222 THE ZOOM OPTION: apply the persisted level to the follow
+## camera (live — the options row calls this on every flip). Fixed-fit
+## rift cameras are excluded by construction (_follow_cam stays null
+## there); HUD/menus ride CanvasLayers and never see camera zoom.
+func _apply_game_zoom() -> void:
+	if _follow_cam == null:
+		return
+	var idx := clampi(int(Config.get_setting("ui", "game_zoom", 0)), 0, GAME_ZOOM_LEVELS.size() - 1)
+	_follow_cam.zoom = Vector2.ONE * GAME_ZOOM_LEVELS[idx]
+
+
 ## Fish display name from the balance frame's biome tables (sl-0115).
 func _rift_fish_name(biome: int, fish: int, rare: bool) -> String:
 	var biomes: Array = world.stat_frame.get("starhook", {}).get("biomes", [])
@@ -1991,6 +2020,9 @@ func _ready() -> void:
 		# clamped follow camera, like every dungeon/overworld (the
 		# fixed one-room fit lost the walking player four tiles in).
 		camera.setup(int(def.width), int(def.height))
+		# sl-0222: the game-zoom option rides the follow camera.
+		_follow_cam = camera
+		_apply_game_zoom()
 
 	var pause_label := Label.new()
 	pause_label.text = "PAUSED"
@@ -2318,6 +2350,19 @@ func _ready() -> void:
 		func(i: int) -> void:
 			Config.set_setting("ui", "scale", i + 1)
 			_apply_ui_scale(i + 1)
+	)
+	# sl-0222/0223 game zoom (ACCESSIBILITY FIRST — reduced vision;
+	# ui scale's gameplay-view sibling): scales the game camera only,
+	# HUD/menus stay on ui-scale. Applies live; persists. The honest
+	# note rides the resolution: zoom-in shrinks visible warning
+	# distance — the fairness floor is sim-level and unchanged.
+	options_menu.add_cycle_row(
+		"game zoom",
+		GAME_ZOOM_NAMES,
+		clampi(int(Config.get_setting("ui", "game_zoom", 0)), 0, GAME_ZOOM_LEVELS.size() - 1),
+		func(i: int) -> void:
+			Config.set_setting("ui", "game_zoom", i)
+			_apply_game_zoom()
 	)
 	# sl-0077 crosshair style + size (player-facing, both profiles):
 	# shapes differ by silhouette, never hue (CORE-50); "classic" = the

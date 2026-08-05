@@ -25,6 +25,7 @@ const PROFILES := {
 			"fullscreen": false,
 			"crosshair_style": 1,
 			"crosshair_size": 9,
+			"game_zoom": 0,
 		},
 		"dev": {"scenario": "res://data/scenarios/first_contact.tres", "seed": 1},
 	},
@@ -40,6 +41,7 @@ const PROFILES := {
 			"fullscreen": false,
 			"crosshair_style": 2,
 			"crosshair_size": 15,
+			"game_zoom": 2,
 		},
 		"dev": {"scenario": "res://data/scenarios/first_contact.tres", "seed": 1},
 	},
@@ -167,6 +169,18 @@ static func verify(m: Node, profile: String) -> Array[String]:
 				"crosshair size %d not wired (applied %d)"
 				% [int(vals.ui.crosshair_size), int(m.get("_crosshair_size"))]
 			)
+		)
+
+	# sl-0222 game zoom -> the live follow camera (the accessibility
+	# row's runtime object; first_contact is an arena world, so the
+	# follow camera exists on both profiles).
+	var zoom_levels: Array = m.get("GAME_ZOOM_LEVELS")
+	var fcam: Camera2D = m.get("_follow_cam")
+	if fcam == null:
+		fails.append("follow camera missing — game zoom unverifiable")
+	elif not is_equal_approx(fcam.zoom.x, float(zoom_levels[int(vals.ui.game_zoom)])):
+		fails.append(
+			"game zoom idx %d not wired (camera %.2f)" % [int(vals.ui.game_zoom), fcam.zoom.x]
 		)
 
 	# Remap path (full remapping from start): high profile only.

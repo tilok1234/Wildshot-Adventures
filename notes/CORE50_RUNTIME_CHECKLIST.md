@@ -47,6 +47,7 @@
 | Remapping (persisted path -> live InputMap) | injected move_up=J is live (+ tests/settings round-trip) |
 | Hold/toggle fire | sim-side autofire latch, smoke-mechanized since M3 (CORE-32 proofs) |
 | Rift split ratio (sl-0125) | [ui] rift_split settings round-trip in the gate; NOT core50-verified (deliberate: the row only applies inside rift scenarios, which core50's default-scenario boot never enters) — the render truth is the four-capture evidence + the designer-eyes row below |
+| Game zoom 1x/1.5x/2x (sl-0222/0223 — accessibility first) | the live follow camera's zoom (both profiles differ: 1x vs 2x) + [ui] game_zoom settings round-trip; fixed-fit rift cameras structurally excluded (Law 1 fit) |
 
 ## Designer eyes — one pass in the TESTER build (render gate)
 
@@ -69,6 +70,12 @@ Launch the tester exe, flip each in options (O), confirm the LOOK:
 - [ ] Crosshair styles (sl-0077): all four silhouettes readable on
       every floor; size steps visibly 9/11/13/15; "classic" at 11 is
       the exact ratified look (preview: reports/crosshair_styles_preview.png).
+- [ ] Game zoom (sl-0222/0223): flip 1x/1.5x/2x on the overworld —
+      the world magnifies, HUD/menus stay put; 2x is pixel-exact,
+      1.5x carries honest fractional stepping (the pixel-integrity
+      call is yours — evidence: reports/zoom_option_{1x,15x,2x}_*.png).
+      Remember: zoom-in sees LESS around you; the fairness floor is
+      sim-level and unchanged.
 - [ ] Audio rows: each bus audibly steps 100/70/40/off independently
       (five buses since M8: Master/Sfx/KeyThreats/Music/AttackSfx);
       KeyThreats off silences telegraphs but Sfx stays. Real audio is

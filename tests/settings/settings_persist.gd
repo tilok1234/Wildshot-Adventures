@@ -107,6 +107,14 @@ func _init() -> void:
 		quit(1)
 		return
 
+	# sl-0222 game zoom ([ui] section): the accessibility row's
+	# round-trip.
+	config.set_setting("ui", "game_zoom", 2)
+	if int(config.get_setting("ui", "game_zoom", -1)) != 2:
+		printerr("FAIL: ui/game_zoom did not persist")
+		quit(1)
+		return
+
 	# Menu pass ([ui] section): the C menu's last-used tab + the log's
 	# tracked-quest choice persist view-side (options-style).
 	config.set_setting("ui", "menu_tab", 1)
