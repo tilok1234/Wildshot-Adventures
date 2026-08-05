@@ -46,8 +46,12 @@
 > melee-harmless pins retired: the wave-1 three now KILL a standing
 > player (test-pinned inverse); the LAB RUSHER's whiff pin stands
 > untouched for wave 2. Gate: close_fighter_test = fixed step 34;
-> battery 64 rows / 125 runs. WAVE 2 (every remaining close family,
-> fresh archetypes each) HOLDS until the designer plays wave 1.**
+> battery 64 rows / 125 runs; **the seam SEALED ALL GREEN 15.4 min
+> on the committed tree** (7bc2d06 + the dcb0953 green_camp record
+> catch — run-1 camp bytes predated the goblin's final iteration;
+> the seal's own byte gate caught it, camp margins landed 0.840/
+> 0.900). WAVE 2 (every remaining close family, fresh archetypes
+> each) HOLDS until the designer plays wave 1.**
 
 > **PREVIOUS — THE NIGHT SEAM (2026-08-05 ~01:30-03:30 local,
 > hands-free; three sealed seams 0c81144 / 5c4d0ce / 007703e + the
