@@ -2524,3 +2524,79 @@ SEAL full ALL GREEN on the committed tree). sl-0213 (close-fighter
 re-arm) NOT folded in, exactly as routed. NO feel verdicts — mark
 style, region params, GIVE_UP/RETURN radii: ALL [T]; the designer's
 run around the map is the acceptance.
+
+
+THE NIGHT SEAM 2026-08-05 (PASTE D v4: sl-0227 + sl-0221 + sl-0222/
+0223; three sealed seams 0c81144 / 5c4d0ce / 007703e + the docs close;
+SERIAL 27->28 at the sim seam, WSR v3 UNTOUCHED, next bump 29; smoke
+record pair 9dffd5bb9fc30ed5/abc54568d0cdceda): **sl-0227 THE
+CLAUDE.MD DIET FIRST** (docs-only): the 163,255-byte append-only
+milestone tail (86.5% of the file) moved VERBATIM to
+notes/MILESTONE_HISTORY.md — byte-diff proven (tail sha cfabfca2...,
+head preserved 001cd862..., head+tail == old total); CLAUDE.md keeps
+the binding contract untouched + a compact CURRENT block + the
+pointer; the append discipline continues THERE (this block is the new
+structure's first entry); HANDOFF pointer lines truthed. **sl-0221
+THE HOME BIND + THE RECALL CAST (SERIAL 28)**: parallel settlement
+tables on ScenarioDef/SimWorld (ids/arrival/waypost cells; mismatch
+refuses loudly); slice v1 = capital (cell == the spawn — the default
+home IS today's respawn, pinned identity) + the west waystation
+(arrival 91.5,112.5). THE WAYPOST = the SET-HOME station [T surface]:
+F binds instantly (recorded op 192, radius 1.2, idempotent, HOME_SET
+on change); bodies capital-gate-guard 113.5,179.5 + rough-outpost-
+guard 91.5,113.5 ([P] casting; b77-verified walkable, >=3.0 t from
+every station/giver), plated "Waypost". DEATH-RESPAWN RESOLVES THE
+SET HOME (SimWorld.home_cell: table -> home; no table/ghost ->
+respawn_cell — labs/proofs/rifts/Warren unchanged BY CONSTRUCTION;
+fee 25% [T] re-pinned exact). THE RECALL: P [T, remappable,
+auto-listed] -> recorded op 193 -> a 120 t [T] cast riding the
+SERIAL-27 gather target+ticks pair with a RECALL sentinel (zero new
+cast-state fields); MOVING or a HIT cancels (cooldown UNSPENT);
+completion teleports home + arms 2700 t [T] (the routed 30-60 s
+lean's middle); overworld-only STRUCTURALLY (settlement-less worlds
+refuse sim-side; the plain refusal line covers rifts/dungeons/labs);
+free; recall overrides a running forage bar; death mid-cast clears on
+revive (no posthumous teleport — the same clear retires the
+gather-bar-across-death leftover, recorded rider). RAILS: ops ride
+the bag_op byte's documented free range — WSR v3/InputFrame 17
+UNTOUCHED; state growth 9 bytes/player (home u8 + cooldown 64) — THE
+ONE DEVIATION recorded loudly: "home field ONLY" cannot hold the
+cooldown the same paste requires (unserialized gameplay state cannot
+exist — GDD-16/determinism law). Profile home_town_id BY ID,
+ghost-tolerant, no version bump; settlement-less sessions never
+overwrite the home. Surfaces: recall_view cast bar (the gather bar's
+sibling, over the caster's own head), [P] recall hint (live remap),
+HOME SET/recalled/not-ready/overworld-only toasts. Tests: gather §27
++ living_world §10 + wiring waypost pins (ZERO new fixed steps);
+SERIAL-28 hash coverage; goldens re-recorded + x10. EVIDENCE both
+scales committed + read: reports/recall_home_{waypost,bar}_*.png.
+**sl-0222/0223 THE ZOOM OPTION** (view-only, zero sim bytes —
+smoke pair byte-identical to the SERIAL-28 record): "game zoom"
+options row [T 1x/1.5x/2x], BOTH profiles, [ui] game_zoom, default
+1x, applies live — AN ACCESSIBILITY OPTION FIRST (doc 01 family; ui
+scale's gameplay-view sibling); scales the FOLLOW camera only
+(HUD/menus on CanvasLayers structurally untouched; fixed-fit rift
+cameras keep their Law-1 fit by construction — _follow_cam null
+there). PIXEL-INTEGRITY [P->T]: ships nearest-neighbor (2x
+pixel-exact; 1.5x honest fractional stepping, no blur) — the
+side-by-side ladder is the designer's call; the honest note carried:
+zoom-in shrinks visible warning distance, the fairness floor is
+sim-level and unchanged. core50 pair grew the row (low 1x / high 2x,
+live camera asserted); settings round-trip; checklist rows. EVIDENCE:
+reports/zoom_option_{1x,15x,2x}_{base,desktop}.png (ranger + wolf
+edges). **THE GATE STORY, honestly:** the designer's own hand-
+launched Godot PROJECT MANAGER (another install, open 01:38 local,
+no project loaded) blocks the pretester/export/probe entry guard BY
+DOCTRINE (ambiguous instances block — godot_guard.ps1's own text);
+the recorded b65 individually-green fallback executed in full: ALL
+33 fixed steps green individually (same commands + exit codes), the
+FULL 121-run battery ALL ON-MATRIX standalone via the pretester's
+own extracted table (12.1 min, 8 workers) with every dodge report
+BYTE-IDENTICAL (margins exactly reproduced; only the 6 committed
+repro strays re-record their SERIAL-28 headers), goldens x10,
+core50 pair, boot, lint. Export + lockdown probe are the two
+guard-held legs — THE FULL-PRETESTER SEAL on the committed tree
+rides the first guard-clear (monitored; gotcha 43 honored at the
+seal). NO feel verdicts — waypost cells/casting, cast length,
+cooldown, binding, zoom levels, the 1.5x integrity call: ALL [T];
+the designer's walk + flips rule.

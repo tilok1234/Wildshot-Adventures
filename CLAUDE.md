@@ -416,23 +416,26 @@ primes the tester-recruitment pipeline both Gate 1 cycles draw from.
 **Era: Slice v0.1 — the world is the test (sl-0098).** Green Country is
 live end-to-end on the docs/22 stat frame: the living world (activation
 leash, tether 12, give-up 18 / return 5, away-only respawn), overworld
-death = the CORE-43 25% [T] gold fee + settlement respawn, the Green
-roster (14 families / 54 variants) + Old Tusk + the Warren + King Grubb,
+death = the CORE-43 25% [T] gold fee + respawn at the player's SET HOME
+(waypost stations bind it; capital default = the spawn, sl-0221), the
+RECALL cast (P, 2 s, overworld-only, 45 s cooldown), the Green roster
+(14 families / 54 variants) + Old Tusk + the Warren + King Grubb,
 quests v1 (multi-active cap 5, offer dialogue, map/HUD/mob-mark pull),
 loot bags + bank + vendors + tackle, the C menu family on panel2,
 starhook (rift fights, 15 boss kits, the rift dungeon path, 12 rods +
-tackle gear, the creel), foraging (gather bar), dev map overlay +
+tackle gear, the creel), foraging (gather bar), the game-zoom
+accessibility option (1x/1.5x/2x, sl-0222/0223), dev map overlay +
 console toolbelt + jump commands, hitbox 0.175 + the cadence
 re-composition.
 
-**State:** SERIAL 27 / WSR v3 (next bump 28). Battery 62 rows / 121-run
+**State:** SERIAL 28 / WSR v3 (next bump 29). Battery 62 rows / 121-run
 pool (floor 3.6 + cap 4.14 lanes; two pinned [primary] FAILs + canaries
 by design). Gate = tools/pretester_check.ps1: 33 fixed steps + battery
 + export + lockdown probe; CI green. Engine Godot 4.6.2 pinned.
 
 **Open designer-owned:** the slice week on the docs/19 bar (Green days);
-every [T] number; the sl-0186 dungeon re-walk; refinement pastes follow
-their play.
+every [T] number; the sl-0186 dungeon re-walk; the 1.5x zoom
+pixel-integrity call; refinement pastes follow their play.
 
 > The full append-only milestone history lives at
 > `notes/MILESTONE_HISTORY.md` — append THERE at each session close,

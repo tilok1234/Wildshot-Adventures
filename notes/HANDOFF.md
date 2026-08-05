@@ -1,6 +1,42 @@
-# Session Handoff — updated 2026-08-05 (THE ACTIVITY PASS sl-0216/0218/0219: vocabulary guard + quest activity indicators + the chase-leash diagnose-then-tune; resolutions sl-0224..0226)
+# Session Handoff — updated 2026-08-05 (THE NIGHT SEAM sl-0227/0221/0222/0223: the CLAUDE.md diet + the home bind & recall cast (SERIAL 28) + the game-zoom option)
 
-> **NEWEST FIRST — THE ACTIVITY PASS (2026-08-05 night, hands-free;
+> **NEWEST FIRST — THE NIGHT SEAM (2026-08-05 ~01:30-03:30 local,
+> hands-free; three sealed seams 0c81144 / 5c4d0ce / 007703e + the
+> docs close; SERIAL 27→28 at the sim seam, WSR v3 untouched, next
+> bump 29; smoke pair 9dffd5bb9fc30ed5/abc54568d0cdceda):**
+> (1) **THE CLAUDE.MD DIET** (sl-0227, docs-only): the 163,255-byte
+> milestone tail moved VERBATIM to `notes/MILESTONE_HISTORY.md`
+> (byte-diff proven; CLAUDE.md 188,777 → ~27k bytes = a compact
+> CURRENT block + the untouched contract) — **append session closes
+> THERE now, never in CLAUDE.md**. (2) **THE HOME BIND + THE RECALL
+> CAST** (sl-0221, SERIAL 28 = home_town u8 + recall_ready_tick — 9
+> bytes/player, the cooldown field being the ONE recorded rails
+> deviation): settlement tables on ScenarioDef/SimWorld (slice =
+> capital + west waystation; capital cell == the spawn = today's
+> respawn identity); WAYPOSTS = SET-HOME stations (F = recorded op
+> 192; gate-guard 113.5,179.5 + outpost-guard 91.5,113.5 bodies,
+> "Waypost" plates); death-respawn resolves the SET home
+> (SimWorld.home_cell; fee 25% untouched); RECALL on P = op 193 → a
+> 120 t cast on the gather target+ticks pair (RECALL sentinel; move/
+> hit cancels, cooldown 2700 t arms on completion only;
+> overworld-only structurally — settlement-less worlds refuse).
+> (3) **THE GAME-ZOOM OPTION** (sl-0222/0223, view-only, zero sim
+> bytes): "game zoom" 1x/1.5x/2x on the FOLLOW camera only
+> (accessibility-first; HUD/menus untouched structurally; fixed-fit
+> rift cameras excluded by construction); nearest-neighbor at 1.5x —
+> the pixel-integrity call is the designer's (evidence ladder
+> committed). **THE GATE STORY:** the designer's idle Godot PROJECT
+> MANAGER (another install, open since 01:38) blocks the pretester/
+> export/probe entry guard by doctrine — the b65 individually-green
+> fallback executed IN FULL (all 33 fixed steps individually + the
+> full 121-run battery ALL ON-MATRIX standalone, dodge reports
+> byte-identical, goldens x10, core50 pair, boot, lint); **export +
+> lockdown probe are the two guard-held legs — RUN THE FULL
+> PRETESTER SEAL at the first exclusive seam** (gotcha 43's seal
+> half; everything else already proven on the committed tree). NO
+> feel verdicts — every number/cell/binding [T].
+
+> **PREVIOUS — THE ACTIVITY PASS (2026-08-05 night, hands-free;
 > four sealed gated seams aa65ec7 / 7b6b9a7 / 3f2a996 / d2900e8;
 > resolutions sl-0224..0226; SERIAL 27 / WSR v3 UNTOUCHED all
 > session):** (1) **THE DUNGEON VOCABULARY GUARD** (sl-0216,
@@ -145,21 +181,22 @@ carries the current session state and the hard-won lessons the
 contract doesn't. Nothing repo-side gates on the Claude account; git
 identity and gh auth are machine-local; this file + `CLAUDE.md` +
 planning `docs/23` are the complete context carrier. (Serialization is
-**SERIAL 27** — 23 the bag, 24 loot bags, 25 the bank, 26 the gear
-seam, 27 THE FORAGING BUILD (sl-0198: ambient forage nodes
-pos+species on the world; the gather bar target+ticks + the
-forage_mats wallet on PlayerState; the sl-0105 stillness fields
-RETIRED). **WSR VERSION 3** (InputFrame 17 bytes; v2 replays refuse
-loudly — the foraging verb rides EXISTING inputs, zero format
-growth). NEXT BUMP IS **28**. Smoke record pair since SERIAL 27:
-316bc4c7cc5004be / 30fa8ce4fb8f7b27.)
+**SERIAL 28** — 23 the bag, 24 loot bags, 25 the bank, 26 the gear
+seam, 27 the foraging build, 28 THE HOME BIND + THE RECALL CAST
+(sl-0221: home_town u8 + recall_ready_tick on PlayerState — 9
+bytes/player; the recall cast itself rides the SERIAL-27 gather
+target+ticks pair with a sentinel; settlement/waypost tables are
+definitions). **WSR VERSION 3** (InputFrame 17 bytes; v2 replays
+refuse loudly — the home/recall ops ride the recorded bag_op byte's
+free range 192/193, zero format growth). NEXT BUMP IS **29**. Smoke
+record pair since SERIAL 28: 9dffd5bb9fc30ed5 / abc54568d0cdceda.)
 
 ## §0 What this project is (60 seconds)
 
 Wildshot Adventures: a solo-developed RotMG-inspired top-down realtime
 bullet-hell ARPG in **Godot 4.6.2 (pinned), typed GDScript, custom
 deterministic sim, no Godot physics in gameplay**. Serialization
-SERIAL 27 (next bump 28); replay format WSR v3; goldens current;
+SERIAL 28 (next bump 29); replay format WSR v3; goldens current;
 local gates green.
 
 Current phase: **THE SLICE ERA** (sl-0098: the world is the test).
@@ -523,7 +560,7 @@ Before every commit, per touched area:
   fast signal (gotcha #26).
 
 ### Canonical proof battery (state 2026-08-05 — 62 rows / 121-run
-### pool; POLICY OF RECORD = REACTIVE; SERIAL 27; WSR v3; Warden 575;
+### pool; POLICY OF RECORD = REACTIVE; SERIAL 28; WSR v3; Warden 575;
 ### b65 flood 34641; b77 current; HURTBOX 0.175 since sl-0208 with
 ### the bot PLANNING at the proven 0.35 envelope — gotcha 49; the
 ### whole record re-baselined with margins +0.175 across the board,
